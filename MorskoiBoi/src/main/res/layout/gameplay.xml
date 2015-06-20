@@ -1,0 +1,90 @@
+<com.ivygames.morskoiboi.ui.view.GameplayLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.ivygames.morskoiboi"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText" >
+
+    <ImageView
+        android:id="@+id/bw"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="@dimen/gameplay_padding" >
+
+        <com.ivygames.morskoiboi.ui.view.FleetBoardView
+            android:id="@+id/board_view_fleet"
+            android:layout_height="match_parent"
+            android:padding="@dimen/board_border" />
+
+        <com.ivygames.morskoiboi.ui.view.TimerView
+            android:id="@+id/timer"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp" />
+
+        <!-- status -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="@dimen/gameplay_status_padding" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/status_vertical_margin" >
+
+                <TextView
+                    android:id="@+id/player"
+                    style="@style/StatusText"
+                    android:layout_width="0dp"
+                    android:layout_marginRight="@dimen/gameplay_name_padding"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="Sagi Mizrachi" />
+
+                <TextView
+                    android:id="@+id/enemy"
+                    style="@style/StatusText"
+                    android:layout_width="0dp"
+                    android:layout_marginLeft="@dimen/gameplay_name_padding"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Android" />
+            </LinearLayout>
+
+            <com.ivygames.morskoiboi.ui.view.FleetView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:verticalMargin="@dimen/status_vertical_margin" />
+
+            <Button
+                android:id="@+id/chat_button"
+                style="@style/ChatButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/chat" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.ivygames.morskoiboi.ui.view.EnemyBoardView
+        android:id="@+id/board_view_enemy"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/main_buttons_margin"
+        android:padding="@dimen/board_border" />
+
+</com.ivygames.morskoiboi.ui.view.GameplayLayout>

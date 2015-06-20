@@ -1,0 +1,35 @@
+<com.ivygames.morskoiboi.ui.view.NotepadLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:scaleType="center"
+        android:src="@drawable/lost4" />
+
+    <TextView
+        style="@style/HeaderText"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/lost_text_margin"
+        android:gravity="center"
+        android:text="@string/lost" />
+
+    <View
+        android:layout_height="0dp"
+        android:layout_weight="10" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/continue_panel" />
+
+    <View
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</com.ivygames.morskoiboi.ui.view.NotepadLinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ivygames.morskoiboi.ui.view.DeviceListLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:background="@color/main"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/select_device"
+        android:textColor="@color/dark_button_text_normal"
+        android:textSize="@dimen/button_main_textSize" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="visible" />
+    <ImageView
+        android:id="@+id/discovery_animation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:src="@drawable/spinner_76_inner_holo"
+        android:visibility="gone" />
+
+    <LinearLayout android:layout_width="match_parent" >
+
+        <Button
+            android:id="@+id/discover_btn"
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/discover" />
+
+        <Button
+            android:id="@+id/ensure_discoverable_btn"
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/show_me" />
+
+        <!-- <Chronometer /> -->
+    </LinearLayout>
+
+</com.ivygames.morskoiboi.ui.view.DeviceListLayout>

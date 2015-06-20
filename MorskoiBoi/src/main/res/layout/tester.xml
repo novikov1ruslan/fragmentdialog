@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TesterActivity"
+    tools:ignore="HardcodedText" >
+
+    <Button
+        android:id="@+id/tester_win"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onWin"
+        android:text="Win"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/tester_loose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onLoose"
+        android:text="Loose"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/internet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onInternet"
+        android:text="Internet"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/setup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onSetup"
+        android:text="Setup"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

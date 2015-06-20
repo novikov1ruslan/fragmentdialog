@@ -1,0 +1,82 @@
+<com.ivygames.morskoiboi.ui.view.BoardSetupLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:background="@color/default_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/tips_pannel"
+        android:layout_width="match_parent" >
+
+        <ViewFlipper
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:autoStart="true"
+            android:flipInterval="7000"
+            android:inAnimation="@android:anim/slide_in_left"
+            android:outAnimation="@android:anim/slide_out_right" >
+
+            <TextView
+                style="@style/NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/place_instruction" />
+
+            <TextView
+                style="@style/NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/rotate_instruction" />
+        </ViewFlipper>
+
+        <ImageButton
+            android:id="@+id/close_button"
+            style="@style/BigCircle"
+            android:layout_margin="@dimen/main_screen_circles_margin"
+            android:src="@drawable/content_remove" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/help_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="2dp"
+        android:background="@drawable/btn_circle_background"
+        android:clickable="true"
+        android:src="@drawable/action_help"
+        android:visibility="gone" />
+
+    <com.ivygames.morskoiboi.ui.view.SetupBoardView
+        android:id="@+id/board_view"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/buttons_panel"
+        android:layout_below="@+id/tips_pannel"
+        android:padding="@dimen/board_border" />
+
+    <LinearLayout
+        android:id="@+id/buttons_panel"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/auto_setup"
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/auto" />
+
+        <Button
+            android:id="@+id/done"
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/done" />
+    </LinearLayout>
+
+</com.ivygames.morskoiboi.ui.view.BoardSetupLayout>

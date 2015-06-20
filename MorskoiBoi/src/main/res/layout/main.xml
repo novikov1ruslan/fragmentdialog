@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ivygames.morskoiboi.ui.view.MainScreenLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/default_background" >
+
+    <ImageButton
+        android:id="@+id/settings_button"
+        style="@style/BigCircle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/main_screen_circles_margin"
+        android:src="@drawable/settings_menu" />
+
+    <ImageButton
+        android:id="@+id/share_button"
+        style="@style/BigCircle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/main_screen_circles_margin"
+        android:src="@drawable/share_menu" />
+
+    <ImageView
+        android:id="@+id/title"
+        android:layout_above="@+id/game_services_box"
+        android:layout_below="@+id/share_button"
+        android:layout_centerHorizontal="true"
+        android:scaleType="center"
+        android:src="@drawable/title" />
+
+    <LinearLayout
+        android:id="@+id/game_services_box"
+        android:layout_above="@+id/play"
+        android:layout_centerHorizontal="true" >
+
+        <ImageButton
+            android:id="@+id/achievements_button"
+            style="@style/BigCircle"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/main_screen_circles_margin"
+            android:src="@drawable/achievements" />
+
+        <ImageButton
+            android:id="@+id/high_score"
+            style="@style/BigCircle"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/main_screen_circles_margin"
+            android:src="@drawable/leaderboards" />
+    </LinearLayout>
+
+    <com.ivygames.morskoiboi.ui.view.InvitationButton
+        android:id="@+id/play"
+        style="@style/Button.Menu"
+        android:layout_above="@+id/help"
+        android:text="@string/play" />
+
+    <Button
+        android:id="@+id/help"
+        style="@style/Button.Menu"
+        android:layout_alignParentBottom="true"
+        android:text="@string/help" />
+
+</com.ivygames.morskoiboi.ui.view.MainScreenLayout>

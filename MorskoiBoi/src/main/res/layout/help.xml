@@ -1,0 +1,9 @@
+<com.ivygames.morskoiboi.ui.view.HelpLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/default_background" >
+
+    <WebView
+        android:id="@+id/html_container"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/help_margin" />
+
+</com.ivygames.morskoiboi.ui.view.HelpLayout>

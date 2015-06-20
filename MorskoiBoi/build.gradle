@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.ivygames.morskoiboi"
+        minSdkVersion 11
+        targetSdkVersion 16
+
+        testApplicationId "com.ivygames.morskoiboi.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    compile project(':AppTheme')
+    compile project(':fragmentdialog')
+    compile project(':BaseGameUtils')
+    compile project(':RUtils')
+    compile 'com.android.support:support-v4:22.1.0'
+    compile 'com.google.android.gms:play-services:+'
+    compile 'ch.acra:acra:4.6.2'
+    compile files('libs/adcolony.jar')
+    compile 'de.greenrobot:eventbus:2.4.0'
+//    compile 'org.apache.commons:commons-lang3:3.4'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+//        exclude group: 'com.google.android', module: 'support-v4'
+    }
+
+    // androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.2'
+    // androidTestCompile files('libs/dexmaker-1.0.jar')
+    // androidTestCompile files('libs/dexmaker-mockito-1.0.jar')
+    // androidTestCompile files('libs/mockito-all-1.9.5.jar')
+}

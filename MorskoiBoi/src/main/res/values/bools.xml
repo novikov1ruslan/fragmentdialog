@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="is_small_screen" format="boolean" type="bool">false</item>
+    <item name="window_no_title" format="boolean" type="bool">true</item>
+    <item name="is_tablet" format="boolean" type="bool">false</item>
+    <item name="support_adcolony" format="boolean" type="bool">false</item>
+    
+</resources>
