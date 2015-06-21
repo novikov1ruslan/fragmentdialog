@@ -23,7 +23,7 @@ public final class UiUtils {
 		// utility class
 	}
 
-	private static Paint sAuxPaint = new Paint();
+	private static final Paint sAuxPaint = new Paint();
 	static {
 		sAuxPaint.setStyle(Paint.Style.STROKE);
 	}
@@ -59,8 +59,6 @@ public final class UiUtils {
 	 *            - leftmost corner of the ship in pixels
 	 * @param top
 	 *            - topmost corner of the ship in pixels
-	 * @param cellSize
-	 * @param paint
 	 */
 	public static void drawShip(Canvas canvas, Ship ship, int left, int top, int cellSize, Paint paint) {
 		int bottom;

@@ -1,10 +1,10 @@
 package com.ivygames.morskoiboi.rt;
 
-import org.commons.logger.Ln;
-
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+
+import org.commons.logger.Ln;
 
 class RoomLeaveListener implements RoomUpdateListener {
 

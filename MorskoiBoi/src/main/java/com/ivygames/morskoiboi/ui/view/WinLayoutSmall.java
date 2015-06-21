@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Collection;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,6 +7,8 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
+
+import java.util.Collection;
 
 public class WinLayoutSmall extends NotepadLinearLayout {
 

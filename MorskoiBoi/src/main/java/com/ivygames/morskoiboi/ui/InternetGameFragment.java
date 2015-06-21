@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import java.util.ArrayList;
-
-import org.commons.logger.Ln;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
@@ -31,6 +27,10 @@ import com.ivygames.morskoiboi.ui.view.InternetGameLayout;
 import com.ivygames.morskoiboi.ui.view.InternetGameLayout.InternetGameLayoutListener;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
+import org.commons.logger.Ln;
+
+import java.util.ArrayList;
+
 import de.greenrobot.event.EventBus;
 
 public class InternetGameFragment extends BattleshipFragment implements InternetGameLayoutListener, InternetGameListener, BackPressListener {
@@ -44,7 +44,6 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 	private final static int RC_WAITING_ROOM = 10002;
 
 	private InternetGame mInternetGame;
-	private InternetOpponent mOpponent;
 	private boolean mKeyLock;
 	private InternetGameLayout mLayout;
 
@@ -139,7 +138,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 
 	private void createGame() {
 		mInternetGame = new InternetGame(mApiClient, this);
-		mOpponent = new InternetOpponent(mInternetGame);
+		InternetOpponent mOpponent = new InternetOpponent(mInternetGame);
 		mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
 		Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), mOpponent);
 	}

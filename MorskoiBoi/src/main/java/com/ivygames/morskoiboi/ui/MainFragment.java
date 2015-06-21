@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -21,6 +19,8 @@ import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
+import org.commons.logger.Ln;
+
 import de.greenrobot.event.EventBus;
 
 public class MainFragment extends BattleshipFragment implements MainScreenActions, SignInListener {
@@ -30,12 +30,12 @@ public class MainFragment extends BattleshipFragment implements MainScreenAction
 	private static final int RC_UNUSED = 0;
 
 	private boolean mAchievementsRequested;
-	protected boolean mLeaderboardRequested;
+	private boolean mLeaderboardRequested;
 	private MainScreenLayout mLayout;
 
 	private static Intent createShareIntent(String greeting) {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+//		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		shareIntent.setType("text/plain");
 		String playPath = "https://play.google.com/store/apps/details?id=com.ivygames.morskoiboi";
 		shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + playPath);
@@ -44,7 +44,7 @@ public class MainFragment extends BattleshipFragment implements MainScreenAction
 
 	@Override
 	public View onCreateView(ViewGroup container) {
-		mLayout = (MainScreenLayout) getLayoutInflater().inflate(R.layout.main, null, false);
+		mLayout = (MainScreenLayout) inflate(R.layout.main, container);
 		mLayout.setScreenActionsListener(this);
 		Ln.d(this + " screen created");
 

@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import java.util.List;
-
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,9 +8,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import org.commons.logger.Ln;
+
+import java.util.List;
+
 public class DeviceUtils {
 
-	private static int[] NETWORK_TYPES = { ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET };
+	private static final int[] NETWORK_TYPES = { ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET };
 
 	private DeviceUtils() {
 	}

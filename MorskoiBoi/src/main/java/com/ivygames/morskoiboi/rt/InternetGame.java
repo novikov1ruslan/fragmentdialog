@@ -1,14 +1,5 @@
 package com.ivygames.morskoiboi.rt;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import org.acra.ACRA;
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import android.os.Bundle;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,6 +15,15 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.ivygames.morskoiboi.RtmSender;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
+
+import org.acra.ACRA;
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import de.greenrobot.event.EventBus;
 

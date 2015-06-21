@@ -1,11 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.commons.logger.Ln;
-import org.commons.logger.WarningListener;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -50,6 +44,12 @@ import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.utils.UiUtils;
+
+import org.commons.logger.Ln;
+import org.commons.logger.WarningListener;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;

@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -14,6 +12,8 @@ import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
+
+import org.commons.logger.Ln;
 
 public class LostFragment extends OnlineGameFragment implements BackPressListener {
 	private static final String TAG = "LOST";

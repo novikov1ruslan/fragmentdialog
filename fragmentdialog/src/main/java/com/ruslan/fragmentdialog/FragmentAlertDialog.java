@@ -1,10 +1,9 @@
 package com.ruslan.fragmentdialog;
 
-import org.commons.logger.Ln;
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.commons.logger.Ln;
+
 public class FragmentAlertDialog extends DialogFragment implements OnClickListener, DialogInterface {
 	public static final String TAG = "DIALOG";
 	
@@ -31,8 +32,8 @@ public class FragmentAlertDialog extends DialogFragment implements OnClickListen
 	 * helper method that shows note like dialog that has title message and OK
 	 * button, that dismisses the dialog
 	 * 
-	 * @param activity
-	 *            provides context and fragment manager
+	 * @param fm
+	 *            fragment manager
 	 * @param tag
 	 *            dialog tag to identify it
 	 * @param msgId
@@ -74,11 +75,6 @@ public class FragmentAlertDialog extends DialogFragment implements OnClickListen
 
 	private DialogInterface.OnClickListener negativeButtonListener;
 
-	private TextView dialogTitle;
-	private Button negativeButton;
-
-	private Button positiveButton;
-
 	private View layout;
 
 	@Override
@@ -112,9 +108,9 @@ public class FragmentAlertDialog extends DialogFragment implements OnClickListen
 		// after layout is inflated - take care of layout specific widgets
 		onLayoutCreated(layout);
 
-		positiveButton = getPositiveButton(layout);
-		negativeButton = getNegativeButton(layout);
-		dialogTitle = (TextView) layout.findViewById(R.id.dialog_title);
+		Button positiveButton = getPositiveButton(layout);
+		Button negativeButton = getNegativeButton(layout);
+		TextView dialogTitle = (TextView) layout.findViewById(R.id.dialog_title);
 
 		// register listeners for buttons
 		// we will listen for the clicks and forward them to the external
@@ -212,6 +208,7 @@ public class FragmentAlertDialog extends DialogFragment implements OnClickListen
 		dismiss();
 	}
 
+	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// create dialog and set its layout

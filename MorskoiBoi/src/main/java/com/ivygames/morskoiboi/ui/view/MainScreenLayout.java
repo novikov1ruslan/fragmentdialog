@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
+
+import org.commons.logger.Ln;
 
 public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener {
 

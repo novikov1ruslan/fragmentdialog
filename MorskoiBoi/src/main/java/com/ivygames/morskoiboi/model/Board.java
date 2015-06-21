@@ -1,5 +1,10 @@
 package com.ivygames.morskoiboi.model;
 
+import org.commons.logger.Ln;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,14 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.commons.logger.Ln;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Board {
 
-	private static final int DIMENTION = 10;
+	private static final int DIMENSION = 10;
 
 	public static final int TOTAL_HEALTH = 20;
 
@@ -106,8 +106,8 @@ public class Board {
 	 */
 	public List<Vector2> getEmptyCells() {
 		List<Vector2> emptyCells = new ArrayList<Vector2>();
-		for (int i = 0; i < DIMENTION; i++) {
-			for (int j = 0; j < DIMENTION; j++) {
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
 				if (mCells[i][j].isEmpty()) {
 					emptyCells.add(Vector2.get(i, j));
 				}
@@ -119,9 +119,6 @@ public class Board {
 	/**
 	 * does not check if cells are empty
 	 *
-	 * @param ship
-	 * @param i
-	 * @param j
 	 * @return true if the ship can be layed out on the board
 	 */
 	public boolean canPutShipAt(Ship ship, int i, int j) {
@@ -138,7 +135,7 @@ public class Board {
 	}
 
 	public boolean containsCell(int i, int j) {
-		return i < DIMENTION && i >= 0 && j < DIMENTION && j >= 0;
+		return i < DIMENSION && i >= 0 && j < DIMENSION && j >= 0;
 	}
 
 	/**
@@ -236,8 +233,8 @@ public class Board {
 			// we need to remember them
 			List<Vector2> missedList = new LinkedList<Vector2>();
 			List<Vector2> hitList = new LinkedList<Vector2>();
-			for (int i = 0; i < DIMENTION; i++) {
-				for (int j = 0; j < DIMENTION; j++) {
+			for (int i = 0; i < DIMENSION; i++) {
+				for (int j = 0; j < DIMENSION; j++) {
 					Cell cell = mCells[i][j];
 					Vector2 vector = Vector2.get(i, j);
 					if (cell.isMiss()) {
@@ -341,7 +338,7 @@ public class Board {
 	}
 
 	private Cell[][] createNewBoard() {
-		Cell[][] cells = new Cell[DIMENTION][DIMENTION];
+		Cell[][] cells = new Cell[DIMENSION][DIMENSION];
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[i].length; j++) {
 				cells[i][j] = new Cell(); // NOPMD
@@ -353,14 +350,11 @@ public class Board {
 
 	/**
 	 * Finds all the cells on the board that are in a conflict with another cell.
-	 *
-	 * @param board
-	 * @return
 	 */
 	public Set<Vector2> getInvalidCells() {
 		Set<Vector2> invalid = new HashSet<Vector2>();
-		for (int i = 0; i < DIMENTION; i++) {
-			for (int j = 0; j < DIMENTION; j++) {
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
 				if (getCell(i, j).getProximity() > 8) {
 					invalid.add(Vector2.get(i, j));
 				}
@@ -381,11 +375,11 @@ public class Board {
 	}
 
 	public int getWidth() {
-		return DIMENTION;
+		return DIMENSION;
 	}
 
 	public int getHeight() {
-		return DIMENTION;
+		return DIMENSION;
 	}
 
 	public void setCell(Cell cell, Vector2 vector) {
@@ -419,8 +413,8 @@ public class Board {
 
 	public static int countUnshotCells(Board board) {
 		int health = 100;
-		for (int i = 0; i < DIMENTION; i++) {
-			for (int j = 0; j < DIMENTION; j++) {
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
 				if (board.getCell(i, j).beenShot()) {
 					health--;
 				}
@@ -469,8 +463,8 @@ public class Board {
 		StringBuilder board = new StringBuilder(130);
 		board.append("----------\n");
 		// print rows first
-		for (int y = 0; y < DIMENTION; y++) {
-			for (int x = 0; x < DIMENTION; x++) {
+		for (int y = 0; y < DIMENSION; y++) {
+			for (int x = 0; x < DIMENSION; x++) {
 				board.append(mCells[x][y]);
 			}
 			board.append('\n');

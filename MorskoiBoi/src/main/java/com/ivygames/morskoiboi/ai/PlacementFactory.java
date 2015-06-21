@@ -1,14 +1,14 @@
 package com.ivygames.morskoiboi.ai;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 public final class PlacementFactory {
 

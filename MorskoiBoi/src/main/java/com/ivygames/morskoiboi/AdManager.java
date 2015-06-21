@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import org.commons.logger.Ln;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -15,6 +13,8 @@ import com.google.android.gms.plus.model.people.Person;
 import com.jirbo.adcolony.AdColony;
 import com.jirbo.adcolony.AdColonyAdapter;
 import com.jirbo.adcolony.AdColonyBundleBuilder;
+
+import org.commons.logger.Ln;
 
 public class AdManager {
 	private static final boolean SUPPORT_AD_COLONY = false;
@@ -72,7 +72,7 @@ public class AdManager {
 		}
 	}
 
-	public void initInterstitialAfterPlay(Context context, String adUnitId) {
+	private void initInterstitialAfterPlay(Context context, String adUnitId) {
 		if (GameSettings.get().noAds()) {
 			Ln.v("no ad game - skipping ads");
 			return;
@@ -93,7 +93,7 @@ public class AdManager {
 
 	}
 
-	public void initInterstitialAfterExit(final Activity activity, String adUnitId) {
+	private void initInterstitialAfterExit(final Activity activity, String adUnitId) {
 		if (GameSettings.get().noAds()) {
 			Ln.v("no ad game - skipping ads");
 			return;
@@ -167,7 +167,7 @@ public class AdManager {
 	 *
 	 * @return An AdRequest to use when loading an ad.
 	 */
-	public AdRequest createAdRequest() {
+	private AdRequest createAdRequest() {
 		return AdManager.createAdRequest(mPerson).build();
 	}
 

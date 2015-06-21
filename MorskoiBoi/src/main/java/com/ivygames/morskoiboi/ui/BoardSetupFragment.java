@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import java.util.PriorityQueue;
-
-import org.commons.logger.Ln;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
@@ -24,6 +20,10 @@ import com.ivygames.morskoiboi.ui.view.BoardSetupLayout.BoardSetupLayoutListener
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
+
+import org.commons.logger.Ln;
+
+import java.util.PriorityQueue;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 

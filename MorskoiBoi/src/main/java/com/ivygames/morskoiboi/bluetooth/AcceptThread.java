@@ -1,11 +1,5 @@
 package com.ivygames.morskoiboi.bluetooth;
 
-import java.io.Closeable;
-import java.io.IOException;
-
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
@@ -13,6 +7,12 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.ivygames.morskoiboi.model.GameEvent;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,7 +26,6 @@ final class AcceptThread extends Thread {
 	private volatile BluetoothServerSocket mServerSocket;
 	private volatile BluetoothSocket mSocket;
 	private volatile boolean mCancelled;
-	private volatile MessageReceiver mConnection;
 
 	private final ConnectionListener mConnectionListener;
 	private final Handler mHandler = new Handler(Looper.myLooper());
@@ -51,7 +50,7 @@ final class AcceptThread extends Thread {
 		}
 
 		Ln.v("connection accepted - starting transmission");
-		mConnection = new MessageReceiver(mSocket, mHandler);
+		MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
 
 		try {
 			mConnection.connect();
@@ -67,7 +66,7 @@ final class AcceptThread extends Thread {
 				EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);
 			}
 		} finally {
-			close(mSocket);
+			BluetoothUtils.close(mSocket);
 		}
 	}
 
@@ -85,7 +84,7 @@ final class AcceptThread extends Thread {
 				mHandler.post(new AcceptFailedCommand(mConnectionListener, ioe));
 			}
 		} finally {
-			close(mServerSocket);
+			BluetoothUtils.close(mServerSocket);
 		}
 
 		return socket;
@@ -94,7 +93,7 @@ final class AcceptThread extends Thread {
 	public void cancelAccept() {
 		Ln.v("canceling accept...");
 		mCancelled = true;
-		close(mServerSocket);
+		BluetoothUtils.close(mServerSocket);
 	}
 
 	public void cancelAcceptAndCloseConnection() {
@@ -102,16 +101,8 @@ final class AcceptThread extends Thread {
 		if (mSocket != null) {
 			Ln.v("closing accepted connection...");
 			interrupt();
-			close(mSocket);
+			BluetoothUtils.close(mSocket);
 		}
 	}
 
-	private void close(Closeable closable) {
-		if (closable != null) {
-			try {
-				closable.close();
-			} catch (IOException e) {
-			}
-		}
-	}
 }

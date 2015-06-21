@@ -1,13 +1,13 @@
 package com.ivygames.morskoiboi.ai;
 
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
 
 public class AndroidOpponent extends AbstractOpponent {
 

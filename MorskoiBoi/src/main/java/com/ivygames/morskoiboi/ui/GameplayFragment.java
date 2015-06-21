@@ -1,8 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.acra.ACRA;
-import org.commons.logger.Ln;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -45,12 +42,15 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
+import org.acra.ACRA;
+import org.commons.logger.Ln;
+
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class GameplayFragment extends OnlineGameFragment implements BackPressListener {
-	public static final String TAG = "GAMEPLAY";
+	private static final String TAG = "GAMEPLAY";
 
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -438,8 +438,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 
 	private int calcSurrenderPenalty() {
 		int decksLost = Board.TOTAL_HEALTH - mPlayerPrivateBoard.getHealth();
-		int surrenderPenalty = decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
-		return surrenderPenalty;
+		return decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
 	}
 
 	private class BoardShotListener implements ShotListener {

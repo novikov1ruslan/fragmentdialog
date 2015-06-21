@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi;
 
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.SparseArray;
+
+import org.commons.logger.Ln;
 
 public final class Bitmaps {
 

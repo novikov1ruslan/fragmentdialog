@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
+
+import org.commons.logger.Ln;
 
 public class HelpFragment extends BattleshipFragment implements BackPressListener {
 	private static final String TAG = "HELP";

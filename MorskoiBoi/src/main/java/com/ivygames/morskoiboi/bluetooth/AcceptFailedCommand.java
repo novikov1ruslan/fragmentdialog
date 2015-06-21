@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.bluetooth;
 
-import java.io.IOException;
-
 import org.apache.commons.lang3.Validate;
+
+import java.io.IOException;
 
 final class AcceptFailedCommand implements Runnable {
 
@@ -10,11 +10,8 @@ final class AcceptFailedCommand implements Runnable {
 	private final IOException mException;
 
 	AcceptFailedCommand(ConnectionListener listener, IOException exception) {
-		Validate.notNull(exception);
-		mException = exception;
-
-		Validate.notNull(listener);
-		mConnnectionListener = listener;
+		mException = Validate.notNull(exception);
+		mConnnectionListener = Validate.notNull(listener);
 	}
 
 	@Override

@@ -1,8 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.acra.ACRA;
-import org.commons.logger.Ln;
-
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -12,6 +9,9 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.R;
+
+import org.acra.ACRA;
+import org.commons.logger.Ln;
 
 public abstract class BattleshipFragment extends Screen {
 
@@ -51,13 +51,13 @@ public abstract class BattleshipFragment extends Screen {
 		Ln.v(this + " fragment destroyed");
 	}
 
-	protected void showWaitingScreen() {
+	protected final void showWaitingScreen() {
 		Ln.d("please wait... ");
 		mWaitFragment = new WaitFragment();
 		mFm.beginTransaction().add(R.id.container, mWaitFragment).commitAllowingStateLoss();
 	}
 
-	protected void hideWaitingScreen() {
+	protected final void hideWaitingScreen() {
 		if (isWaitShown()) {
 			Ln.d("hiding waiting screen");
 			mFm.beginTransaction().remove(mWaitFragment).commitAllowingStateLoss();

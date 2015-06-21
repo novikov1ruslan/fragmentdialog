@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import java.util.Collection;
-
-import org.commons.logger.Ln;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +26,10 @@ import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.ui.view.WinLayoutSmall;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
+
+import org.commons.logger.Ln;
+
+import java.util.Collection;
 
 public class WinFragment extends OnlineGameFragment implements BackPressListener, SignInListener {
 	private static final String TAG = "WIN";

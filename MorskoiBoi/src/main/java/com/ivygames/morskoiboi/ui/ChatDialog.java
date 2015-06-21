@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,9 @@ import com.ivygames.morskoiboi.ui.view.ChatDialogLayout;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+
 public class ChatDialog extends FragmentAlertDialog {
 
 	private final ChatAdapter mChatAdapter;
@@ -23,7 +24,7 @@ public class ChatDialog extends FragmentAlertDialog {
 
 	public ChatDialog(ChatAdapter adapter) {
 		super();
-		mChatAdapter = adapter;
+		mChatAdapter = Validate.notNull(adapter);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class ChatDialog extends FragmentAlertDialog {
 			return null;
 		}
 
-		ChatDialogLayout layout = (ChatDialogLayout) super.onCreateView(inflater, container, savedInstanceState);
+		ChatDialogLayout layout = (ChatDialogLayout) super.onCreateView(inflater, container, null);
 		layout.setAdapter(mChatAdapter);
 		return layout;
 	}

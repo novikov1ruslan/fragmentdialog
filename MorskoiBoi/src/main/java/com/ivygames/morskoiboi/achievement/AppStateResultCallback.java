@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.achievement;
 
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-import org.json.JSONException;
-
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.appstate.AppStateManager.StateConflictResult;
@@ -16,6 +12,10 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.model.Progress;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+import org.json.JSONException;
 
 final class AppStateResultCallback implements ResultCallback<AppStateManager.StateResult> {
 	private final GameSettings mSettings = GameSettings.get();

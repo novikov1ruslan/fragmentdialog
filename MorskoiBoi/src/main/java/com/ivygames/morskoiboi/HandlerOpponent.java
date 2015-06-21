@@ -1,13 +1,13 @@
 package com.ivygames.morskoiboi;
 
-import org.commons.logger.Ln;
-
 import android.os.Handler;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.commons.logger.Ln;
 
 public class HandlerOpponent implements Opponent {
 

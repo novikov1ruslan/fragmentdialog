@@ -29,7 +29,7 @@ public enum Rank {
 	public static final int O10 = 4000000; // <!-- 500k -->
 	public static final int O11 = 4500000; // <!-- 500k -->
 
-	private int mBitmap;
+	private final int mBitmap;
 	private int mSmallBitmap;
 	private int mName;
 	private int mScore;
@@ -77,7 +77,7 @@ public enum Rank {
 		return rank;
 	}
 
-	private Rank(int bitmapRes) {
+	Rank(int bitmapRes) {
 		mBitmap = bitmapRes;
 
 		switch (bitmapRes) {

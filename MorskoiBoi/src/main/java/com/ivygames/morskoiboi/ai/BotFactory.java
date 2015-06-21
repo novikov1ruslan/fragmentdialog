@@ -1,19 +1,19 @@
 package com.ivygames.morskoiboi.ai;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.acra.ACRA;
-
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
+
+import org.acra.ACRA;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 final class BotFactory {
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- <style name="Titled" parent="@style/Theme.AppCompat.Light.DarkActionBar"> -->
     <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="android:editTextStyle">@style/EditTextAppTheme</item>
         <item name="android:checkboxStyle">@style/CheckBoxAppTheme</item>
@@ -10,10 +9,6 @@
         <item name="android:buttonStyleToggle">@style/ToggleAppTheme</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-<!--         <item name="android:windowNoTitle">@bool/window_no_title</item> -->
-<!--         <item name="android:windowFullscreen">true</item> -->
-<!--         <item name="android:windowActionBarOverlay" tools:ignore="NewApi">true</item>
-        <item name="windowActionBarOverlay">true</item> -->
     </style>
 
     <style name="Dialog" parent="@android:style/Theme.Dialog">

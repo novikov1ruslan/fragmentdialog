@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.bluetooth;
 
-import org.apache.commons.lang3.Validate;
-
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame.MessageListener;
+
+import org.apache.commons.lang3.Validate;
 
 final class MessageReceivedCommand implements Runnable {
 

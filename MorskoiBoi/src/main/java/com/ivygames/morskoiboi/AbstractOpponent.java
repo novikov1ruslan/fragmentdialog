@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi;
 
-import java.util.Random;
-
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.commons.logger.Ln;
+
+import java.util.Random;
 
 public abstract class AbstractOpponent implements Opponent {
 	private static final int IMPOSSIBLE_BID = -1;

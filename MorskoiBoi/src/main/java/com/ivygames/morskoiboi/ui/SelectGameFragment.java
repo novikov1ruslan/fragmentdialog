@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
@@ -32,6 +30,8 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
+import org.commons.logger.Ln;
+
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -44,7 +44,7 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 	private static final int TIMES_TO_SHOW_PROGRESS_TIP = 3;
 	private SelectGameLayout mLayout;
 
-	protected boolean mViaInternetRequested;
+	private boolean mViaInternetRequested;
 
 	private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 

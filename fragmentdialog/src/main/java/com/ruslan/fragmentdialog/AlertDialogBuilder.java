@@ -7,10 +7,10 @@ import android.os.Bundle;
 
 public class AlertDialogBuilder {
 
-	protected Bundle args;
-	protected DialogInterface.OnClickListener positiveButtonListener;
-	protected DialogInterface.OnClickListener negativeButtonListener;
-	protected OnCancelListener cancelListener;
+	private Bundle args;
+	private DialogInterface.OnClickListener positiveButtonListener;
+	private DialogInterface.OnClickListener negativeButtonListener;
+	private OnCancelListener cancelListener;
 
 	public AlertDialogBuilder() {
 		args = new Bundle();
@@ -73,7 +73,7 @@ public class AlertDialogBuilder {
 	 * @return This Builder object to allow for chaining of calls to set
 	 *         methods
 	 */
-	public AlertDialogBuilder setPositiveButton(CharSequence text) {
+	private AlertDialogBuilder setPositiveButton(CharSequence text) {
 		args.putCharSequence(FragmentAlertDialog.POSITIVE_BUTTON_TEXT, text);
 		return this;
 	}
@@ -84,15 +84,12 @@ public class AlertDialogBuilder {
 	 * @return This Builder object to allow for chaining of calls to set
 	 *         methods
 	 */
-	public AlertDialogBuilder setNegativeButton(CharSequence text) {
+	private AlertDialogBuilder setNegativeButton(CharSequence text) {
 		args.putCharSequence(FragmentAlertDialog.NEGATIVE_BUTTON_TEXT, text);
 		return this;
 	}
 
 	/**
-	 * @param text
-	 *            The resource id of the text to display in the negative
-	 *            button
 	 * @return This Builder object to allow for chaining of calls to set
 	 *         methods
 	 */
@@ -102,7 +99,7 @@ public class AlertDialogBuilder {
 	}
 
 	/**
-	 * @param text
+	 * @param resId
 	 *            The resource id of the text to display in the positive
 	 *            button
 	 * @return This Builder object to allow for chaining of calls to set
@@ -186,7 +183,6 @@ public class AlertDialogBuilder {
 	/**
 	 * Sets the callback that will be called if the dialog is canceled.
 	 * 
-	 * @see #setCancelable(boolean)
 	 * @return This Builder object to allow for chaining of calls to set
 	 *         methods
 	 */

@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +16,8 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.UiUtils;
+
+import java.util.Random;
 
 public class EnemyBoardView extends BaseBoardView {
 
@@ -129,7 +129,7 @@ public class EnemyBoardView extends BaseBoardView {
 			mLockBitmapSrc.recycle();
 			mLockBitmapSrc = null;
 		}
-	};
+	}
 
 	public void setShotListener(ShotListener shotListener) {
 		mShotListener = shotListener;

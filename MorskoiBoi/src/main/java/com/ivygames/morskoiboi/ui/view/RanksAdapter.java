@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -17,6 +15,8 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
+
+import java.util.List;
 
 class RanksAdapter extends BaseAdapter {
 

@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Collection;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -15,13 +13,15 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import java.util.Collection;
+
 /*package*/abstract class BaseBoardView extends TouchView {
 
 	private final Paint mTurnBorderPaint;
 	private final Paint mBorderPaint;
 
-	protected Paint mShipPaint;
-	protected Paint mAimingPaint;
+	protected final Paint mShipPaint;
+	protected final Paint mAimingPaint;
 	protected int mCellSize;
 	protected int mHalfCellSize;
 	protected Board mBoard;
@@ -42,7 +42,6 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 
 	public BaseBoardView(Context context, AttributeSet attributeSet) {
 		super(context, attributeSet);
-		// mBorder = getResources().getDimensionPixelSize(R.dimen.board_border);
 
 		Resources res = context.getResources();
 		mShipPaint = UiUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
@@ -178,7 +177,7 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 		mHalfCellSize = mCellSize / 2;
 	}
 
-	private final void drawShips(Canvas canvas) {
+	private void drawShips(Canvas canvas) {
 		Collection<Ship> ships = mBoard.getShips();
 		for (Ship ship : ships) {
 			UiUtils.drawShip(canvas, ship, mBoardRect, mCellSize, ship.isDead() ? mShipPaint : mShipPaint);

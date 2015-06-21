@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,6 +8,8 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
+
+import org.commons.logger.Ln;
 
 public class SelectGameLayout extends NotepadRelativeLayout implements View.OnClickListener {
 	public interface SelectGameActions {

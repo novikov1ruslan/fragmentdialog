@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.R;
+
+import org.commons.logger.Ln;
 
 public class WaitFragment extends Fragment {
 	private static final String TAG = "WAIT";

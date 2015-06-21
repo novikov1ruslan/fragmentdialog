@@ -1,10 +1,10 @@
 package com.ivygames.morskoiboi.ai;
 
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
 
 final class ShootAtOpponentCommand implements Runnable {
 	private final Opponent mOpponent;

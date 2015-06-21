@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -19,6 +17,8 @@ import com.ivygames.morskoiboi.ui.view.SettingsLayout;
 import com.ivygames.morskoiboi.ui.view.SettingsLayout.SettingsScreenActions;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
+
+import org.commons.logger.Ln;
 
 public class SettingsFragment extends BattleshipFragment implements SettingsScreenActions, SignInListener, BackPressListener {
 	private static final String TAG = "SETTINGS";

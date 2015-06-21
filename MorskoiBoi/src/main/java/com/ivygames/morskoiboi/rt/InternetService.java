@@ -1,8 +1,5 @@
 package com.ivygames.morskoiboi.rt;
 
-import org.acra.ACRA;
-import org.commons.logger.Ln;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -15,8 +12,11 @@ import android.support.v4.app.NotificationCompat;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ui.BattleshipActivity;
 
+import org.acra.ACRA;
+import org.commons.logger.Ln;
+
 public class InternetService extends Service {
-	public static final int NOTIFICATION_ID = -100;
+	private static final int NOTIFICATION_ID = -100;
 	public static final String EXTRA_CONTENT_TITLE = "EXTRA_CONTENT_TITLE";
 	public static final String EXTRA_CONTENT_TEXT = "EXTRA_CONTENT_TEXT";
 
@@ -59,7 +59,7 @@ public class InternetService extends Service {
 		Ln.v("service destoyed");
 	}
 
-	public static Notification buildNotification(Context packageContext, String contentTitle, String contentText) {
+	private static Notification buildNotification(Context packageContext, String contentTitle, String contentText) {
 		PendingIntent contentIntent = InternetService.buildAppIntent(packageContext);
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(packageContext);
@@ -72,8 +72,7 @@ public class InternetService extends Service {
 		builder.setLocalOnly(true);
 		builder.setShowWhen(false);
 		builder.setOngoing(true);
-		Notification notification = builder.build();
-		return notification;
+		return builder.build();
 	}
 
 	private static PendingIntent buildAppIntent(Context packageContext) {

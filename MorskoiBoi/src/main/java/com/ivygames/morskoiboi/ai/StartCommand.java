@@ -1,9 +1,9 @@
 package com.ivygames.morskoiboi.ai;
 
+import com.ivygames.morskoiboi.model.Opponent;
+
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
-
-import com.ivygames.morskoiboi.model.Opponent;
 
 class StartCommand implements Runnable {
 	private static final int START_TIMEOUT = 3000;

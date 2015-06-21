@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.Button;
 
@@ -29,8 +30,7 @@ public class InvitationButton extends Button {
 	}
 
 	private Bitmap createInvitationBitmap() {
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_mail_white_48dp);
-		return bitmap;
+		return BitmapFactory.decodeResource(getResources(), R.drawable.invitation);
 	}
 
 	public void showInvitation() {
@@ -44,7 +44,7 @@ public class InvitationButton extends Button {
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(@NonNull Canvas canvas) {
 		super.onDraw(canvas);
 		if (mShowInvitation) {
 			canvas.drawBitmap(mBitmap, mLeft, mTop, mPaint);

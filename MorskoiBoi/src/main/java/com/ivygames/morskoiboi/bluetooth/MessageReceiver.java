@@ -1,17 +1,17 @@
 package com.ivygames.morskoiboi.bluetooth;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame.MessageListener;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * This thread runs during a connection with a remote device. It handles all incoming and outgoing transmissions.
@@ -49,7 +49,7 @@ class MessageReceiver implements MessageSender {
 			mHandler.post(new MessageReceivedCommand(mMessageListener, message));
 		}
 
-		close(mSocket);
+		BluetoothUtils.close(mSocket);
 	}
 
 	private void waitForMessageReceiver() {
@@ -64,10 +64,9 @@ class MessageReceiver implements MessageSender {
 	}
 
 	private String readMessage() throws IOException {
-		int c = -1;
 		StringBuilder builder = new StringBuilder();
 		while (true) {
-			c = mInStream.read();
+			int c = mInStream.read();
 			if (c == -1) {
 				throw new IOException("-1 is read");
 			}
@@ -82,8 +81,6 @@ class MessageReceiver implements MessageSender {
 
 	/**
 	 * Write to the connected OutStream.
-	 *
-	 * @throws IOException
 	 */
 	@Override
 	public void write(String message) {
@@ -93,15 +90,6 @@ class MessageReceiver implements MessageSender {
 			mOutStream.write(buffer);
 		} catch (IOException ioe) {
 			Ln.w(ioe);
-		}
-	}
-
-	private void close(Closeable closable) {
-		if (closable != null) {
-			try {
-				closable.close();
-			} catch (IOException e) {
-			}
 		}
 	}
 

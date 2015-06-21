@@ -1,10 +1,5 @@
 package com.ivygames.morskoiboi.achievement;
 
-import java.util.Collection;
-
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.appstate.AppStateManager.StateResult;
@@ -16,6 +11,11 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+
+import java.util.Collection;
 
 public final class AchievementsManager {
 

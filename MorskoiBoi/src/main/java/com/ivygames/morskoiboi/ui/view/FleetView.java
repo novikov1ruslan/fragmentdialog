@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Collection;
-
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -19,12 +15,15 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import org.commons.logger.Ln;
+
+import java.util.Collection;
+
 public class FleetView extends View {
 
 	private static final int DEFAULT_MARGIN_BETWEEN_SHIPS = 4;
 
 	private final int mMarginBetweenShips;
-	private final float mTextSize;
 
 	private final Bitmap mAircraftCarrier;
 	private final Bitmap mBattleship;
@@ -62,7 +61,7 @@ public class FleetView extends View {
 		attributesArray.recycle();
 
 		mLinePaint = UiUtils.newStrokePaint(getResources(), R.color.line);
-		mTextSize = context.getResources().getDimension(R.dimen.status_text_size);
+		float mTextSize = context.getResources().getDimension(R.dimen.status_text_size);
 		mTextPaint.setTextSize(mTextSize);
 		Typeface typeface = Typeface.DEFAULT_BOLD;
 		mTextPaint.setTypeface(typeface);

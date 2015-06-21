@@ -1,15 +1,15 @@
 // FIXME: support android 4.2
 package com.ivygames.morskoiboi.bluetooth;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import org.commons.logger.Ln;
-
 import android.bluetooth.BluetoothDevice;
 
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
+
+import org.commons.logger.Ln;
+
+import java.io.IOException;
+import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
 

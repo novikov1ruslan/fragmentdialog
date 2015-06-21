@@ -1,9 +1,9 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
+
+import org.commons.logger.Ln;
 
 class BackToSelectGameCommand implements Runnable {
 

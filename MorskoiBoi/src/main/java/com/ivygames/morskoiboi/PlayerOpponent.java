@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import org.commons.logger.Ln;
-
 import android.text.TextUtils;
 
 import com.ivygames.morskoiboi.model.Board;
@@ -9,6 +7,8 @@ import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 

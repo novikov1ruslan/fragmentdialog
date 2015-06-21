@@ -1,11 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
@@ -27,6 +21,12 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 import com.ivygames.morskoiboi.utils.GameUtils;
+
+import org.commons.logger.Ln;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class GameplayLayout extends LinearLayout implements View.OnClickListener {
 

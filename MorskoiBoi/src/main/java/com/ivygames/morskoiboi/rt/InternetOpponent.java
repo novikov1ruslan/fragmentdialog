@@ -1,8 +1,5 @@
 package com.ivygames.morskoiboi.rt;
 
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import android.text.TextUtils;
 
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
@@ -11,6 +8,9 @@ import com.ivygames.morskoiboi.AbstractOnlineOpponent;
 import com.ivygames.morskoiboi.RtmSender;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
 
 public class InternetOpponent extends AbstractOnlineOpponent implements RealTimeMessageReceivedListener {
 

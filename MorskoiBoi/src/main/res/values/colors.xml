@@ -31,8 +31,7 @@
     <color name="aim">#647F7FFF</color>
     <color name="aim_locked">#64FF7F7F</color>
     <color name="conflict_cell">#7FFF7F7F</color>
-    <color name="enemy_state_outer">#000099</color>
-    
+
     <!-- dividers -->
     <color name="list_divider">#3388DD</color>
 

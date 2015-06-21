@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.analytics;
 
-import java.util.Map;
-
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
+
+import java.util.Map;
 
 public final class WarningEvent {
 	private static final String GA_CAT_WARNING = "warning";

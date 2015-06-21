@@ -13,8 +13,6 @@ public interface ConnectionListener {
 
 	/**
 	 * accept attempt failed
-	 *
-	 * @param exception
 	 */
 	void onAcceptFailed(IOException exception);
 }

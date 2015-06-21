@@ -1,8 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +8,9 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.ChatMessage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatAdapter extends BaseAdapter {
 	private final List<ChatMessage> mMesages = new ArrayList<ChatMessage>();

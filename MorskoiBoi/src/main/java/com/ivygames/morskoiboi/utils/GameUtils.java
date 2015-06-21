@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public final class GameUtils {
 

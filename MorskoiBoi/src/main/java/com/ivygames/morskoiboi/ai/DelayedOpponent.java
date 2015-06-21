@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi.ai;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.commons.logger.Ln;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class DelayedOpponent implements Opponent {
 	private static final int WHISTLE_SOUND_DELAY = 1300;

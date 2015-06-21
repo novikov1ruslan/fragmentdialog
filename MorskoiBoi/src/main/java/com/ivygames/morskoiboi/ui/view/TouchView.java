@@ -1,11 +1,12 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import org.commons.logger.Ln;
-
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import org.commons.logger.Ln;
 
 /*package*/abstract class TouchView extends View {
 
@@ -23,7 +24,7 @@ import android.view.View;
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(@NonNull MotionEvent event) {
 		mTouchX = (int) event.getX();
 		mTouchY = (int) event.getY();
 		mTouchAction = event.getAction();

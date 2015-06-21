@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi;
 
-import java.util.Comparator;
-
 import com.ivygames.morskoiboi.model.Ship;
+
+import java.util.Comparator;
 
 // TODO: test
 public class ShipComparator implements Comparator<Ship> {

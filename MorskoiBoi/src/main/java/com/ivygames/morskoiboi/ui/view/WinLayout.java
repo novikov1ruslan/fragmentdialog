@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Collection;
-
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
+
+import org.commons.logger.Ln;
+
+import java.util.Collection;
 
 public class WinLayout extends WinLayoutSmall {
 

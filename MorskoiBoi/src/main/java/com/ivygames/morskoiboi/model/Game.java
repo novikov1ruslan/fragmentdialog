@@ -1,38 +1,13 @@
 package com.ivygames.morskoiboi.model;
 
-import java.util.Collection;
-
 import org.commons.logger.Ln;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.ivygames.morskoiboi.ai.AndroidGame;
+import java.util.Collection;
 
 public abstract class Game {
 	public enum Type {
-		VS_ANDROID, BLUETOOTH, INTERNET;
-
-		private static final int VS_ANDROID_INT = 0;
-		private static final int BLUETOOTH_INT = 1;
-		private static final int INTERNET_INT = 2;
-
-		public int toInt() {
-			switch (this) {
-			case VS_ANDROID:
-				return VS_ANDROID_INT;
-			case BLUETOOTH:
-				return BLUETOOTH_INT;
-			case INTERNET:
-				return INTERNET_INT;
-			default:
-				throw new RuntimeException(this.toString());
-			}
-		}
+		VS_ANDROID, BLUETOOTH, INTERNET
 	}
-
-	private static final String SHELLS = "SHELLS";
-	private static final String COMBO = "COMBO";
-	private static final String TIME_SPENT = "TIME_SPENT";
 
 	private static final int MAX_TIME_MILLIS = 300000; // 5 mins
 	private static final int MIN_TIME_MILLIS = 20000; // 20 sec
@@ -62,42 +37,6 @@ public abstract class Game {
 	private int mCombo;
 	private boolean mFinished;
 
-	public static Game fromJson(String json) {
-		Game game = new AndroidGame(null);
-		try {
-			JSONObject jsonObject = new JSONObject(json);
-
-			if (jsonObject.has(SHELLS)) {
-				game.mShells = jsonObject.getInt(SHELLS);
-			}
-
-			if (jsonObject.has(COMBO)) {
-				game.mCombo = jsonObject.getInt(COMBO);
-			}
-
-			if (jsonObject.has(TIME_SPENT)) {
-				game.mTimeSpent = jsonObject.getLong(TIME_SPENT);
-			}
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
-		}
-
-		return game;
-	}
-
-	public JSONObject toJson() {
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put(SHELLS, mShells);
-			jsonObject.put(COMBO, mCombo);
-			jsonObject.put(TIME_SPENT, mTimeSpent);
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
-		}
-
-		return jsonObject;
-	}
-
 	public int getShells() {
 		return mShells;
 	}
@@ -110,9 +49,9 @@ public abstract class Game {
 		return mTimeSpent;
 	}
 
-	public long setTimeSpent(long millis) {
+	public void setTimeSpent(long millis) {
 		Ln.d("time spent in game = " + millis);
-		return mTimeSpent = millis;
+		mTimeSpent = millis;
 	}
 
 	public abstract Type getType();

@@ -1,11 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import java.io.IOException;
-import java.util.Set;
-
-import org.acra.ACRA;
-import org.commons.logger.Ln;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -29,6 +23,12 @@ import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout.DeviceListActions;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
+
+import org.acra.ACRA;
+import org.commons.logger.Ln;
+
+import java.io.IOException;
+import java.util.Set;
 
 public class DeviceListFragment extends BattleshipFragment implements DeviceListActions, ConnectionListener, BackPressListener {
 	private static final String TAG = "bluetooth";

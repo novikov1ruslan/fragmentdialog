@@ -1,13 +1,13 @@
 package com.ivygames.morskoiboi;
 
-import java.io.IOException;
-
-import org.commons.logger.Ln;
-
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
+
+import org.commons.logger.Ln;
+
+import java.io.IOException;
 
 public class SoundBar {
 

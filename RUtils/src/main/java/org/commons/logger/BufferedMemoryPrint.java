@@ -1,27 +1,24 @@
 package org.commons.logger;
 
+import android.util.Log;
+
 import org.apache.commons.collections4.collection.SynchronizedCollection;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.commons.logger.Ln.Config;
 import org.commons.logger.Ln.Print;
-
-import android.util.Log;
 
 public class BufferedMemoryPrint extends Print {
 
 	// The size of a single record is approximately 100b
 	private static final int LOG_RECORDS_TO_BUFFER = 10000;
 
-	private Config config;
+	private final Config config;
 
-	private SynchronizedCollection<String> queue = SynchronizedCollection.synchronizedCollection(new CircularFifoQueue<String>(LOG_RECORDS_TO_BUFFER));
+	private final SynchronizedCollection<String> queue = SynchronizedCollection.synchronizedCollection(new CircularFifoQueue<String>(LOG_RECORDS_TO_BUFFER));
 
 	public BufferedMemoryPrint(Config config) {
 		super();
 		this.config = config;
-		if (config.filesPath == null) {
-			return;
-		}
 	}
 
 	@Override
@@ -30,7 +27,7 @@ public class BufferedMemoryPrint extends Print {
 			return 0;
 		}
 
-		String tag = null;
+		String tag;
 		if (priority == Log.VERBOSE) {
 			tag = "";
 		} else {

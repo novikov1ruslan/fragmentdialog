@@ -1,16 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.Thread.UncaughtExceptionHandler;
-
-import org.acra.ACRA;
-import org.acra.ReportField;
-import org.acra.annotation.ReportsCrashes;
-import org.commons.logger.Ln;
-import org.commons.logger.Ln.Config;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -23,6 +12,17 @@ import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+
+import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.annotation.ReportsCrashes;
+import org.commons.logger.Ln;
+import org.commons.logger.Ln.Config;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
  * ANDROID_VERSION ﻿﻿APP_VERSION_CODE ﻿﻿APP_VERSION_NAME ﻿﻿PACKAGE_NAME ﻿REPORT_ID ﻿STACK_TRACE ﻿USER_APP_START_DATE ﻿USER_CRASH_DATE
@@ -93,8 +93,7 @@ public class BattleshipApplication extends Application {
 		} catch (NameNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-		boolean isDebug = (flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-		return isDebug;
+		return (flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
 	}
 
 	private static class AnalyticsExceptionParser implements ExceptionParser {

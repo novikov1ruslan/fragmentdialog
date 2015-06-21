@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi;
 
-import java.io.IOException;
-import java.util.Random;
-
-import org.commons.logger.Ln;
-
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.ivygames.morskoiboi.ui.BattleshipFragment;
+
+import org.commons.logger.Ln;
+
+import java.io.IOException;
+import java.util.Random;
 
 public class GameplaySoundManager {
 	public static final int ALARM_TIME_SECONDS = 11;

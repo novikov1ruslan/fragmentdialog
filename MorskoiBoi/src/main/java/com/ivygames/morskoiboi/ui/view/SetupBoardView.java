@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.PriorityQueue;
-
-import org.commons.logger.Ln;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -19,6 +15,10 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
+
+import org.commons.logger.Ln;
+
+import java.util.PriorityQueue;
 
 public class SetupBoardView extends BaseBoardView {
 
@@ -100,10 +100,7 @@ public class SetupBoardView extends BaseBoardView {
 					float top = mBoardRect.top + j * mCellSize + 1;
 					float right = left + mCellSize;
 					float bottom = top + mCellSize;
-					if (cell.getProximity() <= 8) {
-						// canvas.drawRect(left, top, right, bottom,
-						// mGreenPaint);
-					} else {
+					if (cell.getProximity() > 8) {
 						canvas.drawRect(left + 1, top + 1, right, bottom, mConflictCellPaint);
 					}
 				}
@@ -388,13 +385,7 @@ public class SetupBoardView extends BaseBoardView {
 
 		@Override
 		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("PressTask [i=");
-			builder.append(mI);
-			builder.append(", j=");
-			builder.append(mJ);
-			builder.append("]");
-			return builder.toString();
+			return "PressTask [i=" + mI + ", j=" + mJ + "]";
 		}
 	}
 }

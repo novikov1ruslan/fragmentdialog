@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
+
+import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 

@@ -1,17 +1,16 @@
 package com.ivygames.morskoiboi.bluetooth;
 
-import java.io.Closeable;
-import java.io.IOException;
-
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.ivygames.morskoiboi.model.GameEvent;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
+
+import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
 
@@ -21,7 +20,6 @@ import de.greenrobot.event.EventBus;
 final class ConnectThread extends Thread {
 	private volatile BluetoothSocket mSocket;
 	private volatile boolean mCancelled;
-	private volatile MessageReceiver mConnection;
 
 	private final BluetoothDevice mDevice;
 	private final ConnectionListener mConnectionListener;
@@ -51,7 +49,7 @@ final class ConnectThread extends Thread {
 		}
 
 		Ln.d("socket connected - starting transmission");
-		mConnection = new MessageReceiver(mSocket, mHandler);
+		MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
 
 		try {
 			mConnection.connect();
@@ -67,7 +65,7 @@ final class ConnectThread extends Thread {
 				EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);
 			}
 		} finally {
-			close(mSocket);
+			BluetoothUtils.close(mSocket);
 		}
 	}
 
@@ -86,7 +84,7 @@ final class ConnectThread extends Thread {
 			if (!mCancelled) {
 				Ln.w(ioe);
 			}
-			close(socket);
+			BluetoothUtils.close(socket);
 			return null;
 		}
 	}
@@ -94,16 +92,7 @@ final class ConnectThread extends Thread {
 	void cancel() {
 		Ln.v("cancelling...");
 		mCancelled = true;
-		close(mSocket);
-	}
-
-	private void close(Closeable closable) {
-		if (closable != null) {
-			try {
-				closable.close();
-			} catch (IOException e) {
-			}
-		}
+		BluetoothUtils.close(mSocket);
 	}
 
 }

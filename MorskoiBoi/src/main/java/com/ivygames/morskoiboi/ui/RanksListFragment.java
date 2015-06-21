@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.commons.logger.Ln;
-
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -9,6 +7,8 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.view.RanksLayout;
+
+import org.commons.logger.Ln;
 
 public class RanksListFragment extends BattleshipFragment implements BackPressListener {
 	private static final String TAG = "RANKS";

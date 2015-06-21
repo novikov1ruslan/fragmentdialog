@@ -1,11 +1,11 @@
 package com.ivygames.morskoiboi;
 
-import org.commons.logger.Ln;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+
+import org.commons.logger.Ln;
 
 public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 	protected Opponent mOpponent;
@@ -20,7 +20,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 	protected static final char VERSION = 'V';
 	protected static final char MESSAGE = 'M';
 
-	public void onRealTimeMessageReceived(String message) {
+	protected void onRealTimeMessageReceived(String message) {
 		char opCode = message.charAt(0);
 		String body = message.substring(1);
 		switch (opCode) {
@@ -71,11 +71,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 
 	@Override
 	public void go() {
-		sendRtm(GO);
-	}
-
-	private void sendRtm(char command) {
-		sendRtm(String.valueOf(command));
+		sendRtm(String.valueOf(GO));
 	}
 
 	@Override

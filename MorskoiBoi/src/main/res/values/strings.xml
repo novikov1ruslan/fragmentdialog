@@ -30,14 +30,12 @@
     <string name="achievements_request">Please sign in with Google to view Achievements.</string>
     <string name="internet_request">Please sign in with Google to play online game with your friends.</string>
     <string name="sign_in">Sign In</string>
-    <string name="game_interrupted">The game was interrupted</string>
     <string name="error">Error</string>
     <string name="match_canceled">Match has been canceled</string>
     <string name="network_error">A network error occurred. Please check your network connection.</string>
 
     <!-- main screen -->
     <string name="app_name">Sea Battle</string>
-    <string name="high_scores">High Scores</string>
     <string name="help">Help</string>
     <string name="share_greeting">Check out great \"Sea Battle\" app at: </string>
     <string name="want_to_leave_room">Do you want to abandon the game with %1$s?</string>
@@ -70,19 +68,17 @@
     <string name="rotate_instruction">Tap on a ship to rotate</string>
 
     <!-- gameplay -->
-    <string name="seaman">Seaman</string>
     <string name="abandon_game_question">Are you sure you want to abandon the battle?</string>
     <string name="surrender_question">Capitan, do you really want to surrender? (%1$s points!)</string>
     <string name="opponent_left">Your opponent has left the game.</string>
     <string name="opponent_surrendered">Your opponent has surrendered!</string>
-    <string name="disconnected">You have been disconnected.</string>
     <string name="opponent_setting_board">%1$s is placing ships</string>
     <string name="player">Player</string>
     <string name="android">Android</string>
     <string name="send">Send</string>
     <string name="enter_your_message">Enter your message</string>
     <string name="chat">CHAT</string>
-    <string name="pause">Pause...</string>
+    <string name="pause">Pause…</string>
     <string name="your_turn">Your turn</string>
     <string name="opponent_s_turn">Opponent\'s turn</string>
     <string name="match_against">Match against:</string>
@@ -109,15 +105,15 @@
     <string name="sign_in_why">Sign in with Google to share your scores and play via internet.</string>
     <string name="sign_in_to_share">Sign in with Google to save your scores and achievements.</string>
     <string name="received_invitation">You have received invitation from %1$s</string>
-    <string name="please_wait">Please Wait...</string>
+    <string name="please_wait">Please Wait…</string>
 
     <!-- Device List -->
-    <string name="connecting_to">Connecting to %1$s...</string>
+    <string name="connecting_to">Connecting to %1$s…</string>
     <string name="discover">Discover</string>
     <string name="show_me">Show Me</string>
     <string name="select_device">Select a Device to Connect</string>
     <string name="none_found">No devices found</string>
-    <string name="discovering">Searching for devices...</string>
+    <string name="discovering">Searching for devices…</string>
     <string name="bluetooth_not_available">Bluetooth is not available, please check your device\'s settings and try again.</string>
 
     <!-- ranks -->

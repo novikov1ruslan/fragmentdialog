@@ -1,5 +1,10 @@
 package org.commons.logger;
 
+import android.util.Log;
+
+import org.commons.logger.Ln.Config;
+import org.commons.logger.Ln.Print;
+
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -7,11 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.MemoryHandler;
-
-import org.commons.logger.Ln.Config;
-import org.commons.logger.Ln.Print;
-
-import android.util.Log;
 
 public class BufferedFilePrint extends Print {
 	/**
@@ -32,20 +32,18 @@ public class BufferedFilePrint extends Print {
 	 */
 	private static final int LOG_COUNT = 1;
 
-	private Logger logger;
+	private final Logger logger;
 
 	private MemoryHandler memoryHandler;
 
-	private Config config;
-
-	private Formatter formatter;
+	private final Config config;
 
 	public BufferedFilePrint(Config config) {
 		super();
 		this.config = config;
 		logger = Logger.getLogger(getClass().getSimpleName());
 		logger.setLevel(Level.ALL);
-		formatter = new NoFormatter();
+		Formatter formatter = new NoFormatter();
 		if (config.filesPath == null) {
 			return;
 		}
@@ -68,7 +66,7 @@ public class BufferedFilePrint extends Print {
 			return 0;
 		}
 		
-		String tag = null;
+		String tag;
 		if (priority == Log.VERBOSE) {
 			tag = "";
 		}

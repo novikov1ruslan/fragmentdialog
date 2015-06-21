@@ -1,17 +1,17 @@
 package com.ivygames.morskoiboi;
 
-import java.util.Map;
-import java.util.Set;
-
-import org.commons.logger.Ln;
-import org.json.JSONException;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.ivygames.morskoiboi.model.Progress;
+
+import org.commons.logger.Ln;
+import org.json.JSONException;
+
+import java.util.Map;
+import java.util.Set;
 
 public class GameSettings {
 

@@ -1,10 +1,10 @@
 package com.ivygames.morskoiboi.analytics;
 
-import java.util.Map;
+import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 
 import org.commons.logger.Ln;
 
-import com.google.android.gms.analytics.HitBuilders.EventBuilder;
+import java.util.Map;
 
 public final class UiEvent {
 	private final EventBuilder builder;

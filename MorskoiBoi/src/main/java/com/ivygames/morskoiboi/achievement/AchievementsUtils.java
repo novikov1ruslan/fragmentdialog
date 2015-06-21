@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.achievement;
 
-import org.commons.logger.Ln;
-
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -9,6 +7,8 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Progress;
+
+import org.commons.logger.Ln;
 
 public class AchievementsUtils {
 	static final int STATE_KEY = 0;

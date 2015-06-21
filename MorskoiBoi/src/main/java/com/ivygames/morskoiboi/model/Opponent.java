@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.model;
 
 public interface Opponent {
 
-	public static final int CURRENT_VERSION = 3;
+	int CURRENT_VERSION = 3;
 
 	/**
 	 * This opponent is being shot at given coordinate. <br>

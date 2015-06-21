@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.Set;
-
-import org.commons.logger.Ln;
-
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -17,6 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
+
+import org.commons.logger.Ln;
+
+import java.util.Set;
 
 public class DeviceListLayout extends NotepadLinearLayout implements View.OnClickListener {
 	public interface DeviceListActions {

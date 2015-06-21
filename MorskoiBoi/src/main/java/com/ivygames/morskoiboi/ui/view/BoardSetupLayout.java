@@ -1,13 +1,10 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import java.util.PriorityQueue;
-
-import org.commons.logger.Ln;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +15,10 @@ import android.widget.RelativeLayout;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+
+import org.commons.logger.Ln;
+
+import java.util.PriorityQueue;
 
 public class BoardSetupLayout extends RelativeLayout implements View.OnClickListener {
 	public interface BoardSetupLayoutListener {
@@ -117,7 +118,7 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 	}
 
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
+	public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
 		if (mTipsPannel != null && mTipsPannel.getVisibility() == VISIBLE) {
 			return super.dispatchTouchEvent(ev);
 		}

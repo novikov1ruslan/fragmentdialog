@@ -26,7 +26,7 @@ public class VibratorFacade {
 	public boolean hasVibrator() {
 		boolean has = mVibrator != null;
 		if (has && Build.VERSION.SDK_INT >= MIN_VERSION_SUPPORTING_HAS_VIBRATOR) {
-			has &= mVibrator.hasVibrator();
+			has = mVibrator.hasVibrator();
 		}
 		return has;
 	}

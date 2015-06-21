@@ -1,13 +1,13 @@
 package com.ivygames.morskoiboi.ui;
 
-import org.apache.commons.lang3.Validate;
-import org.commons.logger.Ln;
-
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
 import com.ivygames.morskoiboi.GameplaySoundManager;
 import com.ivygames.morskoiboi.ui.view.GameplayLayout;
+
+import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
 
 class TurnTimer extends AsyncTask<Void, Integer, Void> {
 	private static final int RESOLUTION = 300;

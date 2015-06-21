@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class LogCatReader {
+class LogCatReader {
 
 	public static String foo() {
 		try {
@@ -12,7 +12,7 @@ public class LogCatReader {
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 			StringBuilder log = new StringBuilder();
-			String line = null;
+			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				log.append(line);
 			}

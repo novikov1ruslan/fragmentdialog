@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.analytics;
 
-import java.util.Map;
-
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
+
+import java.util.Map;
 
 public final class AnalyticsEvent {
 	private final EventBuilder builder;
