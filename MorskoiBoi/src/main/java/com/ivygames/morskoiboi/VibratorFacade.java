@@ -4,15 +4,15 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Vibrator;
 
-import com.ivygames.morskoiboi.ui.BattleshipFragment;
+import com.ivygames.morskoiboi.ui.BattleshipScreen;
 
 public class VibratorFacade {
 
 	private static final int MIN_VERSION_SUPPORTING_HAS_VIBRATOR = 11;
 	private final Vibrator mVibrator;
-	private final BattleshipFragment mFragment;
+	private final BattleshipScreen mFragment;
 
-	public VibratorFacade(BattleshipFragment fragment) {
+	public VibratorFacade(BattleshipScreen fragment) {
 		mFragment = fragment;
 		mVibrator = (Vibrator) fragment.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 	}

@@ -23,7 +23,7 @@ import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 
-public class MainFragment extends BattleshipFragment implements MainScreenActions, SignInListener {
+public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener {
 	private static final String TAG = "MAIN";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -98,13 +98,13 @@ public class MainFragment extends BattleshipFragment implements MainScreenAction
 
 	@Override
 	public void play() {
-		mParent.setScreen(new SelectGameFragment());
+		mParent.setScreen(new SelectGameScreen());
 	}
 
 	@Override
 	public void share() {
 		mGaTracker.send(new UiEvent("share").build());
-		startActivity(MainFragment.createShareIntent(getString(R.string.share_greeting)));
+		startActivity(MainScreen.createShareIntent(getString(R.string.share_greeting)));
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class MainFragment extends BattleshipFragment implements MainScreenAction
 
 	@Override
 	public void showHelp() {
-		mParent.setScreen(new HelpFragment());
+		mParent.setScreen(new HelpScreen());
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class MainFragment extends BattleshipFragment implements MainScreenAction
 
 	@Override
 	public void showSettings() {
-		mParent.setScreen(new SettingsFragment());
+		mParent.setScreen(new SettingsScreen());
 	}
 
 	private void showLeaderboardsDialog() {

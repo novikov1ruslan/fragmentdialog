@@ -15,7 +15,7 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-public class LostFragment extends OnlineGameFragment implements BackPressListener {
+public class LostScreen extends OnlineGameScreen implements BackPressListener {
 	private static final String TAG = "LOST";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -98,9 +98,9 @@ public class LostFragment extends OnlineGameFragment implements BackPressListene
 	}
 
 	private void backToBoardSetup() {
-		Ln.d("getting back to " + BoardSetupFragment.TAG);
+		Ln.d("getting back to " + BoardSetupScreen.TAG);
 		Model.instance.game.clearState();
-		mParent.setScreen(new BoardSetupFragment());
+		mParent.setScreen(new BoardSetupScreen());
 	}
 
 	@Override

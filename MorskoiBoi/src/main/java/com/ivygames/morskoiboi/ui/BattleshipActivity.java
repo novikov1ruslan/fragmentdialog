@@ -191,7 +191,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
 		// ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 
-		setScreen(new MainFragment());
+		setScreen(new MainScreen());
 
 		AdManager.instance.configure(this);
 
@@ -325,7 +325,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 	@Override
 	public void onBackPressed() {
 		Ln.v("top screen = " + mCurrentScreen);
-		if (mCurrentScreen instanceof MainFragment) {
+		if (mCurrentScreen instanceof MainScreen) {
 			if (!mSettings.noAds()) {
 				Ln.d("exiting from the game - show interstitial");
 				AdManager.instance.showInterstitialAfterExit(this);
@@ -467,7 +467,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
 	private FrameLayout mContainer;
 
-	private BattleshipFragment mCurrentScreen;
+	private BattleshipScreen mCurrentScreen;
 	private boolean mResumed;
 
 	public final void setScreen(Screen screen) {
@@ -480,7 +480,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 			mCurrentScreen.onDestroy();
 		}
 
-		mCurrentScreen = (BattleshipFragment) screen;
+		mCurrentScreen = (BattleshipScreen) screen;
 		mCurrentScreen.onAttach(this);
 		mCurrentScreen.onCreate();
 		View view = mCurrentScreen.onCreateView(mContainer);

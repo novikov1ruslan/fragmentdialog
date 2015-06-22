@@ -13,7 +13,7 @@ import com.ivygames.morskoiboi.R;
 import org.acra.ACRA;
 import org.commons.logger.Ln;
 
-public abstract class BattleshipFragment extends Screen {
+public abstract class BattleshipScreen extends Screen {
 
 	protected Tracker mGaTracker;
 	protected GoogleApiClient mApiClient;

@@ -49,7 +49,7 @@ import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class GameplayFragment extends OnlineGameFragment implements BackPressListener {
+public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
 	private static final String TAG = "GAMEPLAY";
 
 	private static final String DIALOG = FragmentAlertDialog.TAG;
@@ -94,7 +94,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 
 		@Override
 		public void run() {
-			mParent.setScreen(new LostFragment());
+			mParent.setScreen(new LostScreen());
 		}
 	};
 
@@ -703,10 +703,10 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 
 		@Override
 		public void run() {
-			WinFragment fragment = new WinFragment();
+			WinScreen fragment = new WinScreen();
 			Bundle args = new Bundle();
-			args.putBoolean(WinFragment.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
-			args.putString(WinFragment.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
+			args.putBoolean(WinScreen.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
+			args.putString(WinScreen.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
 			fragment.setArguments(args);
 			mParent.setScreen(fragment);
 		}

@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 
 import org.commons.logger.Ln;
 
-public class HelpFragment extends BattleshipFragment implements BackPressListener {
+public class HelpScreen extends BattleshipScreen implements BackPressListener {
 	private static final String TAG = "HELP";
 	private View mLayout;
 
@@ -26,7 +26,7 @@ public class HelpFragment extends BattleshipFragment implements BackPressListene
 
 	@Override
 	public void onBackPressed() {
-		mParent.setScreen(new MainFragment());
+		mParent.setScreen(new MainScreen());
 	}
 
 	@Override

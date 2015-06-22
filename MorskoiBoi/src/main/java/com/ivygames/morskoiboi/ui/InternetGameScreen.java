@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class InternetGameFragment extends BattleshipFragment implements InternetGameLayoutListener, InternetGameListener, BackPressListener {
+public class InternetGameScreen extends BattleshipScreen implements InternetGameLayoutListener, InternetGameListener, BackPressListener {
 	private static final String TAG = "INTERNET_GAME";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -204,7 +204,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 		if (resultCode == Activity.RESULT_OK) {
 			Ln.d("starting game");
 			Model.instance.game = mInternetGame;
-			mParent.setScreen(new BoardSetupFragment());
+			mParent.setScreen(new BoardSetupScreen());
 		} else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 			Ln.d("user explicitly chose to leave the room");
 			// if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
@@ -276,7 +276,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 			mInternetGame.finish();
 		}
 
-		mParent.setScreen(new SelectGameFragment());
+		mParent.setScreen(new SelectGameScreen());
 	}
 
 	@Override

@@ -31,7 +31,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class WinFragment extends OnlineGameFragment implements BackPressListener, SignInListener {
+public class WinScreen extends OnlineGameScreen implements BackPressListener, SignInListener {
 	private static final String TAG = "WIN";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -213,9 +213,9 @@ public class WinFragment extends OnlineGameFragment implements BackPressListener
 	}
 
 	private void backToBoardSetup() {
-		Ln.d("getting back to " + BoardSetupFragment.TAG);
+		Ln.d("getting back to " + BoardSetupScreen.TAG);
 		Model.instance.game.clearState();
-		mParent.setScreen(new BoardSetupFragment());
+		mParent.setScreen(new BoardSetupScreen());
 	}
 
 	private void showWantToLeaveRoomDialog() {

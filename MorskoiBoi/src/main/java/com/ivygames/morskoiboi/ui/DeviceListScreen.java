@@ -30,7 +30,7 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 import java.util.Set;
 
-public class DeviceListFragment extends BattleshipFragment implements DeviceListActions, ConnectionListener, BackPressListener {
+public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, ConnectionListener, BackPressListener {
 	private static final String TAG = "bluetooth";
 
 	private static final int REQUEST_ENSURE = 3;
@@ -216,13 +216,13 @@ public class DeviceListFragment extends BattleshipFragment implements DeviceList
 		Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
 
 		mStopAcceptingOnStop = mGame.isConnecting();
-		mParent.setScreen(new BoardSetupFragment());
+		mParent.setScreen(new BoardSetupScreen());
 	}
 
 	@Override
 	public void onBackPressed() {
 		mGame.stopConnecting();
-		mParent.setScreen(new MainFragment());
+		mParent.setScreen(new MainScreen());
 	}
 
 	@Override

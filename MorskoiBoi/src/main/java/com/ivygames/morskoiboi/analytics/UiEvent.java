@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.analytics;
 
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
+import com.google.android.gms.analytics.Tracker;
 
 import org.commons.logger.Ln;
 
@@ -32,5 +33,9 @@ public final class UiEvent {
 
 	public Map<String, String> build() {
 		return builder.build();
+	}
+
+	public static void send(Tracker tracker, String action) {
+		tracker.send(new UiEvent(action).build());
 	}
 }

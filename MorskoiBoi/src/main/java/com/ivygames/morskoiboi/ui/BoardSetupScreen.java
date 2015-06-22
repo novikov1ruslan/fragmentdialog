@@ -30,7 +30,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 /**
  * In this screen it is already known what is the game type.
  */
-public class BoardSetupFragment extends OnlineGameFragment implements BoardSetupLayoutListener, BackPressListener {
+public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayoutListener, BackPressListener {
 	static final String TAG = "BOARD_SETUP";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -91,7 +91,7 @@ public class BoardSetupFragment extends OnlineGameFragment implements BoardSetup
 	}
 
 	private void showGameplayScreen() {
-		mParent.setScreen(new GameplayFragment());
+		mParent.setScreen(new GameplayScreen());
 	}
 
 	private void showSetupValidationError() {

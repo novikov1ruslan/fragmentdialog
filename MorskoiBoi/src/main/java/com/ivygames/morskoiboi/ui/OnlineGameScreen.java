@@ -10,7 +10,7 @@ import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 
-public abstract class OnlineGameFragment extends BattleshipFragment {
+public abstract class OnlineGameScreen extends BattleshipScreen {
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
 	@Override

@@ -20,7 +20,7 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-public class SettingsFragment extends BattleshipFragment implements SettingsScreenActions, SignInListener, BackPressListener {
+public class SettingsScreen extends BattleshipScreen implements SettingsScreenActions, SignInListener, BackPressListener {
 	private static final String TAG = "SETTINGS";
 
 	// (arbitrary) request code for the purchase flow
@@ -124,6 +124,7 @@ public class SettingsFragment extends BattleshipFragment implements SettingsScre
 
 	@Override
 	public void onReportProblem() {
+		UiEvent.send(mGaTracker, "report_problem");
 		Intent intent = getEmailIntent(EMAIL);
 		if (DeviceUtils.resolverAvailableForIntent(intent)) {
 			startActivity(intent);
@@ -171,7 +172,7 @@ public class SettingsFragment extends BattleshipFragment implements SettingsScre
 
 	@Override
 	public void onBackPressed() {
-		mParent.setScreen(new MainFragment());
+		mParent.setScreen(new MainScreen());
 	}
 
 	@Override

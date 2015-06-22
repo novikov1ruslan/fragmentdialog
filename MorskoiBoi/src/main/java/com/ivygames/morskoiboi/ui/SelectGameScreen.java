@@ -36,7 +36,7 @@ import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class SelectGameFragment extends BattleshipFragment implements SelectGameActions, SignInListener, BackPressListener {
+public class SelectGameScreen extends BattleshipScreen implements SelectGameActions, SignInListener, BackPressListener {
 	private static final String TAG = "SELECT_GAME";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -133,7 +133,7 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 	}
 
 	private void showBoardSetup() {
-		mParent.setScreen(new BoardSetupFragment());
+		mParent.setScreen(new BoardSetupScreen());
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 	}
 
 	private void showDeviceListScreen() {
-		mParent.setScreen(new DeviceListFragment());
+		mParent.setScreen(new DeviceListScreen());
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 	}
 
 	private void showInternetGameScreen() {
-		mParent.setScreen(new InternetGameFragment());
+		mParent.setScreen(new InternetGameScreen());
 	}
 
 	private void showInternetDialog() {
@@ -225,12 +225,12 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 	@Override
 	public void showRanks() {
 		mGaTracker.send(new UiEvent("showRanks").build());
-		mParent.setScreen(new RanksListFragment());
+		mParent.setScreen(new RanksListScreen());
 	}
 
 	@Override
 	public void onBackPressed() {
-		mParent.setScreen(new MainFragment());
+		mParent.setScreen(new MainScreen());
 	}
 
 	@Override

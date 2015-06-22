@@ -4,7 +4,7 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import com.ivygames.morskoiboi.ui.BattleshipFragment;
+import com.ivygames.morskoiboi.ui.BattleshipScreen;
 
 import org.commons.logger.Ln;
 
@@ -32,9 +32,9 @@ public class GameplaySoundManager {
 
 	private final Random mRandom = new Random(System.currentTimeMillis());
 
-	private final BattleshipFragment mFragment;
+	private final BattleshipScreen mFragment;
 
-	public GameplaySoundManager(BattleshipFragment fragment) {
+	public GameplaySoundManager(BattleshipScreen fragment) {
 		mFragment = fragment;
 		int soundsCount = HIT_SOUNDS_COUNT + KILL_SOUNDS_COUNT + SPLASH_SOUNDS_COUNT;
 		mSoundPool = new SoundPool(soundsCount, AudioManager.STREAM_MUSIC, 0);
