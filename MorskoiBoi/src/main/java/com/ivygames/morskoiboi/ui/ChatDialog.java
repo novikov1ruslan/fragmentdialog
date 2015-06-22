@@ -16,15 +16,10 @@ import org.commons.logger.Ln;
 
 public class ChatDialog extends FragmentAlertDialog {
 
-	private final ChatAdapter mChatAdapter;
+	private ChatAdapter mChatAdapter;
 
 	public ChatDialog() {
-		this(null);
-	}
-
-	public ChatDialog(ChatAdapter adapter) {
 		super();
-		mChatAdapter = Validate.notNull(adapter);
 	}
 
 	@Override
@@ -48,6 +43,10 @@ public class ChatDialog extends FragmentAlertDialog {
 		return ((ChatDialogLayout) getContentView()).getChatMessage();
 	}
 
+	public void setAdapter(ChatAdapter adapter) {
+		mChatAdapter = adapter;
+	}
+
 	public static class Builder extends AlertDialogBuilder {
 
 		private final ChatAdapter mChatAdapter;
@@ -63,7 +62,10 @@ public class ChatDialog extends FragmentAlertDialog {
 
 		@Override
 		protected FragmentAlertDialog createInternal() {
-			return new ChatDialog(mChatAdapter);
+			ChatDialog dialog = new ChatDialog();
+			dialog.setAdapter(mChatAdapter);
+			return dialog;
 		}
 	}
+
 }
