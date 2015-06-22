@@ -6,7 +6,7 @@
     <dimen name="text_ml">16dp</dimen>
     <dimen name="text_m">14dp</dimen>
     
-    <!-- horizontal pading -->
+    <!-- horizontal padding -->
     <dimen name="dialog_horizontal_margin">14dp</dimen>
 	<dimen name="dialog_single_button_horizontal_margin">77dp</dimen>
 	    

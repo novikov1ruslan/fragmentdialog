@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatAdapter extends BaseAdapter {
-	private final List<ChatMessage> mMesages = new ArrayList<ChatMessage>();
+	private final List<ChatMessage> mMessages = new ArrayList<ChatMessage>();
 	private final LayoutInflater mInflater;
 
 	public ChatAdapter(LayoutInflater inflater) {
@@ -21,18 +21,18 @@ public class ChatAdapter extends BaseAdapter {
 	}
 
 	public void add(ChatMessage message) {
-		mMesages.add(message);
+		mMessages.add(message);
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		return mMesages.size();
+		return mMessages.size();
 	}
 
 	@Override
 	public ChatMessage getItem(int position) {
-		return mMesages.get(position);
+		return mMessages.get(position);
 	}
 
 	@Override

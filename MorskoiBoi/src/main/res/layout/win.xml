@@ -200,14 +200,14 @@
         android:layout_weight="1" />
 
     <include
-        android:id="@+id/continue_pannel"
+        android:id="@+id/continue_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/continue_panel"
         android:visibility="visible" />
 
     <include
-        android:id="@+id/surrender_continue_pannel"
+        android:id="@+id/surrender_continue_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/surrendered_continue_panel"

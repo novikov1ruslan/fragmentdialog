@@ -33,8 +33,8 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
 		super(context, attrs);
 	}
 
-	public void setScreenActions(SelectGameActions scre1enActions) {
-		mScreenActions = scre1enActions;
+	public void setScreenActions(SelectGameActions screenActions) {
+		mScreenActions = screenActions;
 	}
 
 	@Override

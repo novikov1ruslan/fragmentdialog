@@ -106,7 +106,7 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 			Ln.d(this + ": there is a pending invitation ");
 			mLayout.showInvitation();
 		} else {
-			Ln.v(this + ": there are no pending invitatioins");
+			Ln.v(this + ": there are no pending invitations");
 			mLayout.hideInvitation();
 		}
 	}
@@ -149,7 +149,7 @@ public class SelectGameFragment extends BattleshipFragment implements SelectGame
 			if (DeviceUtils.resolverAvailableForIntent(enableIntent)) {
 				startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
 			} else {
-				Ln.w("Bluetooth resolver is not avilable");
+				Ln.w("Bluetooth resolver is not available");
 				mGaTracker.send(new ExceptionEvent("bt_error").build());
 				showBtErrorDialog();
 			}

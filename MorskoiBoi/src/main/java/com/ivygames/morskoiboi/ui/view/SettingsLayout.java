@@ -11,9 +11,9 @@ import org.commons.logger.Ln;
 
 public class SettingsLayout extends NotepadLinearLayout implements View.OnClickListener {
 	public interface SettingsScreenActions {
-		void onSoundCahnged();
+		void onSoundChanged();
 
-		void onVibrstionChanged();
+		void onVibrationChanged();
 
 		void onSignIn();
 
@@ -85,11 +85,11 @@ public class SettingsLayout extends NotepadLinearLayout implements View.OnClickL
 
 		switch (v.getId()) {
 		case R.id.vibration_btn:
-			mScreenActions.onVibrstionChanged();
+			mScreenActions.onVibrationChanged();
 			break;
 
 		case R.id.sound_btn:
-			mScreenActions.onSoundCahnged();
+			mScreenActions.onSoundChanged();
 			break;
 
 		case R.id.sign_in_button:

@@ -36,7 +36,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
 
 		void onVibrationChanged();
 
-		void onSoundCahnged();
+		void onSoundChanged();
 
 	}
 
@@ -58,7 +58,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
 	private long mUnlockedTime;
 	private boolean mGameIsOn;
 	private Bitmap mBwBitmap;
-	private TimerView mTimerVeiw;
+	private TimerView mTimerView;
 	private GameplayLayoutListener mListener;
 
 	public GameplayLayout(Context context, AttributeSet attrs) {
@@ -85,7 +85,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
 		});
 		mPlayerNameView = (TextView) findViewById(R.id.player);
 		mEnemyNameView = (TextView) findViewById(R.id.enemy);
-		mTimerVeiw = (TimerView) findViewById(R.id.timer);
+		mTimerView = (TimerView) findViewById(R.id.timer);
 
 		mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
 		if (mVibrationButton != null) {
@@ -315,15 +315,15 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
 	}
 
 	public void setTotalTime(int seconds) {
-		mTimerVeiw.setTotalTime(seconds);
+		mTimerView.setTotalTime(seconds);
 	}
 
 	public void setTime(int seconds) {
-		mTimerVeiw.setTime(seconds);
+		mTimerView.setTime(seconds);
 	}
 
 	public void setAlarmTime(int alarmTimeSeconds) {
-		mTimerVeiw.setAlarmTime(alarmTimeSeconds);
+		mTimerView.setAlarmTime(alarmTimeSeconds);
 	}
 
 	public void setListener(GameplayLayoutListener listener) {
@@ -342,7 +342,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
 			break;
 
 		case R.id.sound_btn:
-			mListener.onSoundCahnged();
+			mListener.onSoundChanged();
 			break;
 
 		default:

@@ -38,8 +38,8 @@ public class AchievementsUtils {
 			return "CRUISER_COMMANDER";
 		} else if (AchievementsManager.DESTROYER.equals(id)) {
 			return "DESTROYER";
-		} else if (AchievementsManager.MILITARRY_ACHIEVEMENTS.equals(id)) {
-			return "MILITARRY_ACHIEVEMENTS";
+		} else if (AchievementsManager.MILITARY_ACHIEVEMENTS.equals(id)) {
+			return "MILITARY_ACHIEVEMENTS";
 		}
 
 		return "UNKNOWN(" + id + ")";

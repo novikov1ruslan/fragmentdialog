@@ -153,7 +153,7 @@ public class WinFragment extends OnlineGameFragment implements BackPressListener
 
 	@Override
 	public void onSignInSucceeded() {
-		Ln.d("signin succeeded - hiding sign in button");
+		Ln.d("sign in succeeded - hiding sign in button");
 		mLayout.hideSignInBar();
 	}
 
@@ -177,7 +177,7 @@ public class WinFragment extends OnlineGameFragment implements BackPressListener
 		}
 
 		int penalty = GameSettings.get().getProgressPenalty();
-		Ln.d("updating player's progress [" + progress + "] for gametype: " + mGame.getType() + "; penalty=" + penalty);
+		Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
 		int progressIncrement = progress - penalty;
 		if (progressIncrement > 0) {
 			AchievementsUtils.incrementProgress(progressIncrement, mApiClient, mGaTracker);
@@ -197,7 +197,7 @@ public class WinFragment extends OnlineGameFragment implements BackPressListener
 				if (mApiClient.isConnected()) {
 					submitScore(mScores);
 				} else {
-					Ln.d("### client is not connected - could not submitt scores!");
+					Ln.d("### client is not connected - could not submit scores!");
 				}
 			}
 		}

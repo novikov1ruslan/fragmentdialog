@@ -56,7 +56,7 @@ public class InternetService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Ln.v("service destoyed");
+		Ln.v("service destroyed");
 	}
 
 	private static Notification buildNotification(Context packageContext, String contentTitle, String contentText) {

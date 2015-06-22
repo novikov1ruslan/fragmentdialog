@@ -93,7 +93,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		if (!isCancelled()) {
-			Ln.d("timer finished - transfering turn");
+			Ln.d("timer finished - transferring turn");
 			mListener.onTimerExpired();
 		}
 	}

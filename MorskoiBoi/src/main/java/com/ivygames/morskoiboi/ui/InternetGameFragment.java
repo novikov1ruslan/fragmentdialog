@@ -83,7 +83,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 			Ln.d(this + ": there is a pending invitation ");
 			mLayout.showInvitation();
 		} else {
-			Ln.v(this + ": there are no pending invitatioins");
+			Ln.v(this + ": there are no pending invitations");
 			mLayout.hideInvitation();
 		}
 	}
@@ -146,7 +146,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 	@Override
 	public void viewInvitations() {
 		if (mKeyLock) {
-			Ln.w("keys are lockek");
+			Ln.w("keys are locked");
 			return;
 		}
 
@@ -163,7 +163,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 	@Override
 	public void quickGame() {
 		if (mKeyLock) {
-			Ln.w("keys are lockek");
+			Ln.w("keys are locked");
 			return;
 		}
 
@@ -263,7 +263,7 @@ public class InternetGameFragment extends BattleshipFragment implements Internet
 	@Override
 	public void onBackPressed() {
 		if (mKeyLock) {
-			Ln.w("keys are lockek");
+			Ln.w("keys are locked");
 			return;
 		}
 

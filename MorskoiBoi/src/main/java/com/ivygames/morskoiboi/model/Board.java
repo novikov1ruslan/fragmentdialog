@@ -169,7 +169,7 @@ public class Board {
 	// TODO: create a version that accepts putShipAt(Ship ship)
 	public void putShipAt(Ship ship, int x, int y) {
 		if (!canPutShipAt(ship, x, y)) {
-			throw new IllegalArgumentException("canonot put ship " + ship + " at (" + x + "," + y + ")");
+			throw new IllegalArgumentException("cannot put ship " + ship + " at (" + x + "," + y + ")");
 		}
 
 		// TODO: if it is exactly the same ship, remove and put again

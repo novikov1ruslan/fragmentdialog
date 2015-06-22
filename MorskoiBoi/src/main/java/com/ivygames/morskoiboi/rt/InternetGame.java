@@ -128,7 +128,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 			setRoom(room);
 			mGameListener.onWaitingForOpponent(room);
 		} else {
-			Ln.w("room ceration errror");
+			Ln.w("room creation error");
 			mGameListener.onError(statusCode);
 		}
 	}
@@ -185,12 +185,12 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 	@Override
 	public void onP2PConnected(String participantId) { // 3, 1 on disconnect by peer
 		Ln.d("peer-peer connection established with: " + participantId);
-		setRecepientId(participantId);
+		setRecipientId(participantId);
 	}
 
-	private void setRecepientId(String participantId) {
+	private void setRecipientId(String participantId) {
 		if (participantId == null) {
-			Ln.w("recepient is null");
+			Ln.w("recipient is null");
 		} else {
 			mRecipientId = participantId;
 			Ln.v("recipient set to " + mRecipientId);
@@ -218,7 +218,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 	public void onPeerJoined(Room room, List<String> participantIds) { // 1
 		setRoom(room);
 		// if (participantIds.size() > 0) {
-		// setRecepientId(participantIds.get(0));
+		// setRecipientId(participantIds.get(0));
 		// }
 		Ln.d("participants joined the room: " + participantIds);
 	}
@@ -226,7 +226,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 	@Override
 	public void onPeerLeft(Room room, List<String> participantIds) { // by peer
 		setRoom(room);
-		Ln.d("paricipants left: " + participantIds);
+		Ln.d("participants left: " + participantIds);
 		if (mConnectionLostSent) {
 			Ln.w(GameEvent.CONNECTION_LOST + " already has been sent");
 		} else {
@@ -239,7 +239,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 	public void onPeersConnected(Room room, List<String> participantIds) { // 5
 		setRoom(room);
 		if (participantIds.size() > 0) {
-			setRecepientId(participantIds.get(0));
+			setRecipientId(participantIds.get(0));
 		}
 		Ln.d("participants connected to the room: " + participantIds);
 	}
@@ -247,7 +247,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 	@Override
 	public void onPeersDisconnected(Room room, List<String> participantIds) {
 		setRoom(room);
-		Ln.d("paricipants that disconnected from room: " + participantIds);
+		Ln.d("participants that disconnected from room: " + participantIds);
 		if (!mConnectionLostSent) {
 			Ln.w("sending " + GameEvent.CONNECTION_LOST + " message because " + participantIds + " disconnected");
 			EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);

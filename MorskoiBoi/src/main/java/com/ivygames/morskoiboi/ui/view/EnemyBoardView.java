@@ -180,7 +180,7 @@ public class EnemyBoardView extends BaseBoardView {
 			mDstRect.top = dy - d;
 			mDstRect.right = dx + d;
 			mDstRect.bottom = dy + d;
-			canvas.drawBitmap(animation.getCurrentFrame(), animation.getBouunds(), mDstRect, null);
+			canvas.drawBitmap(animation.getCurrentFrame(), animation.getBounds(), mDstRect, null);
 			postInvalidateDelayed(animation.getFrameDuration());
 		}
 	}

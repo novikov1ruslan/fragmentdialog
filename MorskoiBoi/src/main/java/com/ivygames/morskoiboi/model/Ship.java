@@ -184,10 +184,7 @@ public class Ship {
 		if (mX != other.mX) {
 			return false;
 		}
-		if (mY != other.mY) {
-			return false;
-		}
-		return true;
+		return mY == other.mY;
 	}
 
 	@Override

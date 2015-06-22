@@ -101,14 +101,14 @@ public class SettingsFragment extends BattleshipFragment implements SettingsScre
 	}
 
 	@Override
-	public void onSoundCahnged() {
+	public void onSoundChanged() {
 		boolean on = !mSettings.isSoundOn();
 		mSettings.setSound(on);
 		mLayout.setSound(on);
 	}
 
 	@Override
-	public void onVibrstionChanged() {
+	public void onVibrationChanged() {
 		boolean on = !mSettings.isVibrationOn();
 		mSettings.setVibration(on);
 		mLayout.setVibration(on);
@@ -128,7 +128,7 @@ public class SettingsFragment extends BattleshipFragment implements SettingsScre
 		if (DeviceUtils.resolverAvailableForIntent(intent)) {
 			startActivity(intent);
 		} else {
-			Ln.e("email resolver is not avilable");
+			Ln.e("email resolver is not available");
 		}
 
 		// ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity());

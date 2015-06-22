@@ -203,10 +203,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 		Ln.i("game fully created");
 	}
 
-	// private boolean isGamePlayScreenDislpayed() {
-	// return GameplayFragment.TAG.equals(getTopFragment().getTag());
-	// }
-
 	private GoogleApiClient createGoogleApiClient() {
 		ConnectionCallbacks connectedListener = this;
 		OnConnectionFailedListener connectionFailedListener = this;
@@ -235,7 +231,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 		mCurrentScreen.onStart();
 		mStarted = true;
 
-		Ln.d("UI partially visible - keep scren On");
+		Ln.d("UI partially visible - keep screen On");
 		keepScreenOn();
 		if (mGoogleApiClient.isConnected()) {
 			Ln.d("API is connected - register invitation listener");
@@ -304,7 +300,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 			Games.Invitations.unregisterInvitationListener(mGoogleApiClient);
 		}
 		EventBus.getDefault().unregister(this);
-		Ln.d("game fully obscured - stop keeping scren On");
+		Ln.d("game fully obscured - stop keeping screen On");
 	}
 
 	@Override
@@ -358,10 +354,10 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
 		if (requestCode == RC_SIGN_IN) {
 			if (resultCode == RESULT_OK) {
-				Ln.d("conection issue is resolved - reconnecting");
+				Ln.d("connection issue is resolved - reconnecting");
 				mGoogleApiClient.connect();
 			} else {
-				Ln.w("conection issue could not be resolved");
+				Ln.w("connection issue could not be resolved");
 				mResolvingConnectionFailure = false;
 			}
 		} else {

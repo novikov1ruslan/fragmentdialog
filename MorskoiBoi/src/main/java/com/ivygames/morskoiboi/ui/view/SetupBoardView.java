@@ -22,7 +22,7 @@ import java.util.PriorityQueue;
 
 public class SetupBoardView extends BaseBoardView {
 
-	private static final int THOUCH_THRESHOLD = 32;
+	private static final int TOUCH_THRESHOLD = 32;
 
 	private final int minMargin;
 
@@ -160,7 +160,7 @@ public class SetupBoardView extends BaseBoardView {
 		switch (mTouchAction) {
 		case MotionEvent.ACTION_MOVE:
 			if (mLongPressTask != null && hasMovedBeyondThreshold()) {
-				runlLongPressTask();
+				runLongPressTask();
 			}
 			break;
 		case MotionEvent.ACTION_DOWN:
@@ -249,7 +249,7 @@ public class SetupBoardView extends BaseBoardView {
 		mShips.add(mPickedShip);
 	}
 
-	private void runlLongPressTask() {
+	private void runLongPressTask() {
 		Runnable tmp = mLongPressTask;
 		cancelLongPressTask();
 		tmp.run();
@@ -258,7 +258,7 @@ public class SetupBoardView extends BaseBoardView {
 	private boolean hasMovedBeyondThreshold() {
 		int dX = mLongPressTask.getTouchX() - mTouchX;
 		int dY = mLongPressTask.getTouchY() - mTouchY;
-		return dX * dX + dY * dY > THOUCH_THRESHOLD;
+		return dX * dX + dY * dY > TOUCH_THRESHOLD;
 	}
 
 	private void cancelLongPressTask() {
@@ -268,7 +268,7 @@ public class SetupBoardView extends BaseBoardView {
 	}
 
 	private Bitmap getBitmapForSize(int size) {
-		switch (size) { // NOPMD
+		switch (size) {
 		case 4:
 			return mAircraftCarrier;
 		case 3:

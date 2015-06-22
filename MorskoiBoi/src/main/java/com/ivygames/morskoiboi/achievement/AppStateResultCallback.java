@@ -36,7 +36,7 @@ final class AppStateResultCallback implements ResultCallback<AppStateManager.Sta
 		StateConflictResult conflictResult = result.getConflictResult();
 		StateLoadedResult loadedResult = result.getLoadedResult();
 		if (conflictResult != null) {
-			Ln.v("conflict state loaded successfuly: " + conflictResult.getStatus().isSuccess());
+			Ln.v("conflict state loaded successfully: " + conflictResult.getStatus().isSuccess());
 			byte[] localData = conflictResult.getLocalData();
 			byte[] serverData = conflictResult.getServerData();
 			String resolvedVersion = conflictResult.getResolvedVersion();

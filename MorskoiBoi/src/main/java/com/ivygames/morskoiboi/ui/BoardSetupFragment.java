@@ -122,7 +122,7 @@ public class BoardSetupFragment extends OnlineGameFragment implements BoardSetup
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mGaTracker.send(new UiEvent("left_from_sutup", "ok").build());
+				mGaTracker.send(new UiEvent("left_from_setup", "ok").build());
 				Ln.d("player decided to leave the game - finishing");
 				backToSelectGameScreen();
 			}

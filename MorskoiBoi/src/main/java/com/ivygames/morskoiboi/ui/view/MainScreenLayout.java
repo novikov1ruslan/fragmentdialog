@@ -31,8 +31,8 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
 		super(context, attrs);
 	}
 
-	public void setScreenActionsListener(MainScreenActions scre1enActions) {
-		mScreenActions = scre1enActions;
+	public void setScreenActionsListener(MainScreenActions screenActions) {
+		mScreenActions = screenActions;
 	}
 
 	@Override

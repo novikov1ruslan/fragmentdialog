@@ -30,10 +30,9 @@ final class AcceptThread extends Thread {
 	private final ConnectionListener mConnectionListener;
 	private final Handler mHandler = new Handler(Looper.myLooper());
 
-	AcceptThread(ConnectionListener connnectionListener) {
+	AcceptThread(ConnectionListener connectionListener) {
 		super("bt_accept");
-		Validate.notNull(connnectionListener, "connnectionListener cannot be null");
-		mConnectionListener = connnectionListener;
+		mConnectionListener = Validate.notNull(connectionListener);
 	}
 
 	@Override

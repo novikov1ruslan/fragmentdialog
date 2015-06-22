@@ -65,7 +65,7 @@ public class Animation {
 		return mAim;
 	}
 
-	public Rect getBouunds() {
+	public Rect getBounds() {
 		return mBounds;
 	}
 

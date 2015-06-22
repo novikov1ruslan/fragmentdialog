@@ -30,7 +30,7 @@ public class GameSettings {
 	private static final String PROGRESS = "PROGRESS";
 	private static final String PROGRESS_PENALTY = "PROGRESS_PENALTY";
 	private static final String NO_ADS = "NO_ADS";
-	private static final String SHOULD_AUTO_SIGNE_IN = "SIGNED_IN";
+	private static final String SHOULD_AUTO_SIGN_IN = "SIGNED_IN";
 
 	private static final int MINIMAL_RATING_BAR = 10;
 	private static final int RATING_STEP = 5;
@@ -53,11 +53,11 @@ public class GameSettings {
 	}
 
 	public void enableAutoSignIn() {
-		internal.putBoolean(SHOULD_AUTO_SIGNE_IN, true);
+		internal.putBoolean(SHOULD_AUTO_SIGN_IN, true);
 	}
 
 	public boolean shouldAutoSignIn() {
-		return internal.getBoolean(SHOULD_AUTO_SIGNE_IN, false);
+		return internal.getBoolean(SHOULD_AUTO_SIGN_IN, false);
 	}
 
 	public int getProgressPenalty() {
@@ -83,22 +83,6 @@ public class GameSettings {
 	public void setVibration(boolean on) {
 		internal.putBoolean(VIBRATION, on);
 	}
-
-	// public boolean wasPlaceIndtructionShown() {
-	// return internal.getBoolean(PLACE_INSTRUCTION_SHOWN, false);
-	// }
-	//
-	// public void setPlaceInstructionsShown(boolean shown) {
-	// internal.putBoolean(PLACE_INSTRUCTION_SHOWN, shown);
-	// }
-	//
-	// public boolean wasRotateIndtructionShown() {
-	// return internal.getBoolean(ROTATE_INSTRUCTION_SHOWN, false);
-	// }
-	//
-	// public void setRotateInstructionsShown(boolean shown) {
-	// internal.putBoolean(ROTATE_INSTRUCTION_SHOWN, shown);
-	// }
 
 	public void incrementGamesPlayedCounter() {
 		int played = internal.getInt(GAMES_PLAYED, 0);
@@ -230,7 +214,7 @@ public class GameSettings {
 
 		@Override
 		public boolean contains(String key) {
-			throw new RuntimeException("Not implemented"); // NOPMD
+			throw new RuntimeException("Not implemented");
 		}
 
 		@Override

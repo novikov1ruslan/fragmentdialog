@@ -212,7 +212,6 @@ public class AdManager {
 			initInterstitialAfterExit(activity, activity.getString(R.string.admob_interstitial_after_exit_id));
 			initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
 			if (isSmallScreen(activity)) {
-				// && isGamePlayScreenDislpayed()) {
 				mBanner.setVisibility(View.GONE);
 			} else {
 				mBanner.setVisibility(View.VISIBLE);

@@ -79,8 +79,8 @@ public class DelayedOpponent implements Opponent {
 		List<Runnable> scheduledTasks = mExecutor.shutdownNow();
 		try {
 			mExecutor.awaitTermination(10, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			Ln.w("termitated while waiting");
+		} catch (InterruptedException ie) {
+			Ln.w("terminated while waiting");
 			Thread.currentThread().interrupt();
 		}
 	}

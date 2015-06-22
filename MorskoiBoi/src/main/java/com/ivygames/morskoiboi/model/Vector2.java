@@ -48,7 +48,7 @@ public final class Vector2 {
 	static {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				POOL[i][j] = new Vector2(i, j); // NOPMD
+				POOL[i][j] = new Vector2(i, j);
 			}
 		}
 	}
@@ -93,10 +93,7 @@ public final class Vector2 {
 		if (mX != other.mX) {
 			return false;
 		}
-		if (mY != other.mY) {
-			return false;
-		}
-		return true;
+		return mY == other.mY;
 	}
 
 	@Override

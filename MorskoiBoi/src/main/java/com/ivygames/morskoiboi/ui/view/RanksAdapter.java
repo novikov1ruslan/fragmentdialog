@@ -21,18 +21,18 @@ import java.util.List;
 class RanksAdapter extends BaseAdapter {
 
 	private final List<Rank> mRanks;
-	private Rank mCurentRank;
+	private Rank mCurrentRank;
 	private final ColorMatrixColorFilter mIdentityFilter;
 	private final int mTextColor;
 	private final float mRankTextSize;
 	private final float mCurrentRankTextSize;
 	private final int mCurrentTextColor;
-	private final LayoutInflater mInftlater;
+	private final LayoutInflater mInflater;
 
 	RanksAdapter(Context context, List<Rank> ranks, Rank curRank) {
 		super();
 		mRanks = ranks;
-		mCurentRank = curRank;
+		mCurrentRank = curRank;
 
 		ColorMatrix cm = new ColorMatrix();
 		cm.setSaturation(0);
@@ -46,7 +46,7 @@ class RanksAdapter extends BaseAdapter {
 
 		mCurrentTextColor = context.getResources().getColor(R.color.victory_text);
 
-		mInftlater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ class RanksAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
-			convertView = mInftlater.inflate(R.layout.rank_item, parent, false);
+			convertView = mInflater.inflate(R.layout.rank_item, parent, false);
 		}
 
 		Rank rank = mRanks.get(position);
@@ -81,14 +81,14 @@ class RanksAdapter extends BaseAdapter {
 		image.setImageResource(rank.getSmallBitmapRes());
 		score.setTextSize(TypedValue.COMPLEX_UNIT_PX, mRankTextSize);
 
-		if (mCurentRank.getScore() > rank.getScore()) {
+		if (mCurrentRank.getScore() > rank.getScore()) {
 			int color = mTextColor & 0x88FFFFFF;
 			name.setTextColor(color);
 			score.setTextColor(color);
 
 			name.setTextSize(TypedValue.COMPLEX_UNIT_PX, mRankTextSize);
 			image.setColorFilter(0x88FFFFFF, Mode.MULTIPLY);
-		} else if (mCurentRank.getScore() < rank.getScore()) {
+		} else if (mCurrentRank.getScore() < rank.getScore()) {
 			int color = Color.BLACK & 0x66FFFFFF;
 			name.setTextColor(color);
 			score.setTextColor(color);
@@ -107,7 +107,7 @@ class RanksAdapter extends BaseAdapter {
 	}
 
 	public void setCurrentRank(Rank rank) {
-		mCurentRank = rank;
+		mCurrentRank = rank;
 		notifyDataSetChanged();
 	}
 

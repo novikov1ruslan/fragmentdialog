@@ -18,10 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * their AndroidManifest.xml. For apps built using SDK Tools r8 or later, this means any debug build. Release builds built with r8 or later will have verbose
  * and debug log messages turned off.
  * <p/>
- * The default tag is automatically set to your app's packagename, and the current context (eg. activity, service, application, etc) is appended as well. You
+ * The default tag is automatically set to your app's package name, and the current context (eg. activity, service, application, etc) is appended as well. You
  * can add an additional parameter to the tag using {@link #Log(String)}.
  * <p/>
- * Log-levels can be programatically overridden for specific instances using {@link #Log(String, boolean, boolean)}.
+ * Log-levels can be programmatically overridden for specific instances using {@link #Log(String, boolean, boolean)}.
  * <p/>
  * Log messages may optionally use {@link String#format(String, Object...)} formatting, which will not be evaluated unless the log statement is output.
  * Additional parameters to the logging statement are treated as varrgs parameters to {@link String#format(String, Object...)}
@@ -174,8 +174,8 @@ public class Ln {
         return config.minimumLogLevel;
     }
 
-    public static String logLevelToString(int loglevel) {
-        switch (loglevel) {
+    public static String logLevelToString(int logLevel) {
+        switch (logLevel) {
             case Log.VERBOSE:
                 return "VERBOSE";
             case Log.DEBUG:

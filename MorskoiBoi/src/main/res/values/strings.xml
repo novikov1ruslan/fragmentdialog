@@ -69,7 +69,7 @@
 
     <!-- gameplay -->
     <string name="abandon_game_question">Are you sure you want to abandon the battle?</string>
-    <string name="surrender_question">Capitan, do you really want to surrender? (%1$s points!)</string>
+    <string name="surrender_question">Captain, do you really want to surrender? (%1$s points!)</string>
     <string name="opponent_left">Your opponent has left the game.</string>
     <string name="opponent_surrendered">Your opponent has surrendered!</string>
     <string name="opponent_setting_board">%1$s is placing ships</string>

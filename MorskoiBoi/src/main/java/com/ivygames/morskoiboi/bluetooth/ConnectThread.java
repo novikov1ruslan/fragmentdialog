@@ -27,11 +27,8 @@ final class ConnectThread extends Thread {
 
 	ConnectThread(BluetoothDevice device, ConnectionListener connectionListener) {
 		super("bt_connect");
-		Validate.notNull(device, "deveice cannot be null");
-		mDevice = device;
-
-		Validate.notNull(connectionListener, "connectionListener cannot be null");
-		mConnectionListener = connectionListener;
+		mDevice = Validate.notNull(device);
+		mConnectionListener = Validate.notNull(connectionListener);
 	}
 
 	@Override
@@ -59,7 +56,7 @@ final class ConnectThread extends Thread {
 			mConnection.startReceiving();
 		} catch (IOException ioe) {
 			if (mCancelled) {
-				Ln.d("cancelled whle connected");
+				Ln.d("cancelled while connected");
 			} else {
 				Ln.d("connection lost: " + ioe.getMessage());
 				EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);

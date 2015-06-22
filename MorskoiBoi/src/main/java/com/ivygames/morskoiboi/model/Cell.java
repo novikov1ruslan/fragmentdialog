@@ -143,10 +143,7 @@ public class Cell {
 		if (mProximity != other.mProximity) {
 			return false;
 		}
-		if (mState != other.mState) {
-			return false;
-		}
-		return true;
+		return mState == other.mState;
 	}
 
 	@Override

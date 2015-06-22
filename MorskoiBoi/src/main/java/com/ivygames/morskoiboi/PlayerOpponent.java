@@ -62,7 +62,7 @@ public final class PlayerOpponent extends AbstractOpponent {
 		throw new RuntimeException("never used");
 	}
 
-	private void markNeighbouringCellsAsOcupied(final Ship ship) {
+	private void markNeighbouringCellsAsOccupied(final Ship ship) {
 		// if is dead we remove and put ship back to mark adjacent cells as reserved
 		mMyBoard.removeShipFrom(ship.getX(), ship.getY());
 		mMyBoard.putShipAt(ship, ship.getX(), ship.getY());
@@ -76,7 +76,7 @@ public final class PlayerOpponent extends AbstractOpponent {
 		final Ship ship = result.ship;
 		if (ship != null) {
 			Ln.v(this + ": my ship is destroyed - " + ship);
-			markNeighbouringCellsAsOcupied(ship);
+			markNeighbouringCellsAsOccupied(ship);
 		}
 
 		if (result.cell.isHit() && !Board.isItDefeatedBoard(mMyBoard)) {

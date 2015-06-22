@@ -79,7 +79,7 @@ public final class PlacementFactory {
 			return found;
 		}
 
-		private Orientation calcRandomOrientaion() {
+		private Orientation calcRandomOrientaiton() {
 			return mRandom.nextInt(2) == 1 ? Orientation.HORIZONTAL : Orientation.VERTICAL;
 		}
 
@@ -87,16 +87,16 @@ public final class PlacementFactory {
 		private List<Ship> generateFullFleet() {
 			// order is important
 			List<Ship> fullSet = new ArrayList<Ship>();
-			fullSet.add(new Ship(4, calcRandomOrientaion()));
-			fullSet.add(new Ship(3, calcRandomOrientaion()));
-			fullSet.add(new Ship(3, calcRandomOrientaion()));
-			fullSet.add(new Ship(2, calcRandomOrientaion()));
-			fullSet.add(new Ship(2, calcRandomOrientaion()));
-			fullSet.add(new Ship(2, calcRandomOrientaion()));
-			fullSet.add(new Ship(1, calcRandomOrientaion()));
-			fullSet.add(new Ship(1, calcRandomOrientaion()));
-			fullSet.add(new Ship(1, calcRandomOrientaion()));
-			fullSet.add(new Ship(1, calcRandomOrientaion()));
+			fullSet.add(new Ship(4, calcRandomOrientaiton()));
+			fullSet.add(new Ship(3, calcRandomOrientaiton()));
+			fullSet.add(new Ship(3, calcRandomOrientaiton()));
+			fullSet.add(new Ship(2, calcRandomOrientaiton()));
+			fullSet.add(new Ship(2, calcRandomOrientaiton()));
+			fullSet.add(new Ship(2, calcRandomOrientaiton()));
+			fullSet.add(new Ship(1, calcRandomOrientaiton()));
+			fullSet.add(new Ship(1, calcRandomOrientaiton()));
+			fullSet.add(new Ship(1, calcRandomOrientaiton()));
+			fullSet.add(new Ship(1, calcRandomOrientaiton()));
 
 			return fullSet;
 		}

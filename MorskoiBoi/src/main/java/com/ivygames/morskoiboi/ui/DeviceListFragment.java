@@ -61,7 +61,7 @@ public class DeviceListFragment extends BattleshipFragment implements DeviceList
 		mLayout = (DeviceListLayout) getLayoutInflater().inflate(R.layout.device_list, container, false);
 		mLayout.setListener(this);
 		Set<BluetoothDevice> bondedDevices = mBtAdapter.getBondedDevices();
-		Ln.d(TAG + ": retrieved bonded deveices: " + bondedDevices);
+		Ln.d(TAG + ": retrieved bonded devices: " + bondedDevices);
 		mLayout.setBondedDevices(bondedDevices);
 
 		Ln.d(this + " screen created");
@@ -76,7 +76,7 @@ public class DeviceListFragment extends BattleshipFragment implements DeviceList
 		getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
 		getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
 
-		Ln.d(TAG + ": start listening for incomming connections");
+		Ln.d(TAG + ": start listening for incoming connections");
 		if (mGame.isAccepting()) {
 			Ln.e("should have been accepting");
 			ACRA.getErrorReporter().handleException(new RuntimeException("should have been accepting"));
@@ -116,7 +116,7 @@ public class DeviceListFragment extends BattleshipFragment implements DeviceList
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-					Ln.d(TAG + ": device is found, but alredy bound");
+					Ln.d(TAG + ": device is found, but already bound");
 				} else {
 					Ln.d(TAG + ": new device is found: " + device);
 					mLayout.addBondedDevice(device);
@@ -124,7 +124,7 @@ public class DeviceListFragment extends BattleshipFragment implements DeviceList
 				// mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
 			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
 				Set<BluetoothDevice> bondedDevices = mBtAdapter.getBondedDevices();
-				Ln.d(TAG + ": discovery finished, bonded deveices: " + bondedDevices);
+				Ln.d(TAG + ": discovery finished, bonded devices: " + bondedDevices);
 				mLayout.setBondedDevices(bondedDevices);
 				mLayout.cancelDiscovery();
 			} else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {

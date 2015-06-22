@@ -50,7 +50,7 @@
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
         <item name="android:minWidth">320dp</item>
-        <!-- this is workaround to keep dialog match_parrent -->
+        <!-- this is workaround to keep dialog match_parent -->
     </style>
 
 </resources>

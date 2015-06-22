@@ -73,7 +73,7 @@ public class MainFragment extends BattleshipFragment implements MainScreenAction
 			Ln.d(this + ": there is a pending invitation ");
 			mLayout.showInvitation();
 		} else {
-			Ln.v(this + ": there are no pending invitatioins");
+			Ln.v(this + ": there are no pending invitations");
 			mLayout.hideInvitation();
 		}
 	}

@@ -181,7 +181,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 						ChatDialog chatDialog = (ChatDialog) dialog;
 						String text = chatDialog.getChatMessage().toString();
 						if (TextUtils.isEmpty(text)) {
-							Ln.d("chat text is empty - not senting");
+							Ln.d("chat text is empty - not sending");
 						} else {
 							mChatAdapter.add(ChatMessage.newMyMessage(text));
 							mEnemy.onNewMessage(text);
@@ -191,7 +191,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 			}
 
 			@Override
-			public void onSoundCahnged() {
+			public void onSoundChanged() {
 				boolean on = !mSettings.isSoundOn();
 				mSettings.setSound(on);
 				mLayout.setSound(on);
@@ -258,7 +258,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 		Ln.d(this + " is partially obscured - pausing sounds");
 		mSoundManager.autoPause();
 		if (mGame.getType() == Type.VS_ANDROID) {
-			// timer is not running if it is not plyaer's turn, but cancel it just in case
+			// timer is not running if it is not player's turn, but cancel it just in case
 			pauseTimer();
 		}
 	}
@@ -388,7 +388,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 
 		if (shouldNotifyOpponent()) {
 			if (mPlayer.isOpponentReady()) {
-				Ln.d("Capitan, do you really want to surrender?");
+				Ln.d("Captain, do you really want to surrender?");
 				showSurrenderDialog();
 			} else {
 				Ln.d("Do you want to abandon the game with XXX?");
@@ -519,7 +519,7 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 				Ln.d("player's turn - starting timer");
 				startTimer(); // for all practical scenarios - start will only be called from here
 			} else {
-				Ln.d("player's turn, but tragment is paused - DO NOT START TIMER");
+				Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
 			}
 			hideOpponentSettingBoardNotification();
 		}
@@ -638,8 +638,8 @@ public class GameplayFragment extends OnlineGameFragment implements BackPressLis
 		@Override
 		public void onLost(Board board) {
 			if (!Board.isItDefeatedBoard(mPlayerPrivateBoard)) {
-				Ln.v("player privaete board: " + mPlayerPrivateBoard);
-				ACRA.getErrorReporter().handleException(new RuntimeException("lost whle not defeated"));
+				Ln.v("player private board: " + mPlayerPrivateBoard);
+				ACRA.getErrorReporter().handleException(new RuntimeException("lost while not defeated"));
 			}
 			// revealing the enemy board
 			mEnemyPublicBoard = board;

@@ -9,7 +9,7 @@ public abstract class Game {
 		VS_ANDROID, BLUETOOTH, INTERNET
 	}
 
-	private static final int MAX_TIME_MILLIS = 300000; // 5 mins
+	private static final int MAX_TIME_MILLIS = 300000; // 5 minutes
 	private static final int MIN_TIME_MILLIS = 20000; // 20 sec
 
 	private static final int SHIP_1X_WEIGHT = 1;

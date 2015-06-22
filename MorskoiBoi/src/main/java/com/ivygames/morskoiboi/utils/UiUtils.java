@@ -36,10 +36,10 @@ public final class UiUtils {
 		return UiUtils.newStrokePaint(res, colorId, 0F);
 	}
 
-	private static Paint newStrokePaint(Resources res, int colorId, float storkeWidth) {
+	private static Paint newStrokePaint(Resources res, int colorId, float strokeWidth) {
 		Paint paint = new Paint();
 		paint.setColor(res.getColor(colorId));
-		paint.setStrokeWidth(storkeWidth);
+		paint.setStrokeWidth(strokeWidth);
 		paint.setStyle(Paint.Style.STROKE);
 
 		return paint;

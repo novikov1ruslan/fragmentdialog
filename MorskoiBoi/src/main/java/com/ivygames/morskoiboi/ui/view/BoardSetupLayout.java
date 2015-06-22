@@ -40,7 +40,7 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 	private SetupBoardView mBoardView;
 	private BoardSetupLayoutListener mScreenActions;
 	private View mHelpButton;
-	private View mTipsPannel;
+	private View mTipsPanel;
 	private Rect mHelpBounds;
 
 	public void setScreenActionsListener(BoardSetupLayoutListener listener) {
@@ -65,7 +65,7 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 		if (mHelpButton != null) {
 			mHelpButton.setOnClickListener(this);
 		}
-		mTipsPannel = findViewById(R.id.tips_pannel);
+		mTipsPanel = findViewById(R.id.tips_panel);
 
 		mHelpBounds = new Rect();
 
@@ -119,7 +119,7 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 
 	@Override
 	public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-		if (mTipsPannel != null && mTipsPannel.getVisibility() == VISIBLE) {
+		if (mTipsPanel != null && mTipsPanel.getVisibility() == VISIBLE) {
 			return super.dispatchTouchEvent(ev);
 		}
 
@@ -143,8 +143,8 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 	}
 
 	public void showTips() {
-		if (mTipsPannel != null) {
-			mTipsPannel.setVisibility(VISIBLE);
+		if (mTipsPanel != null) {
+			mTipsPanel.setVisibility(VISIBLE);
 		}
 
 		if (mHelpButton != null) {
@@ -153,8 +153,8 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 	}
 
 	public void hideTips() {
-		if (mTipsPannel != null) {
-			mTipsPannel.setVisibility(GONE);
+		if (mTipsPanel != null) {
+			mTipsPanel.setVisibility(GONE);
 		}
 
 		if (mHelpButton != null) {

@@ -4,15 +4,15 @@ import org.apache.commons.lang3.Validate;
 
 final class ConnectFailedCommand implements Runnable {
 
-	private final ConnectionListener mConnnectionListener;
+	private final ConnectionListener mConnectionListener;
 
 	ConnectFailedCommand(ConnectionListener listener) {
 		Validate.notNull(listener, "listener cannot be null");
-		mConnnectionListener = listener;
+		mConnectionListener = listener;
 	}
 
 	@Override
 	public void run() {
-		mConnnectionListener.onConnectFailed();
+		mConnectionListener.onConnectFailed();
 	}
 }

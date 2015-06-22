@@ -4,7 +4,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/tips_pannel"
+        android:id="@+id/tips_panel"
         android:layout_width="match_parent" >
 
         <ViewFlipper
@@ -55,7 +55,7 @@
         android:id="@+id/board_view"
         android:layout_width="match_parent"
         android:layout_above="@+id/buttons_panel"
-        android:layout_below="@+id/tips_pannel"
+        android:layout_below="@+id/tips_panel"
         android:padding="@dimen/board_border" />
 
     <LinearLayout

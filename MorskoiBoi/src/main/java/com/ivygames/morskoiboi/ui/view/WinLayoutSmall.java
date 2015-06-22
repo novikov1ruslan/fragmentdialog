@@ -85,8 +85,8 @@ public class WinLayoutSmall extends NotepadLinearLayout {
 	}
 
 	public void opponentSurrendered() {
-		findViewById(R.id.continue_pannel).setVisibility(GONE);
-		findViewById(R.id.surrender_continue_pannel).setVisibility(VISIBLE);
+		findViewById(R.id.continue_panel).setVisibility(GONE);
+		findViewById(R.id.surrender_continue_panel).setVisibility(VISIBLE);
 	}
 
 }

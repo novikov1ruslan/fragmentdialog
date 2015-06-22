@@ -36,7 +36,7 @@ public final class AchievementsManager {
 	 */
 	static final String CRUISER_COMMANDER = "CgkI8s_j3LsfEAIQDw";
 	static final String DESTROYER = "CgkI8s_j3LsfEAIQBQ";
-	static final String MILITARRY_ACHIEVEMENTS = "CgkI8s_j3LsfEAIQEA";
+	static final String MILITARY_ACHIEVEMENTS = "CgkI8s_j3LsfEAIQEA";
 
 	public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
@@ -68,8 +68,8 @@ public final class AchievementsManager {
 	 * @return true if change has been made
 	 */
 	private boolean unlockIfNotUnlocked(String achievementId) {
-		boolean alredyUnlocked = mSettings.isAchievementUnlocked(achievementId);
-		if (alredyUnlocked) {
+		boolean alreadyUnlocked = mSettings.isAchievementUnlocked(achievementId);
+		if (alreadyUnlocked) {
 			Ln.d(AchievementsManager.name(achievementId) + " already unlocked - no need to unlock");
 			return false;
 		} else {
@@ -87,10 +87,10 @@ public final class AchievementsManager {
 		processShipsLeft(ships);
 
 		if (game.calcTotalScores(ships) >= 15000) {
-			if (mSettings.isAchievementUnlocked(MILITARRY_ACHIEVEMENTS)) {
-				Ln.v(AchievementsManager.name(MILITARRY_ACHIEVEMENTS) + " is already unlocked - do not increment");
+			if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
+				Ln.v(AchievementsManager.name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
 			} else {
-				increment(MILITARRY_ACHIEVEMENTS, 1);
+				increment(MILITARY_ACHIEVEMENTS, 1);
 			}
 		}
 	}
@@ -131,7 +131,7 @@ public final class AchievementsManager {
 	private void processShipsLeft(Collection<Ship> ships) {
 		Ln.v("ships=" + ships);
 
-		int shipsLeft = AchievementsManager.coutAliveShips(ships);
+		int shipsLeft = AchievementsManager.countAliveShips(ships);
 		if (shipsLeft >= 3) {
 			if (unlockIfNotUnlocked(STEALTH)) {
 				reveal(LIFE_SAVING);
@@ -159,7 +159,7 @@ public final class AchievementsManager {
 		}
 	}
 
-	private static int coutAliveShips(Collection<Ship> ships) {
+	private static int countAliveShips(Collection<Ship> ships) {
 		int left = 0;
 		for (Ship ship : ships) {
 			if (!ship.isDead()) {
