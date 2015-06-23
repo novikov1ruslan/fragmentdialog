@@ -6,8 +6,11 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import org.acra.ACRA;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
+
+import java.util.Random;
 
 public class AndroidOpponent extends AbstractOpponent {
 
@@ -100,6 +103,10 @@ public class AndroidOpponent extends AbstractOpponent {
 		Ln.v(this + ": enemy bid=" + bid);
 		mEnemyBid = bid;
 		join();
+		if (mEnemyBid == mMyBid) {
+			ACRA.getErrorReporter().handleException(new RuntimeException("stall"));
+			mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
+		}
 		mThread = new Thread(new StartCommand(mOpponent, mMyBid, mEnemyBid), "bidding_boat");
 		mThread.start();
 	}

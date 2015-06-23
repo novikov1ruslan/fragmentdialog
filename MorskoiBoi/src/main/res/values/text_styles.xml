@@ -29,7 +29,7 @@
     </style>
 
     <style name="ScoresText" parent="@android:style/Widget.TextView">
-        <item name="android:textSize"> @dimen/scores_textSize</item>
+        <item name="android:textSize">@dimen/scores_textSize</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/victory_text</item>
         <item name="android:gravity">right</item>

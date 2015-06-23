@@ -26,7 +26,7 @@ public abstract class AbstractOpponent implements Opponent {
 		Ln.d(this + ": initializing boards and bids");
 		mMyBoard = new Board();
 		mEnemyBoard = new Board();
-		mMyBid = new Random(System.currentTimeMillis()).nextInt(Integer.MAX_VALUE);
+		mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
 		mEnemyBid = IMPOSSIBLE_BID;
 	}
 

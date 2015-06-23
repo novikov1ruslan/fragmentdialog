@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:background="@color/info_crouton_background"
     android:padding="2dp"
-    tools:ignore="HardcodedText" >
+    tools:ignore="HardcodedText">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/info_frame"
-        android:gravity="center" >
+        android:gravity="center">
 
         <TextView
             android:id="@+id/info_message"

@@ -3,7 +3,7 @@
     android:id="@+id/continue_panel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         style="@style/ContinueText"
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:padding="@dimen/main_buttons_margin"
         android:paddingLeft="@dimen/main_buttons_margin"
-        android:paddingRight="@dimen/main_buttons_margin" >
+        android:paddingRight="@dimen/main_buttons_margin">
 
         <Button
             android:id="@+id/yes_button"

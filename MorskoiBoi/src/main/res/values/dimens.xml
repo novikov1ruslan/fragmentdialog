@@ -28,9 +28,9 @@
     <dimen name="player_name_textSize">22dp</dimen>
     <dimen name="settings_header_textSize">32dp</dimen>
     <dimen name="settings_textSize">22dp</dimen>
-	<dimen name="crouton_textSize">16dp</dimen>
+    <dimen name="crouton_textSize">16dp</dimen>
     <dimen name="main_buttons_margin">10dp</dimen>
-    
+
     <!-- ranks -->
     <dimen name="rank_textSize">14dp</dimen>
     <dimen name="current_rank_textSize">20dp</dimen>

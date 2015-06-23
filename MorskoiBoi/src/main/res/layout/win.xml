@@ -5,14 +5,14 @@
     android:background="@color/default_background"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:ignore="HardcodedText" >
+    tools:ignore="HardcodedText">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/win_top_margin"
         android:layout_marginRight="@dimen/win_top_margin"
         android:layout_marginTop="@dimen/win_top_margin"
-        android:gravity="center_horizontal" >
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/time"
@@ -39,11 +39,10 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/sign_in_bar"
         style="@style/SignInBar"
-        android:layout_width="match_parent" >
+        android:layout_width="match_parent">
 
         <com.google.android.gms.common.SignInButton android:id="@+id/sign_in_button" />
 
@@ -66,7 +65,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
+        android:paddingRight="8dp">
 
         <ImageView
             android:id="@+id/ship4"
@@ -89,7 +88,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:paddingLeft="@dimen/gap_between_ships"
-        android:paddingRight="@dimen/gap_between_ships" >
+        android:paddingRight="@dimen/gap_between_ships">
 
         <ImageView
             android:id="@+id/ship3_2"
@@ -122,7 +121,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:paddingLeft="@dimen/gap_between_ships"
-        android:paddingRight="@dimen/gap_between_ships" >
+        android:paddingRight="@dimen/gap_between_ships">
 
         <ImageView
             android:id="@+id/ship2_3"
@@ -182,7 +181,7 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="8dp"
         android:paddingLeft="@dimen/win_horizontal_margin"
-        android:paddingRight="@dimen/win_horizontal_margin" >
+        android:paddingRight="@dimen/win_horizontal_margin">
 
         <TextView
             style="@style/NormalText"
@@ -201,16 +200,16 @@
 
     <include
         android:id="@+id/continue_panel"
+        layout="@layout/continue_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/continue_panel"
         android:visibility="visible" />
 
     <include
         android:id="@+id/surrender_continue_panel"
+        layout="@layout/surrendered_continue_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/surrendered_continue_panel"
         android:visibility="gone" />
 
 </com.ivygames.morskoiboi.ui.view.WinLayout>

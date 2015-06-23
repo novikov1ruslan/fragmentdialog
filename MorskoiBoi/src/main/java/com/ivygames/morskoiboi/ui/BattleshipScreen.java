@@ -96,4 +96,7 @@ public abstract class BattleshipScreen extends Screen {
 		ACRA.getErrorReporter().handleException(new RuntimeException("unprocessed result"));
 	}
 
+	public View getTutView() {
+		return null;
+	}
 }

@@ -497,6 +497,10 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 		// }
 
 		mContainer.addView(view);
+        View tutView = mCurrentScreen.getTutView();
+        if (tutView != null) {
+            mContainer.addView(tutView);
+        }
 		if (oldView != null) {
 			mContainer.removeView(oldView);
 		}

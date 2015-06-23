@@ -7,14 +7,14 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/battleship_margin_horizontal"
     android:paddingRight="@dimen/battleship_margin_horizontal"
-    tools:ignore="HardcodedText" >
+    tools:ignore="HardcodedText">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/win_top_margin"
         android:layout_marginRight="@dimen/win_top_margin"
         android:layout_marginTop="@dimen/win_top_margin"
-        android:gravity="center_horizontal" >
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/time"
@@ -41,11 +41,10 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/sign_in_bar"
         style="@style/SignInBar"
-        android:layout_width="match_parent" >
+        android:layout_width="match_parent">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -70,7 +69,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
+        android:paddingRight="8dp">
 
         <ImageView
             android:id="@+id/ship4"
@@ -93,7 +92,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:paddingLeft="@dimen/gap_between_ships"
-        android:paddingRight="@dimen/gap_between_ships" >
+        android:paddingRight="@dimen/gap_between_ships">
 
         <ImageView
             android:id="@+id/ship3_2"
@@ -126,7 +125,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:paddingLeft="@dimen/gap_between_ships"
-        android:paddingRight="@dimen/gap_between_ships" >
+        android:paddingRight="@dimen/gap_between_ships">
 
         <ImageView
             android:id="@+id/ship2_3"
@@ -186,7 +185,7 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="8dp"
         android:paddingLeft="@dimen/win_horizontal_margin"
-        android:paddingRight="@dimen/win_horizontal_margin" >
+        android:paddingRight="@dimen/win_horizontal_margin">
 
         <TextView
             style="@style/NormalText"

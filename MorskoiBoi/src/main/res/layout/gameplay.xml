@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/default_background"
     android:orientation="vertical"
-    tools:ignore="HardcodedText" >
+    tools:ignore="HardcodedText">
 
     <ImageView
         android:id="@+id/bw"
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="@dimen/gameplay_padding" >
+        android:padding="@dimen/gameplay_padding">
 
         <com.ivygames.morskoiboi.ui.view.FleetBoardView
             android:id="@+id/board_view_fleet"
@@ -35,11 +35,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="@dimen/gameplay_status_padding" >
+            android:padding="@dimen/gameplay_status_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/status_vertical_margin" >
+                android:layout_marginBottom="@dimen/status_vertical_margin">
 
                 <TextView
                     android:id="@+id/player"

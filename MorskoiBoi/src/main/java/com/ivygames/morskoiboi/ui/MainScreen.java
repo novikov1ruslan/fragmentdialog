@@ -32,10 +32,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 	private boolean mAchievementsRequested;
 	private boolean mLeaderboardRequested;
 	private MainScreenLayout mLayout;
+    private View mTutView;
 
-	private static Intent createShareIntent(String greeting) {
+    private static Intent createShareIntent(String greeting) {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		shareIntent.setType("text/plain");
 		String playPath = "https://play.google.com/store/apps/details?id=com.ivygames.morskoiboi";
 		shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + playPath);
@@ -46,6 +46,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 	public View onCreateView(ViewGroup container) {
 		mLayout = (MainScreenLayout) inflate(R.layout.main, container);
 		mLayout.setScreenActionsListener(this);
+		mTutView = mLayout.setTutView(inflate(R.layout.main_tut));
+
 		Ln.d(this + " screen created");
 
 		if (GameSettings.get().shouldProposeRating()) {
@@ -56,7 +58,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 		return mLayout;
 	}
 
-	@Override
+    @Override
+    public View getTutView() {
+        return mTutView;
+    }
+
+    @Override
 	public View getView() {
 		return mLayout;
 	}
@@ -208,5 +215,4 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 	public String toString() {
 		return TAG + debugSuffix();
 	}
-
 }

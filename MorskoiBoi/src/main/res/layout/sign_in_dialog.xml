@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     tools:context=".DialogsTester"
-    tools:ignore="HardcodedText" >
+    tools:ignore="HardcodedText">
 
     <TextView
         android:id="@+id/dialog_text"
@@ -19,7 +19,7 @@
         android:gravity="center_vertical"
         android:text="Your message was not sent. Tap Resend to send the message" />
 
-    <LinearLayout android:layout_width="match_parent" >
+    <LinearLayout android:layout_width="match_parent">
 
         <Button
             android:id="@+id/negative_button"

@@ -4,7 +4,7 @@
     style="@style/DialogFrame"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:context=".DialogsTester" >
+    tools:context=".DialogsTester">
 
     <TextView
         android:id="@+id/dialog_text"
@@ -20,7 +20,7 @@
         android:text="Your message was not sent. Tap Resend to send the message"
         tools:ignore="HardcodedText" />
 
-    <LinearLayout android:layout_width="match_parent" >
+    <LinearLayout android:layout_width="match_parent">
 
         <Button
             android:id="@+id/negative_button"

@@ -2,13 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="#FFFFFF"
-    android:padding="2dp" >
+    android:padding="2dp">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/alert_frame"
-        android:gravity="center" >
+        android:gravity="center">
 
         <TextView
             android:layout_height="match_parent"

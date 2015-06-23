@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:id="@+id/tips_panel"
-        android:layout_width="match_parent" >
+        android:layout_width="match_parent">
 
         <ViewFlipper
             android:layout_width="0dp"
@@ -15,7 +15,7 @@
             android:autoStart="true"
             android:flipInterval="7000"
             android:inAnimation="@android:anim/slide_in_left"
-            android:outAnimation="@android:anim/slide_out_right" >
+            android:outAnimation="@android:anim/slide_out_right">
 
             <TextView
                 style="@style/NormalText"
@@ -61,7 +61,7 @@
     <LinearLayout
         android:id="@+id/buttons_panel"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/auto_setup"

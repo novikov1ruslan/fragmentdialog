@@ -21,7 +21,7 @@
     <RelativeLayout
         android:id="@+id/sign_out_bar"
         style="@style/SettingsContainer"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <TextView
             style="@style/SettingsText"
@@ -43,7 +43,7 @@
         style="@style/SettingsContainer"
         layout="@layout/sign_in_bar" />
 
-    <RelativeLayout style="@style/SettingsContainer" >
+    <RelativeLayout style="@style/SettingsContainer">
 
         <TextView
             style="@style/SettingsText"
@@ -60,7 +60,7 @@
 
     <RelativeLayout
         android:id="@+id/vibration_container"
-        style="@style/SettingsContainer" >
+        style="@style/SettingsContainer">
 
         <TextView
             style="@style/SettingsText"

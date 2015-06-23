@@ -1,5 +1,5 @@
 <com.ivygames.morskoiboi.ui.view.HelpLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/default_background" >
+    android:background="@color/default_background">
 
     <WebView
         android:id="@+id/html_container"

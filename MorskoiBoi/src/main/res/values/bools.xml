@@ -4,5 +4,5 @@
     <item name="is_small_screen" format="boolean" type="bool">false</item>
     <item name="is_tablet" format="boolean" type="bool">false</item>
     <item name="support_adcolony" format="boolean" type="bool">false</item>
-    
+
 </resources>

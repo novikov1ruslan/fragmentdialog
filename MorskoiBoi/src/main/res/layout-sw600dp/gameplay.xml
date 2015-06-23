@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/default_background"
     android:padding="@dimen/tablet_gameplay_padding"
-    tools:ignore="HardcodedText" >
+    tools:ignore="HardcodedText">
 
     <ImageView
         android:id="@+id/bw"
@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/tablet_gameplay_padding"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <!-- status -->
 
@@ -26,11 +26,11 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="2"
             android:orientation="vertical"
-            android:padding="@dimen/gameplay_status_padding" >
+            android:padding="@dimen/gameplay_status_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/status_vertical_margin" >
+                android:layout_marginBottom="@dimen/status_vertical_margin">
 
                 <TextView
                     android:id="@+id/player"
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <com.ivygames.morskoiboi.ui.view.FleetBoardView
                 android:id="@+id/board_view_fleet"
@@ -76,7 +76,7 @@
             <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/chat_button"

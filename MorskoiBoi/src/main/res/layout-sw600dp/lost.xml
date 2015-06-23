@@ -25,8 +25,8 @@
         android:layout_weight="10" />
 
     <include
+        layout="@layout/continue_panel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/continue_panel" />
+        android:layout_height="wrap_content" />
 
 </com.ivygames.morskoiboi.ui.view.NotepadLinearLayout>

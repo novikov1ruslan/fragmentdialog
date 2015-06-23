@@ -15,9 +15,7 @@ class StartCommand implements Runnable {
 	private final int mOpponentBid;
 
 	StartCommand(Opponent opponent, int myBid, int opponentBid) {
-		Validate.notNull(opponent);
-		mOpponent = opponent;
-
+		mOpponent = Validate.notNull(opponent);
 		mMyBid = myBid;
 		mOpponentBid = opponentBid;
 	}

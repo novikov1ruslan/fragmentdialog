@@ -10,6 +10,8 @@ import org.commons.logger.Ln;
 
 public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener {
 
+	private View mTutView;
+
 	public interface MainScreenActions {
 		void play();
 
@@ -89,4 +91,28 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
 		mPlayButton.showInvitation();
 	}
 
+	public View setTutView(View view) {
+		mTutView = view;
+		return view;
+	}
+
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+//		View tut1 = mTutView.findViewById(R.id.tut1);
+//		int[] location = new int[2];
+//		mPlayButton.getLocationOnScreen(location);
+//		tut1.setLeft(location[0]);
+//		tut1.setRight(location[1]);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		View tut1 = mTutView.findViewById(R.id.tut1);
+		int[] location = new int[2];
+		mPlayButton.getLocationOnScreen(location);
+		tut1.setX(location[0]);
+		tut1.setY(location[1]);
+	}
 }
