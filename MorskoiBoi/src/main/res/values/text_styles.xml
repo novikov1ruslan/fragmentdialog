@@ -60,4 +60,9 @@
         <item name="android:layout_alignParentLeft">true</item>
     </style>
 
+    <style name="TutorialText" parent="@android:style/Widget.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

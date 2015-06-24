@@ -57,7 +57,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnInvitationReceivedListener {
 
-	interface BackPressListener {
+    interface BackPressListener {
 
 		void onBackPressed();
 	}
@@ -94,6 +94,12 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
 	private boolean mStarted;
 	private ViewGroup mLayout;
+    private FrameLayout mContainer;
+
+    private BattleshipScreen mCurrentScreen;
+    private View mTutView;
+
+    private boolean mResumed;
 
 	private final OnInvitationReceivedListener mInvitationReceivedListener = new OnInvitationReceivedListener() {
 
@@ -325,6 +331,11 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 	@Override
 	public void onBackPressed() {
 		Ln.v("top screen = " + mCurrentScreen);
+
+        if (mTutView != null) {
+            mContainer.removeView(mTutView);
+        }
+
 		if (mCurrentScreen instanceof MainScreen) {
 			if (!mSettings.noAds()) {
 				Ln.d("exiting from the game - show interstitial");
@@ -465,11 +476,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 		return mIncomingInvitationIds.size() > 0;
 	}
 
-	private FrameLayout mContainer;
-
-	private BattleshipScreen mCurrentScreen;
-	private boolean mResumed;
-
 	public final void setScreen(Screen screen) {
 		View oldView = null;
 		if (mCurrentScreen != null) {
@@ -497,9 +503,9 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 		// }
 
 		mContainer.addView(view);
-        View tutView = mCurrentScreen.getTutView();
-        if (tutView != null) {
-            mContainer.addView(tutView);
+        mTutView = mCurrentScreen.getTutView();
+        if (mTutView != null) {
+            mContainer.addView(mTutView);
         }
 		if (oldView != null) {
 			mContainer.removeView(oldView);

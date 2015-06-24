@@ -24,195 +24,195 @@ import org.commons.logger.Ln;
 import de.greenrobot.event.EventBus;
 
 public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener {
-	private static final String TAG = "MAIN";
-	private static final String DIALOG = FragmentAlertDialog.TAG;
+    private static final String TAG = "MAIN";
+    private static final String DIALOG = FragmentAlertDialog.TAG;
 
-	private static final int RC_UNUSED = 0;
+    private static final int RC_UNUSED = 0;
 
-	private boolean mAchievementsRequested;
-	private boolean mLeaderboardRequested;
-	private MainScreenLayout mLayout;
+    private boolean mAchievementsRequested;
+    private boolean mLeaderboardRequested;
+    private MainScreenLayout mLayout;
     private View mTutView;
 
     private static Intent createShareIntent(String greeting) {
-		Intent shareIntent = new Intent(Intent.ACTION_SEND);
-		shareIntent.setType("text/plain");
-		String playPath = "https://play.google.com/store/apps/details?id=com.ivygames.morskoiboi";
-		shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + playPath);
-		return shareIntent;
-	}
-
-	@Override
-	public View onCreateView(ViewGroup container) {
-		mLayout = (MainScreenLayout) inflate(R.layout.main, container);
-		mLayout.setScreenActionsListener(this);
-		mTutView = mLayout.setTutView(inflate(R.layout.main_tut));
-
-		Ln.d(this + " screen created");
-
-		if (GameSettings.get().shouldProposeRating()) {
-			Ln.d("ask the user to rate the app");
-			showRateDialog();
-		}
-
-		return mLayout;
-	}
-
-    @Override
-    public View getTutView() {
-        return mTutView;
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String playPath = "https://play.google.com/store/apps/details?id=com.ivygames.morskoiboi";
+        shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + playPath);
+        return shareIntent;
     }
 
     @Override
-	public View getView() {
-		return mLayout;
-	}
+    public View onCreateView(ViewGroup container) {
+        mLayout = (MainScreenLayout) inflate(R.layout.main, container);
+        mLayout.setScreenActionsListener(this);
+        mTutView = mLayout.setTutView(inflate(R.layout.main_tut));
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		EventBus.getDefault().register(this);
-		showInvitationIfHas(mParent.hasInvitation());
-	}
+        Ln.d(this + " screen created");
 
-	private void showInvitationIfHas(boolean hasInvitations) {
-		if (hasInvitations) {
-			Ln.d(this + ": there is a pending invitation ");
-			mLayout.showInvitation();
-		} else {
-			Ln.v(this + ": there are no pending invitations");
-			mLayout.hideInvitation();
-		}
-	}
+        if (GameSettings.get().shouldProposeRating()) {
+            Ln.d("ask the user to rate the app");
+            showRateDialog();
+        }
 
-	@Override
-	public void onStop() {
-		super.onStop();
-		EventBus.getDefault().unregister(this);
-	}
+        return mLayout;
+    }
 
-	public void onEventMainThread(InvitationEvent event) {
-		showInvitationIfHas(mParent.hasInvitation());
-	}
+    @Override
+    public View getTutView() {
+        return null;
+    }
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
-			Ln.i("reconnect required");
-			mApiClient.disconnect();
-		}
-	}
+    @Override
+    public View getView() {
+        return mLayout;
+    }
 
-	@Override
-	public void play() {
-		mParent.setScreen(new SelectGameScreen());
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        showInvitationIfHas(mParent.hasInvitation());
+    }
 
-	@Override
-	public void share() {
-		mGaTracker.send(new UiEvent("share").build());
-		startActivity(MainScreen.createShareIntent(getString(R.string.share_greeting)));
-	}
+    private void showInvitationIfHas(boolean hasInvitations) {
+        if (hasInvitations) {
+            Ln.d(this + ": there is a pending invitation ");
+            mLayout.showInvitation();
+        } else {
+            Ln.v(this + ": there are no pending invitations");
+            mLayout.hideInvitation();
+        }
+    }
 
-	@Override
-	public void showAchievements() {
-		boolean signedIn = mApiClient.isConnected();
-		mGaTracker.send(new UiEvent("achievements", signedIn ? 1 : 0).build());
-		if (signedIn) {
-			showAchievementsScreen();
-		} else {
-			Ln.d("user is not signed in - ask to sign in");
-			showAchievementsDialog();
-		}
-	}
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
-	private void showAchievementsScreen() {
-		startActivityForResult(Games.Achievements.getAchievementsIntent(mApiClient), RC_UNUSED);
-	}
+    public void onEventMainThread(InvitationEvent event) {
+        showInvitationIfHas(mParent.hasInvitation());
+    }
 
-	@Override
-	public void onSignInSucceeded() {
-		if (mAchievementsRequested) {
-			mAchievementsRequested = false;
-			showAchievementsScreen();
-		} else if (mLeaderboardRequested) {
-			mLeaderboardRequested = false;
-			showLeaderboardsScreen();
-		}
-	}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
+            Ln.i("reconnect required");
+            mApiClient.disconnect();
+        }
+    }
 
-	private void showAchievementsDialog() {
-		new SignInDialog.Builder().setMessage(R.string.achievements_request).setPositiveButton(R.string.sign_in, new OnClickListener() {
+    @Override
+    public void play() {
+        mParent.setScreen(new SelectGameScreen());
+    }
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mGaTracker.send(new UiEvent("sign_in", "achievements").build());
-				mAchievementsRequested = true;
-				mApiClient.connect();
-			}
-		}).create().show(mFm, DIALOG);
-	}
+    @Override
+    public void share() {
+        mGaTracker.send(new UiEvent("share").build());
+        startActivity(MainScreen.createShareIntent(getString(R.string.share_greeting)));
+    }
 
-	@Override
-	public void showHelp() {
-		mParent.setScreen(new HelpScreen());
-	}
+    @Override
+    public void showAchievements() {
+        boolean signedIn = mApiClient.isConnected();
+        mGaTracker.send(new UiEvent("achievements", signedIn ? 1 : 0).build());
+        if (signedIn) {
+            showAchievementsScreen();
+        } else {
+            Ln.d("user is not signed in - ask to sign in");
+            showAchievementsDialog();
+        }
+    }
 
-	@Override
-	public void showLeaderboards() {
-		boolean signedIn = mApiClient.isConnected();
-		mGaTracker.send(new UiEvent("showHiScores", signedIn ? 1 : 0).build());
-		if (signedIn) {
-			showLeaderboardsScreen();
-		} else {
-			Ln.d("user is not signed in - ask to sign in");
-			showLeaderboardsDialog();
-		}
-	}
+    private void showAchievementsScreen() {
+        startActivityForResult(Games.Achievements.getAchievementsIntent(mApiClient), RC_UNUSED);
+    }
 
-	private void showLeaderboardsScreen() {
-		startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mApiClient, getString(R.string.leaderboard_normal)), RC_UNUSED);
-	}
+    @Override
+    public void onSignInSucceeded() {
+        if (mAchievementsRequested) {
+            mAchievementsRequested = false;
+            showAchievementsScreen();
+        } else if (mLeaderboardRequested) {
+            mLeaderboardRequested = false;
+            showLeaderboardsScreen();
+        }
+    }
 
-	@Override
-	public void showSettings() {
-		mParent.setScreen(new SettingsScreen());
-	}
+    private void showAchievementsDialog() {
+        new SignInDialog.Builder().setMessage(R.string.achievements_request).setPositiveButton(R.string.sign_in, new OnClickListener() {
 
-	private void showLeaderboardsDialog() {
-		new SignInDialog.Builder().setMessage(R.string.leaderboards_request).setPositiveButton(R.string.sign_in, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGaTracker.send(new UiEvent("sign_in", "achievements").build());
+                mAchievementsRequested = true;
+                mApiClient.connect();
+            }
+        }).create().show(mFm, DIALOG);
+    }
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mGaTracker.send(new UiEvent("sign_in", "leaderboards").build());
-				mLeaderboardRequested = true;
-				mApiClient.connect();
-			}
-		}).create().show(mFm, DIALOG);
-	}
+    @Override
+    public void showHelp() {
+        mParent.setScreen(new HelpScreen());
+    }
 
-	private void showRateDialog() {
-		new AlertDialogBuilder().setMessage(R.string.rate_request).setPositiveButton(R.string.rate, new OnClickListener() {
+    @Override
+    public void showLeaderboards() {
+        boolean signedIn = mApiClient.isConnected();
+        mGaTracker.send(new UiEvent("showHiScores", signedIn ? 1 : 0).build());
+        if (signedIn) {
+            showLeaderboardsScreen();
+        } else {
+            Ln.d("user is not signed in - ask to sign in");
+            showLeaderboardsDialog();
+        }
+    }
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mGaTracker.send(new UiEvent("rate").build());
-				GameSettings.get().setRated();
-				GameUtils.rateApp(getActivity());
-			}
+    private void showLeaderboardsScreen() {
+        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mApiClient, getString(R.string.leaderboard_normal)), RC_UNUSED);
+    }
 
-		}).setNegativeButton(R.string.later, new OnClickListener() {
+    @Override
+    public void showSettings() {
+        mParent.setScreen(new SettingsScreen());
+    }
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mGaTracker.send(new UiEvent("rate_later").build());
-				GameSettings.get().rateLater();
-			}
-		}).create().show(mFm, DIALOG);
-	}
+    private void showLeaderboardsDialog() {
+        new SignInDialog.Builder().setMessage(R.string.leaderboards_request).setPositiveButton(R.string.sign_in, new OnClickListener() {
 
-	@Override
-	public String toString() {
-		return TAG + debugSuffix();
-	}
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGaTracker.send(new UiEvent("sign_in", "leaderboards").build());
+                mLeaderboardRequested = true;
+                mApiClient.connect();
+            }
+        }).create().show(mFm, DIALOG);
+    }
+
+    private void showRateDialog() {
+        new AlertDialogBuilder().setMessage(R.string.rate_request).setPositiveButton(R.string.rate, new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGaTracker.send(new UiEvent("rate").build());
+                GameSettings.get().setRated();
+                GameUtils.rateApp(getActivity());
+            }
+
+        }).setNegativeButton(R.string.later, new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGaTracker.send(new UiEvent("rate_later").build());
+                GameSettings.get().rateLater();
+            }
+        }).create().show(mFm, DIALOG);
+    }
+
+    @Override
+    public String toString() {
+        return TAG + debugSuffix();
+    }
 }

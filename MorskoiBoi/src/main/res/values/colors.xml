@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="navy_blue">#000080</color>
+    <color name="bright_navy_blue">#1974D2</color>
+    <color name="royal_blue">#002366</color>
+    <color name="royal_blue_web">#4169E1</color>
 
-    <color name="main">#21458B</color>
+    <color name="old_main">#21458B</color>
+    <color name="main">@color/royal_blue</color>
 
     <!-- background -->
     <color name="default_background">#FFFFFF</color>

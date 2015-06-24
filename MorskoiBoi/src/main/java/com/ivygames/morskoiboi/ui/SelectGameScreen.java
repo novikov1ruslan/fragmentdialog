@@ -26,27 +26,23 @@ import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.ui.view.SelectGameLayout;
 import com.ivygames.morskoiboi.ui.view.SelectGameLayout.SelectGameActions;
-import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
-import de.keyboardsurfer.android.widget.crouton.Configuration;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions, SignInListener, BackPressListener {
 	private static final String TAG = "SELECT_GAME";
 	private static final String DIALOG = FragmentAlertDialog.TAG;
 
 	private static final int REQUEST_ENABLE_BT = 2;
-	private static final int TIMES_TO_SHOW_PROGRESS_TIP = 3;
 	private SelectGameLayout mLayout;
 
 	private boolean mViaInternetRequested;
 
-	private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
+	private View mTutView;
 
 	@Override
 	public View onCreateView(ViewGroup container) {
@@ -62,15 +58,19 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 		mLayout.setPlayerName(settings.getPlayerName());
 		Rank rank = Rank.getBestRankForScore(settings.getProgress().getRank());
 		mLayout.setRank(rank);
-
-		if (settings.getProgressTipCounter() < TIMES_TO_SHOW_PROGRESS_TIP) {
-			Ln.v("rank tip needs to be shown");
-			showRanksCrouton();
-			settings.incrementProgressTipCounter();
-		}
+		mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 
 		Ln.d(this + " screen created, rank = " + rank);
 		return mLayout;
+	}
+
+	@Override
+	public View getTutView() {
+        if (GameSettings.get().showProgressTip()) {
+			Ln.v("rank tip needs to be shown");
+			return mTutView;
+		}
+		return null;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 	@Override
 	public void onResume() {
 		super.onResume();
-		AdManager.instance.showInterstitialAfterPlay();
+        AdManager.instance.showInterstitialAfterPlay();
 	}
 
 	@Override
@@ -116,11 +116,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 		boolean hasBluetooth = pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
 		hasBluetooth &= BluetoothAdapter.getDefaultAdapter() != null;
 		return hasBluetooth;
-	}
-
-	private void showRanksCrouton() {
-		View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.see_ranks), mLayout);
-		Crouton.make(getActivity(), view).setConfiguration(CONFIGURATION_LONG).show();
 	}
 
 	@Override
@@ -219,7 +214,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 	public void onPause() {
 		super.onPause();
 		Ln.d(this + " screen partially hidden - persisting player name");
-		GameSettings.get().setPlayerName(mLayout.getPlayerName());
+        GameSettings.get().progressLearned();
+        GameSettings.get().setPlayerName(mLayout.getPlayerName());
 	}
 
 	@Override

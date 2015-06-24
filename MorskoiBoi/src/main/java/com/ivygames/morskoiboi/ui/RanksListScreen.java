@@ -30,7 +30,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
 
 	@Override
 	public void onBackPressed() {
-		mParent.setScreen(new MainScreen());
+		mParent.setScreen(new SelectGameScreen());
 	}
 
 	@Override
