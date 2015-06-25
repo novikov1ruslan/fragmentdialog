@@ -52,10 +52,10 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
 		if (GameSettings.get().showTips()) {
 			Ln.d("showing tips");
-			mLayout.showTips();
+//			mLayout.showTips();
 		} else {
 			Ln.d("hiding tips");
-			mLayout.hideTips();
+//			mLayout.hideTips();
 		}
 
 		Ln.d(this + " screen created");
@@ -75,6 +75,11 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 		mBoard = PlacementFactory.getAlgorithm().generateBoard();
 		mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
 		mLayout.setBoard(mBoard, mFleet);
+	}
+
+	@Override
+	public void showHelp() {
+
 	}
 
 	@Override
@@ -127,11 +132,6 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 				backToSelectGameScreen();
 			}
 		}).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
-	}
-
-	@Override
-	public void toggleTips(boolean showTips) {
-		GameSettings.get().setShowTips(showTips);
 	}
 
 	@Override

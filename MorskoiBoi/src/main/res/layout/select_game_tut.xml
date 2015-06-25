@@ -5,6 +5,11 @@
     android:background="#88000000">
 
     <ImageView
+        android:id="@+id/rank"
+        android:src="@drawable/rank_seaman"
+        android:visibility="gone" />
+
+    <ImageView
         android:id="@+id/tap"
         android:src="@drawable/tap" />
 

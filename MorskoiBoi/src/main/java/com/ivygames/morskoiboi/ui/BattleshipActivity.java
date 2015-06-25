@@ -333,7 +333,10 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 		Ln.v("top screen = " + mCurrentScreen);
 
         if (mTutView != null) {
+			Ln.v("tutorial view present - removing");
             mContainer.removeView(mTutView);
+			mTutView = null;
+			return;
         }
 
 		if (mCurrentScreen instanceof MainScreen) {

@@ -54,6 +54,12 @@ public class InternetService extends Service {
 	}
 
 	@Override
+	public void onTaskRemoved(Intent rootIntent) {
+		super.onTaskRemoved(rootIntent);
+		stopSelf();
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Ln.v("service destroyed");

@@ -40,4 +40,6 @@
     <!-- dividers -->
     <color name="list_divider">#3388DD</color>
 
+    <color name="ring_pressed">#7FFF7F7F</color>
+
 </resources>

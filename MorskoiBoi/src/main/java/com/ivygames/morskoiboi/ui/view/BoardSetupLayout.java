@@ -26,11 +26,7 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 
 		void autoSetup();
 
-		/**
-		 * @param showTips
-		 *            true if tips are shown
-		 */
-		void toggleTips(boolean showTips);
+		void showHelp();
 	}
 
 	public BoardSetupLayout(Context context, AttributeSet attrs) {
@@ -40,7 +36,6 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 	private SetupBoardView mBoardView;
 	private BoardSetupLayoutListener mScreenActions;
 	private View mHelpButton;
-	private View mTipsPanel;
 	private Rect mHelpBounds;
 
 	public void setScreenActionsListener(BoardSetupLayoutListener listener) {
@@ -57,15 +52,10 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 		mBoardView = (SetupBoardView) findViewById(R.id.board_view);
 		findViewById(R.id.auto_setup).setOnClickListener(this);
 		findViewById(R.id.done).setOnClickListener(this);
-		View closeButton = findViewById(R.id.close_button);
-		if (closeButton != null) {
-			closeButton.setOnClickListener(this);
-		}
 		mHelpButton = findViewById(R.id.help_button);
 		if (mHelpButton != null) {
 			mHelpButton.setOnClickListener(this);
 		}
-		mTipsPanel = findViewById(R.id.tips_panel);
 
 		mHelpBounds = new Rect();
 
@@ -103,12 +93,8 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 			mScreenActions.autoSetup();
 		} else if (id == R.id.done) {
 			mScreenActions.done();
-		} else if (id == R.id.close_button) {
-			hideTips();
-			mScreenActions.toggleTips(false);
 		} else if (id == R.id.help_button) {
-			showTips();
-			mScreenActions.toggleTips(true);
+			mScreenActions.showHelp();
 		}
 	}
 
@@ -119,10 +105,6 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 
 	@Override
 	public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-		if (mTipsPanel != null && mTipsPanel.getVisibility() == VISIBLE) {
-			return super.dispatchTouchEvent(ev);
-		}
-
 		if (mHelpButton != null) {
 			mHelpBounds.left = mHelpButton.getLeft();
 			mHelpBounds.top = mHelpButton.getTop();
@@ -142,23 +124,15 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 		return mBoardView.isSet();
 	}
 
-	public void showTips() {
-		if (mTipsPanel != null) {
-			mTipsPanel.setVisibility(VISIBLE);
-		}
-
-		if (mHelpButton != null) {
-			mHelpButton.setVisibility(GONE);
-		}
-	}
-
-	public void hideTips() {
-		if (mTipsPanel != null) {
-			mTipsPanel.setVisibility(GONE);
-		}
-
-		if (mHelpButton != null) {
-			mHelpButton.setVisibility(VISIBLE);
-		}
-	}
+//	public void showTips() {
+//		if (mHelpButton != null) {
+//			mHelpButton.setVisibility(GONE);
+//		}
+//	}
+//
+//	public void hideTips() {
+//		if (mHelpButton != null) {
+//			mHelpButton.setVisibility(VISIBLE);
+//		}
+//	}
 }

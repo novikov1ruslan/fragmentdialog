@@ -11,8 +11,4 @@
         <item name="android:background">@drawable/btn_default_holo_light</item>
     </style>
 
-    <style name="ToggleAppTheme" parent="android:Widget.Holo.Light.Button.Toggle">
-        <item name="android:background">@drawable/btn_toggle_holo_light</item>
-    </style>
-
 </resources>

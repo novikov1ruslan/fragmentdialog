@@ -115,7 +115,6 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        View tutText = mTutView.findViewById(R.id.show_rank_text);
         int[] location = new int[2];
         mPlayerRank.getLocationOnScreen(location);
 
@@ -123,6 +122,12 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         tap.setX(location[0] + mPlayerRank.getWidth() / 2);
         tap.setY(location[1]);
 
+        View tutText = mTutView.findViewById(R.id.show_rank_text);
         tutText.setY(location[1] / 2 - tutText.getHeight() / 2);
+
+//        ImageView rank = (ImageView) mTutView.findViewById(R.id.rank);
+//        rank.setX(location[0]);
+//        rank.setY(location[1]);
+//        rank.setImageDrawable(mPlayerRank.getDrawable());
     }
 }
