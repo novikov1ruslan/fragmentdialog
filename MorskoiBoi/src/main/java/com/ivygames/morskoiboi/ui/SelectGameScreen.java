@@ -70,7 +70,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 			Ln.v("rank tip needs to be shown");
 			return mTutView;
 		}
-		return null;
+		return mTutView;
+//		return null;
 	}
 
 	@Override
@@ -173,6 +174,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 			Ln.d("user is not signed in - ask to sign in");
 			showInternetDialog();
 		}
+	}
+
+	@Override
+	public void dismissTutorial() {
+        GameSettings.get().progressLearned();
+        mParent.dismissTutorial();
 	}
 
 	private void showInternetGameScreen() {

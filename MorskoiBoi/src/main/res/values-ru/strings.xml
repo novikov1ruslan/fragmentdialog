@@ -59,6 +59,7 @@
     <string name="continue_str">Продолжить</string>
     <string name="play">Играть</string>
     <string name="connection_lost">Потерянно соединение с оппонентом</string>
+    <string name="got_it">Понятно</string>
 
     <!-- setup -->
     <string name="auto">Автоматически</string>

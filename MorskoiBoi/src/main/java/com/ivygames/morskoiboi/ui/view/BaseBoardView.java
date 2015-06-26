@@ -183,28 +183,28 @@ import java.util.Collection;
 
     protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
         // aiming
-        if (mBoard.containsCell(i, j)) {
-            Paint paint = getAimingPaint(mBoard.getCell(i, j));
-
-            // horizontal
-            int leftHor = mBoardRect.left;
-            int topHor = mBoardRect.top + j * mCellSize;
-            int rightHor = mBoardRect.right;
-            int bottomHor = topHor + height * mCellSize;
-
-            // vertical
-            int leftVer = mBoardRect.left + i * mCellSize;
-            int topVer = mBoardRect.top;
-            int rightVer = leftVer + width * mCellSize;
-            if (rightVer > mBoardRect.right) {
-//                rightVer = mBoardRect.right;
-                return;
-            }
-            int bottomVer = mBoardRect.bottom;
-
-            canvas.drawRect(leftHor, topHor, rightHor, bottomHor, paint);
-            canvas.drawRect(leftVer, topVer, rightVer, bottomVer, paint);
+        if (!mBoard.containsCell(i, j)) {
+            return;
         }
+
+        // vertical
+        int leftVer = mBoardRect.left + i * mCellSize;
+        int rightVer = leftVer + width * mCellSize;
+        if (rightVer > mBoardRect.right) {
+            return;
+        }
+        int topVer = mBoardRect.top;
+        int bottomVer = mBoardRect.bottom;
+
+        // horizontal
+        int leftHor = mBoardRect.left;
+        int rightHor = mBoardRect.right;
+        int topHor = mBoardRect.top + j * mCellSize;
+        int bottomHor = topHor + height * mCellSize;
+
+        Paint paint = getAimingPaint(mBoard.getCell(i, j));
+        canvas.drawRect(leftHor, topHor, rightHor, bottomHor, paint);
+        canvas.drawRect(leftVer, topVer, rightVer, bottomVer, paint);
     }
 
     protected Paint getAimingPaint(Cell cell) {

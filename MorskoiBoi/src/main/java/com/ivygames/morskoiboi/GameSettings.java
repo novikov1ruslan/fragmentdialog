@@ -25,6 +25,7 @@ public class GameSettings {
     private static final String RATING_BAR = "RATING_BAR";
     private static final String SHOW_TIPS = "SHOW_TIPS";
     private static final String SHOW_PROGRESS_TIPS = "SHOW_PROGRESS_TIPS";
+    private static final String SHOW_SETUP_TIPS = "SHOW_SETUP_TIPS";
     private static final String ACHIEVEMENT = "ACHIEVEMENT_";
     private static final String PLAYER_NAME = "PLAYER_NAME";
     private static final String PROGRESS = "PROGRESS";
@@ -189,6 +190,10 @@ public class GameSettings {
 
     public boolean showProgressTip() {
         return internal.getBoolean(SHOW_PROGRESS_TIPS, true);
+    }
+
+    public boolean showSetupTips() {
+        return internal.getBoolean(SHOW_SETUP_TIPS, true);
     }
 
     public void progressLearned() {

@@ -3,6 +3,12 @@
     android:background="@color/default_background"
     android:orientation="vertical">
 
+    <com.ivygames.morskoiboi.ui.view.SetupBoardView
+        android:id="@+id/board_view"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/buttons_panel"
+        android:padding="@dimen/board_border" />
+
     <ImageButton
         android:id="@+id/help_button"
         android:layout_width="48dp"
@@ -13,12 +19,6 @@
         android:background="@drawable/help_background"
         android:clickable="true"
         android:src="@drawable/action_help" />
-
-    <com.ivygames.morskoiboi.ui.view.SetupBoardView
-        android:id="@+id/board_view"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/buttons_panel"
-        android:padding="@dimen/board_border" />
 
     <LinearLayout
         android:id="@+id/buttons_panel"

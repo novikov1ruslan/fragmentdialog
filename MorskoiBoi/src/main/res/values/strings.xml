@@ -59,6 +59,7 @@
     <string name="continue_str">Continue</string>
     <string name="play">Play</string>
     <string name="connection_lost">Connection with the opponent has been lost</string>
+    <string name="got_it">Got It</string>
 
     <!-- setup -->
     <string name="auto">Auto</string>

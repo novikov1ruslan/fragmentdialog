@@ -31,117 +31,133 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
  * In this screen it is already known what is the game type.
  */
 public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayoutListener, BackPressListener {
-	static final String TAG = "BOARD_SETUP";
-	private static final String DIALOG = FragmentAlertDialog.TAG;
+    static final String TAG = "BOARD_SETUP";
+    private static final String DIALOG = FragmentAlertDialog.TAG;
 
-	private Board mBoard;
-	private PriorityQueue<Ship> mFleet;
+    private Board mBoard;
+    private PriorityQueue<Ship> mFleet;
 
-	private BoardSetupLayout mLayout;
+    private BoardSetupLayout mLayout;
+    private View mTutView;
 
-	@Override
-	public View onCreateView(ViewGroup container) {
-		mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
-		GameUtils.populateFullHorizontalFleet(mFleet);
-		mBoard = new Board();
-		Ln.d("new board created, fleet initialized");
+    @Override
+    public View onCreateView(ViewGroup container) {
+        mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
+        GameUtils.populateFullHorizontalFleet(mFleet);
+        mBoard = new Board();
+        Ln.d("new board created, fleet initialized");
 
-		mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
-		mLayout.setScreenActionsListener(this);
-		mLayout.setBoard(mBoard, mFleet);
+        mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
+        mLayout.setScreenActionsListener(this);
+        mLayout.setBoard(mBoard, mFleet);
+        mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
-		if (GameSettings.get().showTips()) {
-			Ln.d("showing tips");
+        if (GameSettings.get().showTips()) {
+            Ln.d("showing tips");
 //			mLayout.showTips();
-		} else {
-			Ln.d("hiding tips");
+        } else {
+            Ln.d("hiding tips");
 //			mLayout.hideTips();
-		}
+        }
 
-		Ln.d(this + " screen created");
-		return mLayout;
-	}
+        Ln.d(this + " screen created");
+        return mLayout;
+    }
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		Crouton.cancelAllCroutons();
-		Ln.d(this + " screen destroyed - all croutons canceled");
-	}
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Crouton.cancelAllCroutons();
+        Ln.d(this + " screen destroyed - all croutons canceled");
+    }
 
-	@Override
-	public void autoSetup() {
-		mGaTracker.send(new UiEvent("auto").build());
-		mBoard = PlacementFactory.getAlgorithm().generateBoard();
-		mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
-		mLayout.setBoard(mBoard, mFleet);
-	}
+    @Override
+    public void autoSetup() {
+        mGaTracker.send(new UiEvent("auto").build());
+        mBoard = PlacementFactory.getAlgorithm().generateBoard();
+        mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
+        mLayout.setBoard(mBoard, mFleet);
+    }
 
-	@Override
-	public void showHelp() {
+    @Override
+    public void showHelp() {
 
-	}
+    }
 
-	@Override
-	public void done() {
-		mGaTracker.send(new UiEvent("done").build());
-		if (mLayout.isSet()) {
-			Ln.d("board set - showing gameplay screen");
-			Model.instance.player.setBoard(mBoard);
-			showGameplayScreen();
-		} else {
-			Ln.d("!: board is not set yet");
-			showSetupValidationError();
-		}
-	}
+    @Override
+    public void done() {
+        mGaTracker.send(new UiEvent("done").build());
+        if (mLayout.isSet()) {
+            Ln.d("board set - showing gameplay screen");
+            Model.instance.player.setBoard(mBoard);
+            showGameplayScreen();
+        } else {
+            Ln.d("!: board is not set yet");
+            showSetupValidationError();
+        }
+    }
 
-	private void showGameplayScreen() {
-		mParent.setScreen(new GameplayScreen());
-	}
+    @Override
+    public void dismissTutorial() {
+        mParent.dismissTutorial();
+    }
 
-	private void showSetupValidationError() {
-		View view = getLayoutInflater().inflate(R.layout.ships_setup_validation_crouton, mLayout, false);
-		Crouton.make(getActivity(), view).show();
-	}
+    private void showGameplayScreen() {
+        mParent.setScreen(new GameplayScreen());
+    }
 
-	@Override
-	public void onBackPressed() {
-		mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_BACK, "setup").build());
-		if (shouldNotifyOpponent()) {
-			Ln.d("match against a real human - ask the player if he really wants to exit");
-			showWantToLeaveRoomDialog();
-		} else {
-			backToSelectGameScreen();
-		}
-	}
+    private void showSetupValidationError() {
+        View view = getLayoutInflater().inflate(R.layout.ships_setup_validation_crouton, mLayout, false);
+        Crouton.make(getActivity(), view).show();
+    }
 
-	private void backToSelectGameScreen() {
-		new BackToSelectGameCommand(mParent).run();
-	}
+    @Override
+    public void onBackPressed() {
+        mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_BACK, "setup").build());
+        if (shouldNotifyOpponent()) {
+            Ln.d("match against a real human - ask the player if he really wants to exit");
+            showWantToLeaveRoomDialog();
+        } else {
+            backToSelectGameScreen();
+        }
+    }
 
-	private void showWantToLeaveRoomDialog() {
-		String displayName = Model.instance.opponent.getName();
-		String message = getString(R.string.want_to_leave_room, displayName);
+    private void backToSelectGameScreen() {
+        new BackToSelectGameCommand(mParent).run();
+    }
 
-		new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
+    private void showWantToLeaveRoomDialog() {
+        String displayName = Model.instance.opponent.getName();
+        String message = getString(R.string.want_to_leave_room, displayName);
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mGaTracker.send(new UiEvent("left_from_setup", "ok").build());
-				Ln.d("player decided to leave the game - finishing");
-				backToSelectGameScreen();
-			}
-		}).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
-	}
+        new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
 
-	@Override
-	public View getView() {
-		return mLayout;
-	}
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGaTracker.send(new UiEvent("left_from_setup", "ok").build());
+                Ln.d("player decided to leave the game - finishing");
+                backToSelectGameScreen();
+            }
+        }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
+    }
 
-	@Override
-	public String toString() {
-		return TAG + debugSuffix();
-	}
+    @Override
+    public View getView() {
+        return mLayout;
+    }
+
+    @Override
+    public View getTutView() {
+        if (GameSettings.get().showSetupTips()) {
+            Ln.v("setup tip needs to be shown");
+            return mTutView;
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return TAG + debugSuffix();
+    }
 
 }

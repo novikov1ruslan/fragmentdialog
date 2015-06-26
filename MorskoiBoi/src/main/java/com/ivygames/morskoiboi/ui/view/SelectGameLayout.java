@@ -20,6 +20,8 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         void viaInternet();
 
         void showRanks();
+
+        void dismissTutorial();
     }
 
     private SelectGameActions mScreenActions;
@@ -75,6 +77,9 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
             case R.id.player_rank:
                 mScreenActions.showRanks();
                 break;
+            case R.id.got_it_button:
+                mScreenActions.dismissTutorial();
+                break;
             default:
                 Ln.w("unprocessed select button =" + v.getId());
                 break;
@@ -113,8 +118,16 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mTutView.measure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        mTutView.layout(l, t, r, b);
+
         int[] location = new int[2];
         mPlayerRank.getLocationOnScreen(location);
 
@@ -124,6 +137,17 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
 
         View tutText = mTutView.findViewById(R.id.show_rank_text);
         tutText.setY(location[1] / 2 - tutText.getHeight() / 2);
+
+        float padding = getResources().getDimension(R.dimen.tut_screen_padding);
+        View gotIt = mTutView.findViewById(R.id.got_it_button);
+        int gotItWidth = gotIt.getWidth();
+        int gotItHeight = gotIt.getHeight();
+        int w = getWidth();
+        int h = getHeight();
+        gotIt.setX(getWidth() - gotIt.getWidth() - padding);
+        gotIt.setY(tap.getY() + tap.getHeight() + padding);
+        gotIt.setOnClickListener(this);
+
 
 //        ImageView rank = (ImageView) mTutView.findViewById(R.id.rank);
 //        rank.setX(location[0]);

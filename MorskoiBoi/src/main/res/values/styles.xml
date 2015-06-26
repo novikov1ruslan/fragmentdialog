@@ -102,4 +102,9 @@
         <item name="android:textColor">@color/my_chat_text</item>
     </style>
 
+    <style name="TutorialButton">
+        <item name="android:background">@drawable/got_it_button</item>
+        <item name="android:textColor">@color/tutorial_text</item>
+    </style>
+
 </resources>

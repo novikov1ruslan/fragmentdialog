@@ -22,7 +22,8 @@
     <color name="victory_text">#8b0000</color>
     <color name="alert_text">#ffff4444</color>
     <color name="my_chat_text">#C41E3A</color>
-    <color name="enemy_chat">#00703C</color>
+    <color name="enemy_chat">@color/main</color>
+    <color name="tutorial_text">#000000</color>
 
     <!-- graphics -->
     <color name="ship_border">#00008B</color>

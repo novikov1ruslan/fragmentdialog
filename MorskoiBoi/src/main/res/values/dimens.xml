@@ -64,5 +64,6 @@
 
     <!-- lost -->
     <dimen name="lost_text_margin">16dp</dimen>
+    <dimen name="tut_screen_padding">16dp</dimen>
 
 </resources>
