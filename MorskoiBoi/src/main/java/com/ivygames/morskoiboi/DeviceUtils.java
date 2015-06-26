@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -42,6 +43,10 @@ public class DeviceUtils {
 		if (extras != null) {
 			DeviceUtils.printExtras(extras);
 		}
+	}
+
+	public static boolean isTablet(Resources res) {
+		return res.getBoolean(R.bool.is_tablet);
 	}
 
 	private static void printExtras(Bundle extras) {

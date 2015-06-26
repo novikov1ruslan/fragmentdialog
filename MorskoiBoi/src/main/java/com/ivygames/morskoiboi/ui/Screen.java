@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.ui;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,4 +48,7 @@ public abstract class Screen {
 		return getLayoutInflater().inflate(resId, container, false);
 	}
 
+    protected final Resources getResources() {
+        return mParent.getResources();
+    }
 }

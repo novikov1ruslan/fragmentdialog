@@ -330,13 +330,24 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     public void dismissTutorial() {
         if (mTutView == null) {
-            Ln.w("no tutorial view to remove");
+            Ln.d("no tutorial view to remove");
             return;
         }
 
         Ln.v("tutorial view present - removing");
         mContainer.removeView(mTutView);
         mTutView = null;
+    }
+
+    public void showTutorial(View view) {
+        if (mTutView == null) {
+            mTutView = view;
+            if (mTutView != null) {
+                mContainer.addView(mTutView);
+            }
+        } else {
+            Ln.d("tutorial view already shown: " + mTutView);
+        }
     }
 
     @Override
@@ -504,12 +515,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         mCurrentScreen.onAttach(this);
         mCurrentScreen.onCreate();
         View view = mCurrentScreen.onCreateView(mContainer);
-        if (mStarted) {
-            mCurrentScreen.onStart();
-            if (mResumed) {
-                mCurrentScreen.onResume();
-            }
-        }
 
         // if (oldView != null) {
         // LayoutTransition layoutTransition = new LayoutTransition();
@@ -517,12 +522,19 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         // }
 
         mContainer.addView(view);
-        mTutView = mCurrentScreen.getTutView();
-        if (mTutView != null) {
-            mContainer.addView(mTutView);
-        }
+//        mTutView = mCurrentScreen.getTutView();
+//        if (mTutView != null) {
+//            mContainer.addView(mTutView);
+//        }
         if (oldView != null) {
             mContainer.removeView(oldView);
+        }
+
+        if (mStarted) {
+            mCurrentScreen.onStart();
+            if (mResumed) {
+                mCurrentScreen.onResume();
+            }
         }
     }
 }

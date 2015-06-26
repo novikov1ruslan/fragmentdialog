@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 
@@ -13,6 +14,7 @@ import org.commons.logger.Ln;
 
 public class SelectGameLayout extends NotepadRelativeLayout implements View.OnClickListener {
     public interface SelectGameActions {
+
         void vsAndroid();
 
         void viaBlueTooth();
@@ -22,14 +24,18 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         void showRanks();
 
         void dismissTutorial();
+
+        void showHelp();
+
     }
 
     private SelectGameActions mScreenActions;
+
     private TextView mPlayerName;
     private ImageView mPlayerRank;
     private TextView mRankText;
-
     private InvitationButton mViaInternetButton;
+
     private View mTutView;
 
     public SelectGameLayout(Context context, AttributeSet attrs) {
@@ -54,7 +60,7 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         mPlayerName = (TextView) findViewById(R.id.player_name);
         mPlayerRank = (ImageView) findViewById(R.id.player_rank);
         mRankText = (TextView) findViewById(R.id.rank_text);
-
+        findViewById(R.id.help_button).setOnClickListener(this);
         mPlayerRank.setOnClickListener(this);
     }
 
@@ -76,6 +82,9 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
                 break;
             case R.id.player_rank:
                 mScreenActions.showRanks();
+                break;
+            case R.id.help_button:
+                mScreenActions.showHelp();
                 break;
             case R.id.got_it_button:
                 mScreenActions.dismissTutorial();
@@ -144,10 +153,12 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         int gotItHeight = gotIt.getHeight();
         int w = getWidth();
         int h = getHeight();
-        gotIt.setX(getWidth() - gotIt.getWidth() - padding);
         gotIt.setY(tap.getY() + tap.getHeight() + padding);
+        if (DeviceUtils.isTablet(getResources())) {
+            padding += getResources().getDimension(R.dimen.battleship_margin_horizontal);
+        }
+        gotIt.setX(getWidth() - gotIt.getWidth() - padding);
         gotIt.setOnClickListener(this);
-
 
 //        ImageView rank = (ImageView) mTutView.findViewById(R.id.rank);
 //        rank.setX(location[0]);

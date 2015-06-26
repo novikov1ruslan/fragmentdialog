@@ -5,6 +5,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
@@ -52,16 +53,21 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
-        if (GameSettings.get().showTips()) {
-            Ln.d("showing tips");
-//			mLayout.showTips();
-        } else {
-            Ln.d("hiding tips");
-//			mLayout.hideTips();
-        }
-
         Ln.d(this + " screen created");
         return mLayout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mParent.showTutorial(getTutView());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        GameSettings.get().hideBoardSetupHelp();
+        mParent.dismissTutorial();
     }
 
     @Override
@@ -81,7 +87,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public void showHelp() {
-
+        mParent.showTutorial(mTutView);
     }
 
     @Override
@@ -99,6 +105,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public void dismissTutorial() {
+        GameSettings.get().hideBoardSetupHelp();
         mParent.dismissTutorial();
     }
 
@@ -148,7 +155,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public View getTutView() {
-        if (GameSettings.get().showSetupTips()) {
+        if (DeviceUtils.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
             Ln.v("setup tip needs to be shown");
             return mTutView;
         }

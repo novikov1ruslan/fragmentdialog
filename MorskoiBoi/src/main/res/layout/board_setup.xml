@@ -11,13 +11,10 @@
 
     <ImageButton
         android:id="@+id/help_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/HelpButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="2dp"
-        android:background="@drawable/help_background"
-        android:clickable="true"
         android:src="@drawable/action_help" />
 
     <LinearLayout

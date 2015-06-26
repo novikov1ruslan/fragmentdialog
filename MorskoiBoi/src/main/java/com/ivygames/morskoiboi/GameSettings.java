@@ -23,9 +23,8 @@ public class GameSettings {
     private static final String VIBRATION = "VIBRATION";
     private static final String GAMES_PLAYED = "GAMES_PLAYED";
     private static final String RATING_BAR = "RATING_BAR";
-    private static final String SHOW_TIPS = "SHOW_TIPS";
-    private static final String SHOW_PROGRESS_TIPS = "SHOW_PROGRESS_TIPS";
-    private static final String SHOW_SETUP_TIPS = "SHOW_SETUP_TIPS";
+    private static final String SHOW_PROGRESS_HELP = "SHOW_PROGRESS_HELP";
+    private static final String SHOW_SETUP_HELP = "SHOW_SETUP_HELP";
     private static final String ACHIEVEMENT = "ACHIEVEMENT_";
     private static final String PLAYER_NAME = "PLAYER_NAME";
     private static final String PROGRESS = "PROGRESS";
@@ -116,14 +115,6 @@ public class GameSettings {
         Ln.d("game shall be rated later: after " + newRatingBar + " games");
     }
 
-    public boolean showTips() {
-        return internal.getBoolean(SHOW_TIPS, true);
-    }
-
-    public void setShowTips(boolean show) {
-        internal.putBoolean(SHOW_TIPS, show);
-    }
-
     public void unlockAchievement(String achievementId) {
         setAchievementState(achievementId, STATE_UNLOCKED);
     }
@@ -188,16 +179,20 @@ public class GameSettings {
         internal.putBoolean(NO_ADS, true);
     }
 
-    public boolean showProgressTip() {
-        return internal.getBoolean(SHOW_PROGRESS_TIPS, true);
+    public boolean showProgressHelp() {
+        return internal.getBoolean(SHOW_PROGRESS_HELP, true);
     }
 
-    public boolean showSetupTips() {
-        return internal.getBoolean(SHOW_SETUP_TIPS, true);
+    public boolean showSetupHelp() {
+        return internal.getBoolean(SHOW_SETUP_HELP, true);
     }
 
-    public void progressLearned() {
-        internal.putBoolean(SHOW_PROGRESS_TIPS, false);
+    public void hideProgressHelp() {
+        internal.putBoolean(SHOW_PROGRESS_HELP, false);
+    }
+
+    public void hideBoardSetupHelp() {
+        internal.putBoolean(SHOW_SETUP_HELP, false);
     }
 
     private static class Internal implements SharedPreferences, SharedPreferences.Editor {
