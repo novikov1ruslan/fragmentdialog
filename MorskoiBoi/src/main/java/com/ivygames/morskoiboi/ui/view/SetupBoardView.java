@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
@@ -22,7 +23,7 @@ import java.util.PriorityQueue;
 
 public class SetupBoardView extends BaseBoardView {
 
-    private static final int TOUCH_THRESHOLD = 32;
+    private static final long LONG_PRESS_DELAY = 1000;
 
     private int mMargin;
 
@@ -49,7 +50,7 @@ public class SetupBoardView extends BaseBoardView {
      */
     private PickShipTask mLongPressTask;
     private final Handler mHandler;
-
+    private final int mTouchSlop;
     private final Paint mConflictCellPaint;
 
     private final Bitmap mAircraftCarrier;
@@ -79,6 +80,10 @@ public class SetupBoardView extends BaseBoardView {
         mBattleship = bitmaps.getBitmap(R.drawable.battleship);
         mDestroyer = bitmaps.getBitmap(R.drawable.frigate);
         mGunboat = bitmaps.getBitmap(R.drawable.gunboat);
+
+        ViewConfiguration vc = ViewConfiguration.get(context);
+        mTouchSlop = vc.getScaledTouchSlop();
+        Ln.v("touch slop = " + mTouchSlop);
     }
 
     private int getShipWidthInPx(Ship ship) {
@@ -164,7 +169,7 @@ public class SetupBoardView extends BaseBoardView {
                 break;
             case MotionEvent.ACTION_DOWN:
                 if (mShipSelectionRect.contains(mTouchX, mTouchY)) {
-                    tryChoosingNewShip();
+                    tryPickingNewShip();
                 } else if (mBoard.containsCell(getCellX(), getCellY())) {
                     scheduleNewPickTask(getCellX(), getCellY());
                 }
@@ -227,18 +232,19 @@ public class SetupBoardView extends BaseBoardView {
     private void scheduleNewPickTask(int i, int j) {
         mLongPressTask = new PickShipTask(i, j, mTouchX, mTouchY);
         Ln.v("scheduling long press task: " + mLongPressTask);
-        mHandler.postDelayed(mLongPressTask, 1000);
+        mHandler.postDelayed(mLongPressTask, LONG_PRESS_DELAY);
     }
 
-    private void tryChoosingNewShip() {
+    private void tryPickingNewShip() {
         mPickedShip = mShips.poll();
-        if (mPickedShip != null) {
+        if (mPickedShip == null) {
+            Ln.v("no ships to pick");
+        } else {
             mCurrentShip = null;
             centerPickedShipAround(mTouchX, mTouchY);
             updateAim();
-            Ln.v(mPickedShip + " picked from stack");
+            Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
         }
-        Ln.v("stack: " + mShips);
     }
 
     private void returnPickedShipToPool() {
@@ -249,15 +255,15 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void runLongPressTask() {
-        Runnable tmp = mLongPressTask;
+        Runnable task = mLongPressTask;
         cancelLongPressTask();
-        tmp.run();
+        task.run();
     }
 
     private boolean hasMovedBeyondThreshold() {
         int dX = mLongPressTask.getTouchX() - mTouchX;
         int dY = mLongPressTask.getTouchY() - mTouchY;
-        return dX * dX + dY * dY > TOUCH_THRESHOLD;
+        return Math.sqrt(dX * dX + dY * dY) > mTouchSlop;
     }
 
     private void cancelLongPressTask() {
@@ -303,7 +309,6 @@ public class SetupBoardView extends BaseBoardView {
         int maxWidth = horizontalFreeArea - mMargin * 2;
 
         // make rect square (margin will be recalculated)
-        int horMargin;
         if (maxWidth > maxHeight) {
             mCellSize = maxHeight / mBoard.getWidth();
         } else {

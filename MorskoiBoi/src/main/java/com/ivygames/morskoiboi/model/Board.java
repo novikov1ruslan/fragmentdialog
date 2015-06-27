@@ -470,8 +470,7 @@ public class Board {
 			board.append('\n');
 		}
 		for (Ship ship : mShips) {
-			board.append(ship);
-			board.append("; ");
+			board.append(ship).append("; ");
 		}
 		board.append('\n');
 
