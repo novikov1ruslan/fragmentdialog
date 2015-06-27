@@ -82,7 +82,8 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         Uri uri = Uri.parse("mailto:" + EMAIL);
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(uri);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + DeviceUtils.getVersionName(mParent) + ")");
+//        intent.putExtra(Intent.EXTRA_TEXT, "hi android jack!");
         return Intent.createChooser(intent, getString(R.string.report_problem));
     }
 

@@ -80,6 +80,12 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <service android:name="com.ivygames.morskoiboi.rt.InternetService" />
+
+        <receiver android:name="com.ivygames.morskoiboi.NetworkReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <!--
@@ -87,13 +93,6 @@
         android:name="android.test.InstrumentationTestRunner"
         android:label="Tests for My App"
         android:targetPackage="com.ivygames.morskoiboi" />
-
-
-
-
-
-
-
     -->
 
 </manifest>

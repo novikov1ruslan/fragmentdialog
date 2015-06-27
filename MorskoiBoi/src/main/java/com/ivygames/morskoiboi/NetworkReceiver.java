@@ -1,0 +1,27 @@
+
+package com.ivygames.morskoiboi;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import org.commons.logger.Ln;
+
+public final class NetworkReceiver
+        extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+        String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
+        String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
+        boolean isFailOver = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
+
+        NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+        NetworkInfo otherNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
+
+        Ln.d("noConnectivity=" + noConnectivity + "; reason=" + reason + "; info=" + info + "; isFailOver=" + isFailOver + "; currentNetworkInfo=" + currentNetworkInfo + "; otherNetworkInfo=" + otherNetworkInfo);
+    }
+}

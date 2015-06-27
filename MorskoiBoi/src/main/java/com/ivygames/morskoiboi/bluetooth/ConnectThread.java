@@ -89,6 +89,7 @@ final class ConnectThread extends Thread {
 	void cancel() {
 		Ln.v("cancelling...");
 		mCancelled = true;
+		interrupt();
 		BluetoothUtils.close(mSocket);
 	}
 

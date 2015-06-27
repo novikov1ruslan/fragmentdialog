@@ -55,4 +55,10 @@ public class DeviceUtils {
 			Ln.v(key + "=" + value.toString() + "[" + value.getClass().getName() + "]");
 		}
 	}
+
+    public static String getVersionName(Context context) {
+//        return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        return context.getResources().getString(R.string.versionName);
+    }
+
 }

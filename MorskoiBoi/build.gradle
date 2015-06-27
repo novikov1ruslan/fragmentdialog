@@ -42,6 +42,7 @@ dependencies {
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
 //        exclude group: 'com.google.android', module: 'support-v4'
     }
+    compile 'org.solovyev.android:checkout:0.7.3@aar'
 
     // androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.2'
     // androidTestCompile files('libs/dexmaker-1.0.jar')

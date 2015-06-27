@@ -36,6 +36,7 @@ import com.ivygames.morskoiboi.AdManager;
 import com.ivygames.morskoiboi.BattleshipApplication;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.GameServicesUtils;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
@@ -100,6 +101,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     private View mTutView;
 
     private boolean mResumed;
+
+//    private final ActivityCheckout checkout = Checkout.forActivity(this, MyApplication.get().getCheckout());
 
     private final OnInvitationReceivedListener mInvitationReceivedListener = new OnInvitationReceivedListener() {
 
@@ -422,13 +425,14 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         Ln.d("resolving connection failure");
         mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient, connectionResult, RC_SIGN_IN, getString(R.string.error)); // TODO:
+        Ln.d("has resolution = " + mResolvingConnectionFailure);
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Ln.d("connection suspended - trying to reconnect: " + cause);
-        mResolvingConnectionFailure = false;
-        mGoogleApiClient.connect();
+        Ln.d("connection suspended - trying to reconnect: " + GameServicesUtils.connectionCauseToString(cause));
+//        mResolvingConnectionFailure = false;
+//        mGoogleApiClient.connect(); // according to google reconnection us handled automatically
     }
 
     @Override
