@@ -37,8 +37,6 @@ import com.ivygames.morskoiboi.ui.view.ChatAdapter;
 import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 import com.ivygames.morskoiboi.ui.view.GameplayLayout;
 import com.ivygames.morskoiboi.ui.view.GameplayLayout.GameplayLayoutListener;
-import com.ivygames.morskoiboi.ui.view.InfoCroutonLayout;
-import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -46,7 +44,6 @@ import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
-import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
@@ -60,8 +57,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final int VIBRATION_ON_KILL = 500;
 
-    private static final Configuration CONFIGURATION_INFINITE = new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build();
-
     private static final int READY_TO_START = 0;
 
     private Game mGame;
@@ -73,8 +68,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private VibratorFacade mVibrator;
     private Board mEnemyPublicBoard;
     private Board mPlayerPrivateBoard;
-
-//	private Crouton mOpponentSettingBoardCrouton;
 
     private boolean mBackPressEnabled;
 
@@ -120,8 +113,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private int mTimerExpiredCounter;
 
     private Intent mMatchStatusIntent;
-
-    private boolean mPlayerTurn;
 
     @Override
     public View getView() {
@@ -268,7 +259,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         super.onResume();
         Ln.d(this + " is fully visible - resuming sounds");
         mSoundManager.autoResume();
-        if (/* isTimerPaused() && */mPlayerTurn && mGame.getType() == Type.VS_ANDROID) {
+        if (/* isTimerPaused() && */!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
             Ln.v("showing pause dialog");
             mLayout.lock();
             showPauseDialog();
@@ -497,7 +488,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private void notifyOpponentTurn() {
         getActivity().startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
-        mPlayerTurn = false;
     }
 
     /**
@@ -528,15 +518,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         private void notifyPlayerTurn() {
             getActivity().startService(getServiceIntent(getString(R.string.your_turn)));
             mLayout.playerTurn();
-            mPlayerTurn = true;
         }
 
         private void hideOpponentSettingBoardNotification() {
-//			if (mOpponentSettingBoardCrouton != null) {
-            Ln.d("hiding \"opponent setting board\" crouton");
-//				Crouton.hide(mOpponentSettingBoardCrouton);
-//				mOpponentSettingBoardCrouton = null;
-//			}
+            Ln.d("hiding \"opponent setting board\" notification");
             mLayout.hideOpponentSettingBoardNotification();
         }
 

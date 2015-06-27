@@ -17,6 +17,8 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import org.commons.logger.Ln;
+
 import java.util.Random;
 
 public class EnemyBoardView extends BaseBoardView {
@@ -95,8 +97,10 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Bitmap tmp = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.nautical8);
-        if (tmp != null) { // TODO: ?
+        Bitmap tmp = BitmapFactory.decodeResource(getResources(), R.drawable.nautical8);
+        if (tmp == null) {
+            Ln.e("could not decode nautical");
+        } else { // TODO: ?
             int x = mRandom.nextInt(tmp.getWidth() - TEXTURE_SIZE);
             int y = mRandom.nextInt(tmp.getHeight() - TEXTURE_SIZE);
             mNauticalBitmap = Bitmap.createBitmap(tmp, x, y, TEXTURE_SIZE, TEXTURE_SIZE);
@@ -213,6 +217,10 @@ public class EnemyBoardView extends BaseBoardView {
 
     public void removeAim() {
         mAim = null;
+    }
+
+    public boolean isLocked() {
+        return mLocked;
     }
 
     public void lock() {

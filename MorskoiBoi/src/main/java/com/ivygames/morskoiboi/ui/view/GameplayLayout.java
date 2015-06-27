@@ -200,6 +200,10 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
         mStartTime = SystemClock.elapsedRealtime();
     }
 
+    public boolean isLocked() {
+        return mEnemyBoardView.isLocked();
+    }
+
     public void lock() {
         mEnemyBoardView.lock();
 
