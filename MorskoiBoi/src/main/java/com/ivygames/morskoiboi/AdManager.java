@@ -175,7 +175,7 @@ public class AdManager {
         Builder builder = new AdRequest.Builder();
         if (GameConstants.IS_TEST_MODE) {
             /*
-			 * This call will add the emulator as a test device. To add a physical device for testing, pass in your hashed device ID, which can be found in the
+             * This call will add the emulator as a test device. To add a physical device for testing, pass in your hashed device ID, which can be found in the
 			 * LogCat output when loading an ad on your device.
 			 */
             builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);

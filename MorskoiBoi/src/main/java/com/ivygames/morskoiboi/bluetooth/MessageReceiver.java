@@ -17,84 +17,84 @@ import java.io.OutputStream;
  * This thread runs during a connection with a remote device. It handles all incoming and outgoing transmissions.
  */
 class MessageReceiver implements MessageSender {
-	private InputStream mInStream;
-	private OutputStream mOutStream;
+    private InputStream mInStream;
+    private OutputStream mOutStream;
 
-	private final BluetoothSocket mSocket;
-	private final Handler mHandler;
-	private volatile MessageListener mMessageListener;
+    private final BluetoothSocket mSocket;
+    private final Handler mHandler;
+    private volatile MessageListener mMessageListener;
 
-	MessageReceiver(BluetoothSocket socket, Handler handler) {
-		Validate.notNull(socket, "socket cannot be null");
-		mSocket = socket;
+    MessageReceiver(BluetoothSocket socket, Handler handler) {
+        Validate.notNull(socket, "socket cannot be null");
+        mSocket = socket;
 
-		Validate.notNull(handler, "handler cannot be null");
-		mHandler = handler;
-	}
+        Validate.notNull(handler, "handler cannot be null");
+        mHandler = handler;
+    }
 
-	void connect() throws IOException {
-		// get the BluetoothSocket input and output streams
-		mInStream = mSocket.getInputStream();
-		mOutStream = mSocket.getOutputStream();
-		// The input stream will be returned even if the socket is not
-		// yet connected, but operations on that
-		// stream will throw IOException until the associated socket is
-		// connected.
-	}
+    void connect() throws IOException {
+        // get the BluetoothSocket input and output streams
+        mInStream = mSocket.getInputStream();
+        mOutStream = mSocket.getOutputStream();
+        // The input stream will be returned even if the socket is not
+        // yet connected, but operations on that
+        // stream will throw IOException until the associated socket is
+        // connected.
+    }
 
-	void startReceiving() throws IOException {
-		waitForMessageReceiver();
-		while (!Thread.currentThread().isInterrupted()) {
-			String message = readMessage();
-			mHandler.post(new MessageReceivedCommand(mMessageListener, message));
-		}
+    void startReceiving() throws IOException {
+        waitForMessageReceiver();
+        while (!Thread.currentThread().isInterrupted()) {
+            String message = readMessage();
+            mHandler.post(new MessageReceivedCommand(mMessageListener, message));
+        }
 
-		BluetoothUtils.close(mSocket);
-	}
+        BluetoothUtils.close(mSocket);
+    }
 
-	private void waitForMessageReceiver() {
-		while (mMessageListener == null && !Thread.currentThread().isInterrupted()) {
-			Ln.v("busy wait"); // TODO: replace by lazy wait
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
+    private void waitForMessageReceiver() {
+        while (mMessageListener == null && !Thread.currentThread().isInterrupted()) {
+            Ln.v("busy wait"); // TODO: replace by lazy wait
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
 
-	private String readMessage() throws IOException {
-		StringBuilder builder = new StringBuilder();
-		while (true) {
-			int c = mInStream.read();
-			if (c == -1) {
-				throw new IOException("-1 is read");
-			}
-			if (c == '|') {
-				break;
-			}
-			builder.append((char) c);
-		}
+    private String readMessage() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        while (true) {
+            int c = mInStream.read();
+            if (c == -1) {
+                throw new IOException("-1 is read");
+            }
+            if (c == '|') {
+                break;
+            }
+            builder.append((char) c);
+        }
 
-		return builder.toString();
-	}
+        return builder.toString();
+    }
 
-	/**
-	 * Write to the connected OutStream.
-	 */
-	@Override
-	public void write(String message) {
-		byte[] buffer = message.getBytes();
-		Ln.v("writing " + buffer.length + " bytes");
-		try {
-			mOutStream.write(buffer);
-		} catch (IOException ioe) {
-			Ln.w(ioe);
-		}
-	}
+    /**
+     * Write to the connected OutStream.
+     */
+    @Override
+    public void write(String message) {
+        byte[] buffer = message.getBytes();
+        Ln.v("writing " + buffer.length + " bytes");
+        try {
+            mOutStream.write(buffer);
+        } catch (IOException ioe) {
+            Ln.w(ioe);
+        }
+    }
 
-	@Override
-	public void setMessageListener(MessageListener listener) {
-		mMessageListener = listener;
-	}
+    @Override
+    public void setMessageListener(MessageListener listener) {
+        mMessageListener = listener;
+    }
 }

@@ -4,15 +4,15 @@ import java.io.IOException;
 
 public interface ConnectionListener {
 
-	void onConnected(MessageSender sender);
+    void onConnected(MessageSender sender);
 
-	/**
-	 * connection attempt failed
-	 */
-	void onConnectFailed();
+    /**
+     * connection attempt failed
+     */
+    void onConnectFailed();
 
-	/**
-	 * accept attempt failed
-	 */
-	void onAcceptFailed(IOException exception);
+    /**
+     * accept attempt failed
+     */
+    void onAcceptFailed(IOException exception);
 }

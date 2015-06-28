@@ -4,8 +4,8 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothGame.MessageListener;
 
 public interface MessageSender {
 
-	void write(String message);
+    void write(String message);
 
-	void setMessageListener(MessageListener listener);
+    void setMessageListener(MessageListener listener);
 
 }

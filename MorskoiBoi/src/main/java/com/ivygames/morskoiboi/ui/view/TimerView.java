@@ -12,63 +12,63 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 
 public class TimerView extends View {
 
-	private static final int DEFAULT_TOTAL_TIME = 120000;
+    private static final int DEFAULT_TOTAL_TIME = 120000;
 
-	private int mTotalTime = DEFAULT_TOTAL_TIME;
-	private int mTime = DEFAULT_TOTAL_TIME;
-	private final Rect mOuterRect = new Rect();
-	private final Rect mInnerRect = new Rect();
-	private final Paint mInnerPaint;
-	private final Paint mInnerWarningPaint;
-	private final Paint mOuterPaint;
+    private int mTotalTime = DEFAULT_TOTAL_TIME;
+    private int mTime = DEFAULT_TOTAL_TIME;
+    private final Rect mOuterRect = new Rect();
+    private final Rect mInnerRect = new Rect();
+    private final Paint mInnerPaint;
+    private final Paint mInnerWarningPaint;
+    private final Paint mOuterPaint;
 
-	private int mAlarmTimeSeconds;
+    private int mAlarmTimeSeconds;
 
-	public TimerView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		mOuterPaint = UiUtils.newStrokePaint(getResources(), R.color.main);
-		// mInnerPaint = UiUtils.newFillPaint(getResources(), R.color.miss_background);
-		mInnerPaint = UiUtils.newFillPaint(getResources(), R.color.main);
-		mInnerWarningPaint = UiUtils.newFillPaint(getResources(), R.color.hit);
-	}
+    public TimerView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mOuterPaint = UiUtils.newStrokePaint(getResources(), R.color.main);
+        // mInnerPaint = UiUtils.newFillPaint(getResources(), R.color.miss_background);
+        mInnerPaint = UiUtils.newFillPaint(getResources(), R.color.main);
+        mInnerWarningPaint = UiUtils.newFillPaint(getResources(), R.color.hit);
+    }
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		int height = getHeight();
-		mInnerRect.top = height - (height * mTime) / mTotalTime;
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        int height = getHeight();
+        mInnerRect.top = height - (height * mTime) / mTotalTime;
 
-		canvas.drawRect(mInnerRect, getInnerPaint());
-		canvas.drawRect(mOuterRect, mOuterPaint);
-	}
+        canvas.drawRect(mInnerRect, getInnerPaint());
+        canvas.drawRect(mOuterRect, mOuterPaint);
+    }
 
-	private Paint getInnerPaint() {
-		return mTime > mAlarmTimeSeconds ? mInnerPaint : mInnerWarningPaint;
-	}
+    private Paint getInnerPaint() {
+        return mTime > mAlarmTimeSeconds ? mInnerPaint : mInnerWarningPaint;
+    }
 
-	public void setTotalTime(int time) {
-		mTotalTime = time;
-	}
+    public void setTotalTime(int time) {
+        mTotalTime = time;
+    }
 
-	public void setTime(int time) {
-		mTime = time;
-		invalidate();
-	}
+    public void setTime(int time) {
+        mTime = time;
+        invalidate();
+    }
 
-	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		super.onSizeChanged(w, h, oldw, oldh);
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
 
-		int width = getWidth();
-		int height = getHeight();
-		mOuterRect.right = width - 1;
-		mOuterRect.bottom = height - 1;
+        int width = getWidth();
+        int height = getHeight();
+        mOuterRect.right = width - 1;
+        mOuterRect.bottom = height - 1;
 
-		mInnerRect.right = mOuterRect.right;
-		mInnerRect.bottom = mOuterRect.bottom;
-	}
+        mInnerRect.right = mOuterRect.right;
+        mInnerRect.bottom = mOuterRect.bottom;
+    }
 
-	public void setAlarmTime(int alarmTimeSeconds) {
-		mAlarmTimeSeconds = alarmTimeSeconds;
-	}
+    public void setAlarmTime(int alarmTimeSeconds) {
+        mAlarmTimeSeconds = alarmTimeSeconds;
+    }
 }

@@ -11,69 +11,69 @@ import java.util.List;
 
 public class Animation {
 
-	private final List<Bitmap> mBitmaps;
-	private int mFrameDuration;
-	private long mStartTime;
-	private Vector2 mAim;
-	private final Rect mBounds;
-	private final int mDuration;
-	private final float mCellRatio;
+    private final List<Bitmap> mBitmaps;
+    private int mFrameDuration;
+    private long mStartTime;
+    private Vector2 mAim;
+    private final Rect mBounds;
+    private final int mDuration;
+    private final float mCellRatio;
 
-	public Animation(int frameDuration, float cellRatio) {
-		mDuration = frameDuration;
-		mCellRatio = cellRatio;
-		mBitmaps = new ArrayList<Bitmap>();
-		mBounds = new Rect();
-	}
+    public Animation(int frameDuration, float cellRatio) {
+        mDuration = frameDuration;
+        mCellRatio = cellRatio;
+        mBitmaps = new ArrayList<Bitmap>();
+        mBounds = new Rect();
+    }
 
-	public void start() {
-		mStartTime = SystemClock.elapsedRealtime();
-		mFrameDuration = mDuration / mBitmaps.size();
-	}
+    public void start() {
+        mStartTime = SystemClock.elapsedRealtime();
+        mFrameDuration = mDuration / mBitmaps.size();
+    }
 
-	public boolean isRunning() {
-		return mStartTime + mFrameDuration * mBitmaps.size() > SystemClock.elapsedRealtime();
-	}
+    public boolean isRunning() {
+        return mStartTime + mFrameDuration * mBitmaps.size() > SystemClock.elapsedRealtime();
+    }
 
-	public void adFrame(Bitmap bitmap) {
-		mBounds.right = bitmap.getWidth();
-		mBounds.bottom = bitmap.getHeight();
-		mBitmaps.add(bitmap);
-	}
+    public void adFrame(Bitmap bitmap) {
+        mBounds.right = bitmap.getWidth();
+        mBounds.bottom = bitmap.getHeight();
+        mBitmaps.add(bitmap);
+    }
 
-	public Bitmap getCurrentFrame() {
-		long offset = SystemClock.elapsedRealtime() - mStartTime;
-		int index = (int) (offset / mFrameDuration);
+    public Bitmap getCurrentFrame() {
+        long offset = SystemClock.elapsedRealtime() - mStartTime;
+        int index = (int) (offset / mFrameDuration);
 
-		// normalize
-		if (index < 0) {
-			index = 0;
-		}
+        // normalize
+        if (index < 0) {
+            index = 0;
+        }
 
-		if (index >= mBitmaps.size()) {
-			index = mBitmaps.size() - 1;
-		}
+        if (index >= mBitmaps.size()) {
+            index = mBitmaps.size() - 1;
+        }
 
-		return mBitmaps.get(index);
-	}
+        return mBitmaps.get(index);
+    }
 
-	public void setAim(Vector2 aim) {
-		mAim = aim;
-	}
+    public void setAim(Vector2 aim) {
+        mAim = aim;
+    }
 
-	public Vector2 getAim() {
-		return mAim;
-	}
+    public Vector2 getAim() {
+        return mAim;
+    }
 
-	public Rect getBounds() {
-		return mBounds;
-	}
+    public Rect getBounds() {
+        return mBounds;
+    }
 
-	public long getFrameDuration() {
-		return mFrameDuration;
-	}
+    public long getFrameDuration() {
+        return mFrameDuration;
+    }
 
-	public float getCellRatio() {
-		return mCellRatio;
-	}
+    public float getCellRatio() {
+        return mCellRatio;
+    }
 }

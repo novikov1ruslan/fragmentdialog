@@ -16,56 +16,56 @@ import org.commons.logger.Ln;
 
 public class ChatDialog extends FragmentAlertDialog {
 
-	private ChatAdapter mChatAdapter;
+    private ChatAdapter mChatAdapter;
 
-	public ChatDialog() {
-		super();
-	}
+    public ChatDialog() {
+        super();
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			Ln.i("dialog recreating");
-			return null;
-		}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            Ln.i("dialog recreating");
+            return null;
+        }
 
-		ChatDialogLayout layout = (ChatDialogLayout) super.onCreateView(inflater, container, null);
-		layout.setAdapter(mChatAdapter);
-		return layout;
-	}
+        ChatDialogLayout layout = (ChatDialogLayout) super.onCreateView(inflater, container, null);
+        layout.setAdapter(mChatAdapter);
+        return layout;
+    }
 
-	@Override
-	protected int getLayout() {
-		return R.layout.chat_dialog;
-	}
+    @Override
+    protected int getLayout() {
+        return R.layout.chat_dialog;
+    }
 
-	public CharSequence getChatMessage() {
-		return ((ChatDialogLayout) getContentView()).getChatMessage();
-	}
+    public CharSequence getChatMessage() {
+        return ((ChatDialogLayout) getContentView()).getChatMessage();
+    }
 
-	public void setAdapter(ChatAdapter adapter) {
-		mChatAdapter = adapter;
-	}
+    public void setAdapter(ChatAdapter adapter) {
+        mChatAdapter = adapter;
+    }
 
-	public static class Builder extends AlertDialogBuilder {
+    public static class Builder extends AlertDialogBuilder {
 
-		private final ChatAdapter mChatAdapter;
+        private final ChatAdapter mChatAdapter;
 
-		public Builder(ChatAdapter adapter) {
-			mChatAdapter = adapter;
-		}
+        public Builder(ChatAdapter adapter) {
+            mChatAdapter = adapter;
+        }
 
-		public Builder setName(CharSequence name) {
-			setMessage(name + ":");
-			return this;
-		}
+        public Builder setName(CharSequence name) {
+            setMessage(name + ":");
+            return this;
+        }
 
-		@Override
-		protected FragmentAlertDialog createInternal() {
-			ChatDialog dialog = new ChatDialog();
-			dialog.setAdapter(mChatAdapter);
-			return dialog;
-		}
-	}
+        @Override
+        protected FragmentAlertDialog createInternal() {
+            ChatDialog dialog = new ChatDialog();
+            dialog.setAdapter(mChatAdapter);
+            return dialog;
+        }
+    }
 
 }

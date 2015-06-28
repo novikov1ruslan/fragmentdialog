@@ -20,88 +20,88 @@ import de.greenrobot.event.EventBus;
  * This thread runs while listening for incoming connections. It behaves like a server-side client. It runs until a connection is accepted (or until cancelled).
  */
 final class AcceptThread extends Thread {
-	// Name for the SDP record when creating server socket
-	private static final String NAME = "BtGameManager";
+    // Name for the SDP record when creating server socket
+    private static final String NAME = "BtGameManager";
 
-	private volatile BluetoothServerSocket mServerSocket;
-	private volatile BluetoothSocket mSocket;
-	private volatile boolean mCancelled;
+    private volatile BluetoothServerSocket mServerSocket;
+    private volatile BluetoothSocket mSocket;
+    private volatile boolean mCancelled;
 
-	private final ConnectionListener mConnectionListener;
-	private final Handler mHandler = new Handler(Looper.myLooper());
+    private final ConnectionListener mConnectionListener;
+    private final Handler mHandler = new Handler(Looper.myLooper());
 
-	AcceptThread(ConnectionListener connectionListener) {
-		super("bt_accept");
-		mConnectionListener = Validate.notNull(connectionListener);
-	}
+    AcceptThread(ConnectionListener connectionListener) {
+        super("bt_accept");
+        mConnectionListener = Validate.notNull(connectionListener);
+    }
 
-	@Override
-	public void run() {
-		Ln.v("obtaining transmission socket...");
-		mSocket = obtainBluetoothSocket(BluetoothAdapter.getDefaultAdapter());
-		if (mSocket == null) {
-			if (mCancelled) {
-				Ln.v("cancelled while accepting");
-			} else {
-				Ln.w("failed to obtain socket");
-			}
-			return;
-		}
+    @Override
+    public void run() {
+        Ln.v("obtaining transmission socket...");
+        mSocket = obtainBluetoothSocket(BluetoothAdapter.getDefaultAdapter());
+        if (mSocket == null) {
+            if (mCancelled) {
+                Ln.v("cancelled while accepting");
+            } else {
+                Ln.w("failed to obtain socket");
+            }
+            return;
+        }
 
-		Ln.v("connection accepted - starting transmission");
-		MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
+        Ln.v("connection accepted - starting transmission");
+        MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
 
-		try {
-			mConnection.connect();
+        try {
+            mConnection.connect();
 
-			// we post connected event after connection object is created
-			mHandler.post(new ConnectedCommand(mConnectionListener, mConnection));
-			mConnection.startReceiving();
-		} catch (IOException ioe) {
-			if (mCancelled) {
-				Ln.v("cancelled while connected");
-			} else {
-				Ln.w(ioe);
-				EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);
-			}
-		} finally {
-			BluetoothUtils.close(mSocket);
-		}
-	}
+            // we post connected event after connection object is created
+            mHandler.post(new ConnectedCommand(mConnectionListener, mConnection));
+            mConnection.startReceiving();
+        } catch (IOException ioe) {
+            if (mCancelled) {
+                Ln.v("cancelled while connected");
+            } else {
+                Ln.w(ioe);
+                EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);
+            }
+        } finally {
+            BluetoothUtils.close(mSocket);
+        }
+    }
 
-	private BluetoothSocket obtainBluetoothSocket(BluetoothAdapter bluetoothAdapter) {
-		BluetoothSocket socket = null;
-		try {
-			mServerSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
-			Ln.v("server socket created, accepting connection...");
-			// This is a blocking call and will only return on a successful connection or an exception
-			socket = mServerSocket.accept();
-		} catch (IOException ioe) {
-			if (!mCancelled) {
-				// timeout?
-				Ln.w(ioe);
-				mHandler.post(new AcceptFailedCommand(mConnectionListener, ioe));
-			}
-		} finally {
-			BluetoothUtils.close(mServerSocket);
-		}
+    private BluetoothSocket obtainBluetoothSocket(BluetoothAdapter bluetoothAdapter) {
+        BluetoothSocket socket = null;
+        try {
+            mServerSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
+            Ln.v("server socket created, accepting connection...");
+            // This is a blocking call and will only return on a successful connection or an exception
+            socket = mServerSocket.accept();
+        } catch (IOException ioe) {
+            if (!mCancelled) {
+                // timeout?
+                Ln.w(ioe);
+                mHandler.post(new AcceptFailedCommand(mConnectionListener, ioe));
+            }
+        } finally {
+            BluetoothUtils.close(mServerSocket);
+        }
 
-		return socket;
-	}
+        return socket;
+    }
 
-	public void cancelAccept() {
-		Ln.v("canceling accept...");
-		mCancelled = true;
-		BluetoothUtils.close(mServerSocket);
-	}
+    public void cancelAccept() {
+        Ln.v("canceling accept...");
+        mCancelled = true;
+        BluetoothUtils.close(mServerSocket);
+    }
 
-	public void cancelAcceptAndCloseConnection() {
-		cancelAccept();
-		if (mSocket != null) {
-			Ln.v("closing accepted connection...");
-			interrupt();
-			BluetoothUtils.close(mSocket);
-		}
-	}
+    public void cancelAcceptAndCloseConnection() {
+        cancelAccept();
+        if (mSocket != null) {
+            Ln.v("closing accepted connection...");
+            interrupt();
+            BluetoothUtils.close(mSocket);
+        }
+    }
 
 }

@@ -8,26 +8,26 @@ import com.ivygames.morskoiboi.ui.BattleshipScreen;
 
 public class VibratorFacade {
 
-	private static final int MIN_VERSION_SUPPORTING_HAS_VIBRATOR = 11;
-	private final Vibrator mVibrator;
-	private final BattleshipScreen mFragment;
+    private static final int MIN_VERSION_SUPPORTING_HAS_VIBRATOR = 11;
+    private final Vibrator mVibrator;
+    private final BattleshipScreen mFragment;
 
-	public VibratorFacade(BattleshipScreen fragment) {
-		mFragment = fragment;
-		mVibrator = (Vibrator) fragment.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-	}
+    public VibratorFacade(BattleshipScreen fragment) {
+        mFragment = fragment;
+        mVibrator = (Vibrator) fragment.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+    }
 
-	public void vibrate(int milliseconds) {
-		if (GameSettings.get().isVibrationOn() && hasVibrator() && mFragment.isResumed()) {
-			mVibrator.vibrate(milliseconds);
-		}
-	}
+    public void vibrate(int milliseconds) {
+        if (GameSettings.get().isVibrationOn() && hasVibrator() && mFragment.isResumed()) {
+            mVibrator.vibrate(milliseconds);
+        }
+    }
 
-	public boolean hasVibrator() {
-		boolean has = mVibrator != null;
-		if (has && Build.VERSION.SDK_INT >= MIN_VERSION_SUPPORTING_HAS_VIBRATOR) {
-			has = mVibrator.hasVibrator();
-		}
-		return has;
-	}
+    public boolean hasVibrator() {
+        boolean has = mVibrator != null;
+        if (has && Build.VERSION.SDK_INT >= MIN_VERSION_SUPPORTING_HAS_VIBRATOR) {
+            has = mVibrator.hasVibrator();
+        }
+        return has;
+    }
 }

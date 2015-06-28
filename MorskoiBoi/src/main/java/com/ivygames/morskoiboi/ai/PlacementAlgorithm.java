@@ -5,7 +5,7 @@ import com.ivygames.morskoiboi.model.Ship;
 
 public interface PlacementAlgorithm {
 
-	boolean place(Ship ship, Board board);
+    boolean place(Ship ship, Board board);
 
-	Board generateBoard();
+    Board generateBoard();
 }

@@ -9,33 +9,33 @@ import org.commons.logger.Ln;
 
 public class BluetoothOpponent extends AbstractOnlineOpponent implements MessageListener {
 
-	private final MessageSender mSender;
+    private final MessageSender mSender;
 
-	public BluetoothOpponent(MessageSender sender) {
-		super();
-		Validate.notNull(sender);
-		mSender = sender;
-		Ln.v("new bluetooth opponent created");
-	}
+    public BluetoothOpponent(MessageSender sender) {
+        super();
+        Validate.notNull(sender);
+        mSender = sender;
+        Ln.v("new bluetooth opponent created");
+    }
 
-	@Override
-	public void sendRtm(String message) {
-		Ln.v("sending: [" + message + "]");
-		message = message + '|';
-		mSender.write(message);
-	}
+    @Override
+    public void sendRtm(String message) {
+        Ln.v("sending: [" + message + "]");
+        message = message + '|';
+        mSender.write(message);
+    }
 
-	@Override
-	public void setOpponent(Opponent opponent) {
-		mOpponent = opponent;
-		String message = NAME + mOpponent.getName();
-		sendRtm(message);
-	}
+    @Override
+    public void setOpponent(Opponent opponent) {
+        mOpponent = opponent;
+        String message = NAME + mOpponent.getName();
+        sendRtm(message);
+    }
 
-	@Override
-	public void onMessageReceived(String message) {
-		onRealTimeMessageReceived(message);
-		Ln.v("received [" + message + "] from [" + getName() + "]");
-	}
+    @Override
+    public void onMessageReceived(String message) {
+        onRealTimeMessageReceived(message);
+        Ln.v("received [" + message + "] from [" + getName() + "]");
+    }
 
 }

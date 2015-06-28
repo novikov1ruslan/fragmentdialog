@@ -10,24 +10,24 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 public class SimpleActionDialog {
 
-	public static FragmentAlertDialog create(int stringRes, final Runnable command) {
-		return SimpleActionDialog.create(stringRes, R.string.ok, command);
-	}
+    public static FragmentAlertDialog create(int stringRes, final Runnable command) {
+        return SimpleActionDialog.create(stringRes, R.string.ok, command);
+    }
 
-	public static FragmentAlertDialog create(int messageStringRes, final int buttonStringRes, final Runnable command) {
-		return new AlertDialogBuilder().setMessage(messageStringRes).setPositiveButton(buttonStringRes, new OnClickListener() {
+    public static FragmentAlertDialog create(int messageStringRes, final int buttonStringRes, final Runnable command) {
+        return new AlertDialogBuilder().setMessage(messageStringRes).setPositiveButton(buttonStringRes, new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				command.run();
-			}
-		}).setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                command.run();
+            }
+        }).setOnCancelListener(new OnCancelListener() {
 
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				command.run();
-			}
-		}).create();
-	}
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                command.run();
+            }
+        }).create();
+    }
 
 }

@@ -12,94 +12,94 @@ import java.util.Random;
 
 public final class PlacementFactory {
 
-	private PlacementFactory() {
-		// factory
-	}
+    private PlacementFactory() {
+        // factory
+    }
 
-	public static PlacementAlgorithm getAlgorithm() {
-		return new PlacementImplementation();
-	}
+    public static PlacementAlgorithm getAlgorithm() {
+        return new PlacementImplementation();
+    }
 
-	private static class PlacementImplementation implements PlacementAlgorithm {
+    private static class PlacementImplementation implements PlacementAlgorithm {
 
-		private final Random mRandom;
+        private final Random mRandom;
 
-		public PlacementImplementation() {
-			mRandom = new Random(System.currentTimeMillis());
-		}
+        public PlacementImplementation() {
+            mRandom = new Random(System.currentTimeMillis());
+        }
 
-		@Override
-		public Board generateBoard() {
-			Board board = new Board();
+        @Override
+        public Board generateBoard() {
+            Board board = new Board();
 
-			Collection<Ship> ships = generateFullFleet();
-			for (Ship ship : ships) {
-				place(ship, board);
-			}
+            Collection<Ship> ships = generateFullFleet();
+            for (Ship ship : ships) {
+                place(ship, board);
+            }
 
-			return board;
-		}
+            return board;
+        }
 
-		private static boolean isPlaceEmpty(Ship ship, Board board, int i, int j) {
-			boolean isHorizontal = ship.isHorizontal();
-			for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
-				int x = isHorizontal ? k : i;
-				int y = isHorizontal ? j : k;
-				if (!board.getCell(x, y).isEmpty()) {
-					return false;
-				}
-			}
+        private static boolean isPlaceEmpty(Ship ship, Board board, int i, int j) {
+            boolean isHorizontal = ship.isHorizontal();
+            for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
+                int x = isHorizontal ? k : i;
+                int y = isHorizontal ? j : k;
+                if (!board.getCell(x, y).isEmpty()) {
+                    return false;
+                }
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		@Override
-		public boolean place(Ship ship, Board board) {
-			List<Vector2> cells = board.getEmptyCells();
-			boolean found = false;
+        @Override
+        public boolean place(Ship ship, Board board) {
+            List<Vector2> cells = board.getEmptyCells();
+            boolean found = false;
 
-			while (!cells.isEmpty()) {
-				int cellIndex = mRandom.nextInt(cells.size());
-				Vector2 cell = cells.get(cellIndex);
-				int i = cell.getX();
-				int j = cell.getY();
-				// boolean found = canPlaceShipAt(board, ship, i, j, board2);
-				found = board.canPutShipAt(ship, i, j);
-				if (found) {
-					found = PlacementImplementation.isPlaceEmpty(ship, board, i, j);
-					if (found) {
-						board.putShipAt(ship, i, j);
-						break;
-					} else {
-						cells.remove(cellIndex);
-					}
-				}
-			}
+            while (!cells.isEmpty()) {
+                int cellIndex = mRandom.nextInt(cells.size());
+                Vector2 cell = cells.get(cellIndex);
+                int i = cell.getX();
+                int j = cell.getY();
+                // boolean found = canPlaceShipAt(board, ship, i, j, board2);
+                found = board.canPutShipAt(ship, i, j);
+                if (found) {
+                    found = PlacementImplementation.isPlaceEmpty(ship, board, i, j);
+                    if (found) {
+                        board.putShipAt(ship, i, j);
+                        break;
+                    } else {
+                        cells.remove(cellIndex);
+                    }
+                }
+            }
 
-			return found;
-		}
+            return found;
+        }
 
-		private Orientation calcRandomOrientaiton() {
-			return mRandom.nextInt(2) == 1 ? Orientation.HORIZONTAL : Orientation.VERTICAL;
-		}
+        private Orientation calcRandomOrientaiton() {
+            return mRandom.nextInt(2) == 1 ? Orientation.HORIZONTAL : Orientation.VERTICAL;
+        }
 
-		// TODO: do via priority queue
-		private List<Ship> generateFullFleet() {
-			// order is important
-			List<Ship> fullSet = new ArrayList<Ship>();
-			fullSet.add(new Ship(4, calcRandomOrientaiton()));
-			fullSet.add(new Ship(3, calcRandomOrientaiton()));
-			fullSet.add(new Ship(3, calcRandomOrientaiton()));
-			fullSet.add(new Ship(2, calcRandomOrientaiton()));
-			fullSet.add(new Ship(2, calcRandomOrientaiton()));
-			fullSet.add(new Ship(2, calcRandomOrientaiton()));
-			fullSet.add(new Ship(1, calcRandomOrientaiton()));
-			fullSet.add(new Ship(1, calcRandomOrientaiton()));
-			fullSet.add(new Ship(1, calcRandomOrientaiton()));
-			fullSet.add(new Ship(1, calcRandomOrientaiton()));
+        // TODO: do via priority queue
+        private List<Ship> generateFullFleet() {
+            // order is important
+            List<Ship> fullSet = new ArrayList<Ship>();
+            fullSet.add(new Ship(4, calcRandomOrientaiton()));
+            fullSet.add(new Ship(3, calcRandomOrientaiton()));
+            fullSet.add(new Ship(3, calcRandomOrientaiton()));
+            fullSet.add(new Ship(2, calcRandomOrientaiton()));
+            fullSet.add(new Ship(2, calcRandomOrientaiton()));
+            fullSet.add(new Ship(2, calcRandomOrientaiton()));
+            fullSet.add(new Ship(1, calcRandomOrientaiton()));
+            fullSet.add(new Ship(1, calcRandomOrientaiton()));
+            fullSet.add(new Ship(1, calcRandomOrientaiton()));
+            fullSet.add(new Ship(1, calcRandomOrientaiton()));
 
-			return fullSet;
-		}
+            return fullSet;
+        }
 
-	}
+    }
 }

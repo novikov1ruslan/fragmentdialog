@@ -6,12 +6,12 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 interface BotAlgorithm {
 
-	/**
-	 * analyzes the board, chooses which cell to shoot, and marks it either miss or hit
-	 */
-	Vector2 shoot(Board board);
+    /**
+     * analyzes the board, chooses which cell to shoot, and marks it either miss or hit
+     */
+    Vector2 shoot(Board board);
 
-	boolean needThinking(Board board);
+    boolean needThinking(Board board);
 
-	void setLastResult(PokeResult result);
+    void setLastResult(PokeResult result);
 }

@@ -6,16 +6,16 @@ import java.io.IOException;
 
 final class AcceptFailedCommand implements Runnable {
 
-	private final ConnectionListener mConnectionListener;
-	private final IOException mException;
+    private final ConnectionListener mConnectionListener;
+    private final IOException mException;
 
-	AcceptFailedCommand(ConnectionListener listener, IOException exception) {
-		mException = Validate.notNull(exception);
-		mConnectionListener = Validate.notNull(listener);
-	}
+    AcceptFailedCommand(ConnectionListener listener, IOException exception) {
+        mException = Validate.notNull(exception);
+        mConnectionListener = Validate.notNull(listener);
+    }
 
-	@Override
-	public void run() {
-		mConnectionListener.onAcceptFailed(mException);
-	}
+    @Override
+    public void run() {
+        mConnectionListener.onAcceptFailed(mException);
+    }
 }

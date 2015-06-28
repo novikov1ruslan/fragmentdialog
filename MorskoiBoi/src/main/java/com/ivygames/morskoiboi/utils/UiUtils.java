@@ -19,118 +19,116 @@ import com.ivygames.morskoiboi.ui.view.InfoCroutonLayout;
 
 public final class UiUtils {
 
-	private UiUtils() {
-		// utility class
-	}
+    private UiUtils() {
+        // utility class
+    }
 
-	private static final Paint sAuxPaint = new Paint();
-	static {
-		sAuxPaint.setStyle(Paint.Style.STROKE);
-	}
+    private static final Paint sAuxPaint = new Paint();
 
-	public static Paint newStrokePaint(Resources res, int colorId, int dimenId) {
-		return UiUtils.newStrokePaint(res, colorId, res.getDimension(dimenId));
-	}
+    static {
+        sAuxPaint.setStyle(Paint.Style.STROKE);
+    }
 
-	public static Paint newStrokePaint(Resources res, int colorId) {
-		return UiUtils.newStrokePaint(res, colorId, 0F);
-	}
+    public static Paint newStrokePaint(Resources res, int colorId, int dimenId) {
+        return UiUtils.newStrokePaint(res, colorId, res.getDimension(dimenId));
+    }
 
-	private static Paint newStrokePaint(Resources res, int colorId, float strokeWidth) {
-		Paint paint = new Paint();
-		paint.setColor(res.getColor(colorId));
-		paint.setStrokeWidth(strokeWidth);
-		paint.setStyle(Paint.Style.STROKE);
+    public static Paint newStrokePaint(Resources res, int colorId) {
+        return UiUtils.newStrokePaint(res, colorId, 0F);
+    }
 
-		return paint;
-	}
+    private static Paint newStrokePaint(Resources res, int colorId, float strokeWidth) {
+        Paint paint = new Paint();
+        paint.setColor(res.getColor(colorId));
+        paint.setStrokeWidth(strokeWidth);
+        paint.setStyle(Paint.Style.STROKE);
 
-	public static Paint newFillPaint(Resources res, int colorId) {
-		Paint paint = new Paint();
-		paint.setColor(res.getColor(colorId));
-		paint.setStyle(Paint.Style.FILL);
-		return paint;
-	}
+        return paint;
+    }
 
-	/**
-	 * draws a ship with a top left position
-	 *
-	 * @param left
-	 *            - leftmost corner of the ship in pixels
-	 * @param top
-	 *            - topmost corner of the ship in pixels
-	 */
-	public static void drawShip(Canvas canvas, Ship ship, int left, int top, int cellSize, Paint paint) {
-		int bottom;
-		int right;
+    public static Paint newFillPaint(Resources res, int colorId) {
+        Paint paint = new Paint();
+        paint.setColor(res.getColor(colorId));
+        paint.setStyle(Paint.Style.FILL);
+        return paint;
+    }
 
-		int shipSize = ship.getSize();
-		if (ship.isHorizontal()) {
-			right = left + cellSize * shipSize;
-			bottom = top + cellSize;
-		} else {
-			right = left + cellSize;
-			bottom = top + cellSize * shipSize;
-		}
-		canvas.drawRect(left, top, right, bottom, paint);
-	}
+    /**
+     * draws a ship with a top left position
+     *
+     * @param left - leftmost corner of the ship in pixels
+     * @param top  - topmost corner of the ship in pixels
+     */
+    public static void drawShip(Canvas canvas, Ship ship, int left, int top, int cellSize, Paint paint) {
+        int bottom;
+        int right;
 
-	public static void drawShip(Canvas canvas, Ship ship, Rect boardRect, int cellSize, Paint paint) {
-		int i = ship.getX();
-		int j = ship.getY();
-		int left = i * cellSize + boardRect.left;
-		int top = j * cellSize + boardRect.top;
+        int shipSize = ship.getSize();
+        if (ship.isHorizontal()) {
+            right = left + cellSize * shipSize;
+            bottom = top + cellSize;
+        } else {
+            right = left + cellSize;
+            bottom = top + cellSize * shipSize;
+        }
+        canvas.drawRect(left, top, right, bottom, paint);
+    }
 
-		UiUtils.drawShip(canvas, ship, left, top, cellSize, paint);
-	}
+    public static void drawShip(Canvas canvas, Ship ship, Rect boardRect, int cellSize, Paint paint) {
+        int i = ship.getX();
+        int j = ship.getY();
+        int left = i * cellSize + boardRect.left;
+        int top = j * cellSize + boardRect.top;
 
-	public static Bitmap invert(Bitmap src) {
-		Bitmap output = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-		int A, R, G, B;
-		int pixelColor;
-		int height = src.getHeight();
-		int width = src.getWidth();
+        UiUtils.drawShip(canvas, ship, left, top, cellSize, paint);
+    }
 
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				pixelColor = src.getPixel(x, y);
-				A = Color.alpha(pixelColor);
+    public static Bitmap invert(Bitmap src) {
+        Bitmap output = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        int A, R, G, B;
+        int pixelColor;
+        int height = src.getHeight();
+        int width = src.getWidth();
 
-				R = 255 - Color.red(pixelColor);
-				G = 255 - Color.green(pixelColor);
-				B = 255 - Color.blue(pixelColor);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                pixelColor = src.getPixel(x, y);
+                A = Color.alpha(pixelColor);
 
-				output.setPixel(x, y, Color.argb(A, R, G, B));
-			}
-		}
+                R = 255 - Color.red(pixelColor);
+                G = 255 - Color.green(pixelColor);
+                B = 255 - Color.blue(pixelColor);
 
-		src.recycle();
+                output.setPixel(x, y, Color.argb(A, R, G, B));
+            }
+        }
 
-		return output;
-	}
+        src.recycle();
 
-	public static InfoCroutonLayout inflateInfoCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
-		InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.info_crouton, root, false);
-		infoCroutonLayout.setMessage(message);
-		return infoCroutonLayout;
-	}
+        return output;
+    }
 
-	public static InfoCroutonLayout inflateChatCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
-		InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.chat_crouton, root, false);
-		infoCroutonLayout.setMessage(message);
-		return infoCroutonLayout;
-	}
+    public static InfoCroutonLayout inflateInfoCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
+        InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.info_crouton, root, false);
+        infoCroutonLayout.setMessage(message);
+        return infoCroutonLayout;
+    }
 
-	/**
-	 * Determines whether or not the device has an extra large screen.
-	 *
-	 * @param context
-	 *            The Android context.
-	 * @return boolean value indicating if the screen size is extra large.
-	 */
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	public static boolean isExtraLargeScreen(Context context) {
-		int screenSizeMask = context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-		return screenSizeMask == Configuration.SCREENLAYOUT_SIZE_XLARGE;
-	}
+    public static InfoCroutonLayout inflateChatCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
+        InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.chat_crouton, root, false);
+        infoCroutonLayout.setMessage(message);
+        return infoCroutonLayout;
+    }
+
+    /**
+     * Determines whether or not the device has an extra large screen.
+     *
+     * @param context The Android context.
+     * @return boolean value indicating if the screen size is extra large.
+     */
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    public static boolean isExtraLargeScreen(Context context) {
+        int screenSizeMask = context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        return screenSizeMask == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
 }
