@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
@@ -149,6 +150,7 @@ public final class PlayerOpponent extends AbstractOpponent {
 	@Override
 	public void onLost(Board board) {
 		Ln.e("never happens");
+		ACRA.getErrorReporter().handleException(new RuntimeException("never happens"));
 	}
 
 	@Override
