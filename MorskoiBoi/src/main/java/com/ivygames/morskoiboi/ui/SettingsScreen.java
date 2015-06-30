@@ -23,13 +23,6 @@ import org.commons.logger.Ln;
 public class SettingsScreen extends BattleshipScreen implements SettingsScreenActions, SignInListener, BackPressListener {
     private static final String TAG = "SETTINGS";
 
-    // (arbitrary) request code for the purchase flow
-    public static final int RC_PURCHASE = 10003;
-
-    private static final String SKU_NO_ADS = "no_ads";
-
-    private static final String DIALOG = FragmentAlertDialog.TAG;
-
     private static final String EMAIL = "ivy.games.studio@gmail.com";
 
     private GameSettings mSettings;
@@ -155,22 +148,6 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         mApiClient.disconnect();
         mLayout.showSignInBar();
     }
-
-    // private void showErrorDialog() {
-    // new AlertDialogBuilder().setMessage(R.string.error).setPositiveButton(R.string.ok, new OnClickListener() {
-    //
-    // @Override
-    // public void onClick(DialogInterface dialog, int which) {
-    // mGaTracker.send(new UiEvent("purchase_error", "ok").build());
-    // }
-    // }).setOnCancelListener(new OnCancelListener() {
-    //
-    // @Override
-    // public void onCancel(DialogInterface dialog) {
-    // mGaTracker.send(new UiEvent("purchase_error", "cancel").build());
-    // }
-    // }).create().show(mFm, DIALOG);
-    // }
 
     @Override
     public void onBackPressed() {

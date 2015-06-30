@@ -24,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
@@ -42,6 +43,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.WarningEvent;
+import com.ivygames.morskoiboi.billing.InventoryHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.utils.UiUtils;
@@ -74,8 +76,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
-    // private FragmentManager mFm;
-
     private Tracker mGaTracker;
     private boolean mRecreating;
     private GameSettings mSettings;
@@ -101,8 +101,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     private View mTutView;
 
     private boolean mResumed;
-
-//    private final ActivityCheckout checkout = Checkout.forActivity(this, MyApplication.get().getCheckout());
+    private InventoryHelper mInventoryHelper;
 
     private final OnInvitationReceivedListener mInvitationReceivedListener = new OnInvitationReceivedListener() {
 
@@ -198,8 +197,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         setContentView(mLayout);
         mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
 
-        // ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-
         setScreen(new MainScreen());
 
         AdManager.instance.configure(this);
@@ -209,7 +206,13 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             mGoogleApiClient.connect();
         }
 
+        mInventoryHelper = new InventoryHelper(this);
+        mInventoryHelper.onCreate();
         Ln.i("game fully created");
+    }
+
+    public void hideAds() {
+        findViewById(R.id.banner).setVisibility(View.GONE);
     }
 
     private GoogleApiClient createGoogleApiClient() {
@@ -220,6 +223,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
         builder.addApi(AppStateManager.API).addScope(AppStateManager.SCOPE_APP_STATE);
         builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
+        builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
+
         return builder.build();
     }
 
@@ -325,6 +330,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         Crouton.cancelAllCroutons();
         AdManager.instance.destroy();
+
+        mInventoryHelper.onDestroy();
 
         mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);

@@ -21,6 +21,9 @@ public final class Bitmaps {
     }
 
     private Bitmaps() {
+    }
+
+    public void loadBitmaps() {
         Context context = BattleshipApplication.get();
         Resources res = context.getResources();
 

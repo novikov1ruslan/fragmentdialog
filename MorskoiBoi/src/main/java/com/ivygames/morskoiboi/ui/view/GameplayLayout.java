@@ -358,7 +358,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
     }
 
     public void hideChatButton() {
-        mChatButton.setVisibility(GONE);
+//        mChatButton.setVisibility(GONE);
     }
 
     public void hideVibrationSetting() {
