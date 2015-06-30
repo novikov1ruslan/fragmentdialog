@@ -155,7 +155,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public View getTutView() {
-        if (DeviceUtils.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
+        if (!DeviceUtils.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
             Ln.v("setup tip needs to be shown");
             return mTutView;
         }
