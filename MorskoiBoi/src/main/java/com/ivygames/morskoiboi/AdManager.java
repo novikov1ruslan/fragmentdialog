@@ -204,7 +204,7 @@ public class AdManager {
     public void configure(Activity activity) {
         mBanner = (AdView) activity.findViewById(R.id.banner);
         if (GameSettings.get().noAds()) {
-            mBanner.setVisibility(View.GONE);
+            mBanner.setVisibility(View.INVISIBLE);
         } else {
             if (SUPPORT_AD_COLONY) {
                 AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);

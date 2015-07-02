@@ -288,9 +288,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void showOpponentSettingBoardNotification() {
         String message = getString(R.string.opponent_setting_board, mEnemy.getName());
-//		InfoCroutonLayout layout = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), message, mLayout);
-//		mOpponentSettingBoardCrouton = Crouton.make(getActivity(), layout).setConfiguration(CONFIGURATION_INFINITE);
-//		mOpponentSettingBoardCrouton.show();
         mLayout.showOpponentSettingBoardNotification(message);
     }
 

@@ -212,7 +212,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     }
 
     public void hideAds() {
-        findViewById(R.id.banner).setVisibility(View.GONE);
+        findViewById(R.id.banner).setVisibility(View.INVISIBLE);
     }
 
     private GoogleApiClient createGoogleApiClient() {
