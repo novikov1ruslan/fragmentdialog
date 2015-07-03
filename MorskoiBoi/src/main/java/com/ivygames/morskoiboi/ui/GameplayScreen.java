@@ -36,12 +36,17 @@ import com.ivygames.morskoiboi.ui.TurnTimer.TimerListener;
 import com.ivygames.morskoiboi.ui.view.ChatAdapter;
 import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 import com.ivygames.morskoiboi.ui.view.GameplayLayout;
-import com.ivygames.morskoiboi.ui.view.GameplayLayout.GameplayLayoutListener;
+import com.ivygames.morskoiboi.ui.view.GameplayLayoutListener;
+import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -209,7 +214,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         // ------------------
 
         mLayout.setTotalTime(mGame.getTurnTimeout());
+        updateMyStatus();
         mLayout.setPlayerBoard(mPlayerPrivateBoard);
+        updateEnemyStatus();
         mLayout.setEnemyBoard(mEnemyPublicBoard);
         mLayout.setAlarmTime(GameplaySoundManager.ALARM_TIME_SECONDS);
         mLayout.lock();
@@ -531,7 +538,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.setShotResult(result);
 
             mLayout.invalidateEnemyBoard();
-            mLayout.updateEnemyStatus();
+            updateEnemyStatus();
 
             if (shipSank(result.ship)) {
                 Ln.v("enemy ship is sunk!! - shake enemy board");
@@ -568,7 +575,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onShotAt(Vector2 aim) {
             PokeResult result = mPlayer.onShotAtForResult(aim);
 
-            mLayout.updateMyStatus();
+            updateMyStatus();
 
             if (shipSank(result.ship)) {
                 // Ln.v("player's ship is sunk: " + result);
@@ -627,6 +634,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
             // revealing the enemy board
             mEnemyPublicBoard = board;
+            updateEnemyStatus();
             mLayout.setEnemyBoard(mEnemyPublicBoard);
             resetPlayer();
             lost(LOST_GAME_WITH_REVEAL_DELAY);
@@ -670,6 +678,33 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return mPlayer.toString();
         }
 
+    }
+
+    public void updateMyStatus() {
+        Collection<Ship> ships = mPlayerPrivateBoard.getShips();
+        LinkedList<Ship> workingShips = new LinkedList<Ship>();
+        for (Ship ship : ships) {
+            if (!ship.isDead()) {
+                workingShips.add(ship);
+            }
+        }
+        mLayout.setMyShips(workingShips);
+    }
+
+    public void updateEnemyStatus() {
+        Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
+        Collection<Ship> fullFleet = GameUtils.generateFullHorizontalFleet();
+        for (Ship ship : killedShips) {
+            Iterator<Ship> iterator = fullFleet.iterator();
+            while (iterator.hasNext()) {
+                Ship next = iterator.next();
+                if (ship.getSize() == next.getSize()) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+        mLayout.setEnemyShips(fullFleet);
     }
 
     private void startTimer() {

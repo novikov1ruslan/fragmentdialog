@@ -7,11 +7,11 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
@@ -19,33 +19,33 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 
 import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class GameplayLayout extends LinearLayout implements View.OnClickListener, TimeConsumer {
+public class TestLayout extends ViewGroup implements View.OnClickListener, TimeConsumer {
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
+    private View mStatusContainer;
+    private TimerView mTimerView;
     private FleetView mFleet;
     private TextView mPlayerNameView;
     private TextView mEnemyNameView;
     private View mChatButton;
     private ImageButton mSoundButton;
-    private ImageButton mVibrationButton;
 
+    private ImageButton mVibrationButton;
     private final Animation mShake;
     private long mStartTime;
     private long mUnlockedTime;
     private boolean mGameIsOn;
     private Bitmap mBwBitmap;
-    private TimerView mTimerView;
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
-    public GameplayLayout(Context context, AttributeSet attrs) {
+    public TestLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
@@ -54,6 +54,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        mStatusContainer = findViewById(R.id.status_container);
         mMyBoardView = (FleetBoardView) findViewById(R.id.board_view_fleet);
         mEnemyBoardView = (EnemyBoardView) findViewById(R.id.board_view_enemy);
         mFleet = (FleetView) findViewById(R.id.status);
@@ -143,7 +144,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
         mFleet.setEnemyShips(ships);
     }
 
-    public void setShotListener(ShotListener listener) {
+    public void setShotListener(EnemyBoardView.ShotListener listener) {
         mEnemyBoardView.setShotListener(listener);
     }
 
@@ -267,6 +268,54 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
             mBwBitmap.recycle();
             mBwBitmap = null;
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        // These are the far left and right edges in which we are performing layout.
+//        int leftPos = getPaddingLeft();
+//        int rightPos = right - left - getPaddingRight();
+//
+//        // This is the middle region inside of the gutter.
+//        final int middleLeft = leftPos + mLeftWidth;
+//        final int middleRight = rightPos - mRightWidth;
+
+        int h = getMeasuredHeight();
+        int w = getMeasuredWidth();
+        int maxHeight = h - mEnemyBoardView.getMeasuredHeight();
+        mEnemyBoardView.layout(0, maxHeight, w, h);
+        int measuredW =  mMyBoardView.getMeasuredWidth();
+        mMyBoardView.layout(0, 0, measuredW, mMyBoardView.getMeasuredHeight());
+        int measuredW2 =  measuredW + mTimerView.getMeasuredWidth();
+        mTimerView.layout(measuredW, 0, measuredW2, mEnemyBoardView.getMeasuredHeight());
+
+        mStatusContainer.layout(measuredW2, 0, w, maxHeight);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int h = getMeasuredHeight();
+        int w = getMeasuredWidth();
+        Ln.v("h=" + h + "; w=" + w);
+
+        int boardSize = h > w ? w : h;
+        int measureSpec = MeasureSpec.makeMeasureSpec(boardSize, MeasureSpec.AT_MOST);
+        mEnemyBoardView.measure(measureSpec, measureSpec);
+
+        int upperArea = h - boardSize;
+
+        measureSpec = MeasureSpec.makeMeasureSpec(upperArea, MeasureSpec.AT_MOST);
+        mTimerView.measure(measureSpec, measureSpec);
+        int restWidth = w - mTimerView.getMeasuredWidth();
+        int halfWidth = restWidth/2;
+
+        measureSpec = MeasureSpec.makeMeasureSpec(upperArea, MeasureSpec.AT_MOST);
+        mMyBoardView.measure(halfWidth, measureSpec);
+
+        measureSpec = MeasureSpec.makeMeasureSpec(upperArea, MeasureSpec.AT_MOST);
+        mStatusContainer.measure(measureSpec, measureSpec);
     }
 
     public void setShotResult(PokeResult result) {

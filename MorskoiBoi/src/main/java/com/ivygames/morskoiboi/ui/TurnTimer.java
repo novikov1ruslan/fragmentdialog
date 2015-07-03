@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.os.SystemClock;
 
 import com.ivygames.morskoiboi.GameplaySoundManager;
-import com.ivygames.morskoiboi.ui.view.GameplayLayout;
+import com.ivygames.morskoiboi.ui.view.TimeConsumer;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
@@ -14,7 +14,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
 
     private volatile long mStartTime;
     private final int mTimeout;
-    private final GameplayLayout mLayout;
+    private final TimeConsumer mLayout;
     private final GameplaySoundManager mSoundManager;
     private final TimerListener mListener;
 
@@ -22,7 +22,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
         void onTimerExpired();
     }
 
-    TurnTimer(int timeout, GameplayLayout layout, TimerListener listener, GameplaySoundManager soundManager) {
+    TurnTimer(int timeout, TimeConsumer layout, TimerListener listener, GameplaySoundManager soundManager) {
         mTimeout = timeout;
 
         Validate.notNull(layout);
