@@ -36,6 +36,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     private static final int REQUEST_ENSURE = 3;
 
     private static final String DIALOG = FragmentAlertDialog.TAG;
+    private static final int DISCOVERABLE_DURATION = 300;
 
     private DeviceListLayout mLayout;
     private BluetoothAdapter mBtAdapter;
@@ -151,8 +152,18 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             Ln.w(TAG + ": already discoverable");
         } else {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
+            Ln.v("ensuring discover-ability for " + DISCOVERABLE_DURATION);
             startActivityForResult(discoverableIntent, REQUEST_ENSURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENSURE) {
+            Ln.v("discoverable result=" + resultCode);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

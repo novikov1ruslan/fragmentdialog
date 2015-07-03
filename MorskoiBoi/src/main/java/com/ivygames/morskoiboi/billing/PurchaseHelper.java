@@ -108,7 +108,7 @@ public class PurchaseHelper {
                 return;
             }
 
-            if (!InventoryHelper.verifyDeveloperPayload(purchase)) {
+            if (!PurchaseUtils.verifyDeveloperPayload(purchase)) {
                 Ln.w("Error purchasing. Authenticity verification failed.");
 //                showErrorDialog();
 //                hideWaitingScreen();

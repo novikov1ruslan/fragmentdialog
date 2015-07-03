@@ -48,6 +48,7 @@ import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import org.acra.ACRA;
 import org.commons.logger.Ln;
 import org.commons.logger.WarningListener;
 
@@ -207,7 +208,11 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         }
 
         mInventoryHelper = new InventoryHelper(this);
-        mInventoryHelper.onCreate();
+        try {
+            mInventoryHelper.onCreate();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
         Ln.i("game fully created");
     }
 
@@ -331,7 +336,11 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         Crouton.cancelAllCroutons();
         AdManager.instance.destroy();
 
-        mInventoryHelper.onDestroy();
+        try {
+            mInventoryHelper.onDestroy();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
 
         mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);

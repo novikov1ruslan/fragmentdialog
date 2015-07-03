@@ -92,8 +92,8 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Ln.e("unprocessed result=" + resultCode + ", request=" + ", data=" + data);
-        ACRA.getErrorReporter().handleException(new RuntimeException("unprocessed result"));
+        Ln.e("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+        ACRA.getErrorReporter().handleException(new RuntimeException("unprocessed result: " + resultCode));
     }
 
     public View getTutView() {
