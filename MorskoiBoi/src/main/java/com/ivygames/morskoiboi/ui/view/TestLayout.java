@@ -1,381 +1,131 @@
 package com.ivygames.morskoiboi.ui.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.os.SystemClock;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.ui.GameplayLayoutInterface;
 
-import org.commons.logger.Ln;
+public abstract class TestLayout extends ViewGroup implements GameplayLayoutInterface, TimeConsumer {
 
-import java.util.Collection;
-
-public class TestLayout extends ViewGroup implements View.OnClickListener, TimeConsumer {
-
-    private FleetBoardView mMyBoardView;
-    private EnemyBoardView mEnemyBoardView;
-    private View mStatusContainer;
-    private TimerView mTimerView;
-    private FleetView mFleet;
-    private TextView mPlayerNameView;
-    private TextView mEnemyNameView;
-    private View mChatButton;
-    private ImageButton mSoundButton;
-
-    private ImageButton mVibrationButton;
-    private final Animation mShake;
-    private long mStartTime;
-    private long mUnlockedTime;
-    private boolean mGameIsOn;
-    private Bitmap mBwBitmap;
-    private GameplayLayoutListener mListener;
-    private TextView mSettingBoardText;
+    private static final float ASPECT_RATIO = 1.5f;
+    private Rect aspectRect = new Rect();
+    private Rect enemyRect = new Rect();
+    private Rect myRect = new Rect();
+    private Rect statusRect = new Rect();
+    private Rect chatRect = new Rect();
+    private Rect turnRect = new Rect();
+    //    private Paint aspectPaint = new Paint();
+    private View enemyBoard;
+    private View myBoard;
+    private View statusBoard;
+    private View chat;
+    private View turn;
 
     public TestLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+//        aspectPaint.setStyle(Paint.Style.FILL);
+//        aspectPaint.setColor(0xFF0000);
+//        aspectPaint.setARGB(255, 255, 0, 0);
+//        setWillNotDraw(false);
     }
+
+//    @Override
+//    protected void onDraw(Canvas canvas) {
+//        super.onDraw(canvas);
+//        canvas.drawRect(aspectRect, aspectPaint);
+//    }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mStatusContainer = findViewById(R.id.status_container);
-        mMyBoardView = (FleetBoardView) findViewById(R.id.board_view_fleet);
-        mEnemyBoardView = (EnemyBoardView) findViewById(R.id.board_view_enemy);
-        mFleet = (FleetView) findViewById(R.id.status);
-        mChatButton = findViewById(R.id.chat_button);
-        mChatButton.setOnClickListener(new OnClickListener() {
+        enemyBoard = findViewById(R.id.enemy_board);
+        myBoard = findViewById(R.id.board_view_fleet);
+        statusBoard = findViewById(R.id.status_container);
 
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onChatClicked();
-                }
-            }
-        });
-        mPlayerNameView = (TextView) findViewById(R.id.player);
-        mEnemyNameView = (TextView) findViewById(R.id.enemy);
-        mTimerView = (TimerView) findViewById(R.id.timer);
-
-        mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
-        if (mVibrationButton != null) {
-            Ln.v("vibration control present");
-            mVibrationButton.setOnClickListener(this);
-        }
-        mSoundButton = (ImageButton) findViewById(R.id.sound_btn);
-        if (mSoundButton != null) {
-            mSoundButton.setOnClickListener(this);
-        }
-
-        mSettingBoardText = (TextView) findViewById(R.id.setting_board_notification);
-    }
-
-    public void setSound(boolean on) {
-        if (mSoundButton != null) {
-            mSoundButton.setImageResource(on ? R.drawable.sound_on : R.drawable.sound_off);
-        }
-    }
-
-    public void setVibration(boolean on) {
-        if (mVibrationButton != null) {
-            mVibrationButton.setImageResource(on ? R.drawable.vibrate_on : R.drawable.vibrate_off);
-        }
-    }
-
-    public void setAim(Vector2 aim) {
-        mEnemyBoardView.setAim(aim);
-    }
-
-    public void removeAim() {
-        mEnemyBoardView.removeAim();
-    }
-
-    public long getUnlockedTime() {
-        return mUnlockedTime;
-    }
-
-    public void setPlayerName(CharSequence name) {
-        if (mPlayerNameView != null) {
-            mPlayerNameView.setText(name);
-        }
-    }
-
-    public void setEnemyName(CharSequence name) {
-        if (mEnemyNameView != null) {
-            mEnemyNameView.setText(name);
-        }
-    }
-
-    public void setPlayerBoard(Board board) {
-        mMyBoardView.setBoard(board);
-    }
-
-    public void setEnemyBoard(Board board) {
-        mEnemyBoardView.setBoard(board);
-        invalidate();
-    }
-
-    public void setMyShips(Collection<Ship> ships) {
-        if (mFleet == null) {
-            return;
-        }
-        mFleet.setMyShips(ships);
-    }
-
-    public void setEnemyShips(Collection<Ship> ships) {
-        if (mFleet == null) {
-            return;
-        }
-        mFleet.setEnemyShips(ships);
-    }
-
-    public void setShotListener(EnemyBoardView.ShotListener listener) {
-        mEnemyBoardView.setShotListener(listener);
-    }
-
-    public void unLock() {
-        mGameIsOn = true;
-        mEnemyBoardView.unLock();
-        mStartTime = SystemClock.elapsedRealtime();
-    }
-
-    public boolean isLocked() {
-        return mEnemyBoardView.isLocked();
-    }
-
-    public void lock() {
-        mEnemyBoardView.lock();
-
-        // game is on after the first unlock
-        if (!mGameIsOn) {
-            return;
-        }
-
-        long d = SystemClock.elapsedRealtime() - mStartTime;
-        mUnlockedTime += d;
-        Ln.v("d = " + d + ", mUnlockedTime=" + mUnlockedTime);
-    }
-
-    /**
-     * locks and sets border
-     */
-    public void enemyTurn() {
-        lock();
-        mEnemyBoardView.hideTurnBorder();
-        mMyBoardView.showTurnBorder();
-    }
-
-    /**
-     * unlocks and sets border
-     */
-    public void playerTurn() {
-        unLock();
-        mEnemyBoardView.showTurnBorder();
-        mMyBoardView.hideTurnBorder();
-    }
-
-    public void invalidateEnemyBoard() {
-        mEnemyBoardView.invalidate();
-    }
-
-    public void invalidatePlayerBoard() {
-        mMyBoardView.invalidate();
-    }
-
-    public void shakePlayerBoard() {
-        mMyBoardView.startAnimation(mShake);
-    }
-
-    public void shakeEnemyBoard() {
-        mEnemyBoardView.startAnimation(mShake);
-    }
-
-    public void win() {
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(2);
-        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(cm);
-        gameOver(cf);
-    }
-
-    public void lost() {
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(cm);
-        gameOver(cf);
-    }
-
-    private void gameOver(ColorMatrixColorFilter cf) {
-        Bitmap bitmap = createScreenBitmap();
-        if (bitmap != null) {
-            int childCount = getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View child = getChildAt(i);
-                child.setVisibility(GONE);
-            }
-
-            // ColorMatrix cm1 = new ColorMatrix();
-            // cm1.set(new float[] {
-            // 1.5f, 1.5f, 1.5f, 0, 0,
-            // 1.5f, 1.5f, 1.5f, 0, 0,
-            // 1.5f, 1.5f, 1.5f, 0, 0,
-            // -1f, -1f, -1f, 0f, 1f});
-
-            ImageView bw = (ImageView) findViewById(R.id.bw);
-            bw.setColorFilter(cf);
-            bw.setImageBitmap(bitmap);
-
-            bw.setVisibility(VISIBLE);
-            bw.startAnimation(mShake);
-        }
-    }
-
-    private Bitmap createScreenBitmap() {
-        setDrawingCacheEnabled(true);
-        buildDrawingCache();
-        Bitmap drawingCache = getDrawingCache();
-        Bitmap bitmap = null;
-        if (drawingCache != null) {
-            /*
-             * [main] java.lang.NullPointerException at android.graphics.Bitmap.createBitmap(Bitmap.java:455) at com.ivygames
-			 * .morskoiboi.ui.view.GameplayLayout.createBwBitmap(GameplayLayout .java:242)
-			 */
-            bitmap = Bitmap.createBitmap(drawingCache);
-        }
-        setDrawingCacheEnabled(false);
-
-        return bitmap;
+        chat = findViewById(R.id.chat_button);
+        turn = findViewById(R.id.timer);
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mBwBitmap != null) {
-            mBwBitmap.recycle();
-            mBwBitmap = null;
-        }
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        // These are the far left and right edges in which we are performing layout.
-//        int leftPos = getPaddingLeft();
-//        int rightPos = right - left - getPaddingRight();
-//
-//        // This is the middle region inside of the gutter.
-//        final int middleLeft = leftPos + mLeftWidth;
-//        final int middleRight = rightPos - mRightWidth;
-
-        int h = getMeasuredHeight();
-        int w = getMeasuredWidth();
-        int maxHeight = h - mEnemyBoardView.getMeasuredHeight();
-        mEnemyBoardView.layout(0, maxHeight, w, h);
-        int measuredW =  mMyBoardView.getMeasuredWidth();
-        mMyBoardView.layout(0, 0, measuredW, mMyBoardView.getMeasuredHeight());
-        int measuredW2 =  measuredW + mTimerView.getMeasuredWidth();
-        mTimerView.layout(measuredW, 0, measuredW2, mEnemyBoardView.getMeasuredHeight());
-
-        mStatusContainer.layout(measuredW2, 0, w, maxHeight);
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        enemyBoard.layout(enemyRect.left, enemyRect.top, enemyRect.right, enemyRect.bottom);
+        myBoard.layout(myRect.left, myRect.top, myRect.right, myRect.bottom);
+        statusBoard.layout(statusRect.left, statusRect.top, statusRect.right, statusRect.bottom);
+        chat.layout(chatRect.left, chatRect.top, chatRect.right, chatRect.bottom);
+        turn.layout(turnRect.left, turnRect.top, turnRect.right, turnRect.bottom);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int h = getMeasuredHeight();
-        int w = getMeasuredWidth();
-        Ln.v("h=" + h + "; w=" + w);
+        float w = getMeasuredWidth();
+        float h = getMeasuredHeight();
 
-        int boardSize = h > w ? w : h;
-        int measureSpec = MeasureSpec.makeMeasureSpec(boardSize, MeasureSpec.AT_MOST);
-        mEnemyBoardView.measure(measureSpec, measureSpec);
-
-        int upperArea = h - boardSize;
-
-        measureSpec = MeasureSpec.makeMeasureSpec(upperArea, MeasureSpec.AT_MOST);
-        mTimerView.measure(measureSpec, measureSpec);
-        int restWidth = w - mTimerView.getMeasuredWidth();
-        int halfWidth = restWidth/2;
-
-        measureSpec = MeasureSpec.makeMeasureSpec(upperArea, MeasureSpec.AT_MOST);
-        mMyBoardView.measure(halfWidth, measureSpec);
-
-        measureSpec = MeasureSpec.makeMeasureSpec(upperArea, MeasureSpec.AT_MOST);
-        mStatusContainer.measure(measureSpec, measureSpec);
-    }
-
-    public void setShotResult(PokeResult result) {
-        mEnemyBoardView.setShotResult(result);
-    }
-
-    public void setTotalTime(int seconds) {
-        mTimerView.setTotalTime(seconds);
-    }
-
-    @Override
-    public void setTime(int seconds) {
-        mTimerView.setTime(seconds);
-    }
-
-    public void setAlarmTime(int alarmTimeSeconds) {
-        mTimerView.setAlarmTime(alarmTimeSeconds);
-    }
-
-    public void setListener(GameplayLayoutListener listener) {
-        mListener = listener;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mListener == null) {
-            return;
+        float aspect = h / w;
+        int desiredWidth = getMeasuredWidth();
+        int desiredHeight = getMeasuredHeight();
+        if (aspect > ASPECT_RATIO) {
+            desiredHeight = (int) (desiredWidth * ASPECT_RATIO);
+        } else {
+            desiredWidth = (int) (desiredHeight / ASPECT_RATIO);
         }
 
-        switch (v.getId()) {
-            case R.id.vibration_btn:
-                mListener.onVibrationChanged();
-                break;
+        aspectRect.left = (int) ((w - desiredWidth) / 2);
+        aspectRect.right = aspectRect.left + desiredWidth;
+        aspectRect.top = (int) ((h - desiredHeight) / 2);
+        aspectRect.bottom = aspectRect.top + desiredHeight;
 
-            case R.id.sound_btn:
-                mListener.onSoundChanged();
-                break;
+        enemyRect.left = aspectRect.left;
+        enemyRect.right = aspectRect.right;
+        enemyRect.bottom = aspectRect.bottom;
+        enemyRect.top = enemyRect.bottom - aspectRect.width();
 
-            default:
-                Ln.w("unprocessed game button=" + v.getId());
-                break;
-        }
-    }
+        myRect.left = aspectRect.left;
+        myRect.right = myRect.left + desiredWidth / 2;
+        myRect.bottom = enemyRect.top;
 
-    public void hideChatButton() {
-        mChatButton.setVisibility(GONE);
-    }
+        statusRect.left = myRect.right;
+        statusRect.right = statusRect.left + desiredWidth / 2;
+        statusRect.bottom = enemyRect.top;
 
-    public void hideVibrationSetting() {
-        if (mVibrationButton != null) {
-            mVibrationButton.setVisibility(GONE);
-        }
-    }
+        int buttonHeight = statusRect.height() / 4;
 
-    public void showOpponentSettingBoardNotification(String message) {
-        mSettingBoardText.setText(message);
-        mSettingBoardText.setVisibility(VISIBLE);
-    }
+        turnRect.left = statusRect.left;
+        turnRect.bottom = statusRect.bottom;
+        turnRect.top = turnRect.bottom - buttonHeight;
+        turnRect.right = turnRect.left + statusRect.width() / 2;
 
-    public void hideOpponentSettingBoardNotification() {
-        mSettingBoardText.setVisibility(GONE);
+        chatRect.left = turnRect.right;
+        chatRect.top = turnRect.top;
+        chatRect.right = chatRect.left + statusRect.width() / 2;
+        chatRect.bottom = chatRect.top + buttonHeight;
+
+        // fixing
+        statusRect.bottom = chatRect.top;
+
+        int widthSpec = MeasureSpec.makeMeasureSpec(enemyRect.width(), MeasureSpec.EXACTLY);
+        int heightSpec = MeasureSpec.makeMeasureSpec(enemyRect.height(), MeasureSpec.EXACTLY);
+        enemyBoard.measure(widthSpec, heightSpec);
+
+        widthSpec = MeasureSpec.makeMeasureSpec(myRect.width(), MeasureSpec.AT_MOST);
+        heightSpec = MeasureSpec.makeMeasureSpec(myRect.height(), MeasureSpec.AT_MOST);
+        myBoard.measure(widthSpec, heightSpec);
+
+        widthSpec = MeasureSpec.makeMeasureSpec(statusRect.width(), MeasureSpec.AT_MOST);
+        heightSpec = MeasureSpec.makeMeasureSpec(statusRect.height(), MeasureSpec.AT_MOST);
+        statusBoard.measure(widthSpec, heightSpec);
+
+        widthSpec = MeasureSpec.makeMeasureSpec(chatRect.width(), MeasureSpec.EXACTLY);
+        heightSpec = MeasureSpec.makeMeasureSpec(chatRect.height(), MeasureSpec.EXACTLY);
+        chat.measure(widthSpec, heightSpec);
+
+        widthSpec = MeasureSpec.makeMeasureSpec(turnRect.width(), MeasureSpec.EXACTLY);
+        heightSpec = MeasureSpec.makeMeasureSpec(turnRect.height(), MeasureSpec.EXACTLY);
+        turn.measure(widthSpec, heightSpec);
     }
 }
