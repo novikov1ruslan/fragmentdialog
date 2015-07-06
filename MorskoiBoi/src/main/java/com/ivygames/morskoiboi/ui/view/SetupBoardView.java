@@ -309,11 +309,7 @@ public class SetupBoardView extends BaseBoardView {
         int maxWidth = horizontalFreeArea - mMargin * 2;
 
         // make rect square (margin will be recalculated)
-        if (maxWidth > maxHeight) {
-            mCellSize = maxHeight / mBoard.getHorizontalDimension();
-        } else {
-            mCellSize = maxWidth / mBoard.getVerticalDimension();
-        }
+        mCellSize = calculateSquareCellSize(maxHeight, maxWidth);
 
         int size = mCellSize * mBoard.getHorizontalDimension();
         int horizontalMargin = (horizontalFreeArea - size) / 2;
@@ -326,6 +322,14 @@ public class SetupBoardView extends BaseBoardView {
 
         mHalfCellSize = mCellSize / 2;
         calcFrameRect();
+    }
+
+    private int calculateSquareCellSize(int maxHeight, int maxWidth) {
+        if (maxWidth > maxHeight) {
+            return maxHeight / mBoard.getHorizontalDimension();
+        } else {
+            return maxWidth / mBoard.getVerticalDimension();
+        }
     }
 
     private void setCurrentShip(Ship ship) {

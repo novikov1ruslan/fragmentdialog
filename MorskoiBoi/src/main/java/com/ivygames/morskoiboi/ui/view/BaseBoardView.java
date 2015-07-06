@@ -84,17 +84,10 @@ abstract class BaseBoardView extends TouchView {
     private void drawMark(Canvas canvas, boolean isMiss, int left, int top) {
         float cx = left + mHalfCellSize;
         float cy = top + mHalfCellSize;
-        // float cellPadding = mCellSize / 5;
-        // if (cellPadding < 1) {
-        // cellPadding = 1;
-        // }
         float radius = mHalfCellSize - mCellSize / 5;
         canvas.drawCircle(cx, cy, radius, isMiss ? mMissBgPaint : mHitBgPaint);
         canvas.drawCircle(cx, cy, radius, isMiss ? mMissOuterPaint : mHitOuterPaint);
         canvas.drawCircle(cx, cy, radius - mCellSize / 6, isMiss ? mMissInnerPaint : mHitInnerPaint);
-        // if (!isMiss) {
-        // canvas.drawCircle(cx, cy, radius - mCellSize / 6, mHitInnerPaint);
-        // }
     }
 
     @Override

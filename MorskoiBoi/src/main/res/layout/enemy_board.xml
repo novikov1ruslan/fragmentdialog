@@ -2,9 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/enemy_board"
     android:layout_width="match_parent"
-    android:layout_gravity="center"
-    android:layout_margin="@dimen/board_border"
-    android:layout_marginBottom="@dimen/main_buttons_margin">
+    android:layout_gravity="center">
 
     <com.ivygames.morskoiboi.ui.view.EnemyBoardView
         android:id="@+id/board_view_enemy"
@@ -18,6 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="32dp"
+        android:padding="@dimen/setting_board_notif_padding"
         android:text="Sagi Mizrachi is placing his ships" />
 </FrameLayout>

@@ -15,6 +15,7 @@
     <dimen name="button_main_textSize">20dp</dimen>
     <dimen name="ship_border">2dp</dimen>
     <dimen name="board_border">2dp</dimen>
+    <dimen name="board_padding">2dp</dimen>
     <dimen name="turn_border">4dp</dimen>
     <dimen name="list_divider_height">2dp</dimen>
     <dimen name="high_score_item_height">48dp</dimen>
@@ -65,5 +66,6 @@
     <!-- lost -->
     <dimen name="lost_text_margin">16dp</dimen>
     <dimen name="tut_screen_padding">16dp</dimen>
+    <dimen name="setting_board_notif_padding">32dp</dimen>
 
 </resources>
