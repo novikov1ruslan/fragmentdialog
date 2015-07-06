@@ -54,7 +54,7 @@
                 android:id="@+id/board_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/board_border" />
+                android:padding="@dimen/board_padding" />
         </FrameLayout>
     </LinearLayout>
 

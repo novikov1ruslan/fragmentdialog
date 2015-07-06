@@ -8,7 +8,7 @@
         android:id="@+id/board_view_enemy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/board_border" />
+        android:padding="@dimen/board_padding" />
 
     <TextView
         android:id="@+id/setting_board_notification"

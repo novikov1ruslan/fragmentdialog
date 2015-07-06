@@ -71,7 +71,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:padding="@dimen/board_border" />
+                android:padding="@dimen/board_padding" />
 
             <LinearLayout
                 android:layout_height="match_parent"
