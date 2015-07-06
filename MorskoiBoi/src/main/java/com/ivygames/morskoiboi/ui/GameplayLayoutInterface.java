@@ -22,7 +22,10 @@ public interface GameplayLayoutInterface {
 
     void setEnemyBoard(Board mEnemyPublicBoard);
 
-    void setAlarmTime(int alarmTimeSeconds);
+    /**
+     * @param millis time in milliseconds
+     */
+    void setAlarmTime(int millis);
 
     void lock();
 

@@ -22,6 +22,7 @@ import java.util.Collection;
 public class FleetView extends View {
 
     private static final int DEFAULT_MARGIN_BETWEEN_SHIPS = 4;
+    private static final String WIDEST_LETTER = "4";
 
     private final int mMarginBetweenShips;
 
@@ -29,6 +30,7 @@ public class FleetView extends View {
     private final Bitmap mBattleship;
     private final Bitmap mDestroyer;
     private final Bitmap mGunboat;
+    private final float mLetterWidth;
 
     private Rect mCarrierBounds;
     private Rect mBattleshipBounds;
@@ -42,8 +44,6 @@ public class FleetView extends View {
 
     private final Paint mLinePaint;
     private final Paint mTextPaint = new Paint();
-    private final Rect mTextBounds = new Rect();
-    // private final Rect mOuterRect = new Rect();
 
     private int[] mMyBuckets;
     private int[] mEnemyBuckets;
@@ -61,15 +61,16 @@ public class FleetView extends View {
         attributesArray.recycle();
 
         mLinePaint = UiUtils.newStrokePaint(getResources(), R.color.line);
-        float mTextSize = context.getResources().getDimension(R.dimen.status_text_size);
+        float mTextSize = getResources().getDimension(R.dimen.status_text_size);
         mTextPaint.setTextSize(mTextSize);
         Typeface typeface = Typeface.DEFAULT_BOLD;
         mTextPaint.setTypeface(typeface);
         mTextPaint.setTextAlign(Paint.Align.LEFT);
-        mTextPaint.getTextBounds("4", 0, 1, mTextBounds);
 
-        mTextColor = context.getResources().getColor(R.color.status_text);
-        mZeroTextColor = context.getResources().getColor(R.color.status_zero_text);
+        mLetterWidth = mTextPaint.measureText(WIDEST_LETTER);
+
+        mTextColor = getResources().getColor(R.color.status_text);
+        mZeroTextColor = getResources().getColor(R.color.status_zero_text);
 
         if (isInEditMode()) {
             mMyBuckets = new int[]{4, 3, 2, 1};
@@ -133,7 +134,7 @@ public class FleetView extends View {
         canvas.drawText(String.valueOf(mMyBuckets[bucket]), textLeft, top + mUnitHeight, mTextPaint);
 
         mTextPaint.setColor(getTextColor(mEnemyBuckets[bucket]));
-        int textRight = w - mTextBounds.width();
+        int textRight = (int) (w - mLetterWidth);
         canvas.drawText(String.valueOf(mEnemyBuckets[bucket]), textRight, top + mUnitHeight, mTextPaint);
 
         canvas.drawLine(0, top, w, top, mLinePaint);
@@ -175,11 +176,11 @@ public class FleetView extends View {
         // Ln.v("w=" + w + ", h=" + h);
 
         int textMargin = w / 20;
-        int shipArea = w - mTextBounds.width() * 2 - textMargin * 2;
+        int shipArea = (int) (w - mLetterWidth * 2 - textMargin * 2);
         int unitWidth = shipArea / 4;
 
         if (unitWidth < 1) {
-            Ln.e("impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mTextBounds.width());
+            Ln.e("impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mLetterWidth);
             // FIXME: maybe because you haven't implemented onMeasure() system thinks no size is needed
             return;
         }

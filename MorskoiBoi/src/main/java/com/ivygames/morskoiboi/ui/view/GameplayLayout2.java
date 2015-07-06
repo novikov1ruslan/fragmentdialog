@@ -11,7 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
@@ -25,7 +24,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class GameplayLayout2 extends TestLayout implements View.OnClickListener {
+public class GameplayLayout2 extends AbstractGameplayLayout implements View.OnClickListener {
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
@@ -41,7 +40,7 @@ public class GameplayLayout2 extends TestLayout implements View.OnClickListener 
     private long mUnlockedTime;
     private boolean mGameIsOn;
     private Bitmap mBwBitmap;
-    private TimerView mTimerView;
+    private TimerViewInterface mTimerView;
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
@@ -69,7 +68,7 @@ public class GameplayLayout2 extends TestLayout implements View.OnClickListener 
         });
         mPlayerNameView = (TextView) findViewById(R.id.player);
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
-        mTimerView = (TimerView) findViewById(R.id.timer);
+        mTimerView = (TimerViewInterface) findViewById(R.id.timer);
 
         mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
         if (mVibrationButton != null) {
@@ -278,12 +277,12 @@ public class GameplayLayout2 extends TestLayout implements View.OnClickListener 
     }
 
     @Override
-    public void setTime(int seconds) {
-        mTimerView.setTime(seconds);
+    public void setCurrentTime(int seconds) {
+        mTimerView.setCurrentTime(seconds);
     }
 
     public void setAlarmTime(int alarmTimeSeconds) {
-        mTimerView.setAlarmTime(alarmTimeSeconds);
+        mTimerView.setAlarmThreshold(alarmTimeSeconds);
     }
 
     public void setListener(GameplayLayoutListener listener) {
@@ -312,7 +311,7 @@ public class GameplayLayout2 extends TestLayout implements View.OnClickListener 
     }
 
     public void hideChatButton() {
-        mChatButton.setVisibility(GONE);
+//        mChatButton.setVisibility(GONE);
     }
 
     public void hideVibrationSetting() {

@@ -4,6 +4,7 @@
     <color name="bright_navy_blue">#1974D2</color>
     <color name="royal_blue">#002366</color>
     <color name="royal_blue_web">#4169E1</color>
+    <color name="chat_pressed">#D32F2F</color>
 
     <color name="old_main">#21458B</color>
     <color name="main">@color/navy_blue</color>

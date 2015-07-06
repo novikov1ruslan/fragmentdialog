@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ui.GameplayLayoutInterface;
 
-public abstract class TestLayout extends ViewGroup implements GameplayLayoutInterface, TimeConsumer {
+public abstract class AbstractGameplayLayout extends ViewGroup implements GameplayLayoutInterface, TimeConsumer {
 
     private static final float ASPECT_RATIO = 1.5f;
     private Rect aspectRect = new Rect();
@@ -25,7 +25,7 @@ public abstract class TestLayout extends ViewGroup implements GameplayLayoutInte
     private View chat;
     private View turn;
 
-    public TestLayout(Context context, AttributeSet attrs) {
+    public AbstractGameplayLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 //        aspectPaint.setStyle(Paint.Style.FILL);
 //        aspectPaint.setColor(0xFF0000);
@@ -94,15 +94,17 @@ public abstract class TestLayout extends ViewGroup implements GameplayLayoutInte
         statusRect.bottom = enemyRect.top;
 
         int buttonHeight = statusRect.height() / 4;
+        int buttonWidth = statusRect.width() / 2;
 
         turnRect.left = statusRect.left;
         turnRect.bottom = statusRect.bottom;
         turnRect.top = turnRect.bottom - buttonHeight;
-        turnRect.right = turnRect.left + statusRect.width() / 2;
+        turnRect.right = turnRect.left + buttonWidth;
 
         chatRect.left = turnRect.right;
         chatRect.top = turnRect.top;
-        chatRect.right = chatRect.left + statusRect.width() / 2;
+//        chatRect.right = chatRect.left + buttonHeight;
+        chatRect.right = chatRect.left + buttonWidth;
         chatRect.bottom = chatRect.top + buttonHeight;
 
         // fixing

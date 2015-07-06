@@ -19,8 +19,8 @@ public final class NetworkReceiver
         String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
         boolean isFailOver = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
 
-        NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-        NetworkInfo otherNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
+        NetworkInfo currentNetworkInfo = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+        NetworkInfo otherNetworkInfo = intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
 
         Ln.d("noConnectivity=" + noConnectivity + "; reason=" + reason + "; info=" + info + "; isFailOver=" + isFailOver + "; currentNetworkInfo=" + currentNetworkInfo + "; otherNetworkInfo=" + otherNetworkInfo);
     }

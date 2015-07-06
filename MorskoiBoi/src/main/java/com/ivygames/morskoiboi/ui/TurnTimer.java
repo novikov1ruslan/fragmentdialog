@@ -22,24 +22,21 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
         void onTimerExpired();
     }
 
+    /**
+     * @param timeout timeout in milliseconds
+     */
     TurnTimer(int timeout, TimeConsumer layout, TimerListener listener, GameplaySoundManager soundManager) {
         mTimeout = timeout;
-
-        Validate.notNull(layout);
-        mLayout = layout;
-
-        Validate.notNull(listener);
-        mListener = listener;
-
-        Validate.notNull(soundManager);
-        mSoundManager = soundManager;
+        mLayout = Validate.notNull(layout);
+        mListener = Validate.notNull(listener);
+        mSoundManager = Validate.notNull(soundManager);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         mStartTime = SystemClock.elapsedRealtime();
-        mLayout.setTime(mTimeout);
+        mLayout.setCurrentTime(mTimeout);
     }
 
     @Override
@@ -62,7 +59,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
 
     private void updateProgress() {
         int timeLeft = getTimeLeft();
-        if (shouldPlayAlarmSound() && mSoundManager.isSoundOn()) {
+        if (shouldPlayAlarmSound()) {
             mSoundManager.playAlarmSound();
         }
 
@@ -86,7 +83,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        mLayout.setTime(values[0]);
+        mLayout.setCurrentTime(values[0]);
     }
 
     @Override
@@ -95,6 +92,10 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
         if (!isCancelled()) {
             Ln.d("timer finished - transferring turn");
             mListener.onTimerExpired();
+            if (mSoundManager.isAlarmPlaying()) {
+                Ln.v("timer expired - stopping alarm");
+                mSoundManager.stopAlarmSound();
+            }
         }
     }
 

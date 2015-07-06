@@ -278,12 +278,12 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
     }
 
     @Override
-    public void setTime(int seconds) {
-        mTimerView.setTime(seconds);
+    public void setCurrentTime(int seconds) {
+        mTimerView.setCurrentTime(seconds);
     }
 
     public void setAlarmTime(int alarmTimeSeconds) {
-        mTimerView.setAlarmTime(alarmTimeSeconds);
+        mTimerView.setAlarmThreshold(alarmTimeSeconds);
     }
 
     public void setListener(GameplayLayoutListener listener) {

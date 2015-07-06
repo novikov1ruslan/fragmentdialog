@@ -10,7 +10,7 @@ import android.view.View;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
-public class TimerView extends View {
+public class TimerView extends View implements TimerViewInterface {
 
     private static final int DEFAULT_TOTAL_TIME = 120000;
 
@@ -22,7 +22,7 @@ public class TimerView extends View {
     private final Paint mInnerWarningPaint;
     private final Paint mOuterPaint;
 
-    private int mAlarmTimeSeconds;
+    private int mAlarmTime;
 
     public TimerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,16 +43,23 @@ public class TimerView extends View {
     }
 
     private Paint getInnerPaint() {
-        return mTime > mAlarmTimeSeconds ? mInnerPaint : mInnerWarningPaint;
+        return mTime > mAlarmTime ? mInnerPaint : mInnerWarningPaint;
     }
 
+    @Override
     public void setTotalTime(int time) {
         mTotalTime = time;
     }
 
-    public void setTime(int time) {
+    @Override
+    public void setCurrentTime(int time) {
         mTime = time;
         invalidate();
+    }
+
+    @Override
+    public void setAlarmThreshold(int millis) {
+        mAlarmTime = millis;
     }
 
     @Override
@@ -66,9 +73,5 @@ public class TimerView extends View {
 
         mInnerRect.right = mOuterRect.right;
         mInnerRect.bottom = mOuterRect.bottom;
-    }
-
-    public void setAlarmTime(int alarmTimeSeconds) {
-        mAlarmTimeSeconds = alarmTimeSeconds;
     }
 }
