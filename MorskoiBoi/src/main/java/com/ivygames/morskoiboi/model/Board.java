@@ -276,9 +276,9 @@ public class Board {
             putShipAt(ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
         } else {
             if (ship.isHorizontal()) {
-                putShipAt(ship, getWidth() - ship.getSize(), y);
+                putShipAt(ship, getHorizontalDimension() - ship.getSize(), y);
             } else {
-                putShipAt(ship, x, getWidth() - ship.getSize());
+                putShipAt(ship, x, getHorizontalDimension() - ship.getSize());
             }
         }
     }
@@ -371,11 +371,11 @@ public class Board {
         return health;
     }
 
-    public int getWidth() {
+    public int getHorizontalDimension() {
         return DIMENSION;
     }
 
-    public int getHeight() {
+    public int getVerticalDimension() {
         return DIMENSION;
     }
 

@@ -15,7 +15,7 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 
 import java.util.Collection;
 
-/*package*/abstract class BaseBoardView extends TouchView {
+abstract class BaseBoardView extends TouchView {
 
     private final Paint mTurnBorderPaint;
     private final Paint mBorderPaint;
@@ -77,7 +77,7 @@ import java.util.Collection;
 
     public final void setBoard(Board board) {
         mBoard = board;
-        mBoardHeight = mBoard.getHeight();
+        mBoardHeight = mBoard.getVerticalDimension();
         invalidate();
     }
 
@@ -101,7 +101,7 @@ import java.util.Collection;
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int boardWidth = mBoard.getWidth();
+        int boardWidth = mBoard.getHorizontalDimension();
 
         // draw vertical lines
         for (int i = 0; i < boardWidth + 1; i++) {
@@ -154,8 +154,8 @@ import java.util.Collection;
         setMeasuredDimension(w, w);
 
         int availableSize = w - getPaddingLeft() - getPaddingRight();
-        mCellSize = availableSize / mBoard.getWidth();
-        int boardSize = mCellSize * mBoard.getWidth();
+        mCellSize = availableSize / mBoard.getHorizontalDimension();
+        int boardSize = mCellSize * mBoard.getHorizontalDimension();
 
         mBoardRect.left = (w - boardSize) / 2;
         mBoardRect.top = getPaddingTop();

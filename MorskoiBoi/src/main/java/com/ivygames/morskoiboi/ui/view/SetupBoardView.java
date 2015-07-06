@@ -310,12 +310,12 @@ public class SetupBoardView extends BaseBoardView {
 
         // make rect square (margin will be recalculated)
         if (maxWidth > maxHeight) {
-            mCellSize = maxHeight / mBoard.getWidth();
+            mCellSize = maxHeight / mBoard.getHorizontalDimension();
         } else {
-            mCellSize = maxWidth / mBoard.getHeight();
+            mCellSize = maxWidth / mBoard.getVerticalDimension();
         }
 
-        int size = mCellSize * mBoard.getWidth();
+        int size = mCellSize * mBoard.getHorizontalDimension();
         int horizontalMargin = (horizontalFreeArea - size) / 2;
         mBoardRect.left = horizontalMargin;
         mBoardRect.right = mBoardRect.left + size;

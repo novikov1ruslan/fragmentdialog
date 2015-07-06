@@ -72,7 +72,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     }
 
     private boolean shouldPlayAlarmSound() {
-        return getTimeLeft() <= GameplaySoundManager.ALARM_TIME_SECONDS && !mSoundManager.isAlarmPlaying();
+        return getTimeLeft() <= (GameplaySoundManager.ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
     }
 
     public int getTimeLeft() {
