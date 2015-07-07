@@ -13,6 +13,8 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import org.apache.commons.lang3.Validate;
+
 import java.util.Collection;
 
 abstract class BaseBoardView extends TouchView {
@@ -22,6 +24,7 @@ abstract class BaseBoardView extends TouchView {
 
     protected final Paint mShipPaint;
     protected final Paint mAimingPaint;
+    private final float mTurnBorderSize;
     protected int mCellSize;
     protected int mHalfCellSize;
     protected Board mBoard;
@@ -40,6 +43,7 @@ abstract class BaseBoardView extends TouchView {
     // private final int mBorder;
     private boolean mShowTurn;
     private int mBoardHeight;
+    private int mMarkRadius;
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -70,13 +74,11 @@ abstract class BaseBoardView extends TouchView {
         mBoardRect = new Rect(0, 0, 0, 0);
         mTurnRect = new Rect(0, 0, 0, 0);
 
-        if (isInEditMode()) {
-            setBoard(new Board());
-        }
+        mTurnBorderSize = getResources().getDimension(R.dimen.ship_border);
     }
 
     public final void setBoard(Board board) {
-        mBoard = board;
+        mBoard = Validate.notNull(board);
         mBoardHeight = mBoard.getVerticalDimension();
         invalidate();
     }
@@ -84,10 +86,9 @@ abstract class BaseBoardView extends TouchView {
     private void drawMark(Canvas canvas, boolean isMiss, int left, int top) {
         float cx = left + mHalfCellSize;
         float cy = top + mHalfCellSize;
-        float radius = mHalfCellSize - mCellSize / 5;
-        canvas.drawCircle(cx, cy, radius, isMiss ? mMissBgPaint : mHitBgPaint);
-        canvas.drawCircle(cx, cy, radius, isMiss ? mMissOuterPaint : mHitOuterPaint);
-        canvas.drawCircle(cx, cy, radius - mCellSize / 6, isMiss ? mMissInnerPaint : mHitInnerPaint);
+        canvas.drawCircle(cx, cy, mMarkRadius, isMiss ? mMissBgPaint : mHitBgPaint);
+        canvas.drawCircle(cx, cy, mMarkRadius, isMiss ? mMissOuterPaint : mHitOuterPaint);
+        canvas.drawCircle(cx, cy, mMarkRadius - mCellSize / 6, isMiss ? mMissInnerPaint : mHitInnerPaint);
     }
 
     @Override
@@ -146,7 +147,6 @@ abstract class BaseBoardView extends TouchView {
         super.onLayout(changed, left, top, right, bottom);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-
         int smallestWidth = w < h ? w : h;
 
         int availableSize = smallestWidth - getPaddingLeft() - getPaddingRight();
@@ -159,15 +159,19 @@ abstract class BaseBoardView extends TouchView {
         mBoardRect.bottom = mBoardRect.top + boardSize;
 
         mHalfCellSize = mCellSize / 2;
+        mMarkRadius = mHalfCellSize - mCellSize / 5;
 
         calcFrameRect();
     }
 
+    /**
+     * Frame Rect is larger by border
+     */
     protected final void calcFrameRect() {
-        mTurnRect.left = mBoardRect.left - getPaddingLeft() / 2;
-        mTurnRect.right = mBoardRect.right + getPaddingRight() / 2;
-        mTurnRect.top = mBoardRect.top - getPaddingTop() / 2;
-        mTurnRect.bottom = mBoardRect.bottom + getPaddingBottom() / 2;
+        mTurnRect.left = (int) (mBoardRect.left - mTurnBorderSize / 2);
+        mTurnRect.right = (int) (mBoardRect.right + mTurnBorderSize / 2);
+        mTurnRect.top = (int) (mBoardRect.top - mTurnBorderSize / 2);
+        mTurnRect.bottom = (int) (mBoardRect.bottom + mTurnBorderSize / 2);
     }
 
     private void drawShips(Canvas canvas) {

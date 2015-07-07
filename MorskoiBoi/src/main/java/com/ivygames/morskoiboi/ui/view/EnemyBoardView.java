@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -39,12 +40,12 @@ public class EnemyBoardView extends BaseBoardView {
     private Rect mLockSrcRect;
     private Rect mLockDstRect;
 
-    private int mLockPadding;
-
     private final Animation mSplashAnimation;
     private final Animation mExplosionAnimation;
 
     private final Rect mDstRect;
+    private int mAnimationHorOffset;
+    private int mAnimationVertOffset;
 
     public interface ShotListener {
         void onShot(int i, int j);
@@ -56,7 +57,6 @@ public class EnemyBoardView extends BaseBoardView {
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-//        mSettingBoardText = (TextView) inflate(context, R.layout.setting_board_notification, null);
 
         mAimingLockedPaint = UiUtils.newFillPaint(getResources(), R.color.aim_locked);
         mLocked = true;
@@ -65,6 +65,13 @@ public class EnemyBoardView extends BaseBoardView {
         mDstRect = new Rect();
 
         mSplashAnimation = new Animation(1000, 2f);
+        fillSplashAnimation();
+
+        mExplosionAnimation = new Animation(1000, 2f);
+        fillExplosionAnimation();
+    }
+
+    private void fillSplashAnimation() {
         Bitmaps bitmaps = Bitmaps.getInstance();
         mSplashAnimation.adFrame(bitmaps.getBitmap(R.drawable.splash_01));
         mSplashAnimation.adFrame(bitmaps.getBitmap(R.drawable.splash_02));
@@ -76,8 +83,10 @@ public class EnemyBoardView extends BaseBoardView {
         mSplashAnimation.adFrame(bitmaps.getBitmap(R.drawable.splash_08));
         mSplashAnimation.adFrame(bitmaps.getBitmap(R.drawable.splash_09));
         mSplashAnimation.adFrame(bitmaps.getBitmap(R.drawable.splash_10));
+    }
 
-        mExplosionAnimation = new Animation(1000, 2f);
+    private void fillExplosionAnimation() {
+        Bitmaps bitmaps = Bitmaps.getInstance();
         mExplosionAnimation.adFrame(bitmaps.getBitmap(R.drawable.explosion_01));
         mExplosionAnimation.adFrame(bitmaps.getBitmap(R.drawable.explosion_03));
         mExplosionAnimation.adFrame(bitmaps.getBitmap(R.drawable.explosion_05));
@@ -141,13 +150,13 @@ public class EnemyBoardView extends BaseBoardView {
         super.onDraw(canvas);
 
         if (mAim != null) {
-            int left = mAim.getX() * mCellSize + mLockPadding + mBoardRect.left;
-            int top = mAim.getY() * mCellSize + mLockPadding + mBoardRect.top;
+            int left = mAim.getX() * mCellSize + mBoardRect.left;
+            int top = mAim.getY() * mCellSize + mBoardRect.top;
             // canvas.drawBitmap(mLockBitmapSrc, left, top, null);
             mLockDstRect.left = left;
             mLockDstRect.top = top;
-            mLockDstRect.right = left + mCellSize - mLockPadding * 2;
-            mLockDstRect.bottom = top + mCellSize - mLockPadding * 2;
+            mLockDstRect.right = left + mCellSize;
+            mLockDstRect.bottom = top + mCellSize;
             canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, mLockDstRect, null);
         }
 
@@ -168,22 +177,20 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private void animate(Animation animation, Canvas canvas) {
-        if (animation.isRunning()) {
-            int dx = animation.getAim().getX() * mCellSize + mBoardRect.left + mHalfCellSize;
-            int dy = animation.getAim().getY() * mCellSize + mBoardRect.top + mHalfCellSize;
+        int dx = animation.getAim().getX() * mCellSize + mAnimationHorOffset;
+        int dy = animation.getAim().getY() * mCellSize + mAnimationVertOffset;
 
-            int d = (int) (animation.getCellRatio() * mHalfCellSize);
-            mDstRect.left = dx - d;
-            mDstRect.top = dy - d;
-            mDstRect.right = dx + d;
-            mDstRect.bottom = dy + d;
-            canvas.drawBitmap(animation.getCurrentFrame(), animation.getBounds(), mDstRect, null);
-            postInvalidateDelayed(animation.getFrameDuration());
-        }
+        int d = (int) (animation.getCellRatio() * mHalfCellSize);
+        mDstRect.left = dx - d;
+        mDstRect.top = dy - d;
+        mDstRect.right = dx + d;
+        mDstRect.bottom = dy + d;
+        canvas.drawBitmap(animation.getCurrentFrame(), animation.getBounds(), mDstRect, null);
+        postInvalidateDelayed(animation.getFrameDuration());
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         boolean processed = super.onTouchEvent(event);
         // TODO: create universal procedure to map x,y to cell
         if (mTouchAction == MotionEvent.ACTION_DOWN && !mLocked) {
@@ -245,4 +252,14 @@ public class EnemyBoardView extends BaseBoardView {
         }
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (!changed) {
+            return;
+        }
+
+        super.onLayout(true, left, top, right, bottom);
+        mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
+        mAnimationVertOffset = mBoardRect.top + mHalfCellSize;
+    }
 }

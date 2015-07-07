@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
@@ -153,7 +154,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         boolean processed = super.onTouchEvent(event);
 
         if (mPickedShip != null) {
@@ -292,7 +293,7 @@ public class SetupBoardView extends BaseBoardView {
             return;
         }
 
-        super.onLayout(changed, left, top, right, bottom);
+        super.onLayout(true, left, top, right, bottom);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
 
