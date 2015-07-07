@@ -1,29 +1,20 @@
 package com.ivygames.morskoiboi.ui.view;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 import org.commons.logger.Ln;
 
-abstract class TouchView extends View {
+public class TouchState {
 
-    protected int mTouchX;
-    protected int mTouchY;
-    protected int mTouchAction;
-    protected int mDragStatus;
+    private int mTouchX;
+    private int mTouchY;
+    private int mTouchAction = MotionEvent.ACTION_UP;
+    private int mDragStatus;
 
     protected static final int START_DRAGGING = 1;
     private static final int STOP_DRAGGING = 0;
 
-    public TouchView(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        mTouchAction = MotionEvent.ACTION_UP;
-    }
-
-    @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchX = (int) event.getX();
         mTouchY = (int) event.getY();
@@ -31,7 +22,7 @@ abstract class TouchView extends View {
         if (mTouchAction == MotionEvent.ACTION_DOWN) {
             Ln.v("ACTION_DOWN: " + mTouchX + ":" + mTouchY);
             mDragStatus = START_DRAGGING;
-        } else if (mTouchAction == MotionEvent.ACTION_UP) {
+        } else if (getTouchAction() == MotionEvent.ACTION_UP) {
             Ln.v("ACTION_UP: " + mTouchX + ":" + mTouchY);
             mDragStatus = STOP_DRAGGING;
         }
@@ -39,4 +30,19 @@ abstract class TouchView extends View {
         return true;
     }
 
+    public int getTouchX() {
+        return mTouchX;
+    }
+
+    public int getTouchY() {
+        return mTouchY;
+    }
+
+    public int getTouchAction() {
+        return mTouchAction;
+    }
+
+    public int getDragStatus() {
+        return mDragStatus;
+    }
 }

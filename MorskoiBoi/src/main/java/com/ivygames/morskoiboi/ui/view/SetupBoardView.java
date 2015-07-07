@@ -50,7 +50,7 @@ public class SetupBoardView extends BaseBoardView {
      * needed to perform double clicks on the ships
      */
     private PickShipTask mLongPressTask;
-    private final Handler mHandler;
+    private final Handler mHandler = new Handler();
     private final int mTouchSlop;
     private final Paint mConflictCellPaint;
 
@@ -60,10 +60,12 @@ public class SetupBoardView extends BaseBoardView {
     private final Bitmap mGunboat;
 
     private Bitmap mCurrentBitmap;
+    private static TouchState mTouchState = new TouchState();
+    private int mTouchX;
+    private int mTouchY;
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        mHandler = new Handler();
 
         mMargin = isInEditMode() ? 20 : (int) getContext().getResources().getDimension(R.dimen.board_setup_margin);
         Resources res = getContext().getResources();
@@ -155,14 +157,16 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        boolean processed = super.onTouchEvent(event);
+        boolean processed = mTouchState.onTouchEvent(event);
+        mTouchX = mTouchState.getTouchX();
+        mTouchY = mTouchState.getTouchY();
 
         if (mPickedShip != null) {
             centerPickedShipAround(mTouchX, mTouchY);
             updateAim();
         }
 
-        switch (mTouchAction) {
+        switch (mTouchState.getTouchAction()) {
             case MotionEvent.ACTION_MOVE:
                 if (mLongPressTask != null && hasMovedBeyondThreshold()) {
                     runLongPressTask();

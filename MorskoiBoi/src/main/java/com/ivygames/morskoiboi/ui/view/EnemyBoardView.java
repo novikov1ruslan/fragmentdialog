@@ -45,7 +45,11 @@ public class EnemyBoardView extends BaseBoardView {
 
     private final Rect mDstRect;
     private int mAnimationHorOffset;
-    private int mAnimationVertOffset;
+    private int mAnimationVerOffset;
+    private int mTouchX;
+    private int mTouchY;
+    private final TouchState mTouchState = new TouchState();
+    private int mTouchAction;
 
     public interface ShotListener {
         void onShot(int i, int j);
@@ -161,7 +165,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         // draw dragged ship
-        if (mDragStatus == START_DRAGGING) {
+        if (mTouchState.getDragStatus() == TouchState.START_DRAGGING) {
 
             // aiming
             int i = mTouchX / mCellSize;
@@ -178,7 +182,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     private void animate(Animation animation, Canvas canvas) {
         int dx = animation.getAim().getX() * mCellSize + mAnimationHorOffset;
-        int dy = animation.getAim().getY() * mCellSize + mAnimationVertOffset;
+        int dy = animation.getAim().getY() * mCellSize + mAnimationVerOffset;
 
         int d = (int) (animation.getCellRatio() * mHalfCellSize);
         mDstRect.left = dx - d;
@@ -191,7 +195,10 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        boolean processed = super.onTouchEvent(event);
+        boolean processed = mTouchState.onTouchEvent(event);
+        mTouchX = mTouchState.getTouchX();
+        mTouchY = mTouchState.getTouchY();
+        mTouchAction = mTouchState.getTouchAction();
         // TODO: create universal procedure to map x,y to cell
         if (mTouchAction == MotionEvent.ACTION_DOWN && !mLocked) {
             mShotListener.onAimingStarted();
@@ -260,6 +267,6 @@ public class EnemyBoardView extends BaseBoardView {
 
         super.onLayout(true, left, top, right, bottom);
         mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
-        mAnimationVertOffset = mBoardRect.top + mHalfCellSize;
+        mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
@@ -17,7 +18,7 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.Collection;
 
-abstract class BaseBoardView extends TouchView {
+abstract class BaseBoardView extends View {
 
     private final Paint mTurnBorderPaint;
     private final Paint mBorderPaint;
@@ -40,7 +41,6 @@ abstract class BaseBoardView extends TouchView {
     private final Paint mMissBgPaint;
     private final Paint mMissInnerPaint;
 
-    // private final int mBorder;
     private boolean mShowTurn;
     private int mBoardHeight;
     private int mMarkRadius;
