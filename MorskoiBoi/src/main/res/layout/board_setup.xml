@@ -7,7 +7,7 @@
         android:id="@+id/board_view"
         android:layout_width="match_parent"
         android:layout_above="@+id/buttons_panel"
-        android:padding="@dimen/board_padding" />
+        android:padding="@dimen/board_setup_margin" />
 
     <ImageButton
         android:id="@+id/help_button"

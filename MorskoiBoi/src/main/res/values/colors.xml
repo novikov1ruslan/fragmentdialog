@@ -35,6 +35,8 @@
     <color name="hit_background">#F8DDE5</color>
     <color name="miss">#0000CD</color>
     <color name="miss_background">#87CEFA</color>
+    <color name="digital_clock_background">#88B3E5FC</color>
+    <color name="digital_clock_alarm_background">#F8DDE5</color>
     <color name="aim">#647F7FFF</color>
     <color name="aim_locked">#64FF7F7F</color>
     <color name="conflict_cell">#7FFF7F7F</color>

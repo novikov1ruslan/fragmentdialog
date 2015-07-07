@@ -375,7 +375,7 @@ public class Board {
         return DIMENSION;
     }
 
-    public int getVerticalDimension() {
+    public int getVerticalDim() {
         return DIMENSION;
     }
 

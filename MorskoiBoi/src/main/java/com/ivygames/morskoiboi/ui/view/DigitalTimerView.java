@@ -2,39 +2,42 @@ package com.ivygames.morskoiboi.ui.view;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.utils.UiUtils;
 
 import java.util.concurrent.TimeUnit;
 
 public class DigitalTimerView extends TextView implements TimerViewInterface {
     private static final String DEFAULT_TEXT = "00:00";
 
-    private final Paint mInnerPaint;
-    private final Paint mInnerWarningPaint;
-//    private final Rect mTextBounds = new Rect();
+    private final int mNormalBackground;
+    private final int mAlarmBackground;
+    private final int mNormalColor;
+    private final int mAlarmColor;
 
     private int mAlarmTime;
     private int mTime;
 
     public DigitalTimerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mInnerPaint = UiUtils.newFillPaint(getResources(), R.color.main);
-        mInnerWarningPaint = UiUtils.newFillPaint(getResources(), R.color.hit);
-        setTextColor(getInnerPaint().getColor());
-        Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "digital_font.ttf");
-        setTypeface(myTypeface);
+        setTypeface(Typeface.createFromAsset(context.getAssets(), "digital_font.ttf"));
         setText(DEFAULT_TEXT);
+        mNormalColor = getResources().getColor(R.color.main);
+        mAlarmColor = getResources().getColor(R.color.hit);
+        mNormalBackground = getResources().getColor(R.color.digital_clock_background);
+        mAlarmBackground = getResources().getColor(R.color.digital_clock_alarm_background);
+
+        setTextColor(mNormalColor);
+//        setBackgroundColor(mNormalBackground);
     }
 
-    private Paint getInnerPaint() {
-        return mTime > mAlarmTime ? mInnerPaint : mInnerWarningPaint;
+    private void update() {
+        setTextColor(mTime > mAlarmTime ? mNormalColor : mAlarmColor);
+//        setBackgroundColor(mTime > mAlarmTime ? mNormalBackground : mAlarmBackground);
     }
 
     private String format(int millis) {
@@ -56,7 +59,7 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
     @Override
     public void setCurrentTime(int time) {
         mTime = time;
-        setTextColor(getInnerPaint().getColor());
+        update();
         setText(format(time));
     }
 
@@ -69,16 +72,18 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         float textSize = 256;
-        mInnerPaint.setTextSize(textSize);
+        Paint paint = new Paint();
+
+        paint.setTextSize(textSize);
         int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
-        float measuredText = mInnerPaint.measureText(DEFAULT_TEXT);
+        float measuredText = paint.measureText(DEFAULT_TEXT);
         if (measuredText > width) {
             textSize = (textSize * width) / measuredText;
         }
 
         // fine tuning
-        while (mInnerPaint.measureText(DEFAULT_TEXT) > width) {
-            mInnerPaint.setTextSize(--textSize);
+        while (paint.measureText(DEFAULT_TEXT) > width) {
+            paint.setTextSize(--textSize);
         }
 
         setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);

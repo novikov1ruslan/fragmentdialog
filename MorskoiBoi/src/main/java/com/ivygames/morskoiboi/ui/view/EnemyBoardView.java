@@ -31,7 +31,7 @@ public class EnemyBoardView extends BaseBoardView {
     private boolean mLocked;
     private final Paint mAimingLockedPaint;
     private Bitmap mNauticalBitmap;
-    private final Random mRandom;
+    private final Random mRandom = new Random(System.currentTimeMillis());
     private Rect mSrcRect;
 
     private Vector2 mAim;
@@ -40,16 +40,16 @@ public class EnemyBoardView extends BaseBoardView {
     private Rect mLockSrcRect;
     private Rect mLockDstRect;
 
-    private final Animation mSplashAnimation;
-    private final Animation mExplosionAnimation;
+    private final Animation mSplashAnimation = new Animation(1000, 2f);
+    private final Animation mExplosionAnimation = new Animation(1000, 2f);
 
-    private final Rect mDstRect;
+    private final Rect mDstRect = new Rect();
     private int mAnimationHorOffset;
     private int mAnimationVerOffset;
+    private final TouchState mTouchState = new TouchState();
+    private int mTouchAction = mTouchState.getTouchAction();
     private int mTouchX;
     private int mTouchY;
-    private final TouchState mTouchState = new TouchState();
-    private int mTouchAction;
 
     public interface ShotListener {
         void onShot(int i, int j);
@@ -64,14 +64,8 @@ public class EnemyBoardView extends BaseBoardView {
 
         mAimingLockedPaint = UiUtils.newFillPaint(getResources(), R.color.aim_locked);
         mLocked = true;
-        mRandom = new Random(System.currentTimeMillis());
 
-        mDstRect = new Rect();
-
-        mSplashAnimation = new Animation(1000, 2f);
         fillSplashAnimation();
-
-        mExplosionAnimation = new Animation(1000, 2f);
         fillExplosionAnimation();
     }
 
@@ -113,7 +107,7 @@ public class EnemyBoardView extends BaseBoardView {
         Bitmap tmp = BitmapFactory.decodeResource(getResources(), R.drawable.nautical8);
         if (tmp == null) {
             Ln.e("could not decode nautical");
-        } else { // TODO: ?
+        } else {
             int x = mRandom.nextInt(tmp.getWidth() - TEXTURE_SIZE);
             int y = mRandom.nextInt(tmp.getHeight() - TEXTURE_SIZE);
             mNauticalBitmap = Bitmap.createBitmap(tmp, x, y, TEXTURE_SIZE, TEXTURE_SIZE);

@@ -79,7 +79,7 @@ abstract class BaseBoardView extends View {
 
     public final void setBoard(Board board) {
         mBoard = Validate.notNull(board);
-        mBoardHeight = mBoard.getVerticalDimension();
+        mBoardHeight = mBoard.getVerticalDim();
         invalidate();
     }
 
@@ -147,14 +147,20 @@ abstract class BaseBoardView extends View {
         super.onLayout(changed, left, top, right, bottom);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-        int smallestWidth = w < h ? w : h;
+        calculateBoardRect(w, h, 0, 0);
+    }
 
-        int availableSize = smallestWidth - getPaddingLeft() - getPaddingRight();
-        mCellSize = availableSize / mBoard.getHorizontalDim();
+    protected final void calculateBoardRect(int w, int h, int horOffset, int verOffset) {
+        int paddedWidth = w - getPaddingLeft() - getPaddingRight();
+        int paddedHeight = h - getPaddingTop() - getPaddingBottom();
+
+        int smallestWidth = paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
+
+        mCellSize = smallestWidth / mBoard.getHorizontalDim();
         int boardSize = mCellSize * mBoard.getHorizontalDim();
 
-        mBoardRect.left = (smallestWidth - boardSize) / 2;
-        mBoardRect.top = getPaddingTop();
+        mBoardRect.left = (w - boardSize) / 2 + horOffset;
+        mBoardRect.top = (h - boardSize) / 2 + verOffset;
         mBoardRect.right = mBoardRect.left + boardSize;
         mBoardRect.bottom = mBoardRect.top + boardSize;
 

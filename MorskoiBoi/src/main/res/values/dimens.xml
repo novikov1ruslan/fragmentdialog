@@ -15,7 +15,7 @@
     <dimen name="button_main_textSize">20dp</dimen>
     <dimen name="ship_border">2dp</dimen>
     <dimen name="board_border">2dp</dimen>
-    <dimen name="board_padding">2dp</dimen>
+    <dimen name="board_padding">4dp</dimen>
     <dimen name="turn_border">4dp</dimen>
     <dimen name="list_divider_height">2dp</dimen>
     <dimen name="high_score_item_height">48dp</dimen>

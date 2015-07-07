@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.ui.view;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -25,8 +24,6 @@ import java.util.PriorityQueue;
 public class SetupBoardView extends BaseBoardView {
 
     private static final long LONG_PRESS_DELAY = 1000;
-
-    private int mMargin;
 
     // the following are drawn at the selection area
     /**
@@ -67,16 +64,11 @@ public class SetupBoardView extends BaseBoardView {
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        mMargin = isInEditMode() ? 20 : (int) getContext().getResources().getDimension(R.dimen.board_setup_margin);
-        Resources res = getContext().getResources();
-
-        mConflictCellPaint = UiUtils.newFillPaint(res, R.color.conflict_cell);
-        // mGreenPaint = UiUtils.newFillPaint(res, R.color.valid_ship_cell);
+        mConflictCellPaint = UiUtils.newFillPaint(getResources(), R.color.conflict_cell);
 
         mPickedShipRect = new Rect();
         mShipSelectionRect = new Rect(0, 0, 0, 0);
         mShipDisplayRect = new Rect(0, 0, 0, 0);
-        mBoardRect = new Rect(mMargin, 0, 0, 0);
 
         Bitmaps bitmaps = Bitmaps.getInstance();
         mAircraftCarrier = bitmaps.getBitmap(R.drawable.aircraft_carrier);
@@ -102,7 +94,6 @@ public class SetupBoardView extends BaseBoardView {
             for (int j = 0; j < 10; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (cell.isReserved()) {
-                    // mGreenPaint.setAlpha((cell.getProximity() * 255) / 16);
                     float left = mBoardRect.left + i * mCellSize + 1;
                     float top = mBoardRect.top + j * mCellSize + 1;
                     float right = left + mCellSize;
@@ -297,7 +288,6 @@ public class SetupBoardView extends BaseBoardView {
             return;
         }
 
-        super.onLayout(true, left, top, right, bottom);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
 
@@ -310,34 +300,14 @@ public class SetupBoardView extends BaseBoardView {
         mShipDisplayRect.right = w;
         mShipDisplayRect.bottom = mShipSelectionRect.bottom;
 
-        int verticalFreeArea = h - mShipSelectionRect.bottom;
-        int horizontalFreeArea = w;
-
-        // calculate max possible rect
-        int maxHeight = verticalFreeArea - mMargin * 2;
-        int maxWidth = horizontalFreeArea - mMargin * 2;
-
-        // make rect square (margin will be recalculated)
-        mCellSize = calculateSquareCellSize(maxHeight, maxWidth);
-
-        int size = mCellSize * mBoard.getHorizontalDim();
-        int horizontalMargin = (horizontalFreeArea - size) / 2;
-        mBoardRect.left = horizontalMargin;
-        mBoardRect.right = mBoardRect.left + size;
-
-        int verticalMargin = (verticalFreeArea - size) / 2;
-        mBoardRect.top = mShipSelectionRect.bottom + verticalMargin;
-        mBoardRect.bottom = mBoardRect.top + size;
-
-        mHalfCellSize = mCellSize / 2;
-        calcFrameRect();
+        calculateBoardRect(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
     }
 
     private int calculateSquareCellSize(int maxHeight, int maxWidth) {
         if (maxWidth > maxHeight) {
             return maxHeight / mBoard.getHorizontalDim();
         } else {
-            return maxWidth / mBoard.getVerticalDimension();
+            return maxWidth / mBoard.getVerticalDim();
         }
     }
 
