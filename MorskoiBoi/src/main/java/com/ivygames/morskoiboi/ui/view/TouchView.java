@@ -8,7 +8,7 @@ import android.view.View;
 
 import org.commons.logger.Ln;
 
-/*package*/abstract class TouchView extends View {
+abstract class TouchView extends View {
 
     protected int mTouchX;
     protected int mTouchY;
@@ -37,50 +37,6 @@ import org.commons.logger.Ln;
         }
 
         return true;
-    }
-
-    protected int measureWidth(int measureSpec) {
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        // return specSize;
-
-        int desiredWidth = specSize;// mDisplayWidth;// +
-        // getPaddingLeft()
-        // +
-        // getPaddingRight();
-        if (specMode == MeasureSpec.EXACTLY) {
-            // Ln.v("MeasureSpec.EXACTLY");
-            // We were told how big to be
-            return specSize;
-        } else if (specMode == MeasureSpec.AT_MOST) {
-            // return desiredWidth < specSize ? desiredWidth : specSize;
-            // Ln.v("MeasureSpec.AT_MOST");
-            return specSize;
-        } else {
-            // Ln.v("MeasureSpec.UNSPECIFIED");
-            return desiredWidth;
-        }
-    }
-
-    protected int measureHeight(int measureSpec) {
-        // int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        return specSize;
-
-        // int desiredHeight = mDisplayHeight;// +
-        // // getPaddingTop()
-        // // +
-        // // getPaddingBottom();
-        // if (specMode == MeasureSpec.EXACTLY) {
-        // // We were told how big to be
-        // return specSize;
-        // } else if (specMode == MeasureSpec.AT_MOST) {
-        // return desiredHeight < specSize ? desiredHeight : specSize;
-        // } else {
-        // return desiredHeight;
-        // }
     }
 
 }

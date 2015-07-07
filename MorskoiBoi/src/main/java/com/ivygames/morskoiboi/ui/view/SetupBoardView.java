@@ -287,10 +287,14 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int w = measureWidth(widthMeasureSpec);
-        int h = measureHeight(heightMeasureSpec);
-        setMeasuredDimension(w, h);
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (!changed) {
+            return;
+        }
+
+        super.onLayout(changed, left, top, right, bottom);
+        int w = getMeasuredWidth();
+        int h = getMeasuredHeight();
 
         // calculate mShipSelectionRect (it starts from left=0, top=0)
         mShipSelectionRect.right = w / 2;
@@ -311,7 +315,7 @@ public class SetupBoardView extends BaseBoardView {
         // make rect square (margin will be recalculated)
         mCellSize = calculateSquareCellSize(maxHeight, maxWidth);
 
-        int size = mCellSize * mBoard.getHorizontalDimension();
+        int size = mCellSize * mBoard.getHorizontalDim();
         int horizontalMargin = (horizontalFreeArea - size) / 2;
         mBoardRect.left = horizontalMargin;
         mBoardRect.right = mBoardRect.left + size;
@@ -326,7 +330,7 @@ public class SetupBoardView extends BaseBoardView {
 
     private int calculateSquareCellSize(int maxHeight, int maxWidth) {
         if (maxWidth > maxHeight) {
-            return maxHeight / mBoard.getHorizontalDimension();
+            return maxHeight / mBoard.getHorizontalDim();
         } else {
             return maxWidth / mBoard.getVerticalDimension();
         }

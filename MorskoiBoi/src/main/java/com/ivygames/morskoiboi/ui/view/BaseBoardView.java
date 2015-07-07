@@ -94,7 +94,7 @@ abstract class BaseBoardView extends TouchView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int boardWidth = mBoard.getHorizontalDimension();
+        int boardWidth = mBoard.getHorizontalDim();
 
         // draw vertical lines
         for (int i = 0; i < boardWidth + 1; i++) {
@@ -138,19 +138,22 @@ abstract class BaseBoardView extends TouchView {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (!changed) {
+            return;
+        }
+
+        super.onLayout(changed, left, top, right, bottom);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
 
-        w = w < h ? w : h;
-        setMeasuredDimension(w, w);
+        int smallestWidth = w < h ? w : h;
 
-        int availableSize = w - getPaddingLeft() - getPaddingRight();
-        mCellSize = availableSize / mBoard.getHorizontalDimension();
-        int boardSize = mCellSize * mBoard.getHorizontalDimension();
+        int availableSize = smallestWidth - getPaddingLeft() - getPaddingRight();
+        mCellSize = availableSize / mBoard.getHorizontalDim();
+        int boardSize = mCellSize * mBoard.getHorizontalDim();
 
-        mBoardRect.left = (w - boardSize) / 2;
+        mBoardRect.left = (smallestWidth - boardSize) / 2;
         mBoardRect.top = getPaddingTop();
         mBoardRect.right = mBoardRect.left + boardSize;
         mBoardRect.bottom = mBoardRect.top + boardSize;
