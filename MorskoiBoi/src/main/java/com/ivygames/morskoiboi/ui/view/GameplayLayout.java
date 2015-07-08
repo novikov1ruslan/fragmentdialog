@@ -19,13 +19,14 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.ui.GameplayLayoutInterface;
 import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 
 import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class GameplayLayout extends LinearLayout implements View.OnClickListener, TimeConsumer {
+public class GameplayLayout extends LinearLayout implements View.OnClickListener, GameplayLayoutInterface {
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
@@ -41,7 +42,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
     private long mUnlockedTime;
     private boolean mGameIsOn;
     private Bitmap mBwBitmap;
-    private TimerView mTimerView;
+    private TimerViewInterface mTimerView;
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
@@ -69,7 +70,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
         });
         mPlayerNameView = (TextView) findViewById(R.id.player);
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
-        mTimerView = (TimerView) findViewById(R.id.timer);
+        mTimerView = (TimerViewInterface) findViewById(R.id.timer);
 
         mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
         if (mVibrationButton != null) {

@@ -76,6 +76,9 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
 
         paint.setTextSize(textSize);
         int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
+        if (width < 0) {
+            return;
+        }
         float measuredText = paint.measureText(DEFAULT_TEXT);
         if (measuredText > width) {
             textSize = (textSize * width) / measuredText;

@@ -6,10 +6,11 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.ui.view.EnemyBoardView;
 import com.ivygames.morskoiboi.ui.view.GameplayLayoutListener;
+import com.ivygames.morskoiboi.ui.view.TimeConsumer;
 
 import java.util.Collection;
 
-public interface GameplayLayoutInterface {
+public interface GameplayLayoutInterface extends TimeConsumer {
     void setSound(boolean soundOn);
 
     void setVibration(boolean vibrationOn);

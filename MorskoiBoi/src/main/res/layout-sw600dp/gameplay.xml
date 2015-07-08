@@ -1,6 +1,6 @@
 <com.ivygames.morskoiboi.ui.view.GameplayLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gameplay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
@@ -18,46 +18,14 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <!-- status -->
-
-        <LinearLayout
+        <include
+            android:id="@+id/status_container"
+            layout="@layout/status"
             android:layout_width="match_parent"
+
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-            android:layout_weight="2"
-            android:orientation="vertical"
-            android:padding="@dimen/gameplay_status_padding">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/status_vertical_margin">
-
-                <TextView
-                    android:id="@+id/player"
-                    style="@style/StatusText"
-                    android:layout_width="0dp"
-                    android:layout_marginRight="@dimen/gameplay_name_padding"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="Sagi Mizrachi" />
-
-                <TextView
-                    android:id="@+id/enemy"
-                    style="@style/StatusText"
-                    android:layout_width="0dp"
-                    android:layout_marginLeft="@dimen/gameplay_name_padding"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Android" />
-            </LinearLayout>
-
-            <com.ivygames.morskoiboi.ui.view.FleetView
-                android:id="@+id/status"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:verticalMargin="@dimen/status_vertical_margin" />
-        </LinearLayout>
+            android:layout_weight="2" />
 
         <LinearLayout
             android:layout_width="match_parent"

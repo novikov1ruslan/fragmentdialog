@@ -6,7 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
@@ -26,6 +29,7 @@ abstract class BaseBoardView extends View {
     protected final Paint mShipPaint;
     protected final Paint mAimingPaint;
     private final float mTurnBorderSize;
+    private final DisplayMetrics mDisplayMetrics;
     protected int mCellSize;
     protected int mHalfCellSize;
     protected Board mBoard;
@@ -44,6 +48,7 @@ abstract class BaseBoardView extends View {
     private boolean mShowTurn;
     private int mBoardHeight;
     private int mMarkRadius;
+    private final WindowManager mWm;
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -75,6 +80,9 @@ abstract class BaseBoardView extends View {
         mTurnRect = new Rect(0, 0, 0, 0);
 
         mTurnBorderSize = getResources().getDimension(R.dimen.ship_border);
+        
+        mWm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        mDisplayMetrics = getDisplayMetrics(mWm);
     }
 
     public final void setBoard(Board board) {
@@ -144,10 +152,64 @@ abstract class BaseBoardView extends View {
             return;
         }
 
-        super.onLayout(changed, left, top, right, bottom);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
         calculateBoardRect(w, h, 0, 0);
+    }
+    
+    private DisplayMetrics getDisplayMetrics(WindowManager wm) {
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        return metrics;
+    }
+    
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int desiredWidth = mDisplayMetrics.widthPixels;
+        int desiredHeight = mDisplayMetrics.heightPixels;
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int width;
+        int height;
+
+        //Measure Width
+        if (widthMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            width = Math.min(desiredWidth, widthSize);
+        } else {
+            //Be whatever you want
+            width = desiredWidth;
+        }
+
+        //Measure Height
+        if (heightMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            height = Math.min(desiredHeight, heightSize);
+        } else {
+            //Be whatever you want
+            height = desiredHeight;
+        }
+
+        if (width > height) {
+            width = height;
+        }
+        else {
+            height = width;
+        }
+
+        //MUST CALL THIS
+        setMeasuredDimension(width, height);
     }
 
     protected final void calculateBoardRect(int w, int h, int horOffset, int verOffset) {

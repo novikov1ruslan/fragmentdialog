@@ -283,6 +283,12 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+                getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+    }
+
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (!changed) {
             return;
@@ -301,14 +307,6 @@ public class SetupBoardView extends BaseBoardView {
         mShipDisplayRect.bottom = mShipSelectionRect.bottom;
 
         calculateBoardRect(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
-    }
-
-    private int calculateSquareCellSize(int maxHeight, int maxWidth) {
-        if (maxWidth > maxHeight) {
-            return maxHeight / mBoard.getHorizontalDim();
-        } else {
-            return maxWidth / mBoard.getVerticalDim();
-        }
     }
 
     private void setCurrentShip(Ship ship) {

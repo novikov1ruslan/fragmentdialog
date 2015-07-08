@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ui.GameplayLayoutInterface;
 
-public abstract class AbstractGameplayLayout extends ViewGroup implements GameplayLayoutInterface, TimeConsumer {
+public abstract class AbstractGameplayLayout extends ViewGroup implements GameplayLayoutInterface {
 
     private static final float ASPECT_RATIO = 1.5f;
     private Rect aspectRect = new Rect();

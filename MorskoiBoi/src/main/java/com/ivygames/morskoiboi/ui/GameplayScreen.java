@@ -36,7 +36,6 @@ import com.ivygames.morskoiboi.ui.TurnTimer.TimerListener;
 import com.ivygames.morskoiboi.ui.view.ChatAdapter;
 import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 import com.ivygames.morskoiboi.ui.view.GameplayLayoutListener;
-import com.ivygames.morskoiboi.ui.view.AbstractGameplayLayout;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -65,7 +64,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private static final int READY_TO_START = 0;
 
     private Game mGame;
-    private AbstractGameplayLayout mLayout;
+    private GameplayLayoutInterface mLayout;
     private PlayerOpponent mPlayer;
     private Opponent mEnemy;
     private Handler mUiThreadHandler;
@@ -121,7 +120,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     @Override
     public View getView() {
-        return mLayout;
+        return (View) mLayout;
     }
 
     @Override
@@ -156,7 +155,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     @Override
     public View onCreateView(ViewGroup container) {
-        mLayout = (AbstractGameplayLayout) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
+        mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
         if (mGame.getType() != Type.INTERNET) {
             Ln.d("not internet game - hide chat button");
             mLayout.hideChatButton();
@@ -247,7 +246,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mPlayer.startBidding();
 
         Ln.d(this + " screen created");
-        return mLayout;
+        return (View) mLayout;
     }
 
     @Override
