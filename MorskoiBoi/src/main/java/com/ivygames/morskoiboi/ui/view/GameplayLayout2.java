@@ -24,7 +24,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class GameplayLayout2 extends AbstractGameplayLayout implements View.OnClickListener {
+public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnClickListener {
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
