@@ -1,9 +1,5 @@
 package com.ivygames.morskoiboi.utils;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -52,22 +48,4 @@ public final class GameUtils {
         return true;
     }
 
-    // /**
-    // * @param vector
-    // * @return true if the cells are aligned horizontally
-    // */
-    // public static boolean areCellsHorizontalFast(Collection<Vector2> vector)
-    // {
-    // if (vector.size() == 1) {
-    // return true;
-    // }
-    //
-    // vector.
-    // }
-
-    public static void rateApp(Context context) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
-        context.startActivity(intent);
-    }
 }

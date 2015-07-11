@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.PlayUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -15,8 +16,6 @@ import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.ui.view.SettingsLayout;
 import com.ivygames.morskoiboi.ui.view.SettingsLayout.SettingsScreenActions;
-import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
@@ -114,7 +113,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     public void onRate() {
         mGaTracker.send(new UiEvent("settings_rate").build());
         mSettings.setRated();
-        GameUtils.rateApp(getActivity());
+        PlayUtils.rateApp(getActivity());
     }
 
     @Override

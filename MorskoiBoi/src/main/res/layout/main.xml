@@ -20,11 +20,22 @@
 
     <ImageView
         android:id="@+id/title"
-        android:layout_above="@+id/game_services_box"
+        android:layout_above="@+id/social_box"
         android:layout_below="@+id/share_button"
         android:layout_centerHorizontal="true"
         android:scaleType="center"
         android:src="@drawable/title" />
+
+    <LinearLayout
+        android:id="@+id/social_box"
+        android:layout_above="@+id/game_services_box"
+        android:layout_centerHorizontal="true">
+
+        <com.google.android.gms.plus.PlusOneButton xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
+            android:id="@+id/plus_one_button"
+            plus:annotation="inline"
+            plus:size="standard" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/game_services_box"

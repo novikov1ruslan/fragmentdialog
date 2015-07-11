@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -9,13 +10,13 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.PlayUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.ui.view.MainScreenLayout;
 import com.ivygames.morskoiboi.ui.view.MainScreenLayout.MainScreenActions;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -32,13 +33,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private boolean mAchievementsRequested;
     private boolean mLeaderboardRequested;
     private MainScreenLayout mLayout;
-    private View mTutView;
+//    private View mTutView;
 
-    private static Intent createShareIntent(String greeting) {
+    private static Intent createShareIntent(Context context, String greeting) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        String playPath = "https://play.google.com/store/apps/details?id=com.ivygames.morskoiboi";
-        shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + playPath);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + PlayUtils.getPlayUrl(context));
         return shareIntent;
     }
 
@@ -46,7 +46,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public View onCreateView(ViewGroup container) {
         mLayout = (MainScreenLayout) inflate(R.layout.main, container);
         mLayout.setScreenActionsListener(this);
-        mTutView = mLayout.setTutView(inflate(R.layout.main_tut));
+//        mTutView = mLayout.setTutView(inflate(R.layout.main_tut));
 
         Ln.d(this + " screen created");
 
@@ -73,6 +73,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         super.onStart();
         EventBus.getDefault().register(this);
         showInvitationIfHas(mParent.hasInvitation());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mLayout.onResume();
     }
 
     private void showInvitationIfHas(boolean hasInvitations) {
@@ -111,7 +117,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void share() {
         mGaTracker.send(new UiEvent("share").build());
-        startActivity(MainScreen.createShareIntent(getString(R.string.share_greeting)));
+        startActivity(MainScreen.createShareIntent(getActivity(), getString(R.string.share_greeting)));
     }
 
     @Override
@@ -198,7 +204,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             public void onClick(DialogInterface dialog, int which) {
                 mGaTracker.send(new UiEvent("rate").build());
                 GameSettings.get().setRated();
-                GameUtils.rateApp(getActivity());
+                PlayUtils.rateApp(getActivity());
             }
 
         }).setNegativeButton(R.string.later, new OnClickListener() {

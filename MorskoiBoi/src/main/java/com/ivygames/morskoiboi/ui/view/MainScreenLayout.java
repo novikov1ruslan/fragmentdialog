@@ -4,11 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.google.android.gms.plus.PlusOneButton;
 import com.ivygames.morskoiboi.R;
 
 import org.commons.logger.Ln;
 
 public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener {
+
+    private static final int PLUS_ONE_REQUEST_CODE = 0;
 
     private View mTutView;
 
@@ -28,6 +31,7 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
 
     private MainScreenActions mScreenActions;
     private InvitationButton mPlayButton;
+    private PlusOneButton mPlusOneButton;
 
     public MainScreenLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,6 +45,7 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        mPlusOneButton = (PlusOneButton) findViewById(R.id.plus_one_button);
         mPlayButton = (InvitationButton) findViewById(R.id.play);
         mPlayButton.setOnClickListener(this);
         findViewById(R.id.high_score).setOnClickListener(this);
@@ -48,6 +53,10 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         findViewById(R.id.share_button).setOnClickListener(this);
         findViewById(R.id.settings_button).setOnClickListener(this);
         findViewById(R.id.achievements_button).setOnClickListener(this);
+    }
+
+    public void onResume() {
+//        mPlusOneButton.initialize(URL, PLUS_ONE_REQUEST_CODE);
     }
 
     @Override
