@@ -38,4 +38,8 @@ public final class UiEvent {
     public static void send(Tracker tracker, String action) {
         tracker.send(new UiEvent(action).build());
     }
+
+    public static void send(Tracker tracker, String action, String label) {
+        tracker.send(new UiEvent(action, label).build());
+    }
 }

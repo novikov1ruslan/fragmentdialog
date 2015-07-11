@@ -151,8 +151,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         super.onCreate(savedInstanceState);
         mRecreating = savedInstanceState != null;
         if (mRecreating) {
-            // mGaTracker.send(new WarningEvent(GameConstants.GA_ACTION_ANDROID,
-            // "recreated").build());
             Ln.i("app is recreating, restart it");
             finish();
             return;

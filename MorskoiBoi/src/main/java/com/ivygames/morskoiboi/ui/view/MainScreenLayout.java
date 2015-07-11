@@ -5,13 +5,12 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.google.android.gms.plus.PlusOneButton;
+import com.ivygames.morskoiboi.PlayUtils;
 import com.ivygames.morskoiboi.R;
 
 import org.commons.logger.Ln;
 
 public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener {
-
-    private static final int PLUS_ONE_REQUEST_CODE = 0;
 
     private View mTutView;
 
@@ -55,8 +54,8 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         findViewById(R.id.achievements_button).setOnClickListener(this);
     }
 
-    public void onResume() {
-//        mPlusOneButton.initialize(URL, PLUS_ONE_REQUEST_CODE);
+    public void onResume(int requestCode) {
+        mPlusOneButton.initialize(PlayUtils.getPlayUrl(getContext()), requestCode);
     }
 
     @Override
