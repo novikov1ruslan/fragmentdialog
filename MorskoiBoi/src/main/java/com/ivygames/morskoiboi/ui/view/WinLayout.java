@@ -2,10 +2,14 @@ package com.ivygames.morskoiboi.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.commons.logger.Ln;
 
@@ -18,6 +22,7 @@ public class WinLayout extends WinLayoutSmall {
     private static final int[] SHIP2_IDS = {R.id.ship2_1, R.id.ship2_2, R.id.ship2_3};
 
     private static final int[] SHIP3_IDS = {R.id.ship3_1, R.id.ship3_2};
+    private boolean mReLayout;
 
     public WinLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,4 +67,23 @@ public class WinLayout extends WinLayoutSmall {
         invalidate();
     }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (mReLayout) {
+            return;
+        }
+
+        int bottomMostView = UiUtils.getRelativeTop(mYesButton) + mYesButton.getMeasuredHeight();
+        if (bottomMostView > getMeasuredHeight()) {
+            View carrier = findViewById(R.id.carrier);
+            if (carrier != null) {
+                ViewParent parent = carrier.getParent();
+                ((ViewGroup) parent).removeView(carrier);
+            }
+//            .setVisibility(GONE);
+//            mReLayout = true;
+//            layout(l, t, r, b);
+        }
+    }
 }

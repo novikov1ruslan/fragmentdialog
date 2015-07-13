@@ -21,6 +21,7 @@ public abstract class CommonGameplayLayout extends ViewGroup {
     protected View mStatusBoard;
     protected View mChatView;
     protected View mTurnTimerView;
+    protected View mGameOver;
 
     public CommonGameplayLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -35,5 +36,7 @@ public abstract class CommonGameplayLayout extends ViewGroup {
 
         mChatView = findViewById(R.id.chat_button);
         mTurnTimerView = findViewById(R.id.timer);
+
+        mGameOver = findViewById(R.id.bw);
     }
 }

@@ -17,7 +17,7 @@ public class WinLayoutSmall extends NotepadLinearLayout {
     private View mScoreContainer;
     private View mSignInBar;
     private View mSignInButton;
-    private View mYesButton;
+    protected View mYesButton;
     private View mNoButton;
     private View mContinueButton;
 

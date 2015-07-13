@@ -72,6 +72,11 @@ public abstract class HandsetGameplayLayout extends CommonGameplayLayout impleme
         mStatusBoard.layout(mStatusRect.left, mStatusRect.top, mStatusRect.right, mStatusRect.bottom);
         mChatView.layout(mChatRect.left, mChatRect.top, mChatRect.right, mChatRect.bottom);
         mTurnTimerView.layout(mTurnTimerRect.left, mTurnTimerRect.top, mTurnTimerRect.right, mTurnTimerRect.bottom);
+
+        widthSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY);
+        heightSpec = MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY);
+        mGameOver.measure(widthSpec, heightSpec);
+        mGameOver.layout(0, 0, getMeasuredWidth(), getMeasuredHeight());
     }
 
     private int calcAspectRect() {
