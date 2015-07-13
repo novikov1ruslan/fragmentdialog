@@ -46,12 +46,26 @@
                 android:layout_margin="8dp"
                 android:orientation="vertical">
 
-                <Button
+                <com.ivygames.morskoiboi.ui.view.DigitalTimerView
+                    android:id="@+id/timer"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:padding="4dp" />
+
+                <ImageView
                     android:id="@+id/chat_button"
-                    style="@style/ChatButton"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:text="@string/chat" />
+                    android:padding="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/chat" />
+
+                <!--<Button-->
+                <!--android:id="@+id/chat_button"-->
+                <!--style="@style/ChatButton"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="48dp"-->
+                <!--android:text="@string/chat" />-->
 
                 <ImageButton
                     android:id="@+id/sound_btn"
@@ -66,11 +80,11 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.ivygames.morskoiboi.ui.view.TimerView
-        android:id="@+id/timer"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp" />
+    <!--<com.ivygames.morskoiboi.ui.view.TimerView-->
+    <!--android:id="@+id/timer"-->
+    <!--android:layout_width="30dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_margin="4dp" />-->
 
     <include
         layout="@layout/enemy_board"
