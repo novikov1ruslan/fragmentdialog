@@ -589,6 +589,16 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 mLayout.invalidatePlayerBoard();
                 mSoundManager.playHitSound();
             }
+
+            // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
+            // notifies about players defeat sending his board along.
+            if (!versionSupportsBoardReveal()) {
+                if (Board.isItDefeatedBoard(mPlayerPrivateBoard)) {
+                    Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
+                    resetPlayer();
+                    lost(LOST_GAME_WO_REVEAL_DELAY);
+                }
+            }
         }
 
         private boolean versionSupportsBoardReveal() {
@@ -621,21 +631,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.v("player private board: " + mPlayerPrivateBoard);
                 ACRA.getErrorReporter().handleException(new RuntimeException("lost while not defeated"));
             }
-
-            if (versionSupportsBoardReveal()) {
-                // revealing the enemy board
-                mEnemyPublicBoard = board;
-                updateEnemyStatus();
-                mLayout.setEnemyBoard(mEnemyPublicBoard);
-                resetPlayer();
-                lost(LOST_GAME_WITH_REVEAL_DELAY);
-            } else {
-                // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
-                // notifies about players defeat sending his board along.
-                Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
-                resetPlayer();
-                lost(LOST_GAME_WO_REVEAL_DELAY);
-            }
+            // revealing the enemy board
+            mEnemyPublicBoard = board;
+            updateEnemyStatus();
+            mLayout.setEnemyBoard(mEnemyPublicBoard);
+            resetPlayer();
+            lost(LOST_GAME_WITH_REVEAL_DELAY);
         }
 
         private void resetPlayer() {
