@@ -63,7 +63,7 @@ public class BattleshipApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler(myHandler);
         myHandler.setExceptionParser(new AnalyticsExceptionParser());
 
-        Bitmaps.getInstance().loadBitmaps();
+        Bitmaps.getInstance().loadBitmaps(getResources());
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     }

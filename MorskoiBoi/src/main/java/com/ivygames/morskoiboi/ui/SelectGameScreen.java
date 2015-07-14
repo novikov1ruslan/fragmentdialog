@@ -167,6 +167,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Ln.v("result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_OK) {
             showDeviceListScreen();
         }

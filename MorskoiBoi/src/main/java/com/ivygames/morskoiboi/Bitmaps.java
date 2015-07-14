@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,9 +22,7 @@ public final class Bitmaps {
     private Bitmaps() {
     }
 
-    public void loadBitmaps() {
-        Context context = BattleshipApplication.get();
-        Resources res = context.getResources();
+    public void loadBitmaps(Resources res) {
 
         put(res, R.drawable.aircraft_carrier);
         put(res, R.drawable.battleship);

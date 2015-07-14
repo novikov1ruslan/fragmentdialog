@@ -21,7 +21,6 @@ public abstract class BattleshipScreen extends Screen {
 
     private WaitFragment mWaitFragment;
     private boolean mResumed;
-    private boolean mStarted;
 
     public void onAttach(BattleshipActivity activity) {
         mParent = activity;
@@ -30,7 +29,7 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     public void onCreate() {
-        Ln.v(this + " fragment creating");
+        Ln.v(this + " creating");
 
         mFm = mParent.getSupportFragmentManager();
     }
@@ -40,15 +39,15 @@ public abstract class BattleshipScreen extends Screen {
     public void onStart() {
         mGaTracker.setScreenName(this.getClass().getSimpleName());
         mGaTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        mStarted = true;
+        Ln.v(this + " started");
     }
 
     public void onDestroyView() {
-        Ln.v(this + " fragment view destroyed");
+        Ln.v(this + " screen view destroyed");
     }
 
     public void onDestroy() {
-        Ln.v(this + " fragment destroyed");
+        Ln.v(this + " screen destroyed");
     }
 
     protected final void showWaitingScreen() {
@@ -76,7 +75,7 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     public void onStop() {
-        mStarted = false;
+        Ln.v(this + " stopped");
     }
 
     public boolean isResumed() {
@@ -85,15 +84,17 @@ public abstract class BattleshipScreen extends Screen {
 
     public void onPause() {
         mResumed = false;
+        Ln.v(this + " paused");
     }
 
     public void onResume() {
         mResumed = true;
+        Ln.v(this + " resumed");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Ln.e("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        ACRA.getErrorReporter().handleException(new RuntimeException("unprocessed result: " + resultCode));
+        Ln.e(this + " unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+        ACRA.getErrorReporter().handleException(new RuntimeException(this + " unprocessed result: " + resultCode));
     }
 
     public View getTutView() {

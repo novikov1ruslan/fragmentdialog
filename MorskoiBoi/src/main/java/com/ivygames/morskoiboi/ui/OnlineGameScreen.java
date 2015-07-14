@@ -16,14 +16,14 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
     @Override
     public void onStart() {
         super.onStart();
-        Ln.v(this + " fragment started - register event listener");
+        Ln.v(this + " screen started - register event listener");
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Ln.v(this + " fragment stopped - unregister event listener");
+        Ln.v(this + " screen stopped - unregister event listener");
         EventBus.getDefault().unregister(this);
     }
 
