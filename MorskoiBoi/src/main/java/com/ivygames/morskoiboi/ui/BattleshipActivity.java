@@ -205,17 +205,23 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             mGoogleApiClient.connect();
         }
 
-        mInventoryHelper = new InventoryHelper(this);
-        try {
-            mInventoryHelper.onCreate();
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
+        if (isGoogleServicesAvailable()) {
+            mInventoryHelper = new InventoryHelper(this);
+            try {
+                mInventoryHelper.onCreate();
+            } catch (Exception e) {
+                ACRA.getErrorReporter().handleException(e);
+            }
         }
 
         if (mSettings.noAds()) {
             hideAds();
         }
         Ln.i("game fully created");
+    }
+
+    private boolean isGoogleServicesAvailable() {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS;
     }
 
     public void hideAds() {
@@ -338,10 +344,12 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         Crouton.cancelAllCroutons();
         AdManager.instance.destroy();
 
-        try {
-            mInventoryHelper.onDestroy();
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
+        if (mInventoryHelper != null) {
+            try {
+                mInventoryHelper.onDestroy();
+            } catch (Exception e) {
+                ACRA.getErrorReporter().handleException(e);
+            }
         }
 
         mGoogleApiClient.disconnect();
