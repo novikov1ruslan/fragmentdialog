@@ -35,17 +35,15 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private Board mBoard;
-    private PriorityQueue<Ship> mFleet;
+    private Board mBoard = new Board();
+    private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
 
     @Override
     public View onCreateView(ViewGroup container) {
-        mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
         GameUtils.populateFullHorizontalFleet(mFleet);
-        mBoard = new Board();
         Ln.d("new board created, fleet initialized");
 
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);

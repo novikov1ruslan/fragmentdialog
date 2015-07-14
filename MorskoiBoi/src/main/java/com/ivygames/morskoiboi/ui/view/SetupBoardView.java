@@ -17,6 +17,7 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.PriorityQueue;
@@ -320,7 +321,7 @@ public class SetupBoardView extends BaseBoardView {
 
     public void setFleet(PriorityQueue<Ship> ships) {
         Ln.v(ships);
-        mShips = ships;
+        mShips = Validate.notNull(ships);
         setCurrentShip(mShips.peek());
 
         invalidate();
@@ -338,6 +339,10 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public String toString() {
+        if (mShips == null) {
+            Ln.e("no ships");
+            return "no ships";
+        }
         return super.toString() + '\n' + mShips.toString();
     }
 
