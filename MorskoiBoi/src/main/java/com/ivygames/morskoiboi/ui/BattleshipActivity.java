@@ -211,6 +211,10 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         } catch (Exception e) {
             ACRA.getErrorReporter().handleException(e);
         }
+
+        if (mSettings.noAds()) {
+            hideAds();
+        }
         Ln.i("game fully created");
     }
 

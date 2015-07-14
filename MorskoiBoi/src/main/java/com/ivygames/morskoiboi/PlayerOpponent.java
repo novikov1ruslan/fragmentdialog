@@ -101,10 +101,10 @@ public final class PlayerOpponent extends AbstractOpponent {
         return mEnemyBoard;
     }
 
-    public void setEnemyBoard(Board board) {
-        Ln.v("enemy board set: " + board);
-        mEnemyBoard = board;
-    }
+//    public void setEnemyBoard(Board board) {
+//        Ln.v("enemy board set: " + board);
+//        mEnemyBoard = board;
+//    }
 
     public Board getBoard() {
         return mMyBoard;

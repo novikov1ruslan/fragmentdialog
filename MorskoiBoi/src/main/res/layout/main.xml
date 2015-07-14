@@ -37,7 +37,8 @@
     <LinearLayout
         android:id="@+id/social_box"
         android:layout_above="@+id/game_services_box"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
 
         <ImageButton
             android:id="@+id/facebook_button"
