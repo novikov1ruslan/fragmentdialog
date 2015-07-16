@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string name="versionName">1.4.1a</string>
+    <string name="versionName">1.4.2</string>
     <string name="app_id">1081184151538</string>
     <!-- dummy -->
     <!-- <string name="admob_id">a14e176c0a170e2</string> -->

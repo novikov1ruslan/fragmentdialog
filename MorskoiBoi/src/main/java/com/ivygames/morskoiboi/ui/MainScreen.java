@@ -29,7 +29,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private static final int RC_UNUSED = 0;
-    private static final int PLUS_ONE_REQUEST_CODE = 100001;
+    private static final int PLUS_ONE_REQUEST_CODE = 20001;
 
     private boolean mAchievementsRequested;
     private boolean mLeaderboardRequested;
@@ -80,6 +80,9 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public void onResume() {
         super.onResume();
         mLayout.onResume(PLUS_ONE_REQUEST_CODE);
+        if (mApiClient.isConnected()) {
+            mLayout.showPlusOneButton();
+        }
     }
 
     private void showInvitationIfHas(boolean hasInvitations) {
@@ -141,6 +144,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void onSignInSucceeded() {
+        mLayout.showPlusOneButton();
 
         if (mAchievementsRequested) {
             mAchievementsRequested = false;

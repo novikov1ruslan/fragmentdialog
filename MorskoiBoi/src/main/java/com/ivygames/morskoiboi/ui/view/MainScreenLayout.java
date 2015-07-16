@@ -99,6 +99,10 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         mPlayButton.showInvitation();
     }
 
+    public void showPlusOneButton() {
+        mPlusOneButton.setVisibility(VISIBLE);
+    }
+
     public View setTutView(View view) {
         mTutView = view;
         return view;
