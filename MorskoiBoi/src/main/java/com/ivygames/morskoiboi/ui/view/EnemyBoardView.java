@@ -189,7 +189,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        boolean processed = mTouchState.onTouchEvent(event);
+        mTouchState.onTouchEvent(event);
         mTouchX = mTouchState.getTouchX();
         mTouchY = mTouchState.getTouchY();
         mTouchAction = mTouchState.getTouchAction();
@@ -210,7 +210,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
         invalidate();
 
-        return processed;
+        return true;
     }
 
     @Override

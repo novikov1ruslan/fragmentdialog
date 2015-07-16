@@ -58,7 +58,7 @@ public class SetupBoardView extends BaseBoardView {
     private final Bitmap mGunboat;
 
     private Bitmap mCurrentBitmap;
-    private static TouchState mTouchState = new TouchState();
+    private static final TouchState mTouchState = new TouchState();
     private int mTouchX;
     private int mTouchY;
 
@@ -149,7 +149,7 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        boolean processed = mTouchState.onTouchEvent(event);
+        mTouchState.onTouchEvent(event);
         mTouchX = mTouchState.getTouchX();
         mTouchY = mTouchState.getTouchY();
 
@@ -185,7 +185,7 @@ public class SetupBoardView extends BaseBoardView {
 
         invalidate();
 
-        return processed;
+        return true;
     }
 
     private int getCellY() {

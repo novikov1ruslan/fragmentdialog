@@ -141,6 +141,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void onSignInSucceeded() {
+
         if (mAchievementsRequested) {
             mAchievementsRequested = false;
             showAchievementsScreen();

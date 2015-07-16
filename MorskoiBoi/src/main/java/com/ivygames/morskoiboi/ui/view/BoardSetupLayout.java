@@ -36,7 +36,6 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
 
     private SetupBoardView mBoardView;
     private BoardSetupLayoutListener mScreenActions;
-    private View mHelpButton;
 
     public void setScreenActionsListener(BoardSetupLayoutListener listener) {
         mScreenActions = listener;
@@ -52,9 +51,9 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
         mBoardView = (SetupBoardView) findViewById(R.id.board_view);
         findViewById(R.id.auto_setup).setOnClickListener(this);
         findViewById(R.id.done).setOnClickListener(this);
-        mHelpButton = findViewById(R.id.help_button);
-        if (mHelpButton != null) {
-            mHelpButton.setOnClickListener(this);
+        View helpButton = findViewById(R.id.help_button);
+        if (helpButton != null) {
+            helpButton.setOnClickListener(this);
         }
 
         View htmlContainer = findViewById(R.id.html_container);

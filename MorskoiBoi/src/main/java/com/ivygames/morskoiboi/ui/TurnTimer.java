@@ -12,7 +12,6 @@ import org.commons.logger.Ln;
 class TurnTimer extends AsyncTask<Void, Integer, Void> {
     private static final int RESOLUTION = 1000;
 
-    private volatile long mStartTime;
     private volatile int mTimeout;
     private final TimeConsumer mLayout;
     private final GameplaySoundManager mSoundManager;
@@ -35,7 +34,6 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mStartTime = SystemClock.elapsedRealtime();
         mLayout.setCurrentTime(mTimeout);
     }
 

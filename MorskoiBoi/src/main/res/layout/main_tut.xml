@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#88000000">
@@ -7,6 +8,7 @@
     <TextView
         android:id="@+id/tut1"
         android:textColor="@android:color/white"
-        android:text="press here to see the high scores" />
+        android:text="press here to see the high scores"
+        tools:ignore="HardcodedText" />
 
 </AbsoluteLayout>

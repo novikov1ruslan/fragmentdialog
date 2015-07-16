@@ -86,7 +86,7 @@ public class InventoryHelper {
     }
 
     // Listener that's called when we finish querying the items and subscriptions we own
-    private IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+    private final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
             try {
                 Ln.d("Query inventory finished.");

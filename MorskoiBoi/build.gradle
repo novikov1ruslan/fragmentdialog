@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.ivygames.morskoiboi"
-        minSdkVersion 11
+        minSdkVersion 13
         targetSdkVersion 16
 
         testApplicationId "com.ivygames.morskoiboi.test"

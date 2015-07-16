@@ -16,13 +16,12 @@ import java.util.concurrent.TimeUnit;
 public class DigitalTimerView extends TextView implements TimerViewInterface {
     private static final String DEFAULT_TEXT = "00:00";
 
-    //    private final int mNormalBackground;
-//    private final int mAlarmBackground;
     private final int mNormalColor;
     private final int mAlarmColor;
 
     private int mAlarmTime;
     private int mTime;
+    private final Paint mPaint;
 
     public DigitalTimerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,16 +29,12 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
         setText(DEFAULT_TEXT);
         mNormalColor = getResources().getColor(R.color.main);
         mAlarmColor = getResources().getColor(R.color.hit);
-//        mNormalBackground = getResources().getColor(R.color.digital_clock_background);
-//        mAlarmBackground = getResources().getColor(R.color.digital_clock_alarm_background);
-
         setTextColor(mNormalColor);
-//        setBackgroundColor(mNormalBackground);
+        mPaint = new Paint();
     }
 
     private void updateColors() {
         setTextColor(mTime > mAlarmTime ? mNormalColor : mAlarmColor);
-//        setBackgroundColor(mTime > mAlarmTime ? mNormalBackground : mAlarmBackground);
     }
 
     private String format(int millis) {
@@ -70,24 +65,23 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         float textSize = 256;
-        Paint paint = new Paint();
 
-        paint.setTextSize(textSize);
+        mPaint.setTextSize(textSize);
         int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         if (width <= 0) {
             return;
         }
-        float measuredText = paint.measureText(DEFAULT_TEXT);
+        float measuredText = mPaint.measureText(DEFAULT_TEXT);
         if (measuredText > width) {
             textSize = (textSize * width) / measuredText;
         }
 
         // fine tuning
-        while (paint.measureText(DEFAULT_TEXT) > width) {
+        while (mPaint.measureText(DEFAULT_TEXT) > width) {
             if (textSize < 8) {
                 break;
             }
-            paint.setTextSize(--textSize);
+            mPaint.setTextSize(--textSize);
         }
         Ln.v("w=" + getMeasuredWidth() + "; h=" + getMeasuredHeight() + "; size=" + textSize);
 

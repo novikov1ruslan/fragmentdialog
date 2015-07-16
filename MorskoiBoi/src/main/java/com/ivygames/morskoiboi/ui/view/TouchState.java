@@ -15,7 +15,7 @@ public class TouchState {
     protected static final int START_DRAGGING = 1;
     private static final int STOP_DRAGGING = 0;
 
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
+    public void onTouchEvent(@NonNull MotionEvent event) {
         mTouchX = (int) event.getX();
         mTouchY = (int) event.getY();
         mTouchAction = event.getAction();
@@ -26,8 +26,6 @@ public class TouchState {
             Ln.v("ACTION_UP: " + mTouchX + ":" + mTouchY);
             mDragStatus = STOP_DRAGGING;
         }
-
-        return true;
     }
 
     public int getTouchX() {

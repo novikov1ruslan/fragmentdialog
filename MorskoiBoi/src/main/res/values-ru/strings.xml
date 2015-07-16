@@ -78,7 +78,6 @@
     <string name="android">Андроид</string>
     <string name="send">Послать</string>
     <string name="enter_your_message">Ваше сообщение</string>
-    <string name="chat">ЧАТ</string>
     <string name="pause">Пауза....</string>
     <string name="your_turn">Ваш ход</string>
     <string name="opponent_s_turn">Ход оппонента</string>

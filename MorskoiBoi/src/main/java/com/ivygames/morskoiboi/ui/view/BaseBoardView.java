@@ -33,8 +33,8 @@ abstract class BaseBoardView extends View {
     protected int mCellSize;
     protected int mHalfCellSize;
     protected Board mBoard;
-    protected Rect mBoardRect;
-    private Rect mTurnRect;
+    protected final Rect mBoardRect;
+    private final Rect mTurnRect;
 
     private final Paint mLinePaint;
     private final Paint mHitOuterPaint;
@@ -48,7 +48,6 @@ abstract class BaseBoardView extends View {
     private boolean mShowTurn;
     private int mBoardHeight;
     private int mMarkRadius;
-    private final WindowManager mWm;
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -80,9 +79,9 @@ abstract class BaseBoardView extends View {
         mTurnRect = new Rect(0, 0, 0, 0);
 
         mTurnBorderSize = getResources().getDimension(R.dimen.ship_border);
-        
-        mWm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        mDisplayMetrics = getDisplayMetrics(mWm);
+
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        mDisplayMetrics = getDisplayMetrics(windowManager);
     }
 
     public final void setBoard(Board board) {

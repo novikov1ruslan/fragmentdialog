@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="navy_blue">#000080</color>
-    <color name="bright_navy_blue">#1974D2</color>
-    <color name="royal_blue">#002366</color>
-    <color name="royal_blue_web">#4169E1</color>
-    <color name="chat_pressed">#D32F2F</color>
+    <!--<color name="bright_navy_blue">#1974D2</color>-->
+    <!--<color name="royal_blue">#002366</color>-->
+    <!--<color name="royal_blue_web">#4169E1</color>-->
+    <!--<color name="chat_pressed">#D32F2F</color>-->
 
-    <color name="old_main">#21458B</color>
+    <!--<color name="old_main">#21458B</color>-->
     <color name="main">@color/navy_blue</color>
 
     <!-- background -->
@@ -35,8 +35,8 @@
     <color name="hit_background">#F8DDE5</color>
     <color name="miss">#0000CD</color>
     <color name="miss_background">#87CEFA</color>
-    <color name="digital_clock_background">#88B3E5FC</color>
-    <color name="digital_clock_alarm_background">#F8DDE5</color>
+    <!--<color name="digital_clock_background">#88B3E5FC</color>-->
+    <!--<color name="digital_clock_alarm_background">#F8DDE5</color>-->
     <color name="aim">#647F7FFF</color>
     <color name="aim_locked">#64FF7F7F</color>
     <color name="conflict_cell">#7FFF7F7F</color>
