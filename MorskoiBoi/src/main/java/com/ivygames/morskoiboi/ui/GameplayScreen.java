@@ -190,6 +190,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 boolean on = !mSettings.isSoundOn();
                 mSettings.setSound(on);
                 mLayout.setSound(on);
+                if (!on) {
+                    mSoundManager.stopPlaying();
+                }
             }
 
 //            @Override
@@ -253,7 +256,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onPause() {
         super.onPause();
         Ln.d(this + " is partially obscured - pausing sounds");
-        mSoundManager.autoPause();
+//        mSoundManager.autoPause();
         if (mGame.getType() == Type.VS_ANDROID) {
             // timer is not running if it is not player's turn, but cancel it just in case
             pauseTimer();
@@ -264,7 +267,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onResume() {
         super.onResume();
         Ln.d(this + " is fully visible - resuming sounds");
-        mSoundManager.autoResume();
+//        mSoundManager.autoResume();
         if (/* isTimerPaused() && */!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
             Ln.v("showing pause dialog");
             mLayout.lock();

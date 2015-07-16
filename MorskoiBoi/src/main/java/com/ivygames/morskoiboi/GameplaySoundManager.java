@@ -29,9 +29,12 @@ public class GameplaySoundManager {
 
     private volatile int mAlarmStream;
     private int mKantropStream;
+    private int mWhistleStream;
+    private int mSplashStream;
+    private int mHitStream;
+    private int mKillStream;
 
     private final Random mRandom = new Random(System.currentTimeMillis());
-
     private final BattleshipScreen mFragment;
 
     public GameplaySoundManager(BattleshipScreen fragment) {
@@ -63,12 +66,22 @@ public class GameplaySoundManager {
         Ln.d("sounds loaded");
     }
 
-    public void autoPause() {
-        mSoundPool.autoPause();
-    }
+//    public void autoPause() {
+//        mSoundPool.autoPause();
+//    }
+//
+//    public void autoResume() {
+//        mSoundPool.autoResume();
+//    }
 
-    public void autoResume() {
-        mSoundPool.autoResume();
+    public void stopPlaying() {
+        mSoundPool.stop(mAlarmStream);
+        mSoundPool.stop(mKantropStream);
+
+        mSoundPool.stop(mWhistleStream);
+        mSoundPool.stop(mSplashStream);
+        mSoundPool.stop(mHitStream);
+        mSoundPool.stop(mKillStream);
     }
 
     public void release() {
@@ -80,7 +93,7 @@ public class GameplaySoundManager {
         if (isSoundOn()) {
             float volume = mRandom.nextFloat() * 0.7f + 0.3f;
             float rate = mRandom.nextFloat() * 0.7f + 0.8f;
-            mSoundPool.play(mWhistleSound, volume, volume, 1, 0, rate);
+            mWhistleStream = mSoundPool.play(mWhistleSound, volume, volume, 1, 0, rate);
         }
     }
 
@@ -99,21 +112,21 @@ public class GameplaySoundManager {
         if (isSoundOn()) {
             float volume = BattleshipApplication.get().getVolume();
             volume = volume * 0.2f;
-            mSoundPool.play(mSplashSounds[mRandom.nextInt(SPLASH_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
+            mSplashStream = mSoundPool.play(mSplashSounds[mRandom.nextInt(SPLASH_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
         }
     }
 
     public void playHitSound() {
         if (isSoundOn()) {
             float volume = BattleshipApplication.get().getVolume();
-            mSoundPool.play(mHitSounds[mRandom.nextInt(HIT_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
+            mHitStream = mSoundPool.play(mHitSounds[mRandom.nextInt(HIT_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
         }
     }
 
     public void playKillSound() {
         if (isSoundOn()) {
             float volume = BattleshipApplication.get().getVolume();
-            mSoundPool.play(mKillSounds[mRandom.nextInt(KILL_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
+            mKillStream = mSoundPool.play(mKillSounds[mRandom.nextInt(KILL_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
         }
     }
 

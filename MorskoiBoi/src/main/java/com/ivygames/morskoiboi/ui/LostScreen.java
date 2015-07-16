@@ -59,17 +59,17 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         return mView;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mSoundBar.autoPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSoundBar.autoResume();
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mSoundBar.autoPause();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mSoundBar.autoResume();
+//    }
 
     @Override
     public void onDestroy() {

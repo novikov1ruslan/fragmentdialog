@@ -133,8 +133,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @Override
     public void onResume() {
         super.onResume();
-        Ln.d(this + " is fully visible - resume sounds");
-        mSoundBar.autoResume();
+//        mSoundBar.autoResume();
 
         if (mGame.getType() == Type.VS_ANDROID && !mApiClient.isConnected()) {
             Ln.d("game vs Android, but client is not connected - show sign button");
@@ -144,12 +143,12 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Ln.d(this + " is partially obscured - pause sounds");
-        mSoundBar.autoPause();
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        Ln.d(this + " is partially obscured - pause sounds");
+//        mSoundBar.autoPause();
+//    }
 
     @Override
     public void onSignInSucceeded() {

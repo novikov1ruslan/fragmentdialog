@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,9 +30,6 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
     private FleetView mFleet;
     private TextView mPlayerNameView;
     private TextView mEnemyNameView;
-    private View mChatButton;
-    private ImageButton mSoundButton;
-//    private ImageButton mVibrationButton;
 
     private final Animation mShake;
     private long mStartTime;
@@ -56,8 +52,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         mMyBoardView = (FleetBoardView) findViewById(R.id.board_view_fleet);
         mEnemyBoardView = (EnemyBoardView) findViewById(R.id.board_view_enemy);
         mFleet = (FleetView) findViewById(R.id.status);
-        mChatButton = findViewById(R.id.chat_button);
-        mChatButton.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.chat_button).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -70,30 +65,11 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
         mTimerView = (TimerViewInterface) findViewById(R.id.timer);
 
-//        mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
-//        if (mVibrationButton != null) {
-//            Ln.v("vibration control present");
-//            mVibrationButton.setOnClickListener(this);
-//        }
-        mSoundButton = (ImageButton) findViewById(R.id.sound_btn);
-        if (mSoundButton != null) {
-            mSoundButton.setOnClickListener(this);
-        }
-
         mSettingBoardText = (TextView) findViewById(R.id.setting_board_notification);
     }
 
     public void setSound(boolean on) {
-        if (mSoundButton != null) {
-            mSoundButton.setImageResource(on ? R.drawable.sound_on : R.drawable.sound_off);
-        }
     }
-
-//    public void setVibration(boolean on) {
-//        if (mVibrationButton != null) {
-//            mVibrationButton.setImageResource(on ? R.drawable.vibrate_on : R.drawable.vibrate_off);
-//        }
-//    }
 
     public void setAim(Vector2 aim) {
         mEnemyBoardView.setAim(aim);

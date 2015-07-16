@@ -33,13 +33,13 @@ public class SoundBar {
         }
     }
 
-    public void autoPause() {
-        mSoundPool.autoPause();
-    }
+//    public void autoPause() {
+//        mSoundPool.autoPause();
+//    }
 
-    public void autoResume() {
-        mSoundPool.autoResume();
-    }
+//    public void autoResume() {
+//        mSoundPool.autoResume();
+//    }
 
     public void release() {
         mSoundPool.release();

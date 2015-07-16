@@ -6,7 +6,7 @@ import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class AndroidGame extends Game {
-    private static final int TURN_TIMEOUT = 2 * 60 * 1000;
+    private static final int TURN_TIMEOUT = 2 * 10 * 1000;
 
     private final AndroidOpponent mOpponent;
 
