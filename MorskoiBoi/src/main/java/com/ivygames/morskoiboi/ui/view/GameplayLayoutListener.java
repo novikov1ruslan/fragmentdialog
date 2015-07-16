@@ -4,7 +4,7 @@ public interface GameplayLayoutListener {
 
     void onChatClicked();
 
-    void onVibrationChanged();
+//    void onVibrationChanged();
 
     void onSoundChanged();
 }

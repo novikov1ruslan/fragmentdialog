@@ -13,9 +13,9 @@ import java.util.Collection;
 public interface GameplayLayoutInterface extends TimeConsumer {
     void setSound(boolean soundOn);
 
-    void setVibration(boolean vibrationOn);
+//    void setVibration(boolean vibrationOn);
 
-    void hideVibrationSetting();
+//    void hideVibrationSetting();
 
     void setTotalTime(int turnTimeout);
 

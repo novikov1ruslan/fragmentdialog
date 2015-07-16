@@ -33,7 +33,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
     private TextView mEnemyNameView;
     private View mChatButton;
     private ImageButton mSoundButton;
-    private ImageButton mVibrationButton;
+//    private ImageButton mVibrationButton;
 
     private final Animation mShake;
     private long mStartTime;
@@ -70,11 +70,11 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
         mTimerView = (TimerViewInterface) findViewById(R.id.timer);
 
-        mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
-        if (mVibrationButton != null) {
-            Ln.v("vibration control present");
-            mVibrationButton.setOnClickListener(this);
-        }
+//        mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
+//        if (mVibrationButton != null) {
+//            Ln.v("vibration control present");
+//            mVibrationButton.setOnClickListener(this);
+//        }
         mSoundButton = (ImageButton) findViewById(R.id.sound_btn);
         if (mSoundButton != null) {
             mSoundButton.setOnClickListener(this);
@@ -89,11 +89,11 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         }
     }
 
-    public void setVibration(boolean on) {
-        if (mVibrationButton != null) {
-            mVibrationButton.setImageResource(on ? R.drawable.vibrate_on : R.drawable.vibrate_off);
-        }
-    }
+//    public void setVibration(boolean on) {
+//        if (mVibrationButton != null) {
+//            mVibrationButton.setImageResource(on ? R.drawable.vibrate_on : R.drawable.vibrate_off);
+//        }
+//    }
 
     public void setAim(Vector2 aim) {
         mEnemyBoardView.setAim(aim);
@@ -296,9 +296,9 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         }
 
         switch (v.getId()) {
-            case R.id.vibration_btn:
-                mListener.onVibrationChanged();
-                break;
+//            case R.id.vibration_btn:
+//                mListener.onVibrationChanged();
+//                break;
 
             case R.id.sound_btn:
                 mListener.onSoundChanged();
@@ -314,11 +314,11 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
 //        mChatButton.setVisibility(GONE);
     }
 
-    public void hideVibrationSetting() {
-        if (mVibrationButton != null) {
-            mVibrationButton.setVisibility(GONE);
-        }
-    }
+//    public void hideVibrationSetting() {
+//        if (mVibrationButton != null) {
+//            mVibrationButton.setVisibility(GONE);
+//        }
+//    }
 
     public void showOpponentSettingBoardNotification(String message) {
         mSettingBoardText.setText(message);

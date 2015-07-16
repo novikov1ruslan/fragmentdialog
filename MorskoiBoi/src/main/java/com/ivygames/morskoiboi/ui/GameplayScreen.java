@@ -192,25 +192,25 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 mLayout.setSound(on);
             }
 
-            @Override
-            public void onVibrationChanged() {
-                boolean on = !mSettings.isVibrationOn();
-                mSettings.setVibration(on);
-                mLayout.setVibration(on);
-                mVibrator.vibrate(300);
-            }
+//            @Override
+//            public void onVibrationChanged() {
+//                boolean on = !mSettings.isVibrationOn();
+//                mSettings.setVibration(on);
+//                mLayout.setVibration(on);
+//                mVibrator.vibrate(300);
+//            }
         });
 
         // --- for tablet ---
         mLayout.setSound(mSettings.isSoundOn());
-        if (mVibrator.hasVibrator()) {
-            Ln.v("show vibration setting setting");
-            mLayout.setVibration(mSettings.isVibrationOn());
-        } else {
-            Ln.v("device does not support vibration - hide setting");
-            mLayout.hideVibrationSetting();
-        }
-        // ------------------
+//        if (mVibrator.hasVibrator()) {
+//            Ln.v("show vibration setting setting");
+//            mLayout.setVibration(mSettings.isVibrationOn());
+//        } else {
+//            Ln.v("device does not support vibration - hide setting");
+//            mLayout.hideVibrationSetting();
+//        }
+//        // ------------------
 
         mLayout.setTotalTime(mGame.getTurnTimeout());
         updateMyStatus();
