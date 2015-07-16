@@ -10,10 +10,10 @@ import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 class TurnTimer extends AsyncTask<Void, Integer, Void> {
-    private static final int RESOLUTION = 300;
+    private static final int RESOLUTION = 1000;
 
     private volatile long mStartTime;
-    private final int mTimeout;
+    private volatile int mTimeout;
     private final TimeConsumer mLayout;
     private final GameplaySoundManager mSoundManager;
     private final TimerListener mListener;
@@ -43,7 +43,6 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     protected Void doInBackground(Void... params) {
         Thread.currentThread().setName("turn_timer");
         Ln.v("timer started for " + mTimeout + "ms");
-        updateProgress();
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 Thread.sleep(RESOLUTION);
@@ -58,26 +57,25 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     }
 
     private void updateProgress() {
-        int timeLeft = getTimeLeft();
-        if (shouldPlayAlarmSound()) {
+        mTimeout -= RESOLUTION;
+        if (shouldPlayAlarmSound(mTimeout)) {
             mSoundManager.playAlarmSound();
         }
 
-        if (timeLeft > 0) {
-            publishProgress(timeLeft);
+        if (mTimeout > 0) {
+            publishProgress(mTimeout);
         } else {
             publishProgress(0);
             Thread.currentThread().interrupt();
         }
     }
 
-    private boolean shouldPlayAlarmSound() {
-        return getTimeLeft() <= (GameplaySoundManager.ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
+    private boolean shouldPlayAlarmSound(int timeLeft) {
+        return timeLeft <= (GameplaySoundManager.ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
     }
 
     public int getTimeLeft() {
-        long d = SystemClock.elapsedRealtime() - mStartTime;
-        return mTimeout - (int) d;
+        return mTimeout;
     }
 
     @Override

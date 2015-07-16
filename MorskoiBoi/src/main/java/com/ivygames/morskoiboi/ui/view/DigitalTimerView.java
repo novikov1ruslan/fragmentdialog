@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class DigitalTimerView extends TextView implements TimerViewInterface {
     private static final String DEFAULT_TEXT = "00:00";
 
-    private final int mNormalBackground;
-    private final int mAlarmBackground;
+    //    private final int mNormalBackground;
+//    private final int mAlarmBackground;
     private final int mNormalColor;
     private final int mAlarmColor;
 
@@ -30,25 +30,21 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
         setText(DEFAULT_TEXT);
         mNormalColor = getResources().getColor(R.color.main);
         mAlarmColor = getResources().getColor(R.color.hit);
-        mNormalBackground = getResources().getColor(R.color.digital_clock_background);
-        mAlarmBackground = getResources().getColor(R.color.digital_clock_alarm_background);
+//        mNormalBackground = getResources().getColor(R.color.digital_clock_background);
+//        mAlarmBackground = getResources().getColor(R.color.digital_clock_alarm_background);
 
         setTextColor(mNormalColor);
 //        setBackgroundColor(mNormalBackground);
     }
 
-    private void update() {
+    private void updateColors() {
         setTextColor(mTime > mAlarmTime ? mNormalColor : mAlarmColor);
 //        setBackgroundColor(mTime > mAlarmTime ? mNormalBackground : mAlarmBackground);
     }
 
     private String format(int millis) {
-        millis += 1000;
         long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes);
-        if (minutes == 2 && seconds == 1) {
-            seconds = 0;
-        }
         return String.format("%02d:%02d", minutes, seconds);
     }
 
@@ -61,7 +57,7 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
     @Override
     public void setCurrentTime(int time) {
         mTime = time;
-        update();
+        updateColors();
         setText(format(time));
     }
 

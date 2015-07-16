@@ -30,6 +30,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
     private FleetView mFleet;
     private TextView mPlayerNameView;
     private TextView mEnemyNameView;
+    private View mChatButton;
 
     private final Animation mShake;
     private long mStartTime;
@@ -52,7 +53,8 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         mMyBoardView = (FleetBoardView) findViewById(R.id.board_view_fleet);
         mEnemyBoardView = (EnemyBoardView) findViewById(R.id.board_view_enemy);
         mFleet = (FleetView) findViewById(R.id.status);
-        findViewById(R.id.chat_button).setOnClickListener(new OnClickListener() {
+        mChatButton = findViewById(R.id.chat_button);
+        mChatButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -287,7 +289,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
     }
 
     public void hideChatButton() {
-//        mChatButton.setVisibility(GONE);
+        mChatButton.setVisibility(GONE);
     }
 
 //    public void hideVibrationSetting() {

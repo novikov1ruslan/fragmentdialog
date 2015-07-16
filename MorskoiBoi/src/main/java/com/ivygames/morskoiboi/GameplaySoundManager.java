@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class GameplaySoundManager {
-    public static final int ALARM_TIME_SECONDS = 11;
+    public static final int ALARM_TIME_SECONDS = 10;
 
     private static final int HIT_SOUNDS_COUNT = 2;
     private static final int KILL_SOUNDS_COUNT = 2;
