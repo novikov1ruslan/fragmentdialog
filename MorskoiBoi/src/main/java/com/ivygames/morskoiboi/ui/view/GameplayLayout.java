@@ -318,7 +318,7 @@ public class GameplayLayout extends LinearLayout implements View.OnClickListener
 
     public void hideVibrationSetting() {
         if (mVibrationButton != null) {
-            mVibrationButton.setVisibility(GONE);
+//            mVibrationButton.setVisibility(GONE);
         }
     }
 

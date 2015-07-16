@@ -31,6 +31,7 @@ public class GameSettings {
     private static final String PROGRESS_PENALTY = "PROGRESS_PENALTY";
     private static final String NO_ADS = "NO_ADS";
     private static final String SHOULD_AUTO_SIGN_IN = "SIGNED_IN";
+    private static final String NEW_RANK_ACHIEVED = "NEW_RANK_ACHIEVED";
 
     private static final int MINIMAL_RATING_BAR = 10;
     private static final int RATING_STEP = 5;
@@ -193,6 +194,14 @@ public class GameSettings {
 
     public void hideBoardSetupHelp() {
         internal.putBoolean(SHOW_SETUP_HELP, false);
+    }
+
+    public void newRankAchieved(boolean achieved) {
+        internal.putBoolean(NEW_RANK_ACHIEVED, achieved);
+    }
+
+    public boolean isNewRankAchieved() {
+        return internal.getBoolean(NEW_RANK_ACHIEVED, false);
     }
 
     private static class Internal implements SharedPreferences, SharedPreferences.Editor {

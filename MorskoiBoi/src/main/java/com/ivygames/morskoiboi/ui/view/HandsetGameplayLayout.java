@@ -25,10 +25,12 @@ public abstract class HandsetGameplayLayout extends CommonGameplayLayout impleme
 
         mMyBoardRect.left = mAspectRect.left;
         mMyBoardRect.right = mMyBoardRect.left + desiredWidth / 2;
+        mMyBoardRect.top = mAspectRect.top;
         mMyBoardRect.bottom = mEnemyBoardRect.top;
 
         mStatusRect.left = mMyBoardRect.right;
         mStatusRect.right = mStatusRect.left + desiredWidth / 2;
+        mStatusRect.top = mAspectRect.top;
         mStatusRect.bottom = mEnemyBoardRect.top;
 
         int buttonHeight = mStatusRect.height() / 4;

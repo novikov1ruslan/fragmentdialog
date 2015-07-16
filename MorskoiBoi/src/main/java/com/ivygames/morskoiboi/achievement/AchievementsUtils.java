@@ -64,6 +64,7 @@ public class AchievementsUtils {
         Rank lastRank = Rank.getBestRankForScore(oldProgress);
         Rank newRank = Rank.getBestRankForScore(newProgress);
         if (newRank != lastRank) {
+            GameSettings.get().newRankAchieved(true);
             String label = lastRank + " promoted to " + newRank;
             tracker.send(new AnalyticsEvent("promotion", label, 1).build());
         }

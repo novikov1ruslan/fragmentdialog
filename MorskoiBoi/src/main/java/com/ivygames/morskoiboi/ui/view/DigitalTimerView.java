@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 
+import org.commons.logger.Ln;
+
 import java.util.concurrent.TimeUnit;
 
 public class DigitalTimerView extends TextView implements TimerViewInterface {
@@ -76,7 +78,7 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
 
         paint.setTextSize(textSize);
         int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
-        if (width < 0) {
+        if (width <= 0) {
             return;
         }
         float measuredText = paint.measureText(DEFAULT_TEXT);
@@ -86,8 +88,12 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
 
         // fine tuning
         while (paint.measureText(DEFAULT_TEXT) > width) {
+            if (textSize < 8) {
+                break;
+            }
             paint.setTextSize(--textSize);
         }
+        Ln.v("w=" + getMeasuredWidth() + "; h=" + getMeasuredHeight() + "; size=" + textSize);
 
         setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
     }

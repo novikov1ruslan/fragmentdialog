@@ -13,13 +13,10 @@
 
     <com.ivygames.morskoiboi.ui.view.FleetBoardView
         android:id="@+id/board_view_fleet"
-        android:layout_height="match_parent"
         android:padding="@dimen/board_padding" />
 
     <com.ivygames.morskoiboi.ui.view.DigitalTimerView
         android:id="@+id/timer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:gravity="center"
         android:padding="4dp" />
 
@@ -29,8 +26,6 @@
 
     <ImageView
         android:id="@+id/chat_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:padding="4dp"
         android:scaleType="fitCenter"
         android:src="@drawable/chat" />

@@ -61,8 +61,54 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 
         Ln.d(this + " screen created, rank = " + rank);
+
+//        share(rank);
+//        share1();
+
         return mLayout;
     }
+
+//    private void share(Rank rank) {
+////            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), rank.getBitmapRes());
+////            String photoUri = MediaStore.Images.Media.insertImage(
+////                    getActivity().getContentResolver(), bitmap, "screeshot.jpg", 1233+ ".jpg Card Image");
+////            Uri uri = Uri.parse(photoUri);
+//        String uri = getUrl(rank.getBitmapRes());
+////        String uri = "https://drive.google.com/file/d/0B7CVg0NNcLFybVpCakE2ZmVBbUU/view?usp=sharing";
+//
+//        Intent shareIntent = new PlusShare.Builder(getActivity())
+//            .setType("image/png")
+//            .setText("hello everyone!")
+//            .setStream(Uri.parse(uri))
+//            .getIntent();
+//        startActivityForResult(shareIntent, 0);
+//    }
+
+
+//    private void share() {
+//        Intent shareIntent = new PlusShare.Builder(getActivity())
+//                .setType("text/plain")
+//                .setText("Welcome to the Google+ platform.")
+//                .setContentUrl(Uri.parse("https://developers.google.com/+/"))
+//                .getIntent();
+//
+//        startActivityForResult(shareIntent, 0);
+//    }
+//
+//    private void share1() {
+//        String uri = "https://drive.google.com/file/d/0B7CVg0NNcLFybVpCakE2ZmVBbUU/view?usp=sharing";
+//        Intent shareIntent = new PlusShare.Builder(getActivity())
+//                .setType("text/plain")
+//                .setText("Just tried this new restaurant! #nomnomnom #myappname")
+//                .setContentUrl(Uri.parse(uri))
+//                .getIntent();
+//
+//        startActivityForResult(shareIntent, 0);
+//    }
+//
+//    private String getUrl(int res) {
+//        return ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/" + res;
+//    }
 
     @Override
     public View getTutView() {
