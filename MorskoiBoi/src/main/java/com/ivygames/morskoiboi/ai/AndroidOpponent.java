@@ -39,10 +39,8 @@ public class AndroidOpponent extends AbstractOpponent {
     @Override
     public synchronized void go() {
         Vector2 aim = mAlgorithm.shoot(mEnemyBoard);
-        boolean needThinking = mAlgorithm.needThinking(mEnemyBoard);
-        needThinking = false;
         join();
-        mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, needThinking), "Bot");
+        mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, false), "Bot");
         mThread.start();
     }
 

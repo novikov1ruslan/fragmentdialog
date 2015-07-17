@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.Button;
@@ -18,7 +17,6 @@ public class InvitationButton extends Button {
     private final Bitmap mInvitation;
     private int mInvitationLeft;
     private int mInvitationTop;
-    private Paint mPaint;
     private boolean mShowInvitation;
 
     public InvitationButton(Context context, AttributeSet attrs) {
@@ -54,7 +52,7 @@ public class InvitationButton extends Button {
         super.onDraw(canvas);
         if (mShowInvitation) {
             if (mInvitation != null) {
-                canvas.drawBitmap(mInvitation, mInvitationLeft, mInvitationTop, mPaint);
+                canvas.drawBitmap(mInvitation, mInvitationLeft, mInvitationTop, null);
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.ui;
 
 import android.os.AsyncTask;
-import android.os.SystemClock;
 
 import com.ivygames.morskoiboi.GameplaySoundManager;
 import com.ivygames.morskoiboi.ui.view.TimeConsumer;

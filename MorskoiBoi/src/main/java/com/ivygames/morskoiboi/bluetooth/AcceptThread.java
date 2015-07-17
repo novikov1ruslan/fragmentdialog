@@ -11,7 +11,6 @@ import com.ivygames.morskoiboi.model.GameEvent;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-import java.io.Closeable;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;

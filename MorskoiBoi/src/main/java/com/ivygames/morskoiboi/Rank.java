@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import org.commons.logger.Ln;
-
 public enum Rank {
     SEAMAN(R.drawable.rank_seaman), PETTY_OFFICER_THIRD_CLASS(R.drawable.rank_po3), PETTY_OFFICER_SECOND_CLASS(R.drawable.rank_po2), PETTY_OFFICER_FIRST_CLASS(
             R.drawable.rank_po1), CHIEF_PETTY_OFFICER(R.drawable.rank_cpo), CHIEF_SHIP_PETTY_OFFICER(R.drawable.rank_cspo), WARRANT_OFFICER(R.drawable.rank_wo), CHIEF_WARRANT_OFFICER(
@@ -30,7 +28,7 @@ public enum Rank {
     public static final int O11 = 4500000; // <!-- 500k -->
 
     private final int mBitmap;
-    private int mSmallBitmap;
+    private final int mSmallBitmap;
     private int mName;
     private int mScore;
 
@@ -178,8 +176,7 @@ public enum Rank {
                 break;
 
             default:
-                Ln.e("impossible drawable=" + bitmapRes);
-                break;
+                throw new RuntimeException("impossible drawable=" + bitmapRes);
         }
     }
 

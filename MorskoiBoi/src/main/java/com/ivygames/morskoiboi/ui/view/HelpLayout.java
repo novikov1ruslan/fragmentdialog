@@ -31,8 +31,7 @@ public class HelpLayout extends NotepadRelativeLayout {
             }
         });
 
-        // TODO: try to load in XML
-        webView.loadUrl("file:///android_res/raw/battleship_help2.html");
+        webView.loadUrl("file:///android_res/raw/battleship_help.html");
     }
 
     private void setBackgroundTransparent(View view) {

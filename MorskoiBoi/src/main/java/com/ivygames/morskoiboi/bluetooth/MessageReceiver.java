@@ -8,7 +8,6 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothGame.MessageListener;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

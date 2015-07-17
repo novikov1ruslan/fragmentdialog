@@ -37,7 +37,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
 
     @Override
     public View onCreateView(ViewGroup container) {
-        mLayout = (SettingsLayout) getLayoutInflater().inflate(R.layout.settings, container, false);
+        mLayout = (SettingsLayout) inflate(R.layout.settings, container);
         mLayout.setScreenActionsListener(this);
         mLayout.setSound(mSettings.isSoundOn());
         if (mVibrator.hasVibrator()) {
@@ -48,7 +48,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
             mLayout.hideVibrationSetting();
         }
 
-        Intent intent = getEmailIntent(EMAIL);
+        Intent intent = getEmailIntent();
         if (!DeviceUtils.resolverAvailableForIntent(intent)) {
             mLayout.hideReportProblemButton();
         }
@@ -62,19 +62,11 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         return mLayout;
     }
 
-    private Intent getEmailIntent(String email) {
-        // Intent intent = new Intent(Intent.ACTION_SENDTO);
-        // // intent.setData(Uri.parse("mailto:" + email));
-        // intent.setData(Uri.fromParts("mailto", "abc@gmail.com", null));
-        // intent.setType("text/plain");
-        // // intent.setType("message/rfc822");
-        // // intent.putExtra(Intent.EXTRA_EMAIL, new String[] { email });
-        // return intent;
-
+    private Intent getEmailIntent() {
         Uri uri = Uri.parse("mailto:" + EMAIL);
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(uri);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + DeviceUtils.getVersionName(mParent) + ")");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + DeviceUtils.getVersionName(getResources()) + ")");
 //        intent.putExtra(Intent.EXTRA_TEXT, "hi android jack!");
         return Intent.createChooser(intent, getString(R.string.report_problem));
     }
@@ -119,20 +111,12 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     @Override
     public void onReportProblem() {
         UiEvent.send(mGaTracker, "report_problem");
-        Intent intent = getEmailIntent(EMAIL);
+        Intent intent = getEmailIntent();
         if (DeviceUtils.resolverAvailableForIntent(intent)) {
             startActivity(intent);
         } else {
             Ln.e("email resolver is not available");
         }
-
-        // ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity());
-        // // builder.setType("message/rfc822");
-        // builder.
-        // builder.setType("text/plain");
-        // builder.addEmailTo(EMAIL);
-        // builder.setSubject(getString(R.string.app_name));
-        // builder.startChooser();
     }
 
     @Override

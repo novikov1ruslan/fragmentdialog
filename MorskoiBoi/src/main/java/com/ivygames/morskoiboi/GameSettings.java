@@ -49,10 +49,6 @@ public class GameSettings {
         internal = Internal.getInstance();
     }
 
-    public void clear() {
-        internal.clear();
-    }
-
     public void enableAutoSignIn() {
         internal.putBoolean(SHOULD_AUTO_SIGN_IN, true);
     }
@@ -150,10 +146,6 @@ public class GameSettings {
 
     public void setProgress(Progress progress) {
         internal.putString(PROGRESS, progress.toJson().toString());
-    }
-
-    public void setProgress(String progress) {
-        internal.putString(PROGRESS, progress);
     }
 
     public Progress getProgress() {

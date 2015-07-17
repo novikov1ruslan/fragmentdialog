@@ -8,7 +8,6 @@ import com.ivygames.billing.Inventory;
 import com.ivygames.billing.Purchase;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.ui.BattleshipActivity;
-import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
@@ -30,13 +29,12 @@ public class InventoryHelper {
     private final BattleshipActivity mActivity;
 
     static final String SKU_NO_ADS = "no_ads";
-    private static final String DIALOG = FragmentAlertDialog.TAG;
 
     public InventoryHelper(BattleshipActivity activity) {
         mActivity = activity;
     }
 
-    public void onCreate() throws Exception {
+    public void onCreate() {
         // Create the helper, passing it our context and the public key to verify signatures with
         Ln.d("Creating IAB helper.");
         mHelper = new IabHelper(mActivity, BASE64_ENCODED_PUBLIC_KEY);
@@ -108,7 +106,7 @@ public class InventoryHelper {
 
                 // Do we have the premium upgrade?
                 Purchase noAdsPurchase = inventory.getPurchase(SKU_NO_ADS);
-                boolean noAds = (noAdsPurchase != null && PurchaseUtils.verifyDeveloperPayload(noAdsPurchase));
+                boolean noAds = (noAdsPurchase != null);
                 if (noAds) {
                     Ln.d("removing ads");
                     GameSettings.get().setNoAds();
@@ -120,7 +118,7 @@ public class InventoryHelper {
         }
     };
 
-    public void onDestroy() throws Exception {
+    public void onDestroy() {
         // very important:
         Ln.d("Destroying helper.");
         if (mHelper != null) {

@@ -55,21 +55,24 @@ public class DeviceUtils {
     private static void printExtras(Bundle extras) {
         for (String key : extras.keySet()) {
             Object value = extras.get(key);
-            Ln.v(key + "=" + value.toString() + "[" + value.getClass().getName() + "]");
+            if (value == null) {
+                Ln.v(key + "= null");
+            } else {
+                Ln.v(key + "=" + value.toString() + "[" + value.getClass().getName() + "]");
+            }
         }
     }
 
-    public static String getVersionName(Context context) {
-//        return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-        return context.getResources().getString(R.string.versionName);
+    public static String getVersionName(Resources res) {
+        return res.getString(R.string.versionName);
     }
 
     @NonNull
     public static String getDeviceInfo() {
         return "BOARD=" + Build.BOARD + "; BOOTLOADER=" + Build.BOOTLOADER + "; BRAND=" + Build.BRAND + "; CPU_ABI=" + Build.CPU_ABI
-                        + "; DEVICE=" + Build.DEVICE + "; DISPLAY=" + Build.DISPLAY + "; HARDWARE=" + Build.HARDWARE + "; HOST=" + Build.HOST + "; ID=" + Build.ID
-                        + "; MANUFACTURER=" + Build.MANUFACTURER + "; MODEL=" + Build.MODEL + "; PRODUCT=" + Build.PRODUCT + "; USER=" + Build.USER + "; SDK="
-                        + Build.VERSION.SDK_INT;
+                + "; DEVICE=" + Build.DEVICE + "; DISPLAY=" + Build.DISPLAY + "; HARDWARE=" + Build.HARDWARE + "; HOST=" + Build.HOST + "; ID=" + Build.ID
+                + "; MANUFACTURER=" + Build.MANUFACTURER + "; MODEL=" + Build.MODEL + "; PRODUCT=" + Build.PRODUCT + "; USER=" + Build.USER + "; SDK="
+                + Build.VERSION.SDK_INT;
     }
 
     public static boolean isDebug(Context context) {

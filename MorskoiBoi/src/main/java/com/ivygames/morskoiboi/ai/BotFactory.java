@@ -17,8 +17,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 final class BotFactory {
 
-    private static Random sFakeRandom;
-
     private BotFactory() {
         // factory
     }
@@ -33,12 +31,7 @@ final class BotFactory {
         private final CopyOnWriteArrayList<Vector2> mHitDecks;
 
         public BotImplementation() {
-            if (sFakeRandom == null) {
-                mRandom = new Random(System.currentTimeMillis());
-            } else {
-                mRandom = sFakeRandom;
-            }
-
+            mRandom = new Random(System.currentTimeMillis());
             mHitDecks = new CopyOnWriteArrayList<Vector2>();
         }
 
@@ -143,7 +136,7 @@ final class BotFactory {
         }
 
         @Override
-        public boolean needThinking(Board board) {
+        public boolean needThinking() {
             return mHitDecks.size() < 2;
         }
     }

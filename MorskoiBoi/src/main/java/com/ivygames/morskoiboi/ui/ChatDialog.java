@@ -11,7 +11,6 @@ import com.ivygames.morskoiboi.ui.view.ChatDialogLayout;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class ChatDialog extends FragmentAlertDialog {

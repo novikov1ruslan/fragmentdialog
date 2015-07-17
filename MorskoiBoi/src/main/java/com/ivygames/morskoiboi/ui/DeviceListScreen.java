@@ -59,7 +59,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     @Override
     public View onCreateView(ViewGroup container) {
-        mLayout = (DeviceListLayout) getLayoutInflater().inflate(R.layout.device_list, container, false);
+        mLayout = (DeviceListLayout) inflate(R.layout.device_list, container);
         mLayout.setListener(this);
         Set<BluetoothDevice> bondedDevices = mBtAdapter.getBondedDevices();
         Ln.d(TAG + ": retrieved bonded devices: " + bondedDevices);

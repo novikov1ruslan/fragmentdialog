@@ -149,20 +149,11 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
 
         float padding = getResources().getDimension(R.dimen.tut_screen_padding);
         View gotIt = mTutView.findViewById(R.id.got_it_button);
-        int gotItWidth = gotIt.getWidth();
-        int gotItHeight = gotIt.getHeight();
-        int w = getWidth();
-        int h = getHeight();
         gotIt.setY(tap.getY() + tap.getHeight() + padding);
         if (DeviceUtils.isTablet(getResources())) {
             padding += getResources().getDimension(R.dimen.battleship_margin_horizontal);
         }
         gotIt.setX(getWidth() - gotIt.getWidth() - padding);
         gotIt.setOnClickListener(this);
-
-//        ImageView rank = (ImageView) mTutView.findViewById(R.id.rank);
-//        rank.setX(location[0]);
-//        rank.setY(location[1]);
-//        rank.setImageDrawable(mPlayerRank.getDrawable());
     }
 }

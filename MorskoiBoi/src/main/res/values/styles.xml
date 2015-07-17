@@ -9,13 +9,6 @@
         <item name="android:layout_marginRight">@dimen/main_buttons_margin</item>
     </style>
 
-    <style name="ChatButton">
-        <item name="android:textSize">@dimen/text_m</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/main</item>
-        <item name="android:background">@drawable/chat_background</item>
-    </style>
-
     <style name="Edit" parent="@style/EditTextAppTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginRight">20dp</item>

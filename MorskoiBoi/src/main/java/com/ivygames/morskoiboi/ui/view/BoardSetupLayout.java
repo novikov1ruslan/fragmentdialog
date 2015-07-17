@@ -135,8 +135,6 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
         View drag = mTutView.findViewById(R.id.drag_gesture);
         int height = mBoardView.getHeight();
         int width = mBoardView.getWidth();
-        int dragWidth = drag.getWidth();
-        int dragHeight = drag.getHeight();
         drag.setX(width / 4 - drag.getWidth() / 2);
         drag.setY(height / 8);
 

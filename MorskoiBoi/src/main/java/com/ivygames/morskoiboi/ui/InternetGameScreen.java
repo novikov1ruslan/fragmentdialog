@@ -49,7 +49,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     @Override
     public View onCreateView(ViewGroup container) {
-        mLayout = (InternetGameLayout) getLayoutInflater().inflate(R.layout.internet_game, container, false);
+        mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
         mLayout.setPlayerName(GameSettings.get().getPlayerName());
         mLayout.setScreenActions(this);
         Ln.d(this + " screen created");

@@ -11,7 +11,7 @@ interface BotAlgorithm {
      */
     Vector2 shoot(Board board);
 
-    boolean needThinking(Board board);
+    boolean needThinking();
 
     void setLastResult(PokeResult result);
 }

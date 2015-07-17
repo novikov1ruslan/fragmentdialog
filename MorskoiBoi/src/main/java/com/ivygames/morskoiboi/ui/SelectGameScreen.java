@@ -46,7 +46,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public View onCreateView(ViewGroup container) {
-        mLayout = (SelectGameLayout) getLayoutInflater().inflate(R.layout.select_game, container, false);
+        mLayout = (SelectGameLayout) inflate(R.layout.select_game, container);
         mLayout.setScreenActions(this);
 
         if (!hasBluetooth()) {

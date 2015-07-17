@@ -106,9 +106,4 @@ class RanksAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setCurrentRank(Rank rank) {
-        mCurrentRank = rank;
-        notifyDataSetChanged();
-    }
-
 }
