@@ -39,10 +39,6 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     private static final int MIN_PLAYERS = 2;
 
-    private static final int RC_SELECT_PLAYERS = 10000;
-    private static final int RC_INVITATION_INBOX = 10001;
-    private final static int RC_WAITING_ROOM = 10002;
-
     private InternetGame mInternetGame;
     private boolean mKeyLock;
     private InternetGameLayout mLayout;
@@ -133,7 +129,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
         showWaitingScreen();
         Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mApiClient, InternetGame.MIN_OPPONENTS, InternetGame.MAX_OPPONENTS, false);
-        startActivityForResult(intent, RC_SELECT_PLAYERS);
+        startActivityForResult(intent, BattleshipActivity.RC_SELECT_PLAYERS);
     }
 
     private void createGame() {
@@ -157,7 +153,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
         showWaitingScreen();
         Intent intent = Games.Invitations.getInvitationInboxIntent(mApiClient);
-        startActivityForResult(intent, RC_INVITATION_INBOX);
+        startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
     }
 
     @Override
@@ -187,13 +183,13 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
         Ln.v("result=" + resultCode);
         switch (requestCode) {
-            case RC_SELECT_PLAYERS:
+            case BattleshipActivity.RC_SELECT_PLAYERS:
                 handleSelectPlayersResult(resultCode, data);
                 break;
-            case RC_INVITATION_INBOX:
+            case BattleshipActivity.RC_INVITATION_INBOX:
                 handleInvitationInboxResult(resultCode, data);
                 break;
-            case RC_WAITING_ROOM:
+            case BattleshipActivity.RC_WAITING_ROOM:
                 handleWaitingRoomResult(resultCode);
                 break;
         }
@@ -257,7 +253,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
      */
     private void showWaitingRoom(Room room) {
         Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(mApiClient, room, MIN_PLAYERS);
-        startActivityForResult(intent, RC_WAITING_ROOM);
+        startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
     }
 
     @Override

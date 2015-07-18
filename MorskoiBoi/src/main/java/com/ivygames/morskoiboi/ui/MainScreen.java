@@ -28,9 +28,6 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private static final String TAG = "MAIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private static final int RC_UNUSED = 0;
-    private static final int PLUS_ONE_REQUEST_CODE = 20001;
-
     private boolean mAchievementsRequested;
     private boolean mLeaderboardRequested;
     private MainScreenLayout mLayout;
@@ -79,7 +76,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onResume() {
         super.onResume();
-        mLayout.onResume(PLUS_ONE_REQUEST_CODE);
+        mLayout.onResume(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
         if (mApiClient.isConnected()) {
             mLayout.showPlusOneButton();
         }
@@ -110,7 +107,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required");
             mApiClient.disconnect();
-        } else if (requestCode == PLUS_ONE_REQUEST_CODE) {
+        } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE) {
             UiEvent.send(mGaTracker, "+1", "[" + resultCode + "]");
         }
     }
@@ -139,7 +136,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void showAchievementsScreen() {
-        startActivityForResult(Games.Achievements.getAchievementsIntent(mApiClient), RC_UNUSED);
+        startActivityForResult(Games.Achievements.getAchievementsIntent(mApiClient), BattleshipActivity.RC_UNUSED);
     }
 
     @Override
@@ -185,7 +182,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void showLeaderboardsScreen() {
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mApiClient, getString(R.string.leaderboard_normal)), RC_UNUSED);
+        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mApiClient, getString(R.string.leaderboard_normal)), BattleshipActivity.RC_UNUSED);
     }
 
     @Override

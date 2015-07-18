@@ -33,8 +33,6 @@ import java.util.Set;
 public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, ConnectionListener, BackPressListener {
     private static final String TAG = "bluetooth";
 
-    private static final int REQUEST_ENSURE = 3;
-
     private static final String DIALOG = FragmentAlertDialog.TAG;
     private static final int DISCOVERABLE_DURATION = 300;
 
@@ -154,13 +152,13 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
             Ln.v("ensuring discover-ability for " + DISCOVERABLE_DURATION);
-            startActivityForResult(discoverableIntent, REQUEST_ENSURE);
+            startActivityForResult(discoverableIntent, BattleshipActivity.RC_ENSURE_DISCOVERABLE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_ENSURE) {
+        if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
             Ln.v("discoverable result=" + resultCode);
         } else {
             super.onActivityResult(requestCode, resultCode, data);

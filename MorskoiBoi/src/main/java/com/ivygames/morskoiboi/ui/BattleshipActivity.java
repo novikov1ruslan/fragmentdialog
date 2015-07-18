@@ -61,19 +61,30 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnInvitationReceivedListener {
 
-    interface BackPressListener {
-
-        void onBackPressed();
-    }
-
-    interface SignInListener {
-
-        void onSignInSucceeded();
-    }
+    public static final int RC_SELECT_PLAYERS = 10000;
+    public static final int RC_INVITATION_INBOX = 10001;
+    public final static int RC_WAITING_ROOM = 10002;
+    static final int RC_ENSURE_DISCOVERABLE = 3;
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
+    // Request code used to invoke Snapshot selection UI.
+    public static final int RC_SELECT_SNAPSHOT = 9003;
+    static final int RC_UNUSED = 0;
+    static final int PLUS_ONE_REQUEST_CODE = 20001;
+    static final int RC_ENABLE_BT = 2;
+
     private static final int SERVICE_RESOLVE = 9002;
+
+    interface BackPressListener {
+        void onBackPressed();
+
+    }
+
+    interface SignInListener {
+        void onSignInSucceeded();
+
+    }
 
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
@@ -426,6 +437,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
                 Ln.w("connection issue could not be resolved");
                 mResolvingConnectionFailure = false;
             }
+        } else if (requestCode == RC_SELECT_SNAPSHOT) {
+            mAchievementsManager.onActivityResult2(resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }

@@ -37,7 +37,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private static final String TAG = "SELECT_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private static final int REQUEST_ENABLE_BT = 2;
     private SelectGameLayout mLayout;
 
     private boolean mViaInternetRequested;
@@ -198,7 +197,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             Ln.d("Bluetooth available, but not enabled - prompt to enable");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             if (DeviceUtils.resolverAvailableForIntent(enableIntent)) {
-                startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                startActivityForResult(enableIntent, BattleshipActivity.RC_ENABLE_BT);
             } else {
                 Ln.w("Bluetooth resolver is not available");
                 mGaTracker.send(new ExceptionEvent("bt_error").build());
@@ -214,7 +213,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Ln.v("result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_OK) {
+        if (requestCode == BattleshipActivity.RC_ENABLE_BT && resultCode == Activity.RESULT_OK) {
             showDeviceListScreen();
         }
     }
