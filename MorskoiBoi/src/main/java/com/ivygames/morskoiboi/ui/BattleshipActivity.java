@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.ui;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -68,8 +69,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-    // Request code used to invoke Snapshot selection UI.
-    public static final int RC_SELECT_SNAPSHOT = 9003;
+//    // Request code used to invoke Snapshot selection UI.
+//    public static final int RC_SELECT_SNAPSHOT = 9003;
     static final int RC_UNUSED = 0;
     static final int PLUS_ONE_REQUEST_CODE = 20001;
     static final int RC_ENABLE_BT = 2;
@@ -437,8 +438,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
                 Ln.w("connection issue could not be resolved");
                 mResolvingConnectionFailure = false;
             }
-        } else if (requestCode == RC_SELECT_SNAPSHOT) {
-            mAchievementsManager.onActivityResult2(resultCode, data);
+//        } else if (requestCode == RC_SELECT_SNAPSHOT) {
+//            mAchievementsManager.onActivityResult(resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }
@@ -489,7 +490,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             mSettings.setPlayerName(name);
         }
 
-        mAchievementsManager.loadAchievements();
+        mAchievementsManager.loadAchievements(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
 
         if (mCurrentScreen instanceof SignInListener) {
             ((SignInListener) mCurrentScreen).onSignInSucceeded();

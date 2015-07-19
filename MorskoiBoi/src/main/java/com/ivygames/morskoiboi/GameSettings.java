@@ -32,6 +32,7 @@ public class GameSettings {
     private static final String NO_ADS = "NO_ADS";
     private static final String SHOULD_AUTO_SIGN_IN = "SIGNED_IN";
     private static final String NEW_RANK_ACHIEVED = "NEW_RANK_ACHIEVED";
+    private static final String PROGRESS_MIGRATED = "PROGRESS_MIGRATED";
 
     private static final int MINIMAL_RATING_BAR = 10;
     private static final int RATING_STEP = 5;
@@ -194,6 +195,14 @@ public class GameSettings {
 
     public boolean isNewRankAchieved() {
         return internal.getBoolean(NEW_RANK_ACHIEVED, false);
+    }
+
+    public boolean hasProgressMigrated() {
+        return internal.getBoolean(PROGRESS_MIGRATED, false);
+    }
+
+    public void setProgressMigrated() {
+        internal.putBoolean(PROGRESS_MIGRATED, true);
     }
 
     private static class Internal implements SharedPreferences, SharedPreferences.Editor {

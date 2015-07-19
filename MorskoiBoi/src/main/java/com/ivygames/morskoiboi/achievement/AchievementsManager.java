@@ -1,33 +1,27 @@
 package com.ivygames.morskoiboi.achievement;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Bundle;
 
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
-import com.google.android.gms.appstate.AppStateManager.StateResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.google.android.gms.games.snapshot.Snapshot;
-import com.google.android.gms.games.snapshot.SnapshotMetadata;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.ui.BattleshipActivity;
 
+import org.acra.ACRA;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-import java.io.IOException;
 import java.util.Collection;
 
 public final class AchievementsManager {
@@ -57,8 +51,8 @@ public final class AchievementsManager {
     private final Tracker mGaTracker;
     private final GameSettings mSettings = GameSettings.get();
 
-    private final AchievementsResultCallback achievementsLoadCallback;
-    private final AppStateResultCallback appStateCallback;
+    private final AchievementsResultCallback mAchievementsLoadCallback;
+//    private final AppStateResultCallback appStateCallback;
 
     public AchievementsManager(GoogleApiClient apiClient, Tracker tracker) {
         Validate.notNull(tracker);
@@ -66,15 +60,20 @@ public final class AchievementsManager {
 
         Validate.notNull(apiClient);
         mApiClient = apiClient;
-        achievementsLoadCallback = new AchievementsResultCallback(apiClient);
-        appStateCallback = new AppStateResultCallback(apiClient, tracker);
+        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient);
+//        appStateCallback = new AppStateResultCallback(apiClient, tracker);
     }
 
-    public void loadAchievements() {
+    public void loadAchievements(Bitmap bitmap) {
         PendingResult<LoadAchievementsResult> loadResult = Games.Achievements.load(mApiClient, true);
-        loadResult.setResultCallback(achievementsLoadCallback);
-        PendingResult<StateResult> stateResult = AppStateManager.load(mApiClient, AchievementsUtils.STATE_KEY);
-        stateResult.setResultCallback(appStateCallback);
+        loadResult.setResultCallback(mAchievementsLoadCallback);
+//            PendingResult<StateResult> stateResult = AppStateManager.load(mApiClient, AchievementsUtils.STATE_KEY);
+//            stateResult.setResultCallback(appStateCallback);
+        if (GameSettings.get().hasProgressMigrated()) {
+            savedGamesLoad(AchievementsUtils.makeSnapshotName());
+        } else {
+            cloudSaveMigrate(bitmap);
+        }
     }
 
     /**
@@ -210,6 +209,7 @@ public final class AchievementsManager {
         return AchievementsUtils.debugName(achievementId);
     }
 
+    // -------------------------------- Save Game
 
     /**
      * Async migrate the data in Cloud Save (stateKey APP_STATE_KEY) to a Snapshot in the Saved
@@ -218,7 +218,7 @@ public final class AchievementsManager {
      * appropriate data and metadata.  After migrate, the UI will be cleared and the data will be
      * available to load from Snapshots.
      */
-    public void cloudSaveMigrate() {
+    public void cloudSaveMigrate(final Bitmap bitmap) {
         final boolean createIfMissing = true;
 
         // Note: when migrating your users from Cloud Save to Saved Games, you will need to perform
@@ -230,15 +230,13 @@ public final class AchievementsManager {
         // this case there is no data available to auto-generate a description, cover image, or
         // playedTime.  It is strongly recommended that you generate unique and meaningful
         // values for these fields based on the data in your app.
-        final String snapshotName = makeSnapshotName(AchievementsUtils.STATE_KEY);
-        final String description = "Saved game #" + AchievementsUtils.STATE_KEY;
+        final String snapshotName = AchievementsUtils.makeSnapshotName();
+        final String description = "Sea Battle Score";
         final long playedTimeMillis = 60 * 60 * 1000;
-        final Bitmap bitmap = null;//BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 
         AsyncTask<Void, Void, Boolean> migrateTask = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected void onPreExecute() {
-//                showProgressDialog("Migrating");
             }
 
             @Override
@@ -293,25 +291,14 @@ public final class AchievementsManager {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (result) {
-//                    displayMessage(getString(R.string.cloud_save_migrate_success), false);
+                    AnalyticsEvent.send(mGaTracker, "migration succeeded");
+                    savedGamesLoad(AchievementsUtils.makeSnapshotName());
                 } else {
-//                    displayMessage(getString(R.string.cloud_save_migrate_failure), true);
+                    ACRA.getErrorReporter().handleException(new RuntimeException("migration failed"));
                 }
-
-//                dismissProgressDialog();
             }
         };
         migrateTask.execute();
-    }
-
-    /**
-     * Generate a unique Snapshot name from an AppState stateKey.
-     *
-     * @param appStateKey the stateKey for the Cloud Save data.
-     * @return a unique Snapshot name that maps to the stateKey.
-     */
-    private String makeSnapshotName(int appStateKey) {
-        return "Snapshot-" + String.valueOf(appStateKey);
     }
 
     /**
@@ -324,90 +311,21 @@ public final class AchievementsManager {
         PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.open(
                 mApiClient, snapshotName, false);
 
-//        showProgressDialog("Loading Saved Game");
-        ResultCallback<Snapshots.OpenSnapshotResult> callback =
-                new ResultCallback<Snapshots.OpenSnapshotResult>() {
-                    @Override
-                    public void onResult(Snapshots.OpenSnapshotResult openSnapshotResult) {
-                        if (openSnapshotResult.getStatus().isSuccess()) {
-//                            displayMessage(getString(R.string.saved_games_load_success), false);
-                            byte[] data = new byte[0];
-                            try {
-                                data = openSnapshotResult.getSnapshot().getSnapshotContents().readFully();
-                            } catch (IOException e) {
-//                                displayMessage("Exception reading snapshot: " + e.getMessage(), true);
-                            }
-                            setData(new String(data));
-                            displaySnapshotMetadata(openSnapshotResult.getSnapshot().getMetadata());
-                        } else {
-//                            displayMessage(getString(R.string.saved_games_load_failure), true);
-                        }
-//                        dismissProgressDialog();
-                    }
-                };
+        ResultCallback<Snapshots.OpenSnapshotResult> callback = new SavedGamesResultCallback(mApiClient, mGaTracker);
         pendingResult.setResultCallback(callback);
     }
 
-    private void setData(String data) {
-//        if (data == null) {
-//            dataEditText.setText("");
-//        } else {
-//            dataEditText.setText(data);
+//    private void displaySnapshotMetadata(SnapshotMetadata metadata) {
+//        if (metadata == null) {
+//            return;
 //        }
-    }
-
-    private void displaySnapshotMetadata(SnapshotMetadata metadata) {
-        if (metadata == null) {
-            return;
-        }
-
-        String metadataStr = "Source: Saved Games" + '\n'
-                + "Description: " + metadata.getDescription() + '\n'
-                + "Name: " + metadata.getUniqueName() + '\n'
-                + "Last Modified: " + String.valueOf(metadata.getLastModifiedTimestamp()) + '\n'
-                + "Played Time: " + String.valueOf(metadata.getPlayedTime()) + '\n'
-                + "Cover Image URL: " + metadata.getCoverImageUrl();
-    }
-
-    /**
-     * Launch the UI to select a Snapshot from the user's Saved Games.  The result of this
-     * selection will be returned to onActivityResult.
-     */
-    public void savedGamesSelect(Activity activity) {
-        final boolean allowAddButton = false;
-        final boolean allowDelete = false;
-        Intent intent = Games.Snapshots.getSelectSnapshotIntent(
-                mApiClient, "Saved Games", allowAddButton, allowDelete,
-                Snapshots.DISPLAY_LIMIT_NONE);
-
-//        showProgressDialog("Loading");
-        activity.startActivityForResult(intent, BattleshipActivity.RC_SELECT_SNAPSHOT);
-    }
-
-    public void onActivityResult2(int resultCode, Intent data) {
-        Ln.d("RC_SELECT_SNAPSHOT, resultCode = " + resultCode);
-        if (resultCode == Activity.RESULT_OK) {
-            // Successfully returned from Snapshot selection UI
-            if (data != null) {
-                Bundle bundle = data.getExtras();
-                SnapshotMetadata selected = Games.Snapshots.getSnapshotFromBundle(bundle);
-                if (selected == null) {
-                    // No snapshot in the Intent bundle, display error message
-//                        displayMessage(getString(R.string.saved_games_select_failure), true);
-                    setData(null);
-                    displaySnapshotMetadata(null);
-                } else {
-                    // Found Snapshot Metadata in Intent bundle.  Load Snapshot by name.
-                    String snapshotName = selected.getUniqueName();
-                    savedGamesLoad(snapshotName);
-                }
-            }
-        } else {
-            // User canceled the select intent or it failed for some other reason
-//                displayMessage(getString(R.string.saved_games_select_cancel), true);
-            setData(null);
-            displaySnapshotMetadata(null);
-        }
-    }
+//
+//        String metadataStr = "Source: Saved Games" + '\n'
+//                + "Description: " + metadata.getDescription() + '\n'
+//                + "Name: " + metadata.getUniqueName() + '\n'
+//                + "Last Modified: " + String.valueOf(metadata.getLastModifiedTimestamp()) + '\n'
+//                + "Played Time: " + String.valueOf(metadata.getPlayedTime()) + '\n'
+//                + "Cover Image URL: " + metadata.getCoverImageUrl();
+//    }
 
 }
