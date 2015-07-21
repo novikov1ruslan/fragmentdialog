@@ -59,7 +59,7 @@ public class AchievementsUtils {
 
         trackPromotionEvent(oldProgress, progress.getRank(), tracker);
 
-        Ln.d("posting progress to the cloud");
+        Ln.d("posting progress to the cloud: " + progress);
         String json = progress.toJson().toString();
         if (apiClient.isConnected()) {
             savedGamesUpdate(apiClient, json.getBytes());
@@ -107,7 +107,7 @@ public class AchievementsUtils {
      * played time, and description with each Snapshot update.  After update, the UI will
      * be cleared.
      */
-    private static void savedGamesUpdate(final GoogleApiClient apiClient, final byte[] data) {
+    public static void savedGamesUpdate(final GoogleApiClient apiClient, final byte[] data) {
         final String snapshotName = makeSnapshotName();
         final boolean createIfMissing = false;
 

@@ -232,7 +232,7 @@ public final class AchievementsManager {
         // values for these fields based on the data in your app.
         final String snapshotName = AchievementsUtils.makeSnapshotName();
         final String description = "Sea Battle Score";
-        final long playedTimeMillis = 60 * 60 * 1000;
+        final long playedTimeMillis = 0;
 
         AsyncTask<Void, Void, Boolean> migrateTask = new AsyncTask<Void, Void, Boolean>() {
             @Override

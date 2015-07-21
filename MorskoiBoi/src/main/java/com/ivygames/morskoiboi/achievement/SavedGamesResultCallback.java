@@ -4,8 +4,13 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.snapshot.Snapshot;
+import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
@@ -26,17 +31,29 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
     }
 
     @Override
-    public void onResult(Snapshots.OpenSnapshotResult openSnapshotResult) {
-        if (openSnapshotResult.getStatus().isSuccess()) {
+    public void onResult(Snapshots.OpenSnapshotResult result) {
+        if (result.getStatus().isSuccess()) {
             Ln.d("saved game loaded");
             try {
-                byte[] data = openSnapshotResult.getSnapshot().getSnapshotContents().readFully();
+                Snapshot snapshot = result.getSnapshot();
+                byte[] data = snapshot.getSnapshotContents().readFully();
+                Progress max = parseProgress(data);
+                if (result.getStatus().getStatusCode() == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
+                    Snapshot modifiedSnapshot = result.getConflictingSnapshot();
+                    data = modifiedSnapshot.getSnapshotContents().readFully();
+                    Progress modifiedProgress = parseProgress(data);
+                    max = getMax(max, modifiedProgress);
+
+                    AnalyticsEvent.send(mGaTracker, "snapshot conflict");
+                    AchievementsUtils.savedGamesUpdate(mApiClient, max.toJson().toString().getBytes());
+                }
+
                 Progress localProgress = mSettings.getProgress();
-                Progress cloudProgress = parseProgress(data);
-                Ln.v("local progress=" + localProgress + ", cloud progress=" + cloudProgress);
-                mSettings.setProgress(getMax(localProgress, cloudProgress));
-            } catch (IOException e) {
-                Ln.w(e, "failed to load saved game");
+                Ln.v("local progress=" + localProgress + ", cloud progress=" + max + ", saving");
+                max = getMax(max, localProgress);
+                mSettings.setProgress(max);
+            } catch (IOException ioe) {
+                Ln.w(ioe, "failed to load saved game");
             }
         } else {
             Ln.w("failed to load saved game");
