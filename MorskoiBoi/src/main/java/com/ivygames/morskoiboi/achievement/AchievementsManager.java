@@ -246,7 +246,7 @@ public final class AchievementsManager {
 
                 if (!load.getStatus().isSuccess()) {
                     Ln.w("Could not load App State for migration.");
-                    return false;
+                    return true;
                 }
 
                 // Get Data from AppState
@@ -262,7 +262,7 @@ public final class AchievementsManager {
                     // This is outside the scope of this sample, however you should resolve such
                     // conflicts in your own app by following the steps outlined here:
                     // https://developers.google.com/games/services/android/savedgames#handling_saved_game_conflicts
-                    return false;
+                    return true;
                 }
 
                 // Write the new data to the snapshot
@@ -291,6 +291,7 @@ public final class AchievementsManager {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (result) {
+                    GameSettings.get().setProgressMigrated();
                     AnalyticsEvent.send(mGaTracker, "migration succeeded");
                     savedGamesLoad(AchievementsUtils.makeSnapshotName());
                 } else {

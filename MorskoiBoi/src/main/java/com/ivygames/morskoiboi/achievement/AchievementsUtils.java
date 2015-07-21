@@ -107,7 +107,7 @@ public class AchievementsUtils {
      * played time, and description with each Snapshot update.  After update, the UI will
      * be cleared.
      */
-    public static void savedGamesUpdate(final GoogleApiClient apiClient, final byte[] data) {
+    static void savedGamesUpdate(final GoogleApiClient apiClient, final byte[] data) {
         final String snapshotName = makeSnapshotName();
         final boolean createIfMissing = false;
 

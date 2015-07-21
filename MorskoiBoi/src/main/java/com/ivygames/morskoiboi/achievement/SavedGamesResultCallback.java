@@ -1,13 +1,12 @@
 package com.ivygames.morskoiboi.achievement;
 
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
-import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
@@ -32,43 +31,58 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
 
     @Override
     public void onResult(Snapshots.OpenSnapshotResult result) {
-        if (result.getStatus().isSuccess()) {
-            Ln.d("saved game loaded");
-            try {
-                Snapshot snapshot = result.getSnapshot();
-                byte[] data = snapshot.getSnapshotContents().readFully();
-                Progress max = parseProgress(data);
-                if (result.getStatus().getStatusCode() == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
-                    Snapshot modifiedSnapshot = result.getConflictingSnapshot();
-                    data = modifiedSnapshot.getSnapshotContents().readFully();
-                    Progress modifiedProgress = parseProgress(data);
-                    max = getMax(max, modifiedProgress);
-
-                    AnalyticsEvent.send(mGaTracker, "snapshot conflict");
-                    AchievementsUtils.savedGamesUpdate(mApiClient, max.toJson().toString().getBytes());
-                }
-
+        try {
+            if (result.getStatus().isSuccess()) {
+                Progress max = getServerProgress(result.getSnapshot());
+                Ln.d("saved game loaded");
                 Progress localProgress = mSettings.getProgress();
                 Ln.v("local progress=" + localProgress + ", cloud progress=" + max + ", saving");
                 max = getMax(max, localProgress);
                 mSettings.setProgress(max);
-            } catch (IOException ioe) {
-                Ln.w(ioe, "failed to load saved game");
+            } else {
+                Ln.w("failed to load saved game");
+                int statusCode = result.getStatus().getStatusCode();
+                if (statusCode == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
+                    Progress max = getServerProgress(result.getSnapshot());
+                    max = resolveConflict(result, max);
+                    mSettings.setProgress(max);
+                }
+                else {
+                    Ln.e("failed to load saved game: " + statusCode);
+                }
             }
-        } else {
-            Ln.w("failed to load saved game");
+
+        } catch (IOException ioe) {
+            Ln.w(ioe, "failed to load saved game");
         }
     }
 
-    private void resolveConflict(int stateKey, String resolvedVersion, byte[] localData, byte[] cloudData) {
-        Progress localProgress = parseProgress(localData);
-        Progress cloudProgress = parseProgress(cloudData);
-        Progress max = getMax(localProgress, cloudProgress);
-        Ln.d("resolving conflict: local=" + localProgress + " vs cloud=" + cloudProgress + ", resolved=" + max);
-        byte[] resolvedData = max.toString().getBytes();
-        AppStateManager.resolve(mApiClient, stateKey, resolvedVersion, resolvedData);
-        mSettings.setProgress(max);
+    private Progress getServerProgress(Snapshot snapshot) throws IOException {
+        byte[] data = snapshot.getSnapshotContents().readFully();
+        return parseProgress(data);
     }
+
+    @NonNull
+    private Progress resolveConflict(Snapshots.OpenSnapshotResult result, Progress max) throws IOException {
+        Snapshot modifiedSnapshot = result.getConflictingSnapshot();
+        byte[] data = modifiedSnapshot.getSnapshotContents().readFully();
+        Progress modifiedProgress = parseProgress(data);
+        max = getMax(max, modifiedProgress);
+
+        AnalyticsEvent.send(mGaTracker, "snapshot conflict");
+        AchievementsUtils.savedGamesUpdate(mApiClient, max.toJson().toString().getBytes());
+        return max;
+    }
+
+//    private void resolveConflict(int stateKey, String resolvedVersion, byte[] localData, byte[] cloudData) {
+//        Progress localProgress = parseProgress(localData);
+//        Progress cloudProgress = parseProgress(cloudData);
+//        Progress max = getMax(localProgress, cloudProgress);
+//        Ln.d("resolving conflict: local=" + localProgress + " vs cloud=" + cloudProgress + ", resolved=" + max);
+//        byte[] resolvedData = max.toString().getBytes();
+//        AppStateManager.resolve(mApiClient, stateKey, resolvedVersion, resolvedData);
+//        mSettings.setProgress(max);
+//    }
 
     private Progress parseProgress(byte[] loadedData) {
         Progress progress;
