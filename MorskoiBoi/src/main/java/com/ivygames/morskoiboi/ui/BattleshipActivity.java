@@ -69,8 +69,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-//    // Request code used to invoke Snapshot selection UI.
-//    public static final int RC_SELECT_SNAPSHOT = 9003;
     static final int RC_UNUSED = 0;
     static final int PLUS_ONE_REQUEST_CODE = 20001;
     static final int RC_ENABLE_BT = 2;
@@ -217,12 +215,14 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             mGoogleApiClient.connect();
         }
 
-        if (isGoogleServicesAvailable()) {
-            mInventoryHelper = new InventoryHelper(this);
-            try {
-                mInventoryHelper.onCreate();
-            } catch (Exception e) {
-                ACRA.getErrorReporter().handleException(e);
+        if (!GameSettings.get().noAds()) {
+            if (isGoogleServicesAvailable()) {
+                mInventoryHelper = new InventoryHelper(this);
+                try {
+                    mInventoryHelper.onCreate();
+                } catch (Exception e) {
+                    ACRA.getErrorReporter().handleException(e);
+                }
             }
         }
 
@@ -438,8 +438,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
                 Ln.w("connection issue could not be resolved");
                 mResolvingConnectionFailure = false;
             }
-//        } else if (requestCode == RC_SELECT_SNAPSHOT) {
-//            mAchievementsManager.onActivityResult(resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }

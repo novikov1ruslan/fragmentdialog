@@ -166,7 +166,11 @@ public class GameSettings {
     }
 
     public boolean noAds() {
-        return internal.getBoolean(NO_ADS, false);
+        if (Constants.FREE) {
+            return internal.getBoolean(NO_ADS, false);
+        }
+
+        return true;
     }
 
     public void setNoAds() {
