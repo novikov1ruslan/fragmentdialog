@@ -259,7 +259,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 //        mSoundManager.autoPause();
         if (mGame.getType() == Type.VS_ANDROID) {
             // timer is not running if it is not player's turn, but cancel it just in case
-            pauseTimer();
+            pauseTurnTimer();
         }
     }
 
@@ -285,9 +285,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             @Override
             public void run() {
                 if (isTimerPaused()) {
-                    resumeTimer();
+                    resumeTurnTimer();
                 } else {
-                    startTimer();
+                    startTurnTimer();
                 }
                 mLayout.unLock();
             }
@@ -311,7 +311,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         Crouton.cancelAllCroutons();
 
-        stopTimer();
+        stopTurnTimer();
         mHandlerOpponent.stop();
         mGame.finishMatch();
         mSoundManager.release();
@@ -322,7 +322,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @Override
     public void onEventMainThread(GameEvent event) {
         if (event == GameEvent.OPPONENT_LEFT) {
-            stopTimer();
+            stopTurnTimer();
             getActivity().stopService(mMatchStatusIntent);
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
@@ -334,7 +334,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         } else if (event == GameEvent.CONNECTION_LOST) {
             EventBus.getDefault().removeAllStickyEvents();
-            stopTimer();
+            stopTurnTimer();
             getActivity().stopService(mMatchStatusIntent);
             if (mGame.hasFinished()) {
                 Ln.d(event + " received, but the game has already finished - skipping this event");
@@ -344,7 +344,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     }
 
-    private void pauseTimer() {
+    private void pauseTurnTimer() {
         if (mTurnTimer != null) {
             mTimeLeft = mTurnTimer.getTimeLeft();
             Ln.v("timer pausing with " + mTimeLeft);
@@ -353,7 +353,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     }
 
-    private void stopTimer() {
+    private void stopTurnTimer() {
         if (mTurnTimer != null) {
             mTurnTimer.cancel(true);
             mTimeLeft = READY_TO_START;
@@ -365,10 +365,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     /**
      * only called for android game
      */
-    private void resumeTimer() {
+    private void resumeTurnTimer() {
         if (mTurnTimer != null) {
             ACRA.getErrorReporter().handleException(new RuntimeException("already resumed"));
-            pauseTimer();
+            pauseTurnTimer();
         }
 
         Ln.v("resuming timer for " + mTimeLeft);
@@ -461,7 +461,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 return;
             }
 
-            stopTimer();
+            stopTurnTimer();
             mTimerExpiredCounter = 0;
 
             Vector2 aim = Vector2.get(x, y);
@@ -514,7 +514,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             notifyPlayerTurn();
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
-                startTimer(); // for all practical scenarios - start will only be called from here
+                startTurnTimer(); // for all practical scenarios - start will only be called from here
             } else {
                 Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
             }
@@ -709,10 +709,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setEnemyShips(fullFleet);
     }
 
-    private void startTimer() {
+    private void startTurnTimer() {
         if (mTurnTimer != null) {
             ACRA.getErrorReporter().handleException(new RuntimeException("already running"));
-            stopTimer();
+            stopTurnTimer();
         }
 
         Ln.d("starting timer");
