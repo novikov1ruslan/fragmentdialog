@@ -9,6 +9,9 @@ import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.variant.RussianRules;
 import com.ivygames.morskoiboi.ShipComparator;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -40,6 +43,8 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     private BoardSetupLayout mLayout;
     private View mTutView;
+
+    private final Rules mRules = RulesFactory.getRules();
 
     @Override
     public View onCreateView(ViewGroup container) {
@@ -91,7 +96,8 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     @Override
     public void done() {
         mGaTracker.send(new UiEvent("done").build());
-        if (mLayout.isSet()) {
+//        if (mLayout.isSet()) {
+        if (mRules.isBoardSet(mBoard)) {
             Ln.d("board set - showing gameplay screen");
             Model.instance.player.setBoard(mBoard);
             showGameplayScreen();

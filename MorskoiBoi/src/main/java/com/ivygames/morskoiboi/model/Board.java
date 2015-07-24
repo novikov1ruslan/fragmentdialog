@@ -345,21 +345,21 @@ public class Board {
         return cells;
     }
 
-    /**
-     * Finds all the cells on the board that are in a conflict with another cell.
-     */
-    public Set<Vector2> getInvalidCells() {
-        Set<Vector2> invalid = new HashSet<Vector2>();
-        for (int i = 0; i < DIMENSION; i++) {
-            for (int j = 0; j < DIMENSION; j++) {
-                if (getCell(i, j).getProximity() > 8) {
-                    invalid.add(Vector2.get(i, j));
-                }
-            }
-        }
-
-        return invalid;
-    }
+//    /**
+//     * Finds all the cells on the board that are in a conflict with another cell.
+//     */
+//    public Set<Vector2> getInvalidCells() {
+//        Set<Vector2> invalid = new HashSet<Vector2>();
+//        for (int i = 0; i < DIMENSION; i++) {
+//            for (int j = 0; j < DIMENSION; j++) {
+//                if (getCell(i, j).getProximity() > 8) {
+//                    invalid.add(Vector2.get(i, j));
+//                }
+//            }
+//        }
+//
+//        return invalid;
+//    }
 
     // TODO: remove
     public int getHealth() {

@@ -13,6 +13,8 @@ import android.view.ViewConfiguration;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
@@ -61,6 +63,7 @@ public class SetupBoardView extends BaseBoardView {
     private static final TouchState mTouchState = new TouchState();
     private int mTouchX;
     private int mTouchY;
+    private final Rules mRules = RulesFactory.getRules();
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -99,7 +102,7 @@ public class SetupBoardView extends BaseBoardView {
                     float top = mBoardRect.top + j * mCellSize + 1;
                     float right = left + mCellSize;
                     float bottom = top + mCellSize;
-                    if (cell.getProximity() > 8) {
+                    if (mRules.isCellConflicting(cell)) {
                         canvas.drawRect(left + 1, top + 1, right, bottom, mConflictCellPaint);
                     }
                 }
@@ -327,15 +330,15 @@ public class SetupBoardView extends BaseBoardView {
         invalidate();
     }
 
-    public boolean isSet() {
-        boolean set = mShips.isEmpty() && mPickedShip == null && mBoard.getInvalidCells().isEmpty();
-        int size = mBoard.getShips().size();
-        if (set && size != 10) {
-            Ln.e("wrong board size = " + size);
-            set = false;
-        }
-        return set;
-    }
+//    public boolean isSet() {
+//        boolean set = mShips.isEmpty() && mPickedShip == null && mBoard.getInvalidCells().isEmpty();
+//        int size = mBoard.getShips().size();
+//        if (set && size != 10) {
+//            Ln.e("wrong board size = " + size);
+//            set = false;
+//        }
+//        return set;
+//    }
 
     @Override
     public String toString() {

@@ -9,6 +9,11 @@ import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.ivygames.morskoiboi.ai.BotFactory;
+import com.ivygames.morskoiboi.variant.RussianBot;
+import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -59,13 +64,18 @@ public class BattleshipApplication extends Application {
         Tracker tracker = gaInstance.newTracker(GameConstants.ANALYTICS_KEY);
         UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         ExceptionReporter myHandler = new ExceptionReporter(tracker, exceptionHandler, this);
-        // Make myHandler the new default uncaught exception handler.
+        // TODO: Make myHandler the new default uncaught exception handler.
         Thread.setDefaultUncaughtExceptionHandler(myHandler);
         myHandler.setExceptionParser(new AnalyticsExceptionParser());
 
         Bitmaps.getInstance().loadBitmaps(getResources());
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        // dependency injection
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement());
+        RulesFactory.setRules(new RussianRules());
+        BotFactory.setAlgorithm(new RussianBot());
     }
 
     private static class AnalyticsExceptionParser implements ExceptionParser {
