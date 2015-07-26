@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.text.TextUtils;
 
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -66,7 +67,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     private void markNeighbouringCellsAsOccupied(final Ship ship) {
         // if is dead we remove and put ship back to mark adjacent cells as reserved
         mMyBoard.removeShipFrom(ship.getX(), ship.getY());
-        mMyBoard.putShipAt(ship, ship.getX(), ship.getY());
+        PlacementFactory.getAlgorithm().putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
     }
 
     public PokeResult onShotAtForResult(Vector2 aim) {

@@ -56,14 +56,14 @@ public class Ship {
         }
     }
 
-    public static boolean isInShip(Ship ship, int i, int j) {
-        int x = ship.getX();
-        int y = ship.getY();
+    public boolean isInShip(int i, int j) {
+        int x = getX();
+        int y = getY();
 
-        if (ship.isHorizontal()) {
-            return i >= x && i < x + ship.getSize() && j == y;
+        if (isHorizontal()) {
+            return i >= x && i < x + getSize() && j == y;
         } else {
-            return j >= y && j < y + ship.getSize() && i == x;
+            return j >= y && j < y + getSize() && i == x;
         }
     }
 
@@ -120,6 +120,12 @@ public class Ship {
     }
 
     public Ship setY(int y) {
+        mY = y;
+        return this;
+    }
+
+    public Ship setCoordinates(int x, int y) {
+        mX = x;
         mY = y;
         return this;
     }

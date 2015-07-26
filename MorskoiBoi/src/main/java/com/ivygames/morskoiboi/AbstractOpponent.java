@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -65,7 +66,7 @@ public abstract class AbstractOpponent implements Opponent {
         if (ship == null) {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
-            mEnemyBoard.putShipAt(ship, ship.getX(), ship.getY());
+            PlacementFactory.getAlgorithm().putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
         Ln.v(mEnemyBoard);
     }

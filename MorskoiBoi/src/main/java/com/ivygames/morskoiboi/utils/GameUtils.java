@@ -1,13 +1,17 @@
 package com.ivygames.morskoiboi.utils;
 
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 public final class GameUtils {
+
+    private static volatile long sRandomCounter;
 
     private GameUtils() {
         // utility
@@ -48,4 +52,43 @@ public final class GameUtils {
         return true;
     }
 
+    private static Ship.Orientation calcRandomOrientation(Random random) {
+        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
+    }
+
+    // TODO: do via priority queue
+    public static List<Ship> generateFullFleet() {
+        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
+
+        // order is important
+        List<Ship> fullSet = new ArrayList<Ship>();
+        fullSet.add(new Ship(4, calcRandomOrientation(random)));
+        fullSet.add(new Ship(3, calcRandomOrientation(random)));
+        fullSet.add(new Ship(3, calcRandomOrientation(random)));
+        fullSet.add(new Ship(2, calcRandomOrientation(random)));
+        fullSet.add(new Ship(2, calcRandomOrientation(random)));
+        fullSet.add(new Ship(2, calcRandomOrientation(random)));
+        fullSet.add(new Ship(1, calcRandomOrientation(random)));
+        fullSet.add(new Ship(1, calcRandomOrientation(random)));
+        fullSet.add(new Ship(1, calcRandomOrientation(random)));
+        fullSet.add(new Ship(1, calcRandomOrientation(random)));
+
+        return fullSet;
+    }
+
+    /**
+     * @return true if the {@code board} has empty space for the {@code ship} at coordinates
+     */
+    public static boolean isPlaceEmpty(Ship ship, Board board, int i, int j) {
+        boolean isHorizontal = ship.isHorizontal();
+        for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
+            int x = isHorizontal ? k : i;
+            int y = isHorizontal ? j : k;
+            if (!board.getCell(x, y).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -15,6 +15,7 @@ import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
@@ -223,7 +224,7 @@ public class SetupBoardView extends BaseBoardView {
      */
     private boolean tryPutPickedShip() {
         if (mBoard.canPutShipAt(mPickedShip, mAimI, mAimJ)) {
-            mBoard.putShipAt(mPickedShip, mAimI, mAimJ);
+            PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAimI, mAimJ);
             return true;
         }
         return false;

@@ -1,5 +1,8 @@
 package com.ivygames.morskoiboi.model;
 
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
+
 import org.commons.logger.Ln;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,7 +14,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public class Board {
 
@@ -23,6 +25,8 @@ public class Board {
     private static final String SHIPS = "ships";
     private Collection<Ship> mShips;
     private Cell[][] mCells;
+
+    private final PlacementAlgorithm mPlacementAlgorithm = PlacementFactory.getAlgorithm();
 
     public static Board fromJson(String json) {
         try {
@@ -56,7 +60,7 @@ public class Board {
         for (int i = 0; i < shipsJson.length(); i++) {
             JSONObject shipJson = shipsJson.getJSONObject(i);
             Ship ship = Ship.fromJson(shipJson);
-            board.putShipAt(ship, ship.getX(), ship.getY());
+            PlacementFactory.getAlgorithm().putShipAt(board, ship, ship.getX(), ship.getY());
         }
     }
 
@@ -82,9 +86,6 @@ public class Board {
             jsonObject.put(CELLS, Board.getStringFromCells(mCells));
 
             JSONArray shipsJson = new JSONArray();
-            // [main] java.util.ConcurrentModificationException
-            // at java.util.ArrayList$ArrayListIterator.next(ArrayList.java:569)
-            // at com.ivygames.morskoiboi.model.Board.toJson(Board.java:81)
             for (Ship ship : mShips) {
                 shipsJson.put(ship.toJson());
             }
@@ -149,56 +150,14 @@ public class Board {
         return getCell(vector.getX(), vector.getY());
     }
 
-    private void putShips(Collection<Ship> ships) {
+    private static void putShips(Board board, Collection<Ship> ships) {
         for (Ship ship : ships) {
-            putShip(ship);
+            putShip(board, ship);
         }
     }
 
-    private void putShip(Ship ship) {
-        putShipAt(ship, ship.getX(), ship.getY());
-    }
-
-    /**
-     * marks adjacent cells as RESERVED and adds the ship to the board
-     *
-     * @throws IllegalArgumentException if cannot place the ship
-     */
-    // TODO: create a version that accepts putShipAt(Ship ship)
-    public void putShipAt(Ship ship, int x, int y) {
-        if (!canPutShipAt(ship, x, y)) {
-            throw new IllegalArgumentException("cannot put ship " + ship + " at (" + x + "," + y + ")");
-        }
-
-        // TODO: if it is exactly the same ship, remove and put again
-        ship.setX(x);
-        ship.setY(y);
-
-        boolean horizontal = ship.isHorizontal();
-        for (int i = -1; i <= ship.getSize(); i++) {
-            for (int j = -1; j < 2; j++) {
-                int cellX = x + (horizontal ? i : j);
-                int cellY = y + (horizontal ? j : i);
-                if (containsCell(cellX, cellY)) {
-                    Cell cell = getCell(cellX, cellY);
-                    if (Ship.isInShip(ship, cellX, cellY)) {
-                        cell.addShip();
-                        if (ship.isDead()) {
-                            // cell.setSunk();
-                            cell.setHit();
-                        }
-                    } else {
-                        if (ship.isDead()) {
-                            cell.setMiss();
-                        } else {
-                            cell.setReserved();
-                        }
-                    }
-                }
-            }
-        }
-
-        mShips.add(ship);
+    private static void putShip(Board board, Ship ship) {
+        PlacementFactory.getAlgorithm().putShipAt(board, ship, ship.getX(), ship.getY());
     }
 
     /**
@@ -246,7 +205,7 @@ public class Board {
             mShips.remove(removedShip);
             Collection<Ship> ships = mShips;
             clearBoard();
-            putShips(ships);
+            putShips(this, ships);
 
             for (Vector2 missPlace : missedList) {
                 mCells[missPlace.getX()][missPlace.getY()].setMiss();
@@ -272,13 +231,15 @@ public class Board {
         }
 
         ship.rotate();
+
+        PlacementAlgorithm algorithm = PlacementFactory.getAlgorithm();
         if (canPutShipAt(ship, x, y)) {
-            putShipAt(ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
+            algorithm.putShipAt(this, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
         } else {
             if (ship.isHorizontal()) {
-                putShipAt(ship, getHorizontalDim() - ship.getSize(), y);
+                algorithm.putShipAt(this, ship, getHorizontalDim() - ship.getSize(), y);
             } else {
-                putShipAt(ship, x, getHorizontalDim() - ship.getSize());
+                algorithm.putShipAt(this, ship, x, getHorizontalDim() - ship.getSize());
             }
         }
     }
@@ -291,7 +252,7 @@ public class Board {
         HashSet<Ship> ships = new HashSet<Ship>();
         if (hasShipAt(i, j)) {
             for (Ship ship : mShips) {
-                if (Ship.isInShip(ship, i, j)) {
+                if (ship.isInShip(i, j)) {
                     ships.add(ship);
                 }
             }
@@ -312,7 +273,7 @@ public class Board {
     private Ship getFirstShipAt(int i, int j) {
         if (hasShipAt(i, j)) {
             for (Ship ship : mShips) {
-                if (Ship.isInShip(ship, i, j)) {
+                if (ship.isInShip(i, j)) {
                     return ship;
                 }
             }
@@ -326,7 +287,7 @@ public class Board {
      */
     private Ship getShipAt(int x, int y) {
         for (Ship ship : mShips) {
-            if (Ship.isInShip(ship, x, y)) {
+            if (ship.isInShip(x, y)) {
                 return ship;
             }
         }
