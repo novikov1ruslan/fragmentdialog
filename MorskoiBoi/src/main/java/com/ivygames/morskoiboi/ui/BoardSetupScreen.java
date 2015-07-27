@@ -11,7 +11,6 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.variant.RussianRules;
 import com.ivygames.morskoiboi.ShipComparator;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -37,9 +36,10 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayoutListener, BackPressListener {
     static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
+    private static final int TOTAL_SHIPS = RulesFactory.getRules().getTotalShips().length;
 
     private Board mBoard = new Board();
-    private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
+    private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
@@ -84,7 +84,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     public void autoSetup() {
         mGaTracker.send(new UiEvent("auto").build());
         mBoard = PlacementFactory.getAlgorithm().generateBoard();
-        mFleet = new PriorityQueue<Ship>(10, new ShipComparator());
+        mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
     }
 
@@ -96,7 +96,6 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     @Override
     public void done() {
         mGaTracker.send(new UiEvent("done").build());
-//        if (mLayout.isSet()) {
         if (mRules.isBoardSet(mBoard)) {
             Ln.d("board set - showing gameplay screen");
             Model.instance.player.setBoard(mBoard);

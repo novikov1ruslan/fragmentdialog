@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Board {
 
-    private static final int DIMENSION = 10;
+    public static final int DIMENSION = 10;
 
     private static final String CELLS = "cells";
     private static final String SHIPS = "ships";

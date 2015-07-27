@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.graphics.Bitmap;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
@@ -17,7 +19,9 @@ public interface Rules {
      */
     boolean isItDefeatedBoard(Board board);
 
-    int getTotalShips();
+    int[] getTotalShips();
 
     int calcTotalScores(Collection<Ship> ships, Game game);
+
+    Bitmap getBitmapForSize(int size);
 }

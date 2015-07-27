@@ -44,11 +44,11 @@ public final class Vector2 {
         mY = y;
     }
 
-    private static final Vector2[][] POOL = new Vector2[10][10];
+    private static final Vector2[][] POOL = new Vector2[Board.DIMENSION][Board.DIMENSION];
 
     static {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
                 POOL[i][j] = new Vector2(i, j);
             }
         }

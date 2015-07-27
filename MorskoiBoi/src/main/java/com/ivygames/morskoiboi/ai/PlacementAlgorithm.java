@@ -15,4 +15,5 @@ public interface PlacementAlgorithm {
     void putShipAt(Board board, Ship ship, int x, int y);
 
     Collection<Ship> generateFullFleet();
+
 }

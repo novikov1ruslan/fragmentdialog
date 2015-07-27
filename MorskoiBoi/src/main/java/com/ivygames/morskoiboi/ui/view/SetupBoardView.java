@@ -11,11 +11,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
@@ -28,7 +28,6 @@ import java.util.PriorityQueue;
 public class SetupBoardView extends BaseBoardView {
 
     private static final long LONG_PRESS_DELAY = 1000;
-    private static final int BOARD_SIZE = 10;
 
     // the following are drawn at the selection area
     /**
@@ -56,11 +55,6 @@ public class SetupBoardView extends BaseBoardView {
     private final int mTouchSlop;
     private final Paint mConflictCellPaint;
 
-    private final Bitmap mAircraftCarrier;
-    private final Bitmap mBattleship;
-    private final Bitmap mDestroyer;
-    private final Bitmap mGunboat;
-
     private Bitmap mCurrentBitmap;
     private static final TouchState mTouchState = new TouchState();
     private int mTouchX;
@@ -76,12 +70,6 @@ public class SetupBoardView extends BaseBoardView {
         mShipSelectionRect = new Rect(0, 0, 0, 0);
         mShipDisplayRect = new Rect(0, 0, 0, 0);
 
-        Bitmaps bitmaps = Bitmaps.getInstance();
-        mAircraftCarrier = bitmaps.getBitmap(R.drawable.aircraft_carrier);
-        mBattleship = bitmaps.getBitmap(R.drawable.battleship);
-        mDestroyer = bitmaps.getBitmap(R.drawable.frigate);
-        mGunboat = bitmaps.getBitmap(R.drawable.gunboat);
-
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
         Ln.v("touch slop = " + mTouchSlop);
@@ -96,8 +84,8 @@ public class SetupBoardView extends BaseBoardView {
         super.onDraw(canvas);
 
         // paint invalid cells (ships that touch each other) and the ships themselves
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (cell.isReserved()) {
                     float left = mBoardRect.left + i * mCellSize + 1;
@@ -274,20 +262,6 @@ public class SetupBoardView extends BaseBoardView {
         mLongPressTask = null;
     }
 
-    private Bitmap getBitmapForSize(int size) {
-        switch (size) {
-            case 4:
-                return mAircraftCarrier;
-            case 3:
-                return mBattleship;
-            case 2:
-                return mDestroyer;
-            case 1:
-            default:
-                return mGunboat;
-        }
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
@@ -320,7 +294,7 @@ public class SetupBoardView extends BaseBoardView {
         if (mCurrentShip == null) {
             mCurrentBitmap = null;
         } else {
-            mCurrentBitmap = getBitmapForSize(mCurrentShip.getSize());
+            mCurrentBitmap = RulesFactory.getRules().getBitmapForSize(mCurrentShip.getSize());
         }
     }
 
@@ -331,16 +305,6 @@ public class SetupBoardView extends BaseBoardView {
 
         invalidate();
     }
-
-//    public boolean isSet() {
-//        boolean set = mShips.isEmpty() && mPickedShip == null && mBoard.getInvalidCells().isEmpty();
-//        int size = mBoard.getShips().size();
-//        if (set && size != BOARD_SIZE) {
-//            Ln.e("wrong board size = " + size);
-//            set = false;
-//        }
-//        return set;
-//    }
 
     @Override
     public String toString() {

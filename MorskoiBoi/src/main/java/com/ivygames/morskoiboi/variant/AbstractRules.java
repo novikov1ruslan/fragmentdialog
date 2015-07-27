@@ -11,7 +11,11 @@ public abstract class AbstractRules implements Rules {
 
     @Override
     public boolean isBoardSet(Board board) {
-        return board.getShips().size() == getTotalShips() && getInvalidCells(board).isEmpty();
+        return allShipsAreOnBoard(board) && getInvalidCells(board).isEmpty();
+    }
+
+    private boolean allShipsAreOnBoard(Board board) {
+        return board.getShips().size() == getTotalShips().length;
     }
 
     /**
@@ -35,6 +39,6 @@ public abstract class AbstractRules implements Rules {
      */
     @Override
     public boolean isItDefeatedBoard(Board board) {
-        return board.getShips().size() == getTotalShips() && board.allAvailableShipsAreDestroyed();
+        return allShipsAreOnBoard(board) && board.allAvailableShipsAreDestroyed();
     }
 }

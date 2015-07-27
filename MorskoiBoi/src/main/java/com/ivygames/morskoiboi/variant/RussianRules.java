@@ -1,5 +1,9 @@
 package com.ivygames.morskoiboi.variant;
 
+import android.graphics.Bitmap;
+
+import com.ivygames.morskoiboi.Bitmaps;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
@@ -10,7 +14,7 @@ import java.util.Collection;
 
 public class RussianRules extends AbstractRules {
 
-    private static final int TOTAL_SHIPS = 10;
+    private static final int[] TOTAL_SHIPS = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
 
     private static final int MAX_TIME_MILLIS = 300000; // 5 minutes
     private static final int MIN_TIME_MILLIS = 20000; // 20 sec
@@ -34,7 +38,7 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int getTotalShips() {
+    public int[] getTotalShips() {
         return TOTAL_SHIPS;
     }
 
@@ -96,6 +100,22 @@ public class RussianRules extends AbstractRules {
             }
         }
         return shipsWeight * SHIP_UNIT_BONUS;
+    }
+
+    @Override
+    public Bitmap getBitmapForSize(int size) {
+        Bitmaps bitmaps = Bitmaps.getInstance();
+        switch (size) {
+            case 4:
+                return bitmaps.getBitmap(R.drawable.aircraft_carrier);
+            case 3:
+                return bitmaps.getBitmap(R.drawable.battleship);
+            case 2:
+                return bitmaps.getBitmap(R.drawable.frigate);
+            case 1:
+            default:
+                return bitmaps.getBitmap(R.drawable.gunboat);
+        }
     }
 
 }

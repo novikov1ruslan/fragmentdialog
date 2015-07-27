@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.utils;
 
+import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -18,22 +20,15 @@ public final class GameUtils {
     }
 
     public static Collection<Ship> populateFullHorizontalFleet(Collection<Ship> ships) {
-        ships.add(new Ship(1));
-        ships.add(new Ship(1));
-        ships.add(new Ship(1));
-        ships.add(new Ship(1));
-        ships.add(new Ship(2));
-        ships.add(new Ship(2));
-        ships.add(new Ship(2));
-        ships.add(new Ship(3));
-        ships.add(new Ship(3));
-        ships.add(new Ship(4));
-
+        int[] totalShips = RulesFactory.getRules().getTotalShips();
+        for (int i = totalShips.length - 1; i >= 0 ; i--) {
+            ships.add(new Ship(totalShips[i]));
+        }
         return ships;
     }
 
     public static Collection<Ship> generateFullHorizontalFleet() {
-        return GameUtils.populateFullHorizontalFleet(new ArrayList<Ship>());
+        return populateFullHorizontalFleet(new ArrayList<Ship>());
     }
 
     /**
@@ -62,21 +57,9 @@ public final class GameUtils {
 
         // order is important
         List<Ship> fullSet = new ArrayList<Ship>();
-        for (int length :
-                shipsLength) {
+        for (int length : shipsLength) {
             fullSet.add(new Ship(length, calcRandomOrientation(random)));
         }
-
-        fullSet.add(new Ship(4, calcRandomOrientation(random)));
-        fullSet.add(new Ship(3, calcRandomOrientation(random)));
-        fullSet.add(new Ship(3, calcRandomOrientation(random)));
-        fullSet.add(new Ship(2, calcRandomOrientation(random)));
-        fullSet.add(new Ship(2, calcRandomOrientation(random)));
-        fullSet.add(new Ship(2, calcRandomOrientation(random)));
-        fullSet.add(new Ship(1, calcRandomOrientation(random)));
-        fullSet.add(new Ship(1, calcRandomOrientation(random)));
-        fullSet.add(new Ship(1, calcRandomOrientation(random)));
-        fullSet.add(new Ship(1, calcRandomOrientation(random)));
 
         return fullSet;
     }
