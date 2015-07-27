@@ -16,7 +16,10 @@ import com.ivygames.morskoiboi.GameplaySoundManager;
 import com.ivygames.morskoiboi.HandlerOpponent;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Board;
@@ -86,6 +89,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private int mTimeLeft = READY_TO_START;
 
     private boolean mOpponentSurrendered;
+
+    private final Rules mRules = RulesFactory.getRules();
 
     private final Runnable mShowLostScreenCommand = new Runnable() {
 
@@ -435,8 +440,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private int calcSurrenderPenalty() {
-        int decksLost = Board.TOTAL_HEALTH - mPlayerPrivateBoard.getHealth();
+        int decksLost = getTotalHealth() - mPlayerPrivateBoard.getHealth();
         return decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
+    }
+
+    private int getTotalHealth() {
+        Collection<Ship> ships = PlacementFactory.getAlgorithm().generateFullFleet();
+        int totalHealth = 0;
+        for (Ship ship: ships) {
+            totalHealth += ship.getSize();
+        }
+        return totalHealth;
     }
 
     private class BoardShotListener implements ShotListener {
@@ -548,7 +562,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 mSoundManager.playKillSound();
                 mVibrator.vibrate(VIBRATION_ON_KILL);
 
-                if (Board.isItDefeatedBoard(mEnemyPublicBoard)) {
+                if (mRules.isItDefeatedBoard(mEnemyPublicBoard)) {
                     Ln.d("enemy has lost!!!");
                     disableBackPress();
 
@@ -596,7 +610,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
             // notifies about players defeat sending his board along.
             if (!versionSupportsBoardReveal()) {
-                if (Board.isItDefeatedBoard(mPlayerPrivateBoard)) {
+                if (mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                     Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
                     resetPlayer();
                     lost(LOST_GAME_WO_REVEAL_DELAY);
@@ -630,7 +644,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onLost(Board board) {
-            if (!Board.isItDefeatedBoard(mPlayerPrivateBoard)) {
+            if (!mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                 Ln.v("player private board: " + mPlayerPrivateBoard);
                 ACRA.getErrorReporter().handleException(new RuntimeException("lost while not defeated"));
             }

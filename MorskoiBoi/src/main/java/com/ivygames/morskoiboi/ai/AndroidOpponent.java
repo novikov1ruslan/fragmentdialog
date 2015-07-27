@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -72,7 +73,7 @@ public class AndroidOpponent extends AbstractOpponent {
             Ln.d(this + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
         } else if (result.ship != null) {
-            if (Board.isItDefeatedBoard(mEnemyBoard)) {
+            if (RulesFactory.getRules().isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I lost - notifying " + mOpponent);
                 mOpponent.onLost(mMyBoard);
                 reset();

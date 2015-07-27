@@ -81,7 +81,7 @@ public final class PlayerOpponent extends AbstractOpponent {
             markNeighbouringCellsAsOccupied(ship);
         }
 
-        if (result.cell.isHit() && !Board.isItDefeatedBoard(mMyBoard)) {
+        if (result.cell.isHit() && !RulesFactory.getRules().isItDefeatedBoard(mMyBoard)) {
             Ln.d(this + ": I'm hit - " + mOpponent + " continues");
             mOpponent.go();
         }

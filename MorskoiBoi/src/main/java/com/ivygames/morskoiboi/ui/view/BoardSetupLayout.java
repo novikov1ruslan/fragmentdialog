@@ -116,10 +116,6 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
         mBoardView.setFleet(fleet);
     }
 
-//    public boolean isSet() {
-//        return mBoardView.isSet();
-//    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

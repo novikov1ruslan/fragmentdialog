@@ -10,6 +10,7 @@ import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.achievement.AchievementsUtils;
@@ -61,7 +62,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
         mTime = mGame.getTimeSpent();
         mShips = board.getShips();
-        mScores = mGame.calcTotalScores(mShips);
+        mScores = RulesFactory.getRules().calcTotalScores(mShips, mGame);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         GameSettings.get().incrementGamesPlayedCounter();

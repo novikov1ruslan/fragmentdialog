@@ -6,6 +6,7 @@ public class Cell {
     private final static char RESERVED = '0';
     private final static char MISS = '*';
     private final static char HIT = 'X';
+    public static final int RESERVED_PROXIMITY_VALUE = 8;
 
     private char mState;
     private int mProximity;
@@ -42,9 +43,10 @@ public class Cell {
     }
 
     private static Cell parseProximityCell(char c) {
-        if (c >= '0' && c <= '8') {
+        int zero = '0';
+        if (c >= zero && c <= zero + RESERVED_PROXIMITY_VALUE) {
             Cell cell = Cell.newReserved();
-            cell.mProximity = c - '0';
+            cell.mProximity = c - zero;
             return cell;
         } else {
             throw new IllegalArgumentException(Character.toString(c));
@@ -103,11 +105,11 @@ public class Cell {
     }
 
     /**
-     * sets proximity to 8 and state to {@link #RESERVED}
+     * sets proximity to {@code RESERVED_PROXIMITY_VALUE} and state to {@link #RESERVED}
      */
     public void addShip() {
         mState = RESERVED;
-        mProximity += 8;
+        mProximity += RESERVED_PROXIMITY_VALUE;
     }
 
     // TODO: remove

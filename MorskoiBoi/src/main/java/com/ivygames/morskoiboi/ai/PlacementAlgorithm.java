@@ -2,6 +2,9 @@ package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.utils.GameUtils;
+
+import java.util.Collection;
 
 public interface PlacementAlgorithm {
 
@@ -10,4 +13,6 @@ public interface PlacementAlgorithm {
     Board generateBoard();
 
     void putShipAt(Board board, Ship ship, int x, int y);
+
+    Collection<Ship> generateFullFleet();
 }

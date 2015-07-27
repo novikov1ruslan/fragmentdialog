@@ -57,11 +57,16 @@ public final class GameUtils {
     }
 
     // TODO: do via priority queue
-    public static List<Ship> generateFullFleet() {
+    public static List<Ship> generateFullFleet(int[] shipsLength) {
         Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
 
         // order is important
         List<Ship> fullSet = new ArrayList<Ship>();
+        for (int length :
+                shipsLength) {
+            fullSet.add(new Ship(length, calcRandomOrientation(random)));
+        }
+
         fullSet.add(new Ship(4, calcRandomOrientation(random)));
         fullSet.add(new Ship(3, calcRandomOrientation(random)));
         fullSet.add(new Ship(3, calcRandomOrientation(random)));

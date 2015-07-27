@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.ai;
 
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -26,6 +27,7 @@ final class PassShotResultToOpponentCommand implements Runnable {
 
     @Override
     public void run() {
+        // FIXME: data accessed in this method is not synchronized - not volatile
         Ln.v("begin");
         try {
             Thread.sleep(WHISTLE_SOUND_DELAY);
@@ -36,7 +38,7 @@ final class PassShotResultToOpponentCommand implements Runnable {
         }
 
         mOpponent.onShotResult(mResult);
-        if (mResult.cell.isHit() && !Board.isItDefeatedBoard(mMyBoard)) {
+        if (mResult.cell.isHit() && !RulesFactory.getRules().isItDefeatedBoard(mMyBoard)) {
             Ln.d("Android is hit, passing turn to " + mOpponent);
             mOpponent.go();
         }

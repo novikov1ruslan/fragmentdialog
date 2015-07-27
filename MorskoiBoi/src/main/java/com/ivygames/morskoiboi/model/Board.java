@@ -19,8 +19,6 @@ public class Board {
 
     private static final int DIMENSION = 10;
 
-    public static final int TOTAL_HEALTH = 20;
-
     private static final String CELLS = "cells";
     private static final String SHIPS = "ships";
     private Collection<Ship> mShips;
@@ -127,9 +125,9 @@ public class Board {
 
         if (canPut) {
             if (ship.isHorizontal()) {
-                canPut = i + ship.getSize() <= 10;
+                canPut = i + ship.getSize() <= DIMENSION;
             } else {
-                canPut = j + ship.getSize() <= 10;
+                canPut = j + ship.getSize() <= DIMENSION;
             }
         }
         return canPut;
@@ -351,7 +349,7 @@ public class Board {
     /**
      * @return true if every ship on the board is sunk
      */
-    private boolean allAvailableShipsAreDestroyed() {
+    public boolean allAvailableShipsAreDestroyed() {
         for (Ship ship : mShips) {
             if (!ship.isDead()) {
                 return false;
@@ -362,26 +360,6 @@ public class Board {
     }
 
     // TODO: unit test
-
-    /**
-     * @return true if board has 10 ships and all of them are destroyed
-     */
-    public static boolean isItDefeatedBoard(Board board) {
-        return board.mShips.size() == 10 && board.allAvailableShipsAreDestroyed();
-    }
-
-    public static int countUnshotCells(Board board) {
-        int health = 100;
-        for (int i = 0; i < DIMENSION; i++) {
-            for (int j = 0; j < DIMENSION; j++) {
-                if (board.getCell(i, j).beenShot()) {
-                    health--;
-                }
-            }
-        }
-
-        return health;
-    }
 
     @Override
     public int hashCode() {

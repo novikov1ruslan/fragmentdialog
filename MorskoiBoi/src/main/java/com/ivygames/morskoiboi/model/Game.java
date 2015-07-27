@@ -9,23 +9,6 @@ public abstract class Game {
         VS_ANDROID, BLUETOOTH, INTERNET
     }
 
-    private static final int MAX_TIME_MILLIS = 300000; // 5 minutes
-    private static final int MIN_TIME_MILLIS = 20000; // 20 sec
-
-    private static final int SHIP_1X_WEIGHT = 1;
-    private static final int SHIP_2X_WEIGHT = 3;
-    private static final int SHIP_3X_WEIGHT = 6;
-    private static final int SHIP_4X_WEIGHT = 10;
-
-    private static final int SHELL_UNIT_BONUS = 100;
-    private static final int SHIP_UNIT_BONUS = 230; // (long) (SHELL_UNIT_BONUS
-    // *
-    // 2.3); //
-    // 80shells/35weights = 2.3
-    private static final int COMBO_UNIT_BONUS = 800; // 8 * SHELL_UNIT_BONUS
-
-    private static final float MAX_TIME_BONUS_MULTIPLIER = 2f;
-    private static final float MIN_TIME_BONUS_MULTIPLIER = 1f;
     private static final int INITIAL_SHELLS_NUMBER = 100; // 10 * 10
 
     public static final int SURRENDER_PENALTY_PER_DECK = 100;
@@ -71,67 +54,6 @@ public abstract class Game {
             Ln.v("sank");
             mLastShip = ship;
         }
-    }
-
-    private int calcComboBonus() {
-        return getCombo() * COMBO_UNIT_BONUS;
-    }
-
-    public int calcTotalScores(Collection<Ship> ships) {
-        float timeMultiplier = getTimeMultiplier();
-        int shellsBonus = calcShellsBonus();
-        int shipsBonus = calcSavedShipsBonus(ships);
-        int comboBonus = calcComboBonus();
-
-        return (int) (shellsBonus * timeMultiplier) + shipsBonus + comboBonus;
-    }
-
-    private int calcShellsBonus() {
-        int shells = getShells();
-        return shells * SHELL_UNIT_BONUS;
-    }
-
-    private float getTimeMultiplier() {
-        long millis = getTimeSpent();
-
-        if (millis >= MAX_TIME_MILLIS) {
-            return MIN_TIME_BONUS_MULTIPLIER;
-        }
-
-        if (millis <= MIN_TIME_MILLIS) {
-            return MAX_TIME_BONUS_MULTIPLIER;
-        }
-
-        return MIN_TIME_BONUS_MULTIPLIER + (float) (MAX_TIME_MILLIS - millis) / (float) (MAX_TIME_MILLIS - MIN_TIME_MILLIS);
-    }
-
-    private int calcSavedShipsBonus(Collection<Ship> ships) {
-
-        int shipsWeight = 0;
-        for (Ship ship : ships) {
-            if (ship.isDead()) {
-                continue;
-            }
-
-            switch (ship.getSize()) {
-                case 1:
-                    shipsWeight += SHIP_1X_WEIGHT;
-                    break;
-                case 2:
-                    shipsWeight += SHIP_2X_WEIGHT;
-                    break;
-                case 3:
-                    shipsWeight += SHIP_3X_WEIGHT;
-                    break;
-                case 4:
-                    shipsWeight += SHIP_4X_WEIGHT;
-                    break;
-                default:
-                    Ln.e("impossible ship size = " + ship.getSize());
-                    break;
-            }
-        }
-        return shipsWeight * SHIP_UNIT_BONUS;
     }
 
     public void finish() {

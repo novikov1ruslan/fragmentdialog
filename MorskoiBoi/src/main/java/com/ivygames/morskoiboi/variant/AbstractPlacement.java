@@ -24,7 +24,7 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
     public Board generateBoard() {
         Board board = new Board();
 
-        Collection<Ship> ships = GameUtils.generateFullFleet();
+        Collection<Ship> ships = generateFullFleet();
         for (Ship ship : ships) {
             place(ship, board);
         }

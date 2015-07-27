@@ -10,6 +10,8 @@ import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.ivygames.morskoiboi.ai.BotFactory;
+import com.ivygames.morskoiboi.variant.AmericanPlacement;
+import com.ivygames.morskoiboi.variant.AmericanRules;
 import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
@@ -73,8 +75,10 @@ public class BattleshipApplication extends Application {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // dependency injection
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement());
-        RulesFactory.setRules(new RussianRules());
+//        PlacementFactory.setPlacementAlgorithm(new RussianPlacement());
+//        RulesFactory.setRules(new RussianRules());
+        PlacementFactory.setPlacementAlgorithm(new AmericanPlacement());
+        RulesFactory.setRules(new AmericanRules());
         BotFactory.setAlgorithm(new RussianBot());
     }
 

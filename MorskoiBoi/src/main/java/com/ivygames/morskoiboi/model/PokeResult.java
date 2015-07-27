@@ -11,7 +11,7 @@ public class PokeResult {
 
     public final Cell cell;
     public final Ship ship;
-    public final Vector2 aim; // TODO: unit test
+    public final Vector2 aim;
 
     public static PokeResult fromJson(String json) {
         Cell cell;

@@ -28,6 +28,7 @@ import java.util.PriorityQueue;
 public class SetupBoardView extends BaseBoardView {
 
     private static final long LONG_PRESS_DELAY = 1000;
+    private static final int BOARD_SIZE = 10;
 
     // the following are drawn at the selection area
     /**
@@ -95,8 +96,8 @@ public class SetupBoardView extends BaseBoardView {
         super.onDraw(canvas);
 
         // paint invalid cells (ships that touch each other) and the ships themselves
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (cell.isReserved()) {
                     float left = mBoardRect.left + i * mCellSize + 1;
@@ -334,7 +335,7 @@ public class SetupBoardView extends BaseBoardView {
 //    public boolean isSet() {
 //        boolean set = mShips.isEmpty() && mPickedShip == null && mBoard.getInvalidCells().isEmpty();
 //        int size = mBoard.getShips().size();
-//        if (set && size != 10) {
+//        if (set && size != BOARD_SIZE) {
 //            Ln.e("wrong board size = " + size);
 //            set = false;
 //        }

@@ -14,6 +14,7 @@ import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
@@ -98,7 +99,7 @@ public final class AchievementsManager {
         processTimeSpent(game.getTimeSpent());
         processShipsLeft(ships);
 
-        if (game.calcTotalScores(ships) >= 15000) {
+        if (RulesFactory.getRules().calcTotalScores(ships, game) >= 15000) {
             if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
                 Ln.v(AchievementsManager.name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
             } else {
