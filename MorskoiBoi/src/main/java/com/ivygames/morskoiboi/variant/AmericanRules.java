@@ -45,4 +45,9 @@ public class AmericanRules extends AbstractRules {
                 return bitmaps.getBitmap(R.drawable.gunboat);
         }
     }
+
+    @Override
+    public int[] newShipTypesArray() {
+        return new int[]{5, 4, 3, 2};
+    }
 }

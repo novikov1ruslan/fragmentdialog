@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
@@ -23,6 +24,12 @@ public class FleetView extends View {
 
     private static final int DEFAULT_MARGIN_BETWEEN_SHIPS = 4;
     private static final String WIDEST_LETTER = "4";
+    private static final int TYPES_OF_SHIPS = 4;
+
+    private static final int CARRIER_VISUAL_LENGTH = 4;
+    private static final int BATTLESHIP_VISUAL_LENGTH = 3;
+    private static final int DESTROYER_VISUAL_LENGTH = 2;
+    private static final int GUNBOAT_VISUAL_LENGTH = 1;
 
     private final int mMarginBetweenShips;
 
@@ -73,11 +80,11 @@ public class FleetView extends View {
         mZeroTextColor = getResources().getColor(R.color.status_zero_text);
 
         if (isInEditMode()) {
-            mMyBuckets = new int[]{4, 3, 2, 1};
-            mEnemyBuckets = new int[]{4, 3, 2, 1};
+            mMyBuckets = RulesFactory.getRules().newShipTypesArray();
+            mEnemyBuckets = RulesFactory.getRules().newShipTypesArray();
         } else {
-            mMyBuckets = new int[4];
-            mEnemyBuckets = new int[4];
+            mMyBuckets = new int[TYPES_OF_SHIPS];
+            mEnemyBuckets = new int[TYPES_OF_SHIPS];
         }
 
         mAircraftCarrier = Bitmaps.getInstance().getBitmap(R.drawable.aircraft_carrier);
@@ -152,7 +159,7 @@ public class FleetView extends View {
 
     public void setMyShips(Collection<Ship> ships) {
 
-        mMyBuckets = new int[4];
+        mMyBuckets = new int[TYPES_OF_SHIPS];
         for (Ship ship : ships) {
             mMyBuckets[ship.getSize() - 1]++;
         }
@@ -162,7 +169,7 @@ public class FleetView extends View {
 
     public void setEnemyShips(Collection<Ship> ships) {
 
-        mEnemyBuckets = new int[4];
+        mEnemyBuckets = new int[TYPES_OF_SHIPS];
         for (Ship ship : ships) {
             mEnemyBuckets[ship.getSize() - 1]++;
         }
@@ -177,7 +184,7 @@ public class FleetView extends View {
 
         int textMargin = w / 20;
         int shipArea = (int) (w - mLetterWidth * 2 - textMargin * 2);
-        int unitWidth = shipArea / 4;
+        int unitWidth = shipArea / CARRIER_VISUAL_LENGTH;
 
         if (unitWidth < 1) {
             Ln.e("impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mLetterWidth);
@@ -185,19 +192,19 @@ public class FleetView extends View {
             return;
         }
 
-        int allMarginsBetweenShips = mMarginBetweenShips * 3;
-        int highestShip = calcDestHeight(mAircraftCarrier, unitWidth * 4);
-        int desiredHeight = highestShip * 4 + allMarginsBetweenShips;
+        int allMarginsBetweenShips = mMarginBetweenShips * (TYPES_OF_SHIPS - 1);
+        int highestShip = calcDestHeight(mAircraftCarrier, unitWidth * CARRIER_VISUAL_LENGTH);
+        int desiredHeight = highestShip * TYPES_OF_SHIPS + allMarginsBetweenShips;
         while (desiredHeight > h) {
             unitWidth--;
-            highestShip = calcDestHeight(mAircraftCarrier, unitWidth * 4);
-            desiredHeight = highestShip * 4 + allMarginsBetweenShips;
+            highestShip = calcDestHeight(mAircraftCarrier, unitWidth * CARRIER_VISUAL_LENGTH);
+            desiredHeight = highestShip * TYPES_OF_SHIPS + allMarginsBetweenShips;
         }
 
-        mCarrierBounds = scaleShip(mAircraftCarrier, unitWidth * 4);
-        mBattleshipBounds = scaleShip(mBattleship, unitWidth * 3);
-        mDestroyerBounds = scaleShip(mDestroyer, unitWidth * 2);
-        mGunboatBounds = scaleShip(mGunboat, unitWidth);
+        mCarrierBounds = scaleShip(mAircraftCarrier, unitWidth * CARRIER_VISUAL_LENGTH);
+        mBattleshipBounds = scaleShip(mBattleship, unitWidth * BATTLESHIP_VISUAL_LENGTH);
+        mDestroyerBounds = scaleShip(mDestroyer, unitWidth * DESTROYER_VISUAL_LENGTH);
+        mGunboatBounds = scaleShip(mGunboat, unitWidth * GUNBOAT_VISUAL_LENGTH);
 
         mUnitHeight = mCarrierBounds.height();
     }

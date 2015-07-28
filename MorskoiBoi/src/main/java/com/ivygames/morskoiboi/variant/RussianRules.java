@@ -118,4 +118,8 @@ public class RussianRules extends AbstractRules {
         }
     }
 
+    @Override
+    public int[] newShipTypesArray() {
+        return new int[]{4, 3, 2, 1};
+    }
 }
