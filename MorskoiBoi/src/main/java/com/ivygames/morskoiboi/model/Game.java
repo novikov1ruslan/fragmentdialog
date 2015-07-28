@@ -2,8 +2,6 @@ package com.ivygames.morskoiboi.model;
 
 import org.commons.logger.Ln;
 
-import java.util.Collection;
-
 public abstract class Game {
     public enum Type {
         VS_ANDROID, BLUETOOTH, INTERNET

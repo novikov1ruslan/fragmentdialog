@@ -88,6 +88,16 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/main_screen_circles_margin"
             android:src="@drawable/leaderboards" />
+
+        <ImageButton
+            android:id="@+id/no_ads"
+            android:layout_width="@dimen/big_circle_size"
+            android:layout_height="@dimen/big_circle_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/main_screen_circles_margin"
+            android:background="@drawable/help_background"
+            android:src="@drawable/no_ads" />
+
     </LinearLayout>
 
     <com.ivygames.morskoiboi.ui.view.InvitationButton

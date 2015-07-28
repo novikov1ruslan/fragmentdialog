@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.utils.GameUtils;
 
 import java.util.Collection;
 

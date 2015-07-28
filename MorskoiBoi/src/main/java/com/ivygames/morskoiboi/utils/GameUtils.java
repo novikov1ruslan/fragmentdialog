@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.utils;
 
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;

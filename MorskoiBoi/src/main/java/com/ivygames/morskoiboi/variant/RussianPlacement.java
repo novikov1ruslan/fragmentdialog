@@ -1,10 +1,7 @@
 package com.ivygames.morskoiboi.variant;
 
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
-
-import java.util.Collection;
 
 
 public class RussianPlacement extends AbstractPlacement {

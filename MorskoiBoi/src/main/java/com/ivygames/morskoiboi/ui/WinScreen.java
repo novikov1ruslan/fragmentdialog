@@ -13,7 +13,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.achievement.AchievementsUtils;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;

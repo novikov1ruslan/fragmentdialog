@@ -26,6 +26,8 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         void share();
 
         void showAchievements();
+
+        void noAds();
     }
 
     private MainScreenActions mScreenActions;
@@ -52,6 +54,7 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         findViewById(R.id.share_button).setOnClickListener(this);
         findViewById(R.id.settings_button).setOnClickListener(this);
         findViewById(R.id.achievements_button).setOnClickListener(this);
+        findViewById(R.id.no_ads).setOnClickListener(this);
     }
 
     public void onResume(int requestCode) {
@@ -83,6 +86,10 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
 
             case R.id.achievements_button:
                 mScreenActions.showAchievements();
+                break;
+
+            case R.id.no_ads:
+                mScreenActions.noAds();
                 break;
 
             default:

@@ -10,12 +10,10 @@ import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.ivygames.morskoiboi.ai.BotFactory;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.variant.AmericanPlacement;
 import com.ivygames.morskoiboi.variant.AmericanRules;
 import com.ivygames.morskoiboi.variant.RussianBot;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.acra.ACRA;
 import org.acra.ReportField;

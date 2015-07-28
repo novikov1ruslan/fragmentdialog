@@ -1,22 +1,10 @@
 package com.ivygames.morskoiboi.achievement;
 
-import android.os.AsyncTask;
-
-import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.snapshot.Snapshot;
-import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
-import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Rank;
-import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
-import com.ivygames.morskoiboi.model.Progress;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
-public class AchievementsUtils {
+class AchievementsUtils {
     private AchievementsUtils() {
 
     }

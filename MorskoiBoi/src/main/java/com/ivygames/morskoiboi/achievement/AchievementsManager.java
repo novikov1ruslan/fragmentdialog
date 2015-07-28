@@ -1,25 +1,16 @@
 package com.ivygames.morskoiboi.achievement;
 
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
-import com.google.android.gms.games.snapshot.Snapshot;
-import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
-import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 
-import org.acra.ACRA;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
@@ -68,20 +59,6 @@ public final class AchievementsManager {
         loadResult.setResultCallback(mAchievementsLoadCallback);
     }
 
-    /**
-     * @return true if change has been made
-     */
-    private boolean unlockIfNotUnlocked(String achievementId) {
-        boolean alreadyUnlocked = mSettings.isAchievementUnlocked(achievementId);
-        if (alreadyUnlocked) {
-            Ln.d(AchievementsManager.name(achievementId) + " already unlocked - no need to unlock");
-            return false;
-        } else {
-            unlock(achievementId);
-            return true;
-        }
-    }
-
     public void processAchievements(Game game, Collection<Ship> ships) {
         Ln.v("game: " + game + "; ships: " + ships);
 
@@ -96,6 +73,20 @@ public final class AchievementsManager {
             } else {
                 increment(MILITARY_ACHIEVEMENTS, 1);
             }
+        }
+    }
+
+    /**
+     * @return true if change has been made
+     */
+    private boolean unlockIfNotUnlocked(String achievementId) {
+        boolean alreadyUnlocked = mSettings.isAchievementUnlocked(achievementId);
+        if (alreadyUnlocked) {
+            Ln.d(AchievementsManager.name(achievementId) + " already unlocked - no need to unlock");
+            return false;
+        } else {
+            unlock(achievementId);
+            return true;
         }
     }
 

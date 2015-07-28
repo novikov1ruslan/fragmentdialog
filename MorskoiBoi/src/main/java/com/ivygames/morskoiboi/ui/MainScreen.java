@@ -135,6 +135,11 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         }
     }
 
+    @Override
+    public void noAds() {
+        // TODO: implement
+    }
+
     private void showAchievementsScreen() {
         startActivityForResult(Games.Achievements.getAchievementsIntent(mApiClient), BattleshipActivity.RC_UNUSED);
     }

@@ -16,7 +16,6 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
-import com.ivygames.morskoiboi.achievement.AchievementsUtils;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;

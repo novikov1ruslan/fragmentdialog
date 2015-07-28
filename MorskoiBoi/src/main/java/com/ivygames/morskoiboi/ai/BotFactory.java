@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ai;
 
-import com.ivygames.morskoiboi.variant.RussianBot;
-
 import org.apache.commons.lang3.Validate;
 
 public class BotFactory {

@@ -42,11 +42,11 @@ import com.ivygames.morskoiboi.GameServicesUtils;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.billing.InventoryHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.utils.UiUtils;
 

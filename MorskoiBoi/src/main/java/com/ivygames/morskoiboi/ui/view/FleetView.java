@@ -12,13 +12,14 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.commons.logger.Ln;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FleetView extends View {
 
@@ -52,8 +53,8 @@ public class FleetView extends View {
     private final Paint mLinePaint;
     private final Paint mTextPaint = new Paint();
 
-    private int[] mMyBuckets;
-    private int[] mEnemyBuckets;
+    private final Map<Integer, Integer> mMyBuckets = new HashMap<Integer, Integer>();
+    private final Map<Integer, Integer> mEnemyBuckets = new HashMap<Integer, Integer>();
 
     private final int mTextColor;
     private final int mZeroTextColor;
@@ -78,14 +79,6 @@ public class FleetView extends View {
 
         mTextColor = getResources().getColor(R.color.status_text);
         mZeroTextColor = getResources().getColor(R.color.status_zero_text);
-
-        if (isInEditMode()) {
-            mMyBuckets = RulesFactory.getRules().newShipTypesArray();
-            mEnemyBuckets = RulesFactory.getRules().newShipTypesArray();
-        } else {
-            mMyBuckets = new int[TYPES_OF_SHIPS];
-            mEnemyBuckets = new int[TYPES_OF_SHIPS];
-        }
 
         mAircraftCarrier = Bitmaps.getInstance().getBitmap(R.drawable.aircraft_carrier);
         mBattleship = Bitmaps.getInstance().getBitmap(R.drawable.battleship);
@@ -136,13 +129,13 @@ public class FleetView extends View {
         canvas.drawBitmap(bitmap, src, dst, null);
         canvas.restore();
 
-        mTextPaint.setColor(getTextColor(mMyBuckets[bucket]));
+        mTextPaint.setColor(getTextColor(mMyBuckets.get(bucket)));
         int textLeft = 0;
-        canvas.drawText(String.valueOf(mMyBuckets[bucket]), textLeft, top + mUnitHeight, mTextPaint);
+        canvas.drawText(String.valueOf(mMyBuckets.get(bucket)), textLeft, top + mUnitHeight, mTextPaint);
 
-        mTextPaint.setColor(getTextColor(mEnemyBuckets[bucket]));
+        mTextPaint.setColor(getTextColor(mEnemyBuckets.get(bucket)));
         int textRight = (int) (w - mLetterWidth);
-        canvas.drawText(String.valueOf(mEnemyBuckets[bucket]), textRight, top + mUnitHeight, mTextPaint);
+        canvas.drawText(String.valueOf(mEnemyBuckets.get(bucket)), textRight, top + mUnitHeight, mTextPaint);
 
         canvas.drawLine(0, top, w, top, mLinePaint);
         int bottom = top + mUnitHeight;
@@ -158,22 +151,23 @@ public class FleetView extends View {
     }
 
     public void setMyShips(Collection<Ship> ships) {
-
-        mMyBuckets = new int[TYPES_OF_SHIPS];
-        for (Ship ship : ships) {
-            mMyBuckets[ship.getSize() - 1]++;
-        }
-
+        updateShipCounts(ships, mMyBuckets);
         invalidate();
     }
 
-    public void setEnemyShips(Collection<Ship> ships) {
-
-        mEnemyBuckets = new int[TYPES_OF_SHIPS];
+    private void updateShipCounts(Collection<Ship> ships, Map<Integer, Integer> map) {
         for (Ship ship : ships) {
-            mEnemyBuckets[ship.getSize() - 1]++;
-        }
+            Integer amount = map.get(ship.getSize());
+            if (amount == null) {
+                amount = 0;
+            }
 
+            map.put(ship.getSize(), amount + 1);
+        }
+    }
+
+    public void setEnemyShips(Collection<Ship> ships) {
+        updateShipCounts(ships, mEnemyBuckets);
         invalidate();
     }
 
