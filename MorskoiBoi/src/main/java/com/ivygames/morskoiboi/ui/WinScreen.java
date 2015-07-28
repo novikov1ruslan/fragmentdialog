@@ -22,6 +22,7 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.SignInListener;
@@ -180,7 +181,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
         int progressIncrement = progress - penalty;
         if (progressIncrement > 0) {
-            AchievementsUtils.incrementProgress(progressIncrement, mApiClient, mGaTracker);
+            ProgressManager.incrementProgress(progressIncrement, mApiClient, mGaTracker);
             GameSettings.get().setProgressPenalty(0);
         } else {
             GameSettings.get().setProgressPenalty(-progressIncrement);

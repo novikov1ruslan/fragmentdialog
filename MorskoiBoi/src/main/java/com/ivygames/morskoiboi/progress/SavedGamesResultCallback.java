@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.achievement;
+package com.ivygames.morskoiboi.progress;
 
 import android.support.annotation.NonNull;
 
@@ -70,7 +70,7 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
         max = getMax(max, modifiedProgress);
 
         AnalyticsEvent.send(mGaTracker, "snapshot conflict");
-        AchievementsUtils.savedGamesUpdate(mApiClient, max.toJson().toString().getBytes());
+        ProgressManager.savedGamesUpdate(mApiClient, max.toJson().toString().getBytes());
         return max;
     }
 

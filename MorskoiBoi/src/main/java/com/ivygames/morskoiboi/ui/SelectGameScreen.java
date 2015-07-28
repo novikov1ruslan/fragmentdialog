@@ -130,7 +130,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         AdManager.instance.showInterstitialAfterPlay();
         mParent.showTutorial(getTutView());
 
-        AchievementsUtils.incrementProgress(1, mApiClient,  mGaTracker);
+//        AchievementsUtils.incrementProgress(1, mApiClient,  mGaTracker);
     }
 
     @Override

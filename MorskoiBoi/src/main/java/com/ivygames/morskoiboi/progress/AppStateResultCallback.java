@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.achievement;
+package com.ivygames.morskoiboi.progress;
 
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
@@ -40,7 +40,7 @@ final class AppStateResultCallback implements ResultCallback<AppStateManager.Sta
             byte[] localData = conflictResult.getLocalData();
             byte[] serverData = conflictResult.getServerData();
             String resolvedVersion = conflictResult.getResolvedVersion();
-            resolveConflict(AchievementsUtils.STATE_KEY, resolvedVersion, localData, serverData);
+            resolveConflict(ProgressManager.STATE_KEY, resolvedVersion, localData, serverData);
         } else if (loadedResult != null) {
             int statusCode = loadedResult.getStatus().getStatusCode();
             int stateKey = loadedResult.getStateKey();
@@ -76,7 +76,7 @@ final class AppStateResultCallback implements ResultCallback<AppStateManager.Sta
                 Progress progress = mSettings.getProgress();
                 Ln.d("there is no saved data, updating cloud with: " + progress);
                 String json = progress.toJson().toString();
-                AppStateManager.update(mApiClient, AchievementsUtils.STATE_KEY, json.getBytes());
+                AppStateManager.update(mApiClient, ProgressManager.STATE_KEY, json.getBytes());
                 break;
             case GamesStatusCodes.STATUS_NETWORK_ERROR_NO_DATA:
                 // TODO:

@@ -53,7 +53,6 @@ public final class AchievementsManager {
     private final GameSettings mSettings = GameSettings.get();
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
-//    private final AppStateResultCallback appStateCallback;
 
     public AchievementsManager(GoogleApiClient apiClient, Tracker tracker) {
         Validate.notNull(tracker);
@@ -62,19 +61,11 @@ public final class AchievementsManager {
         Validate.notNull(apiClient);
         mApiClient = apiClient;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient);
-//        appStateCallback = new AppStateResultCallback(apiClient, tracker);
     }
 
-    public void loadAchievements(Bitmap bitmap) {
+    public void loadAchievements() {
         PendingResult<LoadAchievementsResult> loadResult = Games.Achievements.load(mApiClient, true);
         loadResult.setResultCallback(mAchievementsLoadCallback);
-//            PendingResult<StateResult> stateResult = AppStateManager.load(mApiClient, AchievementsUtils.STATE_KEY);
-//            stateResult.setResultCallback(appStateCallback);
-        if (GameSettings.get().hasProgressMigrated()) {
-            savedGamesLoad(AchievementsUtils.makeSnapshotName());
-        } else {
-            cloudSaveMigrate(bitmap);
-        }
     }
 
     /**
@@ -209,125 +200,5 @@ public final class AchievementsManager {
     private static String name(String achievementId) {
         return AchievementsUtils.debugName(achievementId);
     }
-
-    // -------------------------------- Save Game
-
-    /**
-     * Async migrate the data in Cloud Save (stateKey APP_STATE_KEY) to a Snapshot in the Saved
-     * Games service with unique snap 'Snapshot-{APP_STATE_KEY}'.  If no such Snapshot exists,
-     * create a Snapshot and populate all fields.  If the Snapshot already exists, update the
-     * appropriate data and metadata.  After migrate, the UI will be cleared and the data will be
-     * available to load from Snapshots.
-     */
-    public void cloudSaveMigrate(final Bitmap bitmap) {
-        final boolean createIfMissing = true;
-
-        // Note: when migrating your users from Cloud Save to Saved Games, you will need to perform
-        // the migration process at most once per device.  You should keep track of the migration
-        // status locally for each AppState data slot (using SharedPreferences or similar)
-        // to avoid repeating network calls or migrating the same AppState data multiple times.
-
-        // Compute SnapshotMetadata fields based on the information available from AppState.  In
-        // this case there is no data available to auto-generate a description, cover image, or
-        // playedTime.  It is strongly recommended that you generate unique and meaningful
-        // values for these fields based on the data in your app.
-        final String snapshotName = AchievementsUtils.makeSnapshotName();
-        final String description = "Sea Battle Score";
-        final long playedTimeMillis = 0;
-
-        AsyncTask<Void, Void, Boolean> migrateTask = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected void onPreExecute() {
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                // Get AppState Data
-                AppStateManager.StateResult load = AppStateManager.load(mApiClient, AchievementsUtils.STATE_KEY).await();
-
-                if (!load.getStatus().isSuccess()) {
-                    Ln.w("Could not load App State for migration.");
-                    return true;
-                }
-
-                // Get Data from AppState
-                byte[] data = load.getLoadedResult().getLocalData();
-
-                // Open the snapshot, creating if necessary
-                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(mApiClient, snapshotName, createIfMissing).await();
-
-                if (!open.getStatus().isSuccess()) {
-                    Ln.w("Could not open Snapshot for migration.");
-                    // TODO: Handle Snapshot conflicts
-                    // Note: one reason for failure to open a Snapshot is conflicting saved games.
-                    // This is outside the scope of this sample, however you should resolve such
-                    // conflicts in your own app by following the steps outlined here:
-                    // https://developers.google.com/games/services/android/savedgames#handling_saved_game_conflicts
-                    return true;
-                }
-
-                // Write the new data to the snapshot
-                Snapshot snapshot = open.getSnapshot();
-                snapshot.getSnapshotContents().writeBytes(data);
-
-                // Change metadata
-                SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
-                        .fromMetadata(snapshot.getMetadata())
-                        .setCoverImage(bitmap)
-                        .setDescription(description)
-                        .setPlayedTimeMillis(playedTimeMillis)
-                        .build();
-
-                Snapshots.CommitSnapshotResult commit = Games.Snapshots.commitAndClose(mApiClient, snapshot, metadataChange).await();
-
-                if (!commit.getStatus().isSuccess()) {
-                    Ln.w("Failed to commit Snapshot.");
-                    return false;
-                }
-
-                // No failures
-                return true;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    GameSettings.get().setProgressMigrated();
-                    AnalyticsEvent.send(mGaTracker, "migration succeeded");
-                    savedGamesLoad(AchievementsUtils.makeSnapshotName());
-                } else {
-                    ACRA.getErrorReporter().handleException(new RuntimeException("migration failed"));
-                }
-            }
-        };
-        migrateTask.execute();
-    }
-
-    /**
-     * Load a Snapshot from the Saved Games service based on its unique name.  After load, the UI
-     * will update to display the Snapshot data and SnapshotMetadata.
-     *
-     * @param snapshotName the unique name of the Snapshot.
-     */
-    private void savedGamesLoad(String snapshotName) {
-        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.open(
-                mApiClient, snapshotName, false);
-
-        ResultCallback<Snapshots.OpenSnapshotResult> callback = new SavedGamesResultCallback(mApiClient, mGaTracker);
-        pendingResult.setResultCallback(callback);
-    }
-
-//    private void displaySnapshotMetadata(SnapshotMetadata metadata) {
-//        if (metadata == null) {
-//            return;
-//        }
-//
-//        String metadataStr = "Source: Saved Games" + '\n'
-//                + "Description: " + metadata.getDescription() + '\n'
-//                + "Name: " + metadata.getUniqueName() + '\n'
-//                + "Last Modified: " + String.valueOf(metadata.getLastModifiedTimestamp()) + '\n'
-//                + "Played Time: " + String.valueOf(metadata.getPlayedTime()) + '\n'
-//                + "Cover Image URL: " + metadata.getCoverImageUrl();
-//    }
 
 }

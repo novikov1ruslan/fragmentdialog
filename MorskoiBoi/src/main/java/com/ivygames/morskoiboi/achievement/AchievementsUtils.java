@@ -17,8 +17,6 @@ import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 public class AchievementsUtils {
-    static final int STATE_KEY = 0;
-
     private AchievementsUtils() {
 
     }
@@ -51,32 +49,6 @@ public class AchievementsUtils {
         return "UNKNOWN(" + id + ")";
     }
 
-    public static void incrementProgress(int increment, GoogleApiClient apiClient, Tracker tracker) {
-        Ln.d("incrementing progress by " + increment);
-        Progress progress = GameSettings.get().getProgress();
-        int oldProgress = progress.getRank();
-        GameSettings.get().setProgress(new Progress(oldProgress + increment));
-
-        trackPromotionEvent(oldProgress, progress.getRank(), tracker);
-
-        Ln.d("posting progress to the cloud: " + progress);
-        String json = progress.toJson().toString();
-        if (apiClient.isConnected()) {
-            savedGamesUpdate(apiClient, json.getBytes());
-//            AppStateManager.update(apiClient, STATE_KEY, json.getBytes());
-        }
-    }
-
-    private static void trackPromotionEvent(int oldProgress, int newProgress, Tracker tracker) {
-        Rank lastRank = Rank.getBestRankForScore(oldProgress);
-        Rank newRank = Rank.getBestRankForScore(newProgress);
-        if (newRank != lastRank) {
-            GameSettings.get().newRankAchieved(true);
-            String label = lastRank + " promoted to " + newRank;
-            tracker.send(new AnalyticsEvent("promotion", label, 1).build());
-        }
-    }
-
     static void setUnlocked(String achievementId) {
         if (AchievementsUtils.isUnlocked(achievementId)) {
             Ln.v(AchievementsUtils.debugName(achievementId) + " already unlocked");
@@ -101,66 +73,4 @@ public class AchievementsUtils {
         return GameSettings.get().isAchievementRevealed(achievementId);
     }
 
-    /**
-     * Update the Snapshot in the Saved Games service with new data.  Metadata is not affected,
-     * however for your own application you will likely want to update metadata such as cover image,
-     * played time, and description with each Snapshot update.  After update, the UI will
-     * be cleared.
-     */
-    static void savedGamesUpdate(final GoogleApiClient apiClient, final byte[] data) {
-        final String snapshotName = makeSnapshotName();
-        final boolean createIfMissing = false;
-
-        AsyncTask<Void, Void, Boolean> updateTask = new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(apiClient, snapshotName, createIfMissing).await();
-
-                if (!open.getStatus().isSuccess()) {
-                    Ln.w("Could not open Snapshot for update.");
-                    return false;
-                }
-
-                // Change data but leave existing metadata
-                Snapshot snapshot = open.getSnapshot();
-                snapshot.getSnapshotContents().writeBytes(data);
-
-                Snapshots.CommitSnapshotResult commit = Games.Snapshots.commitAndClose(
-                        apiClient, snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
-
-                if (!commit.getStatus().isSuccess()) {
-                    Ln.w("Failed to commit Snapshot.");
-                    return false;
-                }
-
-                // No failures
-                return true;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    Ln.d("saved data updated");
-                } else {
-                    ACRA.getErrorReporter().handleException(new RuntimeException("could not update"));
-                }
-            }
-        };
-        updateTask.execute();
-    }
-
-    /**
-     * Generate a unique Snapshot name from an AppState stateKey.
-     *
-     * @param appStateKey the stateKey for the Cloud Save data.
-     * @return a unique Snapshot name that maps to the stateKey.
-     */
-    private static String makeSnapshotName(int appStateKey) {
-        return "Snapshot-" + String.valueOf(appStateKey);
-    }
-
-    public static String makeSnapshotName() {
-        return makeSnapshotName(STATE_KEY);
-    }
 }

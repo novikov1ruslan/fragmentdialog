@@ -42,6 +42,7 @@ import com.ivygames.morskoiboi.GameServicesUtils;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.billing.InventoryHelper;
@@ -103,6 +104,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     private boolean mResolvingConnectionFailure;
 
     private AchievementsManager mAchievementsManager;
+    private ProgressManager mProgressManager;
 
     private boolean mStarted;
     private ViewGroup mLayout;
@@ -199,6 +201,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         mGaTracker.enableAdvertisingIdCollection(true);
 
         mAchievementsManager = new AchievementsManager(mGoogleApiClient, mGaTracker);
+        mProgressManager = new ProgressManager(mGoogleApiClient, mGaTracker);
 
         mSettings = GameSettings.get();
 
@@ -488,7 +491,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             mSettings.setPlayerName(name);
         }
 
-        mAchievementsManager.loadAchievements(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+        mAchievementsManager.loadAchievements();
+        mProgressManager.loadProgress(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
 
         if (mCurrentScreen instanceof SignInListener) {
             ((SignInListener) mCurrentScreen).onSignInSucceeded();

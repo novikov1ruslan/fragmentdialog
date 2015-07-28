@@ -9,6 +9,8 @@ import org.commons.logger.Ln;
 
 public final class Bitmaps {
 
+    private static final int BPP = 4;
+
     private final SparseArray<Bitmap> mBitmaps = new SparseArray<Bitmap>();
 
     private int mMemoryUsed;
@@ -67,7 +69,7 @@ public final class Bitmaps {
         Bitmap bitmap = BitmapFactory.decodeResource(res, resId);
         mBitmaps.put(resId, bitmap);
 
-        mMemoryUsed += bitmap.getHeight() * bitmap.getWidth() * 4;
+        mMemoryUsed += bitmap.getHeight() * bitmap.getWidth() * BPP;
     }
 
     public Bitmap getBitmap(int resId) {
