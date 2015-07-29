@@ -110,6 +110,10 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         mPlusOneButton.setVisibility(VISIBLE);
     }
 
+    public void hideNoAdsButton() {
+        findViewById(R.id.no_ads).setVisibility(GONE);
+    }
+
     public View setTutView(View view) {
         mTutView = view;
         return view;

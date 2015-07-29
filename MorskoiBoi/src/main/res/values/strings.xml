@@ -39,6 +39,7 @@
     <string name="help">Help</string>
     <string name="share_greeting">Check out great \"Sea Battle\" app at: </string>
     <string name="want_to_leave_room">Do you want to abandon the game with %1$s?</string>
+    <string name="purchase_error">Could not complete purchase. Please try later. Your account has not been charged.</string>
     <string name="purchase_success">You have successfully removed the ads. Please restart the app.</string>
 
     <!-- select game screen -->

@@ -9,7 +9,9 @@ import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.ui.BattleshipActivity;
 
+import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class PurchaseHelper {
@@ -17,10 +19,9 @@ public class PurchaseHelper {
     private IabHelper mHelper;
     private Activity mActivity;
     // (arbitrary) request code for the purchase flow
-    private static final int RC_PURCHASE = 10003;
 
     public void onCreate(Activity activity) {
-        mActivity = activity;
+        mActivity = Validate.notNull(activity);
 
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) != ConnectionResult.SUCCESS) {
             Ln.e("services not available");
@@ -35,13 +36,13 @@ public class PurchaseHelper {
         mHelper.enableDebugLogging(true);
     }
 
-    public void onNoAds() {
+    public void purchase(int requestCode, IabHelper.OnIabPurchaseFinishedListener listener) {
         // TODO: move to UI
 //        mGaTracker.send(new UiEvent("no_ads").build());
         Ln.d("Upgrade button clicked; launching purchase flow for upgrade.");
 
 		/*
-		 * TODO: for security, generate your payload here for verification. See the comments on verifyDeveloperPayload() for more info. Since this is a SAMPLE,
+         * TODO: for security, generate your payload here for verification. See the comments on verifyDeveloperPayload() for more info. Since this is a SAMPLE,
 		 * we just use an empty string, but on a production app you should carefully generate this.
 		 */
         String payload = "";
@@ -62,11 +63,11 @@ public class PurchaseHelper {
         }
 
 //        showWaitingScreen();
-        mHelper.launchPurchaseFlow(mActivity, InventoryHelper.SKU_NO_ADS, RC_PURCHASE, mPurchaseFinishedListener, payload);
+        mHelper.launchPurchaseFlow(mActivity, InventoryHelper.SKU_NO_ADS, requestCode, listener, payload);
     }
 
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        Ln.v("request coode = " + requestCode + "; response code = " + resultCode);
+        Ln.v("request code = " + requestCode + "; response code = " + resultCode);
         if (mHelper == null) {
             return false;
         }
@@ -88,46 +89,4 @@ public class PurchaseHelper {
             mHelper = null;
         }
     }
-
-    // Callback for when a purchase is finished
-    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        @Override
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Ln.d("Purchase finished: " + result + ", purchase: " + purchase);
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) {
-                return;
-            }
-
-            if (result.isFailure()) {
-                Ln.w("Error purchasing: " + result);
-                // FIXME
-                // showErrorDialog();
-//                hideWaitingScreen();
-                return;
-            }
-
-            if (!PurchaseUtils.verifyDeveloperPayload(purchase)) {
-                Ln.w("Error purchasing. Authenticity verification failed.");
-//                showErrorDialog();
-//                hideWaitingScreen();
-                // FIXME
-                return;
-            }
-
-            Ln.d("Purchase successful.");
-
-            if (purchase.getSku().equals(InventoryHelper.SKU_NO_ADS)) {
-                // bought the premium upgrade!
-                Ln.d("Purchase is premium upgrade. Congratulating user.");
-                GameSettings.get().setNoAds();
-                // FIXME
-//                getActivity().findViewById(R.id.banner).setVisibility(View.GONE);
-//                mLayout.hideIab();
-            }
-
-//            hideWaitingScreen();
-        }
-    };
 }

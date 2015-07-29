@@ -34,6 +34,9 @@ import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.example.games.basegameutils.BaseGameUtils;
+import com.ivygames.billing.IabHelper;
+import com.ivygames.billing.IabResult;
+import com.ivygames.billing.Purchase;
 import com.ivygames.morskoiboi.AdManager;
 import com.ivygames.morskoiboi.BattleshipApplication;
 import com.ivygames.morskoiboi.DeviceUtils;
@@ -45,10 +48,12 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.billing.InventoryHelper;
+import com.ivygames.morskoiboi.billing.PurchaseHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.utils.UiUtils;
+import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
@@ -73,6 +78,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     static final int RC_UNUSED = 0;
     static final int PLUS_ONE_REQUEST_CODE = 20001;
     static final int RC_ENABLE_BT = 2;
+    private static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
 
@@ -115,6 +121,42 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     private boolean mResumed;
     private InventoryHelper mInventoryHelper;
+    private PurchaseHelper mPurchaseHelper;
+
+    // Callback for when a purchase is finished
+    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        @Override
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Ln.d("Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mPurchaseHelper == null) {
+                return;
+            }
+
+            if (result.isFailure()) {
+                Ln.w("Error purchasing: " + result);
+                FragmentAlertDialog.showNote(getSupportFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
+//                hideWaitingScreen();
+                return;
+            }
+
+            Ln.d("Purchase successful.");
+
+            if (purchase.getSku().equals(InventoryHelper.SKU_NO_ADS)) {
+                // bought the premium upgrade!
+                Ln.d("Purchase is premium upgrade. Congratulating user.");
+                mSettings.setNoAds();
+                hideAds();
+                if (mCurrentScreen instanceof MainScreen) {
+                    ((MainScreen) mCurrentScreen).hideNoAdsButton();
+                }
+            }
+
+//            hideWaitingScreen();
+        }
+    };
+
 
     private final OnInvitationReceivedListener mInvitationReceivedListener = new OnInvitationReceivedListener() {
 
@@ -220,12 +262,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         if (!GameSettings.get().noAds()) {
             if (isGoogleServicesAvailable()) {
-                mInventoryHelper = new InventoryHelper(this);
-                try {
-                    mInventoryHelper.onCreate();
-                } catch (Exception e) {
-                    ACRA.getErrorReporter().handleException(e);
-                }
+                createInventoryHelper();
+                createPurchaseHelper();
             }
         }
 
@@ -233,6 +271,24 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             hideAds();
         }
         Ln.i("game fully created");
+    }
+
+    private void createPurchaseHelper() {
+        mPurchaseHelper = new PurchaseHelper();
+        try {
+            mPurchaseHelper.onCreate(this);
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    private void createInventoryHelper() {
+        mInventoryHelper = new InventoryHelper(this);
+        try {
+            mInventoryHelper.onCreate();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
     }
 
     private boolean isGoogleServicesAvailable() {
@@ -359,18 +415,36 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         Crouton.cancelAllCroutons();
         AdManager.instance.destroy();
 
+        destroyInventoryHelper();
+
+        destroyPurchaseHelper();
+
+        mGoogleApiClient.disconnect();
+        mGoogleApiClient.unregisterConnectionCallbacks(this);
+        mGoogleApiClient.unregisterConnectionFailedListener(this);
+        Ln.d("game destroyed");
+    }
+
+    private void destroyInventoryHelper() {
         if (mInventoryHelper != null) {
             try {
                 mInventoryHelper.onDestroy();
             } catch (Exception e) {
                 ACRA.getErrorReporter().handleException(e);
             }
+            mInventoryHelper = null;
         }
+    }
 
-        mGoogleApiClient.disconnect();
-        mGoogleApiClient.unregisterConnectionCallbacks(this);
-        mGoogleApiClient.unregisterConnectionFailedListener(this);
-        Ln.d("game destroyed");
+    private void destroyPurchaseHelper() {
+        if (mPurchaseHelper != null) {
+            try {
+                mPurchaseHelper.onDestroy();
+            } catch (Exception e) {
+                ACRA.getErrorReporter().handleException(e);
+            }
+            mPurchaseHelper = null;
+        }
     }
 
     public void dismissTutorial() {
@@ -441,9 +515,18 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
                 Ln.w("connection issue could not be resolved");
                 mResolvingConnectionFailure = false;
             }
+        } else if (requestCode == RC_PURCHASE) {
+            if (mPurchaseHelper != null) {
+                try {
+                    mPurchaseHelper.onActivityResult(requestCode, resultCode, data);
+                } catch (Exception e) {
+                    ACRA.getErrorReporter().handleException(e);
+                }
+            }
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }
+
     }
 
     @Override
@@ -535,6 +618,16 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     @Override
     public void onInvitationRemoved(String invitationId) {
         Ln.i("invitation withdrawn: " + invitationId);
+    }
+
+    public void onNoAds() {
+        if (mPurchaseHelper != null) {
+            try {
+                mPurchaseHelper.purchase(RC_PURCHASE, mPurchaseListener);
+            } catch (Exception e) {
+                ACRA.getErrorReporter().handleException(e);
+            }
+        }
     }
 
     public void onEventMainThread(ChatMessage message) {

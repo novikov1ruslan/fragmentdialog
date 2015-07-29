@@ -28,7 +28,7 @@ public class InventoryHelper {
     private IabHelper mHelper;
     private final BattleshipActivity mActivity;
 
-    static final String SKU_NO_ADS = "no_ads";
+    public static final String SKU_NO_ADS = "no_ads";
 
     public InventoryHelper(BattleshipActivity activity) {
         mActivity = activity;

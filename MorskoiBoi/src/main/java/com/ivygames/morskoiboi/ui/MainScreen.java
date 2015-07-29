@@ -80,6 +80,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         if (mApiClient.isConnected()) {
             mLayout.showPlusOneButton();
         }
+
+        if (GameSettings.get().noAds()) {
+            mParent.hideAds();
+        }
     }
 
     private void showInvitationIfHas(boolean hasInvitations) {
@@ -137,7 +141,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void noAds() {
-        // TODO: implement
+        mParent.onNoAds();
     }
 
     private void showAchievementsScreen() {
@@ -225,6 +229,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
                 GameSettings.get().rateLater();
             }
         }).create().show(mFm, DIALOG);
+    }
+
+    public void hideNoAdsButton() {
+        mLayout.hideNoAdsButton();
     }
 
     @Override
