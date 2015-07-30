@@ -53,8 +53,8 @@ public class FleetView extends View {
     private final Paint mLinePaint;
     private final Paint mTextPaint = new Paint();
 
-    private final Map<Integer, Integer> mMyBuckets = new HashMap<Integer, Integer>();
-    private final Map<Integer, Integer> mEnemyBuckets = new HashMap<Integer, Integer>();
+    private final Map<Integer, Integer> mMyShipsLeft = new HashMap<Integer, Integer>();
+    private final Map<Integer, Integer> mEnemyShipsLeft = new HashMap<Integer, Integer>();
 
     private final int mTextColor;
     private final int mZeroTextColor;
@@ -109,19 +109,19 @@ public class FleetView extends View {
         }
 
         int top = 0;
-        drawShip(mAircraftCarrier, mCarrierSrc, mCarrierBounds, top, 3, canvas);
+        drawShip(mAircraftCarrier, mCarrierSrc, mCarrierBounds, top, 4, canvas);
 
         top += mUnitHeight + mMarginBetweenShips;
-        drawShip(mBattleship, mBattleshipSrc, mBattleshipBounds, top, 2, canvas);
+        drawShip(mBattleship, mBattleshipSrc, mBattleshipBounds, top, 3, canvas);
 
         top += mUnitHeight + mMarginBetweenShips;
-        drawShip(mDestroyer, mDestroyerSrc, mDestroyerBounds, top, 1, canvas);
+        drawShip(mDestroyer, mDestroyerSrc, mDestroyerBounds, top, 2, canvas);
 
         top += mUnitHeight + mMarginBetweenShips;
-        drawShip(mGunboat, mGunboatSrc, mGunboatBounds, top, 0, canvas);
+        drawShip(mGunboat, mGunboatSrc, mGunboatBounds, top, 1, canvas);
     }
 
-    private void drawShip(Bitmap bitmap, Rect src, Rect dst, int top, int bucket, Canvas canvas) {
+    private void drawShip(Bitmap bitmap, Rect src, Rect dst, int top, int shipSize, Canvas canvas) {
         int w = getWidth();
 
         canvas.save();
@@ -129,13 +129,15 @@ public class FleetView extends View {
         canvas.drawBitmap(bitmap, src, dst, null);
         canvas.restore();
 
-        mTextPaint.setColor(getTextColor(mMyBuckets.get(bucket)));
+        Integer numOfShips = mMyShipsLeft.get(shipSize);
+        mTextPaint.setColor(getTextColor(numOfShips));
         int textLeft = 0;
-        canvas.drawText(String.valueOf(mMyBuckets.get(bucket)), textLeft, top + mUnitHeight, mTextPaint);
+        canvas.drawText(String.valueOf(numOfShips), textLeft, top + mUnitHeight, mTextPaint);
 
-        mTextPaint.setColor(getTextColor(mEnemyBuckets.get(bucket)));
+        numOfShips = mEnemyShipsLeft.get(shipSize);
+        mTextPaint.setColor(getTextColor(numOfShips));
         int textRight = (int) (w - mLetterWidth);
-        canvas.drawText(String.valueOf(mEnemyBuckets.get(bucket)), textRight, top + mUnitHeight, mTextPaint);
+        canvas.drawText(String.valueOf(numOfShips), textRight, top + mUnitHeight, mTextPaint);
 
         canvas.drawLine(0, top, w, top, mLinePaint);
         int bottom = top + mUnitHeight;
@@ -151,7 +153,7 @@ public class FleetView extends View {
     }
 
     public void setMyShips(Collection<Ship> ships) {
-        updateShipCounts(ships, mMyBuckets);
+        updateShipCounts(ships, mMyShipsLeft);
         invalidate();
     }
 
@@ -167,7 +169,7 @@ public class FleetView extends View {
     }
 
     public void setEnemyShips(Collection<Ship> ships) {
-        updateShipCounts(ships, mEnemyBuckets);
+        updateShipCounts(ships, mEnemyShipsLeft);
         invalidate();
     }
 

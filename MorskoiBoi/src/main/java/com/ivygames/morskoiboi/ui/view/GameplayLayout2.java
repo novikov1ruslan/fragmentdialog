@@ -27,7 +27,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
-    private FleetView mFleet;
+    private FleetView mFleetView;
     private TextView mPlayerNameView;
     private TextView mEnemyNameView;
     private View mChatButton;
@@ -52,7 +52,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         super.onFinishInflate();
         mMyBoardView = (FleetBoardView) findViewById(R.id.board_view_fleet);
         mEnemyBoardView = (EnemyBoardView) findViewById(R.id.board_view_enemy);
-        mFleet = (FleetView) findViewById(R.id.status);
+        mFleetView = (FleetView) findViewById(R.id.status);
         mChatButton = findViewById(R.id.chat_button);
         mChatButton.setOnClickListener(new OnClickListener() {
 
@@ -107,17 +107,17 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
     }
 
     public void setMyShips(Collection<Ship> ships) {
-        if (mFleet == null) {
+        if (mFleetView == null) {
             return;
         }
-        mFleet.setMyShips(ships);
+        mFleetView.setMyShips(ships);
     }
 
     public void setEnemyShips(Collection<Ship> ships) {
-        if (mFleet == null) {
+        if (mFleetView == null) {
             return;
         }
-        mFleet.setEnemyShips(ships);
+        mFleetView.setEnemyShips(ships);
     }
 
     public void setShotListener(ShotListener listener) {
