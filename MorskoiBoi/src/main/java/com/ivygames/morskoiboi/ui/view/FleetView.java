@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
@@ -53,8 +54,8 @@ public class FleetView extends View {
     private final Paint mLinePaint;
     private final Paint mTextPaint = new Paint();
 
-    private final Map<Integer, Integer> mMyShipsLeft = new HashMap<Integer, Integer>();
-    private final Map<Integer, Integer> mEnemyShipsLeft = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> mMyShipsLeft;
+    private Map<Integer, Integer> mEnemyShipsLeft;
 
     private final int mTextColor;
     private final int mZeroTextColor;
@@ -153,23 +154,30 @@ public class FleetView extends View {
     }
 
     public void setMyShips(Collection<Ship> ships) {
-        updateShipCounts(ships, mMyShipsLeft);
+        mMyShipsLeft = generateShips(ships);
         invalidate();
     }
 
-    private void updateShipCounts(Collection<Ship> ships, Map<Integer, Integer> map) {
-        for (Ship ship : ships) {
-            Integer amount = map.get(ship.getSize());
-            if (amount == null) {
-                amount = 0;
-            }
-
-            map.put(ship.getSize(), amount + 1);
+    private Map<Integer, Integer> generateEmptyShips() {
+        Map<Integer, Integer> ships = new HashMap<Integer, Integer>();
+        int[] shipSizes = RulesFactory.getRules().getTotalShips();
+        for (int shipSize: shipSizes) {
+            ships.put(shipSize, 0);
         }
+
+        return ships;
+    }
+
+    private Map<Integer, Integer> generateShips(Collection<Ship> ships) {
+        Map<Integer, Integer> map = generateEmptyShips();
+        for (Ship ship : ships) {
+            map.put(ship.getSize(), map.get(ship.getSize()) + 1);
+        }
+        return map;
     }
 
     public void setEnemyShips(Collection<Ship> ships) {
-        updateShipCounts(ships, mEnemyShipsLeft);
+        mEnemyShipsLeft = generateShips(ships);
         invalidate();
     }
 
