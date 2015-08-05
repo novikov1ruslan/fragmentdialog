@@ -46,8 +46,7 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
                     Progress max = getServerProgress(result.getSnapshot());
                     max = resolveConflict(result, max);
                     mSettings.setProgress(max);
-                }
-                else {
+                } else {
                     Ln.e("failed to load saved game: " + statusCode);
                 }
             }
@@ -59,6 +58,10 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
 
     private Progress getServerProgress(Snapshot snapshot) throws IOException {
         byte[] data = snapshot.getSnapshotContents().readFully();
+        if (data == null || data.length < 6) {
+            return new Progress(0);
+        }
+
         return parseProgress(data);
     }
 
@@ -73,16 +76,6 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
         ProgressManager.savedGamesUpdate(mApiClient, max.toJson().toString().getBytes());
         return max;
     }
-
-//    private void resolveConflict(int stateKey, String resolvedVersion, byte[] localData, byte[] cloudData) {
-//        Progress localProgress = parseProgress(localData);
-//        Progress cloudProgress = parseProgress(cloudData);
-//        Progress max = getMax(localProgress, cloudProgress);
-//        Ln.d("resolving conflict: local=" + localProgress + " vs cloud=" + cloudProgress + ", resolved=" + max);
-//        byte[] resolvedData = max.toString().getBytes();
-//        AppStateManager.resolve(mApiClient, stateKey, resolvedVersion, resolvedData);
-//        mSettings.setProgress(max);
-//    }
 
     private Progress parseProgress(byte[] loadedData) {
         Progress progress;
@@ -99,6 +92,5 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
     private Progress getMax(Progress local, Progress cloud) {
         return local.getRank() > cloud.getRank() ? local : cloud;
     }
-
 
 }
