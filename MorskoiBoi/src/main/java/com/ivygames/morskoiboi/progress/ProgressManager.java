@@ -7,7 +7,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
@@ -22,6 +21,8 @@ import org.commons.logger.Ln;
 
 public class ProgressManager {
     public static final int STATE_KEY = 0;
+    private static final String PROGRESS_DESCRIPTION = "Sea Battle Score";
+    public static final String SNAPSHOT_NAME = "Sea Battle Snapshot";//makeSnapshotName();
 
     private final GoogleApiClient mApiClient;
     private final Tracker mGaTracker;
@@ -36,11 +37,15 @@ public class ProgressManager {
     public void loadProgress(Bitmap bitmap) {
         //            PendingResult<StateResult> stateResult = AppStateManager.load(mApiClient, AchievementsUtils.STATE_KEY);
 //            stateResult.setResultCallback(appStateCallback);
-        if (GameSettings.get().hasProgressMigrated()) {
-            savedGamesLoad(makeSnapshotName());
+        if (hasMigrated()) {
+            savedGamesLoad();
         } else {
-            cloudSaveMigrate(bitmap);
+            migrate(bitmap);
         }
+    }
+
+    private boolean hasMigrated() {
+        return GameSettings.get().hasProgressMigrated();
     }
 
     /**
@@ -50,7 +55,7 @@ public class ProgressManager {
      * appropriate data and metadata.  After migrate, the UI will be cleared and the data will be
      * available to load from Snapshots.
      */
-    public void cloudSaveMigrate(final Bitmap bitmap) {
+    public void migrate(final Bitmap bitmap) {
         final boolean createIfMissing = true;
 
         // Note: when migrating your users from Cloud Save to Saved Games, you will need to perform
@@ -62,15 +67,9 @@ public class ProgressManager {
         // this case there is no data available to auto-generate a description, cover image, or
         // playedTime.  It is strongly recommended that you generate unique and meaningful
         // values for these fields based on the data in your app.
-        final String snapshotName = makeSnapshotName();
-        final String description = "Sea Battle Score";
         final long playedTimeMillis = 0;
 
         AsyncTask<Void, Void, Boolean> migrateTask = new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected void onPreExecute() {
-            }
 
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -86,7 +85,7 @@ public class ProgressManager {
                 byte[] data = load.getLoadedResult().getLocalData();
 
                 // Open the snapshot, creating if necessary
-                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(mApiClient, snapshotName, createIfMissing).await();
+                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(mApiClient, SNAPSHOT_NAME, createIfMissing).await();
 
                 if (!open.getStatus().isSuccess()) {
                     Ln.w("Could not open Snapshot for migration.");
@@ -106,7 +105,7 @@ public class ProgressManager {
                 SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
                         .fromMetadata(snapshot.getMetadata())
                         .setCoverImage(bitmap)
-                        .setDescription(description)
+                        .setDescription(PROGRESS_DESCRIPTION)
                         .setPlayedTimeMillis(playedTimeMillis)
                         .build();
 
@@ -126,7 +125,7 @@ public class ProgressManager {
                 if (result) {
                     GameSettings.get().setProgressMigrated();
                     AnalyticsEvent.send(mGaTracker, "migration succeeded");
-                    savedGamesLoad(makeSnapshotName());
+                    savedGamesLoad();
                 } else {
                     ACRA.getErrorReporter().handleException(new RuntimeException("migration failed"));
                 }
@@ -138,31 +137,26 @@ public class ProgressManager {
     /**
      * Load a Snapshot from the Saved Games service based on its unique name.  After load, the UI
      * will update to display the Snapshot data and SnapshotMetadata.
-     *
-     * @param snapshotName the unique name of the Snapshot.
      */
-    private void savedGamesLoad(String snapshotName) {
-        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.open(
-                mApiClient, snapshotName, false);
-
-        ResultCallback<Snapshots.OpenSnapshotResult> callback = new SavedGamesResultCallback(mApiClient, mGaTracker);
-        pendingResult.setResultCallback(callback);
+    private void savedGamesLoad() {
+        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.open(mApiClient, SNAPSHOT_NAME, false);
+        pendingResult.setResultCallback(new SavedGamesResultCallback(mApiClient, mGaTracker));
     }
 
-    public static void incrementProgress(int increment, GoogleApiClient apiClient, Tracker tracker) {
+    public void incrementProgress(int increment) {
         Ln.d("incrementing progress by " + increment);
-        Progress progress = GameSettings.get().getProgress();
-        int oldProgress = progress.getRank();
-        GameSettings.get().setProgress(new Progress(oldProgress + increment));
+        int oldProgress = GameSettings.get().getProgress().getRank();
 
-        trackPromotionEvent(oldProgress, progress.getRank(), tracker);
+        Progress newProgress = new Progress(oldProgress + increment);
+        GameSettings.get().setProgress(newProgress);
 
-        Ln.d("posting progress to the cloud: " + progress);
-        String json = progress.toJson().toString();
-        if (apiClient.isConnected()) {
-            savedGamesUpdate(apiClient, json.getBytes());
+        if (mApiClient.isConnected()) {
+            Ln.d("posting progress to the cloud: " + newProgress);
+            update(mApiClient, Progress.getBytes(newProgress));
 //            AppStateManager.update(apiClient, STATE_KEY, json.getBytes());
         }
+
+        trackPromotionEvent(oldProgress, newProgress.getRank(), mGaTracker);
     }
 
     private static void trackPromotionEvent(int oldProgress, int newProgress, Tracker tracker) {
@@ -181,30 +175,25 @@ public class ProgressManager {
      * played time, and description with each Snapshot update.  After update, the UI will
      * be cleared.
      */
-    static void savedGamesUpdate(final GoogleApiClient apiClient, final byte[] data) {
-        final String snapshotName = makeSnapshotName();
-        final boolean createIfMissing = false;
+    static void update(final GoogleApiClient apiClient, final byte[] data) {
+        final boolean CREATE_IF_MISSING = false;
 
         AsyncTask<Void, Void, Boolean> updateTask = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(apiClient, snapshotName, createIfMissing).await();
-
+                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(apiClient, SNAPSHOT_NAME, CREATE_IF_MISSING).await();
                 if (!open.getStatus().isSuccess()) {
-                    Ln.w("Could not open Snapshot for update.");
+                    Ln.w("Could not open Snapshot for update: " + open.getStatus().getStatusCode());
                     return false;
                 }
+                Snapshot snapshot = open.getSnapshot();
 
                 // Change data but leave existing metadata
-                Snapshot snapshot = open.getSnapshot();
                 snapshot.getSnapshotContents().writeBytes(data);
-
-                Snapshots.CommitSnapshotResult commit = Games.Snapshots.commitAndClose(
-                        apiClient, snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
-
+                Snapshots.CommitSnapshotResult commit = Games.Snapshots.commitAndClose(apiClient, snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
                 if (!commit.getStatus().isSuccess()) {
-                    Ln.w("Failed to commit Snapshot.");
+                    Ln.w("Failed to commit Snapshot: " + commit.getStatus().getStatusCode());
                     return false;
                 }
 
@@ -222,20 +211,6 @@ public class ProgressManager {
             }
         };
         updateTask.execute();
-    }
-
-    /**
-     * Generate a unique Snapshot name from an AppState stateKey.
-     *
-     * @param appStateKey the stateKey for the Cloud Save data.
-     * @return a unique Snapshot name that maps to the stateKey.
-     */
-    private static String makeSnapshotName(int appStateKey) {
-        return "Snapshot-" + String.valueOf(appStateKey);
-    }
-
-    public static String makeSnapshotName() {
-        return makeSnapshotName(STATE_KEY);
     }
 
 }

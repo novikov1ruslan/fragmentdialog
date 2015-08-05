@@ -29,8 +29,8 @@ public enum Rank {
 
     private final int mBitmap;
     private final int mSmallBitmap;
-    private int mName;
-    private int mScore;
+    private final int mName;
+    private final int mScore;
 
     public static Rank getBestRankForScore(int score) {
         Rank rank = SEAMAN;
