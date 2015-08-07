@@ -11,6 +11,13 @@
         ads:adSize="FULL_BANNER"
         ads:adUnitId="@string/admob_banner_id" />
 
+    <!--<com.google.android.gms.ads.AdView-->
+        <!--android:id="@+id/banner"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--ads:adSize="SMART_BANNER"-->
+        <!--ads:adUnitId="@string/admob_banner_id" />-->
+
     <com.ivygames.morskoiboi.ui.view.NotepadFrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

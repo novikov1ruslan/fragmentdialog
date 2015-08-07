@@ -292,12 +292,6 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
         mChatButton.setVisibility(GONE);
     }
 
-//    public void hideVibrationSetting() {
-//        if (mVibrationButton != null) {
-//            mVibrationButton.setVisibility(GONE);
-//        }
-//    }
-
     public void showOpponentSettingBoardNotification(String message) {
         mSettingBoardText.setText(message);
         mSettingBoardText.setVisibility(VISIBLE);

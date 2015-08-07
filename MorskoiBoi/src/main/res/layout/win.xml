@@ -29,12 +29,12 @@
             android:textSize="@dimen/victory_text" />
 
         <ImageView
-            android:visibility="visible"
             android:id="@+id/carrier"
             android:layout_width="match_parent"
             android:layout_marginTop="24dp"
             android:scaleType="center"
-            android:src="@drawable/carrier_big" />
+            android:src="@drawable/carrier_big"
+            android:visibility="visible" />
     </FrameLayout>
 
     <View
@@ -56,114 +56,7 @@
             android:text="@string/sign_in_to_share" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="bottom"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
-
-        <ImageView
-            android:id="@+id/ship4"
-            style="@style/WinShip"
-            android:layout_weight="4"
-            android:src="@drawable/aircraft_carrier_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship3_1"
-            style="@style/WinShip"
-            android:layout_weight="3"
-            android:src="@drawable/battleship_empty" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="bottom"
-        android:paddingLeft="@dimen/gap_between_ships"
-        android:paddingRight="@dimen/gap_between_ships">
-
-        <ImageView
-            android:id="@+id/ship3_2"
-            style="@style/WinShip"
-            android:layout_weight="3"
-            android:src="@drawable/battleship_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship2_1"
-            style="@style/WinShip"
-            android:layout_weight="2"
-            android:src="@drawable/frigate_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship2_2"
-            style="@style/WinShip"
-            android:layout_weight="2"
-            android:src="@drawable/frigate_empty" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="bottom"
-        android:paddingLeft="@dimen/gap_between_ships"
-        android:paddingRight="@dimen/gap_between_ships">
-
-        <ImageView
-            android:id="@+id/ship2_3"
-            style="@style/WinShip"
-            android:layout_weight="2"
-            android:src="@drawable/frigate_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship1_1"
-            style="@style/WinShip"
-            android:layout_weight="1"
-            android:src="@drawable/gunboat_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship1_2"
-            style="@style/WinShip"
-            android:layout_weight="1"
-            android:src="@drawable/gunboat_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship1_3"
-            style="@style/WinShip"
-            android:layout_weight="1"
-            android:src="@drawable/gunboat_empty" />
-
-        <View
-            android:layout_width="@dimen/gap_between_ships"
-            android:layout_height="@dimen/gap_between_ships" />
-
-        <ImageView
-            android:id="@+id/ship1_4"
-            style="@style/WinShip"
-            android:layout_weight="1"
-            android:src="@drawable/gunboat_empty" />
-    </LinearLayout>
+    <include layout="@layout/fleet" />
 
     <View
         android:layout_width="match_parent"

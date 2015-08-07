@@ -199,6 +199,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     @Override
     public void onP2PDisconnected(String participantId) {
+        // TODO: "Called when client gets disconnected from a peer participant."
         Ln.d(participantId);
     }
 

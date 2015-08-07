@@ -22,7 +22,7 @@ import org.commons.logger.Ln;
 public class ProgressManager {
     public static final int STATE_KEY = 0;
     private static final String PROGRESS_DESCRIPTION = "Sea Battle Score";
-    public static final String SNAPSHOT_NAME = "Sea Battle Snapshot";//makeSnapshotName();
+    public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
     private final GoogleApiClient mApiClient;
     private final Tracker mGaTracker;

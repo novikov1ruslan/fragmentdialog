@@ -17,5 +17,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="@dimen/setting_board_notif_padding"
-        android:text="Sagi Mizrachi is placing his ships" />
+        android:text="Sagi Mizrachi is placing his ships"
+        android:visibility="gone" />
 </FrameLayout>

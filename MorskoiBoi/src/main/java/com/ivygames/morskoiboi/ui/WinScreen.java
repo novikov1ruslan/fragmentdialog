@@ -180,7 +180,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
         int progressIncrement = progress - penalty;
         if (progressIncrement > 0) {
-            ProgressManager.incrementProgress(progressIncrement, mApiClient, mGaTracker);
+            new ProgressManager(mApiClient, mGaTracker).incrementProgress(progressIncrement);
             GameSettings.get().setProgressPenalty(0);
         } else {
             GameSettings.get().setProgressPenalty(-progressIncrement);
