@@ -5,7 +5,7 @@ public enum Rank {
             R.drawable.rank_po1), CHIEF_PETTY_OFFICER(R.drawable.rank_cpo), CHIEF_SHIP_PETTY_OFFICER(R.drawable.rank_cspo), WARRANT_OFFICER(R.drawable.rank_wo), CHIEF_WARRANT_OFFICER(
             R.drawable.rank_cwo), ENSIGN(R.drawable.rank_o1), LIEUTENANT_JUNIOR(R.drawable.rank_o2), LIEUTENANT(R.drawable.rank_o3), LIEUTENANT_COMMANDER(
             R.drawable.rank_o4), COMMANDER(R.drawable.rank_o5), CAPTAIN(R.drawable.rank_o6), REAR_ADMIRAL_LOWER_HALF(R.drawable.rank_o7), REAR_ADMIRAL(
-            R.drawable.rank_o8), VICE_ADMIRAL(R.drawable.rank_o9), ADMIRAL(R.drawable.rank_o10), FLEET_ADMIRAL(R.drawable.rank_o11);
+            R.drawable.rank_o8), VICE_ADMIRAL(R.drawable.rank_o9), ADMIRAL(R.drawable.rank_o10), FLEET_ADMIRAL(R.drawable.rank_o11), NAVY_ADMIRAL(R.drawable.rank_o12);
 
     public static final int PO3 = 50000; //
     public static final int PO2 = 150000; // <!-- 100k -->
@@ -26,6 +26,7 @@ public enum Rank {
     public static final int O9 = 3500000; // <!-- 500k -->
     public static final int O10 = 4000000; // <!-- 500k -->
     public static final int O11 = 4500000; // <!-- 500k -->
+    public static final int O12 = 5500000; // <!-- 500k -->
 
     private final int mBitmap;
     private final int mSmallBitmap;
@@ -34,7 +35,9 @@ public enum Rank {
 
     public static Rank getBestRankForScore(int score) {
         Rank rank = SEAMAN;
-        if (score >= FLEET_ADMIRAL.getScore()) {
+        if (score >= NAVY_ADMIRAL.getScore()) {
+            rank = NAVY_ADMIRAL;
+        } else if (score >= FLEET_ADMIRAL.getScore()) {
             rank = FLEET_ADMIRAL;
         } else if (score >= ADMIRAL.getScore()) {
             rank = ADMIRAL;
@@ -173,6 +176,11 @@ public enum Rank {
                 mName = R.string.rank_o11;
                 mSmallBitmap = R.drawable.rank_o11_s;
                 mScore = O11;
+                break;
+            case R.drawable.rank_o12:
+                mName = R.string.rank_o12;
+                mSmallBitmap = R.drawable.rank_o12_s;
+                mScore = O12;
                 break;
 
             default:

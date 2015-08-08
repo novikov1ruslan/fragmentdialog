@@ -21,6 +21,7 @@
     <string name="rank_o9">Вице-адмирал</string>
     <string name="rank_o10">Адмирал</string>
     <string name="rank_o11">Адмирал флота</string>
+    <string name="rank_o12">Адмирал ВМФ</string>
 
     <!--  -->
     <string name="rate_request">Если Вам понравилась игра, пожалуйста проголосуйте чтобы поддержать разработчика. Заранее спасибо!</string>
