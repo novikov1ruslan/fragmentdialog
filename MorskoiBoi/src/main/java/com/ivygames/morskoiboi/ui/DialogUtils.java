@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.ui;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.support.v4.app.FragmentManager;
 
 import com.ivygames.morskoiboi.R;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
@@ -47,5 +48,9 @@ class DialogUtils {
                 command.run();
             }
         }).create();
+    }
+
+    public static void showNote(FragmentManager fm, int msgId) {
+        FragmentAlertDialog.showNote(fm, FragmentAlertDialog.TAG, msgId);
     }
 }

@@ -71,8 +71,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingEnd="32dp"
-        android:paddingLeft="32dp">
+        android:paddingEnd="@dimen/fleet_adjustment_padding"
+        android:paddingLeft="@dimen/fleet_adjustment_padding">
 
         <include layout="@layout/fleet" />
     </LinearLayout>

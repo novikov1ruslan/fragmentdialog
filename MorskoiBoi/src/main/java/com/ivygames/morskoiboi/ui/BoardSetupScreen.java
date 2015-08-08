@@ -2,6 +2,8 @@ package com.ivygames.morskoiboi.ui;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +17,7 @@ import com.ivygames.morskoiboi.ShipComparator;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
@@ -30,21 +33,27 @@ import java.util.PriorityQueue;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-/**
- * In this screen it is already known what is the game type.
- */
 public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayoutListener, BackPressListener {
     static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
     private static final int TOTAL_SHIPS = RulesFactory.getRules().getTotalShips().length;
+    private static final long BOARD_SETUP_TIMEOUT = 2 * 60 * 1000;
 
     private Board mBoard = new Board();
     private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private final Rules mRules = RulesFactory.getRules();
+    private final Runnable mTimeoutTask = new Runnable() {
+        @Override
+        public void run() {
+            Model.instance.game.finish();
+            DialogUtils.showNote(getActivity().getSupportFragmentManager(), R.string.session_timeout);
+        }
+    };
 
     @Override
     public View onCreateView(ViewGroup container) {
@@ -55,6 +64,10 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
         mLayout.setScreenActionsListener(this);
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
+
+        if (Model.instance.game.getType() == Game.Type.INTERNET) {
+            mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
+        }
 
         Ln.d(this + " screen created");
         return mLayout;
@@ -76,6 +89,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mHandler.removeCallbacks(mTimeoutTask);
         Crouton.cancelAllCroutons();
         Ln.d(this + " screen destroyed - all croutons canceled");
     }

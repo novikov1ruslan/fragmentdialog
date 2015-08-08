@@ -33,6 +33,12 @@
     <string name="error">Ошибка</string>
     <string name="match_canceled">Матч был отменен</string>
     <string name="network_error">Произошла ошибка соединения. Пожалуйста, проверьте Ваше подключение.</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="continue_str">Продолжить</string>
+    <string name="play">Играть</string>
+    <string name="connection_lost">Потерянно соединение с оппонентом</string>
+    <string name="got_it">Понятно</string>
 
     <!-- main screen -->
     <string name="app_name">Морской Бой</string>
@@ -54,20 +60,13 @@
     <string name="invite_player">Пригласить</string>
     <string name="view_invitations">Мои Приглашения</string>
 
-    <!--  -->
-    <string name="yes">Да</string>
-    <string name="no">Нет</string>
-    <string name="continue_str">Продолжить</string>
-    <string name="play">Играть</string>
-    <string name="connection_lost">Потерянно соединение с оппонентом</string>
-    <string name="got_it">Понятно</string>
-
     <!-- setup -->
     <string name="auto">Автоматически</string>
     <string name="done">Готово</string>
     <string name="ships_setup_validation">Сначала необходимо расставить корабли</string>
     <string name="place_instruction">Перетяните корабли, чтобы расставить их на поле</string>
     <string name="rotate_instruction">Щелкните по кораблю на поле, чтобы он развернулся</string>
+    <string name="session_timeout">Сеанс прерван: Вы слишком долго расстанавливали корабли.</string>
 
     <!-- gameplay -->
     <string name="abandon_game_question">Вы уверенны, что хотите покинуть битву?</string>

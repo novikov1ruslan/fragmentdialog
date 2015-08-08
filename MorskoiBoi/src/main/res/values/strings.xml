@@ -33,6 +33,12 @@
     <string name="error">Error</string>
     <string name="match_canceled">Match has been canceled</string>
     <string name="network_error">A network error occurred. Please check your network connection.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="continue_str">Continue</string>
+    <string name="play">Play</string>
+    <string name="connection_lost">Connection with the opponent has been lost</string>
+    <string name="got_it">Got It</string>
 
     <!-- main screen -->
     <string name="app_name">Sea Battle</string>
@@ -54,20 +60,13 @@
     <string name="invite_player">Invite Player</string>
     <string name="view_invitations">View Invitations</string>
 
-    <!--  -->
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="continue_str">Continue</string>
-    <string name="play">Play</string>
-    <string name="connection_lost">Connection with the opponent has been lost</string>
-    <string name="got_it">Got It</string>
-
     <!-- setup -->
     <string name="auto">Auto</string>
     <string name="done">Done</string>
     <string name="ships_setup_validation">You must set your ships first</string>
     <string name="place_instruction">Move the ship to place it on the board</string>
     <string name="rotate_instruction">Tap on a ship to rotate</string>
+    <string name="session_timeout">Your session timed out</string>
 
     <!-- gameplay -->
     <string name="abandon_game_question">Are you sure you want to abandon the battle?</string>
