@@ -27,6 +27,7 @@
     <dimen name="ad_iab_banner">60dp</dimen>
     <dimen name="sign_in_text_margin">8dp</dimen>
     <dimen name="player_name_textSize">22dp</dimen>
+    <dimen name="another_round_textSize">22dp</dimen>
     <dimen name="settings_header_textSize">32dp</dimen>
     <dimen name="settings_textSize">22dp</dimen>
     <dimen name="crouton_textSize">16dp</dimen>

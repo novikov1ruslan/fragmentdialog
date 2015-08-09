@@ -2,6 +2,7 @@
 
     <dimen name="battleship_margin_horizontal">192dp</dimen>
     <dimen name="player_name_textSize">30dp</dimen>
+    <dimen name="another_round_textSize">30dp</dimen>
     <dimen name="settings_textSize">30dp</dimen>
     <dimen name="button_main_textSize">30dp</dimen>
     <dimen name="menu_button_layout_height">70dp</dimen>

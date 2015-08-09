@@ -53,6 +53,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             showRateDialog();
         }
 
+        if (GameSettings.get().noAds()) {
+            hideNoAdsButton();
+        }
+
         return mLayout;
     }
 
@@ -141,6 +145,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void noAds() {
+        UiEvent.send(mGaTracker, "no_ads");
         mParent.onNoAds();
     }
 

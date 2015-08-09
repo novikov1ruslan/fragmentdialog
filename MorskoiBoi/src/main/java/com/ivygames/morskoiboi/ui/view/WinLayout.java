@@ -70,9 +70,10 @@ public class WinLayout extends WinLayoutSmall {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
+//        if (mYesButton.getBottom() > ((View) mYesButton.getParent()).getBottom()) {
         int bottomMostView = UiUtils.getRelativeTop(mYesButton) + mYesButton.getMeasuredHeight();
         if (bottomMostView > getMeasuredHeight()) {
-            View carrier = findViewById(R.id.carrier);
+            ImageView carrier = (ImageView) findViewById(R.id.carrier);
             if (carrier != null) {
                 ViewParent parent = carrier.getParent();
                 ((ViewGroup) parent).removeView(carrier);

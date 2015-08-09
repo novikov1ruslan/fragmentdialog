@@ -47,7 +47,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.WarningEvent;
-import com.ivygames.morskoiboi.billing.InventoryHelper;
 import com.ivygames.morskoiboi.billing.PurchaseHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -120,7 +119,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
     private View mTutView;
 
     private boolean mResumed;
-    private InventoryHelper mInventoryHelper;
     private PurchaseHelper mPurchaseHelper;
 
     // Callback for when a purchase is finished
@@ -143,7 +141,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
             Ln.d("Purchase successful.");
 
-            if (purchase.getSku().equals(InventoryHelper.SKU_NO_ADS)) {
+            if (purchase.getSku().equals(PurchaseHelper.SKU_NO_ADS)) {
                 // bought the premium upgrade!
                 Ln.d("Purchase is premium upgrade. Congratulating user.");
                 mSettings.setNoAds();
@@ -262,7 +260,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         if (!GameSettings.get().noAds()) {
             if (isGoogleServicesAvailable()) {
-                createInventoryHelper();
                 createPurchaseHelper();
             }
         }
@@ -277,15 +274,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         mPurchaseHelper = new PurchaseHelper();
         try {
             mPurchaseHelper.onCreate(this);
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
-        }
-    }
-
-    private void createInventoryHelper() {
-        mInventoryHelper = new InventoryHelper(this);
-        try {
-            mInventoryHelper.onCreate();
         } catch (Exception e) {
             ACRA.getErrorReporter().handleException(e);
         }
@@ -415,25 +403,12 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         Crouton.cancelAllCroutons();
         AdManager.instance.destroy();
 
-        destroyInventoryHelper();
-
         destroyPurchaseHelper();
 
         mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);
         mGoogleApiClient.unregisterConnectionFailedListener(this);
         Ln.d("game destroyed");
-    }
-
-    private void destroyInventoryHelper() {
-        if (mInventoryHelper != null) {
-            try {
-                mInventoryHelper.onDestroy();
-            } catch (Exception e) {
-                ACRA.getErrorReporter().handleException(e);
-            }
-            mInventoryHelper = null;
-        }
     }
 
     private void destroyPurchaseHelper() {

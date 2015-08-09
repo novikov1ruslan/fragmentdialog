@@ -141,7 +141,7 @@ public final class UiUtils {
     }
 
     public static int getRelativeTop(View myView) {
-        if (myView.getParent() == myView.getRootView())
+        if (myView.getParent().getParent() == myView.getRootView())
             return myView.getTop();
         else
             return myView.getTop() + getRelativeTop((View) myView.getParent());
