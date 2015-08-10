@@ -142,13 +142,9 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             Ln.d("Purchase successful.");
 
             if (purchase.getSku().equals(PurchaseHelper.SKU_NO_ADS)) {
-                // bought the premium upgrade!
                 Ln.d("Purchase is premium upgrade. Congratulating user.");
                 mSettings.setNoAds();
                 hideAds();
-                if (mCurrentScreen instanceof MainScreen) {
-                    ((MainScreen) mCurrentScreen).hideNoAdsButton();
-                }
             }
 
 //            hideWaitingScreen();
@@ -285,6 +281,9 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     public void hideAds() {
         findViewById(R.id.banner).setVisibility(View.GONE);
+        if (mCurrentScreen instanceof MainScreen) {
+            ((MainScreen) mCurrentScreen).hideNoAdsButton();
+        }
     }
 
     private GoogleApiClient createGoogleApiClient() {

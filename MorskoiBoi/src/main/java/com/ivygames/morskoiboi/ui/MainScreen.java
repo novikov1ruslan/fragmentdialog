@@ -86,7 +86,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         }
 
         if (GameSettings.get().noAds()) {
-            mParent.hideAds();
+            hideNoAdsButton();
         }
     }
 
