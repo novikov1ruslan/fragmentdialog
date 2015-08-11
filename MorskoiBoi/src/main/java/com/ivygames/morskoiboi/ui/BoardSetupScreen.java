@@ -15,6 +15,7 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ShipComparator;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
@@ -50,8 +51,16 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     private final Runnable mTimeoutTask = new Runnable() {
         @Override
         public void run() {
+            Ln.d("board setup timeout");
+            AnalyticsEvent.send(mGaTracker, "board setup timeout");
             Model.instance.game.finish();
-            DialogUtils.showNote(getActivity().getSupportFragmentManager(), R.string.session_timeout);
+//            DialogUtils.showNote(getActivity().getSupportFragmentManager(), R.string.session_timeout);
+            DialogUtils.newOkDialog(R.string.session_timeout, new Runnable() {
+                @Override
+                public void run() {
+                    backToSelectGameScreen();
+                }
+            });
         }
     };
 
