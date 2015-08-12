@@ -60,7 +60,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
                 public void run() {
                     backToSelectGameScreen();
                 }
-            });
+            }).show(mParent.getSupportFragmentManager(), FragmentAlertDialog.TAG);
         }
     };
 
@@ -75,6 +75,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
         if (Model.instance.game.getType() == Game.Type.INTERNET) {
+            Ln.d("initializing timeout: " + BOARD_SETUP_TIMEOUT);
             mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
         }
 

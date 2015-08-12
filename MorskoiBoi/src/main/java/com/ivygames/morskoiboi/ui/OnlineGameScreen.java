@@ -14,16 +14,16 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Ln.v(this + " screen started - register event listener");
+    public void onCreate() {
+        super.onCreate();
+        Ln.v(this + " screen created - register event listener");
         EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        Ln.v(this + " screen stopped - unregister event listener");
+    public void onDestroy() {
+        super.onDestroy();
+        Ln.v(this + " screen destroyed - unregister event listener");
         EventBus.getDefault().unregister(this);
     }
 
