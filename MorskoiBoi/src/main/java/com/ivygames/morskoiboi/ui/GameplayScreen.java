@@ -5,6 +5,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
@@ -122,6 +123,20 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private int mTimerExpiredCounter;
 
     private Intent mMatchStatusIntent;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private final Runnable mShotHangDetectionTask = new Runnable() {
+        @Override
+        public void run() {
+            ACRA.getErrorReporter().handleException(new RuntimeException("shot_hanged"));
+        }
+    };
+    private final Runnable mTurnHangDetectionTask = new Runnable() {
+        @Override
+        public void run() {
+            ACRA.getErrorReporter().handleException(new RuntimeException("turn_hanged"));
+        }
+    };
 
     @Override
     public View getView() {
@@ -308,6 +323,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mSoundManager.release();
         getActivity().stopService(mMatchStatusIntent);
         Ln.d(this + " screen destroyed");
+
+        mHandler.removeCallbacks(mShotHangDetectionTask);
+        mHandler.removeCallbacks(mTurnHangDetectionTask);
     }
 
     @Override
@@ -333,6 +351,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 super.onEventMainThread(event);
             }
         }
+
+        mHandler.removeCallbacks(mShotHangDetectionTask);
+        mHandler.removeCallbacks(mTurnHangDetectionTask);
     }
 
     private void pauseTurnTimer() {
@@ -426,14 +447,22 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private int calcSurrenderPenalty() {
-        int decksLost = getTotalHealth() - mPlayerPrivateBoard.getHealth();
+        int decksLost = getTotalHealth() - getRemainedHealth();
         return decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
+    }
+
+    private int getRemainedHealth() {
+        int health = 0;
+        for (Ship ship : mPlayerPrivateBoard.getShips()) {
+            health += ship.getHealth();
+        }
+        return health;
     }
 
     private int getTotalHealth() {
         Collection<Ship> ships = PlacementFactory.getAlgorithm().generateFullFleet();
         int totalHealth = 0;
-        for (Ship ship: ships) {
+        for (Ship ship : ships) {
             totalHealth += ship.getSize();
         }
         return totalHealth;
@@ -460,6 +489,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 // TODO: play sound
                 return;
             }
+
+            mHandler.postDelayed(mShotHangDetectionTask, 10000);
 
             stopTurnTimer();
             mTimerExpiredCounter = 0;
@@ -533,6 +564,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onShotResult(final PokeResult result) {
+            mHandler.removeCallbacks(mShotHangDetectionTask);
+
             mPlayer.onShotResult(result);
             mGame.updateWithNewShot(result.ship, result.cell);
 
@@ -563,6 +596,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.v("it's a miss - move is already passed by implementation - update the screen");
                 notifyOpponentTurn();
                 mSoundManager.playSplash();
+                mHandler.postDelayed(mTurnHangDetectionTask, 60000);
             } else {
                 Ln.v("it's a hit! - player continues");
                 mSoundManager.playHitSound();
@@ -575,6 +609,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onShotAt(Vector2 aim) {
+            mHandler.removeCallbacks(mTurnHangDetectionTask);
             PokeResult result = mPlayer.onShotAtForResult(aim);
 
             updateMyStatus();

@@ -283,6 +283,7 @@ public class Board {
     /**
      * @return the first ship that contains the coordinate or null if no such ship found
      */
+    // TODO: what is the difference from getFirstShipAt?
     private Ship getShipAt(int x, int y) {
         for (Ship ship : mShips) {
             if (ship.isInShip(x, y)) {
@@ -302,32 +303,6 @@ public class Board {
         }
 
         return cells;
-    }
-
-//    /**
-//     * Finds all the cells on the board that are in a conflict with another cell.
-//     */
-//    public Set<Vector2> getInvalidCells() {
-//        Set<Vector2> invalid = new HashSet<Vector2>();
-//        for (int i = 0; i < DIMENSION; i++) {
-//            for (int j = 0; j < DIMENSION; j++) {
-//                if (getCell(i, j).getProximity() > 8) {
-//                    invalid.add(Vector2.get(i, j));
-//                }
-//            }
-//        }
-//
-//        return invalid;
-//    }
-
-    // TODO: remove
-    public int getHealth() {
-        int health = 0;
-        for (Ship ship : mShips) {
-            health += ship.getHealth();
-        }
-
-        return health;
     }
 
     public int getHorizontalDim() {
@@ -358,8 +333,6 @@ public class Board {
 
         return true;
     }
-
-    // TODO: unit test
 
     @Override
     public int hashCode() {
