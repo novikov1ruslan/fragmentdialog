@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.acra.ACRA;
 import org.apache.commons.lang3.Validate;
@@ -30,7 +31,7 @@ public class AndroidOpponent extends AbstractOpponent {
     protected void reset() {
         super.reset();
         mMyBoard = PlacementFactory.getAlgorithm().generateBoard();
-        mAlgorithm = BotFactory.getAlgorithm();
+        mAlgorithm = new RussianBot();//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
         if (GameConstants.IS_TEST_MODE) {
             Ln.i(this + ": my board: " + mMyBoard);
