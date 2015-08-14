@@ -18,7 +18,7 @@ import de.greenrobot.event.EventBus;
 /**
  * This thread runs while listening for incoming connections. It behaves like a server-side client. It runs until a connection is accepted (or until cancelled).
  */
-final class AcceptThread extends Thread {
+public final class AcceptThread extends Thread {
     // Name for the SDP record when creating server socket
     private static final String NAME = "BtGameManager";
 
@@ -29,32 +29,44 @@ final class AcceptThread extends Thread {
     private final ConnectionListener mConnectionListener;
     private final Handler mHandler = new Handler(Looper.myLooper());
 
-    AcceptThread(ConnectionListener connectionListener) {
+    public AcceptThread(ConnectionListener listener) {
         super("bt_accept");
-        mConnectionListener = Validate.notNull(connectionListener);
+        mConnectionListener = Validate.notNull(listener);
     }
 
     @Override
     public void run() {
         Ln.v("obtaining transmission socket...");
-        mSocket = obtainBluetoothSocket(BluetoothAdapter.getDefaultAdapter());
-        if (mSocket == null) {
+        try {
+            mSocket = obtainBluetoothSocket();
+        } catch (final IOException ioe) {
             if (mCancelled) {
                 Ln.v("cancelled while accepting");
             } else {
+                // timeout?
                 Ln.w("failed to obtain socket");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConnectionListener.onConnectFailed(ioe);
+                    }
+                });
             }
             return;
         }
 
         Ln.v("connection accepted - starting transmission");
-        MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
-
         try {
+            final MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
             mConnection.connect();
 
             // we post connected event after connection object is created
-            mHandler.post(new ConnectedCommand(mConnectionListener, mConnection));
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mConnectionListener.onConnected(mConnection);
+                }
+            });
             mConnection.startReceiving();
         } catch (IOException ioe) {
             if (mCancelled) {
@@ -68,34 +80,21 @@ final class AcceptThread extends Thread {
         }
     }
 
-    private BluetoothSocket obtainBluetoothSocket(BluetoothAdapter bluetoothAdapter) {
-        BluetoothSocket socket = null;
+    private BluetoothSocket obtainBluetoothSocket() throws IOException {
         try {
-            mServerSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
+            mServerSocket = BluetoothAdapter.getDefaultAdapter().listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
             Ln.v("server socket created, accepting connection...");
             // This is a blocking call and will only return on a successful connection or an exception
-            socket = mServerSocket.accept();
-        } catch (IOException ioe) {
-            if (!mCancelled) {
-                // timeout?
-                Ln.w(ioe);
-                mHandler.post(new AcceptFailedCommand(mConnectionListener, ioe));
-            }
+            return mServerSocket.accept();
         } finally {
             BluetoothUtils.close(mServerSocket);
         }
-
-        return socket;
     }
 
     public void cancelAccept() {
         Ln.v("canceling accept...");
         mCancelled = true;
         BluetoothUtils.close(mServerSocket);
-    }
-
-    public void cancelAcceptAndCloseConnection() {
-        cancelAccept();
         if (mSocket != null) {
             Ln.v("closing accepted connection...");
             interrupt();

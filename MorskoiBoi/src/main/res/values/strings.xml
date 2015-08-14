@@ -109,7 +109,9 @@
     <string name="received_invitation">You have received invitation from %1$s</string>
     <string name="please_wait">Please Wait…</string>
 
-    <!-- Device List -->
+    <!-- Bluetooth -->
+    <string name="create_game">Create Game</string>
+    <string name="join_game">Join Game</string>
     <string name="connecting_to">Connecting to %1$s…</string>
     <string name="discover">Discover</string>
     <string name="show_me">Show Me</string>

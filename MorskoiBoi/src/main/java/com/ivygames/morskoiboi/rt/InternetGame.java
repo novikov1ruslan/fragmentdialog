@@ -347,14 +347,6 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         return builder;
     }
 
-    // public String getRoomId() {
-    // return mRoom.getRoomId();
-    // }
-    //
-    // public String getRecipientId() {
-    // return mRecipientId;
-    // }
-
     @Override
     public void onRealTimeMessageSent(int statusCode, int tokenId, String recipientParticipantId) {
         Ln.v(tokenId + " message sent, status=" + InternetGame.getStatusName(statusCode));

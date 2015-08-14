@@ -4,15 +4,11 @@ import java.io.IOException;
 
 public interface ConnectionListener {
 
-    void onConnected(MessageSender sender);
+    void onConnected(BluetoothConnection connection);
 
     /**
      * connection attempt failed
      */
-    void onConnectFailed();
+    void onConnectFailed(IOException exception);
 
-    /**
-     * accept attempt failed
-     */
-    void onAcceptFailed(IOException exception);
 }

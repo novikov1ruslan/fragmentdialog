@@ -17,7 +17,7 @@ import de.greenrobot.event.EventBus;
 /**
  * This thread runs while attempting to make an outgoing connection with a device. It runs straight through; the connection either succeeds or fails.
  */
-final class ConnectThread extends Thread {
+public final class ConnectThread extends Thread {
     private volatile BluetoothSocket mSocket;
     private volatile boolean mCancelled;
 
@@ -25,7 +25,7 @@ final class ConnectThread extends Thread {
     private final ConnectionListener mConnectionListener;
     private final Handler mHandler = new Handler(Looper.myLooper());
 
-    ConnectThread(BluetoothDevice device, ConnectionListener connectionListener) {
+    public ConnectThread(BluetoothDevice device, ConnectionListener connectionListener) {
         super("bt_connect");
         mDevice = Validate.notNull(device);
         mConnectionListener = Validate.notNull(connectionListener);
@@ -34,26 +34,37 @@ final class ConnectThread extends Thread {
     @Override
     public void run() {
         Ln.v("connecting to " + mDevice);
-        mSocket = obtainSocket(mDevice);
-        if (mSocket == null) {
+        try {
+            mSocket = obtainSocket(mDevice);
+        } catch (final IOException ioe) {
             if (mCancelled) {
                 Ln.v("cancelled while connecting");
             } else {
-                Ln.d("failed to obtain socket");
-                mHandler.post(new ConnectFailedCommand(mConnectionListener));
+                Ln.d(ioe, "failed to obtain socket");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConnectionListener.onConnectFailed(ioe);
+                    }
+                });
             }
+            BluetoothUtils.close(mSocket);
             return;
         }
 
         Ln.d("socket connected - starting transmission");
-        MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
-
         try {
-            mConnection.connect();
+            final MessageReceiver connection = new MessageReceiver(mSocket, mHandler);
+            connection.connect();
 
             // we post connected event after connection object is created
-            mHandler.post(new ConnectedCommand(mConnectionListener, mConnection));
-            mConnection.startReceiving();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mConnectionListener.onConnected(connection);
+                }
+            });
+            connection.startReceiving();
         } catch (IOException ioe) {
             if (mCancelled) {
                 Ln.d("cancelled while connected");
@@ -66,27 +77,18 @@ final class ConnectThread extends Thread {
         }
     }
 
-    private BluetoothSocket obtainSocket(BluetoothDevice device) {
-        BluetoothSocket socket = null;
-        try {
-            // get a BluetoothSocket for a connection with the given BluetoothDevice
-            socket = device.createRfcommSocketToServiceRecord(BluetoothGame.MY_UUID);
+    private BluetoothSocket obtainSocket(BluetoothDevice device) throws IOException {
+        // get a BluetoothSocket for a connection with the given BluetoothDevice
+        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(BluetoothGame.MY_UUID);
 
-            Ln.v("socket created - connecting...");
-            // This is a blocking call and will only return on a
-            // successful connection or an exception
-            socket.connect();
-            return socket;
-        } catch (IOException ioe) {
-            if (!mCancelled) {
-                Ln.w(ioe);
-            }
-            BluetoothUtils.close(socket);
-            return null;
-        }
+        Ln.v("socket created - connecting...");
+        // This is a blocking call and will only return on a
+        // successful connection or an exception
+        socket.connect();
+        return socket;
     }
 
-    void cancel() {
+    public void cancel() {
         Ln.v("cancelling...");
         mCancelled = true;
         interrupt();

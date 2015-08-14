@@ -176,7 +176,7 @@ public class ProgressManager {
      * be cleared.
      */
     static void update(final GoogleApiClient apiClient, final byte[] data) {
-        final boolean CREATE_IF_MISSING = false;
+        final boolean CREATE_IF_MISSING = true;
 
         AsyncTask<Void, Void, Boolean> updateTask = new AsyncTask<Void, Void, Boolean>() {
 

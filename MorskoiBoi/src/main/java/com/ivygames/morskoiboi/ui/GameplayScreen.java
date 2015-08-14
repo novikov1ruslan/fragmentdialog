@@ -541,6 +541,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void go() {
+            mHandler.removeCallbacks(mTurnHangDetectionTask);
             mPlayer.go();
             notifyPlayerTurn();
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {

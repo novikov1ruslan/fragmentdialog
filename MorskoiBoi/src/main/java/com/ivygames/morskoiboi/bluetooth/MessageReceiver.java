@@ -15,7 +15,7 @@ import java.io.OutputStream;
 /**
  * This thread runs during a connection with a remote device. It handles all incoming and outgoing transmissions.
  */
-class MessageReceiver implements MessageSender {
+class MessageReceiver implements BluetoothConnection {
     private InputStream mInStream;
     private OutputStream mOutStream;
 
@@ -24,11 +24,8 @@ class MessageReceiver implements MessageSender {
     private volatile MessageListener mMessageListener;
 
     MessageReceiver(BluetoothSocket socket, Handler handler) {
-        Validate.notNull(socket, "socket cannot be null");
-        mSocket = socket;
-
-        Validate.notNull(handler, "handler cannot be null");
-        mHandler = handler;
+        mSocket = Validate.notNull(socket);
+        mHandler = Validate.notNull(handler);
     }
 
     void connect() throws IOException {
@@ -44,8 +41,13 @@ class MessageReceiver implements MessageSender {
     void startReceiving() throws IOException {
         waitForMessageReceiver();
         while (!Thread.currentThread().isInterrupted()) {
-            String message = readMessage();
-            mHandler.post(new MessageReceivedCommand(mMessageListener, message));
+            final String message = readMessage();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mMessageListener.onMessageReceived(message);
+                }
+            });
         }
 
         BluetoothUtils.close(mSocket);
@@ -95,5 +97,10 @@ class MessageReceiver implements MessageSender {
     @Override
     public void setMessageListener(MessageListener listener) {
         mMessageListener = listener;
+    }
+
+    @Override
+    public void disconnect() {
+        BluetoothUtils.close(mSocket);
     }
 }

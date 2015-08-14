@@ -83,7 +83,7 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
             }
             mPaint.setTextSize(--textSize);
         }
-        Ln.v("w=" + getMeasuredWidth() + "; h=" + getMeasuredHeight() + "; size=" + textSize);
+//        Ln.v("w=" + getMeasuredWidth() + "; h=" + getMeasuredHeight() + "; size=" + textSize);
 
         setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
     }

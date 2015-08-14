@@ -12,19 +12,17 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.analytics.ExceptionEvent;
+import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
+import com.ivygames.morskoiboi.bluetooth.ConnectThread;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
-import com.ivygames.morskoiboi.bluetooth.MessageSender;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout.DeviceListActions;
-import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -33,26 +31,14 @@ import java.util.Set;
 public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, ConnectionListener, BackPressListener {
     private static final String TAG = "bluetooth";
 
-    private static final String DIALOG = FragmentAlertDialog.TAG;
-    private static final int DISCOVERABLE_DURATION = 300;
-
     private DeviceListLayout mLayout;
-    private BluetoothAdapter mBtAdapter;
-    private BluetoothGame mGame;
+    private final BluetoothAdapter mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 
-    private boolean mStopAcceptingOnStop;
+    private ConnectThread mConnectThread;
 
     @Override
     public View getView() {
         return mLayout;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
-        mGame = new BluetoothGame();
-        Model.instance.game = mGame;
     }
 
     @Override
@@ -74,17 +60,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
-
         Ln.d(TAG + ": start listening for incoming connections");
-        if (mGame.isAccepting()) {
-            Ln.e("should have been accepting");
-            ACRA.getErrorReporter().handleException(new RuntimeException("should have been accepting"));
-        } else {
-            mStopAcceptingOnStop = true;
-            mGame.startAccepting(this);
-        }
-
-        updateEnsureDiscoverable(mBtAdapter.getScanMode());
     }
 
     @Override
@@ -93,12 +69,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         mBtAdapter.cancelDiscovery();
         mLayout.cancelDiscovery();
 
-        if (mStopAcceptingOnStop) {
-            mGame.stopAccepting();
-        }
-
         getActivity().unregisterReceiver(mReceiver);
-
         Ln.d(TAG + ": activity stopped, receivers are unregistered");
     }
 
@@ -129,32 +100,9 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             } else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
                 int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
                 Ln.d(TAG + ": scan mode changed to " + scanMode);
-                updateEnsureDiscoverable(scanMode);
             }
         }
     };
-
-    private void updateEnsureDiscoverable(int scanMode) {
-        if (scanMode == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Ln.d(TAG + ": scan mode CONNECTABLE_DISCOVERABLE - hiding 'show me' button");
-            mLayout.hideEnsureDiscoverable();
-        } else {
-            Ln.d(TAG + ": scan mode " + scanMode + " - showing 'show me' button");
-            mLayout.showEnsureDiscoverable();
-        }
-    }
-
-    @Override
-    public void ensureDiscoverable() {
-        if (isDiscoverable()) {
-            Ln.w(TAG + ": already discoverable");
-        } else {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
-            Ln.v("ensuring discover-ability for " + DISCOVERABLE_DURATION);
-            startActivityForResult(discoverableIntent, BattleshipActivity.RC_ENSURE_DISCOVERABLE);
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -163,10 +111,6 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    private boolean isDiscoverable() {
-        return mBtAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE;
     }
 
     @Override
@@ -184,7 +128,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     @Override
     public void selectDevice(String info) {
         Ln.d(TAG + ": selected device [" + info + "]");
-        if (mGame.isConnecting()) {
+        if (isConnecting()) {
             Ln.w("already connecting to device");
             return;
         }
@@ -193,45 +137,63 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         // Always cancel discovery because it will slow down a connection
         mBtAdapter.cancelDiscovery();
 
-        String address = BluetoothUtils.extractMacAddress(info);
-        BluetoothDevice device = mBtAdapter.getRemoteDevice(address);
-
-        mGame.cancelAcceptAndCloseConnection();
-
+        BluetoothDevice device = mBtAdapter.getRemoteDevice(BluetoothUtils.extractMacAddress(info));
         mLayout.connectingTo(device.getName());
-        mGame.connectToDevice(device, this);
+        connectToDevice(device);
+    }
+
+    public boolean isConnecting() {
+        return mConnectThread != null;
     }
 
     @Override
-    public void onConnectFailed() {
+    public void onConnectFailed(IOException exception) {
         Ln.d(TAG + ": connection attempt failed - start listening");
         mLayout.connectionFailed();
-        mStopAcceptingOnStop = true;
-        mGame.startAccepting(this);
     }
 
     @Override
-    public void onAcceptFailed(IOException exception) {
-        Ln.w(TAG + ": accept failed - exiting to select game");
-        mGaTracker.send(new ExceptionEvent("bluetooth_accept_failed", exception).build());
-        DialogUtils.newOkDialog(R.string.bluetooth_not_available, new BackToSelectGameCommand(mParent)).show(mFm, DIALOG);
-    }
-
-    @Override
-    public void onConnected(MessageSender sender) {
+    public void onConnected(BluetoothConnection connection) {
         Ln.d(TAG + ": connected - creating opponent and showing board setup");
-        BluetoothOpponent opponent = new BluetoothOpponent(sender);
-        sender.setMessageListener(opponent);
+        BluetoothOpponent opponent = new BluetoothOpponent(connection);
+        connection.setMessageListener(opponent);
         Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
+        Model.instance.game = new BluetoothGame(connection);
 
-        mStopAcceptingOnStop = mGame.isConnecting();
         mParent.setScreen(new BoardSetupScreen());
     }
 
     @Override
     public void onBackPressed() {
-        mGame.stopConnecting();
+        stopConnecting();
         mParent.setScreen(new MainScreen());
+    }
+
+    /**
+     * Cancel any thread attempting to make a connection
+     */
+    private synchronized void stopConnecting() {
+        if (mConnectThread == null) {
+            return;
+        }
+
+        Ln.d("canceling current connection attempt...");
+        mConnectThread.cancel();
+        BluetoothUtils.join(mConnectThread);
+        mConnectThread = null;
+        Ln.d("connection cancelled");
+    }
+
+    /**
+     * Start the ConnectThread to initiate a connection to a remote device.
+     *
+     * @param device The BluetoothDevice to connect
+     */
+    private synchronized void connectToDevice(BluetoothDevice device) {
+        stopConnecting();
+        Ln.d("connecting to: " + device);
+        mConnectThread = new ConnectThread(device, this);
+        mConnectThread.start();
     }
 
     @Override

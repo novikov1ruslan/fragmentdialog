@@ -209,7 +209,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showDeviceListScreen() {
-        mParent.setScreen(new DeviceListScreen());
+//        mParent.setScreen(new DeviceListScreen());
+        mParent.setScreen(new BluetoothScreen());
     }
 
     @Override

@@ -108,7 +108,9 @@
     <string name="received_invitation">Вы получили приглашение от %1$s</string>
     <string name="please_wait">Пожалуйста, подождите…</string>
 
-    <!-- Device List -->
+    <!-- Bluetooth -->
+    <string name="create_game">Create Game</string>
+    <string name="join_game">Join Game</string>
     <string name="connecting_to">Подключается к %1$s…</string>
     <string name="discover">Найти</string>
     <string name="show_me">Показать Меня</string>

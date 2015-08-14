@@ -8,4 +8,5 @@ public interface BluetoothConnection {
 
     void setMessageListener(MessageListener listener);
 
+    void disconnect();
 }

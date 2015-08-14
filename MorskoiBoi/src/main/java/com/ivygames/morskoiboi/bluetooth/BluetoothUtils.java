@@ -27,4 +27,13 @@ public class BluetoothUtils {
             }
         }
     }
+
+    public static void join(Thread t) {
+        try {
+            t.join();
+        } catch (InterruptedException ie) {
+            Ln.d("interrupted while joining");
+            Thread.currentThread().interrupt();
+        }
+    }
 }

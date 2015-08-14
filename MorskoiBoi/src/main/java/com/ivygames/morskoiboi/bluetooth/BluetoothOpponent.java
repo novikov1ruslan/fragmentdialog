@@ -9,12 +9,11 @@ import org.commons.logger.Ln;
 
 public class BluetoothOpponent extends AbstractOnlineOpponent implements MessageListener {
 
-    private final MessageSender mSender;
+    private final BluetoothConnection mSender;
 
-    public BluetoothOpponent(MessageSender sender) {
+    public BluetoothOpponent(BluetoothConnection sender) {
         super();
-        Validate.notNull(sender);
-        mSender = sender;
+        mSender = Validate.notNull(sender);
         Ln.v("new bluetooth opponent created");
     }
 

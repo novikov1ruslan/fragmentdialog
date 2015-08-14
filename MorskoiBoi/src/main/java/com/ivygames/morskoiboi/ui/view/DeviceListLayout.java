@@ -20,8 +20,6 @@ import java.util.Set;
 
 public class DeviceListLayout extends NotepadLinearLayout implements View.OnClickListener {
     public interface DeviceListActions {
-        void ensureDiscoverable();
-
         void doDiscover();
 
         void selectDevice(String info);
@@ -33,7 +31,6 @@ public class DeviceListLayout extends NotepadLinearLayout implements View.OnClic
     private View mDiscoveryAnimation;
     private TextView mTitleView;
     private final Animation mRotation;
-    private View mEnsureButton;
 
     public DeviceListLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,8 +53,6 @@ public class DeviceListLayout extends NotepadLinearLayout implements View.OnClic
         mDiscoverBtn = findViewById(R.id.discover_btn);
         mDiscoverBtn.setOnClickListener(this);
         mDiscoveryAnimation = findViewById(R.id.discovery_animation);
-        mEnsureButton = findViewById(R.id.ensure_discoverable_btn);
-        mEnsureButton.setOnClickListener(this);
     }
 
     @Override
@@ -65,10 +60,6 @@ public class DeviceListLayout extends NotepadLinearLayout implements View.OnClic
         switch (v.getId()) {
             case R.id.discover_btn:
                 mListener.doDiscover();
-                break;
-
-            case R.id.ensure_discoverable_btn:
-                mListener.ensureDiscoverable();
                 break;
 
             default:
@@ -79,14 +70,6 @@ public class DeviceListLayout extends NotepadLinearLayout implements View.OnClic
 
     public void addBondedDevice(BluetoothDevice device) {
         mDevicesAdapter.add(device.getName() + "\n" + device.getAddress());
-    }
-
-    public void hideEnsureDiscoverable() {
-        mEnsureButton.setVisibility(INVISIBLE);
-    }
-
-    public void showEnsureDiscoverable() {
-        mEnsureButton.setVisibility(VISIBLE);
     }
 
     public void startDiscovery() {

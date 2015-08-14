@@ -38,13 +38,6 @@
             android:layout_weight="1"
             android:text="@string/discover" />
 
-        <Button
-            android:id="@+id/ensure_discoverable_btn"
-            style="@style/Button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="@string/show_me" />
-
         <!-- <Chronometer /> -->
     </LinearLayout>
 
