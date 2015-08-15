@@ -20,7 +20,6 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.view.BluetoothLayout;
 import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -177,14 +176,14 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onConnectFailed(IOException exception) {
         if (isDialogShown()) {
-            mDialog.setText("Connection Failed");
+            mDialog.setText(R.string.connection_failed);
         }
     }
 
     private void showDialog() {
         mLayout.disable();
         mDialog = (SingleTextDialog) inflate(R.layout.wait_dialog, mContainer);
-        mDialog.setText(R.string.please_wait);
+        mDialog.setText(R.string.waiting_connection);
         mContainer.addView(mDialog);
     }
 
