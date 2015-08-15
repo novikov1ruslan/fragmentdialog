@@ -109,11 +109,11 @@
     <string name="please_wait">Пожалуйста, подождите…</string>
 
     <!-- Bluetooth -->
-    <string name="create_game">Create Game</string>
-    <string name="join_game">Join Game</string>
+    <string name="create_game">Создать Игру</string>
+    <string name="join_game">Подсоединиться к Игре</string>
     <string name="connecting_to">Подключается к %1$s…</string>
     <string name="discover">Найти</string>
-    <string name="show_me">Показать Меня</string>
+    <string name="waiting_connection">Ожидание Подсоединения...</string>
     <string name="select_device">Выберите Устройство</string>
     <string name="none_found">Устройства не найдены</string>
     <string name="discovering">Поиск устройств…</string>

@@ -1,6 +1,8 @@
 package com.ivygames.morskoiboi.ui;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ public abstract class BattleshipScreen extends Screen {
         mParent = activity;
         mApiClient = mParent.getApiClient();
         mGaTracker = mParent.getTracker();
+        mGaTracker.setScreenName(this.getClass().getSimpleName());
+        mGaTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public void onCreate() {
@@ -37,8 +41,6 @@ public abstract class BattleshipScreen extends Screen {
     public abstract View onCreateView(ViewGroup container);
 
     public void onStart() {
-        mGaTracker.setScreenName(this.getClass().getSimpleName());
-        mGaTracker.send(new HitBuilders.ScreenViewBuilder().build());
         Ln.v(this + " started");
     }
 
@@ -93,8 +95,12 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Ln.e(this + " unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        ACRA.getErrorReporter().handleException(new RuntimeException(this + " unprocessed result: " + resultCode));
+        if (requestCode == BattleshipActivity.RC_ENABLE_BT) {
+            Ln.e(this + " unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+        } else {
+            Ln.e(this + " unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+            ACRA.getErrorReporter().handleException(new RuntimeException(this + " unprocessed result: " + resultCode));
+        }
     }
 
     public View getTutView() {

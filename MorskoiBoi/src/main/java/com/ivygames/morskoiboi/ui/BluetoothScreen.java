@@ -1,20 +1,26 @@
 package com.ivygames.morskoiboi.ui;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
+import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
-import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.view.BluetoothLayout;
 import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
+import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -31,10 +37,33 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     private final BluetoothAdapter mBtAdapter = BluetoothAdapter.getDefaultAdapter();
     private AcceptThread mAcceptThread;
 
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Ln.v(TAG + ": received broadcast: " + action);
+
+            if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
+                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
+                Ln.d(TAG + ": scan mode changed to " + scanMode);
+
+                if (!isDiscoverable()) {
+                    cancelGameCreation();
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
+    }
+
     @Override
     public View onCreateView(ViewGroup container) {
         mContainer = container;
-        mLayout = (BluetoothLayout) inflate(R.layout.bluetooth, container);
+        mLayout = (BluetoothLayout) inflate(R.layout.bluetooth_common, container);
         mLayout.setListener(this);
 
         Ln.d(this + " screen created");
@@ -44,6 +73,29 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public View getView() {
         return mLayout;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                UiEvent.send(mGaTracker, "reject_discover");
+                Ln.d("user rejected discover-ability - canceling game creation");
+                cancelGameCreation();
+            } else {
+                Ln.e("wrong result for insure: " + resultCode);
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -68,12 +120,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         }
     }
 
-    private void showDialog() {
-        mDialog = (SingleTextDialog) inflate(R.layout.wait_dialog, mContainer);
-        mDialog.setText(R.string.please_wait);
-        mContainer.addView(mDialog);
-    }
-
     @Override
     public void joinGame() {
         mParent.setScreen(new DeviceListScreen());
@@ -82,11 +128,15 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onBackPressed() {
         if (isDialogShown()) {
-            hideDialog();
-            cancelAcceptAndCloseConnection();
+            cancelGameCreation();
         } else {
             mParent.setScreen(new MainScreen());
         }
+    }
+
+    private void cancelGameCreation() {
+        hideDialog();
+        cancelAcceptAndCloseConnection();
     }
 
     public synchronized void cancelAcceptAndCloseConnection() {
@@ -102,10 +152,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     private boolean isDialogShown() {
         return mDialog != null;
-    }
-
-    private void hideDialog() {
-        mContainer.removeView(mDialog);
     }
 
     private void ensureDiscoverable() {
@@ -135,4 +181,16 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         }
     }
 
+    private void showDialog() {
+        mLayout.disable();
+        mDialog = (SingleTextDialog) inflate(R.layout.wait_dialog, mContainer);
+        mDialog.setText(R.string.please_wait);
+        mContainer.addView(mDialog);
+    }
+
+    private void hideDialog() {
+        mContainer.removeView(mDialog);
+        mDialog = null;
+        mLayout.enable();
+    }
 }

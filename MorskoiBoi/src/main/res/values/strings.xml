@@ -114,7 +114,7 @@
     <string name="join_game">Join Game</string>
     <string name="connecting_to">Connecting to %1$s…</string>
     <string name="discover">Discover</string>
-    <string name="show_me">Show Me</string>
+    <string name="waiting_connection">Waiting for Connection...</string>
     <string name="select_device">Select a Device to Connect</string>
     <string name="none_found">No devices found</string>
     <string name="discovering">Searching for devices…</string>

@@ -49,4 +49,19 @@ public class BluetoothLayout extends NotepadLinearLayout implements View.OnClick
                 break;
         }
     }
+
+    public void enable() {
+        setEnabled(true);
+    }
+
+    public void disable() {
+        setEnabled(false);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        findViewById(R.id.create_game_btn).setEnabled(enabled);
+        findViewById(R.id.join_game_btn).setEnabled(enabled);
+    }
 }
