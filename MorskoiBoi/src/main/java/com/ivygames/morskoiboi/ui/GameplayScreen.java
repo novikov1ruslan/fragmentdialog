@@ -760,12 +760,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            WinScreen fragment = new WinScreen();
             Bundle args = new Bundle();
             args.putBoolean(WinScreen.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
             args.putString(WinScreen.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
-            fragment.setArguments(args);
-            mParent.setScreen(fragment);
+            mParent.setScreen(new WinScreen(args));
         }
     };
 

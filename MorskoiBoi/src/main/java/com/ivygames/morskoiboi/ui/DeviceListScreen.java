@@ -22,11 +22,12 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout.DeviceListActions;
+import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
+import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, ConnectionListener, BackPressListener {
     private static final String TAG = "bluetooth";
@@ -36,6 +37,9 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     private ConnectThread mConnectThread;
 
+    private ViewGroup mContainer;
+    private SingleTextDialog mDialog;
+
     @Override
     public View getView() {
         return mLayout;
@@ -43,11 +47,10 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     @Override
     public View onCreateView(ViewGroup container) {
+        mContainer = container;
         mLayout = (DeviceListLayout) inflate(R.layout.device_list, container);
         mLayout.setListener(this);
-        Set<BluetoothDevice> bondedDevices = mBtAdapter.getBondedDevices();
-        Ln.d(TAG + ": retrieved bonded devices: " + bondedDevices);
-        mLayout.setBondedDevices(bondedDevices);
+        mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
 
         Ln.d(this + " screen created");
         return mLayout;
@@ -56,74 +59,46 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     @Override
     public void onStart() {
         super.onStart();
-        Ln.d(TAG + ": register BT broadcast receiver");
+        Ln.d(TAG + ": register BT broadcast receiver, starting discovery...");
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
-        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
-        Ln.d(TAG + ": start listening for incoming connections");
+//        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
+        mBtAdapter.startDiscovery();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mBtAdapter.cancelDiscovery();
-        mLayout.cancelDiscovery();
-
         getActivity().unregisterReceiver(mReceiver);
-        Ln.d(TAG + ": activity stopped, receivers are unregistered");
+        Ln.d(TAG + ": receivers are unregistered, discovery canceled");
     }
 
-    /**
-     * The BroadcastReceiver that listens for discovered devices and changes the title when discovery is finished
-     */
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Ln.v(TAG + ": received broadcast: " + action);
+            mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
 
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                    Ln.d(TAG + ": device is found, but already bound");
-                } else {
-                    Ln.d(TAG + ": new device is found: " + device);
-                    mLayout.addBondedDevice(device);
-                }
-                // mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                Set<BluetoothDevice> bondedDevices = mBtAdapter.getBondedDevices();
-                Ln.d(TAG + ": discovery finished, bonded devices: " + bondedDevices);
-                mLayout.setBondedDevices(bondedDevices);
-                mLayout.cancelDiscovery();
-            } else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
-                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
-                Ln.d(TAG + ": scan mode changed to " + scanMode);
-            }
+//            // When discovery finds a device
+//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+//                    Ln.d(TAG + ": device is found, but already bound");
+//                } else {
+//                    Ln.d(TAG + ": new device is found: " + device);
+//                    mLayout.addBondedDevice(device);
+//                }
+//            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+//                mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
+//            }
+//            else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
+//                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
+//                Ln.d(TAG + ": scan mode changed to " + scanMode);
+//            }
         }
     };
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
-            Ln.v("discoverable result=" + resultCode);
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void doDiscover() {
-        if (mBtAdapter.isDiscovering()) {
-            Ln.w("already discovering");
-            return;
-        }
-
-        Ln.d("starting discovery...");
-        mBtAdapter.startDiscovery();
-        mLayout.startDiscovery();
-    }
 
     @Override
     public void selectDevice(String info) {
@@ -138,35 +113,53 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         mBtAdapter.cancelDiscovery();
 
         BluetoothDevice device = mBtAdapter.getRemoteDevice(BluetoothUtils.extractMacAddress(info));
-        mLayout.connectingTo(device.getName());
+        showDialog(getResources().getString(R.string.connecting_to, device.getName()));
         connectToDevice(device);
     }
 
-    public boolean isConnecting() {
+    private boolean isConnecting() {
         return mConnectThread != null;
     }
 
     @Override
     public void onConnectFailed(IOException exception) {
-        Ln.d(TAG + ": connection attempt failed - start listening");
-        mLayout.connectionFailed();
+        Ln.d(TAG + ": connection attempt failed");
+//        mLayout.connectionFailed();
+        if (isDialogShown()) {
+            mDialog.setText(R.string.connection_failed);
+        }
     }
 
     @Override
     public void onConnected(BluetoothConnection connection) {
         Ln.d(TAG + ": connected - creating opponent and showing board setup");
         BluetoothOpponent opponent = new BluetoothOpponent(connection);
-        connection.setMessageListener(opponent);
+        connection.setMessageReceiver(opponent);
         Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        mParent.setScreen(new BoardSetupScreen());
+        setScreen(new BoardSetupScreen());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isDialogShown()) {
+            hideDialog();
+        }
+//        if (isDialogShown() && !getActivity().isFinishing()) {
+//            cancelGameCreation();
+//            ACRA.getErrorReporter().handleException(new RuntimeException("dialog should have been destroyed"));
+//        }
     }
 
     @Override
     public void onBackPressed() {
-        stopConnecting();
-        mParent.setScreen(new MainScreen());
+        if (isDialogShown()) {
+            cancelGameCreation();
+        } else {
+            setScreen(new MainScreen());
+        }
     }
 
     /**
@@ -189,11 +182,33 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
      *
      * @param device The BluetoothDevice to connect
      */
-    private synchronized void connectToDevice(BluetoothDevice device) {
+    private void connectToDevice(BluetoothDevice device) {
         stopConnecting();
         Ln.d("connecting to: " + device);
         mConnectThread = new ConnectThread(device, this);
         mConnectThread.start();
+    }
+
+    private boolean isDialogShown() {
+        return mDialog != null;
+    }
+
+    private void showDialog(String text) {
+        mLayout.disable();
+        mDialog = (SingleTextDialog) inflate(R.layout.wait_dialog, mContainer);
+        mDialog.setText(text);
+        mContainer.addView(mDialog);
+    }
+
+    private void hideDialog() {
+        mContainer.removeView(mDialog);
+        mDialog = null;
+        mLayout.enable();
+    }
+
+    private void cancelGameCreation() {
+        hideDialog();
+        stopConnecting();
     }
 
     @Override

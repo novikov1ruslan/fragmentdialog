@@ -4,7 +4,7 @@ public interface BluetoothConnection {
 
     void write(String message);
 
-    void setMessageListener(MessageReceiver listener);
+    void setMessageReceiver(MessageReceiver listener);
 
     void disconnect();
 }

@@ -1,8 +1,6 @@
 package com.ivygames.morskoiboi.ui;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +22,19 @@ public abstract class BattleshipScreen extends Screen {
     private WaitFragment mWaitFragment;
     private boolean mResumed;
 
-    public void onAttach(BattleshipActivity activity) {
+    public final void onAttach(BattleshipActivity activity) {
         mParent = activity;
         mApiClient = mParent.getApiClient();
         mGaTracker = mParent.getTracker();
         mGaTracker.setScreenName(this.getClass().getSimpleName());
         mGaTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mFm = mParent.getSupportFragmentManager();
+        Ln.v(this + " attached");
+
     }
 
     public void onCreate() {
         Ln.v(this + " creating");
-
-        mFm = mParent.getSupportFragmentManager();
     }
 
     public abstract View onCreateView(ViewGroup container);

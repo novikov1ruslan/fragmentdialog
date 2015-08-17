@@ -1,17 +1,12 @@
 // FIXME: support android 4.2
 package com.ivygames.morskoiboi.bluetooth;
 
-import android.bluetooth.BluetoothDevice;
-
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.GameEvent;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.UUID;
-
-import de.greenrobot.event.EventBus;
 
 public class BluetoothGame extends Game {
     public static final int WIN_PROGRESS_POINTS = 5000;

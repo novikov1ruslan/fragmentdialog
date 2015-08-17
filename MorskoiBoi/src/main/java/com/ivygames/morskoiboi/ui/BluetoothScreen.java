@@ -9,17 +9,21 @@ import android.content.IntentFilter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
+import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.view.BluetoothLayout;
 import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
+import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -95,6 +99,15 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
+
+        if (isDialogShown()) {
+            hideDialog();
+        }
+
+//        if (isDialogShown() && !getActivity().isFinishing()) {
+//            cancelGameCreation();
+//            ACRA.getErrorReporter().handleException(new RuntimeException("dialog should have been destroyed"));
+//        }
     }
 
     @Override
@@ -121,7 +134,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        mParent.setScreen(new DeviceListScreen());
+        setScreen(new DeviceListScreen());
     }
 
     @Override
@@ -129,7 +142,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            mParent.setScreen(new MainScreen());
+            setScreen(new MainScreen());
         }
     }
 
@@ -149,10 +162,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         mAcceptThread = null;
     }
 
-    private boolean isDialogShown() {
-        return mDialog != null;
-    }
-
     private void ensureDiscoverable() {
         if (isDiscoverable()) {
             Ln.w(TAG + ": already discoverable");
@@ -170,7 +179,13 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void onConnected(BluetoothConnection connection) {
+        Ln.d(TAG + ": connected - creating opponent and showing board setup");
+        BluetoothOpponent opponent = new BluetoothOpponent(connection);
+        connection.setMessageReceiver(opponent);
+        Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
         Model.instance.game = new BluetoothGame(connection);
+
+        setScreen(new BoardSetupScreen());
     }
 
     @Override
@@ -178,6 +193,10 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             mDialog.setText(R.string.connection_failed);
         }
+    }
+
+    private boolean isDialogShown() {
+        return mDialog != null;
     }
 
     private void showDialog() {
@@ -195,6 +214,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public String toString() {
-        return "DEVICE_LIST" + debugSuffix();
+        return "BLUETOOTH" + debugSuffix();
     }
 }

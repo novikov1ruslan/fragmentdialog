@@ -28,6 +28,7 @@ import com.ivygames.morskoiboi.ui.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.ui.view.WinLayoutSmall;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
+import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.Collection;
@@ -48,13 +49,18 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private int mScores;
 
     private SoundBar mSoundBar;
-    private Bundle mArgs;
+    private final Bundle mArgs;
+
+    public WinScreen(Bundle args) {
+        super();
+        mArgs = Validate.notNull(args);
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Board board = Board.fromJson(getArguments().getString(EXTRA_BOARD));
+        Board board = Board.fromJson(mArgs.getString(EXTRA_BOARD));
 
         mGame = Model.instance.game;
 
@@ -67,10 +73,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
         GameSettings.get().incrementGamesPlayedCounter();
         Ln.v("fleet: " + mShips);
-    }
-
-    private Bundle getArguments() {
-        return mArgs;
     }
 
     @Override
@@ -128,14 +130,12 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     }
 
     private boolean hasOpponentSurrendered() {
-        return getArguments().getBoolean(EXTRA_OPPONENT_SURRENDERED);
+        return mArgs.getBoolean(EXTRA_OPPONENT_SURRENDERED);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        mSoundBar.autoResume();
-
         if (mGame.getType() == Type.VS_ANDROID && !mApiClient.isConnected()) {
             Ln.d("game vs Android, but client is not connected - show sign button");
             mLayout.showSignInBar();
@@ -143,13 +143,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             mLayout.hideSignInBar();
         }
     }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        Ln.d(this + " is partially obscured - pause sounds");
-//        mSoundBar.autoPause();
-//    }
 
     @Override
     public void onSignInSucceeded() {
@@ -242,10 +235,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         } else {
             new BackToSelectGameCommand(mParent).run();
         }
-    }
-
-    public void setArguments(Bundle args) {
-        mArgs = args;
     }
 
     @Override

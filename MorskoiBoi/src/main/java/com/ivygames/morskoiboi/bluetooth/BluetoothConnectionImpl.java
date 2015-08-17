@@ -19,7 +19,7 @@ class BluetoothConnectionImpl implements BluetoothConnection {
 
     private final BluetoothSocket mSocket;
     private final Handler mHandler;
-    private volatile MessageReceiver mMessageListener;
+    private volatile MessageReceiver mMessageReceiver;
 
     BluetoothConnectionImpl(BluetoothSocket socket, Handler handler) {
         mSocket = Validate.notNull(socket);
@@ -43,7 +43,7 @@ class BluetoothConnectionImpl implements BluetoothConnection {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mMessageListener.onMessageReceived(message);
+                    mMessageReceiver.onMessageReceived(message);
                 }
             });
         }
@@ -52,7 +52,7 @@ class BluetoothConnectionImpl implements BluetoothConnection {
     }
 
     private void waitForMessageReceiver() {
-        while (mMessageListener == null && !Thread.currentThread().isInterrupted()) {
+        while (mMessageReceiver == null && !Thread.currentThread().isInterrupted()) {
             Ln.v("busy wait"); // TODO: replace by lazy wait
             try {
                 Thread.sleep(100);
@@ -93,8 +93,8 @@ class BluetoothConnectionImpl implements BluetoothConnection {
     }
 
     @Override
-    public void setMessageListener(MessageReceiver listener) {
-        mMessageListener = listener;
+    public void setMessageReceiver(MessageReceiver receiver) {
+        mMessageReceiver = receiver;
     }
 
     @Override
