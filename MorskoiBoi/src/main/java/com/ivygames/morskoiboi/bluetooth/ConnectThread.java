@@ -54,7 +54,7 @@ public final class ConnectThread extends Thread {
 
         Ln.d("socket connected - starting transmission");
         try {
-            final MessageReceiver connection = new MessageReceiver(mSocket, mHandler);
+            final BluetoothConnectionImpl connection = new BluetoothConnectionImpl(mSocket, mHandler);
             connection.connect();
 
             // we post connected event after connection object is created

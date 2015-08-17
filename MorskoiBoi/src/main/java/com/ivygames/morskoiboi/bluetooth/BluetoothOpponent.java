@@ -1,13 +1,12 @@
 package com.ivygames.morskoiboi.bluetooth;
 
 import com.ivygames.morskoiboi.AbstractOnlineOpponent;
-import com.ivygames.morskoiboi.bluetooth.BluetoothGame.MessageListener;
 import com.ivygames.morskoiboi.model.Opponent;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-public class BluetoothOpponent extends AbstractOnlineOpponent implements MessageListener {
+public class BluetoothOpponent extends AbstractOnlineOpponent implements MessageReceiver {
 
     private final BluetoothConnection mSender;
 

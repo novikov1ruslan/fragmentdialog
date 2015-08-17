@@ -14,7 +14,6 @@ import java.util.UUID;
 import de.greenrobot.event.EventBus;
 
 public class BluetoothGame extends Game {
-    // private static final String TAG = "bluetooth";
     public static final int WIN_PROGRESS_POINTS = 5000;
 
     private static final int TURN_TIMEOUT = 40 * 1000;
@@ -27,8 +26,6 @@ public class BluetoothGame extends Game {
     public BluetoothGame(BluetoothConnection connection) {
         super();
         mConnection = Validate.notNull(connection);
-        EventBus.getDefault().removeAllStickyEvents();
-        EventBus.getDefault().register(this);
         Ln.v("new bluetooth game created");
     }
 
@@ -40,8 +37,6 @@ public class BluetoothGame extends Game {
         }
 
         super.finish();
-        EventBus.getDefault().removeAllStickyEvents();
-        EventBus.getDefault().unregister(this);
         mConnection.disconnect();
         Ln.v("game finished");
     }
@@ -51,19 +46,9 @@ public class BluetoothGame extends Game {
         return Type.BLUETOOTH;
     }
 
-//    public void onEventMainThread(GameEvent event) {
-//        if (event == GameEvent.CONNECTION_LOST) {
-//            mConnected = false;
-//        }
-//    }
-
     @Override
     public int getTurnTimeout() {
         return TURN_TIMEOUT;
-    }
-
-    interface MessageListener {
-        void onMessageReceived(String message);
     }
 
 }

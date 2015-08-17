@@ -192,4 +192,9 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         mDialog = null;
         mLayout.enable();
     }
+
+    @Override
+    public String toString() {
+        return "DEVICE_LIST" + debugSuffix();
+    }
 }

@@ -57,7 +57,7 @@ public final class AcceptThread extends Thread {
 
         Ln.v("connection accepted - starting transmission");
         try {
-            final MessageReceiver mConnection = new MessageReceiver(mSocket, mHandler);
+            final BluetoothConnectionImpl mConnection = new BluetoothConnectionImpl(mSocket, mHandler);
             mConnection.connect();
 
             // we post connected event after connection object is created
