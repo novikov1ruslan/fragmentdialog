@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- <dimen name="battleship_margin_horizontal">128dp</dimen> -->
+    <dimen name="battleship_margin_horizontal">0dp</dimen>
     <!-- <dimen name="settings_width">500dp</dimen> -->
     <!-- <dimen name="setup_buttons_margin">16dp</dimen> -->
     <!-- <dimen name="tablet_gameplay_padding">32dp</dimen> -->

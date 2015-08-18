@@ -21,10 +21,9 @@ import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.view.DeviceListLayout;
-import com.ivygames.morskoiboi.ui.view.DeviceListLayout.DeviceListActions;
+import com.ivygames.morskoiboi.ui.view.DeviceListActions;
 import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -63,13 +62,13 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
 //        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
-        mBtAdapter.startDiscovery();
+        startDiscovery();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mBtAdapter.cancelDiscovery();
+        cancelDiscovery();
         getActivity().unregisterReceiver(mReceiver);
         Ln.d(TAG + ": receivers are unregistered, discovery canceled");
     }
@@ -79,20 +78,21 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Ln.v(TAG + ": received broadcast: " + action);
-            mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
+//            mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
 
-//            // When discovery finds a device
-//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-//                    Ln.d(TAG + ": device is found, but already bound");
-//                } else {
-//                    Ln.d(TAG + ": new device is found: " + device);
-//                    mLayout.addBondedDevice(device);
-//                }
-//            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-//                mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
-//            }
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    Ln.d(TAG + ": device is found, but already bound");
+                } else {
+                    Ln.d(TAG + ": new device is found: " + device);
+                    mLayout.addBondedDevice(device);
+                }
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
+                cancelDiscovery();
+            }
 //            else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
 //                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
 //                Ln.d(TAG + ": scan mode changed to " + scanMode);
@@ -110,11 +110,26 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
         // Cancel discovery because it's costly and we're about to connect.
         // Always cancel discovery because it will slow down a connection
-        mBtAdapter.cancelDiscovery();
+        cancelDiscovery();
 
         BluetoothDevice device = mBtAdapter.getRemoteDevice(BluetoothUtils.extractMacAddress(info));
         showDialog(getResources().getString(R.string.connecting_to, device.getName()));
         connectToDevice(device);
+    }
+
+    private void cancelDiscovery() {
+        mBtAdapter.cancelDiscovery();
+        mLayout.discoveryFinished();
+    }
+
+    @Override
+    public void scan() {
+        startDiscovery();
+    }
+
+    private void startDiscovery() {
+        mLayout.discoveryStarted();
+        mBtAdapter.startDiscovery();
     }
 
     private boolean isConnecting() {
