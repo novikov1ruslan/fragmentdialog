@@ -238,6 +238,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         mSettings = GameSettings.get();
 
+        Ln.d("google play services available = " + isGoogleServicesAvailable());
+
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
         mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
@@ -254,6 +256,9 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         if (!GameSettings.get().noAds()) {
             if (isGoogleServicesAvailable()) {
                 createPurchaseHelper();
+            } else {
+                Ln.e("gpgs_not_available");
+                hideNoAdsButton();
             }
         }
 
