@@ -12,6 +12,7 @@ import java.util.Random;
 
 public final class GameUtils {
 
+    public static final int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
     private static volatile long sRandomCounter;
 
     private GameUtils() {

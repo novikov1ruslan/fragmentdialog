@@ -35,16 +35,13 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
                 mOpponent.go();
                 break;
             case SHOOT:
-                Vector2 aim = Vector2.fromJson(body);
-                mOpponent.onShotAt(aim);
+                mOpponent.onShotAt(Vector2.fromJson(body));
                 break;
             case SHOOT_RESULT:
-                PokeResult result = PokeResult.fromJson(body);
-                mOpponent.onShotResult(result);
+                mOpponent.onShotResult(PokeResult.fromJson(body));
                 break;
             case WIN:
-                Board board = Board.fromJson(body);
-                mOpponent.onLost(board);
+                mOpponent.onLost(Board.fromJson(body));
                 break;
             case VERSION:
                 mOpponent.setOpponentVersion(Integer.parseInt(body));

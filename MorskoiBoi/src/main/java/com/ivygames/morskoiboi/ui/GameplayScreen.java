@@ -531,7 +531,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
      * methods of this class are called in UI thread
      */
     private class UiProxyOpponent implements Opponent {
-        private static final int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
 
         private final PlayerOpponent mPlayer;
 
@@ -634,6 +633,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (!versionSupportsBoardReveal()) {
                 if (mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                     Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
+                    AnalyticsEvent.send(mGaTracker, "reveal_not_supported");
                     resetPlayer();
                     lost(LOST_GAME_WO_REVEAL_DELAY);
                 }
@@ -641,7 +641,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         private boolean versionSupportsBoardReveal() {
-            return mPlayer.getOpponentVersion() >= PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
+            return mPlayer.getOpponentVersion() >= GameUtils.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
         }
 
         @Override

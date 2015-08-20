@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.rt;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
@@ -14,7 +12,6 @@ import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class InternetOpponent extends AbstractOnlineOpponent implements RealTimeMessageReceivedListener {
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private final RtmSender mRtmSender;
 
