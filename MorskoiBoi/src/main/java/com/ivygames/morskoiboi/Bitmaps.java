@@ -69,10 +69,21 @@ public final class Bitmaps {
         Bitmap bitmap = BitmapFactory.decodeResource(res, resId);
         mBitmaps.put(resId, bitmap);
 
-        mMemoryUsed += bitmap.getHeight() * bitmap.getWidth() * BPP;
+        if (bitmap != null) {
+            mMemoryUsed += bitmap.getHeight() * bitmap.getWidth() * BPP;
+        }
     }
 
     public Bitmap getBitmap(int resId) {
-        return mBitmaps.get(resId);
+        Bitmap bitmap = mBitmaps.get(resId);
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(BattleshipApplication.get().getResources(), resId);
+            if (bitmap != null) {
+                Ln.e("bitmap_crash_saved");
+                mBitmaps.put(resId, bitmap);
+            }
+        }
+
+        return bitmap;
     }
 }
