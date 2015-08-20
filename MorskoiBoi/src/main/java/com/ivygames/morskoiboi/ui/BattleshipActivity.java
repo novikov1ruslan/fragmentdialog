@@ -135,7 +135,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             if (result.isFailure()) {
                 Ln.w("Error purchasing: " + result);
                 FragmentAlertDialog.showNote(getSupportFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
-//                hideWaitingScreen();
                 return;
             }
 
@@ -146,8 +145,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
                 mSettings.setNoAds();
                 hideAds();
             }
-
-//            hideWaitingScreen();
         }
     };
 
@@ -266,10 +263,16 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         Ln.i("game fully created");
     }
 
+    public void hideNoAdsButton() {
+        if (mCurrentScreen instanceof MainScreen) {
+            ((MainScreen) mCurrentScreen).hideNoAdsButton();
+        }
+    }
+
     private void createPurchaseHelper() {
-        mPurchaseHelper = new PurchaseHelper();
+        mPurchaseHelper = new PurchaseHelper(this);
         try {
-            mPurchaseHelper.onCreate(this);
+            mPurchaseHelper.onCreate();
         } catch (Exception e) {
             ACRA.getErrorReporter().handleException(e);
         }
@@ -281,9 +284,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     public void hideAds() {
         findViewById(R.id.banner).setVisibility(View.GONE);
-        if (mCurrentScreen instanceof MainScreen) {
-            ((MainScreen) mCurrentScreen).hideNoAdsButton();
-        }
+        hideNoAdsButton();
     }
 
     private GoogleApiClient createGoogleApiClient() {

@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.billing;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 
@@ -34,7 +33,7 @@ public class PurchaseHelper {
     public static final String SKU_NO_ADS = "no_ads";
 
     private IabHelper mHelper;
-    private BattleshipActivity mActivity;
+    private final BattleshipActivity mActivity;
 
     // Listener that's called when we finish querying the items and subscriptions we own
     private final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -71,8 +70,11 @@ public class PurchaseHelper {
         }
     };
 
-    public void onCreate(BattleshipActivity activity) {
+    public PurchaseHelper(BattleshipActivity activity) {
         mActivity = Validate.notNull(activity);
+    }
+
+    public void onCreate() {
 
         if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) != ConnectionResult.SUCCESS) {
             Ln.e("services not available");
@@ -95,6 +97,10 @@ public class PurchaseHelper {
                     Ln.d("Setup finished.");
 
                     if (!result.isSuccess()) {
+                        if (result.getResponse() == IabHelper.BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE) {
+                            Ln.w("billing_unavailable");
+                            mActivity.hideNoAdsButton();
+                        }
                         // Oh noes, there was a problem.
                         complain("Problem setting up in-app billing: " + result);
                         return;
@@ -162,13 +168,21 @@ public class PurchaseHelper {
         // very important:
         Ln.d("Destroying helper.");
         if (mHelper != null) {
-            mHelper.dispose();
+            try {
+                mHelper.dispose();
+            } catch (IllegalArgumentException iae) {
+                if (iae.getMessage().contains("Service not registered")) {
+                    Ln.w("service_not_registered");
+                } else {
+                    throw iae;
+                }
+            }
             mHelper = null;
         }
     }
 
     private void complain(String message) {
-        Ln.e("**** TrivialDrive Error: " + message);
+        Ln.e("**** Error: " + message);
         alert("Error: " + message);
     }
 
