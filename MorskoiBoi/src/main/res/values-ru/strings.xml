@@ -109,6 +109,7 @@
     <string name="please_wait">Пожалуйста, подождите…</string>
 
     <!-- Bluetooth -->
+    <string name="paring_instruction">В отдельных случаях устройства должны быть предварительно подключены в настройках аппарата.</string>
     <string name="create_game">Создать Игру</string>
     <string name="join_game">Подсоединиться к Игре</string>
     <string name="connecting_to">Подключается к %1$s…</string>

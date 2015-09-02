@@ -110,6 +110,7 @@
     <string name="please_wait">Please Wait…</string>
 
     <!-- Bluetooth -->
+    <string name="paring_instruction">In some cases devices must be paired in the settings before they can be visible in the game.</string>
     <string name="create_game">Create Game</string>
     <string name="join_game">Join Game</string>
     <string name="connecting_to">Connecting to %1$s…</string>
