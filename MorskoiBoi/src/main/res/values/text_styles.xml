@@ -54,6 +54,11 @@
         <item name="android:textColor">@color/main</item>
     </style>
 
+    <style name="VersionText" parent="android:Widget.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/main</item>
+    </style>
+
     <style name="SettingsText" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/settings_textSize</item>
         <item name="android:textColor">@color/edit_text</item>
