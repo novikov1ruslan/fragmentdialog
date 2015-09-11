@@ -12,7 +12,6 @@ import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
@@ -144,8 +143,8 @@ public class ProgressManager {
     }
 
     public void incrementProgress(int increment) {
-        Ln.d("incrementing progress by " + increment);
         int oldProgress = GameSettings.get().getProgress().getRank();
+        Ln.d("incrementing progress (" + oldProgress + ") by " + increment);
 
         Progress newProgress = new Progress(oldProgress + increment);
         GameSettings.get().setProgress(newProgress);
@@ -156,17 +155,7 @@ public class ProgressManager {
 //            AppStateManager.update(apiClient, STATE_KEY, json.getBytes());
         }
 
-        trackPromotionEvent(oldProgress, newProgress.getRank(), mGaTracker);
-    }
-
-    private static void trackPromotionEvent(int oldProgress, int newProgress, Tracker tracker) {
-        Rank lastRank = Rank.getBestRankForScore(oldProgress);
-        Rank newRank = Rank.getBestRankForScore(newProgress);
-        if (newRank != lastRank) {
-            GameSettings.get().newRankAchieved(true);
-            String label = lastRank + " promoted to " + newRank;
-            tracker.send(new AnalyticsEvent("promotion", label, 1).build());
-        }
+        AnalyticsEvent.trackPromotionEvent(oldProgress, newProgress.getRank(), mGaTracker);
     }
 
     /**

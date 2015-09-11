@@ -26,7 +26,7 @@ public enum Rank {
     public static final int O9 = 3500000; // <!-- 500k -->
     public static final int O10 = 4000000; // <!-- 500k -->
     public static final int O11 = 4500000; // <!-- 500k -->
-    public static final int O12 = 5500000; // <!-- 500k -->
+    public static final int O12 = 5500000; // <!-- 1000k -->
 
     private final int mBitmap;
     private final int mSmallBitmap;

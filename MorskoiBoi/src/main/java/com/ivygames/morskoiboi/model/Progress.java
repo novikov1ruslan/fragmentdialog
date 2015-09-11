@@ -40,12 +40,12 @@ public class Progress {
         return mRank;
     }
 
+    public static byte[] getBytes(Progress progress) {
+        return progress.toJson().toString().getBytes();
+    }
+
     @Override
     public String toString() {
         return "[rank=" + mRank + "]";
-    }
-
-    public static byte[] getBytes(Progress progress) {
-        return progress.toJson().toString().getBytes();
     }
 }

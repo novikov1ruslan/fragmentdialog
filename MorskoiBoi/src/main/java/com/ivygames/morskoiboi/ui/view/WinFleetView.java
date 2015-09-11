@@ -187,7 +187,7 @@ public class WinFleetView extends View {
         int unitWidth = shipArea / CARRIER_VISUAL_LENGTH;
 
         if (unitWidth < 1) {
-            Ln.e("impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mLetterWidth);
+            Ln.e("win: impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mLetterWidth);
             // FIXME: maybe because you haven't implemented onMeasure() system thinks no size is needed
             return;
         }

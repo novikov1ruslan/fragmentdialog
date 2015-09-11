@@ -95,9 +95,12 @@ public abstract class BattleshipScreen extends Screen {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BattleshipActivity.RC_ENABLE_BT) {
-            Ln.e(this + " unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+            Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+        }
+        else if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
+                Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         } else {
-            Ln.e(this + " unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+            Ln.e("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
             ACRA.getErrorReporter().handleException(new RuntimeException(this + " unprocessed result: " + resultCode));
         }
     }

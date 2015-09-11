@@ -54,7 +54,7 @@ final class AppStateResultCallback implements ResultCallback<AppStateManager.Sta
         Progress cloudProgress = parseProgress(cloudData);
         Progress max = getMax(localProgress, cloudProgress);
         Ln.d("resolving conflict: local=" + localProgress + " vs cloud=" + cloudProgress + ", resolved=" + max);
-        byte[] resolvedData = max.toString().getBytes();
+        byte[] resolvedData = Progress.getBytes(max);
         AppStateManager.resolve(mApiClient, stateKey, resolvedVersion, resolvedData);
         mSettings.setProgress(max);
     }

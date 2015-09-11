@@ -23,7 +23,6 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.view.BluetoothLayout;
 import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -81,14 +80,12 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
-            if (resultCode == Activity.RESULT_OK) {
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
+            if (resultCode == Activity.RESULT_CANCELED) {
                 UiEvent.send(mGaTracker, "reject_discover");
                 Ln.d("user rejected discover-ability - canceling game creation");
                 cancelGameCreation();
             } else {
-                Ln.e("wrong result for insure: " + resultCode);
+                Ln.d("discover-ability insured for: " + resultCode);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
