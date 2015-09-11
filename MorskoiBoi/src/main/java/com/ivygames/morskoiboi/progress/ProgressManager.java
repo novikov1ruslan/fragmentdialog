@@ -14,6 +14,7 @@ import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.model.ProgressUtils;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
@@ -151,7 +152,7 @@ public class ProgressManager {
 
         if (mApiClient.isConnected()) {
             Ln.d("posting progress to the cloud: " + newProgress);
-            update(mApiClient, Progress.getBytes(newProgress));
+            update(mApiClient, ProgressUtils.getBytes(newProgress));
 //            AppStateManager.update(apiClient, STATE_KEY, json.getBytes());
         }
 

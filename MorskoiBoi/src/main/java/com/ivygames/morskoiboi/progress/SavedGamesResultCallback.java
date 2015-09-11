@@ -7,16 +7,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
-import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.model.ProgressUtils;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
-import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -35,13 +33,13 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
         try {
             Status status = result.getStatus();
             if (status.isSuccess()) {
-                Progress cloudProgress = getProgressFromSnapshot(result.getSnapshot());
+                Progress cloudProgress = ProgressUtils.getProgressFromSnapshot(result.getSnapshot());
                 Progress localProgress = mSettings.getProgress();
                 Ln.v("progress loaded: local =" + localProgress + ", cloud =" + cloudProgress);
                 Progress max = getMax(cloudProgress, localProgress);
                 mSettings.setProgress(max);
                 if (max.getRank() > cloudProgress.getRank()) {
-                    ProgressManager.update(mApiClient, Progress.getBytes(max));// max.toJson().toString().getBytes());
+                    ProgressManager.update(mApiClient, ProgressUtils.getBytes(max));// max.toJson().toString().getBytes());
                 }
             } else {
                 int statusCode = status.getStatusCode();
@@ -58,33 +56,14 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
         }
     }
 
-    private Progress getProgressFromSnapshot(Snapshot snapshot) throws IOException {
-        byte[] data = snapshot.getSnapshotContents().readFully();
-        if (data == null || data.length == 0) {
-            return new Progress(0);
-        }
-
-        return parseProgress(data);
-    }
-
     @NonNull
     private void resolveConflict(Snapshots.OpenSnapshotResult result) throws IOException {
-        Progress currentProgress = getProgressFromSnapshot(result.getSnapshot());
-        Progress modifiedProgress = getProgressFromSnapshot(result.getConflictingSnapshot());
+        Progress currentProgress = ProgressUtils.getProgressFromSnapshot(result.getSnapshot());
+        Progress modifiedProgress = ProgressUtils.getProgressFromSnapshot(result.getConflictingSnapshot());
         Progress max = getMax(currentProgress, modifiedProgress);
 
         mSettings.setProgress(max);
-        ProgressManager.update(mApiClient, Progress.getBytes(max));
-    }
-
-    private Progress parseProgress(byte[] loadedData) {
-        try {
-            return Progress.fromJson(loadedData);
-        } catch (JSONException je) {
-            Ln.e(je);
-            mGaTracker.send(new ExceptionEvent("parsing_progress", "data=" + new String(loadedData), 1).build());
-            return mSettings.getProgress();
-        }
+        ProgressManager.update(mApiClient, ProgressUtils.getBytes(max));
     }
 
     private static Progress getMax(Progress local, Progress cloud) {

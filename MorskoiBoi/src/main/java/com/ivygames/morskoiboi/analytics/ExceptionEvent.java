@@ -13,6 +13,14 @@ public final class ExceptionEvent {
         tracker.send(new ExceptionEvent(action, e).build());
     }
 
+    public static void send(Tracker tracker, String action, String label) {
+        tracker.send(new ExceptionEvent(action, label).build());
+    }
+
+    public static void send(Tracker tracker, String action, String label, Exception e) {
+        tracker.send(new ExceptionEvent(action, label + e.getClass() + "; " + e.getMessage()).build());
+    }
+
     public ExceptionEvent(String action, Exception e) {
         builder = new EventBuilder(GA_CAT_EXCEPTION, action).setLabel("" + e);
     }

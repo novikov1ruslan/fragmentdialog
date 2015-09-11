@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.model.ProgressUtils;
 
 import org.commons.logger.Ln;
 import org.json.JSONException;
@@ -146,7 +147,7 @@ public class GameSettings {
     }
 
     public void setProgress(Progress progress) {
-        internal.putString(PROGRESS, progress.toJson().toString());
+        internal.putString(PROGRESS, ProgressUtils.toJson(progress).toString());
     }
 
     public Progress getProgress() {
@@ -156,7 +157,7 @@ public class GameSettings {
             progress = new Progress(0);
         } else {
             try {
-                progress = Progress.fromJson(json);
+                progress = ProgressUtils.fromJson(json);
             } catch (JSONException je) {
                 throw new RuntimeException(je);
             }
