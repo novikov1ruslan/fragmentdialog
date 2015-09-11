@@ -103,14 +103,14 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
 
     @Override
     public void onRate() {
-        mGaTracker.send(new UiEvent("settings_rate").build());
+        UiEvent.send("settings_rate");
         mSettings.setRated();
         PlayUtils.rateApp(getActivity());
     }
 
     @Override
     public void onReportProblem() {
-        UiEvent.send(mGaTracker, "report_problem");
+        UiEvent.send("report_problem");
         Intent intent = getEmailIntent();
         if (DeviceUtils.resolverAvailableForIntent(intent)) {
             startActivity(intent);
@@ -121,13 +121,13 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
 
     @Override
     public void onSignIn() {
-        mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_SIGN_IN, "settings").build());
+        UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "settings");
         mApiClient.connect();
     }
 
     @Override
     public void onSignOut() {
-        mGaTracker.send(new UiEvent("sign_out", "settings").build());
+        UiEvent.send("sign_out", "settings");
         mApiClient.disconnect();
         mLayout.showSignInBar();
     }

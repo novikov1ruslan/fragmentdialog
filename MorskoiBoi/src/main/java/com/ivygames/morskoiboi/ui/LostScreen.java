@@ -41,7 +41,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
             @Override
             public void onClick(View v) {
-                mGaTracker.send(new UiEvent("continue", "win").build());
+                UiEvent.send("continue", "win");
                 backToBoardSetup();
             }
         });
@@ -50,7 +50,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
             @Override
             public void onClick(View v) {
-                mGaTracker.send(new UiEvent("dont_continue", "win").build());
+                UiEvent.send("dont_continue", "win");
                 doNotContinue();
             }
         });
@@ -79,7 +79,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     @Override
     public void onBackPressed() {
-        mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_BACK, "lost").build());
+        UiEvent.send(GameConstants.GA_ACTION_BACK, "lost");
         doNotContinue();
     }
 

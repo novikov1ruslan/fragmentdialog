@@ -52,7 +52,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
         @Override
         public void run() {
             Ln.d("board setup timeout");
-            AnalyticsEvent.send(mGaTracker, "board setup timeout");
+            AnalyticsEvent.send("board setup timeout");
             Model.instance.game.finish();
 //            DialogUtils.showNote(getActivity().getSupportFragmentManager(), R.string.session_timeout);
             DialogUtils.newOkDialog(R.string.session_timeout, new Runnable() {
@@ -106,7 +106,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public void autoSetup() {
-        mGaTracker.send(new UiEvent("auto").build());
+        UiEvent.send("auto");
         mBoard = PlacementFactory.getAlgorithm().generateBoard();
         mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
@@ -119,7 +119,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public void done() {
-        mGaTracker.send(new UiEvent("done").build());
+        UiEvent.send("done");
         if (mRules.isBoardSet(mBoard)) {
             Ln.d("board set - showing gameplay screen");
             Model.instance.player.setBoard(mBoard);
@@ -147,7 +147,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
     @Override
     public void onBackPressed() {
-        mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_BACK, "setup").build());
+        UiEvent.send(GameConstants.GA_ACTION_BACK, "setup");
         if (shouldNotifyOpponent()) {
             Ln.d("match against a real human - ask the player if he really wants to exit");
             showWantToLeaveRoomDialog();
@@ -168,7 +168,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("left_from_setup", "ok").build());
+                UiEvent.send("left_from_setup", "ok");
                 Ln.d("player decided to leave the game - finishing");
                 backToSelectGameScreen();
             }

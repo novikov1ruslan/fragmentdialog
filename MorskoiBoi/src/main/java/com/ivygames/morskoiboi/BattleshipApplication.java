@@ -8,9 +8,9 @@ import android.util.Log;
 import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.analytics.GlobalTracker;
 import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
@@ -57,16 +57,15 @@ public class BattleshipApplication extends Application {
         // filesPath = Environment.getExternalStorageDirectory().getPath();
         Config logConfig = new Config(minimumLogLevel, path, "battleship");
         Ln.setConfiguration(logConfig);
-
+        GlobalTracker.sTracker = GoogleAnalytics.getInstance(this).newTracker(GameConstants.ANALYTICS_KEY);
+        GlobalTracker.sTracker.enableAdvertisingIdCollection(true);
         Log.i("Battleship", "created");
 
-        GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(this);
-        Tracker tracker = gaInstance.newTracker(GameConstants.ANALYTICS_KEY);
         UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        ExceptionReporter myHandler = new ExceptionReporter(tracker, exceptionHandler, this);
-        // TODO: Make myHandler the new default uncaught exception handler.
-        Thread.setDefaultUncaughtExceptionHandler(myHandler);
-        myHandler.setExceptionParser(new AnalyticsExceptionParser());
+        ExceptionReporter exceptionReporter = new ExceptionReporter(GlobalTracker.sTracker, exceptionHandler, this);
+        // TODO: Make exceptionReporter the new default uncaught exception handler.
+        Thread.setDefaultUncaughtExceptionHandler(exceptionReporter);
+        exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
 
         Bitmaps.getInstance().loadBitmaps(getResources());
 

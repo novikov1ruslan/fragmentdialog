@@ -109,7 +109,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mTimeLeft = READY_TO_START;
             mTimerExpiredCounter++;
             if (mTimerExpiredCounter > 2) {
-                mGaTracker.send(new AnalyticsEvent("surrendered_passively").build());
+                AnalyticsEvent.send("surrendered_passively");
                 int penalty = calcSurrenderPenalty();
                 Ln.d("player surrender passively with penalty: " + penalty);
                 surrender(penalty);
@@ -187,12 +187,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             @Override
             public void onChatClicked() {
-                mGaTracker.send(new UiEvent("chat", "open").build());
+                UiEvent.send("chat", "open");
                 new ChatDialog.Builder(mChatAdapter).setName(mPlayer.getName()).setPositiveButton(R.string.send, new OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mGaTracker.send(new UiEvent("chat", "sent").build());
+                        UiEvent.send("chat", "sent");
                         ChatDialog chatDialog = (ChatDialog) dialog;
                         String text = chatDialog.getChatMessage().toString();
                         if (TextUtils.isEmpty(text)) {
@@ -335,7 +335,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             getActivity().stopService(mMatchStatusIntent);
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
-                mGaTracker.send(new AnalyticsEvent("opponent_surrendered").build());
+                AnalyticsEvent.send("opponent_surrendered");
                 mOpponentSurrendered = true;
                 showOpponentSurrenderedDialog();
             } else {
@@ -424,7 +424,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("left_from_game", "ok").build());
+                UiEvent.send("left_from_game", "ok");
                 Ln.d("player decided to leave the game");
                 mBackToSelectGameCommand.run();
             }
@@ -439,7 +439,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("surrender", "ok").build());
+                UiEvent.send("surrender", "ok");
                 Ln.d("player chose to surrender");
                 surrender(penalty);
             }
@@ -633,7 +633,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (!versionSupportsBoardReveal()) {
                 if (mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                     Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
-                    AnalyticsEvent.send(mGaTracker, "reveal_not_supported");
+                    AnalyticsEvent.send("reveal_not_supported");
                     resetPlayer();
                     lost(LOST_GAME_WO_REVEAL_DELAY);
                 }

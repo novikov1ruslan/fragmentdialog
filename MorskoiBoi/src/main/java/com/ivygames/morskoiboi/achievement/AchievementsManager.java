@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.achievement;
 
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.Games;
@@ -40,17 +39,12 @@ public final class AchievementsManager {
     public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
     private final GoogleApiClient mApiClient;
-    private final Tracker mGaTracker;
     private final GameSettings mSettings = GameSettings.get();
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManager(GoogleApiClient apiClient, Tracker tracker) {
-        Validate.notNull(tracker);
-        mGaTracker = tracker;
-
-        Validate.notNull(apiClient);
-        mApiClient = apiClient;
+    public AchievementsManager(GoogleApiClient apiClient) {
+        mApiClient = Validate.notNull(apiClient);
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient);
     }
 
@@ -167,7 +161,7 @@ public final class AchievementsManager {
     private void unlock(String achievementId) {
         Ln.d("unlocking achievement: " + AchievementsManager.name(achievementId));
         mSettings.unlockAchievement(achievementId);
-        mGaTracker.send(new AnalyticsEvent("achievement", achievementId).build());
+        AnalyticsEvent.send("achievement", achievementId);
         if (mApiClient.isConnected()) {
             Games.Achievements.unlock(mApiClient, achievementId);
         }

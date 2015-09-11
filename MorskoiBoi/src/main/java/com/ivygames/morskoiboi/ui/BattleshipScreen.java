@@ -5,17 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.analytics.UiEvent;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 public abstract class BattleshipScreen extends Screen {
 
-    protected Tracker mGaTracker;
     protected GoogleApiClient mApiClient;
     protected FragmentManager mFm;
 
@@ -25,9 +23,7 @@ public abstract class BattleshipScreen extends Screen {
     public final void onAttach(BattleshipActivity activity) {
         mParent = activity;
         mApiClient = mParent.getApiClient();
-        mGaTracker = mParent.getTracker();
-        mGaTracker.setScreenName(this.getClass().getSimpleName());
-        mGaTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        UiEvent.screenView(this.getClass().getSimpleName());
         mFm = mParent.getSupportFragmentManager();
         Ln.v(this + " attached");
 
@@ -96,9 +92,8 @@ public abstract class BattleshipScreen extends Screen {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BattleshipActivity.RC_ENABLE_BT) {
             Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        }
-        else if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
-                Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+        } else if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
+            Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         } else {
             Ln.e("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
             ACRA.getErrorReporter().handleException(new RuntimeException(this + " unprocessed result: " + resultCode));

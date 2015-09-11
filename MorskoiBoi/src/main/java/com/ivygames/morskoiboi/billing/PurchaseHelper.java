@@ -121,7 +121,6 @@ public class PurchaseHelper {
 
     public void purchase(int requestCode, IabHelper.OnIabPurchaseFinishedListener listener) {
         // TODO: move to UI
-//        mGaTracker.send(new UiEvent("no_ads").build());
         Ln.d("Upgrade button clicked; launching purchase flow for upgrade.");
 
 		/*

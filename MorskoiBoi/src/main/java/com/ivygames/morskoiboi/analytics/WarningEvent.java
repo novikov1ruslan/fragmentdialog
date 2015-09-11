@@ -27,4 +27,8 @@ public final class WarningEvent {
     public Map<String, String> build() {
         return builder.build();
     }
+
+    public static void send(String message) {
+        GlobalTracker.sTracker.send(new WarningEvent(message).build());
+    }
 }

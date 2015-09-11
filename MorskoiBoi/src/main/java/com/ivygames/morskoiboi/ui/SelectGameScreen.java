@@ -128,8 +128,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         super.onResume();
         AdManager.instance.showInterstitialAfterPlay();
         mParent.showTutorial(getTutView());
-
-//        AchievementsUtils.incrementProgress(1, mApiClient,  mGaTracker);
     }
 
     @Override
@@ -177,7 +175,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public void vsAndroid() {
-        mGaTracker.send(new UiEvent("vsAndroid").build());
+        UiEvent.send("vsAndroid");
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android));
         Model.instance.game = new AndroidGame(opponent);
         Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName()), opponent);
@@ -192,7 +190,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void viaBlueTooth() {
         // If BT is not on, request that it be enabled.
         boolean enabled = BluetoothAdapter.getDefaultAdapter().isEnabled();
-        mGaTracker.send(new UiEvent("viaBluetooth", enabled ? 1 : 0).build());
+        UiEvent.send("viaBluetooth", enabled ? 1 : 0);
         if (enabled) {
             showDeviceListScreen();
         } else {
@@ -202,7 +200,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
                 startActivityForResult(enableIntent, BattleshipActivity.RC_ENABLE_BT);
             } else {
                 Ln.w("Bluetooth resolver is not available");
-                mGaTracker.send(new ExceptionEvent("bt_error").build());
+                ExceptionEvent.send("bt_error");
                 showBtErrorDialog();
             }
         }
@@ -224,7 +222,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void viaInternet() {
         boolean signedIn = mApiClient.isConnected();
-        mGaTracker.send(new UiEvent("viaInternet", signedIn ? 1 : 0).build());
+        UiEvent.send("viaInternet", signedIn ? 1 : 0);
 
         if (signedIn) {
             showInternetGameScreen();
@@ -254,7 +252,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("sign_in", "internet").build());
+                UiEvent.send("sign_in", "internet");
                 mViaInternetRequested = true;
                 mApiClient.connect();
             }
@@ -282,7 +280,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public void showRanks() {
-        mGaTracker.send(new UiEvent("showRanks").build());
+        UiEvent.send("showRanks");
         mParent.setScreen(new RanksListScreen());
     }
 

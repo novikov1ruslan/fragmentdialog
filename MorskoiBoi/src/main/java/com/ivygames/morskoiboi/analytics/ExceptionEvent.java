@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.analytics;
 
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
-import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
@@ -9,16 +8,20 @@ public final class ExceptionEvent {
     private final EventBuilder builder;
     private static final String GA_CAT_EXCEPTION = "exception";
 
-    public static void send(Tracker tracker, String action, Exception e) {
-        tracker.send(new ExceptionEvent(action, e).build());
+    public static void send(String action, Exception e) {
+        GlobalTracker.sTracker.send(new ExceptionEvent(action, e).build());
     }
 
-    public static void send(Tracker tracker, String action, String label) {
-        tracker.send(new ExceptionEvent(action, label).build());
+    public static void send(String action, String label) {
+        GlobalTracker.sTracker.send(new ExceptionEvent(action, label).build());
     }
 
-    public static void send(Tracker tracker, String action, String label, Exception e) {
-        tracker.send(new ExceptionEvent(action, label + e.getClass() + "; " + e.getMessage()).build());
+    public static void send(String action, String label, Exception e) {
+        GlobalTracker.sTracker.send(new ExceptionEvent(action, label + e.getClass() + "; " + e.getMessage()).build());
+    }
+
+    public static void send(String action) {
+        GlobalTracker.sTracker.send(new ExceptionEvent(action).build());
     }
 
     public ExceptionEvent(String action, Exception e) {
@@ -44,4 +47,5 @@ public final class ExceptionEvent {
     public Map<String, String> build() {
         return builder.build();
     }
+
 }

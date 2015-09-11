@@ -81,7 +81,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
             if (resultCode == Activity.RESULT_CANCELED) {
-                UiEvent.send(mGaTracker, "reject_discover");
+                UiEvent.send("reject_discover");
                 Ln.d("user rejected discover-ability - canceling game creation");
                 cancelGameCreation();
             } else {

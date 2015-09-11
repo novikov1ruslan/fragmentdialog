@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.progress;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -17,6 +16,7 @@ import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ProgressUtils;
 
 import org.acra.ACRA;
+import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class ProgressManager {
@@ -25,18 +25,12 @@ public class ProgressManager {
     public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
     private final GoogleApiClient mApiClient;
-    private final Tracker mGaTracker;
-    //    private final AppStateResultCallback appStateCallback;
 
-    public ProgressManager(GoogleApiClient apiClient, Tracker tracker) {
-        mApiClient = apiClient;
-        mGaTracker = tracker;
-        //        appStateCallback = new AppStateResultCallback(apiClient, tracker);
+    public ProgressManager(GoogleApiClient apiClient) {
+        mApiClient = Validate.notNull(apiClient);
     }
 
     public void loadProgress(Bitmap bitmap) {
-        //            PendingResult<StateResult> stateResult = AppStateManager.load(mApiClient, AchievementsUtils.STATE_KEY);
-//            stateResult.setResultCallback(appStateCallback);
         if (hasMigrated()) {
             savedGamesLoad();
         } else {
@@ -124,7 +118,7 @@ public class ProgressManager {
             protected void onPostExecute(Boolean result) {
                 if (result) {
                     GameSettings.get().setProgressMigrated();
-                    AnalyticsEvent.send(mGaTracker, "migration succeeded");
+                    AnalyticsEvent.send("migration succeeded");
                     savedGamesLoad();
                 } else {
                     ACRA.getErrorReporter().handleException(new RuntimeException("migration failed"));
@@ -140,7 +134,7 @@ public class ProgressManager {
      */
     private void savedGamesLoad() {
         PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.open(mApiClient, SNAPSHOT_NAME, false);
-        pendingResult.setResultCallback(new SavedGamesResultCallback(mApiClient, mGaTracker));
+        pendingResult.setResultCallback(new SavedGamesResultCallback(mApiClient));
     }
 
     public void incrementProgress(int increment) {
@@ -156,7 +150,7 @@ public class ProgressManager {
 //            AppStateManager.update(apiClient, STATE_KEY, json.getBytes());
         }
 
-        AnalyticsEvent.trackPromotionEvent(oldProgress, newProgress.getRank(), mGaTracker);
+        AnalyticsEvent.trackPromotionEvent(oldProgress, newProgress.getRank());
     }
 
     /**

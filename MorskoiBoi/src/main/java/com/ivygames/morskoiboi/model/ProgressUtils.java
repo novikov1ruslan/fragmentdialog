@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.model;
 
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
@@ -41,13 +40,13 @@ public class ProgressUtils {
         return toJson(progress).toString().getBytes();
     }
 
-    public static Progress parseProgress(byte[] loadedData, Tracker tracker) {
+    public static Progress parseProgress(byte[] loadedData) {
         try {
             return fromJson(loadedData);
         } catch (JSONException je) {
             Ln.e(je);
             String corruptedData = new String(loadedData);
-            ExceptionEvent.send(tracker, "parsing_progress", "data=" + corruptedData);
+            ExceptionEvent.send("parsing_progress", "data=" + corruptedData);
 
             // hacky solution to fix these corruptions: [rank=1575175], Progress [mRank=54397]
             if (corruptedData.length() > 3) {
@@ -57,7 +56,7 @@ public class ProgressUtils {
                     return new Progress(Integer.parseInt(corruptedData.substring(start, end)));
                 } catch (Exception e) {
                     Ln.w(e);
-                    ExceptionEvent.send(tracker, "parsing_progress", "data=" + corruptedData, e);
+                    ExceptionEvent.send("parsing_progress", "data=" + corruptedData, e);
                 }
             }
 
@@ -65,12 +64,12 @@ public class ProgressUtils {
         }
     }
 
-    public static Progress getProgressFromSnapshot(Snapshot snapshot, Tracker tracker) throws IOException {
+    public static Progress getProgressFromSnapshot(Snapshot snapshot) throws IOException {
         byte[] data = snapshot.getSnapshotContents().readFully();
         if (data == null || data.length == 0) {
             return new Progress(0);
         }
 
-        return parseProgress(data, tracker);
+        return parseProgress(data);
     }
 }

@@ -92,7 +92,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
             @Override
             public void onClick(View v) {
-                mGaTracker.send(new UiEvent("continue", "win").build());
+                UiEvent.send("continue", "win");
                 backToBoardSetup();
             }
         });
@@ -101,7 +101,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
             @Override
             public void onClick(View v) {
-                mGaTracker.send(new UiEvent("dont_continue", "win").build());
+                UiEvent.send("dont_continue", "win");
                 doNotContinue();
             }
         });
@@ -114,7 +114,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
             @Override
             public void onClick(View v) {
-                mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_SIGN_IN, "win").build());
+                UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "win");
                 mApiClient.connect();
             }
         });
@@ -156,7 +156,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             if (GameConstants.IS_TEST_MODE) {
                 Ln.i("game is in test mode - achievements not updated");
             } else {
-                new AchievementsManager(mApiClient, mGaTracker).processAchievements(mGame, mShips);
+                new AchievementsManager(mApiClient).processAchievements(mGame, mShips);
             }
             progress = mScores * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
         } else if (mGame.getType() == Type.INTERNET) {
@@ -173,7 +173,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
         int progressIncrement = progress - penalty;
         if (progressIncrement > 0) {
-            new ProgressManager(mApiClient, mGaTracker).incrementProgress(progressIncrement);
+            new ProgressManager(mApiClient).incrementProgress(progressIncrement);
             GameSettings.get().setProgressPenalty(0);
         } else {
             GameSettings.get().setProgressPenalty(-progressIncrement);
@@ -201,7 +201,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     @Override
     public void onBackPressed() {
-        mGaTracker.send(new UiEvent(GameConstants.GA_ACTION_BACK, "win").build());
+        UiEvent.send(GameConstants.GA_ACTION_BACK, "win");
         doNotContinue();
     }
 
@@ -225,7 +225,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         if (currentPlayer != null) {
             String playerName = currentPlayer.getDisplayName();
             String player = String.valueOf(playerName.hashCode());
-            mGaTracker.send(new AnalyticsEvent("scores", player, totalScores).build());
+            AnalyticsEvent.send("scores", player, totalScores);
         }
     }
 

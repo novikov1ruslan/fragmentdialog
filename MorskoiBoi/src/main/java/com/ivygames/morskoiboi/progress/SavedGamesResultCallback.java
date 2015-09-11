@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.progress;
 
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -19,11 +18,9 @@ import java.io.IOException;
 final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSnapshotResult> {
     private final GameSettings mSettings = GameSettings.get();
     private final GoogleApiClient mApiClient;
-    private final Tracker mGaTracker;
 
-    SavedGamesResultCallback(GoogleApiClient apiClient, Tracker tracker) {
+    SavedGamesResultCallback(GoogleApiClient apiClient) {
         mApiClient = Validate.notNull(apiClient);
-        mGaTracker = Validate.notNull(tracker);
     }
 
     @Override
@@ -31,7 +28,7 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
         try {
             Status status = result.getStatus();
             if (status.isSuccess()) {
-                Progress cloudProgress = ProgressUtils.getProgressFromSnapshot(result.getSnapshot(), mGaTracker);
+                Progress cloudProgress = ProgressUtils.getProgressFromSnapshot(result.getSnapshot());
                 Progress localProgress = mSettings.getProgress();
                 Ln.v("progress loaded: local =" + localProgress + ", cloud =" + cloudProgress);
                 Progress max = getMax(cloudProgress, localProgress);
@@ -43,7 +40,7 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
                 int statusCode = status.getStatusCode();
                 if (statusCode == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
                     Ln.w("conflict while loading progress");
-                    AnalyticsEvent.send(mGaTracker, "snapshot conflict");
+                    AnalyticsEvent.send("snapshot conflict");
                     resolveConflict(result);
                 } else {
                     Ln.e("failed to load saved game: " + statusCode);
@@ -55,8 +52,8 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
     }
 
     private void resolveConflict(Snapshots.OpenSnapshotResult result) throws IOException {
-        Progress currentProgress = ProgressUtils.getProgressFromSnapshot(result.getSnapshot(), mGaTracker);
-        Progress modifiedProgress = ProgressUtils.getProgressFromSnapshot(result.getConflictingSnapshot(), mGaTracker);
+        Progress currentProgress = ProgressUtils.getProgressFromSnapshot(result.getSnapshot());
+        Progress modifiedProgress = ProgressUtils.getProgressFromSnapshot(result.getConflictingSnapshot());
         Progress max = getMax(currentProgress, modifiedProgress);
 
         mSettings.setProgress(max);

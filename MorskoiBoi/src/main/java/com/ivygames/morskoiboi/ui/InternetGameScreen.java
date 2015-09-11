@@ -111,7 +111,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         } else {
             // STATUS_REAL_TIME_CONNECTION_FAILED
             // STATUS_INTERNAL_ERROR
-            mGaTracker.send(new ExceptionEvent("internet_game", RtUtils.name(statusCode)).build());
+            ExceptionEvent.send("internet_game", RtUtils.name(statusCode));
             SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(mParent)).show(mFm, DIALOG);
         }
     }
@@ -124,7 +124,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         }
 
         mKeyLock = true;
-        mGaTracker.send(new UiEvent("invitePlayer").build());
+        UiEvent.send("invitePlayer");
         createGame();
 
         showWaitingScreen();
@@ -147,7 +147,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         }
 
         mKeyLock = true;
-        mGaTracker.send(new UiEvent("viewInvitations").build());
+        UiEvent.send("viewInvitations");
         Ln.d("requesting invitations screen...");
         createGame();
 
@@ -164,7 +164,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         }
 
         mKeyLock = true;
-        mGaTracker.send(new UiEvent("quickGame").build());
+        UiEvent.send("quickGame");
         createGame();
 
         showWaitingScreen();
@@ -207,7 +207,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             mInternetGame.finish();
         } else if (resultCode == Activity.RESULT_CANCELED) {
             /*
-			 * Dialog was cancelled (user pressed back key, for instance). In our game, this means leaving the room too. In more elaborate games,this could mean
+             * Dialog was cancelled (user pressed back key, for instance). In our game, this means leaving the room too. In more elaborate games,this could mean
 			 * something else (like minimizing the waiting room UI but continue in the handshake process).
 			 */
             Ln.d("user closed the waiting room - leaving");

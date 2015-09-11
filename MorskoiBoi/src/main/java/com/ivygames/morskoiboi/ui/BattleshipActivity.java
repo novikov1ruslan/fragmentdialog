@@ -16,7 +16,6 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger.LogLevel;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -93,7 +92,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
-    private Tracker mGaTracker;
     private boolean mRecreating;
     private GameSettings mSettings;
 
@@ -218,23 +216,20 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             gaInstance.getLogger().setLogLevel(LogLevel.ERROR);
             gaInstance.setDryRun(true);
         }
-        mGaTracker = gaInstance.newTracker(GameConstants.ANALYTICS_KEY);
         Ln.setWarningListener(new WarningListener() {
 
             @Override
             public void onWaring(String message, int level) {
                 if (level == Log.WARN) {
-                    mGaTracker.send(new WarningEvent(message).build());
+                    WarningEvent.send(message);
                 } else {
-                    mGaTracker.send(new ExceptionEvent(message).build());
+                    ExceptionEvent.send(message);
                 }
             }
         });
 
-        mGaTracker.enableAdvertisingIdCollection(true);
-
-        mAchievementsManager = new AchievementsManager(mGoogleApiClient, mGaTracker);
-        mProgressManager = new ProgressManager(mGoogleApiClient, mGaTracker);
+        mAchievementsManager = new AchievementsManager(mGoogleApiClient);
+        mProgressManager = new ProgressManager(mGoogleApiClient);
 
         mSettings = GameSettings.get();
 
@@ -584,10 +579,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     public GoogleApiClient getApiClient() {
         return mGoogleApiClient;
-    }
-
-    public Tracker getTracker() {
-        return mGaTracker;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.analytics;
 
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
-import com.google.android.gms.analytics.Tracker;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Rank;
 
@@ -29,13 +28,13 @@ public final class AnalyticsEvent {
         builder = new EventBuilder(AnalyticsEvent.GA_CAT_GAME, action).setValue(value);
     }
 
-    public static void trackPromotionEvent(int oldProgress, int newProgress, Tracker tracker) {
+    public static void trackPromotionEvent(int oldProgress, int newProgress) {
         Rank lastRank = Rank.getBestRankForScore(oldProgress);
         Rank newRank = Rank.getBestRankForScore(newProgress);
         if (newRank != lastRank) {
             GameSettings.get().newRankAchieved(true);
             String label = lastRank + " promoted to " + newRank;
-            tracker.send(new AnalyticsEvent("promotion", label, 1).build());
+            AnalyticsEvent.send("promotion", label);
             Ln.i(label);
         }
     }
@@ -44,11 +43,15 @@ public final class AnalyticsEvent {
         return builder.build();
     }
 
-    public static void send(Tracker tracker, String action) {
-        tracker.send(new AnalyticsEvent(action).build());
+    public static void send(String action) {
+        GlobalTracker.sTracker.send(new AnalyticsEvent(action).build());
     }
 
-    public static void send(Tracker tracker, String action, String label) {
-        tracker.send(new AnalyticsEvent(action, label).build());
+    public static void send(String action, String label) {
+        GlobalTracker.sTracker.send(new AnalyticsEvent(action, label).build());
+    }
+
+    public static void send(String action, String label, int value) {
+        GlobalTracker.sTracker.send(new AnalyticsEvent(action, label, value).build());
     }
 }

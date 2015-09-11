@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.analytics;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
-import com.google.android.gms.analytics.Tracker;
 
 import org.commons.logger.Ln;
 
@@ -31,15 +31,24 @@ public final class UiEvent {
         builder = new EventBuilder(UiEvent.GA_CAT_UI, action).setLabel(label).setValue(value);
     }
 
+    public static void screenView(String screenName) {
+        GlobalTracker.sTracker.setScreenName(screenName);
+        GlobalTracker.sTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
     public Map<String, String> build() {
         return builder.build();
     }
 
-    public static void send(Tracker tracker, String action) {
-        tracker.send(new UiEvent(action).build());
+    public static void send(String action) {
+        GlobalTracker.sTracker.send(new UiEvent(action).build());
     }
 
-    public static void send(Tracker tracker, String action, String label) {
-        tracker.send(new UiEvent(action, label).build());
+    public static void send(String action, String label) {
+        GlobalTracker.sTracker.send(new UiEvent(action, label).build());
+    }
+
+    public static void send(String action, int value) {
+        GlobalTracker.sTracker.send(new UiEvent(action, value).build());
     }
 }

@@ -116,7 +116,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             Ln.i("reconnect required");
             mApiClient.disconnect();
         } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE) {
-            UiEvent.send(mGaTracker, "+1", "[" + resultCode + "]");
+            UiEvent.send("+1", "[" + resultCode + "]");
         }
     }
 
@@ -127,14 +127,14 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void share() {
-        mGaTracker.send(new UiEvent("share").build());
+        UiEvent.send("share");
         startActivity(MainScreen.createShareIntent(getActivity(), getString(R.string.share_greeting)));
     }
 
     @Override
     public void showAchievements() {
         boolean signedIn = mApiClient.isConnected();
-        mGaTracker.send(new UiEvent("achievements", signedIn ? 1 : 0).build());
+        UiEvent.send("achievements", signedIn ? 1 : 0);
         if (signedIn) {
             showAchievementsScreen();
         } else {
@@ -145,7 +145,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void noAds() {
-        UiEvent.send(mGaTracker, "no_ads");
+        UiEvent.send("no_ads");
         mParent.onNoAds();
     }
 
@@ -171,7 +171,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("sign_in", "achievements").build());
+                UiEvent.send("sign_in", "achievements");
                 mAchievementsRequested = true;
                 mApiClient.connect();
             }
@@ -186,7 +186,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void showLeaderboards() {
         boolean signedIn = mApiClient.isConnected();
-        mGaTracker.send(new UiEvent("showHiScores", signedIn ? 1 : 0).build());
+        UiEvent.send("showHiScores", signedIn ? 1 : 0);
         if (signedIn) {
             showLeaderboardsScreen();
         } else {
@@ -209,7 +209,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("sign_in", "leaderboards").build());
+                UiEvent.send("sign_in", "leaderboards");
                 mLeaderboardRequested = true;
                 mApiClient.connect();
             }
@@ -221,7 +221,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("rate").build());
+                UiEvent.send("rate");
                 GameSettings.get().setRated();
                 PlayUtils.rateApp(getActivity());
             }
@@ -230,7 +230,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mGaTracker.send(new UiEvent("rate_later").build());
+                UiEvent.send("rate_later");
                 GameSettings.get().rateLater();
             }
         }).create().show(mFm, DIALOG);
