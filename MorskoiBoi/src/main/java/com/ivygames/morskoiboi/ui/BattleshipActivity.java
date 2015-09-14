@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.ui;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -550,7 +549,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         }
 
         mAchievementsManager.loadAchievements();
-        mProgressManager.loadProgress(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+        mProgressManager.loadProgress();
 
         if (mCurrentScreen instanceof SignInListener) {
             ((SignInListener) mCurrentScreen).onSignInSucceeded();

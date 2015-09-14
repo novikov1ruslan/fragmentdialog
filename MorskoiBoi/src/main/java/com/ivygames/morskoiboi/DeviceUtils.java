@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -84,4 +85,10 @@ public class DeviceUtils {
         }
         return (flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
+
+    public static boolean isVibrationOn(Context context) {
+        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return audio.getRingerMode() != AudioManager.RINGER_MODE_SILENT;
+    }
+
 }

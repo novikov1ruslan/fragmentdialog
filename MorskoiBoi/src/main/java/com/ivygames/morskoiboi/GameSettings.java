@@ -164,6 +164,7 @@ public class GameSettings {
         }
 
         return progress;
+//        return new Progress(Rank.FLEET_ADMIRAL.getScore());
     }
 
     public boolean noAds() {
