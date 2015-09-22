@@ -55,7 +55,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
         GameSettings settings = GameSettings.get();
         mLayout.setPlayerName(settings.getPlayerName());
-        Rank rank = Rank.getBestRankForScore(settings.getProgress().getRank());
+        Rank rank = Rank.getBestRankForScore(settings.getProgress().getScores());
         mLayout.setRank(rank);
         mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 

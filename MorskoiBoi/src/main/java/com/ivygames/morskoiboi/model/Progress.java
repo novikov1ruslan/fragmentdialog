@@ -8,7 +8,7 @@ public class Progress {
 
     private final int mRank;
 
-    public int getRank() {
+    public int getScores() {
         return mRank;
     }
 

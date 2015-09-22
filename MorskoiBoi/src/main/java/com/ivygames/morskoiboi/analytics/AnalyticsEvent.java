@@ -28,9 +28,9 @@ public final class AnalyticsEvent {
         builder = new EventBuilder(AnalyticsEvent.GA_CAT_GAME, action).setValue(value);
     }
 
-    public static void trackPromotionEvent(int oldProgress, int newProgress) {
-        Rank lastRank = Rank.getBestRankForScore(oldProgress);
-        Rank newRank = Rank.getBestRankForScore(newProgress);
+    public static void trackPromotionEvent(int oldScores, int newScores) {
+        Rank lastRank = Rank.getBestRankForScore(oldScores);
+        Rank newRank = Rank.getBestRankForScore(newScores);
         if (newRank != lastRank) {
             GameSettings.get().newRankAchieved(true);
             String label = lastRank + " promoted to " + newRank;

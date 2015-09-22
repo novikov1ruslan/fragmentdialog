@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.ivygames.morskoiboi.model.Progress;
-import com.ivygames.morskoiboi.model.ProgressUtils;
+import com.ivygames.morskoiboi.progress.ProgressUtils;
 
 import org.commons.logger.Ln;
 import org.json.JSONException;

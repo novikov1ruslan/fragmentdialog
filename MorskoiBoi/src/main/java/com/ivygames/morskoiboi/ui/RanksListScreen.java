@@ -17,7 +17,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (RanksLayout) inflate(R.layout.ranks_list, container);
-        mLayout.setTotalScore(GameSettings.get().getProgress().getRank());
+        mLayout.setTotalScore(GameSettings.get().getProgress().getScores());
 
         Ln.d(this + " screen created");
         return mLayout;

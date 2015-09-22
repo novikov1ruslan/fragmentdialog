@@ -1,8 +1,10 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.morskoiboi.progress;
 
 import com.google.android.gms.games.snapshot.Snapshot;
+import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
+import com.ivygames.morskoiboi.model.Progress;
 
 import org.commons.logger.Ln;
 import org.json.JSONException;
@@ -16,7 +18,7 @@ public class ProgressUtils {
     public static JSONObject toJson(Progress progress) {
         JSONObject json = new JSONObject();
         try {
-            json.put(RANK, progress.getRank());
+            json.put(RANK, progress.getScores());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -71,5 +73,18 @@ public class ProgressUtils {
         }
 
         return parseProgress(data);
+    }
+
+    public static int getScoresFromSnapshot(Snapshot snapshot) throws IOException {
+        return getProgressFromSnapshot(snapshot).getScores();
+    }
+
+    public static Snapshot getResolveSnapshot(Snapshots.OpenSnapshotResult result) throws IOException {
+        Snapshot baseSnapshot = result.getSnapshot();
+        Snapshot conflictingSnapshot = result.getConflictingSnapshot();
+        int baseScores = getScoresFromSnapshot(baseSnapshot);
+        int conflictingScores = getScoresFromSnapshot(conflictingSnapshot);
+
+        return baseScores > conflictingScores ? baseSnapshot : conflictingSnapshot;
     }
 }
