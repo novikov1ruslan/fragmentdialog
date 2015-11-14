@@ -27,7 +27,6 @@ public class AdManager {
     }
 
     private InterstitialAd mInterstitialAfterPlay;
-    private InterstitialAd mInterstitialAfterExit;
     private boolean mInterstitialAfterPlayShown = true;
     private String mBirthday;
     private String mCurrentLocation;
@@ -58,20 +57,6 @@ public class AdManager {
         }
     }
 
-    public void showInterstitialAfterExit(Activity activity) {
-        if (GameSettings.get().noAds()) {
-            Ln.v("no ad game - skipping ads");
-            return;
-        }
-
-        if (mInterstitialAfterExit.isLoaded()) {
-            mInterstitialAfterExit.show();
-        } else {
-            Ln.d("ad could not be loaded");
-            activity.finish();
-        }
-    }
-
     private void initInterstitialAfterPlay(Context context, String adUnitId) {
         if (GameSettings.get().noAds()) {
             Ln.v("no ad game - skipping ads");
@@ -91,32 +76,6 @@ public class AdManager {
             }
         });
 
-    }
-
-    private void initInterstitialAfterExit(final Activity activity, String adUnitId) {
-        if (GameSettings.get().noAds()) {
-            Ln.v("no ad game - skipping ads");
-            return;
-        }
-
-        mInterstitialAfterExit = new InterstitialAd(activity);
-        mInterstitialAfterExit.setAdUnitId(adUnitId);
-        Ln.v("interstitial after exit initialized for [" + adUnitId + "]");
-
-        Builder builder = AdManager.createAdRequest(mPerson);
-        if (SUPPORT_AD_COLONY) {
-            AdColonyBundleBuilder.setZoneId(ADCOLONY_ZONE_ID);
-            builder.addNetworkExtrasBundle(AdColonyAdapter.class, AdColonyBundleBuilder.build());
-        }
-        AdRequest adRequest = builder.build();
-        mInterstitialAfterExit.loadAd(adRequest);
-        mInterstitialAfterExit.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                Ln.d("interstitial closed - closing the game now");
-                activity.finish();
-            }
-        });
     }
 
     public void setPerson(Person person) {
@@ -209,7 +168,6 @@ public class AdManager {
             if (SUPPORT_AD_COLONY) {
                 AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);
             }
-            initInterstitialAfterExit(activity, activity.getString(R.string.admob_interstitial_after_exit_id));
             initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
             if (isSmallScreen(activity)) {
                 mBanner.setVisibility(View.GONE);

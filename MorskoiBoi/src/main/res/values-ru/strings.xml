@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ranks -->
     <string name="rank_seaman">Матрос</string>
@@ -115,7 +115,7 @@
     <string name="connecting_to">Подключается к %1$s…</string>
     <string name="discover">Найти</string>
     <string name="connection_failed">Ошибка Соединения</string>
-    <string name="waiting_connection">Ожидание Подсоединения...</string>
+    <string name="waiting_connection">Ожидание Подсоединения…</string>
     <string name="select_device">Выберите Устройство</string>
     <string name="scan">SCAN</string>
     <string name="none_found">Устройства не найдены</string>

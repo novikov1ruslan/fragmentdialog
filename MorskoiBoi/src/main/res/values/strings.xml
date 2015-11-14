@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ranks -->
     <string name="rank_seaman">Seaman</string>
@@ -24,7 +24,7 @@
     <string name="rank_o12">Admiral of the Navy</string>
 
     <!--  -->
-    <string name="rate_request">If you like this game please rate it to suport the developer. Thank you in advance!</string>
+    <string name="rate_request">If you like this game please rate it to support the developer. Thank you in advance!</string>
     <string name="rate">Rate</string>
     <string name="later">Later</string>
     <string name="leaderboards_request">Please sign in with Google to view Leaderboards.</string>
@@ -116,7 +116,7 @@
     <string name="connecting_to">Connecting to %1$s…</string>
     <string name="discover">Discover</string>
     <string name="connection_failed">Connection Failed</string>
-    <string name="waiting_connection">Waiting for Connection...</string>
+    <string name="waiting_connection">Waiting for Connection…</string>
     <string name="select_device">Select Device</string>
     <string name="scan">SCAN</string>
     <string name="none_found">No devices found</string>
