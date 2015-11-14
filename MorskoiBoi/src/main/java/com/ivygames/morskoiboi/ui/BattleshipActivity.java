@@ -454,13 +454,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             return;
         }
 
-        if (mCurrentScreen instanceof MainScreen) {
-            if (!mSettings.noAds()) {
-                Ln.d("exiting from the game - show interstitial");
-                AdManager.instance.showInterstitialAfterExit(this);
-                return;
-            }
-        } else if (mCurrentScreen instanceof BackPressListener) {
+        if (mCurrentScreen instanceof BackPressListener) {
             Ln.v("propagating backpress");
             if (mCurrentScreen.isResumed()) {
                 ((BackPressListener) mCurrentScreen).onBackPressed();
