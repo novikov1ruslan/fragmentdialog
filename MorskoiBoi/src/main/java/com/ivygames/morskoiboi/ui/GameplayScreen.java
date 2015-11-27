@@ -129,12 +129,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void run() {
             ACRA.getErrorReporter().handleException(new RuntimeException("shot_hanged"));
+            showConnectionLostDialog();
         }
     };
     private final Runnable mTurnHangDetectionTask = new Runnable() {
         @Override
         public void run() {
             ACRA.getErrorReporter().handleException(new RuntimeException("turn_hanged"));
+            showConnectionLostDialog();
         }
     };
 
@@ -193,8 +195,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         UiEvent.send("chat", "sent");
-                        ChatDialog chatDialog = (ChatDialog) dialog;
-                        String text = chatDialog.getChatMessage().toString();
+                        String text = ((ChatDialog) dialog).getChatMessage().toString();
                         if (TextUtils.isEmpty(text)) {
                             Ln.d("chat text is empty - not sending");
                         } else {
@@ -415,8 +416,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showWantToLeaveRoomDialog() {
-        String message = getString(R.string.want_to_leave_room, mEnemy.getName());
-        showLeaveGameDialog(message);
+        showLeaveGameDialog(getString(R.string.want_to_leave_room, mEnemy.getName()));
     }
 
     private void showLeaveGameDialog(String message) {
@@ -525,6 +525,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private void notifyOpponentTurn() {
         getActivity().startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
+    }
+
+    private void showConnectionLostDialog() {
+        SimpleActionDialog.create(R.string.connection_lost, mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
     /**
