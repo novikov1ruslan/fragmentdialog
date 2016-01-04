@@ -66,6 +66,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private static final int VIBRATION_ON_KILL = 500;
 
     private static final int READY_TO_START = 0;
+    public static final int SHOT_HANG_DETECTION_TIMEOUT = 10000;
+    public static final int TURN_HANG_DETECTION_TIMEOUT = 60000;
+    public static final int ALLOWED_SKIPPED_TURNS = 2;
 
     private Game mGame;
     private GameplayLayoutInterface mLayout;
@@ -101,20 +104,22 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     };
 
-    private final TimerListener mTimerListener = new TimerListener() {
+    private final TimerListener mTurnTimerListener = new TimerListener() {
 
         @Override
         public void onTimerExpired() {
             mTurnTimer = null;
             mTimeLeft = READY_TO_START;
             mTimerExpiredCounter++;
-            if (mTimerExpiredCounter > 2) {
+            if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
                 AnalyticsEvent.send("surrendered_passively");
                 int penalty = calcSurrenderPenalty();
                 Ln.d("player surrender passively with penalty: " + penalty);
                 surrender(penalty);
             } else {
-                notifyOpponentTurn();
+                Ln.d("turn skipped");
+                showOpponentTurn();
+                startDetectingTurnTimeout();
                 mEnemy.go();
             }
         }
@@ -234,10 +239,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setEnemyName(mEnemy.getName());
 
         if (mPlayer.isOpponentReady()) {
-            boolean isOpponentTurn = mPlayer.isOpponentTurn();
-            Ln.d("turn: " + (isOpponentTurn ? "opponent" : "player"));
-            if (isOpponentTurn) {
-                notifyOpponentTurn();
+            if (mPlayer.isOpponentTurn()) {
+                Ln.d("opponent's turn");
+                showOpponentTurn();
+                startDetectingTurnTimeout();
+            }
+            else {
+                Ln.d("player's turn");
             }
         } else {
             Ln.d("opponent is still setting board");
@@ -325,8 +333,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         getActivity().stopService(mMatchStatusIntent);
         Ln.d(this + " screen destroyed");
 
-        mHandler.removeCallbacks(mShotHangDetectionTask);
-        mHandler.removeCallbacks(mTurnHangDetectionTask);
+        stopDetectingShotTimeout();
+        stopDetectingTurnTimeout();
     }
 
     @Override
@@ -353,8 +361,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         }
 
-        mHandler.removeCallbacks(mShotHangDetectionTask);
-        mHandler.removeCallbacks(mTurnHangDetectionTask);
+        stopDetectingShotTimeout();
+        stopDetectingTurnTimeout();
     }
 
     private void pauseTurnTimer() {
@@ -385,7 +393,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         Ln.v("resuming timer for " + mTimeLeft);
-        mTurnTimer = new TurnTimer(mTimeLeft, mLayout, mTimerListener, mSoundManager);
+        mTurnTimer = new TurnTimer(mTimeLeft, mLayout, mTurnTimerListener, mSoundManager);
         mTimeLeft = READY_TO_START;
         mTurnTimer.execute();
     }
@@ -490,7 +498,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 return;
             }
 
-            mHandler.postDelayed(mShotHangDetectionTask, 10000);
+            startDetectingShotTimeout();
 
             stopTurnTimer();
             mTimerExpiredCounter = 0;
@@ -522,7 +530,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     }
 
-    private void notifyOpponentTurn() {
+    private void showOpponentTurn() {
         getActivity().startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
     }
@@ -544,9 +552,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void go() {
-            mHandler.removeCallbacks(mTurnHangDetectionTask);
             mPlayer.go();
-            notifyPlayerTurn();
+            showPlayerTurn();
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
                 startTurnTimer(); // for all practical scenarios - start will only be called from here
@@ -556,7 +563,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             hideOpponentSettingBoardNotification();
         }
 
-        private void notifyPlayerTurn() {
+        private void showPlayerTurn() {
             getActivity().startService(getServiceIntent(getString(R.string.your_turn)));
             mLayout.playerTurn();
         }
@@ -568,8 +575,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onShotResult(final PokeResult result) {
-            mHandler.removeCallbacks(mShotHangDetectionTask);
+            stopDetectingShotTimeout();
 
+            Ln.v(result);
             mPlayer.onShotResult(result);
             mGame.updateWithNewShot(result.ship, result.cell);
 
@@ -597,10 +605,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     showWinScreenDelayed();
                 }
             } else if (result.cell.isMiss()) {
-                Ln.v("it's a miss - move is already passed by implementation - update the screen");
-                notifyOpponentTurn();
+                Ln.d(mPlayer + ": I missed - passing the turn to " + mEnemy);
                 mSoundManager.playSplash();
-                mHandler.postDelayed(mTurnHangDetectionTask, 60000);
+                showOpponentTurn();
+                startDetectingTurnTimeout();
+                mEnemy.go();
             } else {
                 Ln.v("it's a hit! - player continues");
                 mSoundManager.playHitSound();
@@ -613,7 +622,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onShotAt(Vector2 aim) {
-            mHandler.removeCallbacks(mTurnHangDetectionTask);
+            stopDetectingTurnTimeout();
             PokeResult result = mPlayer.onShotAtForResult(aim);
 
             updateMyStatus();
@@ -659,7 +668,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             hideOpponentSettingBoardNotification();
             mPlayer.bid(bid);
             if (mPlayer.isOpponentTurn()) {
-                notifyOpponentTurn();
+                showOpponentTurn();
+                startDetectingTurnTimeout();
             }
         }
 
@@ -722,6 +732,22 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     }
 
+    private void stopDetectingShotTimeout() {
+        mHandler.removeCallbacks(mShotHangDetectionTask);
+    }
+
+    private void startDetectingShotTimeout() {
+        mHandler.postDelayed(mShotHangDetectionTask, SHOT_HANG_DETECTION_TIMEOUT);
+    }
+
+    private void stopDetectingTurnTimeout() {
+        mHandler.removeCallbacks(mTurnHangDetectionTask);
+    }
+
+    private void startDetectingTurnTimeout() {
+        mHandler.postDelayed(mTurnHangDetectionTask, TURN_HANG_DETECTION_TIMEOUT);
+    }
+
     public void updateMyStatus() {
         Collection<Ship> ships = mPlayerPrivateBoard.getShips();
         LinkedList<Ship> workingShips = new LinkedList<Ship>();
@@ -756,7 +782,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         Ln.d("starting timer");
-        mTurnTimer = new TurnTimer(mGame.getTurnTimeout(), mLayout, mTimerListener, mSoundManager);
+        mTurnTimer = new TurnTimer(mGame.getTurnTimeout(), mLayout, mTurnTimerListener, mSoundManager);
         mTurnTimer.execute();
     }
 

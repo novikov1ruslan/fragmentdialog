@@ -51,12 +51,7 @@ public final class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onShotResult(PokeResult result) {
-        Ln.v(result);
         updateEnemyBoard(result);
-        if (result.cell.isMiss()) {
-            Ln.d(this + ": I missed - passing the turn to " + mOpponent);
-            mOpponent.go();
-        }
     }
 
     @Override
@@ -101,11 +96,6 @@ public final class PlayerOpponent extends AbstractOpponent {
     public Board getEnemyBoard() {
         return mEnemyBoard;
     }
-
-//    public void setEnemyBoard(Board board) {
-//        Ln.v("enemy board set: " + board);
-//        mEnemyBoard = board;
-//    }
 
     public Board getBoard() {
         return mMyBoard;
