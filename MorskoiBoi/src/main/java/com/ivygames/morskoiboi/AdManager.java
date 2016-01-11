@@ -11,8 +11,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.plus.model.people.Person;
 import com.jirbo.adcolony.AdColony;
-import com.jirbo.adcolony.AdColonyAdapter;
-import com.jirbo.adcolony.AdColonyBundleBuilder;
 
 import org.commons.logger.Ln;
 

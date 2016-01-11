@@ -14,6 +14,7 @@ import org.commons.logger.Ln;
 
 public abstract class BattleshipScreen extends Screen {
 
+    // TODO: make these final, remove onAttach() method
     protected GoogleApiClient mApiClient;
     protected FragmentManager mFm;
 

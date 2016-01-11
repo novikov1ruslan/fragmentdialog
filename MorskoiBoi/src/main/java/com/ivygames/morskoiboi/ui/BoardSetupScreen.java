@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.ui;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -48,18 +47,18 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     private View mTutView;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private final AsyncTask<Void, Void, Void> timeoutTask = new AsyncTask<Void, Void, Void>() {
-        @Override
-        protected Void doInBackground(Void... params) {
-            Thread.sleep();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-        }
-    };
+//    private final AsyncTask<Void, Void, Void> timeoutTask = new AsyncTask<Void, Void, Void>() {
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            Thread.sleep();
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//
+//        }
+//    };
 
     private final Rules mRules = RulesFactory.getRules();
     private final Runnable mTimeoutTask = new Runnable() {

@@ -20,8 +20,8 @@ import com.ivygames.morskoiboi.bluetooth.ConnectThread;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
-import com.ivygames.morskoiboi.ui.view.DeviceListLayout;
 import com.ivygames.morskoiboi.ui.view.DeviceListActions;
+import com.ivygames.morskoiboi.ui.view.DeviceListLayout;
 import com.ivygames.morskoiboi.ui.view.SingleTextDialog;
 
 import org.commons.logger.Ln;

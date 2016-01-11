@@ -44,8 +44,7 @@ public class ProgressManager {
     }
 
     public void loadProgress() {
-        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.open(mApiClient, SNAPSHOT_NAME, false);
-        pendingResult.setResultCallback(new SavedGamesResultCallback(mApiClient));
+        Games.Snapshots.open(mApiClient, SNAPSHOT_NAME, false).setResultCallback(new SavedGamesResultCallback(mApiClient));
     }
 
     public void incrementProgress(int increment) {
@@ -57,14 +56,24 @@ public class ProgressManager {
         Ln.d("incrementing progress (" + oldScores + ") by " + increment);
 
         Progress newProgress = new Progress(oldScores + increment);
+        saveProgress(newProgress);
+
+        AnalyticsEvent.trackPromotionEvent(oldScores, newProgress.getScores());
+    }
+
+    private void saveProgress(Progress newProgress) {
         GameSettings.get().setProgress(newProgress);
 
         if (mApiClient.isConnected()) {
             Ln.d("posting progress to the cloud: " + newProgress);
             update(mApiClient, ProgressUtils.getBytes(newProgress));
         }
+    }
 
-        AnalyticsEvent.trackPromotionEvent(oldScores, newProgress.getScores());
+    public void debug_setProgress(int progress) {
+        Ln.i("setting debug progress to: " + progress);
+
+        saveProgress(new Progress(progress));
     }
 
     /**

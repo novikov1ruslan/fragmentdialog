@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.view.RanksLayout;
 
@@ -18,6 +19,13 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     public View onCreateView(ViewGroup container) {
         mLayout = (RanksLayout) inflate(R.layout.ranks_list, container);
         mLayout.setTotalScore(GameSettings.get().getProgress().getScores());
+
+        mLayout.debug_setDebugListener(new RanksLayout.DebugListener() {
+            @Override
+            public void onDebugScoreSet(int score) {
+                new ProgressManager(mApiClient).debug_setProgress(score);
+            }
+        });
 
         Ln.d(this + " screen created");
         return mLayout;

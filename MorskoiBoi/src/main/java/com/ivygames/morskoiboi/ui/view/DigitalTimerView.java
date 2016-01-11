@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 
-import org.commons.logger.Ln;
-
 import java.util.concurrent.TimeUnit;
 
 public class DigitalTimerView extends TextView implements TimerViewInterface {

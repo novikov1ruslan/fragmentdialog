@@ -29,6 +29,28 @@
         android:layout_margin="8dp"
         android:background="@color/main" />
 
+    <LinearLayout
+        android:id="@+id/debug_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/debug_set_score_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/debug_set_score_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Score" />
+
+    </LinearLayout>
+
+
     <ListView
         android:id="@+id/ranks"
         android:layout_width="match_parent"
