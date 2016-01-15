@@ -67,7 +67,7 @@
     <string name="ships_setup_validation">You must set your ships first</string>
     <string name="place_instruction">Move the ship to place it on the board</string>
     <string name="rotate_instruction">Tap on a ship to rotate</string>
-    <string name="session_timeout">Your session timed out</string>
+    <string name="session_timeout">Your session timed out: it took you too long to place the ships</string>
 
     <!-- gameplay -->
     <string name="abandon_game_question">Are you sure you want to abandon the battle?</string>

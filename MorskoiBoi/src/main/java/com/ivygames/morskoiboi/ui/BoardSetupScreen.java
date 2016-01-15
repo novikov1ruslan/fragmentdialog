@@ -38,7 +38,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
     private static final int TOTAL_SHIPS = RulesFactory.getRules().getTotalShips().length;
-    private static final long BOARD_SETUP_TIMEOUT = 2 * 60 * 1000;
+    private static final long BOARD_SETUP_TIMEOUT = 90 * 1000;
 
     private Board mBoard = new Board();
     private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
@@ -47,19 +47,6 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     private View mTutView;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-//    private final AsyncTask<Void, Void, Void> timeoutTask = new AsyncTask<Void, Void, Void>() {
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            Thread.sleep();
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//
-//        }
-//    };
-
     private final Rules mRules = RulesFactory.getRules();
     private final Runnable mTimeoutTask = new Runnable() {
         @Override
@@ -67,13 +54,12 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
             Ln.d("board setup timeout");
             AnalyticsEvent.send("board setup timeout");
             Model.instance.game.finish();
-//            DialogUtils.showNote(getActivity().getSupportFragmentManager(), R.string.session_timeout);
             DialogUtils.newOkDialog(R.string.session_timeout, new Runnable() {
                 @Override
                 public void run() {
                     backToSelectGameScreen();
                 }
-            }).show(mParent.getSupportFragmentManager(), FragmentAlertDialog.TAG);
+            }).show(getFragmentManager(), FragmentAlertDialog.TAG);
         }
     };
 
@@ -87,7 +73,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
-        if (Model.instance.game.getType() == Game.Type.INTERNET) {
+        if (Model.instance.game.getType() == Game.Type.INTERNET || GameConstants.IS_TEST_MODE) {
             Ln.d("initializing timeout: " + BOARD_SETUP_TIMEOUT);
             mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
         }

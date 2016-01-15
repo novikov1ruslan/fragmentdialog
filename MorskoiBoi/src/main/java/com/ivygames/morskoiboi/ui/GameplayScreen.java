@@ -66,8 +66,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private static final int VIBRATION_ON_KILL = 500;
 
     private static final int READY_TO_START = 0;
-    public static final int SHOT_HANG_DETECTION_TIMEOUT = 10000;
-    public static final int TURN_HANG_DETECTION_TIMEOUT = 60000;
+    public static final int SHOT_HANG_DETECTION_TIMEOUT = 10000; // milliseconds
+    public static final int TURN_HANG_DETECTION_TIMEOUT = 60000; // milliseconds
     public static final int ALLOWED_SKIPPED_TURNS = 2;
 
     private Game mGame;

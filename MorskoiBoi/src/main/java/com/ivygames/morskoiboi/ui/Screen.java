@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.ui;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,10 @@ import android.view.ViewGroup;
 public abstract class Screen {
 
     protected BattleshipActivity mParent;
+
+    protected final FragmentManager getFragmentManager() {
+        return mParent.getSupportFragmentManager();
+    }
 
     public abstract View getView();
 

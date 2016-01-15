@@ -25,9 +25,8 @@ public abstract class BattleshipScreen extends Screen {
         mParent = activity;
         mApiClient = mParent.getApiClient();
         UiEvent.screenView(this.getClass().getSimpleName());
-        mFm = mParent.getSupportFragmentManager();
+        mFm = getFragmentManager();
         Ln.v(this + " attached");
-
     }
 
     public void onCreate() {
