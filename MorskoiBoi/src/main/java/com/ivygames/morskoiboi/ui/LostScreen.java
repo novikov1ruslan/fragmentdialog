@@ -6,8 +6,9 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SoundBar;
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
@@ -25,7 +26,8 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     @Override
     public void onCreate() {
         super.onCreate();
-        mSoundBar = new SoundBar(getActivity().getAssets(), "lost.ogg");
+        mSoundBar = SoundBarFactory.create(getActivity().getAssets(), "lost.ogg");
+        mSoundBar.play();
         GameSettings.get().incrementGamesPlayedCounter();
     }
 
@@ -59,17 +61,17 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         return mView;
     }
 
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mSoundBar.autoPause();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mSoundBar.autoResume();
-//    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSoundBar.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSoundBar.resume();
+    }
 
     @Override
     public void onDestroy() {

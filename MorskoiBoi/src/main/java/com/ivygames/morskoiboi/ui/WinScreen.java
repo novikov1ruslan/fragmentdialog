@@ -9,9 +9,10 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.SoundBar;
+import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -64,7 +65,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
         mGame = Model.instance.game;
 
-        mSoundBar = new SoundBar(getActivity().getAssets(), "win.ogg");
+        mSoundBar = SoundBarFactory.create(getActivity().getAssets(), "win.ogg");
+        mSoundBar.play();
 
         mTime = mGame.getTimeSpent();
         mShips = board.getShips();
@@ -142,6 +144,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         } else {
             mLayout.hideSignInBar();
         }
+        mSoundBar.resume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSoundBar.pause();
     }
 
     @Override
