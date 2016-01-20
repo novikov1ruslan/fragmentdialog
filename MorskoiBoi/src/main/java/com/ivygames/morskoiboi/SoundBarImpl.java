@@ -31,6 +31,7 @@ class SoundBarImpl implements SoundBar {
                 }
             }
         });
+        Ln.d("created music for " + afd);
     }
 
     @Override
@@ -42,16 +43,19 @@ class SoundBarImpl implements SoundBar {
     public void release() {
         mSoundPool.release();
         mReleased = true;
+        Ln.d("music released");
     }
 
     @Override
     public void resume() {
         mSoundPool.autoResume();
+        Ln.v("music resumed");
     }
 
     @Override
     public void pause() {
         mSoundPool.autoPause();
+        Ln.v("music paused");
     }
 
 }
