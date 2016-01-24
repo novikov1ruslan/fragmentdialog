@@ -38,7 +38,7 @@ public class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayo
     static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
     private static final int TOTAL_SHIPS = RulesFactory.getRules().getTotalShips().length;
-    private static final long BOARD_SETUP_TIMEOUT = 90 * 1000;
+    private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 
     private Board mBoard = new Board();
     private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());

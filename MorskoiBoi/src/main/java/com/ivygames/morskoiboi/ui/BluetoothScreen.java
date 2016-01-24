@@ -210,6 +210,11 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     @Override
+    public int getMusic() {
+        return R.raw.intro_music;
+    }
+
+    @Override
     public String toString() {
         return "BLUETOOTH" + debugSuffix();
     }

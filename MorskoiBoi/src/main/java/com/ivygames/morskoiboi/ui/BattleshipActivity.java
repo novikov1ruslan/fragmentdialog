@@ -41,6 +41,7 @@ import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameServicesUtils;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.MusicPlayer;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
@@ -117,6 +118,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     private boolean mResumed;
     private PurchaseHelper mPurchaseHelper;
+
+    private MusicPlayer mMusicPlayer;
 
     // Callback for when a purchase is finished
     private final IabHelper.OnIabPurchaseFinishedListener mPurchaseListener = new IabHelper.OnIabPurchaseFinishedListener() {
@@ -197,6 +200,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             finish();
             return;
         }
+        mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
         mGoogleApiClient = createGoogleApiClient();
 
@@ -259,7 +263,16 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         if (mSettings.noAds()) {
             hideAds();
         }
+
         Ln.i("game fully created");
+    }
+
+    public void playMusic(int music) {
+        mMusicPlayer.play(music);
+    }
+
+    public void stopMusic() {
+        mMusicPlayer.stop();
     }
 
     public void hideNoAdsButton() {
@@ -352,6 +365,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         // Set the hardware buttons to control the music
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         AdManager.instance.resume(this);
+
+        mMusicPlayer.play(mCurrentScreen.getMusic());
     }
 
     @Override
@@ -368,6 +383,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         setVolumeControlStream(mVolumeControlStream);
         AdManager.instance.pause();
+
+        mMusicPlayer.pause();
     }
 
     @Override
@@ -407,6 +424,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);
         mGoogleApiClient.unregisterConnectionFailedListener(this);
+
+        mMusicPlayer.release();
         Ln.d("game destroyed");
     }
 
@@ -605,9 +624,14 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         return mIncomingInvitationIds.size() > 0;
     }
 
-    public final void setScreen(Screen screen) {
+    public final void setScreen(BattleshipScreen screen) {
         View oldView = null;
+
         if (mCurrentScreen != null) {
+            if (mCurrentScreen.getMusic() != screen.getMusic()) {
+                mMusicPlayer.stop();
+            }
+
             oldView = mCurrentScreen.getView();
             mCurrentScreen.onPause();
             mCurrentScreen.onStop();
@@ -615,21 +639,12 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             mCurrentScreen.onDestroy();
         }
 
-        mCurrentScreen = (BattleshipScreen) screen;
+        mCurrentScreen = screen;
         mCurrentScreen.onAttach(this);
         mCurrentScreen.onCreate();
         View view = mCurrentScreen.onCreateView(mContainer);
 
-        // if (oldView != null) {
-        // LayoutTransition layoutTransition = new LayoutTransition();
-        // mContainer.setLayoutTransition(layoutTransition);
-        // }
-
         mContainer.addView(view);
-//        mTutView = mCurrentScreen.getTutView();
-//        if (mTutView != null) {
-//            mContainer.addView(mTutView);
-//        }
         if (oldView != null) {
             mContainer.removeView(oldView);
         }
@@ -640,5 +655,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
                 mCurrentScreen.onResume();
             }
         }
+
+        mMusicPlayer.play(mCurrentScreen.getMusic());
     }
 }

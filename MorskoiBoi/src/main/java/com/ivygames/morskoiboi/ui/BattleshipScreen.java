@@ -1,11 +1,13 @@
 package com.ivygames.morskoiboi.ui;
 
 import android.content.Intent;
+import android.support.annotation.RawRes;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.ivygames.morskoiboi.MusicPlayer;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 
@@ -45,6 +47,10 @@ public abstract class BattleshipScreen extends Screen {
 
     public void onDestroy() {
         Ln.v(this + " screen destroyed");
+    }
+
+    protected final void setScreen(BattleshipScreen screen) {
+        mParent.setScreen(screen);
     }
 
     protected final void showWaitingScreen() {
@@ -102,5 +108,9 @@ public abstract class BattleshipScreen extends Screen {
 
     public View getTutView() {
         return null;
+    }
+
+    public @RawRes int getMusic() {
+        return MusicPlayer.NO_SOUND;
     }
 }

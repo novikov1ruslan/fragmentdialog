@@ -276,6 +276,11 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     }
 
     @Override
+    public int getMusic() {
+        return R.raw.intro_music;
+    }
+
+    @Override
     public String toString() {
         return TAG + debugSuffix();
     }

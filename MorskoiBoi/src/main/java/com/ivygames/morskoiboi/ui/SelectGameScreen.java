@@ -290,6 +290,11 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @Override
+    public int getMusic() {
+        return R.raw.intro_music;
+    }
+
+    @Override
     public String toString() {
         return TAG + debugSuffix();
     }

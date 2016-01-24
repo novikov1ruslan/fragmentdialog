@@ -91,6 +91,13 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         boolean on = !mSettings.isSoundOn();
         mSettings.setSound(on);
         mLayout.setSound(on);
+
+        if (on) {
+            mParent.playMusic(getMusic());
+        }
+        else {
+            mParent.stopMusic();
+        }
     }
 
     @Override
@@ -135,6 +142,11 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     @Override
     public void onBackPressed() {
         mParent.setScreen(new MainScreen());
+    }
+
+    @Override
+    public int getMusic() {
+        return R.raw.intro_music;
     }
 
     @Override

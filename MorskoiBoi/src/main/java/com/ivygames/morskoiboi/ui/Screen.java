@@ -25,10 +25,6 @@ public abstract class Screen {
         return mParent;
     }
 
-    protected final void setScreen(Screen screen) {
-        mParent.setScreen(screen);
-    }
-
     protected final String getString(int resId) {
         return mParent.getString(resId);
     }

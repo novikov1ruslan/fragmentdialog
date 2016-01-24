@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;

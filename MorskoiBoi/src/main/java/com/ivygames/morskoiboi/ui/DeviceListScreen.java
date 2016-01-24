@@ -227,6 +227,11 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     }
 
     @Override
+    public int getMusic() {
+        return R.raw.intro_music;
+    }
+
+    @Override
     public String toString() {
         return "DEVICE_LIST" + debugSuffix();
     }

@@ -241,6 +241,11 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     @Override
+    public int getMusic() {
+        return R.raw.intro_music;
+    }
+
+    @Override
     public String toString() {
         return TAG + debugSuffix();
     }
