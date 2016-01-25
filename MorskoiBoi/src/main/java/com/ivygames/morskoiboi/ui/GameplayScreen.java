@@ -133,14 +133,16 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final Runnable mShotHangDetectionTask = new Runnable() {
         @Override
         public void run() {
-            ACRA.getErrorReporter().handleException(new RuntimeException("shot_hanged"));
+//            ACRA.getErrorReporter().handleException(new RuntimeException("shot_hanged"));
+            Ln.w("shot_hanged");
             showConnectionLostDialog();
         }
     };
     private final Runnable mTurnHangDetectionTask = new Runnable() {
         @Override
         public void run() {
-            ACRA.getErrorReporter().handleException(new RuntimeException("turn_hanged"));
+//            ACRA.getErrorReporter().handleException(new RuntimeException("turn_hanged"));
+            Ln.w("turn_hanged");
             showConnectionLostDialog();
         }
     };
