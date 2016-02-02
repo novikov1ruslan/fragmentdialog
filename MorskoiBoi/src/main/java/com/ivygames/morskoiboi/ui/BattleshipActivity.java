@@ -219,17 +219,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             gaInstance.getLogger().setLogLevel(LogLevel.ERROR);
             gaInstance.setDryRun(true);
         }
-        Ln.setWarningListener(new WarningListener() {
-
-            @Override
-            public void onWaring(String message, int level) {
-                if (level == Log.WARN) {
-                    WarningEvent.send(message);
-                } else {
-                    ExceptionEvent.send(message);
-                }
-            }
-        });
 
         mAchievementsManager = new AchievementsManager(mGoogleApiClient);
         mProgressManager = new ProgressManager(mGoogleApiClient);

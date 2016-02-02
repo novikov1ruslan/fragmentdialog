@@ -10,7 +10,9 @@ import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.GlobalTracker;
+import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
@@ -18,8 +20,11 @@ import com.ivygames.morskoiboi.variant.RussianRules;
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.annotation.ReportsCrashes;
+import org.commons.logger.Config;
 import org.commons.logger.Ln;
-import org.commons.logger.Ln.Config;
+import org.commons.logger.Logger;
+import org.commons.logger.LoggerImpl;
+import org.commons.logger.WarningListener;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -52,11 +57,7 @@ public class BattleshipApplication extends Application {
         sContext = this;
         ACRA.init(this);
 
-        int minimumLogLevel = DeviceUtils.isDebug(this) ? Log.VERBOSE : Log.INFO;
-        String path = getFilesDir().getPath();
-        // filesPath = Environment.getExternalStorageDirectory().getPath();
-        Config logConfig = new Config(minimumLogLevel, path, "battleship");
-        Ln.setConfiguration(logConfig);
+        initLogger();
         GlobalTracker.sTracker = GoogleAnalytics.getInstance(this).newTracker(GameConstants.ANALYTICS_KEY);
         GlobalTracker.sTracker.enableAdvertisingIdCollection(true);
         Log.i("Battleship", "created");
@@ -77,6 +78,26 @@ public class BattleshipApplication extends Application {
 //        PlacementFactory.setPlacementAlgorithm(new AmericanPlacement());
 //        RulesFactory.setRules(new AmericanRules());
         BotFactory.setAlgorithm(new RussianBot());
+    }
+
+    private void initLogger() {
+        int minimumLogLevel = DeviceUtils.isDebug(this) ? Log.VERBOSE : Log.INFO;
+        String path = getFilesDir().getPath();
+        // filesPath = Environment.getExternalStorageDirectory().getPath();
+        Config logConfig = new Config(minimumLogLevel, path, "battleship");
+        WarningListener warningListener = new WarningListener() {
+
+            @Override
+            public void onWaring(String message, int level) {
+                if (level == Log.WARN) {
+                    WarningEvent.send(message);
+                } else {
+                    ExceptionEvent.send(message);
+                }
+            }
+        };
+        Logger logger = new LoggerImpl(logConfig, warningListener);
+        Ln.injectLogger(logger);
     }
 
     private static class AnalyticsExceptionParser implements ExceptionParser {
