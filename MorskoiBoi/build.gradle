@@ -17,7 +17,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            testCoverageEnabled = true
         }
+
+        debug {
+            debuggable true
+            testCoverageEnabled = true
+
+//            if (testCoverageEnabled) {
+//                testInstrumentationRunner 'com.here.test.JacocoRunner'
+//            } else {
+//                testInstrumentationRunner 'com.here.test.JUnitReportGoogleInstrumentationTestRunner'
+//            }
+        }
+
     }
 
     signingConfigs {
@@ -51,7 +64,6 @@ dependencies {
     compile project(':BaseGameUtils')
     compile project(':RUtils')
     compile files('libs/adcolony.jar')
-//    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.android.gms:play-services-games:7.5.0'
     compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
@@ -62,13 +74,20 @@ dependencies {
     compile 'ch.acra:acra:4.6.2'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
-//        exclude group: 'com.google.android', module: 'support-v4'
     }
-    //    compile 'org.solovyev.android:checkout:0.7.4@aar'
-//    compile 'com.anjlab.android.iab.v3:library:1.0.@aar'
     // androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.2'
     // androidTestCompile files('libs/dexmaker-1.0.jar')
     // androidTestCompile files('libs/dexmaker-mockito-1.0.jar')
     // androidTestCompile files('libs/mockito-all-1.9.5.jar')
     compile project(':BillingUtils')
+
+    // Unit test dependencies.
+//    def robolectricVersion = '3.0'
+
+    testCompile "org.robolectric:robolectric:3.0"
+//    testCompile "org.robolectric:shadows-support-v4:${robolectricVersion}"
+    testCompile 'junit:junit:4.12'
+//    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
 }

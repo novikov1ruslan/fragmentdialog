@@ -246,7 +246,7 @@ public class Board {
         return getShipsAt(vector.getX(), vector.getY());
     }
 
-    private Collection<Ship> getShipsAt(int i, int j) {
+    public Collection<Ship> getShipsAt(int i, int j) {
         HashSet<Ship> ships = new HashSet<Ship>();
         if (hasShipAt(i, j)) {
             for (Ship ship : mShips) {

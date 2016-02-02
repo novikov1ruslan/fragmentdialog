@@ -16,6 +16,7 @@ public class Ship {
 
     private final int mSize;
     private Orientation mOrientation;
+    //TODO: store it on board
     private int mX;
     private int mY;
     private int mHealth;
@@ -110,6 +111,7 @@ public class Ship {
         return mX;
     }
 
+    //TODO: remove as not used
     public Ship setX(int x) {
         mX = x;
         return this;

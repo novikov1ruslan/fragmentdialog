@@ -1,5 +1,10 @@
 package com.ivygames.morskoiboi.model;
 
+/**
+ * E->M, E->H, E->R
+ * R->H
+ *
+ */
 public class Cell {
 
     private final static char EMPTY = ' ';
@@ -65,16 +70,20 @@ public class Cell {
         return mState == EMPTY;
     }
 
+    public boolean isMiss() {
+        return mState == MISS;
+    }
+
     public boolean isHit() {
         return mState == HIT;
     }
 
-    public void setHit() {
-        mState = HIT;
+    public boolean isReserved() {
+        return mState == RESERVED;
     }
 
-    public boolean isMiss() {
-        return mState == MISS;
+    public void setHit() {
+        mState = HIT;
     }
 
     public void setMiss() throws IllegalStateException {
@@ -83,10 +92,6 @@ public class Cell {
         }
 
         mState = MISS;
-    }
-
-    public boolean isReserved() {
-        return mState == RESERVED;
     }
 
     public void setReserved() throws IllegalStateException {
