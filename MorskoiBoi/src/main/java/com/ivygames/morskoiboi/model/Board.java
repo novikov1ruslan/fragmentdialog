@@ -24,8 +24,6 @@ public class Board {
     private Collection<Ship> mShips;
     private Cell[][] mCells;
 
-    private final PlacementAlgorithm mPlacementAlgorithm = PlacementFactory.getAlgorithm();
-
     public static Board fromJson(String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -104,7 +102,7 @@ public class Board {
      * @return all cells that will return true on {@link Cell#isEmpty()}
      */
     public List<Vector2> getEmptyCells() {
-        List<Vector2> emptyCells = new ArrayList<Vector2>();
+        List<Vector2> emptyCells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {
                 if (mCells[i][j].isEmpty()) {
@@ -120,7 +118,7 @@ public class Board {
      *
      * @return true if the ship can be layed out on the board
      */
-    public boolean canPutShipAt(Ship ship, int i, int j) {
+    public boolean shipFitsTheBoard(Ship ship, int i, int j) {
         boolean canPut = containsCell(i, j);
 
         if (canPut) {
@@ -163,7 +161,7 @@ public class Board {
      */
     private void clearBoard() {
         mCells = createNewBoard();
-        mShips = new ArrayList<Ship>();
+        mShips = new ArrayList<>();
     }
 
     /**
@@ -185,8 +183,8 @@ public class Board {
         if (removedShip != null) {
             // missed and hit cells are not recreated by adding ships back, so
             // we need to remember them
-            List<Vector2> missedList = new LinkedList<Vector2>();
-            List<Vector2> hitList = new LinkedList<Vector2>();
+            List<Vector2> missedList = new LinkedList<>();
+            List<Vector2> hitList = new LinkedList<>();
             for (int i = 0; i < DIMENSION; i++) {
                 for (int j = 0; j < DIMENSION; j++) {
                     Cell cell = mCells[i][j];
@@ -231,7 +229,7 @@ public class Board {
         ship.rotate();
 
         PlacementAlgorithm algorithm = PlacementFactory.getAlgorithm();
-        if (canPutShipAt(ship, x, y)) {
+        if (shipFitsTheBoard(ship, x, y)) {
             algorithm.putShipAt(this, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
         } else {
             if (ship.isHorizontal()) {
@@ -247,7 +245,7 @@ public class Board {
     }
 
     public Collection<Ship> getShipsAt(int i, int j) {
-        HashSet<Ship> ships = new HashSet<Ship>();
+        HashSet<Ship> ships = new HashSet<>();
         if (hasShipAt(i, j)) {
             for (Ship ship : mShips) {
                 if (ship.isInShip(i, j)) {

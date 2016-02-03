@@ -17,8 +17,8 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
 
     private final Random mRandom;
 
-    public AbstractPlacement() {
-        mRandom = new Random(System.currentTimeMillis());
+    public AbstractPlacement(Random random) {
+        mRandom = random;
     }
 
     @Override
@@ -48,12 +48,10 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
             Vector2 cell = cells.get(cellIndex);
             int i = cell.getX();
             int j = cell.getY();
-            found = board.canPutShipAt(ship, i, j);
-            if (found) {
-                found = GameUtils.isPlaceEmpty(ship, board, i, j);
-                if (found) {
+            if (board.shipFitsTheBoard(ship, i, j)) {
+                if (GameUtils.isPlaceEmpty(ship, board, i, j)) {
                     putShipAt(board, ship, i, j);
-                    break;
+                    return true;
                 } else {
                     // this cell is not suitable for placement
                     cells.remove(cellIndex);
@@ -61,12 +59,12 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
             }
         }
 
-        return found;
+        return false;
     }
 
     @Override
     public void putShipAt(Board board, Ship ship, int x, int y) {
-        if (!board.canPutShipAt(ship, x, y)) {
+        if (!board.shipFitsTheBoard(ship, x, y)) {
             throw new IllegalArgumentException("cannot put ship " + ship + " at (" + x + "," + y + ")");
         }
 
@@ -95,7 +93,6 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
         board.getShips().add(ship);
     }
 
-    protected void markAdjacentCellsIfNeeded(Ship ship, Cell cell) {
-    }
+    protected abstract void markAdjacentCellsIfNeeded(Ship ship, Cell cell);
 
 }

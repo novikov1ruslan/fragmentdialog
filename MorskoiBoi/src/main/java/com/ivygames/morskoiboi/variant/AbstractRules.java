@@ -22,6 +22,7 @@ public abstract class AbstractRules implements Rules {
      * Finds all the cells on the board that are in a conflict with another cell.
      */
     private Set<Vector2> getInvalidCells(Board board) {
+        // TODO: use areThereInvalidCells()
         Set<Vector2> invalid = new HashSet<Vector2>();
         for (int i = 0; i < board.getHorizontalDim(); i++) {
             for (int j = 0; j < board.getVerticalDim(); j++) {

@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.ai;
 
 public final class PlacementFactory {
 
-    private static PlacementAlgorithm mPlacementAlgorithm;
+    private static PlacementAlgorithm sPlacementAlgorithm;
 
     private PlacementFactory() {
         // factory
@@ -10,11 +10,11 @@ public final class PlacementFactory {
 
     public static void setPlacementAlgorithm(PlacementAlgorithm algorithm) {
 
-        mPlacementAlgorithm = algorithm;
+        sPlacementAlgorithm = algorithm;
     }
 
     public static PlacementAlgorithm getAlgorithm() {
-        return mPlacementAlgorithm;
+        return sPlacementAlgorithm;
     }
 
 }

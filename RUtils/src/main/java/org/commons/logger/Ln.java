@@ -42,7 +42,7 @@ public class Ln {
     private Ln() {
     }
 
-    private static Logger sLogger;
+    private static Logger sLogger = new NullLogger();
 
     public static void injectLogger(Logger logger) {
         sLogger = logger;
@@ -70,7 +70,6 @@ public class Ln {
 
     public static int d(Throwable throwable, Object s1, Object... args) {
         return sLogger.d(throwable, s1, args);
-
     }
 
     public static int i(Throwable t) {

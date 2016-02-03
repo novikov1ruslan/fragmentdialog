@@ -25,7 +25,6 @@ public class RussianRules extends AbstractRules {
     private static final int SHIP_4X_WEIGHT = 10;
 
     private static final int SHELL_UNIT_BONUS = 100;
-    // (long) (SHELL_UNIT_BONUS * 2.3);
     private static final int SHIP_UNIT_BONUS = 230;  // 80shells/35weights = 2.3
     private static final int COMBO_UNIT_BONUS = 800; // 8 * SHELL_UNIT_BONUS
 

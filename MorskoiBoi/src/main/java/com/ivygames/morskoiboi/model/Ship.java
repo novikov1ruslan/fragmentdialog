@@ -168,6 +168,7 @@ public class Ship {
         return result;
     }
 
+    // TODO: remove this equals method after x,y removed from the ship
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

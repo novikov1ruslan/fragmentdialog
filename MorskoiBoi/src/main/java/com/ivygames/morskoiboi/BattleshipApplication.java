@@ -30,6 +30,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Random;
 
 /**
  * ANDROID_VERSION ﻿﻿APP_VERSION_CODE ﻿﻿APP_VERSION_NAME ﻿﻿PACKAGE_NAME ﻿REPORT_ID ﻿STACK_TRACE ﻿USER_APP_START_DATE ﻿USER_CRASH_DATE
@@ -73,7 +74,7 @@ public class BattleshipApplication extends Application {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // dependency injection
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement());
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis())));
         RulesFactory.setRules(new RussianRules());
 //        PlacementFactory.setPlacementAlgorithm(new AmericanPlacement());
 //        RulesFactory.setRules(new AmericanRules());

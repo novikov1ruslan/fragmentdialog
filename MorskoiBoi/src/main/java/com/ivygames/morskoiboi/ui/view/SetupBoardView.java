@@ -212,7 +212,7 @@ public class SetupBoardView extends BaseBoardView {
      * @return true if succeeded to put down currently picked-up ship
      */
     private boolean tryPutPickedShip() {
-        if (mBoard.canPutShipAt(mPickedShip, mAimI, mAimJ)) {
+        if (mBoard.shipFitsTheBoard(mPickedShip, mAimI, mAimJ)) {
             PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAimI, mAimJ);
             return true;
         }

@@ -9,13 +9,16 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
-@RunWith(RobolectricTestRunner.class)
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+//@RunWith(RobolectricTestRunner.class)
 public class BoardTest extends TestCase {
 
 	private Board mBoard;
@@ -24,7 +27,9 @@ public class BoardTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		mBoard = new Board();
-		PlacementFactory.setPlacementAlgorithm(new RussianPlacement());
+		Random random = mock(Random.class);
+		when(random.nextInt(anyInt())).thenReturn(0);
+		PlacementFactory.setPlacementAlgorithm(new RussianPlacement(random));
 		mPlacementAlgorithm = PlacementFactory.getAlgorithm();
 	}
 
@@ -52,30 +57,6 @@ public class BoardTest extends TestCase {
 		assertEquals(10, mBoard.getVerticalDim());
 	}
 
-//	@Test
-//	public void testHealth() {
-//		Ship ship = new Ship(3);
-//		assertEquals(0, mBoard.getHealth());
-//
-//		PlacementFactory.getAlgorithm().putShipAt(mBoard, ship, ship.getX(), ship.getY());
-//		assertEquals(3, mBoard.getHealth());
-//
-//		ship.shoot();
-//		assertEquals(2, mBoard.getHealth());
-//	}
-
-//	@Test
-//	public void testSetCell() {
-//		Cell cell1 = mBoard.getCell(5, 5);
-//		assertTrue(cell1.isEmpty());
-//
-//		Cell cell2 = new Cell();
-//		mBoard.setCell(cell2, 5, 5);
-//		Cell cell3 = mBoard.getCell(5, 5);
-//		assertNotSame(cell2, cell1);
-//		assertSame(cell2, cell3);
-//	}
-
 	@Test
 	public void testGetCellsAround() {
 		mBoard.getCell(5, 4).setReserved();
@@ -102,37 +83,9 @@ public class BoardTest extends TestCase {
 		assertEquals(6, hit.getY());
 	}
 
-//	@Test
-//	public void testInvalidCells() {
-//		Ship ship = new Ship(1);
-//		putShipAt(ship, 5, 5);
-//		assertEquals(0, mBoard.getInvalidCells().size());
-//
-//		ship = new Ship(2);
-//		putShipAt(ship, 6, 6);
-//		Collection<Vector2> cells = mBoard.getInvalidCells();
-//		assertEquals(2, cells.size());
-//
-//		ship = new Ship(3);
-//		putShipAt(ship, 0, 8);
-//		ship = new Ship(4);
-//		putShipAt(ship, 1, 8);
-//		cells = mBoard.getInvalidCells();
-//		assertEquals(6, cells.size());
-//	}
-
 	private void putShipAt(Ship ship, int x, int y) {
 		mPlacementAlgorithm.putShipAt(mBoard, ship, x, y);
 	}
-
-//	@Test
-//	public void testInvalidCells2() {
-//		Ship ship = new Ship(4);
-//		putShipAt(ship, 2, 2);
-//		ship = new Ship(3, Orientation.VERTICAL);
-//		putShipAt(ship, 4, 3);
-//		assertEquals(mBoard.toString(), 4, mBoard.getInvalidCells().size());
-//	}
 
 	@Test
 	public void testEmptyBoard() {
@@ -415,9 +368,9 @@ public class BoardTest extends TestCase {
 		for (int i = -1; i < 11; i++) {
 			for (int j = -1; j < 11; j++) {
 				if (i >= 0 && i < 10 && j >= 0 && j < 10) {
-					assertTrue(mBoard.canPutShipAt(ship, i, j));
+					assertTrue(mBoard.shipFitsTheBoard(ship, i, j));
 				} else {
-					assertFalse(mBoard.canPutShipAt(ship, i, j));
+					assertFalse(mBoard.shipFitsTheBoard(ship, i, j));
 				}
 			}
 		}
