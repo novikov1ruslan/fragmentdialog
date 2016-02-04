@@ -38,11 +38,8 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
         return board;
     }
 
-    @Override
-    public boolean place(Ship ship, Board board) {
+    private boolean place(Ship ship, Board board) {
         List<Vector2> cells = board.getEmptyCells();
-        boolean found = false;
-
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
             Vector2 cell = cells.get(cellIndex);

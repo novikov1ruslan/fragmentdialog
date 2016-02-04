@@ -18,7 +18,6 @@ import static org.hamcrest.core.Is.is;
 
 public class RussianPlacementTest {
 
-	private Board mBoard;
     private PlacementAlgorithm mAlgorithm;
     private int mNumberOfDistinctShips;
 
@@ -34,30 +33,7 @@ public class RussianPlacementTest {
         Random random = new Random(1);
         mAlgorithm = new RussianPlacement(random);
         RulesFactory.setRules(new RussianRules());
-		mBoard = new Board();
 	}
-
-	@Test
-	public void after_placing_a_ship_on_a_board_That_board_has_one_ship() {
-		Ship ship = new Ship(2);
-		assertThat(mAlgorithm.place(ship, mBoard), is(true));
-		assertThat(mBoard.getShips().size(), is(1));
-	}
-
-    @Test
-    public void no_ships_can_be_added_after_10_4squared_ships_already_placed_on_a_board() {
-        for (int i = 0; i < 10; i++) {
-            assert4SquaredCanBePut();
-        }
-
-        Ship ship = new Ship(1);
-        assertThat(mAlgorithm.place(ship, mBoard), is(false));
-    }
-
-    private void assert4SquaredCanBePut() {
-        Ship ship = new Ship(4, Ship.Orientation.VERTICAL);
-        assertThat(mAlgorithm.place(ship, mBoard), is(true));
-    }
 
     @Test
     public void russian_fleet_is_generated_4_3_3_2_2_2_1_1_1_1() {
@@ -70,49 +46,6 @@ public class RussianPlacementTest {
         Board board = mAlgorithm.generateBoard();
         assertAllTheShipsAreRussianFleet(board.getShips());
     }
-
-    @Test
-	public void some_russian_fleet_can_be_placed_on_a_board() {
-		Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(1));
-
-		ship = new Ship(3, Ship.Orientation.VERTICAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(2));
-
-		ship = new Ship(3, Ship.Orientation.HORIZONTAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(3));
-
-		ship = new Ship(2, Ship.Orientation.VERTICAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(4));
-
-		ship = new Ship(2, Ship.Orientation.HORIZONTAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(5));
-
-		ship = new Ship(2, Ship.Orientation.VERTICAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(6));
-
-		ship = new Ship(1, Ship.Orientation.HORIZONTAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(7));
-
-		ship = new Ship(1, Ship.Orientation.VERTICAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(8));
-
-		ship = new Ship(1, Ship.Orientation.HORIZONTAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(9));
-
-		ship = new Ship(1, Ship.Orientation.VERTICAL);
-		mAlgorithm.place(ship, mBoard);
-        assertThat(mBoard.getShips().size(), is(10));
-	}
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {
         mNumberOfDistinctShips = distinct.size();

@@ -294,7 +294,7 @@ public class SetupBoardView extends BaseBoardView {
         if (mCurrentShip == null) {
             mCurrentBitmap = null;
         } else {
-            mCurrentBitmap = RulesFactory.getRules().getBitmapForSize(mCurrentShip.getSize());
+            mCurrentBitmap = RulesFactory.getRules().getBitmapForShipSize(mCurrentShip.getSize());
         }
     }
 

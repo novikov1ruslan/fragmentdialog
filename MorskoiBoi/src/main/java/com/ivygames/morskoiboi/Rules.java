@@ -23,7 +23,7 @@ public interface Rules {
 
     int calcTotalScores(Collection<Ship> ships, Game game);
 
-    Bitmap getBitmapForSize(int size);
+    Bitmap getBitmapForShipSize(int size);
 
     /**
      * @return array containing integers each representing length of a separate ship type

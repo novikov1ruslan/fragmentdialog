@@ -31,7 +31,7 @@ public class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public Bitmap getBitmapForSize(int size) {
+    public Bitmap getBitmapForShipSize(int size) {
         Bitmaps bitmaps = Bitmaps.getInstance();
         switch (size) {
             case 5:
