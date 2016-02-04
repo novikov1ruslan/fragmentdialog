@@ -14,11 +14,9 @@ import com.ivygames.morskoiboi.variant.RussianRules;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,10 +40,10 @@ public class RussianRulesTest {
 
     @Before
     public void setUp() {
-        Random random = new Random(1);
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(random));
-        mAlgorithm = PlacementFactory.getAlgorithm();
         RulesFactory.setRules(new RussianRules());
+        Rules rules = RulesFactory.getRules();
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(1), rules));
+        mAlgorithm = PlacementFactory.getAlgorithm();
         mRules = RulesFactory.getRules();
     }
 

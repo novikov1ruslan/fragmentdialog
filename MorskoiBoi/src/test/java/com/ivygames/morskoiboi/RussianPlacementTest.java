@@ -28,11 +28,8 @@ public class RussianPlacementTest {
 
     @Before
 	public void setup() {
-//        Random random = mock(Random.class);
-//        when(random.nextInt(anyInt())).thenReturn(0).thenReturn(1);
-        Random random = new Random(1);
-        mAlgorithm = new RussianPlacement(random);
         RulesFactory.setRules(new RussianRules());
+        mAlgorithm = new RussianPlacement(new Random(1), RulesFactory.getRules());
 	}
 
     @Test

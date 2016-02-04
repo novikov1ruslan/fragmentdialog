@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.variant;
 
-import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -16,14 +16,16 @@ import java.util.Random;
 public abstract class AbstractPlacement implements PlacementAlgorithm {
 
     private final Random mRandom;
+    private final Rules mRules;
 
-    public AbstractPlacement(Random random) {
+    public AbstractPlacement(Random random, Rules rules) {
         mRandom = random;
+        mRules = rules;
     }
 
     @Override
     public Collection<Ship> generateFullFleet() {
-        return GameUtils.generateFullFleet(RulesFactory.getRules().getTotalShips());
+        return GameUtils.generateFullFleet(mRules.getTotalShips());
     }
 
     @Override

@@ -74,10 +74,8 @@ public class BattleshipApplication extends Application {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // dependency injection
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis())));
         RulesFactory.setRules(new RussianRules());
-//        PlacementFactory.setPlacementAlgorithm(new AmericanPlacement());
-//        RulesFactory.setRules(new AmericanRules());
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), RulesFactory.getRules()));
         BotFactory.setAlgorithm(new RussianBot());
     }
 
