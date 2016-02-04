@@ -87,6 +87,11 @@ public class Ship {
         mHealth = size;
     }
 
+    /**
+     * Creates a ship with default (horizontal) orientation
+     *
+     * @param size size of the ship - number of squares it will occupy when placed on a board
+     */
     public Ship(int size) {
         this(size, Orientation.HORIZONTAL);
     }

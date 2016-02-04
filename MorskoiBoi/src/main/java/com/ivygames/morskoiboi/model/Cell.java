@@ -113,6 +113,7 @@ public class Cell {
      * sets proximity to {@code RESERVED_PROXIMITY_VALUE} and state to {@link #RESERVED}
      */
     public void addShip() {
+        // TODO: remove
         mState = RESERVED;
         mProximity += RESERVED_PROXIMITY_VALUE;
     }

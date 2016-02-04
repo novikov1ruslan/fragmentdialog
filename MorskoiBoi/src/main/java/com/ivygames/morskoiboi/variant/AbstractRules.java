@@ -40,6 +40,6 @@ public abstract class AbstractRules implements Rules {
      */
     @Override
     public boolean isItDefeatedBoard(Board board) {
-        return allShipsAreOnBoard(board) && board.allAvailableShipsAreDestroyed();
+        return allShipsAreOnBoard(board) && Board.allAvailableShipsAreDestroyed(board);
     }
 }

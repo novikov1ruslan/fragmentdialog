@@ -94,17 +94,17 @@ public class BoardTest extends TestCase {
 
 	@Test
 	public void testAllShipsAreDestroyed() {
-		assertFalse(!mBoard.allAvailableShipsAreDestroyed());
+		assertFalse(!Board.allAvailableShipsAreDestroyed(mBoard));
 
 		Ship ship = new Ship(2);
 		putShipAt(ship, 5, 5);
-		assertFalse(mBoard.allAvailableShipsAreDestroyed());
+		assertFalse(Board.allAvailableShipsAreDestroyed(mBoard));
 
 		ship.shoot();
-		assertFalse(mBoard.allAvailableShipsAreDestroyed());
+		assertFalse(Board.allAvailableShipsAreDestroyed(mBoard));
 
 		ship.shoot();
-		assertTrue(mBoard.allAvailableShipsAreDestroyed());
+		assertTrue(Board.allAvailableShipsAreDestroyed(mBoard));
 	}
 
 	private static void assertSigleShip(Board board, Ship ship) {

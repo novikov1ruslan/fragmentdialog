@@ -15,7 +15,7 @@ public interface Rules {
     boolean isCellConflicting(Cell cell);
 
     /**
-     * @return true if board has 10 ships and all of them are destroyed
+     * @return true if board has full fleet and all the ships are destroyed
      */
     boolean isItDefeatedBoard(Board board);
 

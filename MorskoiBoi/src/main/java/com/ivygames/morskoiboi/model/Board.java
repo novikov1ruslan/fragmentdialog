@@ -322,8 +322,8 @@ public class Board {
     /**
      * @return true if every ship on the board is sunk
      */
-    public boolean allAvailableShipsAreDestroyed() {
-        for (Ship ship : mShips) {
+    public static boolean allAvailableShipsAreDestroyed(Board board) {
+        for (Ship ship : board.getShips()) {
             if (!ship.isDead()) {
                 return false;
             }
