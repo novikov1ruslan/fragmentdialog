@@ -88,20 +88,10 @@ public class RussianBotTest {
     public void shooting_horizontally_5_4_3() {
         Board board = new Board();
         hitAt(board, 5, 5);
-        Vector2 aim = mBot.shoot(board);
-        assertThat(aim, is(Vector2.get(5, 4)));
-        missAt(board, aim);
-
-        aim = mBot.shoot(board);
-        assertThat(aim, is(Vector2.get(6, 5)));
-        missAt(board, aim);
-
-        aim = mBot.shoot(board);
-        assertThat(aim, is(Vector2.get(4, 5)));
-        hitAt(board, aim);
-
-        aim = mBot.shoot(board);
-        assertThat(aim, is(Vector2.get(3, 5)));
+        assertMissAt(board, 5, 4);
+        assertMissAt(board, 6, 5);
+        assertHitAt(board, 4, 5);
+        assertHitAt(board, 3, 5);
     }
 
     @Test
