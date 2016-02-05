@@ -76,7 +76,7 @@ public class BattleshipApplication extends Application {
         // dependency injection
         RulesFactory.setRules(new RussianRules());
         PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), RulesFactory.getRules()));
-        BotFactory.setAlgorithm(new RussianBot());
+        BotFactory.setAlgorithm(new RussianBot(null));
     }
 
     private void initLogger() {

@@ -31,7 +31,7 @@ public class AndroidOpponent extends AbstractOpponent {
     protected void reset() {
         super.reset();
         mMyBoard = PlacementFactory.getAlgorithm().generateBoard();
-        mAlgorithm = new RussianBot();//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+        mAlgorithm = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
         if (GameConstants.IS_TEST_MODE) {
             Ln.i(this + ": my board: " + mMyBoard);

@@ -22,9 +22,9 @@ public class RussianBot implements BotAlgorithm {
     private final Random mRandom;
     private final CopyOnWriteArrayList<Vector2> mHitDecks;
 
-    public RussianBot() {
-        mRandom = new Random(System.currentTimeMillis());
-        mHitDecks = new CopyOnWriteArrayList<Vector2>();
+    public RussianBot(Random random) {
+        mRandom = random;
+        mHitDecks = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -38,12 +38,12 @@ public class RussianBot implements BotAlgorithm {
         }
     }
 
-    private boolean isEmptyCell(Board board, int x, int y) {
+    private static boolean isEmptyCell(Board board, int x, int y) {
         return board.containsCell(x, y) && board.getCell(x, y).isEmpty();
     }
 
-    private List<Vector2> getPossibleShotsAround(Board board, int x, int y) {
-        ArrayList<Vector2> possibleShots = new ArrayList<Vector2>();
+    private static List<Vector2> getPossibleShotsAround(Board board, int x, int y) {
+        ArrayList<Vector2> possibleShots = new ArrayList<>();
         if (isEmptyCell(board, x - 1, y)) {
             possibleShots.add(Vector2.get(x - 1, y));
         }
@@ -60,7 +60,7 @@ public class RussianBot implements BotAlgorithm {
         return possibleShots;
     }
 
-    private void addCellIfEmpty(Board board, int x, int y, Collection<Vector2> out) {
+    private static void addCellIfEmpty(Board board, int x, int y, Collection<Vector2> out) {
         if (board.containsCell(x, y)) {
             Cell cell = board.getCell(x, y);
             if (cell.isEmpty()) {
@@ -69,13 +69,13 @@ public class RussianBot implements BotAlgorithm {
         }
     }
 
-    private List<Vector2> getPossibleShotsLinear(Board board, List<Vector2> hitCells) {
-        List<Vector2> possibleShots = new ArrayList<Vector2>();
-        int minX = hitCells.get(0).getX();
-        int minY = hitCells.get(0).getY();
-        int maxX = hitCells.get(0).getX();
-        int maxY = hitCells.get(0).getY();
-        for (Vector2 v : hitCells) {
+    private List<Vector2> getPossibleShotsLinear(Board board) {
+        List<Vector2> possibleShots = new ArrayList<>();
+        int minX = mHitDecks.get(0).getX();
+        int minY = mHitDecks.get(0).getY();
+        int maxX = mHitDecks.get(0).getX();
+        int maxY = mHitDecks.get(0).getY();
+        for (Vector2 v : mHitDecks) {
             int x = v.getX();
             if (x < minX) {
                 minX = x;
@@ -93,7 +93,7 @@ public class RussianBot implements BotAlgorithm {
             }
         }
 
-        if (GameUtils.areCellsHorizontal(hitCells)) { // TODO: miny == maxy
+        if (GameUtils.areCellsHorizontal(mHitDecks)) { // TODO: miny == maxy
             addCellIfEmpty(board, --minX, minY, possibleShots);
             addCellIfEmpty(board, ++maxX, minY, possibleShots);
         } else {
@@ -106,6 +106,7 @@ public class RussianBot implements BotAlgorithm {
 
     @Override
     public Vector2 shoot(Board board) {
+        // TODO: this method does not change the board. Add immutabe board and pass it for correctness
         List<Vector2> possibleShots;
         if (mHitDecks.size() == 0) {
             possibleShots = board.getEmptyCells();
@@ -113,7 +114,7 @@ public class RussianBot implements BotAlgorithm {
             Vector2 v = mHitDecks.get(0);
             possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
         } else { // wounded ship with > 1 decks hit
-            possibleShots = getPossibleShotsLinear(board, mHitDecks);
+            possibleShots = getPossibleShotsLinear(board);
         }
 
         int possibleShotsSize = possibleShots.size();
@@ -127,8 +128,4 @@ public class RussianBot implements BotAlgorithm {
         }
     }
 
-    @Override
-    public boolean needThinking() {
-        return mHitDecks.size() < 2;
-    }
 }
