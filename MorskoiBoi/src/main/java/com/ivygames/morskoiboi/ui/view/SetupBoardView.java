@@ -283,10 +283,8 @@ public class SetupBoardView extends BaseBoardView {
         mShipDisplayRect.right = w;
         mShipDisplayRect.bottom = mShipSelectionRect.bottom;
 
-        w = w - getPaddingLeft() - getPaddingRight();
-        h = h - getPaddingTop() - getPaddingBottom();
-
-        mPresenter.measure(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
+        h = h - mShipSelectionRect.height();
+        mPresenter.measure(w, h, 0, mShipDisplayRect.height(), calcSmallestWidth(w, h));
     }
 
     private void setCurrentShip(Ship ship) {

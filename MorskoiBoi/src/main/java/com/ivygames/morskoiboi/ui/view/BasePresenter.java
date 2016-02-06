@@ -29,9 +29,7 @@ public class BasePresenter {
         mTurnBorderSize = turnBorderSize;
     }
 
-    public final void measure(int w, int h, int horOffset, int verOffset) {
-
-        int smallestWidth = w < h ? w : h;
+    public final void measure(int w, int h, int horOffset, int verOffset, int smallestWidth) {
 
         mCellSizePx = smallestWidth / mBoardSize;
         int boardSizePx = mCellSizePx * mBoardSize;

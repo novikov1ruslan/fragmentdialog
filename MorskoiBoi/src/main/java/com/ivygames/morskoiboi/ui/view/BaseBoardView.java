@@ -79,6 +79,13 @@ abstract class BaseBoardView extends View {
         invalidate();
     }
 
+    protected int calcSmallestWidth(int w, int h) {
+        int paddedWidth = w - getPaddingLeft() - getPaddingRight();
+        int paddedHeight = h - getPaddingTop() - getPaddingBottom();
+
+        return paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
+    }
+
     private void drawMark(Canvas canvas, boolean isMiss, int x, int y) {
         Mark mark = mPresenter.getMark(x, y);
         canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissBgPaint : mHitBgPaint);
@@ -137,9 +144,9 @@ abstract class BaseBoardView extends View {
             return;
         }
 
-        int w = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
-        int h = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
-        mPresenter.measure(w, h, 0, 0);
+        int w = getMeasuredWidth();
+        int h = getMeasuredHeight();
+        mPresenter.measure(w, h, 0, 0, calcSmallestWidth(w, h));
     }
 
     private DisplayMetrics getDisplayMetrics(WindowManager wm) {
