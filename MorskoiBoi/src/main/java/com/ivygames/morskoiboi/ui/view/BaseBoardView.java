@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -17,8 +16,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
-
-import org.apache.commons.lang3.Validate;
 
 import java.util.Collection;
 
@@ -41,190 +38,7 @@ abstract class BaseBoardView extends View {
     private final Paint mMissBgPaint;
     private final Paint mMissInnerPaint;
 
-    public static class Presenter {
-
-        private boolean mShowTurn;
-        private float mTurnBorderSize;
-        private Board mBoard;
-        private Rect mTurnRect = new Rect(0, 0, 0, 0);
-        protected int mCellSize;
-        protected int mHalfCellSize;
-        protected Rect mBoardRect = new Rect(0, 0, 0, 0);
-        private int mMarkRadius;
-        private float[] line = new float[4];
-        private int left;
-        private final Rect rect = new Rect();
-        private final RectF rectF = new RectF();
-
-        /**
-         * Frame Rect is larger by border
-         */
-        private final void calcFrameRect() {
-            mTurnRect.left = (int) (mBoardRect.left - mTurnBorderSize / 2);
-            mTurnRect.right = (int) (mBoardRect.right + mTurnBorderSize / 2);
-            mTurnRect.top = (int) (mBoardRect.top - mTurnBorderSize / 2);
-            mTurnRect.bottom = (int) (mBoardRect.bottom + mTurnBorderSize / 2);
-        }
-
-        public final void calculateBoardRect(int w, int h, int horOffset, int verOffset) {
-            int paddedWidth = w;
-            int paddedHeight = h;
-
-            int smallestWidth = paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
-
-            mCellSize = smallestWidth / mBoard.getHorizontalDim();
-            int boardSize = mCellSize * mBoard.getHorizontalDim();
-
-            mBoardRect.left = (w - boardSize) / 2 + horOffset;
-            mBoardRect.top = (h - boardSize) / 2 + verOffset;
-            mBoardRect.right = mBoardRect.left + boardSize;
-            mBoardRect.bottom = mBoardRect.top + boardSize;
-
-            mHalfCellSize = mCellSize / 2;
-            mMarkRadius = mHalfCellSize - mCellSize / 5;
-
-            calcFrameRect();
-        }
-
-        public void setBoard(Board board) {
-            this.mBoard = board;
-        }
-
-        public int getBoardWidth() {
-            return mBoard.getHorizontalDim();
-        }
-
-        public int getBoardHeight() {
-            return mBoard.getVerticalDim();
-        }
-
-        @Override
-        public String toString() {
-            return mBoard.toString();
-        }
-
-        public Cell getCell(int x, int y) {
-            return mBoard.getCell(x, y);
-        }
-
-        public boolean containsCell(int x, int y) {
-            return mBoard.containsCell(x, y);
-        }
-
-        public Collection<Ship> getShips() {
-            return mBoard.getShips();
-        }
-
-        public void rotateShipAt(int x, int y) {
-            mBoard.rotateShipAt(x, y);
-        }
-
-        public Board getBoard() {
-            return mBoard;
-        }
-
-        public Rect getTurnRect() {
-            return mTurnRect;
-        }
-
-        public float[] getVertical(int i) {
-            float startX = mBoardRect.left + i * mCellSize;
-            float startY = mBoardRect.top;
-            float stopY = mBoardRect.bottom;
-
-            line[0] = startX;
-            line[1] = startY;
-            line[2] = startX;
-            line[3] = stopY;
-
-            return line;
-        }
-
-        public float[] getHorizontal(int i) {
-            float startX = mBoardRect.left;
-            float startY = mBoardRect.top + i * mCellSize;
-            float stopX = mBoardRect.right;
-
-            line[0] = startX;
-            line[1] = startY;
-            line[2] = stopX;
-            line[3] = startY;
-
-            return line;
-        }
-
-        public int getLeft(int i) {
-            return i * mCellSize + mBoardRect.left;
-        }
-
-        public int getTop(int j) {
-            return j * mCellSize + mBoardRect.top;
-        }
-
-        public Rect getBoardRect() {
-            return mBoardRect;
-        }
-
-        public int getCellSize() {
-            return mCellSize;
-        }
-
-        public Rect getVerticalRect(int i, int width) {
-            int leftVer = mBoardRect.left + i * mCellSize;
-            int rightVer = leftVer + width * mCellSize;
-            if (rightVer > mBoardRect.right) {
-                return null;
-            }
-            int topVer = mBoardRect.top;
-            int bottomVer = mBoardRect.bottom;
-
-            rect.left = leftVer;
-            rect.right = rightVer;
-            rect.top = topVer;
-            rect.bottom = bottomVer;
-
-            return rect;
-        }
-
-        public Rect getHorizontalRect(int j, int height) {
-            int leftHor = mBoardRect.left;
-            int rightHor = mBoardRect.right;
-            int topHor = mBoardRect.top + j * mCellSize;
-            int bottomHor = topHor + height * mCellSize;
-
-            rect.left = leftHor;
-            rect.right = rightHor;
-            rect.top = topHor;
-            rect.bottom = bottomHor;
-
-            return rect;
-        }
-
-        // TODO: used in SetupBoardView
-        public RectF getInvalidRect(int i, int j) {
-            float left = mBoardRect.left + i * mCellSize + 1;
-            float top = mBoardRect.top + j * mCellSize + 1;
-            float right = left + mCellSize;
-            float bottom = top + mCellSize;
-
-            rectF.left = left + 1;
-            rectF.top = top + 1;
-            rectF.right = right;
-            rectF.bottom = bottom;
-
-            return rectF;
-        }
-
-        public int getCellY(int mTouchY) {
-            return (mTouchY - mBoardRect.top) / mCellSize;
-        }
-
-        public int getCellX(int mTouchX) {
-            return (mTouchX - mBoardRect.left) / mCellSize;
-        }
-    }
-
-    protected Presenter mPresenter = new Presenter();
+    protected BasePresenter mPresenter;
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -252,23 +66,24 @@ abstract class BaseBoardView extends View {
 
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
-        mPresenter.mTurnBorderSize = res.getDimension(R.dimen.ship_border);
+        mPresenter = new BasePresenter();
+        mPresenter.setTurnBorderSize(getResources().getDimension(R.dimen.ship_border));
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mDisplayMetrics = getDisplayMetrics(windowManager);
     }
 
     public final void setBoard(Board board) {
-        mPresenter.setBoard(Validate.notNull(board));
+        mPresenter.setBoard(board);
         invalidate();
     }
 
     private void drawMark(Canvas canvas, boolean isMiss, int left, int top) {
         float cx = left + mPresenter.mHalfCellSize;
         float cy = top + mPresenter.mHalfCellSize;
-        canvas.drawCircle(cx, cy, mPresenter.mMarkRadius, isMiss ? mMissBgPaint : mHitBgPaint);
-        canvas.drawCircle(cx, cy, mPresenter.mMarkRadius, isMiss ? mMissOuterPaint : mHitOuterPaint);
-        canvas.drawCircle(cx, cy, mPresenter.mMarkRadius - mPresenter.mCellSize / 6, isMiss ? mMissInnerPaint : mHitInnerPaint);
+        canvas.drawCircle(cx, cy, mPresenter.getMarkOuterRadius(), isMiss ? mMissBgPaint : mHitBgPaint);
+        canvas.drawCircle(cx, cy, mPresenter.getMarkOuterRadius(), isMiss ? mMissOuterPaint : mHitOuterPaint);
+        canvas.drawCircle(cx, cy, mPresenter.getMarkInnerRadius(), isMiss ? mMissInnerPaint : mHitInnerPaint);
     }
 
     @Override
@@ -288,7 +103,7 @@ abstract class BaseBoardView extends View {
         }
 
         // draw border
-        if (mPresenter.mShowTurn) {
+        if (mPresenter.isTurn()) {
             canvas.drawRect(mPresenter.getTurnRect(), mTurnBorderPaint);
         } else {
             canvas.drawRect(mPresenter.getTurnRect(), mBorderPaint);
@@ -322,14 +137,14 @@ abstract class BaseBoardView extends View {
         int h = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
         mPresenter.calculateBoardRect(w, h, 0, 0);
     }
-    
+
     private DisplayMetrics getDisplayMetrics(WindowManager wm) {
         Display display = wm.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
         return metrics;
     }
-    
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int desiredWidth = mDisplayMetrics.widthPixels;
@@ -369,8 +184,7 @@ abstract class BaseBoardView extends View {
 
         if (width > height) {
             width = height;
-        }
-        else {
+        } else {
             height = width;
         }
 
@@ -397,7 +211,7 @@ abstract class BaseBoardView extends View {
             return;
         }
 
-        Rect horizontalRect = mPresenter.getHorizontalRect(j, width);
+        Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
 
         Paint paint = getAimingPaint(mPresenter.getCell(i, j));
         canvas.drawRect(horizontalRect, paint);
@@ -409,12 +223,12 @@ abstract class BaseBoardView extends View {
     }
 
     public final void hideTurnBorder() {
-        mPresenter.mShowTurn = false;
+        mPresenter.hideTurn();
         invalidate();
     }
 
     public final void showTurnBorder() {
-        mPresenter.mShowTurn = true;
+        mPresenter.showTurn();
         invalidate();
     }
 
