@@ -142,19 +142,19 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onDraw(Canvas canvas) {
         if (mNauticalBitmap != null) {
-            canvas.drawBitmap(mNauticalBitmap, mSrcRect, mBoardRect, null);
+            canvas.drawBitmap(mNauticalBitmap, mSrcRect, mPresenter.mBoardRect, null);
         }
 
         super.onDraw(canvas);
 
         if (mAim != null) {
-            int left = mAim.getX() * mCellSize + mBoardRect.left;
-            int top = mAim.getY() * mCellSize + mBoardRect.top;
+            int left = mAim.getX() * mPresenter.mCellSize + mPresenter.mBoardRect.left;
+            int top = mAim.getY() * mPresenter.mCellSize + mPresenter.mBoardRect.top;
             // canvas.drawBitmap(mLockBitmapSrc, left, top, null);
             mLockDstRect.left = left;
             mLockDstRect.top = top;
-            mLockDstRect.right = left + mCellSize;
-            mLockDstRect.bottom = top + mCellSize;
+            mLockDstRect.right = left + mPresenter.mCellSize;
+            mLockDstRect.bottom = top + mPresenter.mCellSize;
             canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, mLockDstRect, null);
         }
 
@@ -162,8 +162,8 @@ public class EnemyBoardView extends BaseBoardView {
         if (mTouchState.getDragStatus() == TouchState.START_DRAGGING) {
 
             // aiming
-            int i = mTouchX / mCellSize;
-            int j = mTouchY / mCellSize;
+            int i = mTouchX / mPresenter.mCellSize;
+            int j = mTouchY / mPresenter.mCellSize;
             drawAiming(canvas, i, j, 1, 1);
         }
 
@@ -175,10 +175,10 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private void animate(Animation animation, Canvas canvas) {
-        int dx = animation.getAim().getX() * mCellSize + mAnimationHorOffset;
-        int dy = animation.getAim().getY() * mCellSize + mAnimationVerOffset;
+        int dx = animation.getAim().getX() * mPresenter.mCellSize + mAnimationHorOffset;
+        int dy = animation.getAim().getY() * mPresenter.mCellSize + mAnimationVerOffset;
 
-        int d = (int) (animation.getCellRatio() * mHalfCellSize);
+        int d = (int) (animation.getCellRatio() * mPresenter.mHalfCellSize);
         mDstRect.left = dx - d;
         mDstRect.top = dy - d;
         mDstRect.right = dx + d;
@@ -203,9 +203,9 @@ public class EnemyBoardView extends BaseBoardView {
 
             int i = -1;
             if (mTouchX > LEFT_MARGIN) {
-                i = mTouchX / mCellSize;
+                i = mTouchX / mPresenter.mCellSize;
             }
-            int j = mTouchY / mCellSize;
+            int j = mTouchY / mPresenter.mCellSize;
             mShotListener.onShot(i, j);
         }
         invalidate();
@@ -260,7 +260,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         super.onLayout(true, left, top, right, bottom);
-        mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
-        mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
+        mAnimationHorOffset = mPresenter.mBoardRect.left + mPresenter.mHalfCellSize;
+        mAnimationVerOffset = mPresenter.mBoardRect.top + mPresenter.mHalfCellSize;
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -76,7 +77,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private int getShipWidthInPx(Ship ship) {
-        return ship.getSize() * mCellSize;
+        return ship.getSize() * mPresenter.mCellSize;
     }
 
     @Override
@@ -86,14 +87,11 @@ public class SetupBoardView extends BaseBoardView {
         // paint invalid cells (ships that touch each other) and the ships themselves
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
-                Cell cell = mBoard.getCell(i, j);
+                Cell cell = mPresenter.getCell(i, j);
                 if (cell.isReserved()) {
-                    float left = mBoardRect.left + i * mCellSize + 1;
-                    float top = mBoardRect.top + j * mCellSize + 1;
-                    float right = left + mCellSize;
-                    float bottom = top + mCellSize;
+
                     if (mRules.isCellConflicting(cell)) {
-                        canvas.drawRect(left + 1, top + 1, right, bottom, mConflictCellPaint);
+                        canvas.drawRect(mPresenter.getInvalidRect(i, j), mConflictCellPaint);
                     }
                 }
             }
@@ -108,8 +106,8 @@ public class SetupBoardView extends BaseBoardView {
         // draw the top of the screen (selection area)
         if (mCurrentShip != null) {
             int left = mShipSelectionRect.centerX() - getShipWidthInPx(mCurrentShip) / 2;
-            int top = mShipSelectionRect.centerY() - mCellSize / 2;
-            UiUtils.drawShip(canvas, mCurrentShip, left, top, mCellSize, mShipPaint);
+            int top = mShipSelectionRect.centerY() - mPresenter.mCellSize / 2;
+            UiUtils.drawShip(canvas, mCurrentShip, left, top, mPresenter.mCellSize, mShipPaint);
         }
 
         if (mPickedShip != null) {
@@ -124,20 +122,20 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void updateAim() {
-        int shipInBoardCoordinatesX = mPickedShipRect.left - mBoardRect.left + mHalfCellSize;
-        int shipInBoardCoordinatesY = mPickedShipRect.top - mBoardRect.top + mHalfCellSize;
-        mAimI = shipInBoardCoordinatesX / mCellSize;
-        mAimJ = shipInBoardCoordinatesY / mCellSize;
+        int shipInBoardCoordinatesX = mPickedShipRect.left - mPresenter.mBoardRect.left + mPresenter.mHalfCellSize;
+        int shipInBoardCoordinatesY = mPickedShipRect.top - mPresenter.mBoardRect.top + mPresenter.mHalfCellSize;
+        mAimI = shipInBoardCoordinatesX / mPresenter.mCellSize;
+        mAimJ = shipInBoardCoordinatesY / mPresenter.mCellSize;
     }
 
     private void centerPickedShipAround(int touchX, int touchY) {
         int widthInPx = getShipWidthInPx(mPickedShip);
         int halfWidthInPx = getShipWidthInPx(mPickedShip) / 2;
         boolean isHorizontal = mPickedShip.isHorizontal();
-        mPickedShipRect.left = touchX - (isHorizontal ? halfWidthInPx : mHalfCellSize);
-        mPickedShipRect.top = touchY - (isHorizontal ? mHalfCellSize : halfWidthInPx);
-        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mCellSize);
-        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mCellSize : widthInPx);
+        mPickedShipRect.left = touchX - (isHorizontal ? halfWidthInPx : mPresenter.mHalfCellSize);
+        mPickedShipRect.top = touchY - (isHorizontal ? mPresenter.mHalfCellSize : halfWidthInPx);
+        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mPresenter.mCellSize);
+        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mPresenter.mCellSize : widthInPx);
     }
 
     @Override
@@ -160,7 +158,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_DOWN:
                 if (mShipSelectionRect.contains(mTouchX, mTouchY)) {
                     tryPickingNewShip();
-                } else if (mBoard.containsCell(getCellX(), getCellY())) {
+                } else if (mPresenter.containsCell(getCellX(), getCellY())) {
                     scheduleNewPickTask(getCellX(), getCellY());
                 }
                 break;
@@ -182,11 +180,11 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private int getCellY() {
-        return (mTouchY - mBoardRect.top) / mCellSize;
+        return mPresenter.getCellY(mTouchY);
     }
 
     private int getCellX() {
-        return (mTouchX - mBoardRect.left) / mCellSize;
+        return mPresenter.getCellX(mTouchX);
     }
 
     /**
@@ -205,15 +203,15 @@ public class SetupBoardView extends BaseBoardView {
 
     private void rotateShip() {
         cancelLongPressTask();
-        mBoard.rotateShipAt(getCellX(), getCellY());
+        mPresenter.rotateShipAt(getCellX(), getCellY());
     }
 
     /**
      * @return true if succeeded to put down currently picked-up ship
      */
     private boolean tryPutPickedShip() {
-        if (mBoard.shipFitsTheBoard(mPickedShip, mAimI, mAimJ)) {
-            PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAimI, mAimJ);
+        if (mPresenter.getBoard().shipFitsTheBoard(mPickedShip, mAimI, mAimJ)) {
+            PlacementFactory.getAlgorithm().putShipAt(mPresenter.getBoard(), mPickedShip, mAimI, mAimJ);
             return true;
         }
         return false;
@@ -286,7 +284,10 @@ public class SetupBoardView extends BaseBoardView {
         mShipDisplayRect.right = w;
         mShipDisplayRect.bottom = mShipSelectionRect.bottom;
 
-        calculateBoardRect(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
+        w = w - getPaddingLeft() - getPaddingRight();
+        h = h - getPaddingTop() - getPaddingBottom();
+
+        mPresenter.calculateBoardRect(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
     }
 
     private void setCurrentShip(Ship ship) {
@@ -332,7 +333,7 @@ public class SetupBoardView extends BaseBoardView {
         @Override
         public void run() {
             mLongPressTask = null;
-            mPickedShip = mBoard.removeShipFrom(mI, mJ);
+            mPickedShip = mPresenter.getBoard().removeShipFrom(mI, mJ);
             if (mPickedShip != null) {
                 centerPickedShipAround(mTouchX, mTouchY);
                 updateAim();
