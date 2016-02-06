@@ -5,25 +5,50 @@ import android.graphics.RectF;
 
 public class BasePresenter {
 
+    private final int mBoardSize;
+    private final float mTurnBorderSize;
+
     private boolean mShowTurn;
-    private float mTurnBorderSize;
-    private Rect mTurnRect = new Rect(0, 0, 0, 0);
-    protected int mCellSize;
-    protected int mHalfCellSize;
-    protected Rect mBoardRect = new Rect(0, 0, 0, 0);
+    private Rect mTurnRect = new Rect();
     private int mMarkRadius;
+
+    protected int mCellSizePx;
+    protected int mHalfCellSize;
+    protected Rect mBoardRect = new Rect();
+
+    // temporary fields
     private float[] line = new float[4];
     private final Rect hRect = new Rect();
     private final Rect vRect = new Rect();
+    // TODO: SetupBoardView
     private final RectF rectF = new RectF();
-    private int mBoardSize;
+    private final Mark mMark = new Mark();
 
-    public void setBoardSize(int size) {
-        mBoardSize = size;
+    public BasePresenter(int boardSize, float turnBorderSize) {
+        mBoardSize = boardSize;
+        mTurnBorderSize = turnBorderSize;
     }
 
-    public void setTurnBorderSize(float dimension) {
-        mTurnBorderSize = dimension;
+    public final void measure(int w, int h, int horOffset, int verOffset) {
+
+        int smallestWidth = w < h ? w : h;
+
+        mCellSizePx = smallestWidth / mBoardSize;
+        int boardSizePx = mCellSizePx * mBoardSize;
+
+        calculateBoardRect(w, h, horOffset, verOffset, boardSizePx);
+
+        mHalfCellSize = mCellSizePx / 2;
+        mMarkRadius = mHalfCellSize - mCellSizePx / 5;
+
+        calcFrameRect();
+    }
+
+    private void calculateBoardRect(int w, int h, int horOffset, int verOffset, int boardSize) {
+        mBoardRect.left = (w - boardSize) / 2 + horOffset;
+        mBoardRect.top = (h - boardSize) / 2 + verOffset;
+        mBoardRect.right = mBoardRect.left + boardSize;
+        mBoardRect.bottom = mBoardRect.top + boardSize;
     }
 
     /**
@@ -36,30 +61,12 @@ public class BasePresenter {
         mTurnRect.bottom = (int) (mBoardRect.bottom + mTurnBorderSize / 2);
     }
 
-    public final void calculateBoardRect(int w, int h, int horOffset, int verOffset) {
-
-        int smallestWidth = w < h ? w : h;
-
-        mCellSize = smallestWidth / mBoardSize;
-        int boardSize = mCellSize * mBoardSize;
-
-        mBoardRect.left = (w - boardSize) / 2 + horOffset;
-        mBoardRect.top = (h - boardSize) / 2 + verOffset;
-        mBoardRect.right = mBoardRect.left + boardSize;
-        mBoardRect.bottom = mBoardRect.top + boardSize;
-
-        mHalfCellSize = mCellSize / 2;
-        mMarkRadius = mHalfCellSize - mCellSize / 5;
-
-        calcFrameRect();
-    }
-
     public final Rect getTurnRect() {
         return mTurnRect;
     }
 
     public final float[] getVertical(int i) {
-        float startX = mBoardRect.left + i * mCellSize;
+        float startX = mBoardRect.left + i * mCellSizePx;
         float startY = mBoardRect.top;
         float stopY = mBoardRect.bottom;
 
@@ -73,7 +80,7 @@ public class BasePresenter {
 
     public final float[] getHorizontal(int i) {
         float startX = mBoardRect.left;
-        float startY = mBoardRect.top + i * mCellSize;
+        float startY = mBoardRect.top + i * mCellSizePx;
         float stopX = mBoardRect.right;
 
         line[0] = startX;
@@ -84,12 +91,23 @@ public class BasePresenter {
         return line;
     }
 
-    public final int getLeft(int i) {
-        return i * mCellSize + mBoardRect.left;
+    public Mark getMark(int x, int y) {
+        int left = getLeft(x);
+        int top = getTop(y);
+        mMark.centerX = left + mHalfCellSize;
+        mMark.centerY = top + mHalfCellSize;
+        mMark.outerRadius = getMarkOuterRadius();
+        mMark.innerRadius = getMarkInnerRadius();
+
+        return mMark;
     }
 
-    public final int getTop(int j) {
-        return j * mCellSize + mBoardRect.top;
+    private final int getLeft(int i) {
+        return i * mCellSizePx + mBoardRect.left;
+    }
+
+    private final int getTop(int j) {
+        return j * mCellSizePx + mBoardRect.top;
     }
 
     public final Rect getBoardRect() {
@@ -97,12 +115,12 @@ public class BasePresenter {
     }
 
     public final int getCellSize() {
-        return mCellSize;
+        return mCellSizePx;
     }
 
     public final Rect getVerticalRect(int i, int width) {
-        int leftVer = mBoardRect.left + i * mCellSize;
-        int rightVer = leftVer + width * mCellSize;
+        int leftVer = mBoardRect.left + i * mCellSizePx;
+        int rightVer = leftVer + width * mCellSizePx;
         if (rightVer > mBoardRect.right) {
             return null;
         }
@@ -120,8 +138,8 @@ public class BasePresenter {
     public final Rect getHorizontalRect(int j, int height) {
         int leftHor = mBoardRect.left;
         int rightHor = mBoardRect.right;
-        int topHor = mBoardRect.top + j * mCellSize;
-        int bottomHor = topHor + height * mCellSize;
+        int topHor = mBoardRect.top + j * mCellSizePx;
+        int bottomHor = topHor + height * mCellSizePx;
 
         hRect.left = leftHor;
         hRect.right = rightHor;
@@ -133,10 +151,10 @@ public class BasePresenter {
 
     // TODO: used in SetupBoardView
     public final RectF getInvalidRect(int i, int j) {
-        float left = mBoardRect.left + i * mCellSize + 1;
-        float top = mBoardRect.top + j * mCellSize + 1;
-        float right = left + mCellSize;
-        float bottom = top + mCellSize;
+        float left = mBoardRect.left + i * mCellSizePx + 1;
+        float top = mBoardRect.top + j * mCellSizePx + 1;
+        float right = left + mCellSizePx;
+        float bottom = top + mCellSizePx;
 
         rectF.left = left + 1;
         rectF.top = top + 1;
@@ -147,19 +165,19 @@ public class BasePresenter {
     }
 
     public final int getCellY(int mTouchY) {
-        return (mTouchY - mBoardRect.top) / mCellSize;
+        return (mTouchY - mBoardRect.top) / mCellSizePx;
     }
 
     public final int getCellX(int mTouchX) {
-        return (mTouchX - mBoardRect.left) / mCellSize;
+        return (mTouchX - mBoardRect.left) / mCellSizePx;
     }
 
-    public final float getMarkOuterRadius() {
+    private float getMarkOuterRadius() {
         return mMarkRadius;
     }
 
-    public final float getMarkInnerRadius() {
-        return (float) mMarkRadius - mCellSize / 6;
+    private float getMarkInnerRadius() {
+        return (float) mMarkRadius - mCellSizePx / 6;
     }
 
     public final boolean isTurn() {

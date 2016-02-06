@@ -17,8 +17,6 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
-import org.commons.logger.Ln;
-
 import java.util.Collection;
 
 abstract class BaseBoardView extends View {
@@ -70,8 +68,7 @@ abstract class BaseBoardView extends View {
 
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
-        mPresenter = new BasePresenter();
-        mPresenter.setTurnBorderSize(getResources().getDimension(R.dimen.ship_border));
+        mPresenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mDisplayMetrics = getDisplayMetrics(windowManager);
@@ -79,16 +76,14 @@ abstract class BaseBoardView extends View {
 
     public final void setBoard(Board board) {
         mBoard = board;
-        mPresenter.setBoardSize(board.getHorizontalDim());
         invalidate();
     }
 
-    private void drawMark(Canvas canvas, boolean isMiss, int left, int top) {
-        float cx = left + mPresenter.mHalfCellSize;
-        float cy = top + mPresenter.mHalfCellSize;
-        canvas.drawCircle(cx, cy, mPresenter.getMarkOuterRadius(), isMiss ? mMissBgPaint : mHitBgPaint);
-        canvas.drawCircle(cx, cy, mPresenter.getMarkOuterRadius(), isMiss ? mMissOuterPaint : mHitOuterPaint);
-        canvas.drawCircle(cx, cy, mPresenter.getMarkInnerRadius(), isMiss ? mMissInnerPaint : mHitInnerPaint);
+    private void drawMark(Canvas canvas, boolean isMiss, int x, int y) {
+        Mark mark = mPresenter.getMark(x, y);
+        canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissBgPaint : mHitBgPaint);
+        canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissOuterPaint : mHitOuterPaint);
+        canvas.drawCircle(mark.centerX, mark.centerY, mark.innerRadius, isMiss ? mMissInnerPaint : mHitInnerPaint);
     }
 
     @Override
@@ -117,19 +112,23 @@ abstract class BaseBoardView extends View {
         // draw board
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < mBoard.getVerticalDim(); j++) {
-                int left = mPresenter.getLeft(i);
-                int top = mPresenter.getTop(j);
-
                 Cell cell = mBoard.getCell(i, j);
                 if (cell.isHit()) {
-                    drawMark(canvas, false, left, top);
+                    drawMark(canvas, false, i, j);
                 } else if (cell.isMiss()) {
-                    drawMark(canvas, true, left, top);
+                    drawMark(canvas, true, i, j);
                 }
             }
         }
 
         drawShips(canvas);
+    }
+
+    private void drawShips(Canvas canvas) {
+        Collection<Ship> ships = mBoard.getShips();
+        for (Ship ship : ships) {
+            UiUtils.drawShip(canvas, ship, mPresenter.getBoardRect(), mPresenter.getCellSize(), ship.isDead() ? mShipPaint : mShipPaint);
+        }
     }
 
     @Override
@@ -140,7 +139,7 @@ abstract class BaseBoardView extends View {
 
         int w = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int h = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
-        mPresenter.calculateBoardRect(w, h, 0, 0);
+        mPresenter.measure(w, h, 0, 0);
     }
 
     private DisplayMetrics getDisplayMetrics(WindowManager wm) {
@@ -197,29 +196,15 @@ abstract class BaseBoardView extends View {
         setMeasuredDimension(width, height);
     }
 
-    private void drawShips(Canvas canvas) {
-        Collection<Ship> ships = mBoard.getShips();
-        for (Ship ship : ships) {
-            UiUtils.drawShip(canvas, ship, mPresenter.getBoardRect(), mPresenter.getCellSize(), ship.isDead() ? mShipPaint : mShipPaint);
-        }
-    }
-
     protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
-        // aiming
         if (!mBoard.containsCell(i, j)) {
             return;
         }
-//
-//
         Rect verticalRect = mPresenter.getVerticalRect(i, width);
         if (verticalRect == null) {
             return;
         }
-//
         Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
-        Ln.v("v: " + verticalRect);
-        Ln.v("h: " + horizontalRect);
-//
         Paint paint = getAimingPaint(mBoard.getCell(i, j));
         canvas.drawRect(horizontalRect, paint);
         canvas.drawRect(verticalRect, paint);

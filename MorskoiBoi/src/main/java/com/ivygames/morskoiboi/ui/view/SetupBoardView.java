@@ -76,7 +76,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private int getShipWidthInPx(Ship ship) {
-        return ship.getSize() * mPresenter.mCellSize;
+        return ship.getSize() * mPresenter.mCellSizePx;
     }
 
     @Override
@@ -105,8 +105,8 @@ public class SetupBoardView extends BaseBoardView {
         // draw the top of the screen (selection area)
         if (mCurrentShip != null) {
             int left = mShipSelectionRect.centerX() - getShipWidthInPx(mCurrentShip) / 2;
-            int top = mShipSelectionRect.centerY() - mPresenter.mCellSize / 2;
-            UiUtils.drawShip(canvas, mCurrentShip, left, top, mPresenter.mCellSize, mShipPaint);
+            int top = mShipSelectionRect.centerY() - mPresenter.mCellSizePx / 2;
+            UiUtils.drawShip(canvas, mCurrentShip, left, top, mPresenter.mCellSizePx, mShipPaint);
         }
 
         if (mPickedShip != null) {
@@ -123,8 +123,8 @@ public class SetupBoardView extends BaseBoardView {
     private void updateAim() {
         int shipInBoardCoordinatesX = mPickedShipRect.left - mPresenter.mBoardRect.left + mPresenter.mHalfCellSize;
         int shipInBoardCoordinatesY = mPickedShipRect.top - mPresenter.mBoardRect.top + mPresenter.mHalfCellSize;
-        mAimI = shipInBoardCoordinatesX / mPresenter.mCellSize;
-        mAimJ = shipInBoardCoordinatesY / mPresenter.mCellSize;
+        mAimI = shipInBoardCoordinatesX / mPresenter.mCellSizePx;
+        mAimJ = shipInBoardCoordinatesY / mPresenter.mCellSizePx;
     }
 
     private void centerPickedShipAround(int touchX, int touchY) {
@@ -133,8 +133,8 @@ public class SetupBoardView extends BaseBoardView {
         boolean isHorizontal = mPickedShip.isHorizontal();
         mPickedShipRect.left = touchX - (isHorizontal ? halfWidthInPx : mPresenter.mHalfCellSize);
         mPickedShipRect.top = touchY - (isHorizontal ? mPresenter.mHalfCellSize : halfWidthInPx);
-        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mPresenter.mCellSize);
-        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mPresenter.mCellSize : widthInPx);
+        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mPresenter.mCellSizePx);
+        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mPresenter.mCellSizePx : widthInPx);
     }
 
     @Override
@@ -286,7 +286,7 @@ public class SetupBoardView extends BaseBoardView {
         w = w - getPaddingLeft() - getPaddingRight();
         h = h - getPaddingTop() - getPaddingBottom();
 
-        mPresenter.calculateBoardRect(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
+        mPresenter.measure(w, h - mShipSelectionRect.height(), 0, mShipDisplayRect.height());
     }
 
     private void setCurrentShip(Ship ship) {

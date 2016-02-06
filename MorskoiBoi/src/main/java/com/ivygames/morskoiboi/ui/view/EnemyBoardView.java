@@ -148,13 +148,13 @@ public class EnemyBoardView extends BaseBoardView {
         super.onDraw(canvas);
 
         if (mAim != null) {
-            int left = mAim.getX() * mPresenter.mCellSize + mPresenter.mBoardRect.left;
-            int top = mAim.getY() * mPresenter.mCellSize + mPresenter.mBoardRect.top;
+            int left = mAim.getX() * mPresenter.mCellSizePx + mPresenter.mBoardRect.left;
+            int top = mAim.getY() * mPresenter.mCellSizePx + mPresenter.mBoardRect.top;
             // canvas.drawBitmap(mLockBitmapSrc, left, top, null);
             mLockDstRect.left = left;
             mLockDstRect.top = top;
-            mLockDstRect.right = left + mPresenter.mCellSize;
-            mLockDstRect.bottom = top + mPresenter.mCellSize;
+            mLockDstRect.right = left + mPresenter.mCellSizePx;
+            mLockDstRect.bottom = top + mPresenter.mCellSizePx;
             canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, mLockDstRect, null);
         }
 
@@ -162,8 +162,8 @@ public class EnemyBoardView extends BaseBoardView {
         if (mTouchState.getDragStatus() == TouchState.START_DRAGGING) {
 
             // aiming
-            int i = mTouchX / mPresenter.mCellSize;
-            int j = mTouchY / mPresenter.mCellSize;
+            int i = mTouchX / mPresenter.mCellSizePx;
+            int j = mTouchY / mPresenter.mCellSizePx;
             drawAiming(canvas, i, j, 1, 1);
         }
 
@@ -175,8 +175,8 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private void animate(Animation animation, Canvas canvas) {
-        int dx = animation.getAim().getX() * mPresenter.mCellSize + mAnimationHorOffset;
-        int dy = animation.getAim().getY() * mPresenter.mCellSize + mAnimationVerOffset;
+        int dx = animation.getAim().getX() * mPresenter.mCellSizePx + mAnimationHorOffset;
+        int dy = animation.getAim().getY() * mPresenter.mCellSizePx + mAnimationVerOffset;
 
         int d = (int) (animation.getCellRatio() * mPresenter.mHalfCellSize);
         mDstRect.left = dx - d;
@@ -203,9 +203,9 @@ public class EnemyBoardView extends BaseBoardView {
 
             int i = -1;
             if (mTouchX > LEFT_MARGIN) {
-                i = mTouchX / mPresenter.mCellSize;
+                i = mTouchX / mPresenter.mCellSizePx;
             }
-            int j = mTouchY / mPresenter.mCellSize;
+            int j = mTouchY / mPresenter.mCellSizePx;
             mShotListener.onShot(i, j);
         }
         invalidate();
