@@ -86,7 +86,7 @@ public class SetupBoardView extends BaseBoardView {
         // paint invalid cells (ships that touch each other) and the ships themselves
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
-                Cell cell = mPresenter.getCell(i, j);
+                Cell cell = mBoard.getCell(i, j);
                 if (cell.isReserved()) {
 
                     if (mRules.isCellConflicting(cell)) {
@@ -157,7 +157,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_DOWN:
                 if (mShipSelectionRect.contains(mTouchX, mTouchY)) {
                     tryPickingNewShip();
-                } else if (mPresenter.containsCell(getCellX(), getCellY())) {
+                } else if (mBoard.containsCell(getCellX(), getCellY())) {
                     scheduleNewPickTask(getCellX(), getCellY());
                 }
                 break;
@@ -202,15 +202,15 @@ public class SetupBoardView extends BaseBoardView {
 
     private void rotateShip() {
         cancelLongPressTask();
-        mPresenter.rotateShipAt(getCellX(), getCellY());
+        mBoard.rotateShipAt(getCellX(), getCellY());
     }
 
     /**
      * @return true if succeeded to put down currently picked-up ship
      */
     private boolean tryPutPickedShip() {
-        if (mPresenter.getBoard().shipFitsTheBoard(mPickedShip, mAimI, mAimJ)) {
-            PlacementFactory.getAlgorithm().putShipAt(mPresenter.getBoard(), mPickedShip, mAimI, mAimJ);
+        if (mBoard.shipFitsTheBoard(mPickedShip, mAimI, mAimJ)) {
+            PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAimI, mAimJ);
             return true;
         }
         return false;
@@ -332,7 +332,7 @@ public class SetupBoardView extends BaseBoardView {
         @Override
         public void run() {
             mLongPressTask = null;
-            mPickedShip = mPresenter.getBoard().removeShipFrom(mI, mJ);
+            mPickedShip = mBoard.removeShipFrom(mI, mJ);
             if (mPickedShip != null) {
                 centerPickedShipAround(mTouchX, mTouchY);
                 updateAim();

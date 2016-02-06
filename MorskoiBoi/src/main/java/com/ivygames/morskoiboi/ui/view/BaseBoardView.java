@@ -17,6 +17,8 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
+import org.commons.logger.Ln;
+
 import java.util.Collection;
 
 abstract class BaseBoardView extends View {
@@ -39,6 +41,8 @@ abstract class BaseBoardView extends View {
     private final Paint mMissInnerPaint;
 
     protected BasePresenter mPresenter;
+
+    protected Board mBoard;
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -74,7 +78,8 @@ abstract class BaseBoardView extends View {
     }
 
     public final void setBoard(Board board) {
-        mPresenter.setBoard(board);
+        mBoard = board;
+        mPresenter.setBoardSize(board.getHorizontalDim());
         invalidate();
     }
 
@@ -90,7 +95,7 @@ abstract class BaseBoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int boardWidth = mPresenter.getBoardWidth();
+        int boardWidth = mBoard.getHorizontalDim();
 
         // draw vertical lines
         for (int i = 0; i < boardWidth + 1; i++) {
@@ -111,11 +116,11 @@ abstract class BaseBoardView extends View {
 
         // draw board
         for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < mPresenter.getBoardHeight(); j++) {
+            for (int j = 0; j < mBoard.getVerticalDim(); j++) {
                 int left = mPresenter.getLeft(i);
                 int top = mPresenter.getTop(j);
 
-                Cell cell = mPresenter.getCell(i, j);
+                Cell cell = mBoard.getCell(i, j);
                 if (cell.isHit()) {
                     drawMark(canvas, false, left, top);
                 } else if (cell.isMiss()) {
@@ -193,7 +198,7 @@ abstract class BaseBoardView extends View {
     }
 
     private void drawShips(Canvas canvas) {
-        Collection<Ship> ships = mPresenter.getShips();
+        Collection<Ship> ships = mBoard.getShips();
         for (Ship ship : ships) {
             UiUtils.drawShip(canvas, ship, mPresenter.getBoardRect(), mPresenter.getCellSize(), ship.isDead() ? mShipPaint : mShipPaint);
         }
@@ -201,19 +206,21 @@ abstract class BaseBoardView extends View {
 
     protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
         // aiming
-        if (!mPresenter.containsCell(i, j)) {
+        if (!mBoard.containsCell(i, j)) {
             return;
         }
-
-
+//
+//
         Rect verticalRect = mPresenter.getVerticalRect(i, width);
         if (verticalRect == null) {
             return;
         }
-
+//
         Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
-
-        Paint paint = getAimingPaint(mPresenter.getCell(i, j));
+        Ln.v("v: " + verticalRect);
+        Ln.v("h: " + horizontalRect);
+//
+        Paint paint = getAimingPaint(mBoard.getCell(i, j));
         canvas.drawRect(horizontalRect, paint);
         canvas.drawRect(verticalRect, paint);
     }
