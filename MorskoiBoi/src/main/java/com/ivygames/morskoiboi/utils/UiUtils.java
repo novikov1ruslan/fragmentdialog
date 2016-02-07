@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,15 +72,6 @@ public final class UiUtils {
             bottom = top + cellSize * shipSize;
         }
         canvas.drawRect(left, top, right, bottom, paint);
-    }
-
-    public static void drawShip(Canvas canvas, Ship ship, Rect boardRect, int cellSize, Paint paint) {
-        int i = ship.getX();
-        int j = ship.getY();
-        int left = i * cellSize + boardRect.left;
-        int top = j * cellSize + boardRect.top;
-
-        UiUtils.drawShip(canvas, ship, left, top, cellSize, paint);
     }
 
     public static Bitmap invert(Bitmap src) {

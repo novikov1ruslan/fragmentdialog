@@ -75,6 +75,11 @@ public class SetupBoardView extends BaseBoardView {
         Ln.v("touch slop = " + mTouchSlop);
     }
 
+    @Override
+    protected BasePresenter getPresenter() {
+        return new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
+    }
+
     private int getShipWidthInPx(Ship ship) {
         return ship.getSize() * mPresenter.mCellSizePx;
     }

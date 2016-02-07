@@ -68,11 +68,13 @@ abstract class BaseBoardView extends View {
 
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
-        mPresenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
+        mPresenter = getPresenter();
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mDisplayMetrics = getDisplayMetrics(windowManager);
     }
+
+    protected abstract BasePresenter getPresenter();
 
     public final void setBoard(Board board) {
         mBoard = board;
@@ -134,7 +136,9 @@ abstract class BaseBoardView extends View {
     private void drawShips(Canvas canvas) {
         Collection<Ship> ships = mBoard.getShips();
         for (Ship ship : ships) {
-            UiUtils.drawShip(canvas, ship, mPresenter.getBoardRect(), mPresenter.getCellSize(), ship.isDead() ? mShipPaint : mShipPaint);
+            int left = mPresenter.getLeft(ship.getX());
+            int top = mPresenter.getTop(ship.getY());
+            UiUtils.drawShip(canvas, ship, left, top, mPresenter.getCellSize(), ship.isDead() ? mShipPaint : mShipPaint);
         }
     }
 

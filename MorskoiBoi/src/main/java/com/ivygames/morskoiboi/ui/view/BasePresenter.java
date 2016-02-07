@@ -29,7 +29,7 @@ public class BasePresenter {
         mTurnBorderSize = turnBorderSize;
     }
 
-    public final void measure(int w, int h, int horOffset, int verOffset, int smallestWidth) {
+    public void measure(int w, int h, int horOffset, int verOffset, int smallestWidth) {
 
         mCellSizePx = smallestWidth / mBoardSize;
         int boardSizePx = mCellSizePx * mBoardSize;
@@ -100,17 +100,17 @@ public class BasePresenter {
         return mMark;
     }
 
-    private final int getLeft(int i) {
+    public final int getLeft(int i) {
         return i * mCellSizePx + mBoardRect.left;
     }
 
-    private final int getTop(int j) {
+    public final int getTop(int j) {
         return j * mCellSizePx + mBoardRect.top;
     }
 
-    public final Rect getBoardRect() {
-        return mBoardRect;
-    }
+//    public final Rect getBoardRect() {
+//        return mBoardRect;
+//    }
 
     public final int getCellSize() {
         return mCellSizePx;
