@@ -31,10 +31,7 @@ public class EnemyBoardView extends BaseBoardView {
     private boolean mLocked;
     private final Paint mAimingLockedPaint;
     private Bitmap mNauticalBitmap;
-    private final Random mRandom = new Random(System.currentTimeMillis());
     private Rect mSrcRect;
-
-    private Vector2 mAim;
 
     private Bitmap mLockBitmapSrc;
     private Rect mLockSrcRect;
@@ -67,6 +64,11 @@ public class EnemyBoardView extends BaseBoardView {
 
         fillSplashAnimation();
         fillExplosionAnimation();
+    }
+
+    @Override
+    protected EnemyBoardPresenter getPresenter() {
+        return new EnemyBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
     }
 
     private void fillSplashAnimation() {
@@ -108,6 +110,7 @@ public class EnemyBoardView extends BaseBoardView {
         if (tmp == null) {
             Ln.e("could not decode nautical");
         } else {
+            final Random mRandom = new Random(System.currentTimeMillis());
             int x = mRandom.nextInt(tmp.getWidth() - TEXTURE_SIZE);
             int y = mRandom.nextInt(tmp.getHeight() - TEXTURE_SIZE);
             mNauticalBitmap = Bitmap.createBitmap(tmp, x, y, TEXTURE_SIZE, TEXTURE_SIZE);
@@ -142,23 +145,16 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onDraw(Canvas canvas) {
         if (mNauticalBitmap != null) {
-            canvas.drawBitmap(mNauticalBitmap, mSrcRect, mPresenter.mBoardRect, null);
+            canvas.drawBitmap(mNauticalBitmap, mSrcRect, getPresenter().getBoardRect(), null);
         }
 
         super.onDraw(canvas);
 
-        if (mAim != null) {
-            int left = mAim.getX() * mPresenter.mCellSizePx + mPresenter.mBoardRect.left;
-            int top = mAim.getY() * mPresenter.mCellSizePx + mPresenter.mBoardRect.top;
-            // canvas.drawBitmap(mLockBitmapSrc, left, top, null);
-            mLockDstRect.left = left;
-            mLockDstRect.top = top;
-            mLockDstRect.right = left + mPresenter.mCellSizePx;
-            mLockDstRect.bottom = top + mPresenter.mCellSizePx;
-            canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, mLockDstRect, null);
+        if (getPresenter().hasAim()) {
+            Rect rectDst = getPresenter().getAimRectDst();
+            canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, rectDst, null);
         }
 
-        // draw dragged ship
         if (mTouchState.getDragStatus() == TouchState.START_DRAGGING) {
 
             // aiming
@@ -219,12 +215,12 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void setAim(Vector2 aim) {
-        mAim = aim;
+        getPresenter().setAim(aim);
         invalidate();
     }
 
     public void removeAim() {
-        mAim = null;
+        getPresenter().removeAim();
     }
 
     public boolean isLocked() {
