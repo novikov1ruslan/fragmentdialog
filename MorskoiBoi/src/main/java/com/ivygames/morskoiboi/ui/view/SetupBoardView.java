@@ -77,7 +77,11 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     protected BasePresenter getPresenter() {
-        return new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
+        if (mPresenter == null) {
+            mPresenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
+        }
+
+        return mPresenter;
     }
 
     private int getShipWidthInPx(Ship ship) {
