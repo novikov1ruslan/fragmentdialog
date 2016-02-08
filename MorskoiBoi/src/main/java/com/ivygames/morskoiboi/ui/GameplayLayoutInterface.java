@@ -4,8 +4,8 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.ui.view.EnemyBoardView;
 import com.ivygames.morskoiboi.ui.view.GameplayLayoutListener;
+import com.ivygames.morskoiboi.ui.view.ShotListener;
 import com.ivygames.morskoiboi.ui.view.TimeConsumer;
 
 import java.util.Collection;
@@ -34,7 +34,7 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void setEnemyName(CharSequence name);
 
-    void setShotListener(EnemyBoardView.ShotListener boardShotListener);
+    void setShotListener(ShotListener boardShotListener);
 
     boolean isLocked();
 

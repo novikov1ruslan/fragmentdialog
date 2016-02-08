@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.ui.view;
 
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -20,7 +20,10 @@ public final class EnemyBoardPresenter extends BasePresenter {
     private int mTouchY;
 
     private Vector2 mAim;
+    private ShotListener mShotListener;
 
+    private TouchState mTouchState = new TouchState();
+    private int mTouchAction = mTouchState.getTouchAction();
     public EnemyBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
     }
@@ -30,6 +33,10 @@ public final class EnemyBoardPresenter extends BasePresenter {
         super.measure(w, h, horOffset, verOffset, smallestWidth);
         mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
         mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
+    }
+
+    public void setShotListener(ShotListener shotListener) {
+        mShotListener = shotListener;
     }
 
     public Rect getAnimationDestination(Animation animation) {
@@ -59,11 +66,6 @@ public final class EnemyBoardPresenter extends BasePresenter {
         return mLockDstRect;
     }
 
-    public void setTouch(int touchX, int touchY) {
-        mTouchX = touchX;
-        mTouchY = touchY;
-    }
-
     public int getTouchedCellY() {
         return mTouchY / mCellSizePx;
     }
@@ -91,5 +93,32 @@ public final class EnemyBoardPresenter extends BasePresenter {
 
     public void removeAim() {
         mAim = null;
+    }
+
+    public void onTouch(TouchState touchState) {
+        mTouchState = touchState;
+        mTouchX = mTouchState.getTouchX();
+        mTouchY = mTouchState.getTouchY();
+        mTouchAction = mTouchState.getTouchAction();
+        // TODO: create universal procedure to map x,y to cell
+        if (mTouchAction == MotionEvent.ACTION_DOWN/* && !mLocked*/) {
+            mShotListener.onAimingStarted();
+        }
+
+        if (mTouchAction == MotionEvent.ACTION_UP/* && !mLocked*/) {
+            // TODO: unify these 2 callbacks
+            mShotListener.onAimingFinished();
+            mShotListener.onShot(getTouchedCellX(), getTouchedCellY());
+        }
+    }
+
+    public boolean startedDragging() {
+        return mTouchState.getDragStatus() == TouchState.START_DRAGGING;
+    }
+
+    public void unlock() {
+        if (mTouchAction == MotionEvent.ACTION_DOWN || mTouchAction == MotionEvent.ACTION_MOVE) {
+            mShotListener.onAimingStarted();
+        }
     }
 }

@@ -129,6 +129,26 @@ public class SetupBoardView extends BaseBoardView {
         }
     }
 
+    protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
+        if (!mBoard.containsCell(i, j)) {
+            return;
+        }
+
+//        Aiming aiming = mPresenter.getAiming(i, j, width, height);
+//        if (aiming != null)
+//            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
+//        }
+
+        Rect verticalRect = mPresenter.getVerticalRect(i, width);
+        if (verticalRect == null) {
+            return;
+        }
+        Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
+        Paint paint = getAimingPaint(mBoard.getCell(i, j));
+        canvas.drawRect(horizontalRect, paint);
+        canvas.drawRect(verticalRect, paint);
+    }
+
     private void updateAim() {
         int shipInBoardCoordinatesX = mPickedShipRect.left - mPresenter.mBoardRect.left + mPresenter.mHalfCellSize;
         int shipInBoardCoordinatesY = mPickedShipRect.top - mPresenter.mBoardRect.top + mPresenter.mHalfCellSize;

@@ -17,7 +17,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
 
 import org.commons.logger.Ln;
 

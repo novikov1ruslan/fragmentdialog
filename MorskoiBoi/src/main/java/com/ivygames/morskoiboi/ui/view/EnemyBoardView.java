@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.ui.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,21 +17,11 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 public class EnemyBoardView extends BaseBoardView {
 
     private boolean mLocked = true;
-    private ShotListener mShotListener;
 
-    private final TouchState mTouchState = new TouchState();
-    private int mTouchAction = mTouchState.getTouchAction();
     private EnemyBoardRenderer mRenderer;
 
     private final Paint mAimingLockedPaint;
-
-    public interface ShotListener {
-        void onShot(int i, int j);
-
-        void onAimingStarted();
-
-        void onAimingFinished();
-    }
+    private final TouchState mTouchState = new TouchState();
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -59,7 +50,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void setShotListener(ShotListener shotListener) {
-        mShotListener = shotListener;
+        getPresenter().setShotListener(shotListener);
     }
 
     @Override
@@ -71,34 +62,39 @@ public class EnemyBoardView extends BaseBoardView {
             mRenderer.drawAim(canvas, getPresenter().getAimRectDst());
         }
 
-        drawAiming(canvas);
+        if (getPresenter().startedDragging()) {
+            drawAiming(canvas, getPresenter().getTouchedCellX(), getPresenter().getTouchedCellY(), 1, 1);
+        }
 
         if (mRenderer.isAnimationRunning()) {
             postInvalidateDelayed(mRenderer.animateExplosions(canvas));
         }
     }
 
-    private void drawAiming(Canvas canvas) {
-        if (mTouchState.getDragStatus() == TouchState.START_DRAGGING) {
-            drawAiming(canvas, getPresenter().getTouchedCellX(), getPresenter().getTouchedCellY(), 1, 1);
+    protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
+        if (!mBoard.containsCell(i, j)) {
+            return;
         }
+
+//        Aiming aiming = mPresenter.getAiming(i, j, width, height);
+//        if (aiming != null)
+//            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
+//        }
+
+        Rect verticalRect = mPresenter.getVerticalRect(i, width);
+        if (verticalRect == null) {
+            return;
+        }
+        Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
+        Paint paint = getAimingPaint(mBoard.getCell(i, j));
+        canvas.drawRect(horizontalRect, paint);
+        canvas.drawRect(verticalRect, paint);
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        getPresenter().setTouch(mTouchState.getTouchX(), mTouchState.getTouchY());
-        mTouchAction = mTouchState.getTouchAction();
-        // TODO: create universal procedure to map x,y to cell
-        if (mTouchAction == MotionEvent.ACTION_DOWN && !mLocked) {
-            mShotListener.onAimingStarted();
-        }
-
-        if (mTouchAction == MotionEvent.ACTION_UP && !mLocked) {
-            // TODO: unify these 2 callbacks
-            mShotListener.onAimingFinished();
-            mShotListener.onShot(getPresenter().getTouchedCellX(), getPresenter().getTouchedCellY());
-        }
+        getPresenter().onTouch(mTouchState);
         invalidate();
 
         return true;
@@ -128,9 +124,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     public void unLock() {
         mLocked = false;
-        if (mTouchAction == MotionEvent.ACTION_DOWN || mTouchAction == MotionEvent.ACTION_MOVE) {
-            mShotListener.onAimingStarted();
-        }
+        getPresenter().unlock();
     }
 
     public void setShotResult(PokeResult result) {

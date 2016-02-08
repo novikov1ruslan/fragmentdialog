@@ -38,7 +38,7 @@ import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.ui.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.ui.TurnTimer.TimerListener;
 import com.ivygames.morskoiboi.ui.view.ChatAdapter;
-import com.ivygames.morskoiboi.ui.view.EnemyBoardView.ShotListener;
+import com.ivygames.morskoiboi.ui.view.ShotListener;
 import com.ivygames.morskoiboi.ui.view.GameplayLayoutListener;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
@@ -520,6 +520,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onAimingStarted() {
+            if (mLayout.isLocked()) {
+                // ignore callbacks when layout is locked
+                return;
+            }
+
             Ln.v("aiming started");
             // FIXME
             if (debug_aiming_started) {
@@ -531,6 +536,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onAimingFinished() {
+            if (mLayout.isLocked()) {
+                // ignore callbacks when layout is locked
+                return;
+            }
+
             Ln.v("aiming finished");
             debug_aiming_started = false;
             mSoundManager.stopKantropSound();
