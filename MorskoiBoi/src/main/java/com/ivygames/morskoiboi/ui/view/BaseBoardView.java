@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -209,10 +208,6 @@ abstract class BaseBoardView extends View {
 
         //MUST CALL THIS
         setMeasuredDimension(width, height);
-    }
-
-    protected Paint getAimingPaint(Cell cell) {
-        return mAimingPaint;
     }
 
     public final void hideTurnBorder() {

@@ -136,7 +136,7 @@ public class SetupBoardView extends BaseBoardView {
                 int width = mPickedShip.isHorizontal() ? mPickedShip.getSize() : 1;
                 int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
                 Aiming aiming = getPresenter().getAiming(mAimI, mAimJ, width, height);
-                mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(mAimI, mAimJ)));
+                mRenderer.render(canvas, aiming, mAimingPaint);
             }
         }
 
