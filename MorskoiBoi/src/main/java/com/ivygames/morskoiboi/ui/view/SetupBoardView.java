@@ -148,7 +148,7 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mTouchState.onTouchEvent(event);
+        mTouchState.setEvent(event);
         mTouchX = mTouchState.getTouchX();
         mTouchY = mTouchState.getTouchY();
 

@@ -116,7 +116,7 @@ public class EnemyBoardView extends BaseBoardView {
             }
         }
 
-        mLockBitmapSrc = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.lock);
+        mLockBitmapSrc = BitmapFactory.decodeResource(getResources(), R.drawable.lock);
         mLockSrcRect = new Rect(0, 0, mLockBitmapSrc.getWidth(), mLockBitmapSrc.getHeight());
     }
 
@@ -168,7 +168,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mTouchState.onTouchEvent(event);
+        mTouchState.setEvent(event);
         getPresenter().setTouch(mTouchState.getTouchX(), mTouchState.getTouchY());
         mTouchAction = mTouchState.getTouchAction();
         // TODO: create universal procedure to map x,y to cell
@@ -177,6 +177,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (mTouchAction == MotionEvent.ACTION_UP && !mLocked) {
+            // TODO: unify these 2 callbacks
             mShotListener.onAimingFinished();
             mShotListener.onShot(getPresenter().getTouchedCellX(), getPresenter().getTouchedCellY());
         }
@@ -223,15 +224,6 @@ public class EnemyBoardView extends BaseBoardView {
             mExplosionAnimation.setAim(result.aim);
             mExplosionAnimation.start();
         }
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        if (!changed) {
-            return;
-        }
-
-        super.onLayout(true, left, top, right, bottom);
     }
 
 }
