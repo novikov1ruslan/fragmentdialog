@@ -39,6 +39,7 @@ abstract class BaseBoardView extends View {
     private final Paint mMissInnerPaint;
 
     protected BasePresenter mPresenter;
+    protected BaseBoardRenderer mRenderer;
 
     protected Board mBoard;
 
@@ -69,10 +70,13 @@ abstract class BaseBoardView extends View {
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
         mPresenter = getPresenter();
+        mRenderer = getRenderer();
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mDisplayMetrics = getDisplayMetrics(windowManager);
     }
+
+    protected abstract BaseBoardRenderer getRenderer();
 
     protected abstract BasePresenter getPresenter();
 

@@ -16,7 +16,7 @@ import org.commons.logger.Ln;
 
 import java.util.Random;
 
-class EnemyBoardRenderer {
+class EnemyBoardRenderer extends BaseBoardRenderer {
     private static final int TEXTURE_SIZE = 512;
 
     private final Animation mSplashAnimation = new Animation(1000, 2f);
@@ -133,8 +133,4 @@ class EnemyBoardRenderer {
         }
     }
 
-    public void render(Canvas canvas, Aiming aiming, Paint paint) {
-        canvas.drawRect(aiming.horizontal, paint);
-        canvas.drawRect(aiming.vertical, paint);
-    }
 }

@@ -76,6 +76,15 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     @Override
+    protected BaseBoardRenderer getRenderer() {
+        if (mRenderer == null) {
+            mRenderer = new BaseBoardRenderer();
+        }
+
+        return mRenderer;
+    }
+
+    @Override
     protected BasePresenter getPresenter() {
         if (mPresenter == null) {
             mPresenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
@@ -123,30 +132,15 @@ public class SetupBoardView extends BaseBoardView {
             canvas.drawRect(mPickedShipRect, mShipPaint);
 
             // aiming
-            int width = mPickedShip.isHorizontal() ? mPickedShip.getSize() : 1;
-            int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-            drawAiming(canvas, mAimI, mAimJ, width, height);
-        }
-    }
-
-    protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
-        if (!mBoard.containsCell(i, j)) {
-            return;
+            if (mBoard.containsCell(mAimI, mAimJ)) {
+                int width = mPickedShip.isHorizontal() ? mPickedShip.getSize() : 1;
+                int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
+                Aiming aiming = getPresenter().getAiming(mAimI, mAimJ, width, height);
+                mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(mAimI, mAimJ)));
+            }
         }
 
-//        Aiming aiming = mPresenter.getAiming(i, j, width, height);
-//        if (aiming != null)
-//            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
-//        }
-
-        Rect verticalRect = mPresenter.getVerticalRect(i, width);
-        if (verticalRect == null) {
-            return;
-        }
-        Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
-        Paint paint = getAimingPaint(mBoard.getCell(i, j));
-        canvas.drawRect(horizontalRect, paint);
-        canvas.drawRect(verticalRect, paint);
+        getRenderer().render(canvas, mTouchState);
     }
 
     private void updateAim() {

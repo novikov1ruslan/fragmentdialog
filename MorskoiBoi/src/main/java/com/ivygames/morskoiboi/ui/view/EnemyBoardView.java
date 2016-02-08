@@ -17,8 +17,6 @@ public class EnemyBoardView extends BaseBoardView {
 
     private boolean mLocked = true;
 
-    private EnemyBoardRenderer mRenderer;
-
     private final Paint mAimingLockedPaint;
     private final TouchState mTouchState = new TouchState();
 
@@ -37,15 +35,24 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     @Override
+    protected EnemyBoardRenderer getRenderer() {
+        if (mRenderer == null) {
+            mRenderer = new EnemyBoardRenderer(getPresenter(), getResources());
+        }
+        return (EnemyBoardRenderer) mRenderer;
+    }
+
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mRenderer.init();
+        getRenderer().init();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mRenderer.release();
+        getRenderer().release();
     }
 
     public void setShotListener(ShotListener shotListener) {
@@ -54,31 +61,28 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mRenderer.drawNautical(canvas);
+        getRenderer().drawNautical(canvas);
         super.onDraw(canvas);
 
         if (getPresenter().hasAim()) {
-            mRenderer.drawAim(canvas, getPresenter().getAimRectDst());
+            getRenderer().drawAim(canvas, getPresenter().getAimRectDst());
         }
 
         if (getPresenter().startedDragging()) {
-            drawAiming(canvas, getPresenter().getTouchedI(), getPresenter().getTouchedJ(), 1, 1);
+            int i = getPresenter().getTouchedI();
+            int j = getPresenter().getTouchedJ();
+
+            if (mBoard.containsCell(i, j)) {
+                Aiming aiming = getPresenter().getAiming(i, j, 1, 1);
+                mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
+            }
         }
 
-        if (mRenderer.isAnimationRunning()) {
-            postInvalidateDelayed(mRenderer.animateExplosions(canvas));
-        }
-    }
-
-    protected final void drawAiming(Canvas canvas, int i, int j, int width, int height) {
-        if (!mBoard.containsCell(i, j)) {
-            return;
+        if (getRenderer().isAnimationRunning()) {
+            postInvalidateDelayed(getRenderer().animateExplosions(canvas));
         }
 
-        Aiming aiming = getPresenter().getAiming(i, j, width, height);
-        if (aiming != null) {
-            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
-        }
+        getRenderer().render(canvas, mTouchState);
     }
 
     @Override
@@ -118,7 +122,6 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void setShotResult(PokeResult result) {
-        mRenderer.startAnimation(result);
+        getRenderer().startAnimation(result);
     }
-
 }

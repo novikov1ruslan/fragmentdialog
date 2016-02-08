@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.ui.view;
 
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
 
 public class BasePresenter {
 
@@ -23,6 +24,7 @@ public class BasePresenter {
     // TODO: SetupBoardView
     private final RectF rectF = new RectF();
     private final Mark mMark = new Mark();
+    private final Aiming mAiming = new Aiming();
 
     public BasePresenter(int boardSize, float turnBorderSize) {
         mBoardSize = boardSize;
@@ -116,13 +118,9 @@ public class BasePresenter {
         return mCellSizePx;
     }
 
-    // TODO: make protected
-    public final Rect getVerticalRect(int i, int width) {
+    private @NonNull Rect getVerticalRect(int i, int width) {
         int leftVer = mBoardRect.left + i * mCellSizePx;
         int rightVer = leftVer + width * mCellSizePx;
-        if (rightVer > mBoardRect.right) {
-            return null;
-        }
         int topVer = mBoardRect.top;
         int bottomVer = mBoardRect.bottom;
 
@@ -134,7 +132,7 @@ public class BasePresenter {
         return vRect;
     }
 
-    public final Rect getHorizontalRect(int j, int height) {
+    private @NonNull Rect getHorizontalRect(int j, int height) {
         int leftHor = mBoardRect.left;
         int rightHor = mBoardRect.right;
         int topHor = mBoardRect.top + j * mCellSizePx;
@@ -191,4 +189,12 @@ public class BasePresenter {
         mShowTurn = false;
     }
 
+    public @NonNull Aiming getAiming(int i, int j, int width, int height) {
+        mAiming.vertical = getVerticalRect(i, width);
+        if (mAiming.vertical.right > mBoardRect.right) {
+            mAiming.vertical.right = mBoardRect.right;
+        }
+        mAiming.horizontal = getHorizontalRect(j, height);
+        return mAiming;
+    }
 }

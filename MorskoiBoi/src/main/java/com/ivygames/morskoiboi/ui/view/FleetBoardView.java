@@ -20,4 +20,13 @@ public class FleetBoardView extends BaseBoardView {
         return mPresenter;
     }
 
+    @Override
+    protected BaseBoardRenderer getRenderer() {
+        if (mRenderer == null) {
+            mRenderer = new BaseBoardRenderer();
+        }
+
+        return mRenderer;
+    }
+
 }

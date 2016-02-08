@@ -24,7 +24,6 @@ public final class EnemyBoardPresenter extends BasePresenter {
 
     private TouchState mTouchState = new TouchState();
     private int mTouchAction = mTouchState.getTouchAction();
-    private final Aiming mAiming = new Aiming();
 
     public EnemyBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
@@ -124,13 +123,4 @@ public final class EnemyBoardPresenter extends BasePresenter {
         }
     }
 
-    public Aiming getAiming(int i, int j, int width, int height) {
-        mAiming.vertical = getVerticalRect(i, width);
-        if (mAiming.vertical == null) {
-            return null;
-        }
-
-        mAiming.horizontal = getHorizontalRect(j, height);
-        return mAiming;
-    }
 }
