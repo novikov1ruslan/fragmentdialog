@@ -94,8 +94,7 @@ public class EnemyBoardView extends BaseBoardView {
         return true;
     }
 
-    @Override
-    protected final Paint getAimingPaint(Cell cell) {
+    private Paint getAimingPaint(Cell cell) {
         return cell.beenShot() || mLocked ? mAimingLockedPaint : mAimingPaint;
     }
 

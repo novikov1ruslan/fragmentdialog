@@ -195,6 +195,9 @@ public class BasePresenter {
             mAiming.vertical.right = mBoardRect.right;
         }
         mAiming.horizontal = getHorizontalRect(j, height);
+        if (mAiming.horizontal.bottom > mBoardRect.bottom) {
+            mAiming.horizontal.bottom = mBoardRect.bottom;
+        }
         return mAiming;
     }
 }
