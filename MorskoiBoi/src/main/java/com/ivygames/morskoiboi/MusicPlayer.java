@@ -1,11 +1,8 @@
 package com.ivygames.morskoiboi;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.support.annotation.RawRes;
-
-import org.commons.logger.Ln;
 
 public class MusicPlayer {
     public static final int NO_SOUND = 0;

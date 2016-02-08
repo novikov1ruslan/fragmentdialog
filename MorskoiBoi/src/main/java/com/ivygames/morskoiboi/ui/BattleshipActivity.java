@@ -7,7 +7,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -44,8 +43,6 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.MusicPlayer;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.analytics.ExceptionEvent;
-import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.billing.PurchaseHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -55,7 +52,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
-import org.commons.logger.WarningListener;
 
 import java.util.HashSet;
 import java.util.Set;
