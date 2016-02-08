@@ -211,6 +211,12 @@ abstract class BaseBoardView extends View {
         if (!mBoard.containsCell(i, j)) {
             return;
         }
+
+//        Aiming aiming = mPresenter.getAiming(i, j, width, height);
+//        if (aiming != null)
+//            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
+//        }
+
         Rect verticalRect = mPresenter.getVerticalRect(i, width);
         if (verticalRect == null) {
             return;
