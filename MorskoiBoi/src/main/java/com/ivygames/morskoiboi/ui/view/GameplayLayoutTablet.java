@@ -23,7 +23,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnClickListener {
+public class GameplayLayoutTablet extends OldHandsetGameplayLayout implements View.OnClickListener {
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
@@ -41,7 +41,7 @@ public class GameplayLayout2 extends HandsetGameplayLayout implements View.OnCli
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
-    public GameplayLayout2(Context context, AttributeSet attrs) {
+    public GameplayLayoutTablet(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);

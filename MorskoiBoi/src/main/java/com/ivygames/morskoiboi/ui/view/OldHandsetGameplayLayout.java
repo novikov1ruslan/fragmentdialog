@@ -5,11 +5,11 @@ import android.util.AttributeSet;
 
 import com.ivygames.morskoiboi.ui.GameplayLayoutInterface;
 
-public abstract class HandsetGameplayLayout extends CommonGameplayLayout implements GameplayLayoutInterface {
+public abstract class OldHandsetGameplayLayout extends CommonGameplayLayout implements GameplayLayoutInterface {
 
     private static final float ASPECT_RATIO = 1.5f;
 
-    public HandsetGameplayLayout(Context context, AttributeSet attrs) {
+    public OldHandsetGameplayLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

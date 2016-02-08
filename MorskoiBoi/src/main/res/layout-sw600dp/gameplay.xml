@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.GameplayLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.ui.view.GameplayLayoutHandset xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gameplay_layout"
     android:layout_width="match_parent"
@@ -81,4 +81,4 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp" />
 
-</com.ivygames.morskoiboi.ui.view.GameplayLayout>
+</com.ivygames.morskoiboi.ui.view.GameplayLayoutHandset>
