@@ -488,6 +488,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onShot(int x, int y) {
+            if (mLayout.isLocked()) {
+                // ignore callbacks when layout is locked
+                return;
+            }
+
             if (!mEnemyPublicBoard.containsCell(x, y)) {
                 Ln.d("pressing outside the board: " + x + "," + y);
                 return;

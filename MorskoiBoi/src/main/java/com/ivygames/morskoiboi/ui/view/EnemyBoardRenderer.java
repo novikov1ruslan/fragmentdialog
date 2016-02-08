@@ -4,14 +4,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.PokeResult;
-import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.commons.logger.Ln;
 
@@ -29,6 +27,7 @@ class EnemyBoardRenderer {
     private Bitmap mLockBitmapSrc;
     private Rect mLockSrcRect;
 
+    private Animation mCurrentAnimation;
 
     private final EnemyBoardPresenter mPresenter;
     private Resources mResources;
@@ -74,28 +73,19 @@ class EnemyBoardRenderer {
         mExplosionAnimation.adFrame(bitmaps.getBitmap(R.drawable.explosion_18));
     }
 
+    public boolean isAnimationRunning() {
+        return mCurrentAnimation != null && mCurrentAnimation.isRunning();
+    }
+
     public long animateExplosions(Canvas canvas) {
-        if (mExplosionAnimation.isRunning()) {
-            return animate(mExplosionAnimation, canvas);
-        } else if (mSplashAnimation.isRunning()) {
-            return animate(mSplashAnimation, canvas);
-        }
-        return 0;
+        canvas.drawBitmap(mCurrentAnimation.getCurrentFrame(), mCurrentAnimation.getBounds(), mPresenter.getAnimationDestination(mCurrentAnimation), null);
+        return mCurrentAnimation.getFrameDuration();
     }
 
     public void startAnimation(PokeResult result) {
-        if (result.cell.isMiss()) {
-            mSplashAnimation.setAim(result.aim);
-            mSplashAnimation.start();
-        } else {
-            mExplosionAnimation.setAim(result.aim);
-            mExplosionAnimation.start();
-        }
-    }
-
-    private long animate(Animation animation, Canvas canvas) {
-        canvas.drawBitmap(animation.getCurrentFrame(), animation.getBounds(), mPresenter.getAnimationDestination(animation), null);
-        return animation.getFrameDuration();
+        mCurrentAnimation = result.cell.isMiss() ? mSplashAnimation : mExplosionAnimation;
+        mCurrentAnimation.setAim(result.aim);
+        mCurrentAnimation.start();
     }
 
     public void drawNautical(Canvas canvas) {
@@ -104,13 +94,9 @@ class EnemyBoardRenderer {
         }
     }
 
-    public void drawAim(Canvas canvas) {
-        if (getPresenter().hasAim()) {
-            Rect rectDst = getPresenter().getAimRectDst();
-            canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, rectDst, null);
-        }
+    public void drawAim(Canvas canvas, Rect rectDst) {
+        canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, rectDst, null);
     }
-
 
     private EnemyBoardPresenter getPresenter() {
         return mPresenter;

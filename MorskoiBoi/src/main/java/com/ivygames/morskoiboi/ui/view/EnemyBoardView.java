@@ -67,13 +67,14 @@ public class EnemyBoardView extends BaseBoardView {
         mRenderer.drawNautical(canvas);
         super.onDraw(canvas);
 
-        mRenderer.drawAim(canvas);
+        if (getPresenter().hasAim()) {
+            mRenderer.drawAim(canvas, getPresenter().getAimRectDst());
+        }
 
         drawAiming(canvas);
 
-        long duration = mRenderer.animateExplosions(canvas);
-        if (duration > 0) {
-            postInvalidateDelayed(duration);
+        if (mRenderer.isAnimationRunning()) {
+            postInvalidateDelayed(mRenderer.animateExplosions(canvas));
         }
     }
 
