@@ -24,6 +24,8 @@ public final class EnemyBoardPresenter extends BasePresenter {
 
     private TouchState mTouchState = new TouchState();
     private int mTouchAction = mTouchState.getTouchAction();
+    private final Aiming mAiming = new Aiming();
+
     public EnemyBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
     }
@@ -66,11 +68,11 @@ public final class EnemyBoardPresenter extends BasePresenter {
         return mLockDstRect;
     }
 
-    public int getTouchedCellY() {
+    public int getTouchedJ() {
         return mTouchY / mCellSizePx;
     }
 
-    public int getTouchedCellX() {
+    public int getTouchedI() {
         int x = -1;
         if (mTouchX > LEFT_MARGIN) {
             x = mTouchX / mCellSizePx;
@@ -108,7 +110,7 @@ public final class EnemyBoardPresenter extends BasePresenter {
         if (mTouchAction == MotionEvent.ACTION_UP/* && !mLocked*/) {
             // TODO: unify these 2 callbacks
             mShotListener.onAimingFinished();
-            mShotListener.onShot(getTouchedCellX(), getTouchedCellY());
+            mShotListener.onShot(getTouchedI(), getTouchedJ());
         }
     }
 
@@ -120,5 +122,15 @@ public final class EnemyBoardPresenter extends BasePresenter {
         if (mTouchAction == MotionEvent.ACTION_DOWN || mTouchAction == MotionEvent.ACTION_MOVE) {
             mShotListener.onAimingStarted();
         }
+    }
+
+    public Aiming getAiming(int i, int j, int width, int height) {
+        mAiming.vertical = getVerticalRect(i, width);
+        if (mAiming.vertical == null) {
+            return null;
+        }
+
+        mAiming.horizontal = getHorizontalRect(j, height);
+        return mAiming;
     }
 }

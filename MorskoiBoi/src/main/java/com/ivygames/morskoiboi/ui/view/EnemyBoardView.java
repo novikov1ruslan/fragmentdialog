@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.ui.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -63,7 +62,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (getPresenter().startedDragging()) {
-            drawAiming(canvas, getPresenter().getTouchedCellX(), getPresenter().getTouchedCellY(), 1, 1);
+            drawAiming(canvas, getPresenter().getTouchedI(), getPresenter().getTouchedJ(), 1, 1);
         }
 
         if (mRenderer.isAnimationRunning()) {
@@ -76,19 +75,10 @@ public class EnemyBoardView extends BaseBoardView {
             return;
         }
 
-//        Aiming aiming = mPresenter.getAiming(i, j, width, height);
-//        if (aiming != null)
-//            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
-//        }
-
-        Rect verticalRect = mPresenter.getVerticalRect(i, width);
-        if (verticalRect == null) {
-            return;
+        Aiming aiming = getPresenter().getAiming(i, j, width, height);
+        if (aiming != null) {
+            mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
         }
-        Rect horizontalRect = mPresenter.getHorizontalRect(j, height);
-        Paint paint = getAimingPaint(mBoard.getCell(i, j));
-        canvas.drawRect(horizontalRect, paint);
-        canvas.drawRect(verticalRect, paint);
     }
 
     @Override

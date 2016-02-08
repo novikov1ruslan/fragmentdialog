@@ -116,6 +116,7 @@ public class BasePresenter {
         return mCellSizePx;
     }
 
+    // TODO: make protected
     public final Rect getVerticalRect(int i, int width) {
         int leftVer = mBoardRect.left + i * mCellSizePx;
         int rightVer = leftVer + width * mCellSizePx;
