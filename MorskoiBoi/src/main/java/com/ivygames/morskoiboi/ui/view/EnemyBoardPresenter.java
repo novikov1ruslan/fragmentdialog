@@ -7,9 +7,11 @@ import android.view.MotionEvent;
 import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import org.commons.logger.Ln;
+
 public final class EnemyBoardPresenter extends BasePresenter {
 
-    private static final int LEFT_MARGIN = 10;
+//    private static final int LEFT_MARGIN = 10;
 
     private int mAnimationHorOffset;
     private int mAnimationVerOffset;
@@ -68,16 +70,13 @@ public final class EnemyBoardPresenter extends BasePresenter {
     }
 
     public int getTouchedJ() {
-        return mTouchY / mCellSizePx;
+        int y = mTouchY - mBoardRect.top;
+        return y / mCellSizePx;
     }
 
     public int getTouchedI() {
-        int x = -1;
-        if (mTouchX > LEFT_MARGIN) {
-            x = mTouchX / mCellSizePx;
-        }
-
-        return x;
+        int x = mTouchX - mBoardRect.left;
+        return x / mCellSizePx;
     }
 
     public Rect getBoardRect() {
@@ -100,6 +99,7 @@ public final class EnemyBoardPresenter extends BasePresenter {
         mTouchState = touchState;
         mTouchX = mTouchState.getTouchX();
         mTouchY = mTouchState.getTouchY();
+        Ln.v("x=" + mTouchX + "; y=" + mTouchY);
         mTouchAction = mTouchState.getTouchAction();
         // TODO: create universal procedure to map x,y to cell
         if (mTouchAction == MotionEvent.ACTION_DOWN/* && !mLocked*/) {
