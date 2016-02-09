@@ -18,13 +18,13 @@ public class BasePresenter {
     protected Rect mBoardRect = new Rect();
 
     // temporary fields
-    private float[] line = new float[4];
     private final Rect hRect = new Rect();
     private final Rect vRect = new Rect();
     // TODO: SetupBoardView
     private final RectF rectF = new RectF();
     private final Mark mMark = new Mark();
     private final Aiming mAiming = new Aiming();
+    private BoardG mBoard;
 
     public BasePresenter(int boardSize, float turnBorderSize) {
         mBoardSize = boardSize;
@@ -42,6 +42,7 @@ public class BasePresenter {
         mMarkRadius = mHalfCellSize - mCellSizePx / 5;
 
         calcFrameRect();
+        calculateBoardG();
     }
 
     private void calculateBoardRect(int w, int h, int horOffset, int verOffset, int boardSize) {
@@ -61,15 +62,16 @@ public class BasePresenter {
         mTurnRect.bottom = (int) (mBoardRect.bottom + mTurnBorderSize / 2);
     }
 
-    public final Rect getTurnRect() {
+    private final Rect getTurnRect() {
         return mTurnRect;
     }
 
-    public final float[] getVertical(int i) {
+    private float[] getVertical(int i) {
         float startX = mBoardRect.left + i * mCellSizePx;
         float startY = mBoardRect.top;
         float stopY = mBoardRect.bottom;
 
+        float[] line = new float[4];
         line[0] = startX;
         line[1] = startY;
         line[2] = startX;
@@ -78,11 +80,12 @@ public class BasePresenter {
         return line;
     }
 
-    public final float[] getHorizontal(int i) {
+    private float[] getHorizontal(int i) {
         float startX = mBoardRect.left;
         float startY = mBoardRect.top + i * mCellSizePx;
         float stopX = mBoardRect.right;
 
+        float[] line = new float[4];
         line[0] = startX;
         line[1] = startY;
         line[2] = stopX;
@@ -199,5 +202,22 @@ public class BasePresenter {
             mAiming.horizontal.bottom = mBoardRect.bottom;
         }
         return mAiming;
+    }
+
+    public BoardG getBoard() {
+        return mBoard;
+    }
+
+    private void calculateBoardG() {
+        mBoard = new BoardG();
+        for (int i = 0; i < mBoardSize + 1; i++) {
+            mBoard.lines[i] = getVertical(i);
+        }
+
+        for (int i = 0; i < mBoardSize + 1; i++) {
+            mBoard.lines[mBoardSize + i] = getHorizontal(i);
+        }
+
+        mBoard.frame = getTurnRect();
     }
 }

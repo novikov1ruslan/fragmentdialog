@@ -23,7 +23,7 @@ public class FleetBoardView extends BaseBoardView {
     @Override
     protected BaseBoardRenderer getRenderer() {
         if (mRenderer == null) {
-            mRenderer = new BaseBoardRenderer();
+            mRenderer = new BaseBoardRenderer(getResources());
         }
 
         return mRenderer;

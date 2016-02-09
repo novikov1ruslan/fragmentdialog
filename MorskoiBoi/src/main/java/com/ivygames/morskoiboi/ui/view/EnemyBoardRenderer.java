@@ -34,6 +34,7 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
 
 
     EnemyBoardRenderer(EnemyBoardPresenter presenter, Resources resources) {
+        super(resources);
         mPresenter = presenter;
         mResources = resources;
 

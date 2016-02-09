@@ -104,22 +104,8 @@ abstract class BaseBoardView extends View {
 
         int boardWidth = mBoard.getHorizontalDim();
 
-        // draw vertical lines
-        for (int i = 0; i < boardWidth + 1; i++) {
-            canvas.drawLines(mPresenter.getVertical(i), mLinePaint);
-        }
-
-        // draw horizontal lines
-        for (int i = 0; i < boardWidth + 1; i++) {
-            canvas.drawLines(mPresenter.getHorizontal(i), mLinePaint);
-        }
-
-        // draw border
-        if (mPresenter.isTurn()) {
-            canvas.drawRect(mPresenter.getTurnRect(), mTurnBorderPaint);
-        } else {
-            canvas.drawRect(mPresenter.getTurnRect(), mBorderPaint);
-        }
+        Paint borderPaint = mPresenter.isTurn() ? mTurnBorderPaint : mBorderPaint;
+        mRenderer.renderBoard(canvas, mPresenter.getBoard(), borderPaint);
 
         // draw board
         for (int i = 0; i < boardWidth; i++) {
@@ -135,6 +121,25 @@ abstract class BaseBoardView extends View {
 
         drawShips(canvas);
     }
+
+//    private void drawBoard(Canvas canvas, int boardWidth) {
+//        // draw vertical lines
+//        for (int i = 0; i < boardWidth + 1; i++) {
+//            canvas.drawLines(mPresenter.getVertical(i), mLinePaint);
+//        }
+//
+//        // draw horizontal lines
+//        for (int i = 0; i < boardWidth + 1; i++) {
+//            canvas.drawLines(mPresenter.getHorizontal(i), mLinePaint);
+//        }
+//
+//        // draw border
+//        if (mPresenter.isTurn()) {
+//            canvas.drawRect(mPresenter.getTurnRect(), mTurnBorderPaint);
+//        } else {
+//            canvas.drawRect(mPresenter.getTurnRect(), mBorderPaint);
+//        }
+//    }
 
     private void drawShips(Canvas canvas) {
         Collection<Ship> ships = mBoard.getShips();
