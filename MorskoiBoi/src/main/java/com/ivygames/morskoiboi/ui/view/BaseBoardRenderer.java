@@ -3,10 +3,10 @@ package com.ivygames.morskoiboi.ui.view;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
 public class BaseBoardRenderer {
@@ -57,6 +57,18 @@ public class BaseBoardRenderer {
         }
 
         canvas.drawRect(board.frame, turnPaint);
+    }
+
+    public void drawShip(Canvas canvas, Rect ship, int left, int top, Paint paint) {
+        ship.left += left;
+        ship.top += top;
+        ship.right += left;
+        ship.bottom += top;
+        canvas.drawRect(ship, paint);
+    }
+
+    public void drawShip(Canvas canvas, Rect ship, Paint paint) {
+        drawShip(canvas, ship, 0, 0, paint);
     }
 
     public void drawHitMark(Canvas canvas, Mark mark) {

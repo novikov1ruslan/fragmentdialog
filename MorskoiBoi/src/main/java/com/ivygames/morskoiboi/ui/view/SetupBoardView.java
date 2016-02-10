@@ -124,7 +124,7 @@ public class SetupBoardView extends BaseBoardView {
         if (mCurrentShip != null) {
             int left = mShipSelectionRect.centerX() - getShipWidthInPx(mCurrentShip) / 2;
             int top = mShipSelectionRect.centerY() - mPresenter.mCellSizePx / 2;
-            UiUtils.drawShip(canvas, mCurrentShip, left, top, mPresenter.mCellSizePx, mShipPaint);
+            mRenderer.drawShip(canvas, mPresenter.getRectForShip(mCurrentShip, left, top), mShipPaint);
         }
 
         if (mPickedShip != null) {

@@ -4,6 +4,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.model.Ship;
+
 public class BasePresenter {
 
     private final int mBoardSize;
@@ -105,23 +107,21 @@ public class BasePresenter {
         return mMark;
     }
 
-    public final int getLeft(int i) {
+    private final int getLeft(int i) {
         return i * mCellSizePx + mBoardRect.left;
     }
 
-    public final int getTop(int j) {
+    private final int getTop(int j) {
         return j * mCellSizePx + mBoardRect.top;
     }
 
-//    public final Rect getBoardRect() {
-//        return mBoardRect;
-//    }
-
-    public final int getCellSize() {
+    private final int getCellSize() {
         return mCellSizePx;
     }
 
-    private @NonNull Rect getVerticalRect(int i, int width) {
+    private
+    @NonNull
+    Rect getVerticalRect(int i, int width) {
         int leftVer = mBoardRect.left + i * mCellSizePx;
         int rightVer = leftVer + width * mCellSizePx;
         int topVer = mBoardRect.top;
@@ -135,7 +135,9 @@ public class BasePresenter {
         return vRect;
     }
 
-    private @NonNull Rect getHorizontalRect(int j, int height) {
+    private
+    @NonNull
+    Rect getHorizontalRect(int j, int height) {
         int leftHor = mBoardRect.left;
         int rightHor = mBoardRect.right;
         int topHor = mBoardRect.top + j * mCellSizePx;
@@ -192,7 +194,9 @@ public class BasePresenter {
         mShowTurn = false;
     }
 
-    public @NonNull Aiming getAiming(int i, int j, int width, int height) {
+    public
+    @NonNull
+    Aiming getAiming(int i, int j, int width, int height) {
         mAiming.vertical = getVerticalRect(i, width);
         if (mAiming.vertical.right > mBoardRect.right) {
             mAiming.vertical.right = mBoardRect.right;
@@ -206,6 +210,28 @@ public class BasePresenter {
 
     public BoardG getBoard() {
         return mBoard;
+    }
+
+    private Rect mShipRect = new Rect();
+
+    public Rect getRectForShip(Ship ship) {
+        return getRectForShip(ship, getLeft(ship.getX()), getTop(ship.getY()));
+    }
+
+    public Rect getRectForShip(Ship ship, int left, int top) {
+        mShipRect.left = left;
+        mShipRect.top = top;
+
+        int shipSize = ship.getSize();
+        if (ship.isHorizontal()) {
+            mShipRect.right = mShipRect.left + mCellSizePx * shipSize;
+            mShipRect.bottom = mShipRect.top + mCellSizePx;
+        } else {
+            mShipRect.right = mShipRect.left + mCellSizePx;
+            mShipRect.bottom = mShipRect.top + mCellSizePx * shipSize;
+        }
+
+        return mShipRect;
     }
 
     private void calculateBoardG() {

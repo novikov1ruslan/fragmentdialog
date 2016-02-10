@@ -53,27 +53,6 @@ public final class UiUtils {
         return paint;
     }
 
-    /**
-     * draws a ship with a top left position
-     *
-     * @param left - leftmost corner of the ship in pixels
-     * @param top  - topmost corner of the ship in pixels
-     */
-    public static void drawShip(Canvas canvas, Ship ship, int left, int top, int cellSize, Paint paint) {
-        int bottom;
-        int right;
-
-        int shipSize = ship.getSize();
-        if (ship.isHorizontal()) {
-            right = left + cellSize * shipSize;
-            bottom = top + cellSize;
-        } else {
-            right = left + cellSize;
-            bottom = top + cellSize * shipSize;
-        }
-        canvas.drawRect(left, top, right, bottom, paint);
-    }
-
     public static Bitmap invert(Bitmap src) {
         Bitmap output = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
         int A, R, G, B;
