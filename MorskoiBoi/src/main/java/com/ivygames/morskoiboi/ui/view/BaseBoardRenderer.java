@@ -13,8 +13,31 @@ public class BaseBoardRenderer {
     private Paint debug_paint = new Paint();
     private final Paint mLinePaint;
 
+    private final Paint mHitOuterPaint;
+    private final Paint mHitBgPaint;
+    private final Paint mHitInnerPaint;
+    private final Paint mMissOuterPaint;
+
+    private final Paint mMissBgPaint;
+    private final Paint mMissInnerPaint;
+
     public BaseBoardRenderer(Resources res) {
         mLinePaint = UiUtils.newStrokePaint(res, R.color.line);
+
+        mHitOuterPaint = UiUtils.newStrokePaint(res, R.color.hit);
+        mHitOuterPaint.setAntiAlias(true);
+        mHitInnerPaint = UiUtils.newFillPaint(res, R.color.hit);
+        mHitInnerPaint.setAntiAlias(true);
+        mHitBgPaint = UiUtils.newFillPaint(res, R.color.hit_background);
+
+        mMissOuterPaint = UiUtils.newStrokePaint(res, R.color.miss);
+        mMissOuterPaint.setAntiAlias(true);
+        mMissOuterPaint.setAlpha(63);
+        mMissInnerPaint = UiUtils.newFillPaint(res, R.color.miss);
+        mMissInnerPaint.setAntiAlias(true);
+        mMissInnerPaint.setAlpha(80);
+        mMissBgPaint = UiUtils.newFillPaint(res, R.color.miss_background);
+        mMissBgPaint.setAlpha(80);
     }
 
     public void render(Canvas canvas, Aiming aiming, Paint paint) {
@@ -34,5 +57,19 @@ public class BaseBoardRenderer {
         }
 
         canvas.drawRect(board.frame, turnPaint);
+    }
+
+    public void drawHitMark(Canvas canvas, Mark mark) {
+        drawMark(canvas, mark, false);
+    }
+
+    public void drawMissMark(Canvas canvas, Mark mark) {
+        drawMark(canvas, mark, true);
+    }
+
+    private void drawMark(Canvas canvas, Mark mark, boolean isMiss) {
+        canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissBgPaint : mHitBgPaint);
+        canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissOuterPaint : mHitOuterPaint);
+        canvas.drawCircle(mark.centerX, mark.centerY, mark.innerRadius, isMiss ? mMissInnerPaint : mHitInnerPaint);
     }
 }

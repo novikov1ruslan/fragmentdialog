@@ -27,16 +27,6 @@ abstract class BaseBoardView extends View {
     protected final Paint mAimingPaint;
     private final DisplayMetrics mDisplayMetrics;
 
-    private final Paint mLinePaint;
-
-    private final Paint mHitOuterPaint;
-    private final Paint mHitBgPaint;
-    private final Paint mHitInnerPaint;
-    private final Paint mMissOuterPaint;
-
-    private final Paint mMissBgPaint;
-    private final Paint mMissInnerPaint;
-
     protected BasePresenter mPresenter;
     protected BaseBoardRenderer mRenderer;
 
@@ -48,23 +38,7 @@ abstract class BaseBoardView extends View {
         Resources res = getResources();
         mShipPaint = UiUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
         mTurnBorderPaint = UiUtils.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
-        mLinePaint = UiUtils.newStrokePaint(res, R.color.line);
         mAimingPaint = UiUtils.newFillPaint(res, R.color.aim);
-
-        mHitOuterPaint = UiUtils.newStrokePaint(res, R.color.hit);
-        mHitOuterPaint.setAntiAlias(true);
-        mHitInnerPaint = UiUtils.newFillPaint(res, R.color.hit);
-        mHitInnerPaint.setAntiAlias(true);
-        mHitBgPaint = UiUtils.newFillPaint(res, R.color.hit_background);
-
-        mMissOuterPaint = UiUtils.newStrokePaint(res, R.color.miss);
-        mMissOuterPaint.setAntiAlias(true);
-        mMissOuterPaint.setAlpha(63);
-        mMissInnerPaint = UiUtils.newFillPaint(res, R.color.miss);
-        mMissInnerPaint.setAntiAlias(true);
-        mMissInnerPaint.setAlpha(80);
-        mMissBgPaint = UiUtils.newFillPaint(res, R.color.miss_background);
-        mMissBgPaint.setAlpha(80);
 
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
@@ -91,55 +65,28 @@ abstract class BaseBoardView extends View {
         return paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
     }
 
-    private void drawMark(Canvas canvas, boolean isMiss, int x, int y) {
-        Mark mark = mPresenter.getMark(x, y);
-        canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissBgPaint : mHitBgPaint);
-        canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissOuterPaint : mHitOuterPaint);
-        canvas.drawCircle(mark.centerX, mark.centerY, mark.innerRadius, isMiss ? mMissInnerPaint : mHitInnerPaint);
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int boardWidth = mBoard.getHorizontalDim();
-
         Paint borderPaint = mPresenter.isTurn() ? mTurnBorderPaint : mBorderPaint;
         mRenderer.renderBoard(canvas, mPresenter.getBoard(), borderPaint);
-
-        // draw board
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < mBoard.getVerticalDim(); j++) {
-                Cell cell = mBoard.getCell(i, j);
-                if (cell.isHit()) {
-                    drawMark(canvas, false, i, j);
-                } else if (cell.isMiss()) {
-                    drawMark(canvas, true, i, j);
-                }
-            }
-        }
-
+        drawCells(canvas, mBoard.getHorizontalDim());
         drawShips(canvas);
     }
 
-//    private void drawBoard(Canvas canvas, int boardWidth) {
-//        // draw vertical lines
-//        for (int i = 0; i < boardWidth + 1; i++) {
-//            canvas.drawLines(mPresenter.getVertical(i), mLinePaint);
-//        }
-//
-//        // draw horizontal lines
-//        for (int i = 0; i < boardWidth + 1; i++) {
-//            canvas.drawLines(mPresenter.getHorizontal(i), mLinePaint);
-//        }
-//
-//        // draw border
-//        if (mPresenter.isTurn()) {
-//            canvas.drawRect(mPresenter.getTurnRect(), mTurnBorderPaint);
-//        } else {
-//            canvas.drawRect(mPresenter.getTurnRect(), mBorderPaint);
-//        }
-//    }
+    private void drawCells(Canvas canvas, int boardWidth) {
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardWidth; j++) {
+                Cell cell = mBoard.getCell(i, j);
+                if (cell.isHit()) {
+                    mRenderer.drawHitMark(canvas, mPresenter.getMark(i, j));
+                } else if (cell.isMiss()) {
+                    mRenderer.drawMissMark(canvas, mPresenter.getMark(i, j));
+                }
+            }
+        }
+    }
 
     private void drawShips(Canvas canvas) {
         Collection<Ship> ships = mBoard.getShips();
