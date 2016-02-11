@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.ivygames.morskoiboi.R;
@@ -172,10 +173,19 @@ public class SetupBoardView extends BaseBoardView {
             updateAim();
         }
 
-        switch (mTouchState.getTouchAction()) {
+        processMotionEvent(mTouchState.getTouchAction());
+
+        invalidate();
+
+        return true;
+    }
+
+    private void processMotionEvent(int event) {
+        switch (event) {
             case MotionEvent.ACTION_MOVE:
-                if (mPickShipTask != null && hasMovedBeyondThreshold()) {
-                    runLongPressTask();
+                if (mPickShipTask != null && hasMovedBeyondSlope()) {
+                    mPickShipTask.run();
+                    cancelLongPressTask();
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
@@ -187,7 +197,8 @@ public class SetupBoardView extends BaseBoardView {
                 break;
             case MotionEvent.ACTION_UP:
                 if (mPickShipTask != null) {
-                    rotateShip();
+                    cancelLongPressTask();
+                    mBoard.rotateShipAt(getCellX(), getCellY());
                 } else if (mPickedShip != null) {
                     dropPickedShip();
                 }
@@ -196,10 +207,6 @@ public class SetupBoardView extends BaseBoardView {
                 cancelLongPressTask();
                 break;
         }
-
-        invalidate();
-
-        return true;
     }
 
     private int getCellY() {
@@ -224,11 +231,6 @@ public class SetupBoardView extends BaseBoardView {
         mPickedShip = null;
     }
 
-    private void rotateShip() {
-        cancelLongPressTask();
-        mBoard.rotateShipAt(getCellX(), getCellY());
-    }
-
     /**
      * @return true if succeeded to put down currently picked-up ship
      */
@@ -240,8 +242,20 @@ public class SetupBoardView extends BaseBoardView {
         return false;
     }
 
-    private void scheduleNewPickTask(int i, int j) {
-        mPickShipTask = new PickShipTask(i, j, mTouchX, mTouchY);
+    private void scheduleNewPickTask(final int i, final int j) {
+        mPickShipTask = new PickShipTask(i, j, mTouchX, mTouchY, new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mPickShipTask = null;
+                mPickedShip = mBoard.removeShipFrom(i, j);
+                if (mPickedShip != null) {
+                    centerPickedShipAround(mTouchX, mTouchY);
+                    updateAim();
+                }
+                invalidate();
+                return true;
+            }
+        });
         Ln.v("scheduling long press task: " + mPickShipTask);
         mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
     }
@@ -265,13 +279,7 @@ public class SetupBoardView extends BaseBoardView {
         mShips.add(mPickedShip);
     }
 
-    private void runLongPressTask() {
-        Runnable task = mPickShipTask;
-        cancelLongPressTask();
-        task.run();
-    }
-
-    private boolean hasMovedBeyondThreshold() {
+    private boolean hasMovedBeyondSlope() {
         int dX = mPickShipTask.getTouchX() - mTouchX;
         int dY = mPickShipTask.getTouchY() - mTouchY;
         return Math.sqrt(dX * dX + dY * dY) > mTouchSlop;
@@ -324,45 +332,6 @@ public class SetupBoardView extends BaseBoardView {
             return "no ships";
         }
         return super.toString() + '\n' + mShips.toString();
-    }
-
-    private class PickShipTask implements Runnable {
-
-        private final int mI;
-        private final int mJ;
-        private final int mTouchX;
-        private final int mTouchY;
-
-        public PickShipTask(int i, int j, int touchX, int touchY) {
-            mI = i;
-            mJ = j;
-            mTouchX = touchX;
-            mTouchY = touchY;
-        }
-
-        @Override
-        public void run() {
-            mPickShipTask = null;
-            mPickedShip = mBoard.removeShipFrom(mI, mJ);
-            if (mPickedShip != null) {
-                centerPickedShipAround(mTouchX, mTouchY);
-                updateAim();
-            }
-            invalidate();
-        }
-
-        public int getTouchX() {
-            return mTouchX;
-        }
-
-        public int getTouchY() {
-            return mTouchY;
-        }
-
-        @Override
-        public String toString() {
-            return "PressTask [i=" + mI + ", j=" + mJ + "]";
-        }
     }
 
     private class SetupBoardPresenter extends BasePresenter {
