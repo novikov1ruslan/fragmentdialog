@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -51,7 +52,7 @@ public class SetupBoardView extends BaseBoardView {
      * needed to perform double clicks on the ships
      */
     private PickShipTask mLongPressTask;
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
     private final Paint mConflictCellPaint;
 
@@ -85,12 +86,12 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected SetupBoardPresenter getPresenter() {
         if (mPresenter == null) {
-            mPresenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
+            mPresenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
         }
 
-        return mPresenter;
+        return (SetupBoardPresenter) mPresenter;
     }
 
     private int getShipWidthInPx(Ship ship) {
@@ -296,18 +297,7 @@ public class SetupBoardView extends BaseBoardView {
 
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-
-        // calculate mShipSelectionRect (it starts from left=0, top=0)
-        mShipSelectionRect.right = w / 2;
-        mShipSelectionRect.bottom = h / 4;
-
-        // calculate mShipDisplayRect (it starts from top=0)
-        mShipDisplayRect.left = mShipSelectionRect.right + 1;
-        mShipDisplayRect.right = w;
-        mShipDisplayRect.bottom = mShipSelectionRect.bottom;
-
-        h = h - mShipSelectionRect.height();
-        mPresenter.measure(w, h, 0, mShipDisplayRect.height(), calcSmallestWidth(w, h));
+        getPresenter().measure(w, h);
     }
 
     private void setCurrentShip(Ship ship) {
@@ -372,6 +362,26 @@ public class SetupBoardView extends BaseBoardView {
         @Override
         public String toString() {
             return "PressTask [i=" + mI + ", j=" + mJ + "]";
+        }
+    }
+
+    private class SetupBoardPresenter extends BasePresenter {
+        public SetupBoardPresenter(int boardSize, float dimension) {
+            super(boardSize, dimension);
+        }
+
+        public void measure(int w, int h) {
+            // calculate mShipSelectionRect (it starts from left=0, top=0)
+            mShipSelectionRect.right = w / 2;
+            mShipSelectionRect.bottom = h / 4;
+
+            // calculate mShipDisplayRect (it starts from top=0)
+            mShipDisplayRect.left = mShipSelectionRect.right + 1;
+            mShipDisplayRect.right = w;
+            mShipDisplayRect.bottom = mShipSelectionRect.bottom;
+
+            h = h - mShipSelectionRect.height();
+            super.measure(w, h, 0, mShipDisplayRect.height(), calcSmallestWidth(w, h));
         }
     }
 }
