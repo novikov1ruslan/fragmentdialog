@@ -51,7 +51,7 @@ public class SetupBoardView extends BaseBoardView {
     /**
      * needed to perform double clicks on the ships
      */
-    private PickShipTask mLongPressTask;
+    private PickShipTask mPickShipTask;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
     private final Paint mConflictCellPaint;
@@ -174,7 +174,7 @@ public class SetupBoardView extends BaseBoardView {
 
         switch (mTouchState.getTouchAction()) {
             case MotionEvent.ACTION_MOVE:
-                if (mLongPressTask != null && hasMovedBeyondThreshold()) {
+                if (mPickShipTask != null && hasMovedBeyondThreshold()) {
                     runLongPressTask();
                 }
                 break;
@@ -186,7 +186,7 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (mLongPressTask != null) {
+                if (mPickShipTask != null) {
                     rotateShip();
                 } else if (mPickedShip != null) {
                     dropPickedShip();
@@ -241,9 +241,9 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void scheduleNewPickTask(int i, int j) {
-        mLongPressTask = new PickShipTask(i, j, mTouchX, mTouchY);
-        Ln.v("scheduling long press task: " + mLongPressTask);
-        mHandler.postDelayed(mLongPressTask, LONG_PRESS_DELAY);
+        mPickShipTask = new PickShipTask(i, j, mTouchX, mTouchY);
+        Ln.v("scheduling long press task: " + mPickShipTask);
+        mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
     }
 
     private void tryPickingNewShip() {
@@ -266,21 +266,21 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void runLongPressTask() {
-        Runnable task = mLongPressTask;
+        Runnable task = mPickShipTask;
         cancelLongPressTask();
         task.run();
     }
 
     private boolean hasMovedBeyondThreshold() {
-        int dX = mLongPressTask.getTouchX() - mTouchX;
-        int dY = mLongPressTask.getTouchY() - mTouchY;
+        int dX = mPickShipTask.getTouchX() - mTouchX;
+        int dY = mPickShipTask.getTouchY() - mTouchY;
         return Math.sqrt(dX * dX + dY * dY) > mTouchSlop;
     }
 
     private void cancelLongPressTask() {
-        Ln.v("cancelling long press task: " + mLongPressTask);
-        mHandler.removeCallbacks(mLongPressTask);
-        mLongPressTask = null;
+        Ln.v("cancelling long press task: " + mPickShipTask);
+        mHandler.removeCallbacks(mPickShipTask);
+        mPickShipTask = null;
     }
 
     @Override
@@ -342,7 +342,7 @@ public class SetupBoardView extends BaseBoardView {
 
         @Override
         public void run() {
-            mLongPressTask = null;
+            mPickShipTask = null;
             mPickedShip = mBoard.removeShipFrom(mI, mJ);
             if (mPickedShip != null) {
                 centerPickedShipAround(mTouchX, mTouchY);
