@@ -183,7 +183,7 @@ public class SetupBoardView extends BaseBoardView {
     private void processMotionEvent(int event) {
         switch (event) {
             case MotionEvent.ACTION_MOVE:
-                if (mPickShipTask != null && hasMovedBeyondSlope()) {
+                if (mPickShipTask != null && mPickShipTask.hasMovedBeyondSlope(mTouchX, mTouchY, mTouchSlop)) {
                     mPickShipTask.run();
                     cancelLongPressTask();
                 }
@@ -243,7 +243,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void scheduleNewPickTask(final int i, final int j) {
-        mPickShipTask = new PickShipTask(i, j, mTouchX, mTouchY, new OnLongClickListener() {
+        mPickShipTask = new PickShipTask(mTouchX, mTouchY, new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
@@ -277,12 +277,6 @@ public class SetupBoardView extends BaseBoardView {
             mPickedShip.rotate();
         }
         mShips.add(mPickedShip);
-    }
-
-    private boolean hasMovedBeyondSlope() {
-        int dX = mPickShipTask.getTouchX() - mTouchX;
-        int dY = mPickShipTask.getTouchY() - mTouchY;
-        return Math.sqrt(dX * dX + dY * dY) > mTouchSlop;
     }
 
     private void cancelLongPressTask() {
