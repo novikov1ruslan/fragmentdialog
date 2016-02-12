@@ -58,7 +58,7 @@ abstract class BaseBoardView extends View {
         invalidate();
     }
 
-    protected int calcSmallestWidth(int w, int h) {
+    protected final int calcSmallestWidth(int w, int h) {
         int paddedWidth = w - getPaddingLeft() - getPaddingRight();
         int paddedHeight = h - getPaddingTop() - getPaddingBottom();
 
