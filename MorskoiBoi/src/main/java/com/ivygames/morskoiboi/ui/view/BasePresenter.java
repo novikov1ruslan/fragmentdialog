@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.ui.view;
 
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
@@ -216,6 +217,10 @@ public class BasePresenter {
 
     public Rect getRectForShip(Ship ship) {
         return getRectForShip(ship, getLeft(ship.getX()), getTop(ship.getY()));
+    }
+
+    public Rect getRectForShip(Ship ship, Point point) {
+        return getRectForShip(ship, point.x, point.y);
     }
 
     public Rect getRectForShip(Ship ship, int left, int top) {
