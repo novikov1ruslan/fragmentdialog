@@ -38,7 +38,6 @@ public class SetupBoardView extends BaseBoardView {
      */
     private Ship mCurrentShip;
 
-    private final Rect mShipDisplayRect;
     private PriorityQueue<Ship> mShips;
 
     // the following used during aiming
@@ -59,7 +58,7 @@ public class SetupBoardView extends BaseBoardView {
     private final Paint mConflictCellPaint;
 
     private Bitmap mCurrentBitmap;
-    private static final TouchState mTouchState = new TouchState();
+    private final TouchState mTouchState = new TouchState();
     private int mTouchX;
     private int mTouchY;
     private final Rules mRules = RulesFactory.getRules();
@@ -70,7 +69,6 @@ public class SetupBoardView extends BaseBoardView {
         mConflictCellPaint = UiUtils.newFillPaint(getResources(), R.color.conflict_cell);
 
         mPickedShipRect = new Rect();
-        mShipDisplayRect = new Rect(0, 0, 0, 0);
 
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
@@ -116,8 +114,9 @@ public class SetupBoardView extends BaseBoardView {
         }
 
         if (mCurrentBitmap != null) {
-            int displayLeft = mShipDisplayRect.centerX() - mCurrentBitmap.getWidth() / 2;
-            int displayTop = mShipDisplayRect.centerY() - mCurrentBitmap.getHeight() / 2;
+            Point center = getPresenter().getShipDisplayAreaCenter();
+            int displayLeft = center.x - mCurrentBitmap.getWidth() / 2;
+            int displayTop = center.y - mCurrentBitmap.getHeight() / 2;
             canvas.drawBitmap(mCurrentBitmap, displayLeft, displayTop, null);
         }
 
@@ -301,7 +300,9 @@ public class SetupBoardView extends BaseBoardView {
 
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-        getPresenter().measure(w, h);
+        int hPadding = getHorizontalPadding();
+        int vPadding = getVerticalPadding();
+        getPresenter().measure(w, h, hPadding, vPadding);
     }
 
     private void setCurrentShip(Ship ship) {
@@ -330,15 +331,17 @@ public class SetupBoardView extends BaseBoardView {
         return super.toString() + '\n' + mShips.toString();
     }
 
-    private class SetupBoardPresenter extends BasePresenter {
-        private final Rect mShipSelectionRect;
+    private static class SetupBoardPresenter extends BasePresenter {
+        private final Rect mShipSelectionRect = new Rect();
+        private final Rect mShipDisplayRect = new Rect();
+        private Point shipDisplayCenter = new Point();
+
 
         public SetupBoardPresenter(int boardSize, float dimension) {
             super(boardSize, dimension);
-            mShipSelectionRect = new Rect(0, 0, 0, 0);
         }
 
-        public void measure(int w, int h) {
+        public void measure(int w, int h, int hPadding, int vPadding) {
             // calculate mShipSelectionRect (it starts from left=0, top=0)
             mShipSelectionRect.right = w / 2;
             mShipSelectionRect.bottom = h / 4;
@@ -349,7 +352,7 @@ public class SetupBoardView extends BaseBoardView {
             mShipDisplayRect.bottom = mShipSelectionRect.bottom;
 
             h = h - mShipSelectionRect.height();
-            super.measure(w, h, 0, mShipDisplayRect.height(), calcSmallestWidth(w, h));
+            super.measure(w, h, 0, mShipDisplayRect.height(), hPadding, vPadding);
         }
 
         public int getShipWidthInPx(int shipSize) {
@@ -365,6 +368,11 @@ public class SetupBoardView extends BaseBoardView {
             int left = mShipSelectionRect.centerX() - getShipWidthInPx(shipSize) / 2;
             int top = mShipSelectionRect.centerY() - mCellSizePx / 2;
             return new Point(left, top);
+        }
+
+        public Point getShipDisplayAreaCenter() {
+            shipDisplayCenter.set(mShipDisplayRect.centerX(), mShipDisplayRect.centerY());
+            return shipDisplayCenter;
         }
     }
 }

@@ -58,11 +58,12 @@ abstract class BaseBoardView extends View {
         invalidate();
     }
 
-    protected final int calcSmallestWidth(int w, int h) {
-        int paddedWidth = w - getPaddingLeft() - getPaddingRight();
-        int paddedHeight = h - getPaddingTop() - getPaddingBottom();
+    protected final int getHorizontalPadding() {
+        return getPaddingLeft() + getPaddingRight();
+    }
 
-        return paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
+    protected final int getVerticalPadding() {
+        return getPaddingTop() + getPaddingBottom();
     }
 
     @Override
@@ -103,7 +104,7 @@ abstract class BaseBoardView extends View {
 
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-        mPresenter.measure(w, h, 0, 0, calcSmallestWidth(w, h));
+        mPresenter.measure(w, h, 0, 0, getHorizontalPadding(), getVerticalPadding());
     }
 
     private DisplayMetrics getDisplayMetrics(WindowManager wm) {

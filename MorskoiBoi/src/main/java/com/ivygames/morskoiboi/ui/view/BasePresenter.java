@@ -34,8 +34,9 @@ public class BasePresenter {
         mTurnBorderSize = turnBorderSize;
     }
 
-    public void measure(int w, int h, int horOffset, int verOffset, int smallestWidth) {
+    public void measure(int w, int h, int horOffset, int verOffset, int hPadding, int vPadding) {
 
+        int smallestWidth = calcSmallestWidth(w, h, hPadding, vPadding);
         mCellSizePx = smallestWidth / mBoardSize;
         int boardSizePx = mCellSizePx * mBoardSize;
 
@@ -46,6 +47,13 @@ public class BasePresenter {
 
         calcFrameRect();
         calculateBoardG();
+    }
+
+    private int calcSmallestWidth(int w, int h, int hPadding, int vPadding) {
+        int paddedWidth = w - hPadding;
+        int paddedHeight = h - vPadding;
+
+        return paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
     }
 
     private void calculateBoardRect(int w, int h, int horOffset, int verOffset, int boardSize) {
