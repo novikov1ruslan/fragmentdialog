@@ -6,6 +6,7 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 
 public class BasePresenter {
 
@@ -193,6 +194,12 @@ public class BasePresenter {
 
     public final void hideTurn() {
         mShowTurn = false;
+    }
+
+    public
+    @NonNull
+    Aiming getAiming(Vector2 aim, int width, int height) {
+        return getAiming(aim.getX(), aim.getY(), width, height);
     }
 
     public

@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 public final class Vector2 {
 
+    public static final Vector2 INVALID_VECTOR = new Vector2(-1, -1);
+
     private static final String X = "X";
     private static final String Y = "Y";
 
@@ -57,8 +59,15 @@ public final class Vector2 {
     private final int mX;
     private final int mY;
 
+    private static boolean containsCell(int i, int j) {
+        return i < Board.DIMENSION && i >= 0 && j < Board.DIMENSION && j >= 0;
+    }
+
     // TODO: test
     public static Vector2 get(int i, int j) {
+        if (!containsCell(i, j)) {
+            return INVALID_VECTOR;
+        }
         return POOL[i][j];
     }
 

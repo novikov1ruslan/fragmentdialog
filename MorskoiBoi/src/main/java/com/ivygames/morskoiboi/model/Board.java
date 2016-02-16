@@ -113,6 +113,10 @@ public class Board {
         return emptyCells;
     }
 
+    public boolean shipFitsTheBoard(Ship ship, Vector2 aim) {
+        return shipFitsTheBoard(ship, aim.getX(), aim.getY());
+    }
+
     /**
      * does not check if cells are empty
      *
@@ -129,6 +133,10 @@ public class Board {
             }
         }
         return canPut;
+    }
+
+    public boolean containsCell(Vector2 aim) {
+        return containsCell(aim.getX(), aim.getY());
     }
 
     public boolean containsCell(int i, int j) {

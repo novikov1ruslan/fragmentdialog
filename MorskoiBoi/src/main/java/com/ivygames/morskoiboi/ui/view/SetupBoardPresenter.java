@@ -4,6 +4,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.model.Vector2;
+
 public class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipSelectionRect = new Rect();
     private final Rect mShipDisplayRect = new Rect();
@@ -46,5 +48,13 @@ public class SetupBoardPresenter extends BasePresenter {
     public Point getShipDisplayAreaCenter() {
         shipDisplayCenter.set(mShipDisplayRect.centerX(), mShipDisplayRect.centerY());
         return shipDisplayCenter;
+    }
+
+    public Vector2 getAim(Rect mPickedShipRect) {
+        int shipInBoardCoordinatesX = mPickedShipRect.left - mBoardRect.left + mHalfCellSize;
+        int shipInBoardCoordinatesY = mPickedShipRect.top - mBoardRect.top + mHalfCellSize;
+        int i = shipInBoardCoordinatesX / mCellSizePx;
+        int j = shipInBoardCoordinatesY / mCellSizePx;
+        return Vector2.get(i, j);
     }
 }

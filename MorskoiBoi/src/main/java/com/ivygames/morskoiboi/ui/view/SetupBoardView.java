@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.apache.commons.lang3.Validate;
@@ -46,8 +47,6 @@ public class SetupBoardView extends BaseBoardView {
      */
     private Ship mPickedShip;
     private final Rect mPickedShipRect;
-    private int mAimI;
-    private int mAimJ;
 
     /**
      * needed to perform double clicks on the ships
@@ -62,6 +61,7 @@ public class SetupBoardView extends BaseBoardView {
     private int mTouchX;
     private int mTouchY;
     private final Rules mRules = RulesFactory.getRules();
+    private Vector2 mAim = Vector2.get(-1, -1);
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -133,20 +133,13 @@ public class SetupBoardView extends BaseBoardView {
             canvas.drawRect(mPickedShipRect, mShipPaint);
 
             // aiming
-            if (mBoard.containsCell(mAimI, mAimJ)) {
+            if (mBoard.containsCell(mAim)) {
                 int width = mPickedShip.isHorizontal() ? mPickedShip.getSize() : 1;
                 int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-                Aiming aiming = getPresenter().getAiming(mAimI, mAimJ, width, height);
+                Aiming aiming = getPresenter().getAiming(mAim, width, height);
                 mRenderer.render(canvas, aiming, mAimingPaint);
             }
         }
-    }
-
-    private void updateAim() {
-        int shipInBoardCoordinatesX = mPickedShipRect.left - mPresenter.mBoardRect.left + mPresenter.mHalfCellSize;
-        int shipInBoardCoordinatesY = mPickedShipRect.top - mPresenter.mBoardRect.top + mPresenter.mHalfCellSize;
-        mAimI = shipInBoardCoordinatesX / mPresenter.mCellSizePx;
-        mAimJ = shipInBoardCoordinatesY / mPresenter.mCellSizePx;
     }
 
     private void centerPickedShipAround(int touchX, int touchY) {
@@ -167,7 +160,7 @@ public class SetupBoardView extends BaseBoardView {
 
         if (mPickedShip != null) {
             centerPickedShipAround(mTouchX, mTouchY);
-            updateAim();
+            mAim = getPresenter().getAim(mPickedShipRect);
         }
 
         processMotionEvent(mTouchState.getTouchAction());
@@ -233,8 +226,8 @@ public class SetupBoardView extends BaseBoardView {
      * @return true if succeeded to put down currently picked-up ship
      */
     private boolean tryPutPickedShip() {
-        if (mBoard.shipFitsTheBoard(mPickedShip, mAimI, mAimJ)) {
-            PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAimI, mAimJ);
+        if (mBoard.shipFitsTheBoard(mPickedShip, mAim)) {
+            PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAim.getX(), mAim.getY());
             return true;
         }
         return false;
@@ -248,7 +241,7 @@ public class SetupBoardView extends BaseBoardView {
                 mPickedShip = mBoard.removeShipFrom(i, j);
                 if (mPickedShip != null) {
                     centerPickedShipAround(mTouchX, mTouchY);
-                    updateAim();
+                    mAim = getPresenter().getAim(mPickedShipRect);
                 }
                 invalidate();
                 return true;
@@ -265,7 +258,7 @@ public class SetupBoardView extends BaseBoardView {
         } else {
             mCurrentShip = null;
             centerPickedShipAround(mTouchX, mTouchY);
-            updateAim();
+            mAim = getPresenter().getAim(mPickedShipRect);
             Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
         }
     }
