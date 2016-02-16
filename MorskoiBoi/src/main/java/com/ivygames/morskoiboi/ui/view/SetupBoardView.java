@@ -52,7 +52,6 @@ public class SetupBoardView extends BaseBoardView {
     private final int mTouchSlop;
 
     private Bitmap mCurrentBitmap;
-    private final TouchState mTouchState = new TouchState();
     private int mTouchX;
     private int mTouchY;
     private final Rules mRules = RulesFactory.getRules();
@@ -109,7 +108,7 @@ public class SetupBoardView extends BaseBoardView {
 
         drawScreenTop(canvas);
 
-        getRenderer().render(canvas, mTouchState);
+        getRenderer().render(canvas, mTouchX, mTouchY);
     }
 
     private void drawScreenTop(Canvas canvas) {
@@ -124,9 +123,7 @@ public class SetupBoardView extends BaseBoardView {
 
             // aiming
             if (mBoard.containsCell(mAim)) {
-                int width = mPickedShip.isHorizontal() ? mPickedShip.getSize() : 1;
-                int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-                Aiming aiming = getPresenter().getAiming(mAim, width, height);
+                Aiming aiming = getPresenter().getAimingForPickedShip(mAim, mPickedShip);
                 mRenderer.render(canvas, aiming, mAimingPaint);
             }
         }
@@ -134,16 +131,15 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mTouchState.setEvent(event);
-        mTouchX = mTouchState.getTouchX();
-        mTouchY = mTouchState.getTouchY();
+        mTouchX = (int) event.getX();
+        mTouchY = (int) event.getY();
 
         if (mPickedShip != null) {
             getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
             mAim = getPresenter().getAim();
         }
 
-        processMotionEvent(mTouchState.getTouchAction());
+        processMotionEvent(event.getAction());
 
         invalidate();
 

@@ -72,4 +72,11 @@ public class SetupBoardPresenter extends BasePresenter {
     public Rect getPickedShipRect() {
         return mPickedShipRect;
     }
+
+    @NonNull
+    public Aiming getAimingForPickedShip(Vector2 mAim, Ship mPickedShip) {
+        int width = mPickedShip.isHorizontal() ? mPickedShip.getSize() : 1;
+        int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
+        return getAiming(mAim, width, height);
+    }
 }

@@ -49,9 +49,9 @@ public class BaseBoardRenderer {
         canvas.drawRect(aiming.vertical, paint);
     }
 
-    public void render(Canvas canvas, TouchState mTouchState) {
+    public void render(Canvas canvas, int x, int y) {
         if (GameConstants.IS_TEST_MODE) {
-            canvas.drawCircle(mTouchState.getTouchX(), mTouchState.getTouchY(), 5, debug_paint);
+            canvas.drawCircle(x, y, 5, debug_paint);
         }
     }
 

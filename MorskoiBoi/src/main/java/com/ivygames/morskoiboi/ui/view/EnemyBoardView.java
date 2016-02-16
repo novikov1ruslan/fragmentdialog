@@ -82,7 +82,7 @@ public class EnemyBoardView extends BaseBoardView {
             postInvalidateDelayed(getRenderer().animateExplosions(canvas));
         }
 
-        getRenderer().render(canvas, mTouchState);
+        getRenderer().render(canvas, mTouchState.getTouchX(), mTouchState.getTouchY());
     }
 
     @Override
