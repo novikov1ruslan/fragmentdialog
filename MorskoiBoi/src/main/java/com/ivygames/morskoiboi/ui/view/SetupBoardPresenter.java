@@ -51,7 +51,7 @@ public class SetupBoardPresenter extends BasePresenter {
         return shipDisplayCenter;
     }
 
-    public Vector2 getAim(Rect mPickedShipRect) {
+    public Vector2 getAim() {
         int shipInBoardCoordinatesX = mPickedShipRect.left - mBoardRect.left + mHalfCellSize;
         int shipInBoardCoordinatesY = mPickedShipRect.top - mBoardRect.top + mHalfCellSize;
         int i = shipInBoardCoordinatesX / mCellSizePx;
@@ -59,7 +59,7 @@ public class SetupBoardPresenter extends BasePresenter {
         return Vector2.get(i, j);
     }
 
-    public Rect centerPickedShipAround(int touchX, int touchY, Ship mPickedShip) {
+    public void centerPickedShipAround(int touchX, int touchY, Ship mPickedShip) {
         int widthInPx = getShipWidthInPx(mPickedShip.getSize());
         int halfWidthInPx = getShipWidthInPx(mPickedShip.getSize()) / 2;
         boolean isHorizontal = mPickedShip.isHorizontal();
@@ -67,7 +67,9 @@ public class SetupBoardPresenter extends BasePresenter {
         mPickedShipRect.top = touchY - (isHorizontal ? mHalfCellSize : halfWidthInPx);
         mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mCellSizePx);
         mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mCellSizePx : widthInPx);
+    }
 
+    public Rect getPickedShipRect() {
         return mPickedShipRect;
     }
 }
