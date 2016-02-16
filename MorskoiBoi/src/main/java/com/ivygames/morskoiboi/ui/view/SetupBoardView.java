@@ -46,7 +46,7 @@ public class SetupBoardView extends BaseBoardView {
      * currently picked ship (awaiting to be placed)
      */
     private Ship mPickedShip;
-    private final Rect mPickedShipRect;
+    private Rect mPickedShipRect = new Rect();
 
     /**
      * needed to perform double clicks on the ships
@@ -67,8 +67,6 @@ public class SetupBoardView extends BaseBoardView {
         super(context, attributeSet);
 
         mConflictCellPaint = UiUtils.newFillPaint(getResources(), R.color.conflict_cell);
-
-        mPickedShipRect = new Rect();
 
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
@@ -142,16 +140,6 @@ public class SetupBoardView extends BaseBoardView {
         }
     }
 
-    private void centerPickedShipAround(int touchX, int touchY) {
-        int widthInPx = getPresenter().getShipWidthInPx(mPickedShip.getSize());
-        int halfWidthInPx = getPresenter().getShipWidthInPx(mPickedShip.getSize()) / 2;
-        boolean isHorizontal = mPickedShip.isHorizontal();
-        mPickedShipRect.left = touchX - (isHorizontal ? halfWidthInPx : mPresenter.mHalfCellSize);
-        mPickedShipRect.top = touchY - (isHorizontal ? mPresenter.mHalfCellSize : halfWidthInPx);
-        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mPresenter.mCellSizePx);
-        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mPresenter.mCellSizePx : widthInPx);
-    }
-
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
@@ -159,7 +147,7 @@ public class SetupBoardView extends BaseBoardView {
         mTouchY = mTouchState.getTouchY();
 
         if (mPickedShip != null) {
-            centerPickedShipAround(mTouchX, mTouchY);
+            mPickedShipRect = getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
             mAim = getPresenter().getAim(mPickedShipRect);
         }
 
@@ -242,7 +230,7 @@ public class SetupBoardView extends BaseBoardView {
                 mPickShipTask = null;
                 mPickedShip = mBoard.removeShipFrom(i, j);
                 if (mPickedShip != null) {
-                    centerPickedShipAround(mTouchX, mTouchY);
+                    mPickedShipRect = getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
                     mAim = getPresenter().getAim(mPickedShipRect);
                 }
                 invalidate();
@@ -259,7 +247,7 @@ public class SetupBoardView extends BaseBoardView {
             Ln.v("no ships to pick");
         } else {
             mCurrentShip = null;
-            centerPickedShipAround(mTouchX, mTouchY);
+            mPickedShipRect = getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
             mAim = getPresenter().getAim(mPickedShipRect);
             Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
         }

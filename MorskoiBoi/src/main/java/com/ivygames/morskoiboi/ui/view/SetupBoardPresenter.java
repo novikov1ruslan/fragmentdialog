@@ -4,13 +4,14 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
 public class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipSelectionRect = new Rect();
     private final Rect mShipDisplayRect = new Rect();
     private Point shipDisplayCenter = new Point();
-
+    private final Rect mPickedShipRect = new Rect();
 
     public SetupBoardPresenter(int boardSize, float dimension) {
         super(boardSize, dimension);
@@ -56,5 +57,17 @@ public class SetupBoardPresenter extends BasePresenter {
         int i = shipInBoardCoordinatesX / mCellSizePx;
         int j = shipInBoardCoordinatesY / mCellSizePx;
         return Vector2.get(i, j);
+    }
+
+    public Rect centerPickedShipAround(int touchX, int touchY, Ship mPickedShip) {
+        int widthInPx = getShipWidthInPx(mPickedShip.getSize());
+        int halfWidthInPx = getShipWidthInPx(mPickedShip.getSize()) / 2;
+        boolean isHorizontal = mPickedShip.isHorizontal();
+        mPickedShipRect.left = touchX - (isHorizontal ? halfWidthInPx : mHalfCellSize);
+        mPickedShipRect.top = touchY - (isHorizontal ? mHalfCellSize : halfWidthInPx);
+        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mCellSizePx);
+        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mCellSizePx : widthInPx);
+
+        return mPickedShipRect;
     }
 }
