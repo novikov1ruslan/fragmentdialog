@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.R;
@@ -20,6 +21,7 @@ public class BaseBoardRenderer {
 
     private final Paint mMissBgPaint;
     private final Paint mMissInnerPaint;
+    private final Paint mConflictCellPaint;
 
     public BaseBoardRenderer(Resources res) {
         mLinePaint = UiUtils.newStrokePaint(res, R.color.line);
@@ -38,6 +40,8 @@ public class BaseBoardRenderer {
         mMissInnerPaint.setAlpha(80);
         mMissBgPaint = UiUtils.newFillPaint(res, R.color.miss_background);
         mMissBgPaint.setAlpha(80);
+
+        mConflictCellPaint = UiUtils.newFillPaint(res, R.color.conflict_cell);
     }
 
     public void render(Canvas canvas, Aiming aiming, Paint paint) {
@@ -83,5 +87,9 @@ public class BaseBoardRenderer {
         canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissBgPaint : mHitBgPaint);
         canvas.drawCircle(mark.centerX, mark.centerY, mark.outerRadius, isMiss ? mMissOuterPaint : mHitOuterPaint);
         canvas.drawCircle(mark.centerX, mark.centerY, mark.innerRadius, isMiss ? mMissInnerPaint : mHitInnerPaint);
+    }
+
+    public void renderConflictingCell(Canvas canvas, RectF invalidRect) {
+        canvas.drawRect(invalidRect, mConflictCellPaint);
     }
 }

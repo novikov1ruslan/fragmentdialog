@@ -52,7 +52,6 @@ public class SetupBoardView extends BaseBoardView {
     private PickShipTask mPickShipTask;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
-    private final Paint mConflictCellPaint;
 
     private Bitmap mCurrentBitmap;
     private final TouchState mTouchState = new TouchState();
@@ -63,9 +62,6 @@ public class SetupBoardView extends BaseBoardView {
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-
-        mConflictCellPaint = UiUtils.newFillPaint(getResources(), R.color.conflict_cell);
-
         ViewConfiguration vc = ViewConfiguration.get(context);
         mTouchSlop = vc.getScaledTouchSlop();
         Ln.v("touch slop = " + mTouchSlop);
@@ -100,7 +96,7 @@ public class SetupBoardView extends BaseBoardView {
                 if (cell.isReserved()) {
 
                     if (mRules.isCellConflicting(cell)) {
-                        canvas.drawRect(mPresenter.getInvalidRect(i, j), mConflictCellPaint);
+                        getRenderer().renderConflictingCell(canvas, mPresenter.getInvalidRect(i, j));
                     }
                 }
             }
@@ -167,7 +163,8 @@ public class SetupBoardView extends BaseBoardView {
                 break;
             case MotionEvent.ACTION_DOWN:
                 if (getPresenter().isInShipSelectionArea(mTouchX, mTouchY)) {
-                    tryPickingNewShip();
+                    mPickedShip = mShips.poll();
+                    tryPickingNewShip(mPickedShip);
                 } else if (mBoard.containsCell(getCellX(), getCellY())) {
                     mPickShipTask = scheduleNewPickTask(getCellX(), getCellY());
                     Ln.v("scheduling long press task: " + mPickShipTask);
@@ -239,8 +236,7 @@ public class SetupBoardView extends BaseBoardView {
         return mPickShipTask;
     }
 
-    private void tryPickingNewShip() {
-        mPickedShip = mShips.poll();
+    public void tryPickingNewShip(Ship mPickedShip) {
         if (mPickedShip == null) {
             Ln.v("no ships to pick");
         } else {
