@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.ui.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,7 +20,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;

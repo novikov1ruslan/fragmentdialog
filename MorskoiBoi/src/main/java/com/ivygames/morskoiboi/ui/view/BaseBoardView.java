@@ -92,7 +92,7 @@ abstract class BaseBoardView extends View {
     private void drawShips(Canvas canvas) {
         Collection<Ship> ships = mBoard.getShips();
         for (Ship ship : ships) {
-            mRenderer.drawShip(canvas, mPresenter.getRectForShip(ship), ship.isDead() ? mShipPaint : mShipPaint);
+            mRenderer.drawShip(canvas, mPresenter.getRectForShip(ship), mShipPaint);
         }
     }
 
