@@ -73,10 +73,6 @@ public class BasePresenter {
         mTurnRect.bottom = (int) (mBoardRect.bottom + mTurnBorderSize / 2);
     }
 
-    private final Rect getTurnRect() {
-        return mTurnRect;
-    }
-
     private float[] getVertical(int i) {
         float startX = mBoardRect.left + i * mCellSizePx;
         float startY = mBoardRect.top;
@@ -116,16 +112,12 @@ public class BasePresenter {
         return mMark;
     }
 
-    private final int getLeft(int i) {
+    private int getLeft(int i) {
         return i * mCellSizePx + mBoardRect.left;
     }
 
-    private final int getTop(int j) {
+    private int getTop(int j) {
         return j * mCellSizePx + mBoardRect.top;
-    }
-
-    private final int getCellSize() {
-        return mCellSizePx;
     }
 
     private
@@ -257,6 +249,6 @@ public class BasePresenter {
             mBoard.lines[mBoardSize + i] = getHorizontal(i);
         }
 
-        mBoard.frame = getTurnRect();
+        mBoard.frame = mTurnRect;
     }
 }
