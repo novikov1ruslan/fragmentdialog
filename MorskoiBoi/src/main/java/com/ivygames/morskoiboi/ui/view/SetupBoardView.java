@@ -133,6 +133,7 @@ public class SetupBoardView extends BaseBoardView {
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchX = (int) event.getX();
         mTouchY = (int) event.getY();
+        getPresenter().setTouch(mTouchX, mTouchY);
 
         if (mPickedShip != null) {
             mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
@@ -199,9 +200,6 @@ public class SetupBoardView extends BaseBoardView {
         return mPresenter.getCellX(mTouchX);
     }
 
-    /**
-     * Tries to put {@link #mPickedShip} on the board. Returns it to the pool if fails. {@link #mCurrentShip} is re-taken from the pool.
-     */
     private void dropShip(@NonNull Ship ship) {
         if (!tryPlaceShip(ship)) {
             returnShipToPool(ship);
@@ -261,11 +259,7 @@ public class SetupBoardView extends BaseBoardView {
             return;
         }
 
-        int w = getMeasuredWidth();
-        int h = getMeasuredHeight();
-        int hPadding = getHorizontalPadding();
-        int vPadding = getVerticalPadding();
-        getPresenter().measure(w, h, hPadding, vPadding);
+        getPresenter().measure(getMeasuredWidth(), getMeasuredHeight(), getHorizontalPadding(), getVerticalPadding());
     }
 
     public void setFleet(PriorityQueue<Ship> ships) {

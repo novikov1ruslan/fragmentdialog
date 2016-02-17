@@ -12,6 +12,8 @@ public class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipDisplayRect = new Rect();
     private Point shipDisplayCenter = new Point();
     private final Rect mPickedShipRect = new Rect();
+    private int mTouchX;
+    private int mTouchY;
 
     public SetupBoardPresenter(int boardSize, float dimension) {
         super(boardSize, dimension);
@@ -83,5 +85,10 @@ public class SetupBoardPresenter extends BasePresenter {
     public Vector2 pickNewShip(@NonNull Ship ship, int x, int y) {
         centerPickedShipRectAround(x, y, ship);
         return getAim();
+    }
+
+    public void setTouch(int x, int y) {
+        mTouchX = x;
+        mTouchY = y;
     }
 }
