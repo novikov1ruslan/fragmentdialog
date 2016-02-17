@@ -150,17 +150,21 @@ public class SetupBoardView extends BaseBoardView {
         switch (event) {
             case MotionEvent.ACTION_MOVE:
                 if (mPickShipTask != null && mPickShipTask.hasMovedBeyondSlope(mTouchX, mTouchY, mTouchSlop)) {
-                    Runnable task = mPickShipTask;
-                    cancelLongPressTask();
-                    task.run();
+                    mHandler.removeCallbacks(mPickShipTask);
+                    mPickShipTask.run();
+                    mPickShipTask = null;
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
                 if (getPresenter().isInShipSelectionArea(mTouchX, mTouchY)) {
                     mPickedShip = mShips.poll();
-                    tryPickingNewShip(mPickedShip);
+                    if (mPickedShip == null) {
+                        Ln.v("no ships to pick");
+                    } else {
+                        pickNewShip(mPickedShip);
+                    }
                 } else if (mBoard.containsCell(getCellX(), getCellY())) {
-                    mPickShipTask = scheduleNewPickTask(getCellX(), getCellY());
+                    mPickShipTask = createNewPickTask(getCellX(), getCellY());
                     Ln.v("scheduling long press task: " + mPickShipTask);
                     mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
                 }
@@ -177,6 +181,12 @@ public class SetupBoardView extends BaseBoardView {
                 cancelLongPressTask();
                 break;
         }
+    }
+
+    private void cancelLongPressTask() {
+        Ln.v("cancelling long press task: " + mPickShipTask);
+        mHandler.removeCallbacks(mPickShipTask);
+        mPickShipTask = null;
     }
 
     private int getCellY() {
@@ -212,8 +222,8 @@ public class SetupBoardView extends BaseBoardView {
         return false;
     }
 
-    private PickShipTask scheduleNewPickTask(final int i, final int j) {
-        mPickShipTask = new PickShipTask(mTouchX, mTouchY, new OnLongClickListener() {
+    private PickShipTask createNewPickTask(final int i, final int j) {
+        return new PickShipTask(mTouchX, mTouchY, new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
@@ -226,19 +236,13 @@ public class SetupBoardView extends BaseBoardView {
                 return true;
             }
         });
-
-        return mPickShipTask;
     }
 
-    public void tryPickingNewShip(Ship mPickedShip) {
-        if (mPickedShip == null) {
-            Ln.v("no ships to pick");
-        } else {
-            mCurrentShip = null;
-            getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
-            mAim = getPresenter().getAim();
-            Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
-        }
+    public void pickNewShip(@NonNull Ship ship) {
+        mCurrentShip = null;
+        getPresenter().centerPickedShipAround(mTouchX, mTouchY, ship);
+        mAim = getPresenter().getAim();
+        Ln.v(ship + " picked from stack, stack: " + mShips);
     }
 
     private void returnPickedShipToPool() {
@@ -248,11 +252,6 @@ public class SetupBoardView extends BaseBoardView {
         mShips.add(mPickedShip);
     }
 
-    private void cancelLongPressTask() {
-        Ln.v("cancelling long press task: " + mPickShipTask);
-        mHandler.removeCallbacks(mPickShipTask);
-        mPickShipTask = null;
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
