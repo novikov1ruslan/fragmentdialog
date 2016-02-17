@@ -174,7 +174,8 @@ public class SetupBoardView extends BaseBoardView {
                     cancelLongPressTask();
                     mBoard.rotateShipAt(getCellX(), getCellY());
                 } else if (mPickedShip != null) {
-                    dropPickedShip();
+                    dropShip(mPickedShip);
+                    mPickedShip = null;
                 }
                 break;
             default:
@@ -200,23 +201,21 @@ public class SetupBoardView extends BaseBoardView {
     /**
      * Tries to put {@link #mPickedShip} on the board. Returns it to the pool if fails. {@link #mCurrentShip} is re-taken from the pool.
      */
-    private void dropPickedShip() {
-        if (!tryPutPickedShip()) {
-            returnPickedShipToPool();
+    private void dropShip(@NonNull Ship ship) {
+        if (!tryPlaceShip(ship)) {
+            returnShipToPool(ship);
         }
 
         // reselect current ship to display
         setCurrentShip(mShips.peek());
-
-        mPickedShip = null;
     }
 
     /**
      * @return true if succeeded to put down currently picked-up ship
      */
-    private boolean tryPutPickedShip() {
-        if (mBoard.shipFitsTheBoard(mPickedShip, mAim)) {
-            PlacementFactory.getAlgorithm().putShipAt(mBoard, mPickedShip, mAim.getX(), mAim.getY());
+    private boolean tryPlaceShip(@NonNull Ship ship) {
+        if (mBoard.shipFitsTheBoard(ship, mAim)) {
+            PlacementFactory.getAlgorithm().putShipAt(mBoard, ship, mAim.getX(), mAim.getY());
             return true;
         }
         return false;
@@ -245,11 +244,11 @@ public class SetupBoardView extends BaseBoardView {
         Ln.v(ship + " picked from stack, stack: " + mShips);
     }
 
-    private void returnPickedShipToPool() {
-        if (!mPickedShip.isHorizontal()) {
-            mPickedShip.rotate();
+    private void returnShipToPool(@NonNull Ship ship) {
+        if (!ship.isHorizontal()) {
+            ship.rotate();
         }
-        mShips.add(mPickedShip);
+        mShips.add(ship);
     }
 
 
