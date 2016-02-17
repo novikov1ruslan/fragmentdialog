@@ -207,7 +207,12 @@ public class SetupBoardView extends BaseBoardView {
         }
 
         // reselect current ship to display
-        setCurrentShip(mShips.peek());
+        mCurrentShip = mShips.peek();
+        if (mCurrentShip == null) {
+            mCurrentBitmap = null;
+        } else {
+            mCurrentBitmap = mRules.getBitmapForShipSize(mCurrentShip.getSize());
+        }
     }
 
     /**
@@ -237,7 +242,7 @@ public class SetupBoardView extends BaseBoardView {
         });
     }
 
-    public void pickNewShip(@NonNull Ship ship) {
+    private void pickNewShip(@NonNull Ship ship) {
         mCurrentShip = null;
         getPresenter().centerPickedShipAround(mTouchX, mTouchY, ship);
         mAim = getPresenter().getAim();
@@ -271,19 +276,12 @@ public class SetupBoardView extends BaseBoardView {
         getPresenter().measure(w, h, hPadding, vPadding);
     }
 
-    private void setCurrentShip(Ship ship) {
-        mCurrentShip = ship;
-        if (mCurrentShip == null) {
-            mCurrentBitmap = null;
-        } else {
-            mCurrentBitmap = RulesFactory.getRules().getBitmapForShipSize(mCurrentShip.getSize());
-        }
-    }
-
     public void setFleet(PriorityQueue<Ship> ships) {
         Ln.v(ships);
         mShips = Validate.notNull(ships);
-        setCurrentShip(mShips.peek());
+
+        mCurrentShip = mShips.peek();
+        mCurrentBitmap = mRules.getBitmapForShipSize(mCurrentShip.getSize());
 
         invalidate();
     }
