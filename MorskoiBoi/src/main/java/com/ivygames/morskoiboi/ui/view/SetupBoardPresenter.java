@@ -37,7 +37,7 @@ public class SetupBoardPresenter extends BasePresenter {
         return shipSize * mCellSizePx;
     }
 
-    public boolean isInShipSelectionArea(int x, int y) {
+    private boolean isInShipSelectionArea(int x, int y) {
         return mShipSelectionRect.contains(x, y);
     }
 
@@ -82,7 +82,12 @@ public class SetupBoardPresenter extends BasePresenter {
         return getAiming(mAim, width, height);
     }
 
-    public Vector2 pickNewShip(@NonNull Ship ship, int x, int y) {
+    public Vector2 pickNewShip(@NonNull Ship ship) {
+        return pickNewShip(ship, mTouchX, mTouchY);
+    }
+
+
+    private Vector2 pickNewShip(@NonNull Ship ship, int x, int y) {
         centerPickedShipRectAround(x, y, ship);
         return getAim();
     }
@@ -90,5 +95,17 @@ public class SetupBoardPresenter extends BasePresenter {
     public void setTouch(int x, int y) {
         mTouchX = x;
         mTouchY = y;
+    }
+
+    public int getTouchJ() {
+        return getCellY(mTouchY);
+    }
+
+    public int getTouchI() {
+        return getCellX(mTouchX);
+    }
+
+    public boolean isInShipSelectionArea() {
+        return isInShipSelectionArea(mTouchX, mTouchY);
     }
 }

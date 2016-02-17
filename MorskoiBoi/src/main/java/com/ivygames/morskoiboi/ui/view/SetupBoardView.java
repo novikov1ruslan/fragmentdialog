@@ -136,7 +136,7 @@ public class SetupBoardView extends BaseBoardView {
         getPresenter().setTouch(mTouchX, mTouchY);
 
         if (mPickedShip != null) {
-            mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
+            mAim = getPresenter().pickNewShip(mPickedShip);
         }
 
         processMotionEvent(event.getAction());
@@ -156,17 +156,17 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (getPresenter().isInShipSelectionArea(mTouchX, mTouchY)) {
+                if (getPresenter().isInShipSelectionArea()) {
                     mPickedShip = mShips.poll();
                     if (mPickedShip == null) {
                         Ln.v("no ships to pick");
                     } else {
                         mCurrentShip = null;
-                        mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
+                        mAim = getPresenter().pickNewShip(mPickedShip);
                         Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
-                } else if (mBoard.containsCell(getCellX(), getCellY())) {
-                    mPickShipTask = createNewPickTask(getCellX(), getCellY());
+                } else if (mBoard.containsCell(getPresenter().getTouchI(), getPresenter().getTouchJ())) {
+                    mPickShipTask = createNewPickTask(getPresenter().getTouchI(), getPresenter().getTouchJ());
                     Ln.v("scheduling long press task: " + mPickShipTask);
                     mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
                 }
@@ -174,7 +174,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_UP:
                 if (mPickShipTask != null) {
                     cancelLongPressTask();
-                    mBoard.rotateShipAt(getCellX(), getCellY());
+                    mBoard.rotateShipAt(getPresenter().getTouchI(), getPresenter().getTouchJ());
                 } else if (mPickedShip != null) {
                     dropShip(mPickedShip);
                     mPickedShip = null;
@@ -190,14 +190,6 @@ public class SetupBoardView extends BaseBoardView {
         Ln.v("cancelling long press task: " + mPickShipTask);
         mHandler.removeCallbacks(mPickShipTask);
         mPickShipTask = null;
-    }
-
-    private int getCellY() {
-        return mPresenter.getCellY(mTouchY);
-    }
-
-    private int getCellX() {
-        return mPresenter.getCellX(mTouchX);
     }
 
     private void dropShip(@NonNull Ship ship) {
@@ -232,7 +224,7 @@ public class SetupBoardView extends BaseBoardView {
                 mPickShipTask = null;
                 mPickedShip = mBoard.removeShipFrom(i, j);
                 if (mPickedShip != null) {
-                    mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
+                    mAim = getPresenter().pickNewShip(mPickedShip);
                 }
                 invalidate();
                 return true;
