@@ -135,8 +135,7 @@ public class SetupBoardView extends BaseBoardView {
         mTouchY = (int) event.getY();
 
         if (mPickedShip != null) {
-            getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
-            mAim = getPresenter().getAim();
+            mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
         }
 
         processMotionEvent(event.getAction());
@@ -161,7 +160,9 @@ public class SetupBoardView extends BaseBoardView {
                     if (mPickedShip == null) {
                         Ln.v("no ships to pick");
                     } else {
-                        pickNewShip(mPickedShip);
+                        mCurrentShip = null;
+                        mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
+                        Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
                 } else if (mBoard.containsCell(getCellX(), getCellY())) {
                     mPickShipTask = createNewPickTask(getCellX(), getCellY());
@@ -233,20 +234,12 @@ public class SetupBoardView extends BaseBoardView {
                 mPickShipTask = null;
                 mPickedShip = mBoard.removeShipFrom(i, j);
                 if (mPickedShip != null) {
-                    getPresenter().centerPickedShipAround(mTouchX, mTouchY, mPickedShip);
-                    mAim = getPresenter().getAim();
+                    mAim = getPresenter().pickNewShip(mPickedShip, mTouchX, mTouchY);
                 }
                 invalidate();
                 return true;
             }
         });
-    }
-
-    private void pickNewShip(@NonNull Ship ship) {
-        mCurrentShip = null;
-        getPresenter().centerPickedShipAround(mTouchX, mTouchY, ship);
-        mAim = getPresenter().getAim();
-        Ln.v(ship + " picked from stack, stack: " + mShips);
     }
 
     private void returnShipToPool(@NonNull Ship ship) {
@@ -255,7 +248,6 @@ public class SetupBoardView extends BaseBoardView {
         }
         mShips.add(ship);
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
