@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.ui.view;
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Ship;
@@ -12,6 +13,7 @@ public class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipDisplayRect = new Rect();
     private Point shipDisplayCenter = new Point();
     private final Rect mPickedShipRect = new Rect();
+    private final RectF rectF = new RectF();
     private int mTouchX;
     private int mTouchY;
 
@@ -107,5 +109,19 @@ public class SetupBoardPresenter extends BasePresenter {
 
     public boolean isInShipSelectionArea() {
         return isInShipSelectionArea(mTouchX, mTouchY);
+    }
+
+    public final RectF getInvalidRect(int i, int j) {
+        float left = mBoardRect.left + i * mCellSizePx + 1;
+        float top = mBoardRect.top + j * mCellSizePx + 1;
+        float right = left + mCellSizePx;
+        float bottom = top + mCellSizePx;
+
+        rectF.left = left + 1;
+        rectF.top = top + 1;
+        rectF.right = right;
+        rectF.bottom = bottom;
+
+        return rectF;
     }
 }

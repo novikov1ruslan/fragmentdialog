@@ -93,7 +93,7 @@ public class SetupBoardView extends BaseBoardView {
                 if (cell.isReserved()) {
 
                     if (mRules.isCellConflicting(cell)) {
-                        getRenderer().renderConflictingCell(canvas, mPresenter.getInvalidRect(i, j));
+                        getRenderer().renderConflictingCell(canvas, getPresenter().getInvalidRect(i, j));
                     }
                 }
             }

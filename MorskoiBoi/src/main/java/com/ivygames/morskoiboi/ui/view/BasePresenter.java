@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.ui.view;
 
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Ship;
@@ -21,11 +20,8 @@ public class BasePresenter {
     protected int mHalfCellSize;
     protected Rect mBoardRect = new Rect();
 
-    // temporary fields
     private final Rect hRect = new Rect();
     private final Rect vRect = new Rect();
-    // TODO: SetupBoardView
-    private final RectF rectF = new RectF();
     private final Mark mMark = new Mark();
     private final Aiming mAiming = new Aiming();
     private BoardG mBoard;
@@ -151,21 +147,6 @@ public class BasePresenter {
         hRect.bottom = bottomHor;
 
         return hRect;
-    }
-
-    // TODO: used in SetupBoardView
-    public final RectF getInvalidRect(int i, int j) {
-        float left = mBoardRect.left + i * mCellSizePx + 1;
-        float top = mBoardRect.top + j * mCellSizePx + 1;
-        float right = left + mCellSizePx;
-        float bottom = top + mCellSizePx;
-
-        rectF.left = left + 1;
-        rectF.top = top + 1;
-        rectF.right = right;
-        rectF.bottom = bottom;
-
-        return rectF;
     }
 
     public final int getCellY(int mTouchY) {
