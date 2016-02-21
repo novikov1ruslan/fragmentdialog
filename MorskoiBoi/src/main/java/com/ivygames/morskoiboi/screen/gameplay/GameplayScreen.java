@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdManager;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GameplaySoundManager;
 import com.ivygames.morskoiboi.HandlerOpponent;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;

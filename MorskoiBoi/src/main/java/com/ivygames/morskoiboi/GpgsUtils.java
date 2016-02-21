@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class GameServicesUtils {
-    private GameServicesUtils() {
-
+public class GpgsUtils {
+    private GpgsUtils() {
+        // utils
     }
 
     public static String connectionCauseToString(int cause) {

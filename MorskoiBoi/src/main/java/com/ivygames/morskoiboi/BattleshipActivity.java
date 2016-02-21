@@ -519,7 +519,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Ln.d("connection suspended - trying to reconnect: " + GameServicesUtils.connectionCauseToString(cause));
+        Ln.d("connection suspended - trying to reconnect: " + GpgsUtils.connectionCauseToString(cause));
         // GoogleApiClient will automatically attempt to restore the connection.
         // Applications should disable UI components that require the service, and wait for a call to onConnected(Bundle) to re-enable them.
     }

@@ -22,6 +22,7 @@ public class DeviceUtils {
     private static final int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
 
     private DeviceUtils() {
+        // utils
     }
 
     public static boolean isConnectedToNetwork(Context context) {

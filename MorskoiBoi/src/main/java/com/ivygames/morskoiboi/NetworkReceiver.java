@@ -9,8 +9,7 @@ import android.net.NetworkInfo;
 
 import org.commons.logger.Ln;
 
-public final class NetworkReceiver
-        extends BroadcastReceiver {
+public final class NetworkReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

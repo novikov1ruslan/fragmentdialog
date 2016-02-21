@@ -2,8 +2,6 @@ package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.os.AsyncTask;
 
-import com.ivygames.morskoiboi.GameplaySoundManager;
-
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 

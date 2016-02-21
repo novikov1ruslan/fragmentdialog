@@ -1,9 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+import com.ivygames.morskoiboi.BattleshipApplication;
+import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
 import org.commons.logger.Ln;

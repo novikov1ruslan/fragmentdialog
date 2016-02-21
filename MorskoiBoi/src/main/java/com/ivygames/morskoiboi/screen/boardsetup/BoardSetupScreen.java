@@ -13,7 +13,6 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.ShipComparator;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
