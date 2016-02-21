@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ivygames.morskoiboi.ui.view.DeviceListLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -40,4 +40,4 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-</com.ivygames.morskoiboi.ui.view.DeviceListLayout>
+</com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout>

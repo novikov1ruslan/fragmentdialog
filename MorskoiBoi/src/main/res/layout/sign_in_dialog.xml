@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ivygames.morskoiboi.ui.view.NotepadLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.view.NotepadLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/DialogFrame"
     android:layout_width="match_parent"
@@ -41,4 +41,4 @@
             android:textSize="@dimen/text_ml" />
     </LinearLayout>
 
-</com.ivygames.morskoiboi.ui.view.NotepadLinearLayout>
+</com.ivygames.morskoiboi.screen.view.NotepadLinearLayout>

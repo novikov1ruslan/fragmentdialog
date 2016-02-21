@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.GameplayLayoutTablet xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutTablet xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gameplay_layout"
     android:background="@color/default_background"
@@ -11,11 +11,11 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.ivygames.morskoiboi.ui.view.FleetBoardView
+    <com.ivygames.morskoiboi.screen.gameplay.FleetBoardView
         android:id="@+id/board_view_fleet"
         android:padding="@dimen/board_padding" />
 
-    <com.ivygames.morskoiboi.ui.view.DigitalTimerView
+    <com.ivygames.morskoiboi.screen.gameplay.DigitalTimerView
         android:id="@+id/timer"
         android:gravity="center"
         android:padding="4dp" />
@@ -32,4 +32,4 @@
 
     <include layout="@layout/enemy_board" />
 
-</com.ivygames.morskoiboi.ui.view.GameplayLayoutTablet>
+</com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutTablet>

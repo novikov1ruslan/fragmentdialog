@@ -1,10 +1,10 @@
-<com.ivygames.morskoiboi.ui.view.SingleTextDialog xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.view.SingleTextDialog xmlns:android="http://schemas.android.com/apk/res/android"
     style="@android:style/Theme.Dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80323232">
 
-    <com.ivygames.morskoiboi.ui.view.NotepadRelativeLayout
+    <com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="50dp"
@@ -21,6 +21,6 @@
             android:text="@string/please_wait" />
 
 
-    </com.ivygames.morskoiboi.ui.view.NotepadRelativeLayout>
+    </com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout>
 
-</com.ivygames.morskoiboi.ui.view.SingleTextDialog>
+</com.ivygames.morskoiboi.screen.view.SingleTextDialog>

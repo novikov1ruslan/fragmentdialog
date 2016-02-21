@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.SettingsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.settings.SettingsLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -91,4 +91,4 @@
             android:text="@string/rate" />
     </LinearLayout>
 
-</com.ivygames.morskoiboi.ui.view.SettingsLayout>
+</com.ivygames.morskoiboi.screen.settings.SettingsLayout>

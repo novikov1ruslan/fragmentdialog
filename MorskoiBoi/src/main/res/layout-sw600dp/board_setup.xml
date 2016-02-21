@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.BoardSetupLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/default_background">
 
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_weight="1">
 
-            <com.ivygames.morskoiboi.ui.view.SetupBoardView
+            <com.ivygames.morskoiboi.screen.boardsetup.SetupBoardView
                 android:id="@+id/board_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -58,4 +58,4 @@
         </FrameLayout>
     </LinearLayout>
 
-</com.ivygames.morskoiboi.ui.view.BoardSetupLayout>
+</com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout>

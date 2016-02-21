@@ -4,7 +4,7 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import com.ivygames.morskoiboi.ui.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
 import org.commons.logger.Ln;
 

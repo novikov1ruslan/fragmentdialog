@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.HelpLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.help.HelpLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/default_background">
@@ -12,4 +12,4 @@
         android:layout_marginRight="@dimen/battleship_margin_horizontal"
         android:layout_marginTop="@dimen/help_margin" />
 
-</com.ivygames.morskoiboi.ui.view.HelpLayout>
+</com.ivygames.morskoiboi.screen.help.HelpLayout>

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
@@ -14,8 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.ui.view.InfoCroutonLayout;
+import com.ivygames.morskoiboi.screen.view.InfoCroutonLayout;
 
 public final class UiUtils {
 

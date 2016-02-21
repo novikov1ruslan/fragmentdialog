@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.ui.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;

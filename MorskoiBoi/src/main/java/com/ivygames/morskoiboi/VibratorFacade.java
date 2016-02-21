@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Vibrator;
 
-import com.ivygames.morskoiboi.ui.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
 public class VibratorFacade {
 

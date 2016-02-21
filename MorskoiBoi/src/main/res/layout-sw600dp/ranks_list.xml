@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ivygames.morskoiboi.ui.view.RanksLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.ranks.RanksLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,4 +35,4 @@
         android:id="@+id/ranks"
         android:layout_width="match_parent" />
 
-</com.ivygames.morskoiboi.ui.view.RanksLayout>
+</com.ivygames.morskoiboi.screen.ranks.RanksLayout>

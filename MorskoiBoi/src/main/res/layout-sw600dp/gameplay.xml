@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.GameplayLayoutHandset xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutHandset xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gameplay_layout"
     android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:layout_weight="3"
             android:orientation="horizontal">
 
-            <com.ivygames.morskoiboi.ui.view.FleetBoardView
+            <com.ivygames.morskoiboi.screen.gameplay.FleetBoardView
                 android:id="@+id/board_view_fleet"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.ivygames.morskoiboi.ui.view.DigitalTimerView
+                <com.ivygames.morskoiboi.screen.gameplay.DigitalTimerView
                     android:id="@+id/timer"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
@@ -81,4 +81,4 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp" />
 
-</com.ivygames.morskoiboi.ui.view.GameplayLayoutHandset>
+</com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutHandset>

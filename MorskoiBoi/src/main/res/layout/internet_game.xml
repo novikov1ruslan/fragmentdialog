@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.ui.view.InternetGameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.screen.internet.InternetGameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,10 +34,10 @@
         android:layout_above="@+id/view_invitations_button"
         android:text="@string/invite_player" />
 
-    <com.ivygames.morskoiboi.ui.view.InvitationButton
+    <com.ivygames.morskoiboi.screen.view.InvitationButton
         android:id="@+id/view_invitations_button"
         style="@style/Button.Menu"
         android:layout_alignParentBottom="true"
         android:text="@string/view_invitations" />
 
-</com.ivygames.morskoiboi.ui.view.InternetGameLayout>
+</com.ivygames.morskoiboi.screen.internet.InternetGameLayout>

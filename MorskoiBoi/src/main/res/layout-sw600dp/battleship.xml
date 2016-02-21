@@ -18,7 +18,7 @@
         <!--ads:adSize="SMART_BANNER"-->
         <!--ads:adUnitId="@string/admob_banner_id" />-->
 
-    <com.ivygames.morskoiboi.ui.view.NotepadFrameLayout
+    <com.ivygames.morskoiboi.screen.view.NotepadFrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
