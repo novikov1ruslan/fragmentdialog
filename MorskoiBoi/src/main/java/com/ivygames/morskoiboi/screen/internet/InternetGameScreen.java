@@ -11,6 +11,8 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -23,13 +25,11 @@ import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.rt.RtUtils;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
-import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameLayout.InternetGameLayoutListener;
+import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -47,6 +47,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private InternetGame mInternetGame;
     private boolean mKeyLock;
     private InternetGameLayout mLayout;
+    private WaitFragment mWaitFragment;
 
     @Override
     public View onCreateView(ViewGroup container) {
@@ -278,6 +279,26 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         }
 
         mParent.setScreen(new SelectGameScreen());
+    }
+
+    protected final void showWaitingScreen() {
+        Ln.d("please wait... ");
+        mWaitFragment = new WaitFragment();
+        mFm.beginTransaction().add(R.id.container, mWaitFragment).commitAllowingStateLoss();
+    }
+
+    protected final void hideWaitingScreen() {
+        if (isWaitShown()) {
+            Ln.d("hiding waiting screen");
+            mFm.beginTransaction().remove(mWaitFragment).commitAllowingStateLoss();
+            mWaitFragment = null;
+        } else {
+            Ln.w("waiting screen isn't shown");
+        }
+    }
+
+    protected final boolean isWaitShown() {
+        return mWaitFragment != null;
     }
 
     @Override

@@ -34,16 +34,6 @@ public final class DialogUtils {
         }).setNegativeButton(R.string.cancel).create();
     }
 
-//    public static FragmentAlertDialog newOkDialog(String message, final Runnable command) {
-//        return new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                command.run();
-//            }
-//        }).create();
-//    }
-
     public static FragmentAlertDialog newOkDialog(int message, final Runnable command) {
         return new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
 

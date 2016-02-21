@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.MusicPlayer;
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 
 import org.acra.ACRA;
@@ -21,7 +20,6 @@ public abstract class BattleshipScreen extends Screen {
     protected GoogleApiClient mApiClient;
     protected FragmentManager mFm;
 
-    private WaitFragment mWaitFragment;
     private boolean mResumed;
 
     public final void onAttach(BattleshipActivity activity) {
@@ -52,26 +50,6 @@ public abstract class BattleshipScreen extends Screen {
 
     protected final void setScreen(BattleshipScreen screen) {
         mParent.setScreen(screen);
-    }
-
-    protected final void showWaitingScreen() {
-        Ln.d("please wait... ");
-        mWaitFragment = new WaitFragment();
-        mFm.beginTransaction().add(R.id.container, mWaitFragment).commitAllowingStateLoss();
-    }
-
-    protected final void hideWaitingScreen() {
-        if (isWaitShown()) {
-            Ln.d("hiding waiting screen");
-            mFm.beginTransaction().remove(mWaitFragment).commitAllowingStateLoss();
-            mWaitFragment = null;
-        } else {
-            Ln.w("waiting screen isn't shown");
-        }
-    }
-
-    protected final boolean isWaitShown() {
-        return mWaitFragment != null;
     }
 
     protected final String debugSuffix() {
