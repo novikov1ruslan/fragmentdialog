@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import org.apache.commons.lang3.Validate;
+
 public class BasePresenter {
 
     private final int mBoardSize;
@@ -18,7 +20,7 @@ public class BasePresenter {
 
     protected int mCellSizePx;
     protected int mHalfCellSize;
-    protected Rect mBoardRect = new Rect();
+    protected final Rect mBoardRect = new Rect();
 
     private final Rect hRect = new Rect();
     private final Rect vRect = new Rect();
@@ -99,6 +101,8 @@ public class BasePresenter {
     }
 
     public Mark getMark(int x, int y) {
+        isTrue(mCellSizePx > 0, "call measure first");
+
         int left = getLeft(x);
         int top = getTop(y);
         mMark.centerX = left + mHalfCellSize;
@@ -119,9 +123,9 @@ public class BasePresenter {
 
     private
     @NonNull
-    Rect getVerticalRect(int i, int width) {
+    Rect getVerticalRect(int i, int widthCells) {
         int leftVer = mBoardRect.left + i * mCellSizePx;
-        int rightVer = leftVer + width * mCellSizePx;
+        int rightVer = leftVer + widthCells * mCellSizePx;
         int topVer = mBoardRect.top;
         int bottomVer = mBoardRect.bottom;
 
@@ -135,11 +139,11 @@ public class BasePresenter {
 
     private
     @NonNull
-    Rect getHorizontalRect(int j, int height) {
+    Rect getHorizontalRect(int j, int heightCells) {
         int leftHor = mBoardRect.left;
         int rightHor = mBoardRect.right;
         int topHor = mBoardRect.top + j * mCellSizePx;
-        int bottomHor = topHor + height * mCellSizePx;
+        int bottomHor = topHor + heightCells * mCellSizePx;
 
         hRect.left = leftHor;
         hRect.right = rightHor;
@@ -149,11 +153,11 @@ public class BasePresenter {
         return hRect;
     }
 
-    public final int getCellY(int mTouchY) {
+    protected final int getCellY(int mTouchY) {
         return (mTouchY - mBoardRect.top) / mCellSizePx;
     }
 
-    public final int getCellX(int mTouchX) {
+    protected final int getCellX(int mTouchX) {
         return (mTouchX - mBoardRect.left) / mCellSizePx;
     }
 
@@ -179,18 +183,20 @@ public class BasePresenter {
 
     public
     @NonNull
-    Aiming getAiming(Vector2 aim, int width, int height) {
-        return getAiming(aim.getX(), aim.getY(), width, height);
+    Aiming getAiming(Vector2 aim, int widthCells, int heightCells) {
+        return getAiming(aim.getX(), aim.getY(), widthCells, heightCells);
     }
 
     public
     @NonNull
-    Aiming getAiming(int i, int j, int width, int height) {
-        mAiming.vertical = getVerticalRect(i, width);
+    Aiming getAiming(int i, int j, int widthCells, int heightCells) {
+        Validate.isTrue(widthCells > 0 && heightCells > 0);
+
+        mAiming.vertical = getVerticalRect(i, widthCells);
         if (mAiming.vertical.right > mBoardRect.right) {
             mAiming.vertical.right = mBoardRect.right;
         }
-        mAiming.horizontal = getHorizontalRect(j, height);
+        mAiming.horizontal = getHorizontalRect(j, heightCells);
         if (mAiming.horizontal.bottom > mBoardRect.bottom) {
             mAiming.horizontal.bottom = mBoardRect.bottom;
         }
@@ -212,6 +218,8 @@ public class BasePresenter {
     }
 
     public Rect getRectForShip(Ship ship, int left, int top) {
+        isTrue(mCellSizePx > 0, "call measure first");
+
         mShipRect.left = left;
         mShipRect.top = top;
 
@@ -238,5 +246,11 @@ public class BasePresenter {
         }
 
         mBoard.frame = mTurnRect;
+    }
+
+    private static void isTrue(final boolean expression, final String message) {
+        if (expression == false) {
+            throw new IllegalStateException(message);
+        }
     }
 }
