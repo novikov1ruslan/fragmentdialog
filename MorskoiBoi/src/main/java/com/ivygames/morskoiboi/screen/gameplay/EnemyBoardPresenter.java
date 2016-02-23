@@ -16,7 +16,7 @@ final class EnemyBoardPresenter extends BasePresenter {
     private int mAnimationHorOffset;
     private int mAnimationVerOffset;
     private final Rect mDstRect = new Rect();
-    private Rect mLockDstRect = new Rect();
+    private final Rect mLockDstRect = new Rect();
 
     private int mTouchX;
     private int mTouchY;

@@ -15,7 +15,7 @@ public class BasePresenter {
     private final float mTurnBorderSize;
 
     private boolean mShowTurn;
-    private Rect mTurnRect = new Rect();
+    private final Rect mTurnRect = new Rect();
     private int mMarkRadius;
 
     protected int mCellSizePx;
@@ -199,7 +199,7 @@ public class BasePresenter {
         return mBoard;
     }
 
-    private Rect mShipRect = new Rect();
+    private final Rect mShipRect = new Rect();
 
     public Rect getRectForShip(Ship ship) {
         return getRectForShip(ship, getLeft(ship.getX()), getTop(ship.getY()));

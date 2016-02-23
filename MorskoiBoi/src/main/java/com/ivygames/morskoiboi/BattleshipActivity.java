@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger.LogLevel;
-import com.google.android.gms.appstate.AppStateManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -282,7 +281,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this, connectedListener, connectionFailedListener);
         builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
-        builder.addApi(AppStateManager.API).addScope(AppStateManager.SCOPE_APP_STATE);
         builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
 

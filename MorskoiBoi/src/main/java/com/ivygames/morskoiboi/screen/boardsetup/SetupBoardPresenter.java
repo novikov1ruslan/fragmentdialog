@@ -10,10 +10,10 @@ import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BasePresenter;
 
-public class SetupBoardPresenter extends BasePresenter {
+final class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipSelectionRect = new Rect();
     private final Rect mShipDisplayRect = new Rect();
-    private Point shipDisplayCenter = new Point();
+    private final Point shipDisplayCenter = new Point();
     private final Rect mPickedShipRect = new Rect();
     private final RectF rectF = new RectF();
     private int mTouchX;
@@ -37,7 +37,7 @@ public class SetupBoardPresenter extends BasePresenter {
         super.measure(w, h, 0, mShipDisplayRect.height(), hPadding, vPadding);
     }
 
-    public int getShipWidthInPx(int shipSize) {
+    private int getShipWidthInPx(int shipSize) {
         return shipSize * mCellSizePx;
     }
 
