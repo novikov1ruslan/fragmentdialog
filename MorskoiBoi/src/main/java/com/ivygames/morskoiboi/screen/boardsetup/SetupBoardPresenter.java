@@ -102,11 +102,11 @@ public class SetupBoardPresenter extends BasePresenter {
     }
 
     public int getTouchJ() {
-        return getCellY(mTouchY);
+        return (mTouchY - mBoardRect.top) / mCellSizePx;
     }
 
     public int getTouchI() {
-        return getCellX(mTouchX);
+        return (mTouchX - mBoardRect.left) / mCellSizePx;
     }
 
     public boolean isInShipSelectionArea() {
@@ -126,4 +126,5 @@ public class SetupBoardPresenter extends BasePresenter {
 
         return rectF;
     }
+
 }

@@ -153,14 +153,6 @@ public class BasePresenter {
         return hRect;
     }
 
-    protected final int getCellY(int mTouchY) {
-        return (mTouchY - mBoardRect.top) / mCellSizePx;
-    }
-
-    protected final int getCellX(int mTouchX) {
-        return (mTouchX - mBoardRect.left) / mCellSizePx;
-    }
-
     private float getMarkOuterRadius() {
         return mMarkRadius;
     }
@@ -249,7 +241,7 @@ public class BasePresenter {
     }
 
     private static void isTrue(final boolean expression, final String message) {
-        if (expression == false) {
+        if (!expression) {
             throw new IllegalStateException(message);
         }
     }
