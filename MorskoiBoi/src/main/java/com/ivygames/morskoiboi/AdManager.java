@@ -10,7 +10,7 @@ import com.google.android.gms.ads.AdRequest.Builder;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.plus.model.people.Person;
-import com.jirbo.adcolony.AdColony;
+//import com.jirbo.adcolony.AdColony;
 
 import org.commons.logger.Ln;
 
@@ -164,7 +164,7 @@ public class AdManager {
             mBanner.setVisibility(View.INVISIBLE);
         } else {
             if (SUPPORT_AD_COLONY) {
-                AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);
+//                AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);
             }
             initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
             if (isSmallScreen(activity)) {
@@ -187,7 +187,7 @@ public class AdManager {
             mBanner.loadAd(AdManager.instance.createAdRequest());
             mBanner.resume();
             if (SUPPORT_AD_COLONY) {
-                AdColony.resume(activity);
+//                AdColony.resume(activity);
             }
         }
     }
@@ -199,7 +199,7 @@ public class AdManager {
             Ln.v("pausing banner ad serving");
             mBanner.pause();
             if (SUPPORT_AD_COLONY) {
-                AdColony.pause();
+//                AdColony.pause();
             }
         }
     }

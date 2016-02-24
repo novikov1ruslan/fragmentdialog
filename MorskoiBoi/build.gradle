@@ -63,7 +63,7 @@ dependencies {
     compile project(':fragmentdialog')
     compile project(':BaseGameUtils')
     compile project(':RUtils')
-    compile files('libs/adcolony.jar')
+//    compile files('libs/adcolony.jar')
     compile 'com.google.android.gms:play-services-games:8.4.0'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
