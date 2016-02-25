@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     defaultConfig {
@@ -9,8 +9,7 @@ android {
         minSdkVersion 13
         targetSdkVersion 16
 
-        testApplicationId "com.ivygames.morskoiboi.test"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -23,12 +22,6 @@ android {
         debug {
             debuggable true
             testCoverageEnabled = true
-
-//            if (testCoverageEnabled) {
-//                testInstrumentationRunner 'com.here.test.JacocoRunner'
-//            } else {
-//                testInstrumentationRunner 'com.here.test.JUnitReportGoogleInstrumentationTestRunner'
-//            }
         }
 
     }
@@ -63,6 +56,7 @@ dependencies {
     compile project(':fragmentdialog')
     compile project(':BaseGameUtils')
     compile project(':RUtils')
+    compile project(':BillingUtils')
 //    compile files('libs/adcolony.jar')
     compile 'com.google.android.gms:play-services-games:8.4.0'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
@@ -74,9 +68,12 @@ dependencies {
     compile 'ch.acra:acra:4.6.2'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
-    compile project(':BillingUtils')
+    compile 'com.android.support:support-annotations:23.0.1'
 
-//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile 'com.android.support.test:runner:0.4.1'
+    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.android.support:support-annotations:23.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 
     testCompile "org.robolectric:robolectric:3.0"
     testCompile 'junit:junit:4.12'
