@@ -79,7 +79,6 @@
     <string name="android">Android</string>
     <string name="send">Send</string>
     <string name="enter_your_message">Enter your message</string>
-    <!--<string name="chat">CHAT</string>-->
     <string name="pause">Pause…</string>
     <string name="your_turn">Your turn</string>
     <string name="opponent_s_turn">Opponent\'s turn</string>

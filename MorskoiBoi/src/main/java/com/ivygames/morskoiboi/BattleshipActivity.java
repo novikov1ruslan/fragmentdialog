@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.common.ConnectionResult;
@@ -135,7 +137,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         }
     };
 
-
     private final OnInvitationReceivedListener mInvitationReceivedListener = new OnInvitationReceivedListener() {
 
         @Override
@@ -240,6 +241,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
             hideAds();
         }
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         Ln.i("game fully created");
     }
 
@@ -342,6 +345,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         AdManager.instance.resume(this);
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
+        AppEventsLogger.activateApp(this);
     }
 
     @Override
@@ -360,6 +364,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         AdManager.instance.pause();
 
         mMusicPlayer.pause();
+        AppEventsLogger.deactivateApp(this);
     }
 
     @Override
