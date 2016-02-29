@@ -35,7 +35,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     @Override
     public void onCreate() {
         super.onCreate();
-        mSoundBar = SoundBarFactory.create(getActivity().getAssets(), "lost.ogg");
+        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "lost.ogg");
         mSoundBar.play();
         GameSettings.get().incrementGamesPlayedCounter();
     }
@@ -111,7 +111,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        mParent.setScreen(new BoardSetupScreen(getActivity()));
+        mParent.setScreen(new BoardSetupScreen(getParent()));
     }
 
     @Override

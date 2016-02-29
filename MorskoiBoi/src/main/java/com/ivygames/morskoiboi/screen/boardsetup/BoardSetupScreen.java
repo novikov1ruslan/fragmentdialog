@@ -143,12 +143,12 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     private void showGameplayScreen() {
-        mParent.setScreen(new GameplayScreen(getActivity()));
+        mParent.setScreen(new GameplayScreen(getParent()));
     }
 
     private void showSetupValidationError() {
         View view = getLayoutInflater().inflate(R.layout.ships_setup_validation_crouton, mLayout, false);
-        Crouton.make(getActivity(), view).show();
+        Crouton.make(getParent(), view).show();
     }
 
     @Override

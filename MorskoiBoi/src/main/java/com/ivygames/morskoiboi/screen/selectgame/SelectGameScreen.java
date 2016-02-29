@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdManager;
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -22,16 +25,13 @@ import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
-import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
-import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
-import com.ivygames.morskoiboi.screen.SignInDialog;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -72,53 +72,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
         Ln.d(this + " screen created, rank = " + rank);
 
-//        share(rank);
-//        share1();
-
         return mLayout;
     }
-
-//    private void share(Rank rank) {
-////            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), rank.getBitmapRes());
-////            String photoUri = MediaStore.Images.Media.insertImage(
-////                    getActivity().getContentResolver(), bitmap, "screeshot.jpg", 1233+ ".jpg Card Image");
-////            Uri uri = Uri.parse(photoUri);
-//        String uri = getUrl(rank.getBitmapRes());
-////        String uri = "https://drive.google.com/file/d/0B7CVg0NNcLFybVpCakE2ZmVBbUU/view?usp=sharing";
-//
-//        Intent shareIntent = new PlusShare.Builder(getActivity())
-//            .setType("image/png")
-//            .setText("hello everyone!")
-//            .setStream(Uri.parse(uri))
-//            .getIntent();
-//        startActivityForResult(shareIntent, 0);
-//    }
-
-
-//    private void share() {
-//        Intent shareIntent = new PlusShare.Builder(getActivity())
-//                .setType("text/plain")
-//                .setText("Welcome to the Google+ platform.")
-//                .setContentUrl(Uri.parse("https://developers.google.com/+/"))
-//                .getIntent();
-//
-//        startActivityForResult(shareIntent, 0);
-//    }
-//
-//    private void share1() {
-//        String uri = "https://drive.google.com/file/d/0B7CVg0NNcLFybVpCakE2ZmVBbUU/view?usp=sharing";
-//        Intent shareIntent = new PlusShare.Builder(getActivity())
-//                .setType("text/plain")
-//                .setText("Just tried this new restaurant! #nomnomnom #myappname")
-//                .setContentUrl(Uri.parse(uri))
-//                .getIntent();
-//
-//        startActivityForResult(shareIntent, 0);
-//    }
-//
-//    private String getUrl(int res) {
-//        return ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/" + res;
-//    }
 
     @Override
     public View getTutView() {
@@ -178,7 +133,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private boolean hasBluetooth() {
-        PackageManager pm = getActivity().getPackageManager();
+        PackageManager pm = getParent().getPackageManager();
         boolean hasBluetooth = pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
         hasBluetooth &= BluetoothAdapter.getDefaultAdapter() != null;
         return hasBluetooth;
@@ -194,7 +149,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBoardSetup() {
-        mParent.setScreen(new BoardSetupScreen(getActivity()));
+        mParent.setScreen(new BoardSetupScreen(getParent()));
     }
 
     @Override
@@ -219,7 +174,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private void showDeviceListScreen() {
 //        mParent.setScreen(new DeviceListScreen());
-        mParent.setScreen(new BluetoothScreen(getActivity()));
+        mParent.setScreen(new BluetoothScreen(getParent()));
     }
 
     @Override
@@ -255,7 +210,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        mParent.setScreen(new InternetGameScreen(getActivity()));
+        mParent.setScreen(new InternetGameScreen(getParent()));
     }
 
     private void showInternetDialog() {
@@ -271,7 +226,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBtErrorDialog() {
-        final FragmentManager fm = getActivity().getSupportFragmentManager();
+        final FragmentManager fm = getParent().getSupportFragmentManager();
         new AlertDialogBuilder().setMessage(R.string.bluetooth_not_available).setPositiveButton(R.string.ok).create().show(fm, null);
     }
 
@@ -292,12 +247,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void showRanks() {
         UiEvent.send("showRanks");
-        mParent.setScreen(new RanksListScreen(getActivity()));
+        mParent.setScreen(new RanksListScreen(getParent()));
     }
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen(getActivity()));
+        mParent.setScreen(new MainScreen(getParent()));
     }
 
     @Override

@@ -49,7 +49,7 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     protected final void setScreen(BattleshipScreen screen) {
-        getActivity().setScreen(screen);
+        getParent().setScreen(screen);
     }
 
     protected final String debugSuffix() {
@@ -93,7 +93,7 @@ public abstract class BattleshipScreen extends Screen {
         return MusicPlayer.NO_SOUND;
     }
 
-    public final BattleshipActivity getActivity() {
+    public final BattleshipActivity getParent() {
         return (BattleshipActivity) mParent;
     }
 }

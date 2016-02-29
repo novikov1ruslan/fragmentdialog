@@ -118,7 +118,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     public void onRate() {
         UiEvent.send("settings_rate");
         mSettings.setRated();
-        PlayUtils.rateApp(getActivity());
+        PlayUtils.rateApp(getParent());
     }
 
     @Override
@@ -147,7 +147,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen(getActivity()));
+        mParent.setScreen(new MainScreen(getParent()));
     }
 
     @Override

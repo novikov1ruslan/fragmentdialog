@@ -14,7 +14,7 @@ public class VibratorFacade {
 
     public VibratorFacade(BattleshipScreen fragment) {
         mFragment = fragment;
-        mVibrator = (Vibrator) fragment.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        mVibrator = (Vibrator) fragment.getParent().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public void vibrate(int milliseconds) {

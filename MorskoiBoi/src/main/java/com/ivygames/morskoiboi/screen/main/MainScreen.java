@@ -131,13 +131,13 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void play() {
-        mParent.setScreen(new SelectGameScreen(getActivity()));
+        mParent.setScreen(new SelectGameScreen(getParent()));
     }
 
     @Override
     public void share() {
         UiEvent.send("share");
-        startActivity(MainScreen.createShareIntent(getActivity(), getString(R.string.share_greeting)));
+        startActivity(MainScreen.createShareIntent(getParent(), getString(R.string.share_greeting)));
     }
 
     @Override
@@ -189,7 +189,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showHelp() {
-        mParent.setScreen(new HelpScreen(getActivity()));
+        mParent.setScreen(new HelpScreen(getParent()));
     }
 
     @Override
@@ -210,7 +210,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        mParent.setScreen(new SettingsScreen(getActivity()));
+        mParent.setScreen(new SettingsScreen(getParent()));
     }
 
     private void showLeaderboardsDialog() {
@@ -232,7 +232,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("rate");
                 GameSettings.get().setRated();
-                PlayUtils.rateApp(getActivity());
+                PlayUtils.rateApp(getParent());
             }
 
         }).setNegativeButton(R.string.later, new OnClickListener() {

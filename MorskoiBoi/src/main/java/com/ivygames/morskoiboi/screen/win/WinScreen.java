@@ -69,7 +69,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
         mGame = Model.instance.game;
 
-        mSoundBar = SoundBarFactory.create(getActivity().getAssets(), "win.ogg");
+        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "win.ogg");
         mSoundBar.play();
 
         mTime = mGame.getTimeSpent();
@@ -221,7 +221,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        mParent.setScreen(new BoardSetupScreen(getActivity()));
+        mParent.setScreen(new BoardSetupScreen(getParent()));
     }
 
     private void showWantToLeaveRoomDialog() {

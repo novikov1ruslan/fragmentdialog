@@ -65,9 +65,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     public void onStart() {
         super.onStart();
         Ln.d(TAG + ": register BT broadcast receiver, starting discovery...");
-        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
-//        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
+        getParent().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        getParent().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
         startDiscovery();
     }
 
@@ -75,7 +74,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     public void onStop() {
         super.onStop();
         cancelDiscovery();
-        getActivity().unregisterReceiver(mReceiver);
+        getParent().unregisterReceiver(mReceiver);
         Ln.d(TAG + ": receivers are unregistered, discovery canceled");
     }
 
@@ -159,7 +158,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen(getActivity()));
+        setScreen(new BoardSetupScreen(getParent()));
     }
 
     @Override
@@ -168,10 +167,6 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         if (isDialogShown()) {
             hideDialog();
         }
-//        if (isDialogShown() && !getActivity().isFinishing()) {
-//            cancelGameCreation();
-//            ACRA.getErrorReporter().handleException(new RuntimeException("dialog should have been destroyed"));
-//        }
     }
 
     @Override
@@ -179,7 +174,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen(getActivity()));
+            setScreen(new MainScreen(getParent()));
         }
     }
 

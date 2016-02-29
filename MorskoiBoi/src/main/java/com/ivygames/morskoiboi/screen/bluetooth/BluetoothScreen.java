@@ -67,7 +67,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onCreate() {
         super.onCreate();
-        getActivity().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
+        getParent().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
     }
 
     @Override
@@ -103,16 +103,11 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(mReceiver);
+        getParent().unregisterReceiver(mReceiver);
 
         if (isDialogShown()) {
             hideDialog();
         }
-
-//        if (isDialogShown() && !getActivity().isFinishing()) {
-//            cancelGameCreation();
-//            ACRA.getErrorReporter().handleException(new RuntimeException("dialog should have been destroyed"));
-//        }
     }
 
     @Override
@@ -139,7 +134,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        setScreen(new DeviceListScreen(getActivity()));
+        setScreen(new DeviceListScreen(getParent()));
     }
 
     @Override
@@ -147,7 +142,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen(getActivity()));
+            setScreen(new MainScreen(getParent()));
         }
     }
 
@@ -190,7 +185,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen(getActivity()));
+        setScreen(new BoardSetupScreen(getParent()));
     }
 
     @Override
