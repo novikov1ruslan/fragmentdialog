@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -12,21 +13,26 @@ import com.ivygames.morskoiboi.MusicPlayer;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 
 import org.acra.ACRA;
+import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
+
+import static org.apache.commons.lang3.Validate.*;
 
 public abstract class BattleshipScreen extends Screen {
 
-    // TODO: make these final, remove onAttach() method
-    protected GoogleApiClient mApiClient;
-    protected FragmentManager mFm;
+    @NonNull
+    protected final GoogleApiClient mApiClient;
+
+    @NonNull
+    protected final FragmentManager mFm;
 
     private boolean mResumed;
 
     public BattleshipScreen(BattleshipActivity parent) {
         super(parent);
-        mApiClient = parent.getApiClient();
+        mApiClient = notNull(parent.getApiClient());
+        mFm = notNull(getFragmentManager());
         UiEvent.screenView(this.getClass().getSimpleName());
-        mFm = getFragmentManager();
         Ln.v(this + " attached");
     }
 

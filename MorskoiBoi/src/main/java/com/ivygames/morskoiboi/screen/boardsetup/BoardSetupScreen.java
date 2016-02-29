@@ -62,7 +62,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
                 public void run() {
                     backToSelectGameScreen();
                 }
-            }).show(getFragmentManager(), FragmentAlertDialog.TAG);
+            }).show(mFm, FragmentAlertDialog.TAG);
         }
     };
 

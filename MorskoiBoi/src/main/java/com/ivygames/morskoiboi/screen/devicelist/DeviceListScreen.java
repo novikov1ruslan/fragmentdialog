@@ -118,7 +118,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         cancelDiscovery();
 
         BluetoothDevice device = mBtAdapter.getRemoteDevice(BluetoothUtils.extractMacAddress(info));
-        showDialog(getResources().getString(R.string.connecting_to, device.getName()));
+        showDialog(getString(R.string.connecting_to, device.getName()));
         connectToDevice(device);
     }
 
