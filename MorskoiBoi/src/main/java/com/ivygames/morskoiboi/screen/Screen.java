@@ -23,10 +23,6 @@ public abstract class Screen {
         return mParent.getLayoutInflater().inflate(layoutId, null);
     }
 
-    public final BattleshipActivity getActivity() {
-        return mParent;
-    }
-
     protected final String getString(int resId) {
         return mParent.getString(resId);
     }

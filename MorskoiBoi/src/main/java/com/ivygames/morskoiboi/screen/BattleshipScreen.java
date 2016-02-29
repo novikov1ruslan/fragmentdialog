@@ -92,4 +92,8 @@ public abstract class BattleshipScreen extends Screen {
     public @RawRes int getMusic() {
         return MusicPlayer.NO_SOUND;
     }
+
+    public final BattleshipActivity getActivity() {
+        return mParent;
+    }
 }
