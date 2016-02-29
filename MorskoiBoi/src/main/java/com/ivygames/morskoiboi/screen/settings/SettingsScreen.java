@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
@@ -28,6 +29,10 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     private GameSettings mSettings;
     private SettingsLayout mLayout;
     private VibratorFacade mVibrator;
+
+    public SettingsScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public void onCreate() {
@@ -142,7 +147,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen());
+        mParent.setScreen(new MainScreen(getActivity()));
     }
 
     @Override

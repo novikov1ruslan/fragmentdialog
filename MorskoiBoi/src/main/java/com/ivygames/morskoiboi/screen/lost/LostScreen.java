@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
@@ -26,6 +27,10 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     private SoundBar mSoundBar;
     private View mView;
+
+    public LostScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public void onCreate() {
@@ -106,7 +111,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        mParent.setScreen(new BoardSetupScreen());
+        mParent.setScreen(new BoardSetupScreen(getActivity()));
     }
 
     @Override

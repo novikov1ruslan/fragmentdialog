@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdManager;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.HandlerOpponent;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -100,7 +101,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            mParent.setScreen(new LostScreen());
+            mParent.setScreen(new LostScreen(getActivity()));
         }
     };
 
@@ -146,6 +147,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showConnectionLostDialog();
         }
     };
+
+    public GameplayScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public View getView() {
@@ -810,7 +815,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Bundle args = new Bundle();
             args.putBoolean(WinScreen.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
             args.putString(WinScreen.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
-            mParent.setScreen(new WinScreen(args));
+            mParent.setScreen(new WinScreen(args, getActivity()));
         }
     };
 

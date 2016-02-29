@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
@@ -12,6 +13,10 @@ import de.greenrobot.event.EventBus;
 
 public abstract class OnlineGameScreen extends BattleshipScreen {
     private static final String DIALOG = FragmentAlertDialog.TAG;
+
+    public OnlineGameScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public void onCreate() {

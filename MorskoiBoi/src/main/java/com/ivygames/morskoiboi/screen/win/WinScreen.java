@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
@@ -55,8 +56,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private SoundBar mSoundBar;
     private final Bundle mArgs;
 
-    public WinScreen(Bundle args) {
-        super();
+    public WinScreen(Bundle args, BattleshipActivity parent) {
+        super(parent);
         mArgs = Validate.notNull(args);
     }
 
@@ -220,7 +221,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        mParent.setScreen(new BoardSetupScreen());
+        mParent.setScreen(new BoardSetupScreen(getActivity()));
     }
 
     private void showWantToLeaveRoomDialog() {

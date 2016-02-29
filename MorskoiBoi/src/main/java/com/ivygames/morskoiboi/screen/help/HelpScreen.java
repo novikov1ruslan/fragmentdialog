@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.screen.help;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -13,6 +14,10 @@ import org.commons.logger.Ln;
 public class HelpScreen extends BattleshipScreen implements BackPressListener {
     private static final String TAG = "HELP";
     private View mLayout;
+
+    public HelpScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public View onCreateView(ViewGroup container) {
@@ -28,7 +33,7 @@ public class HelpScreen extends BattleshipScreen implements BackPressListener {
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen());
+        mParent.setScreen(new MainScreen(getActivity()));
     }
 
     @Override

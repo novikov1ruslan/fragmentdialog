@@ -36,6 +36,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private boolean mAchievementsRequested;
     private boolean mLeaderboardRequested;
     private MainScreenLayout mLayout;
+
+    public MainScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 //    private View mTutView;
 
     private static Intent createShareIntent(Context context, String greeting) {
@@ -127,7 +131,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void play() {
-        mParent.setScreen(new SelectGameScreen());
+        mParent.setScreen(new SelectGameScreen(getActivity()));
     }
 
     @Override
@@ -185,7 +189,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showHelp() {
-        mParent.setScreen(new HelpScreen());
+        mParent.setScreen(new HelpScreen(getActivity()));
     }
 
     @Override
@@ -206,7 +210,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        mParent.setScreen(new SettingsScreen());
+        mParent.setScreen(new SettingsScreen(getActivity()));
     }
 
     private void showLeaderboardsDialog() {

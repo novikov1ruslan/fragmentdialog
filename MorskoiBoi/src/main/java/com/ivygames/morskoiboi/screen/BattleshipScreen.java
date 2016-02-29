@@ -22,9 +22,9 @@ public abstract class BattleshipScreen extends Screen {
 
     private boolean mResumed;
 
-    public final void onAttach(BattleshipActivity activity) {
-        mParent = activity;
-        mApiClient = mParent.getApiClient();
+    public BattleshipScreen(BattleshipActivity parent) {
+        super(parent);
+        mApiClient = parent.getApiClient();
         UiEvent.screenView(this.getClass().getSimpleName());
         mFm = getFragmentManager();
         Ln.v(this + " attached");
@@ -49,7 +49,7 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     protected final void setScreen(BattleshipScreen screen) {
-        mParent.setScreen(screen);
+        getActivity().setScreen(screen);
     }
 
     protected final String debugSuffix() {
@@ -94,6 +94,6 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     public final BattleshipActivity getActivity() {
-        return mParent;
+        return (BattleshipActivity) mParent;
     }
 }

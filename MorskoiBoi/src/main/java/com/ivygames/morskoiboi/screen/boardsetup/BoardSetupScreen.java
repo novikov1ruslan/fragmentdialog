@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
@@ -64,6 +65,10 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
             }).show(getFragmentManager(), FragmentAlertDialog.TAG);
         }
     };
+
+    public BoardSetupScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public View onCreateView(ViewGroup container) {
@@ -138,7 +143,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     private void showGameplayScreen() {
-        mParent.setScreen(new GameplayScreen());
+        mParent.setScreen(new GameplayScreen(getActivity()));
     }
 
     private void showSetupValidationError() {

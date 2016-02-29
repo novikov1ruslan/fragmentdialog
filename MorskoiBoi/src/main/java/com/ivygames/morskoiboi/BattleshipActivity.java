@@ -219,7 +219,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         setContentView(mLayout);
         mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
 
-        setScreen(new MainScreen());
+        setScreen(new MainScreen(this));
 
         AdManager.instance.configure(this);
 
@@ -620,7 +620,6 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         }
 
         mCurrentScreen = screen;
-        mCurrentScreen.onAttach(this);
         mCurrentScreen.onCreate();
         View view = mCurrentScreen.onCreateView(mContainer);
 

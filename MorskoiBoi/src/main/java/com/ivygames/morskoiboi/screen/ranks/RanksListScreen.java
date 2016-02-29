@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.screen.ranks;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -15,6 +16,10 @@ import org.commons.logger.Ln;
 public class RanksListScreen extends BattleshipScreen implements BackPressListener {
     private static final String TAG = "RANKS";
     private RanksLayout mLayout;
+
+    public RanksListScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public View onCreateView(ViewGroup container) {
@@ -39,7 +44,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new SelectGameScreen());
+        mParent.setScreen(new SelectGameScreen(getActivity()));
     }
 
     @Override

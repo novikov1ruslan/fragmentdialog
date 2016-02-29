@@ -11,7 +11,11 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 
 public abstract class Screen {
 
-    protected BattleshipActivity mParent;
+    protected final BattleshipActivity mParent;
+
+    protected Screen(BattleshipActivity parent) {
+        mParent = parent;
+    }
 
     protected final FragmentManager getFragmentManager() {
         return mParent.getSupportFragmentManager();

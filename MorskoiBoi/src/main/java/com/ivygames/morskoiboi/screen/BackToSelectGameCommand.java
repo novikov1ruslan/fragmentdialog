@@ -22,7 +22,7 @@ public final class BackToSelectGameCommand implements Runnable {
         if (game != null) {
             game.finish();
         }
-        mBattleshipActivity.setScreen(new SelectGameScreen());
+        mBattleshipActivity.setScreen(new SelectGameScreen(mBattleshipActivity));
     }
 
 }

@@ -60,6 +60,10 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         }
     };
 
+    public BluetoothScreen(BattleshipActivity parent) {
+        super(parent);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -135,7 +139,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        setScreen(new DeviceListScreen());
+        setScreen(new DeviceListScreen(getActivity()));
     }
 
     @Override
@@ -143,7 +147,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen());
+            setScreen(new MainScreen(getActivity()));
         }
     }
 
@@ -186,7 +190,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen());
+        setScreen(new BoardSetupScreen(getActivity()));
     }
 
     @Override

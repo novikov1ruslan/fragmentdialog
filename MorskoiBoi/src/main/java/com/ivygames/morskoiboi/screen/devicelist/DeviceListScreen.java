@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -39,6 +40,10 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     private ViewGroup mContainer;
     private SingleTextDialog mDialog;
+
+    public DeviceListScreen(BattleshipActivity parent) {
+        super(parent);
+    }
 
     @Override
     public View getView() {
@@ -154,7 +159,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen());
+        setScreen(new BoardSetupScreen(getActivity()));
     }
 
     @Override
@@ -174,7 +179,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen());
+            setScreen(new MainScreen(getActivity()));
         }
     }
 

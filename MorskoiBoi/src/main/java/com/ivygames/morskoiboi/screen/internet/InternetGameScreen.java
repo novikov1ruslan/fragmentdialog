@@ -49,6 +49,10 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private InternetGameLayout mLayout;
     private WaitFragment mWaitFragment;
 
+    public InternetGameScreen(BattleshipActivity parent) {
+        super(parent);
+    }
+
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
@@ -206,7 +210,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         if (resultCode == Activity.RESULT_OK) {
             Ln.d("starting game");
             Model.instance.game = mInternetGame;
-            mParent.setScreen(new BoardSetupScreen());
+            mParent.setScreen(new BoardSetupScreen(getActivity()));
         } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
             Ln.d("user explicitly chose to leave the room");
             // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
@@ -278,7 +282,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             mInternetGame.finish();
         }
 
-        mParent.setScreen(new SelectGameScreen());
+        mParent.setScreen(new SelectGameScreen(getActivity()));
     }
 
     protected final void showWaitingScreen() {

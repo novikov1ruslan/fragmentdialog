@@ -50,6 +50,10 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private View mTutView;
 
+    public SelectGameScreen(BattleshipActivity parent) {
+        super(parent);
+    }
+
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (SelectGameLayout) inflate(R.layout.select_game, container);
@@ -190,7 +194,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBoardSetup() {
-        mParent.setScreen(new BoardSetupScreen());
+        mParent.setScreen(new BoardSetupScreen(getActivity()));
     }
 
     @Override
@@ -215,7 +219,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private void showDeviceListScreen() {
 //        mParent.setScreen(new DeviceListScreen());
-        mParent.setScreen(new BluetoothScreen());
+        mParent.setScreen(new BluetoothScreen(getActivity()));
     }
 
     @Override
@@ -251,7 +255,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        mParent.setScreen(new InternetGameScreen());
+        mParent.setScreen(new InternetGameScreen(getActivity()));
     }
 
     private void showInternetDialog() {
@@ -288,12 +292,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void showRanks() {
         UiEvent.send("showRanks");
-        mParent.setScreen(new RanksListScreen());
+        mParent.setScreen(new RanksListScreen(getActivity()));
     }
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen());
+        mParent.setScreen(new MainScreen(getActivity()));
     }
 
     @Override
