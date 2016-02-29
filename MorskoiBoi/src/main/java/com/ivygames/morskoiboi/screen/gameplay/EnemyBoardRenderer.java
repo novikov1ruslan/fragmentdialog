@@ -10,6 +10,7 @@ import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.BaseBoardRenderer;
 
 import org.commons.logger.Ln;
@@ -18,9 +19,10 @@ import java.util.Random;
 
 class EnemyBoardRenderer extends BaseBoardRenderer {
     private static final int TEXTURE_SIZE = 512;
+    private static final float CELL_RATIO = 2f;
 
-    private final Animation mSplashAnimation = new Animation(1000, 2f);
-    private final Animation mExplosionAnimation = new Animation(1000, 2f);
+    private final Animation mSplashAnimation = new Animation(1000);
+    private final Animation mExplosionAnimation = new Animation(1000);
 
     private Bitmap mNauticalBitmap;
     private Rect mSrcRect;
@@ -79,14 +81,14 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
         return mCurrentAnimation != null && mCurrentAnimation.isRunning();
     }
 
-    public long animateExplosions(Canvas canvas) {
-        canvas.drawBitmap(mCurrentAnimation.getCurrentFrame(), mCurrentAnimation.getBounds(), mPresenter.getAnimationDestination(mCurrentAnimation), null);
+    public long animateExplosions(Canvas canvas, Vector2 aim) {
+        canvas.drawBitmap(mCurrentAnimation.getCurrentFrame(), mCurrentAnimation.getBounds(),
+                mPresenter.getAnimationDestination(aim, CELL_RATIO), null);
         return mCurrentAnimation.getFrameDuration();
     }
 
     public void startAnimation(PokeResult result) {
         mCurrentAnimation = result.cell.isMiss() ? mSplashAnimation : mExplosionAnimation;
-        mCurrentAnimation.setAim(result.aim);
         mCurrentAnimation.start();
     }
 

@@ -22,6 +22,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     private final Paint mAimingLockedPaint;
     private final TouchState mTouchState = new TouchState();
+    private PokeResult mLastShotResult;
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -82,7 +83,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (getRenderer().isAnimationRunning()) {
-            postInvalidateDelayed(getRenderer().animateExplosions(canvas));
+            postInvalidateDelayed(getRenderer().animateExplosions(canvas, mLastShotResult.aim));
         }
 
         getRenderer().render(canvas, mTouchState.getTouchX(), mTouchState.getTouchY());
@@ -124,6 +125,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void setShotResult(PokeResult result) {
+        mLastShotResult = result;
         getRenderer().startAnimation(result);
     }
 }

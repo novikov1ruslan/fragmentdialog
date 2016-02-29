@@ -1,4 +1,5 @@
-include ':AppTheme', ':unity-ads-1.5.6'
+include ':AppTheme'
+include ':unity-ads-1.5.6'
 include ':BaseGameUtils'
 include ':RUtils'
 include ':fragmentdialog'

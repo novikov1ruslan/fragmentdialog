@@ -18,6 +18,7 @@ import org.commons.logger.Ln;
 
 import static org.apache.commons.lang3.Validate.*;
 
+// TODO: Screen is never used in isolation - combine BattleshipScreen with Screen
 public abstract class BattleshipScreen extends Screen {
 
     @NonNull

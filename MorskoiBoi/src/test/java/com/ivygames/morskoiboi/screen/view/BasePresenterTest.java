@@ -19,15 +19,15 @@ import static org.junit.Assert.assertThat;
 public class BasePresenterTest {
 
     private BasePresenter mPresenter;
-    private final int hOffset = 10;
-    private final int vOffset = 20;
-    private final int hPadding = 6;
-    private final int vPadding = 8;
+    private static final int H_OFFSET = 10;
+    private static final int V_OFFSET = 20;
+    private static final int H_PADDING = 6;
+    private static final int V_PADDING = 8;
 
     @Before
     public void setup() {
         mPresenter = new BasePresenter(10, 2);
-        mPresenter.measure(320, 480, hOffset, vOffset, hPadding, vPadding);
+        mPresenter.measure(320, 480, H_OFFSET, V_OFFSET, H_PADDING, V_PADDING);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class BasePresenterTest {
 
     @Test
     public void getMarkForLandscape() {
-        mPresenter.measure(800, 480, hOffset, vOffset, hPadding, vPadding);
+        mPresenter.measure(800, 480, H_OFFSET, V_OFFSET, H_PADDING, V_PADDING);
 
         Mark mark = mPresenter.getMark(0, 0);
         Mark expected = new Mark();

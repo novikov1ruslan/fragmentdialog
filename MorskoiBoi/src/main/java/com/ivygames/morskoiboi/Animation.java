@@ -14,15 +14,12 @@ public class Animation {
     private final List<Bitmap> mBitmaps;
     private int mFrameDuration;
     private long mStartTime;
-    private Vector2 mAim;
     private final Rect mBounds;
     private final int mDuration;
-    private final float mCellRatio;
 
-    public Animation(int frameDuration, float cellRatio) {
+    public Animation(int frameDuration) {
         mDuration = frameDuration;
-        mCellRatio = cellRatio;
-        mBitmaps = new ArrayList<Bitmap>();
+        mBitmaps = new ArrayList<>();
         mBounds = new Rect();
     }
 
@@ -45,7 +42,12 @@ public class Animation {
         long offset = SystemClock.elapsedRealtime() - mStartTime;
         int index = (int) (offset / mFrameDuration);
 
-        // normalize
+        index = normalizeIndex(index);
+
+        return mBitmaps.get(index);
+    }
+
+    private int normalizeIndex(int index) {
         if (index < 0) {
             index = 0;
         }
@@ -53,16 +55,7 @@ public class Animation {
         if (index >= mBitmaps.size()) {
             index = mBitmaps.size() - 1;
         }
-
-        return mBitmaps.get(index);
-    }
-
-    public void setAim(Vector2 aim) {
-        mAim = aim;
-    }
-
-    public Vector2 getAim() {
-        return mAim;
+        return index;
     }
 
     public Rect getBounds() {
@@ -71,9 +64,5 @@ public class Animation {
 
     public long getFrameDuration() {
         return mFrameDuration;
-    }
-
-    public float getCellRatio() {
-        return mCellRatio;
     }
 }

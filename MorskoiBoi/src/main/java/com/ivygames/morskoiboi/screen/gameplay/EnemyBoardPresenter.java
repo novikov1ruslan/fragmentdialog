@@ -4,7 +4,6 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
-import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.BasePresenter;
 import com.ivygames.morskoiboi.screen.view.TouchState;
@@ -42,11 +41,12 @@ final class EnemyBoardPresenter extends BasePresenter {
         mShotListener = shotListener;
     }
 
-    public Rect getAnimationDestination(Animation animation) {
-        int dx = animation.getAim().getX() * mCellSizePx + mAnimationHorOffset;
-        int dy = animation.getAim().getY() * mCellSizePx + mAnimationVerOffset;
+    @NonNull
+    public Rect getAnimationDestination(@NonNull Vector2 aim, float cellRatio) {
+        int dx = aim.getX() * mCellSizePx + mAnimationHorOffset;
+        int dy = aim.getY() * mCellSizePx + mAnimationVerOffset;
 
-        int d = (int) (animation.getCellRatio() * mHalfCellSize);
+        int d = (int) (cellRatio * mHalfCellSize);
         mDstRect.left = dx - d;
         mDstRect.top = dy - d;
         mDstRect.right = dx + d;
@@ -122,5 +122,4 @@ final class EnemyBoardPresenter extends BasePresenter {
             mShotListener.onAimingStarted();
         }
     }
-
 }
