@@ -1,11 +1,11 @@
 package com.ivygames.morskoiboi;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +55,7 @@ import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, OnInvitationReceivedListener {
+public class BattleshipActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, OnInvitationReceivedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -123,7 +123,7 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
 
             if (result.isFailure()) {
                 Ln.w("Error purchasing: " + result);
-                FragmentAlertDialog.showNote(getSupportFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
+                FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
                 return;
             }
 
@@ -242,7 +242,8 @@ public class BattleshipActivity extends FragmentActivity implements ConnectionCa
         }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-
+//        String appKey = "fee50c333ff3825fd6ad6d38cff78154de3025546d47a84f";
+//        Appodeal.initialize(this, appKey, Appodeal.BANNER);
         Ln.i("game fully created");
     }
 

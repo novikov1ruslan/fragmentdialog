@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.support.v4.app.FragmentManager;
 
 import com.ivygames.morskoiboi.R;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;

@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi.screen.selectgame;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -226,7 +226,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBtErrorDialog() {
-        final FragmentManager fm = getParent().getSupportFragmentManager();
+        final FragmentManager fm = getParent().getFragmentManager();
         new AlertDialogBuilder().setMessage(R.string.bluetooth_not_available).setPositiveButton(R.string.ok).create().show(fm, null);
     }
 

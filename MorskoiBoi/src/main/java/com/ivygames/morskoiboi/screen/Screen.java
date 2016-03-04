@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,7 @@ public abstract class Screen {
     }
 
     protected final FragmentManager getFragmentManager() {
-        return mParent.getSupportFragmentManager();
+        return mParent.getFragmentManager();
     }
 
     public abstract View getView();
