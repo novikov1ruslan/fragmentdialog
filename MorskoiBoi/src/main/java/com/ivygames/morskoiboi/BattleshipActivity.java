@@ -132,7 +132,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             if (purchase.getSku().equals(PurchaseHelper.SKU_NO_ADS)) {
                 Ln.d("Purchase is premium upgrade. Congratulating user.");
                 mSettings.setNoAds();
-                hideAds();
+//                hideAds();
             }
         }
     };
@@ -237,13 +237,11 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             }
         }
 
-        if (mSettings.noAds()) {
-            hideAds();
-        }
+//        if (mSettings.noAds()) {
+//            hideAds();
+//        }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-//        String appKey = "fee50c333ff3825fd6ad6d38cff78154de3025546d47a84f";
-//        Appodeal.initialize(this, appKey, Appodeal.BANNER);
         Ln.i("game fully created");
     }
 
@@ -275,8 +273,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     public void hideAds() {
-        findViewById(R.id.banner).setVisibility(View.GONE);
-        hideNoAdsButton();
+//        findViewById(R.id.banner).setVisibility(View.GONE);
+//        hideNoAdsButton();
     }
 
     private GoogleApiClient createGoogleApiClient() {
@@ -346,7 +344,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         AdManager.instance.resume(this);
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
-        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(this); // #FB
     }
 
     @Override

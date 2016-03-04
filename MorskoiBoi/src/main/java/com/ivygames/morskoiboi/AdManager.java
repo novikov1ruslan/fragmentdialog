@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
+import com.appodeal.ads.Appodeal;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdRequest.Builder;
@@ -19,6 +20,7 @@ public class AdManager {
     private static final String ADCOLONY_ZONE_ID = "vz37b387ad9fa84e87bf";
 
     public static final AdManager instance = new AdManager();
+    private static final boolean USE_APPODEAL = true;
 
     private AdManager() {
 
@@ -161,16 +163,23 @@ public class AdManager {
     public void configure(Activity activity) {
         mBanner = (AdView) activity.findViewById(R.id.banner);
         if (GameSettings.get().noAds()) {
-            mBanner.setVisibility(View.INVISIBLE);
+            mBanner.setVisibility(View.GONE);
         } else {
-            if (SUPPORT_AD_COLONY) {
-//                AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);
+            if (USE_APPODEAL) {
+                String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
+                Appodeal.initialize(activity, appKey, Appodeal.BANNER);
+                Appodeal.show(activity, Appodeal.BANNER_TOP);
             }
-            initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
-            if (isSmallScreen(activity)) {
-                mBanner.setVisibility(View.GONE);
-            } else {
-                mBanner.setVisibility(View.VISIBLE);
+            else {
+                if (SUPPORT_AD_COLONY) {
+//                AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);
+                }
+                initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
+                if (isSmallScreen(activity)) {
+                    mBanner.setVisibility(View.GONE);
+                } else {
+                    mBanner.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -181,13 +190,17 @@ public class AdManager {
 
     public void resume(Activity activity) {
         if (GameSettings.get().noAds()) {
-            Ln.v("game resumed - resuming ad serving, volume stream saved");
+            Ln.v("game resumed - resuming ad serving");
         } else {
-            Ln.v("game resumed - volume stream saved");
-            mBanner.loadAd(AdManager.instance.createAdRequest());
-            mBanner.resume();
-            if (SUPPORT_AD_COLONY) {
+            if (USE_APPODEAL) {
+                Appodeal.onResume(activity, Appodeal.BANNER); // #APD
+            }
+            else {
+                mBanner.loadAd(AdManager.instance.createAdRequest());
+                mBanner.resume();
+                if (SUPPORT_AD_COLONY) {
 //                AdColony.resume(activity);
+                }
             }
         }
     }
@@ -196,17 +209,27 @@ public class AdManager {
         if (GameSettings.get().noAds()) {
             Ln.v("no ads to pause");
         } else {
-            Ln.v("pausing banner ad serving");
-            mBanner.pause();
-            if (SUPPORT_AD_COLONY) {
+            if (USE_APPODEAL) {
+
+            }
+            else {
+                Ln.v("pausing banner ad serving");
+                mBanner.pause();
+                if (SUPPORT_AD_COLONY) {
 //                AdColony.pause();
+                }
             }
         }
     }
 
     public void destroy() {
-        if (mBanner != null) {
-            mBanner.destroy();
+        if (USE_APPODEAL) {
+
+        }
+        else {
+            if (mBanner != null) {
+                mBanner.destroy();
+            }
         }
     }
 

@@ -17,6 +17,7 @@
 
     <!-- for Appodeal-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Optional -->
     <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
 
@@ -124,10 +125,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:theme="@android:style/Theme.Translucent" />
+        <!--        <activity
+                    android:name="com.google.android.gms.ads.AdActivity"
+                    android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+                    android:theme="@android:style/Theme.Translucent" />-->
 
         <activity
             android:name="com.chartboost.sdk.CBImpressionActivity"
@@ -193,7 +194,6 @@
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
             android:hardwareAccelerated="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-
 
         <activity
             android:name="com.jirbo.adcolony.AdColonyOverlay"
