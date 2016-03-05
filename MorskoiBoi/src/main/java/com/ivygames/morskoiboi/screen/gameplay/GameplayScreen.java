@@ -11,8 +11,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.morskoiboi.AdManager;
+import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.HandlerOpponent;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -36,10 +37,9 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
-import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
@@ -161,7 +161,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onCreate() {
         super.onCreate();
         mMatchStatusIntent = new Intent(getParent(), InternetService.class);
-        AdManager.instance.needToShowInterstitialAfterPlay();
+        AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
 
         mSoundManager.prepareSoundPool(getParent().getAssets());
         mBackPressEnabled = true;

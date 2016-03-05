@@ -70,6 +70,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
+    private AdProvider mAdProvider;
 
     public interface BackPressListener {
         void onBackPressed();
@@ -221,7 +222,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         setScreen(new MainScreen(this));
 
-        AdManager.instance.configure(this);
+        mAdProvider = new AppodealAdProvider(this);
+        AdProviderFactory.setAdProvider(mAdProvider);
 
         if (mSettings.shouldAutoSignIn()) {
             Ln.d("should auto-signin - connecting...");
@@ -341,7 +343,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         // Set the hardware buttons to control the music
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        AdManager.instance.resume(this);
+        mAdProvider.resume(this);
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
         AppEventsLogger.activateApp(this); // #FB
@@ -360,7 +362,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mResumed = false;
 
         setVolumeControlStream(mVolumeControlStream);
-        AdManager.instance.pause();
+        mAdProvider.pause();
 
         mMusicPlayer.pause();
         AppEventsLogger.deactivateApp(this);
@@ -396,7 +398,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         Crouton.cancelAllCroutons();
-        AdManager.instance.destroy();
+        mAdProvider.destroy();
 
         destroyPurchaseHelper();
 
@@ -532,7 +534,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mResolvingConnectionFailure = false;
         mSettings.enableAutoSignIn();
         Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        AdManager.instance.setPerson(currentPerson);
+        mAdProvider.setPerson(currentPerson);
 
         if (TextUtils.isEmpty(mSettings.getPlayerName())) {
             String name = Games.Players.getCurrentPlayer(getApiClient()).getDisplayName();

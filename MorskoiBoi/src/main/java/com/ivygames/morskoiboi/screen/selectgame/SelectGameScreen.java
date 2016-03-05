@@ -10,7 +10,7 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.morskoiboi.AdManager;
+import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
@@ -92,7 +92,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onResume() {
         super.onResume();
-        AdManager.instance.showInterstitialAfterPlay();
+        AdProviderFactory.getAdProvider().showInterstitialAfterPlay();
         mParent.showTutorial(getTutView());
     }
 

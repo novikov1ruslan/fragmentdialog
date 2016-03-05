@@ -4,40 +4,42 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
-import com.appodeal.ads.Appodeal;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdRequest.Builder;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.plus.model.people.Person;
-//import com.jirbo.adcolony.AdColony;
 
 import org.commons.logger.Ln;
 
-public class AdManager {
-    private static final boolean SUPPORT_AD_COLONY = false;
-    private static final String ADCOLONY_ZONE_ID = "vz37b387ad9fa84e87bf";
-
-    public static final AdManager instance = new AdManager();
-    private static final boolean USE_APPODEAL = true;
-
-    private AdManager() {
-
-    }
+public class AdmobAdProvider implements AdProvider {
 
     private InterstitialAd mInterstitialAfterPlay;
     private boolean mInterstitialAfterPlayShown = true;
-    private String mBirthday;
-    private String mCurrentLocation;
-    private int mGender;
     private Person mPerson;
     private AdView mBanner;
 
+    public AdmobAdProvider(Activity activity) {
+        mBanner = (AdView) activity.findViewById(R.id.banner);
+        if (GameSettings.get().noAds()) {
+            mBanner.setVisibility(View.GONE);
+        } else {
+            initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
+            if (isSmallScreen(activity)) {
+                mBanner.setVisibility(View.GONE);
+            } else {
+                mBanner.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
     public void needToShowInterstitialAfterPlay() {
         mInterstitialAfterPlayShown = false;
     }
 
+    @Override
     public void showInterstitialAfterPlay() {
         if (GameSettings.get().noAds()) {
             Ln.v("no ad game - skipping ads");
@@ -78,6 +80,7 @@ public class AdManager {
 
     }
 
+    @Override
     public void setPerson(Person person) {
         if (person == null) {
             Ln.w("person is null");
@@ -85,27 +88,27 @@ public class AdManager {
         }
 
         mPerson = person;
-        if (person.hasBirthday()) {
-            mBirthday = person.getBirthday();
-            Ln.v("birthday=" + mBirthday);
-        } else {
-            Ln.v("player has not specified birthday");
-        }
-
-        if (person.hasCurrentLocation()) {
-            mCurrentLocation = person.getCurrentLocation();
-            Ln.v("current location=" + mCurrentLocation);
-        } else {
-            Ln.v("player has not specified location");
-        }
-
-        if (person.hasGender()) {
-            mGender = person.getGender();
-            String gender = AdManager.genderToString(mGender);
-            Ln.v("gender=" + gender);
-        } else {
-            Ln.v("player has not specified gender");
-        }
+//        if (person.hasBirthday()) {
+//            mBirthday = person.getBirthday();
+//            Ln.v("birthday=" + mBirthday);
+//        } else {
+//            Ln.v("player has not specified birthday");
+//        }
+//
+//        if (person.hasCurrentLocation()) {
+//            mCurrentLocation = person.getCurrentLocation();
+//            Ln.v("current location=" + mCurrentLocation);
+//        } else {
+//            Ln.v("player has not specified location");
+//        }
+//
+//        if (person.hasGender()) {
+//            mGender = person.getGender();
+//            String gender = AdmobAdProvider.genderToString(mGender);
+//            Ln.v("gender=" + gender);
+//        } else {
+//            Ln.v("player has not specified gender");
+//        }
     }
 
     private static String genderToString(int gender) {
@@ -127,7 +130,7 @@ public class AdManager {
      * @return An AdRequest to use when loading an ad.
      */
     private AdRequest createAdRequest() {
-        return AdManager.createAdRequest(mPerson).build();
+        return AdmobAdProvider.createAdRequest(mPerson).build();
     }
 
     private static Builder createAdRequest(Person person) {
@@ -160,76 +163,34 @@ public class AdManager {
         return builder;
     }
 
-    public void configure(Activity activity) {
-        mBanner = (AdView) activity.findViewById(R.id.banner);
-        if (GameSettings.get().noAds()) {
-            mBanner.setVisibility(View.GONE);
-        } else {
-            if (USE_APPODEAL) {
-                String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
-                Appodeal.initialize(activity, appKey, Appodeal.BANNER);
-                Appodeal.show(activity, Appodeal.BANNER_TOP);
-            }
-            else {
-                if (SUPPORT_AD_COLONY) {
-//                AdColony.configure(activity, "version:" + activity.getString(R.string.versionName) + ",store:google", "app2c40a372149e43558c", ADCOLONY_ZONE_ID);
-                }
-                initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
-                if (isSmallScreen(activity)) {
-                    mBanner.setVisibility(View.GONE);
-                } else {
-                    mBanner.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-    }
-
     private boolean isSmallScreen(Context context) {
         return context.getResources().getBoolean(R.bool.is_small_screen);
     }
 
+    @Override
     public void resume(Activity activity) {
         if (GameSettings.get().noAds()) {
             Ln.v("game resumed - resuming ad serving");
         } else {
-            if (USE_APPODEAL) {
-                Appodeal.onResume(activity, Appodeal.BANNER); // #APD
-            }
-            else {
-                mBanner.loadAd(AdManager.instance.createAdRequest());
-                mBanner.resume();
-                if (SUPPORT_AD_COLONY) {
-//                AdColony.resume(activity);
-                }
-            }
+            mBanner.loadAd(createAdRequest());
+            mBanner.resume();
         }
     }
 
+    @Override
     public void pause() {
         if (GameSettings.get().noAds()) {
             Ln.v("no ads to pause");
         } else {
-            if (USE_APPODEAL) {
-
-            }
-            else {
-                Ln.v("pausing banner ad serving");
-                mBanner.pause();
-                if (SUPPORT_AD_COLONY) {
-//                AdColony.pause();
-                }
-            }
+            Ln.v("pausing banner ad serving");
+            mBanner.pause();
         }
     }
 
+    @Override
     public void destroy() {
-        if (USE_APPODEAL) {
-
-        }
-        else {
-            if (mBanner != null) {
-                mBanner.destroy();
-            }
+        if (mBanner != null) {
+            mBanner.destroy();
         }
     }
 
