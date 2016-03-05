@@ -13,7 +13,6 @@ public class AppodealAdProvider implements AdProvider {
     private boolean mInterstitialAfterPlayShown = true;
 
     public AppodealAdProvider(final Activity activity) {
-
         mActivity = activity;
 
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
@@ -23,7 +22,6 @@ public class AppodealAdProvider implements AdProvider {
         Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
             @Override
             public void onInterstitialLoaded(boolean loaded) {
-//                Appodeal.show(activity, Appodeal.INTERSTITIAL);
             }
 
             @Override
@@ -51,11 +49,6 @@ public class AppodealAdProvider implements AdProvider {
 
     @Override
     public void showInterstitialAfterPlay() {
-        if (GameSettings.get().noAds()) {
-            Ln.v("no ad game - skipping ads");
-            return;
-        }
-
         if (mInterstitialAfterPlayShown) {
             Ln.v("already shown - skipping ads");
             return;
@@ -84,6 +77,6 @@ public class AppodealAdProvider implements AdProvider {
 
     @Override
     public void destroy() {
-
+        Appodeal.hide(mActivity, Appodeal.BANNER);
     }
 }

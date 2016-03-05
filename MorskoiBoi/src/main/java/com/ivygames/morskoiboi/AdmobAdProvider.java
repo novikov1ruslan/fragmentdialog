@@ -21,16 +21,11 @@ public class AdmobAdProvider implements AdProvider {
     private AdView mBanner;
 
     public AdmobAdProvider(Activity activity) {
-        mBanner = (AdView) activity.findViewById(R.id.banner);
-        if (GameSettings.get().noAds()) {
+        initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
+        if (isSmallScreen(activity)) {
             mBanner.setVisibility(View.GONE);
         } else {
-            initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
-            if (isSmallScreen(activity)) {
-                mBanner.setVisibility(View.GONE);
-            } else {
-                mBanner.setVisibility(View.VISIBLE);
-            }
+            mBanner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -41,11 +36,6 @@ public class AdmobAdProvider implements AdProvider {
 
     @Override
     public void showInterstitialAfterPlay() {
-        if (GameSettings.get().noAds()) {
-            Ln.v("no ad game - skipping ads");
-            return;
-        }
-
         if (mInterstitialAfterPlayShown) {
             Ln.v("already shown - skipping ads");
             return;
@@ -60,11 +50,6 @@ public class AdmobAdProvider implements AdProvider {
     }
 
     private void initInterstitialAfterPlay(Context context, String adUnitId) {
-        if (GameSettings.get().noAds()) {
-            Ln.v("no ad game - skipping ads");
-            return;
-        }
-
         mInterstitialAfterPlay = new InterstitialAd(context);
         mInterstitialAfterPlay.setAdUnitId(adUnitId);
         Ln.v("interstitial after play initialized for [" + adUnitId + "]");
@@ -169,22 +154,14 @@ public class AdmobAdProvider implements AdProvider {
 
     @Override
     public void resume(Activity activity) {
-        if (GameSettings.get().noAds()) {
-            Ln.v("game resumed - resuming ad serving");
-        } else {
-            mBanner.loadAd(createAdRequest());
-            mBanner.resume();
-        }
+        mBanner.loadAd(createAdRequest());
+        mBanner.resume();
     }
 
     @Override
     public void pause() {
-        if (GameSettings.get().noAds()) {
-            Ln.v("no ads to pause");
-        } else {
-            Ln.v("pausing banner ad serving");
-            mBanner.pause();
-        }
+        Ln.v("pausing banner ad serving");
+        mBanner.pause();
     }
 
     @Override

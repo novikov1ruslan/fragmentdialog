@@ -70,7 +70,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
-    private AdProvider mAdProvider;
 
     public interface BackPressListener {
         void onBackPressed();
@@ -133,7 +132,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             if (purchase.getSku().equals(PurchaseHelper.SKU_NO_ADS)) {
                 Ln.d("Purchase is premium upgrade. Congratulating user.");
                 mSettings.setNoAds();
-//                hideAds();
+                hideAds();
             }
         }
     };
@@ -222,15 +221,15 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         setScreen(new MainScreen(this));
 
-        mAdProvider = new AppodealAdProvider(this);
-        AdProviderFactory.setAdProvider(mAdProvider);
-
         if (mSettings.shouldAutoSignIn()) {
             Ln.d("should auto-signin - connecting...");
             mGoogleApiClient.connect();
         }
 
-        if (!GameSettings.get().noAds()) {
+        if (mSettings.noAds()) {
+            hideAds();
+        } else {
+            AdProviderFactory.setAdProvider(new AppodealAdProvider(this));
             if (isGoogleServicesAvailable()) {
                 createPurchaseHelper();
             } else {
@@ -238,10 +237,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
                 hideNoAdsButton();
             }
         }
-
-//        if (mSettings.noAds()) {
-//            hideAds();
-//        }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
@@ -275,8 +270,10 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     public void hideAds() {
-//        findViewById(R.id.banner).setVisibility(View.GONE);
-//        hideNoAdsButton();
+        AdProviderFactory.getAdProvider().destroy();
+        AdProviderFactory.setAdProvider(new NoAdsAdProvider());
+        findViewById(R.id.banner).setVisibility(View.GONE);
+        hideNoAdsButton();
     }
 
     private GoogleApiClient createGoogleApiClient() {
@@ -343,7 +340,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         // Set the hardware buttons to control the music
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        mAdProvider.resume(this);
+        AdProviderFactory.getAdProvider().resume(this);
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
         AppEventsLogger.activateApp(this); // #FB
@@ -362,7 +359,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mResumed = false;
 
         setVolumeControlStream(mVolumeControlStream);
-        mAdProvider.pause();
+        AdProviderFactory.getAdProvider().pause();
 
         mMusicPlayer.pause();
         AppEventsLogger.deactivateApp(this);
@@ -398,7 +395,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         Crouton.cancelAllCroutons();
-        mAdProvider.destroy();
+        AdProviderFactory.getAdProvider().destroy();
 
         destroyPurchaseHelper();
 
@@ -534,7 +531,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mResolvingConnectionFailure = false;
         mSettings.enableAutoSignIn();
         Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        mAdProvider.setPerson(currentPerson);
+        AdProviderFactory.getAdProvider().setPerson(currentPerson);
 
         if (TextUtils.isEmpty(mSettings.getPlayerName())) {
             String name = Games.Players.getCurrentPlayer(getApiClient()).getDisplayName();
