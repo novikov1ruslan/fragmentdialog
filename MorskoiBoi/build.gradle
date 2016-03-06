@@ -51,6 +51,10 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
     sourceSets { lite { java.srcDirs = ['src/lite/java', 'src/lite/java/1'] } }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 }
 
 dependencies {
