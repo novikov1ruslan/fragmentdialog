@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.common.ConnectionResult;
@@ -238,7 +236,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             }
         }
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
+//        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
     }
 
@@ -343,7 +341,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         AdProviderFactory.getAdProvider().resume(this);
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
-        AppEventsLogger.activateApp(this); // #FB
+//        AppEventsLogger.activateApp(this); // #FB
     }
 
     @Override
@@ -362,7 +360,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         AdProviderFactory.getAdProvider().pause();
 
         mMusicPlayer.pause();
-        AppEventsLogger.deactivateApp(this);
+//        AppEventsLogger.deactivateApp(this);
     }
 
     @Override

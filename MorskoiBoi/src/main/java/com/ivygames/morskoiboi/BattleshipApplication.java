@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.google.android.gms.analytics.ExceptionParser;
@@ -50,6 +51,12 @@ public class BattleshipApplication extends Application {
      */
     public static BattleshipApplication get() {
         return sContext;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override
