@@ -492,7 +492,16 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onShot(int x, int y) {
+        public void onAimingFinished(int x, int y) {
+            if (mLayout.isLocked()) {
+                // ignore callbacks when layout is locked
+                return;
+            }
+
+            Ln.v("aiming finished");
+            debug_aiming_started = false;
+            mSoundManager.stopKantropSound();
+
             if (mLayout.isLocked()) {
                 // ignore callbacks when layout is locked
                 return;
@@ -539,17 +548,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mSoundManager.playKantrop();
         }
 
-        @Override
-        public void onAimingFinished() {
-            if (mLayout.isLocked()) {
-                // ignore callbacks when layout is locked
-                return;
-            }
-
-            Ln.v("aiming finished");
-            debug_aiming_started = false;
-            mSoundManager.stopKantropSound();
-        }
     }
 
     private void showOpponentTurn() {
@@ -772,7 +770,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     public void updateMyStatus() {
         Collection<Ship> ships = mPlayerPrivateBoard.getShips();
-        LinkedList<Ship> workingShips = new LinkedList<Ship>();
+        LinkedList<Ship> workingShips = new LinkedList<>();
         for (Ship ship : ships) {
             if (!ship.isDead()) {
                 workingShips.add(ship);

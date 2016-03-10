@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by novikov on 3/10/16.
- */
 public class SetupBoardPresenterTest {
 
     @Test

@@ -22,25 +22,35 @@ public class TouchState {
         if (mTouchAction == MotionEvent.ACTION_DOWN) {
             Ln.v("ACTION_DOWN: " + mTouchX + ":" + mTouchY);
             mDragStatus = START_DRAGGING;
-        } else if (getTouchAction() == MotionEvent.ACTION_UP) {
+        } else if (getAction() == MotionEvent.ACTION_UP) {
             Ln.v("ACTION_UP: " + mTouchX + ":" + mTouchY);
             mDragStatus = STOP_DRAGGING;
         }
     }
 
-    public int getTouchX() {
+    public int getX() {
         return mTouchX;
     }
 
-    public int getTouchY() {
+    public int getY() {
         return mTouchY;
     }
 
-    public int getTouchAction() {
+    public int getAction() {
         return mTouchAction;
     }
 
     public int getDragStatus() {
         return mDragStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "TouchState{" +
+                "mTouchX=" + mTouchX +
+                ", mTouchY=" + mTouchY +
+                ", mTouchAction=" + mTouchAction +
+                ", mDragStatus=" + mDragStatus +
+                '}';
     }
 }

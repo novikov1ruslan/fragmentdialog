@@ -94,16 +94,12 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
 
     public void drawNautical(Canvas canvas) {
         if (mNauticalBitmap != null) {
-            canvas.drawBitmap(mNauticalBitmap, mSrcRect, getPresenter().getBoardRect(), null);
+            canvas.drawBitmap(mNauticalBitmap, mSrcRect, mPresenter.getBoardRect(), null);
         }
     }
 
     public void drawAim(Canvas canvas, Rect rectDst) {
         canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, rectDst, null);
-    }
-
-    private EnemyBoardPresenter getPresenter() {
-        return mPresenter;
     }
 
     public void init() {

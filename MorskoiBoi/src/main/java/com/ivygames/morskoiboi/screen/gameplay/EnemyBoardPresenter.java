@@ -17,13 +17,9 @@ final class EnemyBoardPresenter extends BasePresenter {
     private final Rect mDstRect = new Rect();
     private final Rect mLockDstRect = new Rect();
 
-    private int mTouchX;
-    private int mTouchY;
-
     private ShotListener mShotListener;
 
-    private TouchState mTouchState = new TouchState();
-    private int mTouchAction = mTouchState.getTouchAction();
+    private final TouchState mTouchState = new TouchState();
 
     public EnemyBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
@@ -69,12 +65,12 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     public int getTouchedJ() {
-        int y = mTouchY - mBoardRect.top;
+        int y = mTouchState.getY() - mBoardRect.top;
         return y / mCellSizePx;
     }
 
     public int getTouchedI() {
-        int x = mTouchX - mBoardRect.left;
+        int x = mTouchState.getX() - mBoardRect.left;
         return x / mCellSizePx;
     }
 
@@ -82,21 +78,16 @@ final class EnemyBoardPresenter extends BasePresenter {
         return mBoardRect;
     }
 
-    public void onTouch(TouchState touchState) {
-        mTouchState = touchState;
-        mTouchX = mTouchState.getTouchX();
-        mTouchY = mTouchState.getTouchY();
-        Ln.v("x=" + mTouchX + "; y=" + mTouchY);
-        mTouchAction = mTouchState.getTouchAction();
-        // TODO: create universal procedure to map x,y to cell
-        if (mTouchAction == MotionEvent.ACTION_DOWN/* && !mLocked*/) {
+    public void touch(MotionEvent event) {
+        mTouchState.setEvent(event);
+        Ln.v("x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
+        int action = mTouchState.getAction();
+        if (action == MotionEvent.ACTION_DOWN) {
             mShotListener.onAimingStarted();
         }
 
-        if (mTouchAction == MotionEvent.ACTION_UP/* && !mLocked*/) {
-            // TODO: unify these 2 callbacks
-            mShotListener.onAimingFinished();
-            mShotListener.onShot(getTouchedI(), getTouchedJ());
+        if (action == MotionEvent.ACTION_UP) {
+            mShotListener.onAimingFinished(getTouchedI(), getTouchedJ());
         }
     }
 
@@ -105,7 +96,8 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     public void unlock() {
-        if (mTouchAction == MotionEvent.ACTION_DOWN || mTouchAction == MotionEvent.ACTION_MOVE) {
+        int action = mTouchState.getAction();
+        if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
             mShotListener.onAimingStarted();
         }
     }
