@@ -20,7 +20,6 @@ final class EnemyBoardPresenter extends BasePresenter {
     private int mTouchX;
     private int mTouchY;
 
-    private Vector2 mAim;
     private ShotListener mShotListener;
 
     private TouchState mTouchState = new TouchState();
@@ -56,9 +55,9 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     @NonNull
-    public Rect getAimRectDst() {
-        int x = mAim.getX();
-        int y = mAim.getY();
+    public Rect getAimRectDst(Vector2 aim) {
+        int x = aim.getX();
+        int y = aim.getY();
         int left = x * mCellSizePx + mBoardRect.left;
         int top = y * mCellSizePx + mBoardRect.top;
         mLockDstRect.left = left;
@@ -81,18 +80,6 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     public Rect getBoardRect() {
         return mBoardRect;
-    }
-
-    public boolean hasAim() {
-        return mAim != null;
-    }
-
-    public void setAim(Vector2 aim) {
-        mAim = aim;
-    }
-
-    public void removeAim() {
-        mAim = null;
     }
 
     public void onTouch(TouchState touchState) {

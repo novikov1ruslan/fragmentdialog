@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.graphics.Rect;
 
-import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.junit.Before;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace;
 import static org.junit.Assert.assertThat;
 
@@ -44,7 +44,11 @@ public class EnemyBoardPresenterTest {
 
     @Test
     public void testGetAimRectDst() throws Exception {
+        mAim = Vector2.get(5, 5);
+        Rect aimRectDst = mPresenter.getAimRectDst();
 
+        Rect expected = new Rect();
+        assertThat(aimRectDst, equalTo(expected));
     }
 
     @Test

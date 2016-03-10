@@ -23,6 +23,7 @@ public class EnemyBoardView extends BaseBoardView {
     private final Paint mAimingLockedPaint;
     private final TouchState mTouchState = new TouchState();
     private PokeResult mLastShotResult;
+    private Vector2 mAim;
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -68,8 +69,8 @@ public class EnemyBoardView extends BaseBoardView {
         getRenderer().drawNautical(canvas);
         super.onDraw(canvas);
 
-        if (getPresenter().hasAim()) {
-            getRenderer().drawAim(canvas, getPresenter().getAimRectDst());
+        if (mAim != null) {
+            getRenderer().drawAim(canvas, getPresenter().getAimRectDst(mAim));
         }
 
         if (getPresenter().startedDragging()) {
@@ -103,12 +104,13 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void setAim(Vector2 aim) {
-        getPresenter().setAim(aim);
+        mAim = aim;
         invalidate();
     }
 
     public void removeAim() {
-        getPresenter().removeAim();
+        mAim = null;
+        invalidate();
     }
 
     public boolean isLocked() {
