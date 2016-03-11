@@ -12,6 +12,24 @@ public class BoardG {
     public Rect frame;
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BoardG boardG = (BoardG) o;
+
+        if (!Arrays.deepEquals(lines, boardG.lines)) return false;
+        return frame != null ? frame.equals(boardG.frame) : boardG.frame == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.deepHashCode(lines);
+        result = 31 * result + (frame != null ? frame.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "BoardG{" +
                 "lines=" + Arrays.deepToString(lines) +
