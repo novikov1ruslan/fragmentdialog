@@ -20,7 +20,7 @@ public class BasePresenter {
 
     protected int mCellSizePx;
     protected int mHalfCellSize;
-    protected final Rect mBoardRect = new Rect();
+    protected Rect mBoardRect = new Rect();
 
     private final Rect hRect = new Rect();
     private final Rect vRect = new Rect();
@@ -33,18 +33,34 @@ public class BasePresenter {
         mTurnBorderSize = turnBorderSize;
     }
 
-    public void measure(int w, int h, int horOffset, int verOffset, int hPadding, int vPadding) {
+    public void measure(int w, int h, int hPadding, int vPadding) {
 
         int smallestWidth = calcSmallestWidth(w, h, hPadding, vPadding);
         mCellSizePx = smallestWidth / mBoardSize;
         int boardSizePx = mCellSizePx * mBoardSize;
 
-        calculateBoardRect(w, h, horOffset, verOffset, boardSizePx);
+        mBoardRect = calculateBoardRect(w, h, boardSizePx);
 
         mHalfCellSize = mCellSizePx / 2;
         mMarkRadius = mHalfCellSize - mCellSizePx / 5;
 
-        calcFrameRect();
+        setBoardVerticalOffset(0);
+    }
+
+    public void setBoardVerticalOffset(int offset) {
+        mBoardRect.top += offset;
+        mBoardRect.bottom += offset;
+
+        calcFrameRect(mBoardRect);
+        calculateBoardG();
+    }
+
+    @Deprecated
+    public void setBoardHorizontalOffset(int offset) {
+        mBoardRect.left += offset;
+        mBoardRect.right += offset;
+
+        calcFrameRect(mBoardRect);
         calculateBoardG();
     }
 
@@ -55,21 +71,24 @@ public class BasePresenter {
         return paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
     }
 
-    private void calculateBoardRect(int w, int h, int horOffset, int verOffset, int boardSize) {
-        mBoardRect.left = (w - boardSize) / 2 + horOffset;
-        mBoardRect.top = (h - boardSize) / 2 + verOffset;
+    private Rect calculateBoardRect(int w, int h, int boardSize) {
+        mBoardRect.left = (w - boardSize) / 2;
+        mBoardRect.top = (h - boardSize) / 2;
         mBoardRect.right = mBoardRect.left + boardSize;
         mBoardRect.bottom = mBoardRect.top + boardSize;
+
+        return mBoardRect;
     }
 
     /**
      * Frame Rect is larger by border
      */
-    private void calcFrameRect() {
-        mTurnRect.left = (int) (mBoardRect.left - mTurnBorderSize / 2);
-        mTurnRect.right = (int) (mBoardRect.right + mTurnBorderSize / 2);
-        mTurnRect.top = (int) (mBoardRect.top - mTurnBorderSize / 2);
-        mTurnRect.bottom = (int) (mBoardRect.bottom + mTurnBorderSize / 2);
+    private void calcFrameRect(Rect boardRect) {
+        float halfBorderSize = mTurnBorderSize / 2;
+        mTurnRect.left = (int) (boardRect.left - halfBorderSize);
+        mTurnRect.right = (int) (boardRect.right + halfBorderSize);
+        mTurnRect.top = (int) (boardRect.top - halfBorderSize);
+        mTurnRect.bottom = (int) (boardRect.bottom + halfBorderSize);
     }
 
     private float[] getVertical(int i) {

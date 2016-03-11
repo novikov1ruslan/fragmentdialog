@@ -27,7 +27,9 @@ public class BasePresenterTest {
     @Before
     public void setup() {
         mPresenter = new BasePresenter(10, 2);
-        mPresenter.measure(320, 480, H_OFFSET, V_OFFSET, H_PADDING, V_PADDING);
+        mPresenter.measure(320, 480, H_PADDING, V_PADDING);
+        mPresenter.setBoardVerticalOffset(V_OFFSET);
+        mPresenter.setBoardHorizontalOffset(H_OFFSET);
     }
 
     @Test
@@ -109,7 +111,9 @@ public class BasePresenterTest {
 
     @Test
     public void getMarkForLandscape() {
-        mPresenter.measure(800, 480, H_OFFSET, V_OFFSET, H_PADDING, V_PADDING);
+        mPresenter.measure(800, 480, H_PADDING, V_PADDING);
+        mPresenter.setBoardVerticalOffset(V_OFFSET);
+        mPresenter.setBoardHorizontalOffset(H_OFFSET);
 
         Mark mark = mPresenter.getMark(0, 0);
         Mark expected = new Mark();

@@ -42,11 +42,13 @@ public class EnemyBoardPresenterTest {
         MockitoAnnotations.initMocks(this);
         mPresenter = new EnemyBoardPresenter(10, 2);
         mPresenter.setShotListener(shotListener);
-        mPresenter.measure(320, 480, H_OFFSET, V_OFFSET, H_PADDING, V_PADDING);
+        mPresenter.measure(320, 480, H_PADDING, V_PADDING);
+        mPresenter.setBoardVerticalOffset(V_OFFSET);
+        mPresenter.setBoardHorizontalOffset(H_OFFSET);
     }
 
     @Test
-    public void testGetAnimationDestination() throws Exception {
+    public void testGetAnimationDestination() {
         Rect animationDestination = mPresenter.getAnimationDestination(Vector2.get(5, 6), CELL_RATIO);
         Rect expected = new Rect(155, 276, 215, 336);
         assertThat(animationDestination, equalTo(expected));

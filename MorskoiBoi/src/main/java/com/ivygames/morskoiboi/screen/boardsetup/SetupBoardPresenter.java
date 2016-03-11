@@ -24,7 +24,7 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @Override
-    public void measure(int w, int h, int horOffset, int verOffset, int hPadding, int vPadding) {
+    public void measure(int w, int h, int hPadding, int vPadding) {
         // calculate mShipSelectionRect (it starts from left=0, top=0)
         mShipSelectionRect.right = w / 2;
         mShipSelectionRect.bottom = h / 4;
@@ -34,8 +34,11 @@ final class SetupBoardPresenter extends BasePresenter {
         mShipDisplayRect.right = w;
         mShipDisplayRect.bottom = mShipSelectionRect.bottom;
 
+        shipDisplayCenter.set(mShipDisplayRect.centerX(), mShipDisplayRect.centerY());
+
         h = h - mShipSelectionRect.height();
-        super.measure(w, h, 0, mShipDisplayRect.height(), hPadding, vPadding);
+        super.measure(w, h, hPadding, vPadding);
+        setBoardVerticalOffset(mShipDisplayRect.height());
     }
 
     private int getShipWidthInPx(int shipSize) {
@@ -54,7 +57,6 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     public Point getShipDisplayAreaCenter() {
-        shipDisplayCenter.set(mShipDisplayRect.centerX(), mShipDisplayRect.centerY());
         return shipDisplayCenter;
     }
 

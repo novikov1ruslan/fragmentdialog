@@ -26,10 +26,22 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     @Override
-    public void measure(int w, int h, int horOffset, int verOffset, int hPadding, int vPadding) {
-        super.measure(w, h, horOffset, verOffset, hPadding, vPadding);
-        mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
+    public void measure(int w, int h, int hPadding, int vPadding) {
+        super.measure(w, h, hPadding, vPadding);
         mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
+        mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
+    }
+
+    @Override
+    public void setBoardVerticalOffset(int offset) {
+        super.setBoardVerticalOffset(offset);
+        mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
+    }
+
+    @Override
+    public void setBoardHorizontalOffset(int offset) {
+        super.setBoardHorizontalOffset(offset);
+        mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
     }
 
     public void setShotListener(ShotListener shotListener) {

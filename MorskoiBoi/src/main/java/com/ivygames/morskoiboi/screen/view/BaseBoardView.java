@@ -104,7 +104,7 @@ public abstract class BaseBoardView extends View {
 
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-        mPresenter.measure(w, h, 0, 0, getHorizontalPadding(), getVerticalPadding());
+        mPresenter.measure(w, h, getHorizontalPadding(), getVerticalPadding());
     }
 
     private DisplayMetrics getDisplayMetrics(WindowManager wm) {

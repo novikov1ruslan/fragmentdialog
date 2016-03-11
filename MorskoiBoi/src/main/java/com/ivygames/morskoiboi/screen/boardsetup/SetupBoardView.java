@@ -259,7 +259,7 @@ public class SetupBoardView extends BaseBoardView {
             return;
         }
 
-        mPresenter.measure(getMeasuredWidth(), getMeasuredHeight(), 0, 0, getHorizontalPadding(), getVerticalPadding());
+        mPresenter.measure(getMeasuredWidth(), getMeasuredHeight(), getHorizontalPadding(), getVerticalPadding());
     }
 
     public void setFleet(PriorityQueue<Ship> ships) {
