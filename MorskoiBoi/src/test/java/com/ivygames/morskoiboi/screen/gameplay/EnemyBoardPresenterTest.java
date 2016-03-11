@@ -46,11 +46,6 @@ public class EnemyBoardPresenterTest {
     }
 
     @Test
-    public void testSetShotListener() throws Exception {
-
-    }
-
-    @Test
     public void testGetAnimationDestination() throws Exception {
         Rect animationDestination = mPresenter.getAnimationDestination(Vector2.get(5, 6), CELL_RATIO);
         Rect expected = new Rect(155, 276, 215, 336);

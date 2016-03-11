@@ -23,7 +23,8 @@ final class SetupBoardPresenter extends BasePresenter {
         super(boardSize, dimension);
     }
 
-    public void measure(int w, int h, int hPadding, int vPadding) {
+    @Override
+    public void measure(int w, int h, int horOffset, int verOffset, int hPadding, int vPadding) {
         // calculate mShipSelectionRect (it starts from left=0, top=0)
         mShipSelectionRect.right = w / 2;
         mShipSelectionRect.bottom = h / 4;

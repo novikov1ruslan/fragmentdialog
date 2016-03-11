@@ -11,8 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.text.IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -39,7 +39,7 @@ public class BasePresenterTest {
         Aiming aiming = mPresenter.getAiming(i, j, width, height);
 
         Aiming expected = new Aiming(new Rect(170, 105, 201, 415), new Rect(15, 260, 325, 291));
-        assertThat(aiming.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(aiming, equalTo(expected));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class BasePresenterTest {
         Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
 
         Aiming expected = new Aiming(new Rect(201, 105, 232, 415), new Rect(15, 291, 325, 415));
-        assertThat(aiming.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(aiming, equalTo(expected));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class BasePresenterTest {
         Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
 
         Aiming expected = new Aiming(new Rect(294, 105, 325, 415), new Rect(15, 384, 325, 415));
-        assertThat(aiming.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(aiming, equalTo(expected));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class BasePresenterTest {
         Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
 
         Aiming expected = new Aiming(new Rect(294, 105, 325, 415), new Rect(15, 384, 325, 415));
-        assertThat(aiming.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(aiming, equalTo(expected));
     }
 
     @Test(expected=IllegalStateException.class)
@@ -104,7 +104,7 @@ public class BasePresenterTest {
         expected.centerY = 120;
         expected.outerRadius = 9.0f;
         expected.innerRadius = 4.0f;
-        assertThat(mark.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(mark, equalTo(expected));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class BasePresenterTest {
         expected.outerRadius = 14.0f;
         expected.innerRadius = 7.0f;
 
-        assertThat(mark.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(mark, equalTo(expected));
     }
 
     @Test
@@ -151,28 +151,28 @@ public class BasePresenterTest {
         System.arraycopy( lines, 0, expected.lines, 0, lines.length );
         expected.frame=new Rect(14, 104, 326, 416);
 
-        assertThat(board.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(board, equalTo(expected));
     }
 
     @Test
     public void getRectForShipHorizontal() {
         Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.HORIZONTAL));
         Rect expected = new Rect(15, 105, 139, 136);
-        assertThat(rect.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(rect, equalTo(expected));
     }
 
     @Test
     public void getRectForShipVertical() {
         Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.VERTICAL));
         Rect expected = new Rect(15, 105, 46, 229);
-        assertThat(rect.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(rect, equalTo(expected));
     }
 
     @Test
     public void getRectForShip2() {
         Rect rect = mPresenter.getRectForShip(new Ship(4), new Point(100, 100));
         Rect expected = new Rect(100, 100, 224, 131);
-        assertThat(rect.toString(), equalToIgnoringWhiteSpace(expected.toString()));
+        assertThat(rect, equalTo(expected));
     }
 
     @Test
