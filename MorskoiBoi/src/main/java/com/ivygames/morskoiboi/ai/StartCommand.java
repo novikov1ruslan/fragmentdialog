@@ -36,7 +36,7 @@ class StartCommand implements Runnable {
         if (isOpponentTurn()) {
             mOpponent.go();
         } else {
-            mOpponent.bid(mMyBid);
+            mOpponent.onEnemyBid(mMyBid);
         }
         Ln.v("end");
     }

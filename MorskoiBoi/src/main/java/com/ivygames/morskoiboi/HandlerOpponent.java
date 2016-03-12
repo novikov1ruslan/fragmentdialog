@@ -81,7 +81,7 @@ public class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void bid(final int bid) {
+    public void onEnemyBid(final int bid) {
         mHandler.post(new Runnable() {
 
             @Override
@@ -90,7 +90,7 @@ public class HandlerOpponent implements Opponent {
                     Ln.w("already stopped");
                     return;
                 }
-                mOpponent.bid(bid);
+                mOpponent.onEnemyBid(bid);
             }
         });
     }

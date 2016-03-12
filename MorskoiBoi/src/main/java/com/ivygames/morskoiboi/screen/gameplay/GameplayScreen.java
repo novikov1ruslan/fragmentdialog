@@ -683,10 +683,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void bid(final int bid) {
+        public void onEnemyBid(final int bid) {
             Ln.d("opponent's bid received: " + bid);
             hideOpponentSettingBoardNotification();
-            mPlayer.bid(bid);
+            mPlayer.onEnemyBid(bid);
             if (mPlayer.isOpponentTurn()) {
                 showOpponentTurn();
                 startDetectingTurnTimeout();

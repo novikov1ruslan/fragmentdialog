@@ -108,7 +108,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void bid(int bid) {
+    public void onEnemyBid(int bid) {
         mEnemyBid = bid;
         mOpponentReady = true;
         Ln.d(this + ": opponent is ready");
@@ -130,7 +130,7 @@ public final class PlayerOpponent extends AbstractOpponent {
             mOpponent.go();
         } else {
             Ln.d(this + ": opponent is not ready - sending him my bid");
-            mOpponent.bid(mMyBid);
+            mOpponent.onEnemyBid(mMyBid);
         }
     }
 

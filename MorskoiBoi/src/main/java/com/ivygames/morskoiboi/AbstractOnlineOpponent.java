@@ -29,7 +29,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
                 Ln.d("opponent name: [" + mName + "]");
                 break;
             case BID:
-                mOpponent.bid(Integer.parseInt(body));
+                mOpponent.onEnemyBid(Integer.parseInt(body));
                 break;
             case GO:
                 mOpponent.go();
@@ -72,7 +72,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     }
 
     @Override
-    public void bid(int bid) {
+    public void onEnemyBid(int bid) {
         // player is ready
         sendRtm(String.valueOf(BID) + bid);
     }

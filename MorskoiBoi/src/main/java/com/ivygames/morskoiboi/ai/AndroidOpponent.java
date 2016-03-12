@@ -100,7 +100,7 @@ public class AndroidOpponent extends AbstractOpponent {
     }
 
     @Override
-    public synchronized void bid(int bid) {
+    public synchronized void onEnemyBid(int bid) {
         Ln.v(this + ": enemy bid=" + bid);
         mEnemyBid = bid;
         join();

@@ -21,7 +21,7 @@ public interface Opponent {
     // TODO: remove it from the interface
     void setOpponent(Opponent opponent);
 
-    void bid(int bid);
+    void onEnemyBid(int bid);
 
     String getName();
 
