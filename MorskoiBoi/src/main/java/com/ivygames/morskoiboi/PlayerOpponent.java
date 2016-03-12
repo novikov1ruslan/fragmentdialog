@@ -139,7 +139,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void opponentLost(Board board) {
         Ln.e("never happens");
         ACRA.getErrorReporter().handleException(new RuntimeException("never happens"));
     }

@@ -41,7 +41,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
                 mOpponent.onShotResult(PokeResult.fromJson(body));
                 break;
             case WIN:
-                mOpponent.onLost(Board.fromJson(body));
+                mOpponent.opponentLost(Board.fromJson(body));
                 break;
             case VERSION:
                 mOpponent.setOpponentVersion(Integer.parseInt(body));
@@ -83,7 +83,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void opponentLost(Board board) {
         sendRtm(WIN + board.toJson().toString());
     }
 
