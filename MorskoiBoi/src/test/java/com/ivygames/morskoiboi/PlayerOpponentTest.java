@@ -230,7 +230,7 @@ public class PlayerOpponentTest {
     @Test
     public void testOpponentLost() throws Exception {
         Board board = null;
-        mPlayer.opponentLost(board);
+        mPlayer.onLost(board);
     }
 
     @Test

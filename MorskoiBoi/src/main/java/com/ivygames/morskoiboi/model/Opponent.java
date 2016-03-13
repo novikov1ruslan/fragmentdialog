@@ -25,7 +25,7 @@ public interface Opponent {
 
     String getName();
 
-    void opponentLost(Board board);
+    void onLost(Board board);
 
     void setOpponentVersion(int ver);
 

@@ -101,7 +101,7 @@ public class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void opponentLost(final Board board) {
+    public void onLost(final Board board) {
         mHandler.post(new Runnable() {
 
             @Override
@@ -110,7 +110,7 @@ public class HandlerOpponent implements Opponent {
                     Ln.w("already stopped");
                     return;
                 }
-                mOpponent.opponentLost(board);
+                mOpponent.onLost(board);
             }
         });
     }

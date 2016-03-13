@@ -77,7 +77,7 @@ public class AndroidOpponent extends AbstractOpponent {
         } else if (result.ship != null) {
             if (RulesFactory.getRules().isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I lost - notifying " + mOpponent);
-                mOpponent.opponentLost(mMyBoard);
+                mOpponent.onLost(mMyBoard);
                 reset(new Random());
             }
         }
@@ -119,7 +119,7 @@ public class AndroidOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void opponentLost(Board board) {
+    public void onLost(Board board) {
         Ln.d("android lost - preparing for the next round");
         join();
         reset(new Random());

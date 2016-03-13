@@ -618,7 +618,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     disableBackPress();
 
                     mGame.setTimeSpent(mLayout.getUnlockedTime());
-                    mEnemy.opponentLost(mPlayerPrivateBoard);
+                    mEnemy.onLost(mPlayerPrivateBoard);
                     resetPlayer();
 
                     mLayout.win();
@@ -699,7 +699,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void opponentLost(Board board) {
+        public void onLost(Board board) {
             if (!mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                 Ln.v("player private board: " + mPlayerPrivateBoard);
                 ACRA.getErrorReporter().handleException(new RuntimeException("lost while not defeated"));
