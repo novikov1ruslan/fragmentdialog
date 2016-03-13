@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.text.TextUtils;
 
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -11,6 +12,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
+
+import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 
@@ -23,19 +26,20 @@ public final class PlayerOpponent extends AbstractOpponent {
     private final String mName;
     private int mOpponentVersion;
 
-    public PlayerOpponent(String name) {
+    public PlayerOpponent(String name, PlacementAlgorithm placementAlgorithm) {
+        super(placementAlgorithm);
         if (TextUtils.isEmpty(name)) {
             name = BattleshipApplication.get().getString(R.string.player);
             Ln.i("player name is empty - replaced by " + name);
         }
         mName = name;
-        reset();
+        reset(new Random());
         Ln.v("new player created");
     }
 
     @Override
-    public void reset() {
-        super.reset();
+    public void reset(Random random) {
+        super.reset(random);
         mOpponentReady = false;
         mPlayerReady = false;
         mOpponentVersion = 0;
@@ -66,7 +70,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     }
 
     public PokeResult onShotAtForResult(Vector2 aim) {
-        PokeResult result = createResultFor(aim);
+        PokeResult result = createResultForShootingAt(aim);
         Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
         mOpponent.onShotResult(result);
 
@@ -114,7 +118,7 @@ public final class PlayerOpponent extends AbstractOpponent {
         Ln.d(this + ": opponent is ready");
 
         if (mPlayerReady && isOpponentTurn()) {
-            Ln.d(this + ": I'm ready too, but its opponent's turn - " + mOpponent + " begins");
+            Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
             mOpponent.go();
         }
     }
@@ -125,7 +129,8 @@ public final class PlayerOpponent extends AbstractOpponent {
     }
 
     public void startBidding() {
-        if (isOpponentReady() && isOpponentTurn()) {
+        mPlayerReady = true;
+        if (mOpponentReady && isOpponentTurn()) {
             Ln.d(this + ": opponent is ready and it is his turn");
             mOpponent.go();
         } else {
@@ -148,10 +153,6 @@ public final class PlayerOpponent extends AbstractOpponent {
     public void setOpponentVersion(int ver) {
         mOpponentVersion = ver;
         Ln.d(this + ": opponent's protocol version: v" + ver);
-    }
-
-    public void setReady() {
-        mPlayerReady = true;
     }
 
     public int getOpponentVersion() {

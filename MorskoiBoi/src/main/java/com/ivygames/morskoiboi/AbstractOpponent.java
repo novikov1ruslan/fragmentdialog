@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -23,11 +24,16 @@ public abstract class AbstractOpponent implements Opponent {
 
     protected volatile int mEnemyBid = IMPOSSIBLE_BID;
 
-    protected void reset() {
+    protected AbstractOpponent(PlacementAlgorithm algorithm) {
+
+    }
+
+    protected void reset(Random random) {
         Ln.d(this + ": initializing boards and bids");
         mMyBoard = new Board();
         mEnemyBoard = new Board();
-        mMyBid = new Random(System.currentTimeMillis() + hashCode()).nextInt(Integer.MAX_VALUE);
+        random.setSeed(System.currentTimeMillis() + hashCode());
+        mMyBid = random.nextInt(Integer.MAX_VALUE);
         mEnemyBid = IMPOSSIBLE_BID;
     }
 
@@ -40,7 +46,7 @@ public abstract class AbstractOpponent implements Opponent {
     /**
      * marks the aimed cell
      */
-    protected final PokeResult createResultFor(Vector2 aim) {
+    protected final PokeResult createResultForShootingAt(Vector2 aim) {
         // ship if found will be shot and returned
         Ship ship = mMyBoard.getFirstShipAt(aim);
 
@@ -53,12 +59,12 @@ public abstract class AbstractOpponent implements Opponent {
             cell.setHit();
             ship.shoot();
 
-            if (!ship.isDead()) {
-                ship = null;
+            if (ship.isDead()) {
+                return new PokeResult(aim, cell, ship);
             }
         }
 
-        return new PokeResult(aim, cell, ship);
+        return new PokeResult(aim, cell);
     }
 
     protected final void updateEnemyBoard(PokeResult result) {

@@ -51,6 +51,7 @@ import org.commons.logger.Ln;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -267,7 +268,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         Ln.d("screen is fully created - exchange protocol versions and start bidding");
         mEnemy.setOpponentVersion(Opponent.CURRENT_VERSION);
-        mPlayer.setReady();
         mPlayer.startBidding();
 
         Ln.d(this + " screen created");
@@ -714,7 +714,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         private void resetPlayer() {
             Ln.d("match is over - blocking the player for further messages until start of the next round");
-            mPlayer.reset();
+            mPlayer.reset(new Random());
             // need to de-associate UI from the enemy opponent
             mEnemy.setOpponent(mPlayer);
         }

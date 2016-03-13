@@ -5,6 +5,7 @@ package com.ivygames.morskoiboi.model;
  * R->H
  *
  */
+// TODO: make Cell immutable
 public class Cell {
 
     private final static char EMPTY = ' ';
@@ -16,19 +17,19 @@ public class Cell {
     private char mState;
     private int mProximity;
 
-    private static Cell newEmpty() {
+    public static Cell newEmpty() {
         return new Cell(EMPTY);
     }
 
-    private static Cell newReserved() {
+    public static Cell newReserved() {
         return new Cell(RESERVED);
     }
 
-    private static Cell newMiss() {
+    public static Cell newMiss() {
         return new Cell(MISS);
     }
 
-    private static Cell newHit() {
+    public static Cell newHit() {
         return new Cell(HIT);
     }
 

@@ -20,16 +20,17 @@ public class AndroidOpponent extends AbstractOpponent {
     private final String mName;
     private Thread mThread;
 
-    public AndroidOpponent(String name) {
+    public AndroidOpponent(String name, PlacementAlgorithm placementAlgorithm) {
+        super(placementAlgorithm);
         Validate.notNull(name);
         mName = name;
-        reset();
+        reset(new Random());
         Ln.v("new android opponent created");
     }
 
     @Override
-    protected void reset() {
-        super.reset();
+    protected void reset(Random random) {
+        super.reset(random);
         mMyBoard = PlacementFactory.getAlgorithm().generateBoard();
         mAlgorithm = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
@@ -58,7 +59,7 @@ public class AndroidOpponent extends AbstractOpponent {
 
     @Override
     public synchronized void onShotAt(Vector2 aim) {
-        PokeResult result = createResultFor(aim);
+        PokeResult result = createResultForShootingAt(aim);
         join();
         mThread = new Thread(new PassShotResultToOpponentCommand(mOpponent, result, mMyBoard), "bot");
         mThread.start();
@@ -77,7 +78,7 @@ public class AndroidOpponent extends AbstractOpponent {
             if (RulesFactory.getRules().isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I lost - notifying " + mOpponent);
                 mOpponent.opponentLost(mMyBoard);
-                reset();
+                reset(new Random());
             }
         }
     }
@@ -121,7 +122,7 @@ public class AndroidOpponent extends AbstractOpponent {
     public void opponentLost(Board board) {
         Ln.d("android lost - preparing for the next round");
         join();
-        reset();
+        reset(new Random());
     }
 
     @Override

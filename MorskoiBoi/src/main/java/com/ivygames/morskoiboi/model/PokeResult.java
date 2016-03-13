@@ -1,5 +1,9 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.Nullable;
+
+import com.ivygames.morskoiboi.utils.GameUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,9 +58,16 @@ public class PokeResult {
         return jsonObject;
     }
 
-    public PokeResult(Vector2 aim, Cell cell, Ship ship) {
+    // TODO: ship can have different coordinates than aim - this is a bug
+    public PokeResult(Vector2 aim, Cell cell, @Nullable Ship ship) {
         this.cell = cell;
         this.ship = ship;
+        this.aim = aim;
+    }
+
+    public PokeResult(Vector2 aim, Cell cell) {
+        this.cell = cell;
+        this.ship = null;
         this.aim = aim;
     }
 

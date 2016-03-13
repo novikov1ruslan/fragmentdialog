@@ -13,6 +13,8 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
@@ -155,7 +157,9 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         Ln.d(TAG + ": connected - creating opponent and showing board setup");
         BluetoothOpponent opponent = new BluetoothOpponent(connection);
         connection.setMessageReceiver(opponent);
-        Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), opponent);
+        String playerName = GameSettings.get().getPlayerName();
+        PlacementAlgorithm placementAlgorithm = PlacementFactory.getAlgorithm();
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placementAlgorithm), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
         setScreen(new BoardSetupScreen(getParent()));

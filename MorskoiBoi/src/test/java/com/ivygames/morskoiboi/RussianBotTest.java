@@ -50,7 +50,7 @@ public class RussianBotTest {
     private void missAt(Board board, int x, int y) {
         Cell cell = newMissCell();
         Vector2 aim = Vector2.get(x, y);
-        mBot.setLastResult(new PokeResult(aim, cell, null));
+        mBot.setLastResult(new PokeResult(aim, cell));
         board.setCell(cell, aim);
     }
 
@@ -155,7 +155,7 @@ public class RussianBotTest {
     private void hitAt(Board board, int x, int y) {
         Cell cell = newHitCell();
         Vector2 aim = Vector2.get(x, y);
-        mBot.setLastResult(new PokeResult(aim, cell, null));
+        mBot.setLastResult(new PokeResult(aim, cell));
         board.setCell(cell, aim);
     }
 

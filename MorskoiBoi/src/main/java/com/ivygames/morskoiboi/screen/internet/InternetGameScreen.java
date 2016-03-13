@@ -16,6 +16,8 @@ import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
@@ -146,7 +148,9 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         mInternetGame = new InternetGame(mApiClient, this);
         InternetOpponent mOpponent = new InternetOpponent(mInternetGame);
         mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
-        Model.instance.setOpponents(new PlayerOpponent(GameSettings.get().getPlayerName()), mOpponent);
+        String playerName = GameSettings.get().getPlayerName();
+        PlacementAlgorithm placementAlgorithm = PlacementFactory.getAlgorithm();
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placementAlgorithm), mOpponent);
     }
 
     @Override

@@ -19,7 +19,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-//@RunWith(RobolectricTestRunner.class)
 public class BoardTest extends TestCase {
 
 	private Board mBoard;
@@ -108,7 +107,7 @@ public class BoardTest extends TestCase {
 		assertTrue(Board.allAvailableShipsAreDestroyed(mBoard));
 	}
 
-	private static void assertSigleShip(Board board, Ship ship) {
+	private static void assertSingleShip(Board board, Ship ship) {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				Collection<Ship> ships = board.getShipsAt(i, j);
@@ -128,10 +127,10 @@ public class BoardTest extends TestCase {
 
 		Ship ship = new Ship(3);
 		putShipAt(ship, 5, 5);
-		assertSigleShip(mBoard, ship);
+		assertSingleShip(mBoard, ship);
 
 		mBoard.getCell(5, 5).setHit();
-		assertSigleShip(mBoard, ship);
+		assertSingleShip(mBoard, ship);
 		
 //		mBoard.getCell(6, 5).setSunk();
 //		assertSigleShip(mBoard, ship);
