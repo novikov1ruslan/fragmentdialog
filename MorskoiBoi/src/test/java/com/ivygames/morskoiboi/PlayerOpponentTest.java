@@ -89,15 +89,6 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void when_players_bid_higher__enemy_does_not_go() {
-        when(mRandom.nextInt(anyInt())).thenReturn(2);
-        mPlayer.reset(mRandom);
-        mPlayer.startBidding();
-        mPlayer.onEnemyBid(1);
-        verify(mEnemy, never()).go();
-    }
-
-    @Test
     public void if_player_can_go__enemy_is_ready() {
         mPlayer.go();
         assertThat(mPlayer.isOpponentReady(), is(true));
@@ -186,13 +177,30 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void when_enemy_bids__enemy_is_ready() {
+    public void after_enemy_bids__enemy_is_ready() {
         mPlayer.onEnemyBid(1);
         assertThat(mPlayer.isOpponentReady(), is(true));
     }
 
     @Test
-    public void when_players_bid_lower__enemy_goes() {
+    public void player_bids_second_and_lower__enemy_goes() {
+        setMyBidTo(0);
+        mPlayer.onEnemyBid(1);
+        mPlayer.startBidding();
+        verify(mEnemy, times(1)).go();
+    }
+
+    @Test
+    public void player_bids_second_and_higher__enemy_gets_player_bid() {
+        int myBid = 2;
+        setMyBidTo(myBid);
+        mPlayer.onEnemyBid(1);
+        mPlayer.startBidding();
+        verify(mEnemy, times(1)).onEnemyBid(myBid);
+    }
+
+    @Test
+    public void enemy_bids_second_and_higher__enemy_goes() {
         setMyBidTo(0);
         mPlayer.startBidding();
         mPlayer.onEnemyBid(1);
@@ -200,52 +208,17 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void testOnNewMessage() {
-//        mPlayer.onNewMessage("test");
-        // TODO: non testable at the moment
-    }
-
-    @Test
-    public void when_player_starts_bidding__enemy_gets_my_bid() {
-        setMyBidTo(0);
+    public void enemy_bids_second_and_lower__enemy_does_not_go() {
+        setMyBidTo(2);
         mPlayer.startBidding();
-        verify(mEnemy, times(1)).onEnemyBid(0);
-    }
-
-    @Test
-    public void when_ready_player_starts_bidding__enemy_gets_my_bid() {
-        setMyBidTo(0);
-        mPlayer.startBidding();
-        verify(mEnemy, times(1)).onEnemyBid(0);
-    }
-
-    @Test
-    public void when_ready_player_starts_bidding_and_it_is_enemys_turn__enemy_goes() {
-        setMyBidTo(1);
-        mPlayer.startBidding();
-        mPlayer.onEnemyBid(2);
-        verify(mEnemy, times(1)).go();
-    }
-
-    @Test
-    public void testOpponentLost() throws Exception {
-        Board board = null;
-        mPlayer.onLost(board);
+        mPlayer.onEnemyBid(1);
+        verify(mEnemy, never()).go();
     }
 
     @Test
     public void testSetOpponentVersion() throws Exception {
-
-    }
-
-    @Test
-    public void testSetReady() throws Exception {
-
-    }
-
-    @Test
-    public void testGetOpponentVersion() throws Exception {
-
+        mPlayer.setOpponentVersion(2);
+        assertThat(mPlayer.getOpponentVersion(), is(2));
     }
 
     private Cell enemyCellAt(Vector2 aim) {
