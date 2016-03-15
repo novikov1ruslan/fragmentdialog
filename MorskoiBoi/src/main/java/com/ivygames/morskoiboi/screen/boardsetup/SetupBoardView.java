@@ -167,7 +167,7 @@ public class SetupBoardView extends BaseBoardView {
                         Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
                 } else if (mBoard.containsCell(i, j)) {
-                    mPickShipTask = createNewPickTask(event);
+                    mPickShipTask = createNewPickTask(event, i, j);
                     Ln.v("scheduling long press task: " + mPickShipTask);
                     mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
                 }
@@ -223,12 +223,10 @@ public class SetupBoardView extends BaseBoardView {
         return false;
     }
 
-    private PickShipTask createNewPickTask(final MotionEvent event) {
+    private PickShipTask createNewPickTask(final MotionEvent event, final int i, final int j) {
         return new PickShipTask(event, new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                int i = getPresenter().getTouchI((int) event.getX());
-                int j = getPresenter().getTouchJ((int) event.getY());
                 mPickShipTask = null;
                 mPickedShip = mBoard.removeShipFrom(i, j);
                 if (mPickedShip != null) {
