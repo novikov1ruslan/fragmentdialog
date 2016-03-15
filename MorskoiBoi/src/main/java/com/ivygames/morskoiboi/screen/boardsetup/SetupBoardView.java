@@ -144,10 +144,8 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void processMotionEvent(MotionEvent event) {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        int i = getPresenter().getTouchI(x);
-        int j = getPresenter().getTouchJ(y);
+        int i = getTouchI(event);
+        int j = getTouchJ(event);
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 if (mPickShipTask != null && mPickShipTask.hasMovedBeyondSlope(event, mTouchSlop)) {
@@ -167,7 +165,7 @@ public class SetupBoardView extends BaseBoardView {
                         Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
                 } else if (mBoard.containsCell(i, j)) {
-                    mPickShipTask = createNewPickTask(event, i, j);
+                    mPickShipTask = createNewPickTask(event);
                     Ln.v("scheduling long press task: " + mPickShipTask);
                     mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
                 }
@@ -185,6 +183,14 @@ public class SetupBoardView extends BaseBoardView {
                 cancelLongPressTask();
                 break;
         }
+    }
+
+    private int getTouchJ(MotionEvent event) {
+        return getPresenter().getTouchJ((int) event.getY());
+    }
+
+    private int getTouchI(MotionEvent event) {
+        return getPresenter().getTouchI((int) event.getX());
     }
 
     private void cancelLongPressTask() {
@@ -223,7 +229,9 @@ public class SetupBoardView extends BaseBoardView {
         return false;
     }
 
-    private PickShipTask createNewPickTask(final MotionEvent event, final int i, final int j) {
+    private PickShipTask createNewPickTask(final MotionEvent event) {
+        final int i = getTouchI(event);
+        final int j = getTouchJ(event);
         return new PickShipTask(event, new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
