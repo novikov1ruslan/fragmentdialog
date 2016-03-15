@@ -17,8 +17,8 @@ final class SetupBoardPresenter extends BasePresenter {
     private final Point shipDisplayCenter = new Point();
     private final Rect mPickedShipRect = new Rect();
     private final RectF rectF = new RectF();
-    private int mTouchX;
-    private int mTouchY;
+//    private int mTouchX;
+//    private int mTouchY;
 
     public SetupBoardPresenter(int boardSize, float dimension) {
         super(boardSize, dimension);
@@ -90,31 +90,26 @@ final class SetupBoardPresenter extends BasePresenter {
         return getAiming(mAim, width, height);
     }
 
-    public Vector2 pickNewShip(@NonNull Ship ship) {
-        return pickNewShip(ship, mTouchX, mTouchY);
+    public Vector2 getAimForShip(@NonNull Ship ship, MotionEvent event) {
+        return getAimForShip(ship, (int) event.getX(), (int) event.getY());
     }
 
 
-    private Vector2 pickNewShip(@NonNull Ship ship, int x, int y) {
+    private Vector2 getAimForShip(@NonNull Ship ship, int x, int y) {
         centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate();
     }
 
-    public void touch(MotionEvent event) {
-        mTouchX = (int) event.getX();
-        mTouchY = (int) event.getY();
+    public int getTouchJ(int y) {
+        return (y - mBoardRect.top) / mCellSizePx;
     }
 
-    public int getTouchJ() {
-        return (mTouchY - mBoardRect.top) / mCellSizePx;
+    public int getTouchI(int x) {
+        return (x - mBoardRect.left) / mCellSizePx;
     }
 
-    public int getTouchI() {
-        return (mTouchX - mBoardRect.left) / mCellSizePx;
-    }
-
-    public boolean isInShipSelectionArea() {
-        return isInShipSelectionArea(mTouchX, mTouchY);
+    public boolean isInShipSelectionArea(MotionEvent event) {
+        return isInShipSelectionArea((int) event.getX(), (int) event.getY());
     }
 
     public final RectF getInvalidRect(int i, int j) {
