@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.graphics.Point;
+import android.graphics.Rect;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -49,7 +50,9 @@ public class SetupBoardPresenterTest {
 
     @Test
     public void testGetPickedShipRect() throws Exception {
-
+//        mPresenter.pickNewShip()
+        Rect shipRect = mPresenter.getPickedShipRect();
+        Assert.assertThat(shipRect, equalTo(new Rect()));
     }
 
     @Test

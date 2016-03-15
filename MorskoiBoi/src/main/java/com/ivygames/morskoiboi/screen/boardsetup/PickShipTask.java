@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
+import android.view.MotionEvent;
 import android.view.View;
 
 public class PickShipTask implements Runnable {
@@ -8,9 +9,9 @@ public class PickShipTask implements Runnable {
     private final int mTouchY;
     private View.OnLongClickListener mListener;
 
-    public PickShipTask(int touchX, int touchY, View.OnLongClickListener listener) {
-        mTouchX = touchX;
-        mTouchY = touchY;
+    public PickShipTask(MotionEvent event, View.OnLongClickListener listener) {
+        mTouchX = (int) event.getX();
+        mTouchY = (int) event.getY();
         mListener = listener;
     }
 
@@ -19,9 +20,9 @@ public class PickShipTask implements Runnable {
         mListener.onLongClick(null);
     }
 
-    public boolean hasMovedBeyondSlope(int x, int y, int slop) {
-        int dX = mTouchX - x;
-        int dY = mTouchY - y;
+    public boolean hasMovedBeyondSlope(MotionEvent event, int slop) {
+        int dX = mTouchX - (int) event.getX();
+        int dY = mTouchY - (int) event.getY();
         return Math.sqrt(dX * dX + dY * dY) > slop;
     }
 

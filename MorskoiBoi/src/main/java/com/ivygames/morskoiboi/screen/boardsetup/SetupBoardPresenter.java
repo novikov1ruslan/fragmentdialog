@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -60,7 +61,7 @@ final class SetupBoardPresenter extends BasePresenter {
         return shipDisplayCenter;
     }
 
-    private Vector2 getAim() {
+    private Vector2 getPickedShipCoordinate() {
         int shipInBoardCoordinatesX = mPickedShipRect.left - mBoardRect.left + mHalfCellSize;
         int shipInBoardCoordinatesY = mPickedShipRect.top - mBoardRect.top + mHalfCellSize;
         int i = shipInBoardCoordinatesX / mCellSizePx;
@@ -68,12 +69,12 @@ final class SetupBoardPresenter extends BasePresenter {
         return Vector2.get(i, j);
     }
 
-    private void centerPickedShipRectAround(int touchX, int touchY, Ship mPickedShip) {
-        int widthInPx = getShipWidthInPx(mPickedShip.getSize());
-        int halfWidthInPx = getShipWidthInPx(mPickedShip.getSize()) / 2;
-        boolean isHorizontal = mPickedShip.isHorizontal();
-        mPickedShipRect.left = touchX - (isHorizontal ? halfWidthInPx : mHalfCellSize);
-        mPickedShipRect.top = touchY - (isHorizontal ? mHalfCellSize : halfWidthInPx);
+    private void centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
+        int widthInPx = getShipWidthInPx(ship.getSize());
+        int halfWidthInPx = widthInPx / 2;
+        boolean isHorizontal = ship.isHorizontal();
+        mPickedShipRect.left = x - (isHorizontal ? halfWidthInPx : mHalfCellSize);
+        mPickedShipRect.top = y - (isHorizontal ? mHalfCellSize : halfWidthInPx);
         mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mCellSizePx);
         mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mCellSizePx : widthInPx);
     }
@@ -95,13 +96,13 @@ final class SetupBoardPresenter extends BasePresenter {
 
 
     private Vector2 pickNewShip(@NonNull Ship ship, int x, int y) {
-        centerPickedShipRectAround(x, y, ship);
-        return getAim();
+        centerPickedShipRectAround(ship, x, y);
+        return getPickedShipCoordinate();
     }
 
-    public void setTouch(int x, int y) {
-        mTouchX = x;
-        mTouchY = y;
+    public void touch(MotionEvent event) {
+        mTouchX = (int) event.getX();
+        mTouchY = (int) event.getY();
     }
 
     public int getTouchJ() {
