@@ -75,12 +75,11 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void drawConflictingCells(Canvas canvas) {
-        // paint invalid cells (ships that touch each other) and the ships themselves
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (mRules.isCellConflicting(cell)) {
-                    getRenderer().renderConflictingCell(canvas, getPresenter().getRectFor(i, j));
+                    getRenderer().renderConflictingCell(canvas, getPresenter().getRectForCell(i, j));
                 }
             }
         }
@@ -104,7 +103,7 @@ public class SetupBoardView extends BaseBoardView {
             canvas.drawRect(shipRect, mShipPaint);
         }
 
-        Aiming aiming = getPresenter().getAiming(mBoard);
+        Aiming aiming = getPresenter().getAiming();
         if (aiming != null) {
             mRenderer.render(canvas, aiming, mAimingPaint);
         }
@@ -133,9 +132,9 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (getPresenter().isInShipSelectionArea(event)) {
+                if (getPresenter().isInShipSelectionArea(x, y)) {
                     getPresenter().pickDockedShipUp(x, y);
-                } else if (getPresenter().isOnBoard(mBoard, x, y)) {
+                } else if (getPresenter().isOnBoard(x, y)) {
                     mPickShipTask = createNewPickTask(event);
                     Ln.v("scheduling long press task: " + mPickShipTask);
                     mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);

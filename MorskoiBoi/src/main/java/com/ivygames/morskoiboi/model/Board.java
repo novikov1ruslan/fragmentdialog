@@ -135,11 +135,11 @@ public class Board {
         return canPut;
     }
 
-    public boolean containsCell(Vector2 aim) {
+    public static boolean containsCell(Vector2 aim) {
         return containsCell(aim.getX(), aim.getY());
     }
 
-    public boolean containsCell(int i, int j) {
+    public static boolean containsCell(int i, int j) {
         return i < DIMENSION && i >= 0 && j < DIMENSION && j >= 0;
     }
 

@@ -192,15 +192,11 @@ public class BasePresenter {
         mShowTurn = false;
     }
 
-    public
-    @NonNull
-    Aiming getAiming(Vector2 aim, int widthCells, int heightCells) {
+    public final @NonNull Aiming getAiming(Vector2 aim, int widthCells, int heightCells) {
         return getAiming(aim.getX(), aim.getY(), widthCells, heightCells);
     }
 
-    public
-    @NonNull
-    Aiming getAiming(int i, int j, int widthCells, int heightCells) {
+    public final @NonNull Aiming getAiming(int i, int j, int widthCells, int heightCells) {
         Validate.isTrue(widthCells > 0 && heightCells > 0);
 
         mAiming.vertical = getVerticalRect(i, widthCells);
