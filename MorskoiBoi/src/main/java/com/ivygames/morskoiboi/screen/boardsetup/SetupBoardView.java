@@ -91,11 +91,9 @@ public class SetupBoardView extends BaseBoardView {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
-                if (cell.isReserved()) {
 
-                    if (mRules.isCellConflicting(cell)) {
-                        getRenderer().renderConflictingCell(canvas, getPresenter().getRectFor(i, j));
-                    }
+                if (mRules.isCellConflicting(cell)) {
+                    getRenderer().renderConflictingCell(canvas, getPresenter().getRectFor(i, j));
                 }
             }
         }

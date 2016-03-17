@@ -33,7 +33,7 @@ public class RussianRules extends AbstractRules {
 
     @Override
     public boolean isCellConflicting(Cell cell) {
-        return cell.getProximity() > Cell.RESERVED_PROXIMITY_VALUE;
+        return cell.isReserved() && cell.getProximity() > Cell.RESERVED_PROXIMITY_VALUE;
     }
 
     @Override

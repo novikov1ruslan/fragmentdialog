@@ -16,7 +16,7 @@ public class AmericanRules extends AbstractRules {
 
     @Override
     public boolean isCellConflicting(Cell cell) {
-        return cell.getProximity() >= Cell.RESERVED_PROXIMITY_VALUE * 2;
+        return cell.isReserved() && cell.getProximity() >= Cell.RESERVED_PROXIMITY_VALUE * 2;
     }
 
     @Override
