@@ -100,11 +100,11 @@ public class SetupBoardView extends BaseBoardView {
 
     private void drawDockedShip(Canvas canvas) {
         if (getPresenter().getDockedShip() != null) {
-            Bitmap mCurrentBitmap = mRules.getBitmapForShipSize(getPresenter().getDockedShip().getSize());
+            Bitmap bitmap = mRules.getBitmapForShipSize(getPresenter().getDockedShip().getSize());
             Point center = getPresenter().getShipDisplayAreaCenter();
-            int displayLeft = center.x - mCurrentBitmap.getWidth() / 2;
-            int displayTop = center.y - mCurrentBitmap.getHeight() / 2;
-            canvas.drawBitmap(mCurrentBitmap, displayLeft, displayTop, null);
+            int displayLeft = center.x - bitmap.getWidth() / 2;
+            int displayTop = center.y - bitmap.getHeight() / 2;
+            canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
             mRenderer.drawShip(canvas, getPresenter().getRectForDockedShip(), mShipPaint);
         }
@@ -112,7 +112,6 @@ public class SetupBoardView extends BaseBoardView {
 
     private void drawPickedShip(Canvas canvas) {
         if (mPickedShip != null) {
-            // center dragged ship around touch point
             canvas.drawRect(getPresenter().getPickedShipRect(), mShipPaint);
 
             // aiming
