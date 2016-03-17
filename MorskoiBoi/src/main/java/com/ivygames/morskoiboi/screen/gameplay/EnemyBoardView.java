@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
@@ -79,7 +78,7 @@ public class EnemyBoardView extends BaseBoardView {
 
             if (mBoard.containsCell(i, j)) {
                 Aiming aiming = getPresenter().getAiming(i, j, 1, 1);
-                mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j)));
+                mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j).beenShot()));
             }
         }
 
@@ -99,8 +98,8 @@ public class EnemyBoardView extends BaseBoardView {
         return true;
     }
 
-    private Paint getAimingPaint(Cell cell) {
-        return cell.beenShot() || mLocked ? mAimingLockedPaint : mAimingPaint;
+    private Paint getAimingPaint(boolean isShot) {
+        return isShot || mLocked ? mAimingLockedPaint : mAimingPaint;
     }
 
     public void setAim(Vector2 aim) {

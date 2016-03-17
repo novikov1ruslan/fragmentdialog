@@ -17,6 +17,7 @@ import android.view.ViewConfiguration;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -51,6 +52,7 @@ public class SetupBoardView extends BaseBoardView {
     private final int mTouchSlop;
 
     private final Rules mRules = RulesFactory.getRules();
+    private final PlacementAlgorithm mPlacementAlgorithm = PlacementFactory.getAlgorithm();
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -91,7 +93,6 @@ public class SetupBoardView extends BaseBoardView {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
-
                 if (mRules.isCellConflicting(cell)) {
                     getRenderer().renderConflictingCell(canvas, getPresenter().getRectFor(i, j));
                 }
@@ -166,7 +167,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_DOWN:
                 if (getPresenter().isInShipSelectionArea(event)) {
                     pickDockedShipUp(x, y);
-                } else if (isInBoard(x, y)) {
+                } else if (isOnBoard(mBoard, x, y)) {
                     mPickShipTask = createNewPickTask(event);
                     Ln.v("scheduling long press task: " + mPickShipTask);
                     mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
@@ -175,9 +176,9 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_UP:
                 if (mPickShipTask != null) {
                     cancelLongPressTask();
-                    rotateShipAt(x, y);
+                    rotateShipAt(mBoard, x, y);
                 } else if (mPickedShip != null) {
-                    dropShip(mPickedShip);
+                    dropShip(mBoard, mPickedShip);
                 }
                 break;
             default:
@@ -193,18 +194,12 @@ public class SetupBoardView extends BaseBoardView {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
-                pickShipFromBoard(x, y);
+                pickShipFromBoard(mBoard, x, y);
                 updateAim(x, y);
                 invalidate();
                 return true;
             }
         });
-    }
-
-    private void pickShipFromBoard(int x, int y) {
-        final int i = getPresenter().getTouchI(x);
-        final int j = getPresenter().getTouchJ(y);
-        mPickedShip = mBoard.removeShipFrom(i, j);
     }
 
     private void cancelLongPressTask() {
@@ -213,16 +208,22 @@ public class SetupBoardView extends BaseBoardView {
         mPickShipTask = null;
     }
 
-    private void rotateShipAt(int x, int y) {
-        int i = getPresenter().getTouchI(x);
-        int j = getPresenter().getTouchJ(y);
-        mBoard.rotateShipAt(i, j);
+    private void pickShipFromBoard(@NonNull Board board, int x, int y) {
+        final int i = getPresenter().getTouchI(x);
+        final int j = getPresenter().getTouchJ(y);
+        mPickedShip = board.removeShipFrom(i, j);
     }
 
-    private boolean isInBoard(int x, int y) {
+    private void rotateShipAt(@NonNull Board board, int x, int y) {
         int i = getPresenter().getTouchI(x);
         int j = getPresenter().getTouchJ(y);
-        return mBoard.containsCell(i, j);
+        board.rotateShipAt(i, j);
+    }
+
+    private boolean isOnBoard(@NonNull Board board, int x, int y) {
+        int i = getPresenter().getTouchI(x);
+        int j = getPresenter().getTouchJ(y);
+        return board.containsCell(i, j);
     }
 
     private void pickDockedShipUp(int x, int y) {
@@ -236,8 +237,8 @@ public class SetupBoardView extends BaseBoardView {
         }
     }
 
-    private void dropShip(@NonNull Ship ship) {
-        if (!tryPlaceShip(ship)) {
+    private void dropShip(@NonNull Board board, @NonNull Ship ship) {
+        if (!tryPlaceShip(board, ship)) {
             returnShipToPool(ship);
         }
 
@@ -248,9 +249,9 @@ public class SetupBoardView extends BaseBoardView {
     /**
      * @return true if succeeded to put down currently picked-up ship
      */
-    private boolean tryPlaceShip(@NonNull Ship ship) {
-        if (mBoard.shipFitsTheBoard(ship, mAim)) {
-            PlacementFactory.getAlgorithm().putShipAt(mBoard, ship, mAim.getX(), mAim.getY());
+    private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship) {
+        if (board.shipFitsTheBoard(ship, mAim)) {
+            mPlacementAlgorithm.putShipAt(board, ship, mAim.getX(), mAim.getY());
             return true;
         }
         return false;
@@ -289,11 +290,11 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public String toString() {
-        if (mShips == null) {
+        if (mBoard == null) {
             Ln.e("no ships");
             return "no ships";
         }
-        return super.toString() + '\n' + mShips.toString();
+        return super.toString() + '\n' + mBoard.toString();
     }
 
 }

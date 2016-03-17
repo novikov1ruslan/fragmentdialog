@@ -151,10 +151,10 @@ public abstract class BaseBoardView extends View {
             height = desiredHeight;
         }
 
-        int commonWidth = width > height ? height : width;
+        int boardSide = width > height ? height : width;
 
         //MUST CALL THIS
-        setMeasuredDimension(commonWidth, commonWidth);
+        setMeasuredDimension(boardSide, boardSide);
     }
 
     public final void hideTurnBorder() {
