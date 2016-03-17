@@ -90,12 +90,7 @@ final class SetupBoardPresenter extends BasePresenter {
         return getAiming(mAim, width, height);
     }
 
-    public Vector2 getAimForShip(@NonNull Ship ship, MotionEvent event) {
-        return getAimForShip(ship, (int) event.getX(), (int) event.getY());
-    }
-
-
-    private Vector2 getAimForShip(@NonNull Ship ship, int x, int y) {
+    public Vector2 getAimForShip(@NonNull Ship ship, int x, int y) {
         centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate();
     }

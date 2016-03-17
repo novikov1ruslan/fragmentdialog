@@ -133,7 +133,7 @@ public class SetupBoardView extends BaseBoardView {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (mPickedShip != null) {
-            mAim = getPresenter().getAimForShip(mPickedShip, event);
+            mAim = getPresenter().getAimForShip(mPickedShip, (int) event.getX(), (int) event.getY());
         }
 
         processMotionEvent(event);
@@ -161,7 +161,7 @@ public class SetupBoardView extends BaseBoardView {
                         Ln.v("no ships to pick");
                     } else {
                         mDockedShip = null;
-                        mAim = getPresenter().getAimForShip(mPickedShip, event);
+                        mAim = getPresenter().getAimForShip(mPickedShip, (int) event.getX(), (int) event.getY());
                         Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
                 } else if (mBoard.containsCell(i, j)) {
@@ -228,6 +228,8 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private PickShipTask createNewPickTask(final MotionEvent event) {
+        final int x = (int) event.getX();
+        final int y = (int) event.getY();
         final int i = getTouchI(event);
         final int j = getTouchJ(event);
         return new PickShipTask(event, new OnLongClickListener() {
@@ -236,7 +238,7 @@ public class SetupBoardView extends BaseBoardView {
                 mPickShipTask = null;
                 mPickedShip = mBoard.removeShipFrom(i, j);
                 if (mPickedShip != null) {
-                    mAim = getPresenter().getAimForShip(mPickedShip, event);
+                    mAim = getPresenter().getAimForShip(mPickedShip, x, y);
                 }
                 invalidate();
                 return true;
