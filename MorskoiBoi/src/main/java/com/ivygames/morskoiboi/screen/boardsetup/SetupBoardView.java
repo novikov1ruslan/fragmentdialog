@@ -132,8 +132,8 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (getPresenter().isInShipSelectionArea(x, y)) {
-                    getPresenter().pickDockedShipUp(x, y);
+                if (getPresenter().isInDockArea(x, y)) {
+                    getPresenter().pickDockedShip(x, y);
                 } else if (getPresenter().isOnBoard(x, y)) {
                     mPickShipTask = createNewPickTask(event);
                     Ln.v("scheduling long press task: " + mPickShipTask);

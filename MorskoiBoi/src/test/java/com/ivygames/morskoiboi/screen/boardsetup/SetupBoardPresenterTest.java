@@ -32,61 +32,23 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void testMeasure() throws Exception {
-
-    }
-
-    @Test
-    public void testGetTopLeftPointInTopArea() throws Exception {
+    public void testGetTopLeftPointInTopArea() {
 //        Point point = mPresenter.getTopLeftPointInTopArea(3);
 //        Assert.assertThat(point, equalTo(new Point()));
     }
 
     @Test
-    public void testGetShipDisplayAreaCenter() throws Exception {
+    public void testGetShipDisplayAreaCenter() {
         Point center = mPresenter.getShipDisplayAreaCenter();
         Assert.assertThat(center, equalTo(new Point(240, 60)));
     }
 
     @Test
-    public void testGetPickedShipRect() throws Exception {
+    public void testGetPickedShipRect() {
 //        mPresenter.pickNewShip()
         Rect shipRect = mPresenter.getPickedShipRect();
         Assert.assertThat(shipRect, equalTo(new Rect()));
     }
 
-    @Test
-    public void testGetAimingForPickedShip() throws Exception {
 
-    }
-
-    @Test
-    public void testPickNewShip() throws Exception {
-
-    }
-
-    @Test
-    public void testSetTouch() throws Exception {
-
-    }
-
-    @Test
-    public void testGetTouchJ() throws Exception {
-
-    }
-
-    @Test
-    public void testGetTouchI() throws Exception {
-
-    }
-
-    @Test
-    public void testIsInShipSelectionArea() throws Exception {
-
-    }
-
-    @Test
-    public void testGetInvalidRect() throws Exception {
-
-    }
 }

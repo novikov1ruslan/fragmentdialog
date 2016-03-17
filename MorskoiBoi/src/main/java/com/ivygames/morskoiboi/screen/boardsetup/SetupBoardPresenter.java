@@ -68,7 +68,7 @@ final class SetupBoardPresenter extends BasePresenter {
         return shipSize * mCellSizePx;
     }
 
-    public boolean isInShipSelectionArea(int x, int y) {
+    public boolean isInDockArea(int x, int y) {
         return mShipSelectionRect.contains(x, y);
     }
 
@@ -218,7 +218,7 @@ final class SetupBoardPresenter extends BasePresenter {
         return Board.containsCell(i, j);
     }
 
-    public void pickDockedShipUp(int x, int y) {
+    public void pickDockedShip(int x, int y) {
         mPickedShip = mShips.poll();
         if (mPickedShip == null) {
             Ln.v("no ships to pick");
