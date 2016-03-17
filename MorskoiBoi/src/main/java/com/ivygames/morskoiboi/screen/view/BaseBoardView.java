@@ -72,13 +72,13 @@ public abstract class BaseBoardView extends View {
 
         Paint borderPaint = mPresenter.isTurn() ? mTurnBorderPaint : mBorderPaint;
         mRenderer.renderBoard(canvas, mPresenter.getBoard(), borderPaint);
-        drawCells(canvas, mBoard.getHorizontalDim());
+        drawCells(canvas);
         drawShips(canvas);
     }
 
-    private void drawCells(Canvas canvas, int boardWidth) {
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardWidth; j++) {
+    private void drawCells(Canvas canvas) {
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (cell.isHit()) {
                     mRenderer.drawHitMark(canvas, mPresenter.getMark(i, j));
@@ -151,14 +151,10 @@ public abstract class BaseBoardView extends View {
             height = desiredHeight;
         }
 
-        if (width > height) {
-            width = height;
-        } else {
-            height = width;
-        }
+        int commonWidth = width > height ? height : width;
 
         //MUST CALL THIS
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(commonWidth, commonWidth);
     }
 
     public final void hideTurnBorder() {

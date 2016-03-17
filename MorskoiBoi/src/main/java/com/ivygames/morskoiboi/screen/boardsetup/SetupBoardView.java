@@ -37,11 +37,11 @@ public class SetupBoardView extends BaseBoardView {
 
     private PriorityQueue<Ship> mShips;
 
-    // the following used during aiming
     /**
      * currently picked ship (awaiting to be placed)
      */
     private Ship mPickedShip;
+    private Vector2 mAim = Vector2.get(-1, -1);
 
     /**
      * needed to perform double clicks on the ships
@@ -51,7 +51,6 @@ public class SetupBoardView extends BaseBoardView {
     private final int mTouchSlop;
 
     private final Rules mRules = RulesFactory.getRules();
-    private Vector2 mAim = Vector2.get(-1, -1);
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
