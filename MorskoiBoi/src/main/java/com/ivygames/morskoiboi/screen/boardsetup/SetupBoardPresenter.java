@@ -112,7 +112,7 @@ final class SetupBoardPresenter extends BasePresenter {
         return isInShipSelectionArea((int) event.getX(), (int) event.getY());
     }
 
-    public final RectF getInvalidRect(int i, int j) {
+    public final RectF getRectFor(int i, int j) {
         float left = mBoardRect.left + i * mCellSizePx + 1;
         float top = mBoardRect.top + j * mCellSizePx + 1;
         float right = left + mCellSizePx;
