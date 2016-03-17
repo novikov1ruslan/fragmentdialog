@@ -37,7 +37,7 @@ public class SetupBoardView extends BaseBoardView {
     /**
      * ship displayed at the top of the screen (selection area)
      */
-    private Ship mCurrentShip;
+    private Ship mDockedShip;
 
     private PriorityQueue<Ship> mShips;
 
@@ -54,7 +54,6 @@ public class SetupBoardView extends BaseBoardView {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
 
-    private Bitmap mCurrentBitmap;
     private final Rules mRules = RulesFactory.getRules();
     private Vector2 mAim = Vector2.get(-1, -1);
 
@@ -86,7 +85,13 @@ public class SetupBoardView extends BaseBoardView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        drawConflictingCells(canvas);
+        drawScreenTop(canvas);
+        drawPickedShip(canvas);
+//        getRenderer().render(canvas, mTouchX, mTouchY);
+    }
 
+    private void drawConflictingCells(Canvas canvas) {
         // paint invalid cells (ships that touch each other) and the ships themselves
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
@@ -97,25 +102,22 @@ public class SetupBoardView extends BaseBoardView {
                 }
             }
         }
+    }
 
-        if (mCurrentBitmap != null) {
+    private void drawScreenTop(Canvas canvas) {
+        if (mDockedShip != null) {
+            Bitmap mCurrentBitmap = mRules.getBitmapForShipSize(mDockedShip.getSize());
             Point center = getPresenter().getShipDisplayAreaCenter();
             int displayLeft = center.x - mCurrentBitmap.getWidth() / 2;
             int displayTop = center.y - mCurrentBitmap.getHeight() / 2;
             canvas.drawBitmap(mCurrentBitmap, displayLeft, displayTop, null);
+
+            Point p = getPresenter().getTopLeftPointInTopArea(mDockedShip.getSize());
+            mRenderer.drawShip(canvas, mPresenter.getRectForShip(mDockedShip, p), mShipPaint);
         }
-
-        drawScreenTop(canvas);
-
-//        getRenderer().render(canvas, mTouchX, mTouchY);
     }
 
-    private void drawScreenTop(Canvas canvas) {
-        if (mCurrentShip != null) {
-            Point p = getPresenter().getTopLeftPointInTopArea(mCurrentShip.getSize());
-            mRenderer.drawShip(canvas, mPresenter.getRectForShip(mCurrentShip, p), mShipPaint);
-        }
-
+    private void drawPickedShip(Canvas canvas) {
         if (mPickedShip != null) {
             // center dragged ship around touch point
             canvas.drawRect(getPresenter().getPickedShipRect(), mShipPaint);
@@ -158,7 +160,7 @@ public class SetupBoardView extends BaseBoardView {
                     if (mPickedShip == null) {
                         Ln.v("no ships to pick");
                     } else {
-                        mCurrentShip = null;
+                        mDockedShip = null;
                         mAim = getPresenter().getAimForShip(mPickedShip, event);
                         Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
@@ -208,11 +210,9 @@ public class SetupBoardView extends BaseBoardView {
 
     private void setCurrentShip() {
         if (mShips.isEmpty()) {
-            mCurrentShip = null;
-            mCurrentBitmap = null;
+            mDockedShip = null;
         } else {
-            mCurrentShip = mShips.peek();
-            mCurrentBitmap = mRules.getBitmapForShipSize(mCurrentShip.getSize());
+            mDockedShip = mShips.peek();
         }
     }
 
