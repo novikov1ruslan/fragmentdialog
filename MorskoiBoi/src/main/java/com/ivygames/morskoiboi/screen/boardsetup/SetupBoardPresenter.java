@@ -11,6 +11,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BasePresenter;
 
+import java.util.PriorityQueue;
+
 final class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipSelectionRect = new Rect();
     private final Rect mShipDisplayRect = new Rect();
@@ -121,4 +123,29 @@ final class SetupBoardPresenter extends BasePresenter {
         return rectF;
     }
 
+    /**
+     * ship displayed at the top of the screen (selection area)
+     */
+    private Ship mDockedShip;
+
+    public Ship getDockedShip() {
+        return mDockedShip;
+    }
+
+    public Rect getRectForDockedShip() {
+        Point p = getTopLeftPointInTopArea(mDockedShip.getSize());
+        return getRectForShip(mDockedShip, p);
+    }
+
+    public void pickDockedShip() {
+        mDockedShip = null;
+    }
+
+    public void setDockedShip(PriorityQueue<Ship> ships) {
+        if (ships.isEmpty()) {
+            mDockedShip = null;
+        } else {
+            mDockedShip = ships.peek();
+        }
+    }
 }

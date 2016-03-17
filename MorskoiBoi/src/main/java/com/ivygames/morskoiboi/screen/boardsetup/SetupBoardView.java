@@ -33,12 +33,6 @@ public class SetupBoardView extends BaseBoardView {
 
     private static final long LONG_PRESS_DELAY = 1000;
 
-    // the following are drawn at the selection area
-    /**
-     * ship displayed at the top of the screen (selection area)
-     */
-    private Ship mDockedShip;
-
     private PriorityQueue<Ship> mShips;
 
     // the following used during aiming
@@ -86,7 +80,7 @@ public class SetupBoardView extends BaseBoardView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawConflictingCells(canvas);
-        drawScreenTop(canvas);
+        drawDockedShip(canvas);
         drawPickedShip(canvas);
 //        getRenderer().render(canvas, mTouchX, mTouchY);
     }
@@ -104,16 +98,15 @@ public class SetupBoardView extends BaseBoardView {
         }
     }
 
-    private void drawScreenTop(Canvas canvas) {
-        if (mDockedShip != null) {
-            Bitmap mCurrentBitmap = mRules.getBitmapForShipSize(mDockedShip.getSize());
+    private void drawDockedShip(Canvas canvas) {
+        if (getPresenter().getDockedShip() != null) {
+            Bitmap mCurrentBitmap = mRules.getBitmapForShipSize(getPresenter().getDockedShip().getSize());
             Point center = getPresenter().getShipDisplayAreaCenter();
             int displayLeft = center.x - mCurrentBitmap.getWidth() / 2;
             int displayTop = center.y - mCurrentBitmap.getHeight() / 2;
             canvas.drawBitmap(mCurrentBitmap, displayLeft, displayTop, null);
 
-            Point p = getPresenter().getTopLeftPointInTopArea(mDockedShip.getSize());
-            mRenderer.drawShip(canvas, mPresenter.getRectForShip(mDockedShip, p), mShipPaint);
+            mRenderer.drawShip(canvas, getPresenter().getRectForDockedShip(), mShipPaint);
         }
     }
 
@@ -160,7 +153,7 @@ public class SetupBoardView extends BaseBoardView {
                     if (mPickedShip == null) {
                         Ln.v("no ships to pick");
                     } else {
-                        mDockedShip = null;
+                        getPresenter().pickDockedShip();
                         mAim = getPresenter().getAimForShip(mPickedShip, (int) event.getX(), (int) event.getY());
                         Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
                     }
@@ -204,16 +197,7 @@ public class SetupBoardView extends BaseBoardView {
             returnShipToPool(ship);
         }
 
-        // reselect current ship to display
-        setCurrentShip();
-    }
-
-    private void setCurrentShip() {
-        if (mShips.isEmpty()) {
-            mDockedShip = null;
-        } else {
-            mDockedShip = mShips.peek();
-        }
+        getPresenter().setDockedShip(mShips);
     }
 
     /**
@@ -268,11 +252,11 @@ public class SetupBoardView extends BaseBoardView {
         mPresenter.measure(getMeasuredWidth(), getMeasuredHeight(), getHorizontalPadding(), getVerticalPadding());
     }
 
-    public void setFleet(PriorityQueue<Ship> ships) {
+    public void setFleet(@NonNull PriorityQueue<Ship> ships) {
         Ln.v(ships);
         mShips = Validate.notNull(ships);
 
-        setCurrentShip();
+        getPresenter().setDockedShip(mShips);
 
         invalidate();
     }
