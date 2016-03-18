@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
@@ -84,17 +83,6 @@ final class SetupBoardPresenter extends BasePresenter {
         return shipDisplayCenter;
     }
 
-    private Rect centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
-        int widthInPx = getShipWidthInPx(ship.getSize());
-        int halfWidthInPx = widthInPx / 2;
-        boolean isHorizontal = ship.isHorizontal();
-        mPickedShipRect.left = x - (isHorizontal ? halfWidthInPx : mHalfCellSize);
-        mPickedShipRect.top = y - (isHorizontal ? mHalfCellSize : halfWidthInPx);
-        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mCellSizePx);
-        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mCellSizePx : widthInPx);
-        return mPickedShipRect;
-    }
-
     @NonNull
     private Aiming getAimingForPickedShip(@NonNull Vector2 mAim) {
         return getAimingForShip(mPickedShip, mAim);
@@ -138,10 +126,6 @@ final class SetupBoardPresenter extends BasePresenter {
         return getRectForShip(mDockedShip, p);
     }
 
-    public void pickDockedShip() {
-        mDockedShip = null;
-    }
-
     public void setDockedShip(PriorityQueue<Ship> ships) {
         if (ships.isEmpty()) {
             mDockedShip = null;
@@ -177,6 +161,17 @@ final class SetupBoardPresenter extends BasePresenter {
     private Vector2 getAimForShip(@NonNull Ship ship, int x, int y) {
         mPickedShipRect = centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate(mPickedShipRect);
+    }
+
+    private Rect centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
+        int widthInPx = getShipWidthInPx(ship.getSize());
+        int halfWidthInPx = widthInPx / 2;
+        boolean isHorizontal = ship.isHorizontal();
+        mPickedShipRect.left = x - (isHorizontal ? halfWidthInPx : mHalfCellSize);
+        mPickedShipRect.top = y - (isHorizontal ? mHalfCellSize : halfWidthInPx);
+        mPickedShipRect.right = mPickedShipRect.left + (isHorizontal ? widthInPx : mCellSizePx);
+        mPickedShipRect.bottom = mPickedShipRect.top + (isHorizontal ? mCellSizePx : widthInPx);
+        return mPickedShipRect;
     }
 
     private Vector2 getPickedShipCoordinate(Rect pickedShipRect) {
@@ -218,13 +213,12 @@ final class SetupBoardPresenter extends BasePresenter {
         return Board.containsCell(i, j);
     }
 
-    public void pickDockedShip(int x, int y) {
+    public void pickDockedShip() {
         mPickedShip = mShips.poll();
         if (mPickedShip == null) {
             Ln.v("no ships to pick");
         } else {
-            pickDockedShip();
-            updateAim(x, y);
+            mDockedShip = null;
             Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
         }
     }

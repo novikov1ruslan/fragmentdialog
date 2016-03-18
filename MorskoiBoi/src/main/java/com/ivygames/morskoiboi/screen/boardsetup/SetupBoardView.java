@@ -125,23 +125,19 @@ public class SetupBoardView extends BaseBoardView {
         int y = (int) event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                if (mPickShipTask != null && mPickShipTask.hasMovedBeyondSlope(event, mTouchSlop)) {
-                    mHandler.removeCallbacks(mPickShipTask);
-                    mPickShipTask.run();
-                    mPickShipTask = null;
+                if (movedBeyondSlope(event)) {
+                    pickShipFromBoard();
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
                 if (getPresenter().isInDockArea(x, y)) {
-                    getPresenter().pickDockedShip(x, y);
+                    getPresenter().pickDockedShip();
                 } else if (getPresenter().isOnBoard(x, y)) {
-                    mPickShipTask = createNewPickTask(event);
-                    Ln.v("scheduling long press task: " + mPickShipTask);
-                    mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
+                    schedulePickingShip(event);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (mPickShipTask != null) {
+                if (pickUpScheduled()) {
                     cancelLongPressTask();
                     getPresenter().rotateShipAt(mBoard, x, y);
                 } else if (getPresenter().hasPickedShip()) {
@@ -152,6 +148,26 @@ public class SetupBoardView extends BaseBoardView {
                 cancelLongPressTask();
                 break;
         }
+    }
+
+    private boolean pickUpScheduled() {
+        return mPickShipTask != null;
+    }
+
+    private void schedulePickingShip(MotionEvent event) {
+        mPickShipTask = createNewPickTask(event);
+        Ln.v("scheduling long press task: " + mPickShipTask);
+        mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
+    }
+
+    private void pickShipFromBoard() {
+        mHandler.removeCallbacks(mPickShipTask);
+        mPickShipTask.run();
+        mPickShipTask = null;
+    }
+
+    private boolean movedBeyondSlope(MotionEvent event) {
+        return pickUpScheduled() && mPickShipTask.hasMovedBeyondSlope(event, mTouchSlop);
     }
 
     private PickShipTask createNewPickTask(final MotionEvent event) {

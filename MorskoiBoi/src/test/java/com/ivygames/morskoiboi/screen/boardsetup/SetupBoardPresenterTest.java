@@ -3,15 +3,20 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
+import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.variant.RussianRules;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.PriorityQueue;
+
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
@@ -29,6 +34,7 @@ public class SetupBoardPresenterTest {
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
         mPresenter.setBoardHorizontalOffset(H_OFFSET);
+        RulesFactory.setRules(new RussianRules());
     }
 
     @Test
@@ -40,15 +46,35 @@ public class SetupBoardPresenterTest {
     @Test
     public void testGetShipDisplayAreaCenter() {
         Point center = mPresenter.getShipDisplayAreaCenter();
-        Assert.assertThat(center, equalTo(new Point(240, 60)));
+        assertThat(center, equalTo(new Point(240, 60)));
     }
 
     @Test
     public void testGetPickedShipRect() {
-//        mPresenter.pickNewShip()
+        mPresenter.updateAim(100, 100);
+        pickShip(new Ship(2));
         Rect shipRect = mPresenter.getPickedShipRect();
-        Assert.assertThat(shipRect, equalTo(new Rect()));
+        assertThat(shipRect, equalTo(new Rect()));
     }
 
+    @Test
+    public void when_there_is_at_least_1_ship__dock_has_ships() {
+        pickShip(new Ship(2));
+        assertThat(mPresenter.hasPickedShip(), is(true));
+    }
 
+    private void pickShip(Ship ship) {
+        PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
+        fleet.add(ship);
+        mPresenter.setFleet(fleet);
+        mPresenter.pickDockedShip();
+    }
+
+    @Test
+    public void when_there_are_no_ships__dock_has_no_ships() {
+        PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
+        mPresenter.setFleet(fleet);
+        mPresenter.pickDockedShip();
+        assertThat(mPresenter.hasPickedShip(), is(false));
+    }
 }
