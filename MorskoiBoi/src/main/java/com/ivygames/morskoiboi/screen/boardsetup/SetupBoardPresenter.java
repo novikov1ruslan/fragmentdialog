@@ -40,6 +40,8 @@ final class SetupBoardPresenter extends BasePresenter {
 
     @NonNull
     private Vector2 mAim = Vector2.INVALID_VECTOR;
+//    private int mI;
+//    private int mJ;
 
     public SetupBoardPresenter(int boardSize, float dimension) {
         super(boardSize, dimension);
@@ -83,18 +85,6 @@ final class SetupBoardPresenter extends BasePresenter {
         return shipDisplayCenter;
     }
 
-    @NonNull
-    private Aiming getAimingForPickedShip(@NonNull Vector2 aim) {
-        return getAimingForShip(mPickedShip, aim);
-    }
-
-    @NonNull
-    private Aiming getAimingForShip(@NonNull Ship ship, @NonNull  Vector2 aim) {
-        int width = ship.isHorizontal() ? ship.getSize() : 1;
-        int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-        return getAiming(aim, width, height);
-    }
-
     private int getTouchJ(int y) {
         return (y - mBoardRect.top) / mCellSizePx;
     }
@@ -126,14 +116,6 @@ final class SetupBoardPresenter extends BasePresenter {
         return getRectForShip(mDockedShip, p);
     }
 
-    public void setDockedShip(PriorityQueue<Ship> ships) {
-        if (ships.isEmpty()) {
-            mDockedShip = null;
-        } else {
-            mDockedShip = ships.peek();
-        }
-    }
-
     @Nullable
     public Rect getPickedShipRect() {
         return hasPickedShip() ? mPickedShipRect : null;
@@ -142,10 +124,22 @@ final class SetupBoardPresenter extends BasePresenter {
     @Nullable
     public Aiming getAiming() {
         if (hasPickedShip() && Board.containsCell(mAim)) {
-            return getAimingForPickedShip(mAim);
+            return getAimingForPickedShip();
         }
 
         return null;
+    }
+
+    @NonNull
+    private Aiming getAimingForPickedShip() {
+        return getAimingForShip(mPickedShip);
+    }
+
+    @NonNull
+    private Aiming getAimingForShip(@NonNull Ship ship) {
+        int width = ship.isHorizontal() ? ship.getSize() : 1;
+        int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
+        return getAiming(mAim, width, height);
     }
 
     public boolean hasPickedShip() {
@@ -154,13 +148,9 @@ final class SetupBoardPresenter extends BasePresenter {
 
     public void updateAim(int x, int y) {
         if (hasPickedShip()) {
-            mAim = getAimForShip(mPickedShip, x, y);
+            mPickedShipRect = centerPickedShipRectAround(mPickedShip, x, y);
+            mAim = getPickedShipCoordinate(mPickedShipRect);
         }
-    }
-
-    private Vector2 getAimForShip(@NonNull Ship ship, int x, int y) {
-        mPickedShipRect = centerPickedShipRectAround(ship, x, y);
-        return getPickedShipCoordinate(mPickedShipRect);
     }
 
     private Rect centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
@@ -195,6 +185,32 @@ final class SetupBoardPresenter extends BasePresenter {
         mPickedShip = null;
     }
 
+    /**
+     * @return true if succeeded to put down currently picked-up ship
+     */
+    private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship) {
+        if (board.shipFitsTheBoard(ship, mAim)) {
+            mPlacementAlgorithm.putShipAt(board, ship, mAim.getX(), mAim.getY());
+            return true;
+        }
+        return false;
+    }
+
+    private void returnShipToPool(@NonNull Ship ship) {
+        if (!ship.isHorizontal()) {
+            ship.rotate();
+        }
+        mShips.add(ship);
+    }
+
+    private void setDockedShip(PriorityQueue<Ship> ships) {
+        if (ships.isEmpty()) {
+            mDockedShip = null;
+        } else {
+            mDockedShip = ships.peek();
+        }
+    }
+
     public void pickShipFromBoard(@NonNull Board board, int x, int y) {
         final int i = getTouchI(x);
         final int j = getTouchJ(y);
@@ -221,24 +237,6 @@ final class SetupBoardPresenter extends BasePresenter {
             mDockedShip = null;
             Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
         }
-    }
-
-    /**
-     * @return true if succeeded to put down currently picked-up ship
-     */
-    private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship) {
-        if (board.shipFitsTheBoard(ship, mAim)) {
-            mPlacementAlgorithm.putShipAt(board, ship, mAim.getX(), mAim.getY());
-            return true;
-        }
-        return false;
-    }
-
-    private void returnShipToPool(@NonNull Ship ship) {
-        if (!ship.isHorizontal()) {
-            ship.rotate();
-        }
-        mShips.add(ship);
     }
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
