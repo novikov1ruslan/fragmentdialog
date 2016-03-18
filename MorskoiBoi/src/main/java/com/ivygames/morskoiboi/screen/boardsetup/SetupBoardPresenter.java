@@ -148,13 +148,31 @@ final class SetupBoardPresenter extends BasePresenter {
         return mPickedShip != null;
     }
 
+    public void pickDockedShip() {
+        mPickedShip = mShips.poll();
+        if (mPickedShip == null) {
+            Ln.v("no ships to pick");
+        } else {
+            mDockedShip = null;
+            Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
+        }
+
+        if (hasPickedShip()) {
+            updatePickedGeometry();
+        }
+    }
+
     public void touch(int x, int y) {
         mX = x;
         mY = y;
         if (hasPickedShip()) {
-            mPickedShipRect = centerPickedShipRectAround(mPickedShip, x, y);
-            mAim = getPickedShipCoordinate(mPickedShipRect);
+            updatePickedGeometry();
         }
+    }
+
+    public void updatePickedGeometry() {
+        mPickedShipRect = centerPickedShipRectAround(mPickedShip, mX, mY);
+        mAim = getPickedShipCoordinate(mPickedShipRect);
     }
 
     private Rect centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
@@ -185,7 +203,7 @@ final class SetupBoardPresenter extends BasePresenter {
             returnShipToPool(mPickedShip);
         }
 
-        setDockedShip(mShips);
+        setDockedShip();
         mPickedShip = null;
     }
 
@@ -207,11 +225,11 @@ final class SetupBoardPresenter extends BasePresenter {
         mShips.add(ship);
     }
 
-    private void setDockedShip(PriorityQueue<Ship> ships) {
-        if (ships.isEmpty()) {
+    private void setDockedShip() {
+        if (mShips.isEmpty()) {
             mDockedShip = null;
         } else {
-            mDockedShip = ships.peek();
+            mDockedShip = mShips.peek();
         }
     }
 
@@ -233,18 +251,8 @@ final class SetupBoardPresenter extends BasePresenter {
         return Board.containsCell(i, j);
     }
 
-    public void pickDockedShip() {
-        mPickedShip = mShips.poll();
-        if (mPickedShip == null) {
-            Ln.v("no ships to pick");
-        } else {
-            mDockedShip = null;
-            Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
-        }
-    }
-
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
         mShips = Validate.notNull(ships);
-        setDockedShip(mShips);
+        setDockedShip();
     }
 }

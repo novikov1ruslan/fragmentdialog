@@ -50,24 +50,24 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void testGetPickedShipRect() {
+    public void after_touch_and_docked_ship_pickup__there_is_valid_picked_ship_rect() {
+        setFleet(new Ship(2));
         mPresenter.touch(100, 100);
-        pickShip(new Ship(2));
-        Rect shipRect = mPresenter.getPickedShipRect();
-        assertThat(shipRect, equalTo(new Rect()));
+        mPresenter.pickDockedShip();
+        assertThat(mPresenter.getPickedShipRect(), equalTo(new Rect(69, 85, 131, 116)));
     }
 
     @Test
     public void when_there_is_at_least_1_ship__dock_has_ships() {
-        pickShip(new Ship(2));
+        setFleet(new Ship(2));
+        mPresenter.pickDockedShip();
         assertThat(mPresenter.hasPickedShip(), is(true));
     }
 
-    private void pickShip(Ship ship) {
+    private void setFleet(Ship ship) {
         PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
         fleet.add(ship);
         mPresenter.setFleet(fleet);
-        mPresenter.pickDockedShip();
     }
 
     @Test
