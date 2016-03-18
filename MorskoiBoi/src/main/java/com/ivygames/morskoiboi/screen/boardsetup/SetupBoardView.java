@@ -112,11 +112,8 @@ public class SetupBoardView extends BaseBoardView {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         getPresenter().updateAim((int) event.getX(), (int) event.getY());
-
         processMotionEvent(event);
-
         invalidate();
-
         return true;
     }
 

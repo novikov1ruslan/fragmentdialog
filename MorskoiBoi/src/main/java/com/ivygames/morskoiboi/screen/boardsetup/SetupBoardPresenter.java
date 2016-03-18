@@ -84,15 +84,15 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @NonNull
-    private Aiming getAimingForPickedShip(@NonNull Vector2 mAim) {
-        return getAimingForShip(mPickedShip, mAim);
+    private Aiming getAimingForPickedShip(@NonNull Vector2 aim) {
+        return getAimingForShip(mPickedShip, aim);
     }
 
     @NonNull
-    private Aiming getAimingForShip(@NonNull Ship ship, @NonNull  Vector2 mAim) {
+    private Aiming getAimingForShip(@NonNull Ship ship, @NonNull  Vector2 aim) {
         int width = ship.isHorizontal() ? ship.getSize() : 1;
         int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-        return getAiming(mAim, width, height);
+        return getAiming(aim, width, height);
     }
 
     private int getTouchJ(int y) {
