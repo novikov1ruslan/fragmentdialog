@@ -40,6 +40,8 @@ final class SetupBoardPresenter extends BasePresenter {
 
     @NonNull
     private Vector2 mAim = Vector2.INVALID_VECTOR;
+    private int mX;
+    private int mY;
 //    private int mI;
 //    private int mJ;
 
@@ -146,7 +148,9 @@ final class SetupBoardPresenter extends BasePresenter {
         return mPickedShip != null;
     }
 
-    public void updateAim(int x, int y) {
+    public void touch(int x, int y) {
+        mX = x;
+        mY = y;
         if (hasPickedShip()) {
             mPickedShipRect = centerPickedShipRectAround(mPickedShip, x, y);
             mAim = getPickedShipCoordinate(mPickedShipRect);

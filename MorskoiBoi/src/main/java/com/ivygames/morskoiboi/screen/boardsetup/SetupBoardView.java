@@ -111,16 +111,17 @@ public class SetupBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        getPresenter().updateAim((int) event.getX(), (int) event.getY());
-        processMotionEvent(event);
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        int action = event.getAction();
+        getPresenter().touch(x, y);
+        processMotionEvent(x, y, action);
         invalidate();
         return true;
     }
 
-    private void processMotionEvent(MotionEvent event) {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        switch (event.getAction()) {
+    private void processMotionEvent(int x, int y, int action) {
+        switch (action) {
             case MotionEvent.ACTION_MOVE:
                 if (movedBeyondSlope(x, y)) {
                     pickShipFromBoard();
@@ -173,7 +174,7 @@ public class SetupBoardView extends BaseBoardView {
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
                 getPresenter().pickShipFromBoard(mBoard, x, y);
-                getPresenter().updateAim(x, y);
+                getPresenter().touch(x, y);
                 invalidate();
                 return true;
             }

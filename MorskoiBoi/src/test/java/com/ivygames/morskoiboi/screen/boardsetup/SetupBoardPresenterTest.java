@@ -51,7 +51,7 @@ public class SetupBoardPresenterTest {
 
     @Test
     public void testGetPickedShipRect() {
-        mPresenter.updateAim(100, 100);
+        mPresenter.touch(100, 100);
         pickShip(new Ship(2));
         Rect shipRect = mPresenter.getPickedShipRect();
         assertThat(shipRect, equalTo(new Rect()));
