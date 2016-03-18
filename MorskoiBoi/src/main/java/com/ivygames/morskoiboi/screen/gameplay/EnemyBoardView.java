@@ -26,12 +26,12 @@ public class EnemyBoardView extends BaseBoardView {
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        mRenderer = new EnemyBoardRenderer(getPresenter(), getResources());
+        mRenderer = new EnemyBoardRenderer(presenter(), getResources());
         mAimingLockedPaint = UiUtils.newFillPaint(getResources(), R.color.aim_locked);
     }
 
     @Override
-    protected EnemyBoardPresenter getPresenter() {
+    protected EnemyBoardPresenter presenter() {
         if (mPresenter == null) {
             mPresenter = new EnemyBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
         }
@@ -41,7 +41,7 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected EnemyBoardRenderer getRenderer() {
         if (mRenderer == null) {
-            mRenderer = new EnemyBoardRenderer(getPresenter(), getResources());
+            mRenderer = new EnemyBoardRenderer(presenter(), getResources());
         }
         return (EnemyBoardRenderer) mRenderer;
     }
@@ -60,7 +60,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void setShotListener(ShotListener shotListener) {
-        getPresenter().setShotListener(shotListener);
+        presenter().setShotListener(shotListener);
     }
 
     @Override
@@ -69,15 +69,15 @@ public class EnemyBoardView extends BaseBoardView {
         super.onDraw(canvas);
 
         if (mAim != null) {
-            getRenderer().drawAim(canvas, getPresenter().getAimRectDst(mAim));
+            getRenderer().drawAim(canvas, presenter().getAimRectDst(mAim));
         }
 
-        if (getPresenter().startedDragging()) {
-            int i = getPresenter().getTouchedI();
-            int j = getPresenter().getTouchedJ();
+        if (presenter().startedDragging()) {
+            int i = presenter().getTouchedI();
+            int j = presenter().getTouchedJ();
 
             if (mBoard.containsCell(i, j)) {
-                Aiming aiming = getPresenter().getAiming(i, j, 1, 1);
+                Aiming aiming = presenter().getAiming(i, j, 1, 1);
                 mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j).beenShot()));
             }
         }
@@ -92,7 +92,7 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        getPresenter().touch(event);
+        presenter().touch(event);
         invalidate();
 
         return true;
@@ -122,7 +122,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     public void unLock() {
         mLocked = false;
-        getPresenter().unlock();
+        presenter().unlock();
     }
 
     public void setShotResult(PokeResult result) {

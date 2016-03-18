@@ -42,7 +42,7 @@ public abstract class BaseBoardView extends View {
 
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
-        mPresenter = getPresenter();
+        mPresenter = presenter();
         mRenderer = getRenderer();
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -51,7 +51,7 @@ public abstract class BaseBoardView extends View {
 
     protected abstract BaseBoardRenderer getRenderer();
 
-    protected abstract BasePresenter getPresenter();
+    protected abstract BasePresenter presenter();
 
     public final void setBoard(Board board) {
         mBoard = board;

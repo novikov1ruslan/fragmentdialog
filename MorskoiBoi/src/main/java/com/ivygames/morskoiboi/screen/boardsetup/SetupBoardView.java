@@ -57,7 +57,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     @Override
-    protected SetupBoardPresenter getPresenter() {
+    protected SetupBoardPresenter presenter() {
         if (mPresenter == null) {
             mPresenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
         }
@@ -79,31 +79,31 @@ public class SetupBoardView extends BaseBoardView {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (mRules.isCellConflicting(cell)) {
-                    getRenderer().renderConflictingCell(canvas, getPresenter().getRectForCell(i, j));
+                    getRenderer().renderConflictingCell(canvas, presenter().getRectForCell(i, j));
                 }
             }
         }
     }
 
     private void drawDockedShip(Canvas canvas) {
-        if (getPresenter().getDockedShip() != null) {
-            Bitmap bitmap = mRules.getBitmapForShipSize(getPresenter().getDockedShip().getSize());
-            Point center = getPresenter().getShipDisplayAreaCenter();
+        if (presenter().getDockedShip() != null) {
+            Bitmap bitmap = mRules.getBitmapForShipSize(presenter().getDockedShip().getSize());
+            Point center = presenter().getShipDisplayAreaCenter();
             int displayLeft = center.x - bitmap.getWidth() / 2;
             int displayTop = center.y - bitmap.getHeight() / 2;
             canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
-            mRenderer.drawShip(canvas, getPresenter().getRectForDockedShip(), mShipPaint);
+            mRenderer.drawShip(canvas, presenter().getRectForDockedShip(), mShipPaint);
         }
     }
 
     private void drawPickedShip(Canvas canvas) {
-        Rect shipRect = getPresenter().getPickedShipRect();
+        Rect shipRect = presenter().getPickedShipRect();
         if (shipRect != null) {
             canvas.drawRect(shipRect, mShipPaint);
         }
 
-        Aiming aiming = getPresenter().getAiming();
+        Aiming aiming = presenter().getAiming();
         if (aiming != null) {
             mRenderer.render(canvas, aiming, mAimingPaint);
         }
@@ -114,7 +114,7 @@ public class SetupBoardView extends BaseBoardView {
         int x = (int) event.getX();
         int y = (int) event.getY();
         int action = event.getAction();
-        getPresenter().touch(x, y);
+        presenter().touch(x, y);
         processMotionEvent(x, y, action);
         invalidate();
         return true;
@@ -128,18 +128,18 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (getPresenter().isInDockArea(x, y)) {
-                    getPresenter().pickDockedShip();
-                } else if (getPresenter().isOnBoard(x, y)) {
+                if (presenter().isInDockArea(x, y)) {
+                    presenter().pickDockedShip();
+                } else if (presenter().isOnBoard(x, y)) {
                     schedulePickingShip(x, y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    getPresenter().rotateShipAt(mBoard, x, y);
-                } else if (getPresenter().hasPickedShip()) {
-                    getPresenter().dropShip(mBoard);
+                    presenter().rotateShipAt(mBoard, x, y);
+                } else if (presenter().hasPickedShip()) {
+                    presenter().dropShip(mBoard);
                 }
                 break;
             default:
@@ -173,8 +173,8 @@ public class SetupBoardView extends BaseBoardView {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
-                getPresenter().pickShipFromBoard(mBoard, x, y);
-                getPresenter().touch(x, y);
+                presenter().pickShipFromBoard(mBoard, x, y);
+                presenter().touch(x, y);
                 invalidate();
                 return true;
             }
@@ -204,7 +204,7 @@ public class SetupBoardView extends BaseBoardView {
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
         Ln.v(ships);
-        getPresenter().setFleet(ships);
+        presenter().setFleet(ships);
         invalidate();
     }
 
