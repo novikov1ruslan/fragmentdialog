@@ -122,7 +122,7 @@ public class SetupBoardView extends BaseBoardView {
         int y = (int) event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                if (movedBeyondSlope(event)) {
+                if (movedBeyondSlope(x, y)) {
                     pickShipFromBoard();
                 }
                 break;
@@ -130,7 +130,7 @@ public class SetupBoardView extends BaseBoardView {
                 if (getPresenter().isInDockArea(x, y)) {
                     getPresenter().pickDockedShip();
                 } else if (getPresenter().isOnBoard(x, y)) {
-                    schedulePickingShip(event);
+                    schedulePickingShip(x, y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -151,8 +151,8 @@ public class SetupBoardView extends BaseBoardView {
         return mPickShipTask != null;
     }
 
-    private void schedulePickingShip(MotionEvent event) {
-        mPickShipTask = createNewPickTask(event);
+    private void schedulePickingShip(int x, int y) {
+        mPickShipTask = createNewPickTask(x, y);
         Ln.v("scheduling long press task: " + mPickShipTask);
         mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
     }
@@ -163,14 +163,12 @@ public class SetupBoardView extends BaseBoardView {
         mPickShipTask = null;
     }
 
-    private boolean movedBeyondSlope(MotionEvent event) {
-        return pickUpScheduled() && mPickShipTask.hasMovedBeyondSlope(event, mTouchSlop);
+    private boolean movedBeyondSlope(int x, int y) {
+        return pickUpScheduled() && mPickShipTask.hasMovedBeyondSlope(x, y, mTouchSlop);
     }
 
-    private PickShipTask createNewPickTask(final MotionEvent event) {
-        final int x = (int) event.getX();
-        final int y = (int) event.getY();
-        return new PickShipTask(event, new OnLongClickListener() {
+    private PickShipTask createNewPickTask(final int x, final int y) {
+        return new PickShipTask(x, y, new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
