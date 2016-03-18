@@ -23,6 +23,7 @@ import java.util.Random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
@@ -32,6 +33,9 @@ public class SetupBoardPresenterTest {
     private static final int V_PADDING = 8;
 
     private SetupBoardPresenter mPresenter;
+
+    private static final Point IN_DOCK_AREA = new Point(100, 100);
+    private static final Point IN_BOARD_AREA = new Point(200, 200);
 
     @Before
     public void setup() {
@@ -46,9 +50,31 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void foo() {
+    public void dropping_ship_without_picking__has_no_effect() {
         Board board = PlacementFactory.getAlgorithm().generateBoard();
         mPresenter.dropShip(board);
+    }
+
+    @Test
+    public void trying_to_drop_ship_that_does_not_fit__returns_it_to_the_dock() {
+        Board board = new Board();
+        PriorityQueue<Ship> fleet = setFleet(new Ship(2));
+        mPresenter.touch(IN_DOCK_AREA);
+        mPresenter.pickDockedShip();
+        mPresenter.dropShip(board);
+        assertThat(fleet.size(), is(1));
+        assertThat(board.getShips().size(), is(0));
+    }
+
+    @Test
+    public void dropping_ship_on_board__moves_it_from_dock_to_board() {
+        Board board = new Board();
+        PriorityQueue<Ship> fleet = setFleet(new Ship(2));
+        mPresenter.touch(IN_BOARD_AREA);
+        mPresenter.pickDockedShip();
+        mPresenter.dropShip(board);
+        assertThat(fleet.size(), is(0));
+        assertThat(board.getShips().size(), is(1));
     }
 
     @Test
@@ -60,7 +86,7 @@ public class SetupBoardPresenterTest {
     @Test
     public void after_touch_and_docked_ship_pickup__there_is_valid_picked_ship_rect() {
         setFleet(new Ship(2));
-        mPresenter.touch(100, 100);
+        mPresenter.touch(IN_DOCK_AREA);
         mPresenter.pickDockedShip();
         assertThat(mPresenter.getPickedShipRect(), equalTo(new Rect(69, 85, 131, 116)));
     }
@@ -80,9 +106,20 @@ public class SetupBoardPresenterTest {
         assertThat(mPresenter.hasPickedShip(), is(false));
     }
 
-    private void setFleet(Ship ship) {
+    @Test
+    public void coordinate_is_in_dock_area() {
+        assertThat(mPresenter.isInDockArea(IN_DOCK_AREA), is(true));
+    }
+
+    @Test
+    public void coordinate_is_not_in_dock_area() {
+        assertThat(mPresenter.isInDockArea(IN_BOARD_AREA), is(false));
+    }
+
+    private PriorityQueue<Ship> setFleet(Ship ship) {
         PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
         fleet.add(ship);
         mPresenter.setFleet(fleet);
+        return fleet;
     }
 }

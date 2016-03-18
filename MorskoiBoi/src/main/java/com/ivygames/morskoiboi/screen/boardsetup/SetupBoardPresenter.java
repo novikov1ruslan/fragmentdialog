@@ -71,6 +71,10 @@ final class SetupBoardPresenter extends BasePresenter {
         return shipSize * mCellSizePx;
     }
 
+    public boolean isInDockArea(Point p) {
+        return isInDockArea(p.x, p.y);
+    }
+
     public boolean isInDockArea(int x, int y) {
         return mShipSelectionRect.contains(x, y);
     }
@@ -162,6 +166,11 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
+
+    public void touch(Point p) {
+        touch(p.x, p.y);
+    }
+
     public void touch(int x, int y) {
         mX = x;
         mY = y;
@@ -199,7 +208,7 @@ final class SetupBoardPresenter extends BasePresenter {
             return;
         }
 
-        if (!tryPlaceShip(board, mPickedShip)) {
+        if (!tryPlaceShip(board, mPickedShip, mAim)) {
             returnShipToPool(mPickedShip);
         }
 
@@ -210,9 +219,9 @@ final class SetupBoardPresenter extends BasePresenter {
     /**
      * @return true if succeeded to put down currently picked-up ship
      */
-    private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship) {
-        if (board.shipFitsTheBoard(ship, mAim)) {
-            mPlacementAlgorithm.putShipAt(board, ship, mAim.getX(), mAim.getY());
+    private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 aim) {
+        if (board.shipFitsTheBoard(ship, aim)) {
+            mPlacementAlgorithm.putShipAt(board, ship, aim.getX(), aim.getY());
             return true;
         }
         return false;
@@ -255,4 +264,5 @@ final class SetupBoardPresenter extends BasePresenter {
         mShips = Validate.notNull(ships);
         setDockedShip();
     }
+
 }
