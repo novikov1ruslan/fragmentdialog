@@ -29,7 +29,7 @@ public class RussianPlacementTest {
     @Before
 	public void setup() {
         RulesFactory.setRules(new RussianRules());
-        mAlgorithm = new RussianPlacement(new Random(1), RulesFactory.getRules());
+        mAlgorithm = new RussianPlacement(new Random(1), RulesFactory.getRules().getTotalShips());
 	}
 
     @Test

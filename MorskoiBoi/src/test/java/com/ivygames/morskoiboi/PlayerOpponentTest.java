@@ -45,7 +45,7 @@ public class PlayerOpponentTest {
         MockitoAnnotations.initMocks(this);
         Rules rules = new RussianRules();
         RulesFactory.setRules(rules);
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(), rules));
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(), rules.getTotalShips()));
         mPlayer = new PlayerOpponent(PLAYER_NAME, PlacementFactory.getAlgorithm());
         mPlayer.setOpponent(mEnemy);
     }

@@ -42,7 +42,7 @@ public class RussianRulesTest {
     public void setUp() {
         RulesFactory.setRules(new RussianRules());
         Rules rules = RulesFactory.getRules();
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(1), rules));
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(1), rules.getTotalShips()));
         mAlgorithm = PlacementFactory.getAlgorithm();
         mRules = RulesFactory.getRules();
     }

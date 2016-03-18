@@ -76,7 +76,7 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @NonNull
-    public Point getTopLeftPointInTopArea(int shipSize) {
+    private Point getTopLeftPointInTopArea(int shipSize) {
         int left = mShipSelectionRect.centerX() - getShipWidthInPx(shipSize) / 2;
         int top = mShipSelectionRect.centerY() - mCellSizePx / 2;
         return new Point(left, top);

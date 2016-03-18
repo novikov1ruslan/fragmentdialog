@@ -8,8 +8,8 @@ import java.util.Random;
 
 public final class AmericanPlacement extends AbstractPlacement {
 
-    public AmericanPlacement(Random random, Rules rules) {
-        super(random, rules);
+    public AmericanPlacement(Random random, int[] totalShips) {
+        super(random, totalShips);
     }
 
     protected final void markAdjacentCellsIfNeeded(Ship ship, Cell cell) {
