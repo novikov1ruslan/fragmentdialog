@@ -19,7 +19,6 @@ import static org.junit.Assert.assertThat;
 public class BasePresenterTest {
 
     private BasePresenter mPresenter;
-    private static final int H_OFFSET = 10;
     private static final int V_OFFSET = 20;
     private static final int H_PADDING = 6;
     private static final int V_PADDING = 8;
@@ -29,7 +28,6 @@ public class BasePresenterTest {
         mPresenter = new BasePresenter(10, 2);
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
-        mPresenter.setBoardHorizontalOffset(H_OFFSET);
     }
 
     @Test
@@ -40,7 +38,7 @@ public class BasePresenterTest {
         int height = 1;
         Aiming aiming = mPresenter.getAiming(i, j, width, height);
 
-        Aiming expected = new Aiming(new Rect(170, 105, 201, 415), new Rect(15, 260, 325, 291));
+        Aiming expected = new Aiming(new Rect(160, 105, 191, 415), new Rect(5, 260, 315, 291));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -52,7 +50,7 @@ public class BasePresenterTest {
         int height = 4;
         Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
 
-        Aiming expected = new Aiming(new Rect(201, 105, 232, 415), new Rect(15, 291, 325, 415));
+        Aiming expected = new Aiming(new Rect(191, 105, 222, 415), new Rect(5, 291, 315, 415));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -64,7 +62,7 @@ public class BasePresenterTest {
         int height = 1;
         Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
 
-        Aiming expected = new Aiming(new Rect(294, 105, 325, 415), new Rect(15, 384, 325, 415));
+        Aiming expected = new Aiming(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -76,7 +74,7 @@ public class BasePresenterTest {
         int height = 4;
         Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
 
-        Aiming expected = new Aiming(new Rect(294, 105, 325, 415), new Rect(15, 384, 325, 415));
+        Aiming expected = new Aiming(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -102,7 +100,7 @@ public class BasePresenterTest {
     public void getMark() {
         Mark mark = mPresenter.getMark(0, 0);
         Mark expected = new Mark();
-        expected.centerX = 30;
+        expected.centerX = 20;
         expected.centerY = 120;
         expected.outerRadius = 9.0f;
         expected.innerRadius = 4.0f;
@@ -113,11 +111,10 @@ public class BasePresenterTest {
     public void getMarkForLandscape() {
         mPresenter.measure(800, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
-        mPresenter.setBoardHorizontalOffset(H_OFFSET);
 
         Mark mark = mPresenter.getMark(0, 0);
         Mark expected = new Mark();
-        expected.centerX = 198;
+        expected.centerX = 188;
         expected.centerY = 48;
         expected.outerRadius = 14.0f;
         expected.innerRadius = 7.0f;
@@ -128,32 +125,32 @@ public class BasePresenterTest {
     @Test
     public void getBoard() {
         BoardG board = mPresenter.getBoard();
-        float[][] lines={{15.0f, 105.0f, 15.0f, 415.0f},
-        {46.0f, 105.0f, 46.0f, 415.0f},
-        {77.0f, 105.0f, 77.0f, 415.0f},
-        {108.0f, 105.0f, 108.0f, 415.0f},
-        {139.0f, 105.0f, 139.0f, 415.0f},
-        {170.0f, 105.0f, 170.0f, 415.0f},
-        {201.0f, 105.0f, 201.0f, 415.0f},
-        {232.0f, 105.0f, 232.0f, 415.0f},
-        {263.0f, 105.0f, 263.0f, 415.0f},
-        {294.0f, 105.0f, 294.0f, 415.0f},
-        {15.0f, 105.0f, 325.0f, 105.0f},
-        {15.0f, 136.0f, 325.0f, 136.0f},
-        {15.0f, 167.0f, 325.0f, 167.0f},
-        {15.0f, 198.0f, 325.0f, 198.0f},
-        {15.0f, 229.0f, 325.0f, 229.0f},
-        {15.0f, 260.0f, 325.0f, 260.0f},
-        {15.0f, 291.0f, 325.0f, 291.0f},
-        {15.0f, 322.0f, 325.0f, 322.0f},
-        {15.0f, 353.0f, 325.0f, 353.0f},
-        {15.0f, 384.0f, 325.0f, 384.0f},
-        {15.0f, 415.0f, 325.0f, 415.0f},
+        float[][] lines={{5.0f, 105.0f, 5.0f, 415.0f},
+        {36.0f, 105.0f, 36.0f, 415.0f},
+        {67.0f, 105.0f, 67.0f, 415.0f},
+        {98.0f, 105.0f, 98.0f, 415.0f},
+        {129.0f, 105.0f, 129.0f, 415.0f},
+        {160.0f, 105.0f, 160.0f, 415.0f},
+        {191.0f, 105.0f, 191.0f, 415.0f},
+        {222.0f, 105.0f, 222.0f, 415.0f},
+        {253.0f, 105.0f, 253.0f, 415.0f},
+        {284.0f, 105.0f, 284.0f, 415.0f},
+        {5.0f, 105.0f, 315.0f, 105.0f},
+        {5.0f, 136.0f, 315.0f, 136.0f},
+        {5.0f, 167.0f, 315.0f, 167.0f},
+        {5.0f, 198.0f, 315.0f, 198.0f},
+        {5.0f, 229.0f, 315.0f, 229.0f},
+        {5.0f, 260.0f, 315.0f, 260.0f},
+        {5.0f, 291.0f, 315.0f, 291.0f},
+        {5.0f, 322.0f, 315.0f, 322.0f},
+        {5.0f, 353.0f, 315.0f, 353.0f},
+        {5.0f, 384.0f, 315.0f, 384.0f},
+        {5.0f, 415.0f, 315.0f, 415.0f},
         {0.0f, 0.0f, 0.0f, 0.0f}};
 
         BoardG expected = new BoardG();
         System.arraycopy( lines, 0, expected.lines, 0, lines.length );
-        expected.frame=new Rect(14, 104, 326, 416);
+        expected.frame=new Rect(4, 104, 316, 416);
 
         assertThat(board, equalTo(expected));
     }
@@ -161,14 +158,14 @@ public class BasePresenterTest {
     @Test
     public void getRectForShipHorizontal() {
         Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.HORIZONTAL));
-        Rect expected = new Rect(15, 105, 139, 136);
+        Rect expected = new Rect(5, 105, 129, 136);
         assertThat(rect, equalTo(expected));
     }
 
     @Test
     public void getRectForShipVertical() {
         Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.VERTICAL));
-        Rect expected = new Rect(15, 105, 46, 229);
+        Rect expected = new Rect(5, 105, 36, 229);
         assertThat(rect, equalTo(expected));
     }
 

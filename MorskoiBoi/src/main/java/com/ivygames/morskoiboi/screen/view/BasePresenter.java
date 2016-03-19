@@ -55,15 +55,6 @@ public class BasePresenter {
         calculateBoardG();
     }
 
-    @Deprecated
-    public void setBoardHorizontalOffset(int offset) {
-        mBoardRect.left += offset;
-        mBoardRect.right += offset;
-
-        calcFrameRect(mBoardRect);
-        calculateBoardG();
-    }
-
     private int calcSmallestWidth(int w, int h, int hPadding, int vPadding) {
         int paddedWidth = w - hPadding;
         int paddedHeight = h - vPadding;

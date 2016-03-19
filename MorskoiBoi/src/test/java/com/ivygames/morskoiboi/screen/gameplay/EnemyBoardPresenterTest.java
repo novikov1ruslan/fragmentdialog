@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
 public class EnemyBoardPresenterTest {
 
     private static final float CELL_RATIO = 2f;
-    private static final int H_OFFSET = 10;
     private static final int V_OFFSET = 20;
     private static final int H_PADDING = 6;
     private static final int V_PADDING = 8;
@@ -44,20 +43,19 @@ public class EnemyBoardPresenterTest {
         mPresenter.setShotListener(shotListener);
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
-        mPresenter.setBoardHorizontalOffset(H_OFFSET);
     }
 
     @Test
     public void testGetAnimationDestination() {
         Rect animationDestination = mPresenter.getAnimationDestination(Vector2.get(5, 6), CELL_RATIO);
-        Rect expected = new Rect(155, 276, 215, 336);
+        Rect expected = new Rect(145, 276, 205, 336);
         assertThat(animationDestination, equalTo(expected));
     }
 
     @Test
     public void testGetAimRectDst() throws Exception {
         Rect aimRectDst = mPresenter.getAimRectDst(Vector2.get(5, 5));
-        Rect expected = new Rect(170, 260, 201, 291);
+        Rect expected = new Rect(160, 260, 191, 291);
         assertThat(aimRectDst, equalTo(expected));
     }
 
@@ -72,12 +70,12 @@ public class EnemyBoardPresenterTest {
     public void testGetTouchedI() throws Exception {
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
         int i = mPresenter.getTouchedI();
-        assertThat(i, is(2));
+        assertThat(i, is(3));
     }
 
     @Test
     public void testGetBoardRect() throws Exception {
-        assertThat(mPresenter.getBoardRect(), equalTo(new Rect(15, 105, 325, 415)));
+        assertThat(mPresenter.getBoardRect(), equalTo(new Rect(5, 105, 315, 415)));
     }
 
     @Test
@@ -89,7 +87,7 @@ public class EnemyBoardPresenterTest {
     @Test
     public void testOnTouch2() throws Exception {
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
-        verify(shotListener, times(1)).onAimingFinished(2, 3);
+        verify(shotListener, times(1)).onAimingFinished(3, 3);
     }
 
     @Test

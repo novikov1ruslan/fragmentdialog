@@ -38,12 +38,6 @@ final class EnemyBoardPresenter extends BasePresenter {
         mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
     }
 
-    @Override
-    public void setBoardHorizontalOffset(int offset) {
-        super.setBoardHorizontalOffset(offset);
-        mAnimationHorOffset = mBoardRect.left + mHalfCellSize;
-    }
-
     public void setShotListener(ShotListener shotListener) {
         mShotListener = shotListener;
     }
