@@ -170,7 +170,7 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
-    public void updatePickedGeometry() {
+    private void updatePickedGeometry() {
         mPickedShipRect = centerPickedShipRectAround(mPickedShip, mX, mY);
         mAim = getPickedShipCoordinate(mPickedShipRect);
     }

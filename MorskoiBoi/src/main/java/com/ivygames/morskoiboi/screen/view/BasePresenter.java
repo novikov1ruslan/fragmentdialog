@@ -224,7 +224,7 @@ public class BasePresenter {
         return getRectForShip(ship, point.x, point.y);
     }
 
-    public Rect getRectForShip(Ship ship, int left, int top) {
+    private Rect getRectForShip(Ship ship, int left, int top) {
         isTrue(mCellSizePx > 0, "call measure first");
 
         mShipRect.left = left;
