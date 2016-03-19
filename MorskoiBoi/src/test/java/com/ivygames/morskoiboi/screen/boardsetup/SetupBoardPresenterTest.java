@@ -2,12 +2,14 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -23,11 +25,10 @@ import java.util.Random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
-    private static final int H_OFFSET = 10;
+    private static final int H_OFFSET = 0;
     private static final int V_OFFSET = 20;
     private static final int H_PADDING = 6;
     private static final int V_PADDING = 8;
@@ -78,12 +79,6 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void testGetShipDisplayAreaCenter() {
-        Point center = mPresenter.getShipDisplayAreaCenter();
-        assertThat(center, equalTo(new Point(240, 60)));
-    }
-
-    @Test
     public void after_touch_and_docked_ship_pickup__there_is_valid_picked_ship_rect() {
         setFleet(new Ship(2));
         mPresenter.touch(IN_DOCK_AREA);
@@ -114,6 +109,31 @@ public class SetupBoardPresenterTest {
     @Test
     public void coordinate_is_not_in_dock_area() {
         assertThat(mPresenter.isInDockArea(IN_BOARD_AREA), is(false));
+    }
+
+    @Test
+    public void testGetRectForDockedShip() {
+        setFleet(new Ship(2));
+        Rect rect = mPresenter.getRectForDockedShip();
+        assertThat(rect, equalTo(new Rect(49, 45, 111, 76)));
+    }
+
+    @Test
+    public void testGetShipDisplayAreaCenter() {
+        Point center = mPresenter.getShipDisplayAreaCenter();
+        assertThat(center, equalTo(new Point(240, 60)));
+    }
+
+    @Test
+    public void testGetRectForCell() {
+        Rect rectForCell = mPresenter.getRectForCell(5, 5);
+        assertThat(rectForCell, equalTo(new Rect(162, 322, 192, 352)));
+    }
+
+    @Test
+    public void testGetAiming() {
+        Aiming aiming = mPresenter.getAiming();
+        assertThat(aiming, equalTo(new Aiming(new Rect(), new Rect())));
     }
 
     private PriorityQueue<Ship> setFleet(Ship ship) {

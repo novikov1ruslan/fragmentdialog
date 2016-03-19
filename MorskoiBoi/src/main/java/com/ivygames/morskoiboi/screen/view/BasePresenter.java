@@ -140,38 +140,6 @@ public class BasePresenter {
         return j * mCellSizePx + mBoardRect.top;
     }
 
-    private
-    @NonNull
-    Rect getVerticalRect(int i, int widthCells) {
-        int leftVer = mBoardRect.left + i * mCellSizePx;
-        int rightVer = leftVer + widthCells * mCellSizePx;
-        int topVer = mBoardRect.top;
-        int bottomVer = mBoardRect.bottom;
-
-        vRect.left = leftVer;
-        vRect.right = rightVer;
-        vRect.top = topVer;
-        vRect.bottom = bottomVer;
-
-        return vRect;
-    }
-
-    private
-    @NonNull
-    Rect getHorizontalRect(int j, int heightCells) {
-        int leftHor = mBoardRect.left;
-        int rightHor = mBoardRect.right;
-        int topHor = mBoardRect.top + j * mCellSizePx;
-        int bottomHor = topHor + heightCells * mCellSizePx;
-
-        hRect.left = leftHor;
-        hRect.right = rightHor;
-        hRect.top = topHor;
-        hRect.bottom = bottomHor;
-
-        return hRect;
-    }
-
     private float getMarkOuterRadius() {
         return mMarkRadius;
     }
@@ -192,11 +160,13 @@ public class BasePresenter {
         mShowTurn = false;
     }
 
-    public final @NonNull Aiming getAiming(Vector2 aim, int widthCells, int heightCells) {
+    @NonNull
+    public final Aiming getAiming(Vector2 aim, int widthCells, int heightCells) {
         return getAiming(aim.getX(), aim.getY(), widthCells, heightCells);
     }
 
-    public final @NonNull Aiming getAiming(int i, int j, int widthCells, int heightCells) {
+    @NonNull
+    public final Aiming getAiming(int i, int j, int widthCells, int heightCells) {
         Validate.isTrue(widthCells > 0 && heightCells > 0);
 
         mAiming.vertical = getVerticalRect(i, widthCells);
@@ -208,6 +178,36 @@ public class BasePresenter {
             mAiming.horizontal.bottom = mBoardRect.bottom;
         }
         return mAiming;
+    }
+
+    @NonNull
+    private Rect getVerticalRect(int i, int widthCells) {
+        int leftVer = mBoardRect.left + i * mCellSizePx;
+        int rightVer = leftVer + widthCells * mCellSizePx;
+        int topVer = mBoardRect.top;
+        int bottomVer = mBoardRect.bottom;
+
+        vRect.left = leftVer;
+        vRect.right = rightVer;
+        vRect.top = topVer;
+        vRect.bottom = bottomVer;
+
+        return vRect;
+    }
+
+    @NonNull
+    private Rect getHorizontalRect(int j, int heightCells) {
+        int leftHor = mBoardRect.left;
+        int rightHor = mBoardRect.right;
+        int topHor = mBoardRect.top + j * mCellSizePx;
+        int bottomHor = topHor + heightCells * mCellSizePx;
+
+        hRect.left = leftHor;
+        hRect.right = rightHor;
+        hRect.top = topHor;
+        hRect.bottom = bottomHor;
+
+        return hRect;
     }
 
     public BoardG getBoard() {

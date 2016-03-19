@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.R;
@@ -89,7 +88,7 @@ public class BaseBoardRenderer {
         canvas.drawCircle(mark.centerX, mark.centerY, mark.innerRadius, isMiss ? mMissInnerPaint : mHitInnerPaint);
     }
 
-    public void renderConflictingCell(Canvas canvas, RectF invalidRect) {
+    public void renderConflictingCell(Canvas canvas, Rect invalidRect) {
         canvas.drawRect(invalidRect, mConflictCellPaint);
     }
 }

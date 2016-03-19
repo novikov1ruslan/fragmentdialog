@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -24,7 +23,7 @@ final class SetupBoardPresenter extends BasePresenter {
     private final Rect mShipDisplayRect = new Rect();
     private final Point shipDisplayCenter = new Point();
     private Rect mPickedShipRect = new Rect();
-    private final RectF rectF = new RectF();
+    private final Rect mRectForCell = new Rect();
     private final PlacementAlgorithm mPlacementAlgorithm = PlacementFactory.getAlgorithm();
     /**
      * ship displayed at the top of the screen (selection area)
@@ -80,37 +79,22 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @NonNull
-    private Point getTopLeftPointInTopArea(int shipSize) {
-        int left = mShipSelectionRect.centerX() - getShipWidthInPx(shipSize) / 2;
-        int top = mShipSelectionRect.centerY() - mCellSizePx / 2;
-        return new Point(left, top);
-    }
-
-    @NonNull
     public Point getShipDisplayAreaCenter() {
         return shipDisplayCenter;
     }
 
-    private int getTouchJ(int y) {
-        return (y - mBoardRect.top) / mCellSizePx;
-    }
+    public Rect getRectForCell(int i, int j) {
+        int left = mBoardRect.left + i * mCellSizePx + 1;
+        int top = mBoardRect.top + j * mCellSizePx + 1;
+        int right = left + mCellSizePx;
+        int bottom = top + mCellSizePx;
 
-    private int getTouchI(int x) {
-        return (x - mBoardRect.left) / mCellSizePx;
-    }
+        mRectForCell.left = left + 1;
+        mRectForCell.top = top + 1;
+        mRectForCell.right = right;
+        mRectForCell.bottom = bottom;
 
-    public final RectF getRectForCell(int i, int j) {
-        float left = mBoardRect.left + i * mCellSizePx + 1;
-        float top = mBoardRect.top + j * mCellSizePx + 1;
-        float right = left + mCellSizePx;
-        float bottom = top + mCellSizePx;
-
-        rectF.left = left + 1;
-        rectF.top = top + 1;
-        rectF.right = right;
-        rectF.bottom = bottom;
-
-        return rectF;
+        return mRectForCell;
     }
 
     public Ship getDockedShip() {
@@ -120,6 +104,13 @@ final class SetupBoardPresenter extends BasePresenter {
     public Rect getRectForDockedShip() {
         Point p = getTopLeftPointInTopArea(mDockedShip.getSize());
         return getRectForShip(mDockedShip, p);
+    }
+
+    @NonNull
+    private Point getTopLeftPointInTopArea(int shipSize) {
+        int left = mShipSelectionRect.centerX() - getShipWidthInPx(shipSize) / 2;
+        int top = mShipSelectionRect.centerY() - mCellSizePx / 2;
+        return new Point(left, top);
     }
 
     @Nullable
@@ -258,6 +249,14 @@ final class SetupBoardPresenter extends BasePresenter {
         int i = getTouchI(x);
         int j = getTouchJ(y);
         return Board.containsCell(i, j);
+    }
+
+    private int getTouchJ(int y) {
+        return (y - mBoardRect.top) / mCellSizePx;
+    }
+
+    private int getTouchI(int x) {
+        return (x - mBoardRect.left) / mCellSizePx;
     }
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
