@@ -233,16 +233,28 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
+    public void pickShipFromBoard(Board board, Point p) {
+        pickShipFromBoard(board, p.x, p.y);
+    }
+
     public void pickShipFromBoard(@NonNull Board board, int x, int y) {
         final int i = getTouchI(x);
         final int j = getTouchJ(y);
         mPickedShip = board.removeShipFrom(i, j);
     }
 
+    public void rotateShipAt(Board board, Point p) {
+        rotateShipAt(board, p.x, p.y);
+    }
+
     public void rotateShipAt(@NonNull Board board, int x, int y) {
         int i = getTouchI(x);
         int j = getTouchJ(y);
         board.rotateShipAt(i, j);
+    }
+
+    public boolean isOnBoard(Point p) {
+        return isOnBoard(p.x, p.y);
     }
 
     public boolean isOnBoard(int x, int y) {
@@ -263,5 +275,4 @@ final class SetupBoardPresenter extends BasePresenter {
         mShips = Validate.notNull(ships);
         setDockedShip();
     }
-
 }
