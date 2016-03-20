@@ -14,13 +14,13 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
-import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -335,8 +335,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         stopTurnTimer();
         mHandlerOpponent.stop();
-        if (mEnemy instanceof AndroidOpponent) {
-            ((AndroidOpponent) mEnemy).stopAi();
+        if (mEnemy instanceof Cancellable) {
+            ((Cancellable) mEnemy).cancel();
         }
         mSoundManager.release();
         getParent().stopService(mMatchStatusIntent);
@@ -509,7 +509,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 return;
             }
 
-            if (!mEnemyPublicBoard.containsCell(x, y)) {
+            if (!Board.containsCell(x, y)) {
                 Ln.d("pressing outside the board: " + x + "," + y);
                 return;
             }

@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.ai;
 
+import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -7,7 +8,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-final class DelayedOpponent implements Opponent {
+final class DelayedOpponent implements Opponent, Cancellable {
 
     private Thread mThread;
     private final Opponent mOpponent;
@@ -71,7 +72,8 @@ final class DelayedOpponent implements Opponent {
 
     }
 
-    synchronized void stopAi() {
+    @Override
+    public void cancel() {
         if (mThread == null) {
             Ln.v("AI not running");
         } else {

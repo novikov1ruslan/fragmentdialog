@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.AbstractOpponent;
+import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
@@ -17,7 +18,7 @@ import org.commons.logger.Ln;
 
 import java.util.Random;
 
-public class AndroidOpponent extends AbstractOpponent {
+public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private volatile BotAlgorithm mBot;
     private final String mName;
@@ -51,10 +52,6 @@ public class AndroidOpponent extends AbstractOpponent {
     @Override
     public void go() {
         mDelayedOpponent.onShotAt(mBot.shoot(mEnemyBoard));
-    }
-
-    public void stopAi() {
-        mDelayedOpponent.stopAi();
     }
 
     @Override
@@ -122,7 +119,13 @@ public class AndroidOpponent extends AbstractOpponent {
     }
 
     @Override
+    public void cancel() {
+        mDelayedOpponent.cancel();
+    }
+
+    @Override
     public String toString() {
         return mName;
     }
+
 }
