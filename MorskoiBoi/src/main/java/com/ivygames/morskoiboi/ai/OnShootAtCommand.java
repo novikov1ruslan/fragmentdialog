@@ -6,12 +6,12 @@ import com.ivygames.morskoiboi.model.Vector2;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-final class ShootAtOpponentCommand implements Runnable {
+final class OnShootAtCommand implements Runnable {
     private final Opponent mOpponent;
     private final boolean mNeedThinking;
     private final Vector2 mAim;
 
-    ShootAtOpponentCommand(Opponent opponent, Vector2 aim, boolean needThinking) {
+    OnShootAtCommand(Opponent opponent, Vector2 aim, boolean needThinking) {
         mOpponent = Validate.notNull(opponent);
         mAim = Validate.notNull(aim);
         mNeedThinking = needThinking;
@@ -20,7 +20,7 @@ final class ShootAtOpponentCommand implements Runnable {
     @Override
     public void run() {
         Ln.v("begin");
-        ShootAtOpponentCommand.simulateThinking(mNeedThinking);
+        OnShootAtCommand.simulateThinking(mNeedThinking);
         if (Thread.currentThread().isInterrupted()) {
             Ln.d("game ended - stopping thinking process");
             return;
@@ -34,7 +34,7 @@ final class ShootAtOpponentCommand implements Runnable {
         // wait from 1 to 2.5 seconds
         int extraTime = needThinking ? 1000 : 0;
         long millis = 1000 + (int) (Math.random() * (500 + extraTime));
-        ShootAtOpponentCommand.sleep(millis);
+        OnShootAtCommand.sleep(millis);
     }
 
     private static void sleep(long millis) {

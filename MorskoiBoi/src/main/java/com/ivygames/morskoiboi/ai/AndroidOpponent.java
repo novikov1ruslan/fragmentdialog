@@ -25,7 +25,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private final PlacementAlgorithm mPlacement;
     private DelayedOpponent mDelayedOpponent;
 
-    public AndroidOpponent(@NonNull  String name, @NonNull PlacementAlgorithm placement) {
+    public AndroidOpponent(@NonNull String name, @NonNull PlacementAlgorithm placement) {
         mPlacement = placement;
         mName = Validate.notNull(name);
         reset(new Random());
@@ -35,7 +35,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         super.setOpponent(opponent);
-        mDelayedOpponent = new DelayedOpponent(opponent, mMyBoard);
+        mDelayedOpponent = new DelayedOpponent(opponent);
     }
 
     @Override
@@ -56,7 +56,13 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
-        mDelayedOpponent.onShotResult(createResultForShootingAt(aim));
+        PokeResult result = createResultForShootingAt(aim);
+        mDelayedOpponent.onShotResult(result);
+        boolean andGo = result.cell.isHit() && !RulesFactory.getRules().isItDefeatedBoard(mMyBoard);
+        if (andGo) {
+            Ln.d("Android is hit, passing turn to " + mOpponent);
+            mDelayedOpponent.go();
+        }
     }
 
     @Override
@@ -108,7 +114,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onLost(Board board) {
         Ln.d("android lost - preparing for the next round");
-        mDelayedOpponent.join();
+        mDelayedOpponent.cancel();
         reset(new Random());
     }
 

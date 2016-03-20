@@ -1,97 +1,66 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.Cancellable;
-import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.DummyOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
-import org.commons.logger.Ln;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
-final class DelayedOpponent implements Opponent, Cancellable {
-
-    private Thread mThread;
+final class DelayedOpponent extends DummyOpponent implements Cancellable {
+    private static int sCounter;
+    private static final boolean NO_NEED_TO_THINK = false;
     private final Opponent mOpponent;
-    private final Board mMyBoard;
+    private boolean mShouldWait = true;
+    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
+        @Override
+        public Thread newThread(@NonNull Runnable r) {
+            return new Thread(r, "bot" + sCounter++);
+        }
+    });
 
-    DelayedOpponent(Opponent opponent, Board myBoard) {
+    DelayedOpponent(Opponent opponent) {
         mOpponent = opponent;
-        mMyBoard = myBoard;
     }
 
     @Override
     public void onShotAt(Vector2 aim) {
-        join();
-        mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, false), "bot");
-        mThread.start();
+        mShouldWait = true;
+        mExecutor.submit(new OnShootAtCommand(mOpponent, aim, NO_NEED_TO_THINK));
     }
 
     @Override
     public void onShotResult(PokeResult result) {
-        join();
-        mThread = new Thread(new PassShotResultToOpponentCommand(mOpponent, result, mMyBoard), "bot");
-        mThread.start();
+        mShouldWait = false;
+        mExecutor.submit(new OnShotResultCommand(mOpponent, result));
     }
 
     @Override
     public void go() {
-        join();
-        mThread = new Thread(new GoCommand(mOpponent), "go_bot");
-        mThread.start();
-    }
-
-    @Override
-    public void setOpponent(Opponent opponent) {
-
+        mExecutor.submit(new GoCommand(mOpponent, mShouldWait));
+        mShouldWait = true;
     }
 
     @Override
     public void onEnemyBid(int bid) {
-        join();
-        mThread = new Thread(new OnEnemyBidCommand(mOpponent, bid), "bidding_bot");
-        mThread.start();
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public void onLost(Board board) {
-
-    }
-
-    @Override
-    public void setOpponentVersion(int ver) {
-
-    }
-
-    @Override
-    public void onNewMessage(String text) {
-
+        mShouldWait = true;
+        mExecutor.submit(new OnEnemyBidCommand(mOpponent, bid));
     }
 
     @Override
     public void cancel() {
-        if (mThread == null) {
-            Ln.v("AI not running");
-        } else {
-            Ln.d("stopping AI");
-            mThread.interrupt();
-            join();
+        mExecutor.shutdownNow();
+        try {
+            mExecutor.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
     }
 
-    void join() {
-        if (mThread != null && mThread.isAlive()) {
-            try {
-                Ln.w("need to join");
-                mThread.interrupt();
-                mThread.join();
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
 }
