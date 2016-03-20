@@ -11,7 +11,7 @@ final class DelayedOpponent implements Opponent {
 
     private Thread mThread;
     private final Opponent mOpponent;
-    private Board mMyBoard;
+    private final Board mMyBoard;
 
     DelayedOpponent(Opponent opponent, Board myBoard) {
         mOpponent = opponent;
@@ -21,7 +21,7 @@ final class DelayedOpponent implements Opponent {
     @Override
     public void onShotAt(Vector2 aim) {
         join();
-        mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, false), "Bot");
+        mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, false), "bot");
         mThread.start();
     }
 

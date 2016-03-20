@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.RulesFactory;
@@ -19,24 +21,24 @@ public class AndroidOpponent extends AbstractOpponent {
 
     private volatile BotAlgorithm mBot;
     private final String mName;
-    private PlacementAlgorithm mPlacement;
+    private final PlacementAlgorithm mPlacement;
     private DelayedOpponent mDelayedOpponent;
 
-    public AndroidOpponent(String name, PlacementAlgorithm placementAlgorithm) {
-        mPlacement = placementAlgorithm;
+    public AndroidOpponent(@NonNull  String name, @NonNull PlacementAlgorithm placement) {
+        mPlacement = placement;
         mName = Validate.notNull(name);
         reset(new Random());
         Ln.v("new android opponent created");
     }
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
         super.setOpponent(opponent);
         mDelayedOpponent = new DelayedOpponent(opponent, mMyBoard);
     }
 
     @Override
-    protected void reset(Random random) {
+    protected void reset(@NonNull Random random) {
         super.reset(random);
         mMyBoard = mPlacement.generateBoard();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
@@ -47,22 +49,21 @@ public class AndroidOpponent extends AbstractOpponent {
     }
 
     @Override
-    public synchronized void go() {
-        Vector2 aim = mBot.shoot(mEnemyBoard);
-        mDelayedOpponent.onShotAt(aim);
+    public void go() {
+        mDelayedOpponent.onShotAt(mBot.shoot(mEnemyBoard));
     }
 
-    synchronized void stopAi() {
+    public void stopAi() {
         mDelayedOpponent.stopAi();
     }
 
     @Override
-    public synchronized void onShotAt(Vector2 aim) {
+    public void onShotAt(@NonNull Vector2 aim) {
         mDelayedOpponent.onShotResult(createResultForShootingAt(aim));
     }
 
     @Override
-    public void onShotResult(PokeResult result) {
+    public void onShotResult(@NonNull PokeResult result) {
         mBot.setLastResult(result);
         updateEnemyBoard(result);
         Ln.v(result);
@@ -79,13 +80,14 @@ public class AndroidOpponent extends AbstractOpponent {
         }
     }
 
+    @NonNull
     @Override
     public String getName() {
         return mName;
     }
 
     @Override
-    public synchronized void onEnemyBid(int bid) {
+    public void onEnemyBid(int bid) {
         Ln.v(this + ": enemy bid=" + bid);
         mEnemyBid = bid;
         if (mEnemyBid == mMyBid) {
@@ -114,7 +116,7 @@ public class AndroidOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void onNewMessage(String text) {
+    public void onNewMessage(@NonNull String text) {
         // mirroring
         mOpponent.onNewMessage(text + "!!!");
     }

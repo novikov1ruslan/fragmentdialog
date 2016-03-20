@@ -2,19 +2,12 @@ package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.model.Game;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class AndroidGame extends Game {
     private static final int TURN_TIMEOUT = 2 * 60 * 1000;
 
-    private final AndroidOpponent mOpponent;
-
-    public AndroidGame(AndroidOpponent opponent) {
-        super();
-
-        Validate.notNull(opponent);
-        mOpponent = opponent;
+    public AndroidGame() {
         Ln.v("new android game created");
     }
 
@@ -27,13 +20,6 @@ public class AndroidGame extends Game {
 
         super.finish();
         Ln.d("finishing Android game - AI stopped");
-    }
-
-    @Override
-    public void finishMatch() {
-        Ln.d("finishing match");
-        super.finishMatch();
-        mOpponent.stopAi();
     }
 
     @Override

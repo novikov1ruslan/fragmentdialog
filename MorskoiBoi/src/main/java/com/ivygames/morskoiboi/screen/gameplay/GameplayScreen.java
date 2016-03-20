@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
+import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -335,7 +336,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         stopTurnTimer();
         mHandlerOpponent.stop();
-        mGame.finishMatch();
+        if (mEnemy instanceof AndroidOpponent) {
+            ((AndroidOpponent) mEnemy).stopAi();
+        }
         mSoundManager.release();
         getParent().stopService(mMatchStatusIntent);
         Ln.d(this + " screen destroyed");

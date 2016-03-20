@@ -56,15 +56,10 @@ public abstract class Game {
 
     public void finish() {
         mFinished = true;
-        finishMatch();
     }
 
     public boolean hasFinished() {
         return mFinished;
-    }
-
-    public void finishMatch() {
-
     }
 
     /**

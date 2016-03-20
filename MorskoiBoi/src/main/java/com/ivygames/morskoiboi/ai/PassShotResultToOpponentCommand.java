@@ -22,7 +22,6 @@ final class PassShotResultToOpponentCommand implements Runnable {
 
     @Override
     public void run() {
-        // FIXME: data accessed in this method is not synchronized - not volatile
         Ln.v("begin");
         try {
             Thread.sleep(WHISTLE_SOUND_DELAY);
