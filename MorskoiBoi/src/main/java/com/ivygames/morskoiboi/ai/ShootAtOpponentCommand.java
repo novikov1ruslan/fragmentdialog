@@ -12,12 +12,8 @@ final class ShootAtOpponentCommand implements Runnable {
     private final Vector2 mAim;
 
     ShootAtOpponentCommand(Opponent opponent, Vector2 aim, boolean needThinking) {
-        Validate.notNull(opponent);
-        mOpponent = opponent;
-
-        Validate.notNull(aim);
-        mAim = aim;
-
+        mOpponent = Validate.notNull(opponent);
+        mAim = Validate.notNull(aim);
         mNeedThinking = needThinking;
     }
 

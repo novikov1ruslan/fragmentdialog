@@ -16,14 +16,14 @@ import java.util.Random;
 
 public class AndroidOpponent extends AbstractOpponent {
 
-    private volatile BotAlgorithm mAlgorithm;
+    private volatile BotAlgorithm mBot;
     private final String mName;
     private Thread mThread;
+    private PlacementAlgorithm mPlacement;
 
     public AndroidOpponent(String name, PlacementAlgorithm placementAlgorithm) {
-        super(placementAlgorithm);
-        Validate.notNull(name);
-        mName = name;
+        mPlacement = placementAlgorithm;
+        mName = Validate.notNull(name);
         reset(new Random());
         Ln.v("new android opponent created");
     }
@@ -31,8 +31,8 @@ public class AndroidOpponent extends AbstractOpponent {
     @Override
     protected void reset(Random random) {
         super.reset(random);
-        mMyBoard = PlacementFactory.getAlgorithm().generateBoard();
-        mAlgorithm = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+        mMyBoard = mPlacement.generateBoard();
+        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
         if (GameConstants.IS_TEST_MODE) {
             Ln.i(this + ": my board: " + mMyBoard);
@@ -41,7 +41,7 @@ public class AndroidOpponent extends AbstractOpponent {
 
     @Override
     public synchronized void go() {
-        Vector2 aim = mAlgorithm.shoot(mEnemyBoard);
+        Vector2 aim = mBot.shoot(mEnemyBoard);
         join();
         mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, false), "Bot");
         mThread.start();
@@ -67,7 +67,7 @@ public class AndroidOpponent extends AbstractOpponent {
 
     @Override
     public void onShotResult(PokeResult result) {
-        mAlgorithm.setLastResult(result);
+        mBot.setLastResult(result);
         updateEnemyBoard(result);
         Ln.v(result);
 

@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -23,10 +22,6 @@ public abstract class AbstractOpponent implements Opponent {
     protected volatile int mMyBid = IMPOSSIBLE_BID;
 
     protected volatile int mEnemyBid = IMPOSSIBLE_BID;
-
-    protected AbstractOpponent(PlacementAlgorithm algorithm) {
-
-    }
 
     protected void reset(Random random) {
         Ln.d(this + ": initializing boards and bids");
