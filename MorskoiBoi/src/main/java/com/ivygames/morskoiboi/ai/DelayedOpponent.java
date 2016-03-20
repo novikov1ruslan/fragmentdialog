@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Cancellable;
+import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.DummyOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -13,10 +14,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-final class DelayedOpponent extends DummyOpponent implements Cancellable {
+public class DelayedOpponent extends DummyOpponent implements CancellableOpponent {
     private static int sCounter;
     private static final boolean NO_NEED_TO_THINK = false;
-    private final Opponent mOpponent;
+    private Opponent mOpponent;
     private boolean mShouldWait = true;
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
         @Override
@@ -25,7 +26,8 @@ final class DelayedOpponent extends DummyOpponent implements Cancellable {
         }
     });
 
-    DelayedOpponent(Opponent opponent) {
+    @Override
+    public void setOpponent(Opponent opponent) {
         mOpponent = opponent;
     }
 

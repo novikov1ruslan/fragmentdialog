@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.Cancellable;
+import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
@@ -13,7 +14,6 @@ import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.acra.ACRA;
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.Random;
@@ -23,11 +23,14 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private volatile BotAlgorithm mBot;
     private final String mName;
     private final PlacementAlgorithm mPlacement;
-    private DelayedOpponent mDelayedOpponent;
+    private final CancellableOpponent mDelegate;
 
-    public AndroidOpponent(@NonNull String name, @NonNull PlacementAlgorithm placement) {
+    public AndroidOpponent(@NonNull String name,
+                           @NonNull PlacementAlgorithm placement,
+                           @NonNull CancellableOpponent delegate) {
         mPlacement = placement;
-        mName = Validate.notNull(name);
+        mName = name;
+        mDelegate = delegate;
         reset(new Random());
         Ln.v("new android opponent created");
     }
@@ -35,7 +38,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         super.setOpponent(opponent);
-        mDelayedOpponent = new DelayedOpponent(opponent);
+        mDelegate.setOpponent(opponent);
     }
 
     @Override
@@ -51,17 +54,17 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void go() {
-        mDelayedOpponent.onShotAt(mBot.shoot(mEnemyBoard));
+        mDelegate.onShotAt(mBot.shoot(mEnemyBoard));
     }
 
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
         PokeResult result = createResultForShootingAt(aim);
-        mDelayedOpponent.onShotResult(result);
+        mDelegate.onShotResult(result);
         boolean andGo = result.cell.isHit() && !RulesFactory.getRules().isItDefeatedBoard(mMyBoard);
         if (andGo) {
             Ln.d("Android is hit, passing turn to " + mOpponent);
-            mDelayedOpponent.go();
+            mDelegate.go();
         }
     }
 
@@ -100,9 +103,9 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         Ln.d("bidding against " + mOpponent + " with result " + isOpponentTurn());
         if (isOpponentTurn()) {
-            mDelayedOpponent.go();
+            mDelegate.go();
         } else {
-            mDelayedOpponent.onEnemyBid(mMyBid);
+            mDelegate.onEnemyBid(mMyBid);
         }
     }
 
@@ -114,7 +117,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onLost(Board board) {
         Ln.d("android lost - preparing for the next round");
-        mDelayedOpponent.cancel();
+        mDelegate.cancel();
         reset(new Random());
     }
 
@@ -126,7 +129,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void cancel() {
-        mDelayedOpponent.cancel();
+        mDelegate.cancel();
     }
 
     @Override

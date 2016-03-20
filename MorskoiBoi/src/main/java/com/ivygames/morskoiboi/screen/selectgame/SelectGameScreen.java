@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
+import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
@@ -144,8 +145,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
-        PlacementAlgorithm placementAlgorithm = PlacementFactory.getAlgorithm();
-        AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), placementAlgorithm);
+        PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
+        AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), placement, new DelayedOpponent());
         Model.instance.game = new AndroidGame();
         Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName()), opponent);
         showBoardSetup();
