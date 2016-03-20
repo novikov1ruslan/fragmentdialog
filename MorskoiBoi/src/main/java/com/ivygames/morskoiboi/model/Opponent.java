@@ -18,7 +18,6 @@ public interface Opponent {
 
     void go();
 
-    // TODO: remove it from the interface
     void setOpponent(Opponent opponent);
 
     void onEnemyBid(int bid);

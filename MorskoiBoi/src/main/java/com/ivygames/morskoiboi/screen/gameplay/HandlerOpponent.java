@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.os.Handler;
 
@@ -9,7 +9,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-public class HandlerOpponent implements Opponent {
+final class HandlerOpponent implements Opponent {
 
     private final Handler mHandler;
     private final Opponent mOpponent;

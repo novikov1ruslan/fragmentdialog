@@ -15,7 +15,6 @@ import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.HandlerOpponent;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
