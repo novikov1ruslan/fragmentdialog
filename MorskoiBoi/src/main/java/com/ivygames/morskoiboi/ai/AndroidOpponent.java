@@ -4,6 +4,7 @@ import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianBot;
@@ -18,14 +19,20 @@ public class AndroidOpponent extends AbstractOpponent {
 
     private volatile BotAlgorithm mBot;
     private final String mName;
-    private Thread mThread;
     private PlacementAlgorithm mPlacement;
+    private DelayedOpponent mDelayedOpponent;
 
     public AndroidOpponent(String name, PlacementAlgorithm placementAlgorithm) {
         mPlacement = placementAlgorithm;
         mName = Validate.notNull(name);
         reset(new Random());
         Ln.v("new android opponent created");
+    }
+
+    @Override
+    public void setOpponent(Opponent opponent) {
+        super.setOpponent(opponent);
+        mDelayedOpponent = new DelayedOpponent(opponent, mMyBoard);
     }
 
     @Override
@@ -42,27 +49,16 @@ public class AndroidOpponent extends AbstractOpponent {
     @Override
     public synchronized void go() {
         Vector2 aim = mBot.shoot(mEnemyBoard);
-        join();
-        mThread = new Thread(new ShootAtOpponentCommand(mOpponent, aim, false), "Bot");
-        mThread.start();
+        mDelayedOpponent.onShotAt(aim);
     }
 
     synchronized void stopAi() {
-        if (mThread == null) {
-            Ln.v("AI not running");
-        } else {
-            Ln.d("stopping AI");
-            mThread.interrupt();
-            join();
-        }
+        mDelayedOpponent.stopAi();
     }
 
     @Override
     public synchronized void onShotAt(Vector2 aim) {
-        PokeResult result = createResultForShootingAt(aim);
-        join();
-        mThread = new Thread(new PassShotResultToOpponentCommand(mOpponent, result, mMyBoard), "bot");
-        mThread.start();
+        mDelayedOpponent.onShotResult(createResultForShootingAt(aim));
     }
 
     @Override
@@ -88,29 +84,21 @@ public class AndroidOpponent extends AbstractOpponent {
         return mName;
     }
 
-    private void join() {
-        if (mThread != null && mThread.isAlive()) {
-            try {
-                Ln.w("need to join");
-                mThread.interrupt();
-                mThread.join();
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
     @Override
     public synchronized void onEnemyBid(int bid) {
         Ln.v(this + ": enemy bid=" + bid);
         mEnemyBid = bid;
-        join();
         if (mEnemyBid == mMyBid) {
             ACRA.getErrorReporter().handleException(new RuntimeException("stall"));
             mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
         }
-        mThread = new Thread(new StartCommand(mOpponent, mMyBid, mEnemyBid), "bidding_boat");
-        mThread.start();
+        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
+        Ln.d("bidding against " + mOpponent + " with result " + isOpponentTurn());
+        if (isOpponentTurn()) {
+            mDelayedOpponent.go();
+        } else {
+            mDelayedOpponent.onEnemyBid(mMyBid);
+        }
     }
 
     @Override
@@ -121,7 +109,7 @@ public class AndroidOpponent extends AbstractOpponent {
     @Override
     public void onLost(Board board) {
         Ln.d("android lost - preparing for the next round");
-        join();
+        mDelayedOpponent.join();
         reset(new Random());
     }
 

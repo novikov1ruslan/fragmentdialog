@@ -46,7 +46,7 @@ public class PlayerOpponentTest {
         Rules rules = new RussianRules();
         RulesFactory.setRules(rules);
         PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(), rules.getTotalShips()));
-        mPlayer = new PlayerOpponent(PLAYER_NAME, PlacementFactory.getAlgorithm());
+        mPlayer = new PlayerOpponent(PLAYER_NAME);
         mPlayer.setOpponent(mEnemy);
     }
 

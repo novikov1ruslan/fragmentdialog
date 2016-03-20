@@ -147,7 +147,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         PlacementAlgorithm placementAlgorithm = PlacementFactory.getAlgorithm();
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), placementAlgorithm);
         Model.instance.game = new AndroidGame(opponent);
-        Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName(), placementAlgorithm), opponent);
+        Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName()), opponent);
         showBoardSetup();
     }
 

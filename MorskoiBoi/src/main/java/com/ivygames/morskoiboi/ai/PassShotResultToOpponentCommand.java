@@ -15,14 +15,9 @@ final class PassShotResultToOpponentCommand implements Runnable {
     private final Board mMyBoard;
 
     PassShotResultToOpponentCommand(Opponent opponent, PokeResult result, Board board) {
-        Validate.notNull(opponent);
-        mOpponent = opponent;
-
-        Validate.notNull(result);
-        mResult = result;
-
-        Validate.notNull(board);
-        mMyBoard = board;
+        mOpponent = Validate.notNull(opponent);
+        mResult = Validate.notNull(result);
+        mMyBoard = Validate.notNull(board);
     }
 
     @Override

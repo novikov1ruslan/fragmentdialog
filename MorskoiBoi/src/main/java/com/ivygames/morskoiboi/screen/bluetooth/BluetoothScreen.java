@@ -185,8 +185,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         BluetoothOpponent opponent = new BluetoothOpponent(connection);
         connection.setMessageReceiver(opponent);
         String playerName = GameSettings.get().getPlayerName();
-        PlacementAlgorithm placementAlgorithm = PlacementFactory.getAlgorithm();
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placementAlgorithm), opponent);
+        Model.instance.setOpponents(new PlayerOpponent(playerName), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
         setScreen(new BoardSetupScreen(getParent()));
