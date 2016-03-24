@@ -151,7 +151,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         Rules rules = RulesFactory.getRules();
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), placement, rules, new DelayedOpponent());
         Model.instance.game = new AndroidGame();
-        Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName(), placement), opponent);
+        Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName(), placement, rules), opponent);
         showBoardSetup();
     }
 

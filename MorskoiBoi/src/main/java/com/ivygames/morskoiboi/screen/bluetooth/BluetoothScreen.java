@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -186,7 +188,8 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         connection.setMessageReceiver(opponent);
         String playerName = GameSettings.get().getPlayerName();
         PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placement), opponent);
+        Rules rules = RulesFactory.getRules();
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
         setScreen(new BoardSetupScreen(getParent()));

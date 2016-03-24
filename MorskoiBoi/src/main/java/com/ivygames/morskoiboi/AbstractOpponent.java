@@ -10,8 +10,6 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-import java.util.Random;
-
 public abstract class AbstractOpponent implements Opponent {
     private static final int IMPOSSIBLE_BID = -1;
 
@@ -20,20 +18,19 @@ public abstract class AbstractOpponent implements Opponent {
     protected Opponent mOpponent;
 
     protected volatile int mMyBid = IMPOSSIBLE_BID;
-
     protected volatile int mEnemyBid = IMPOSSIBLE_BID;
+
     protected final PlacementAlgorithm mPlacement;
 
     protected AbstractOpponent(PlacementAlgorithm placement) {
         mPlacement = placement;
     }
 
-    protected void reset(Random random) {
+    protected void reset(int myBid) {
         Ln.d(this + ": initializing boards and bids");
         mMyBoard = new Board();
         mEnemyBoard = new Board();
-        random.setSeed(System.currentTimeMillis() + hashCode());
-        mMyBid = random.nextInt(Integer.MAX_VALUE);
+        mMyBid = myBid;
         mEnemyBid = IMPOSSIBLE_BID;
     }
 

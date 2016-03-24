@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.AbstractOpponent;
+import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.GameConstants;
@@ -33,7 +34,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mName = name;
         mRules = rules;
         mDelegate = delegate;
-        reset(new Random());
+        reset(new Bidder().newBid());
         Ln.v("new android opponent created");
     }
 
@@ -44,8 +45,8 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     }
 
     @Override
-    protected void reset(@NonNull Random random) {
-        super.reset(random);
+    protected void reset(int myBid) {
+        super.reset(myBid);
         mMyBoard = mPlacement.generateBoard();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
@@ -83,7 +84,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I lost - notifying " + mOpponent);
                 mOpponent.onLost(mMyBoard);
-                reset(new Random());
+                reset(new Bidder().newBid());
             }
         }
     }
@@ -120,7 +121,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void onLost(Board board) {
         Ln.d("android lost - preparing for the next round");
         mDelegate.cancel();
-        reset(new Random());
+        reset(new Bidder().newBid());
     }
 
     @Override

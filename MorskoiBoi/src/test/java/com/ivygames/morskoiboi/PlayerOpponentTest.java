@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -25,11 +24,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class PlayerOpponentTest {
@@ -40,51 +37,50 @@ public class PlayerOpponentTest {
     private Opponent mEnemy;
     @Mock
     private Random mRandom;
+    private PlacementAlgorithm mPlacement;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         Rules rules = new RussianRules();
-        RulesFactory.setRules(rules);
-        PlacementAlgorithm placement = new RussianPlacement(new Random(), rules.getTotalShips());
-        mPlayer = new PlayerOpponent(PLAYER_NAME, placement);
+        mPlacement = new RussianPlacement(new Random(), rules.getTotalShips());
+        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
         mPlayer.setOpponent(mEnemy);
     }
 
     @Test
     public void after_player_is_reset__enemy_is_not_ready() {
-        mPlayer.reset(new Random());
+        mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.isOpponentReady(), is(false));
     }
 
     @Test
     public void after_player_is_reset__his_board_is_empty() {
-        mPlayer.reset(new Random());
+        mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.getBoard().getEmptyCells().size(), is(100));
     }
 
     @Test
     public void after_player_is_reset__enemy_board_is_empty() {
-        mPlayer.reset(new Random());
+        mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.getEnemyBoard().getEmptyCells().size(), is(100));
     }
 
     @Test
     public void after_player_is_reset__it_is_not_enemy_turn() {
-        mPlayer.reset(new Random());
+        mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.isOpponentTurn(), is(false));
     }
 
     @Test
     public void after_player_is_reset__enemy_version_is_0() {
-        mPlayer.reset(new Random());
+        mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.getOpponentVersion(), is(0));
     }
 
     @Test
     public void when_enemy_bids_on_non_ready_player__enemy_does_not_go() {
-        when(mRandom.nextInt(anyInt())).thenReturn(1);
-        mPlayer.reset(mRandom);
+        mPlayer.reset(1);
         mPlayer.onEnemyBid(2);
         verify(mEnemy, never()).go();
     }
@@ -140,7 +136,7 @@ public class PlayerOpponentTest {
         Vector2 aim = Vector2.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
-        PlacementFactory.getAlgorithm().putShipAt(board, new Ship(2), 5, 5);
+        mPlacement.putShipAt(board, new Ship(2), 5, 5);
         PokeResult result = mPlayer.onShotAtForResult(aim);
         assertThat(result.cell.isHit(), is(true));
         assertThat(result.ship, is(nullValue()));
@@ -151,7 +147,7 @@ public class PlayerOpponentTest {
         Vector2 aim = Vector2.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
-        PlacementFactory.getAlgorithm().putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
+        mPlacement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
         mPlayer.onShotAtForResult(aim);
         PokeResult result = mPlayer.onShotAtForResult(Vector2.get(5, 6));
         assertThat(result.cell.isHit(), is(true));
@@ -185,7 +181,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void player_bids_second_and_lower__enemy_goes() {
-        setMyBidTo(0);
+        mPlayer.reset(0);
         mPlayer.onEnemyBid(1);
         mPlayer.startBidding();
         verify(mEnemy, times(1)).go();
@@ -194,7 +190,7 @@ public class PlayerOpponentTest {
     @Test
     public void player_bids_second_and_higher__enemy_gets_player_bid() {
         int myBid = 2;
-        setMyBidTo(myBid);
+        mPlayer.reset(myBid);
         mPlayer.onEnemyBid(1);
         mPlayer.startBidding();
         verify(mEnemy, times(1)).onEnemyBid(myBid);
@@ -202,7 +198,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void enemy_bids_second_and_higher__enemy_goes() {
-        setMyBidTo(0);
+        mPlayer.reset(0);
         mPlayer.startBidding();
         mPlayer.onEnemyBid(1);
         verify(mEnemy, times(1)).go();
@@ -210,7 +206,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void enemy_bids_second_and_lower__enemy_does_not_go() {
-        setMyBidTo(2);
+        mPlayer.reset(2);
         mPlayer.startBidding();
         mPlayer.onEnemyBid(1);
         verify(mEnemy, never()).go();
@@ -226,8 +222,4 @@ public class PlayerOpponentTest {
         return mPlayer.getEnemyBoard().getCellAt(aim);
     }
 
-    private void setMyBidTo(int myBid) {
-        when(mRandom.nextInt(anyInt())).thenReturn(myBid);
-        mPlayer.reset(mRandom);
-    }
 }

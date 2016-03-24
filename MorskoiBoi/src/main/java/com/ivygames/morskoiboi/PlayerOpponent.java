@@ -12,8 +12,6 @@ import com.ivygames.morskoiboi.model.Vector2;
 import org.acra.ACRA;
 import org.commons.logger.Ln;
 
-import java.util.Random;
-
 import de.greenrobot.event.EventBus;
 
 public final class PlayerOpponent extends AbstractOpponent {
@@ -24,24 +22,26 @@ public final class PlayerOpponent extends AbstractOpponent {
     private boolean mPlayerReady;
     private final String mName;
     private int mOpponentVersion;
+    private Rules mRules;
 
-    public PlayerOpponent(String name, PlacementAlgorithm placement) {
+    @Override
+    public void reset(int myBid) {
+        super.reset(myBid);
+        mOpponentReady = false;
+        mPlayerReady = false;
+        mOpponentVersion = 0;
+    }
+
+    public PlayerOpponent(String name, PlacementAlgorithm placement, Rules rules) {
         super(placement);
         if (TextUtils.isEmpty(name)) {
             name = BattleshipApplication.get().getString(R.string.player);
             Ln.i("player name is empty - replaced by " + name);
         }
         mName = name;
-        reset(new Random());
+        mRules = rules;
+        reset(new Bidder().newBid());
         Ln.v("new player created");
-    }
-
-    @Override
-    public void reset(Random random) {
-        super.reset(random);
-        mOpponentReady = false;
-        mPlayerReady = false;
-        mOpponentVersion = 0;
     }
 
     @Override
@@ -79,7 +79,7 @@ public final class PlayerOpponent extends AbstractOpponent {
             markNeighbouringCellsAsOccupied(ship);
         }
 
-        if (result.cell.isHit() && !RulesFactory.getRules().isItDefeatedBoard(mMyBoard)) {
+        if (result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard)) {
             Ln.d(this + ": I'm hit - " + mOpponent + " continues");
             mOpponent.go();
         }

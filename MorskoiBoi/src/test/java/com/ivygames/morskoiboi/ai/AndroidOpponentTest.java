@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.ai;
 
+import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
@@ -43,14 +44,13 @@ public class AndroidOpponentTest {
     private Rules mRules;
 
     private final Board mBoard = new Board();
-    private RussianRules sRules;
     private RussianPlacement sPlacement;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
-        sRules = new RussianRules();
-        sPlacement = new RussianPlacement(new Random(), sRules.getTotalShips());
+        Rules rules = new RussianRules();
+        sPlacement = new RussianPlacement(new Random(), rules.getTotalShips());
         when(mPlacement.generateBoard()).thenReturn(mBoard);
 
         CancellableOpponent mCancellableOpponent = new DelegateOpponent();
@@ -61,14 +61,13 @@ public class AndroidOpponentTest {
 
     @Test
     public void after_android_is_reset__it_is_not_enemy_turn() {
-        mAndroid.reset(new Random());
+        mAndroid.reset(new Bidder().newBid());
         assertThat(mAndroid.isOpponentTurn(), is(false));
     }
 
     @Test
     public void when_enemy_bids_with_higher_bid__enemy_goes() {
-        when(mRandom.nextInt(anyInt())).thenReturn(1);
-        mAndroid.reset(mRandom);
+        mAndroid.reset(1);
         mAndroid.onEnemyBid(2);
         verify(mOpponent, times(1)).go();
     }
@@ -124,4 +123,20 @@ public class AndroidOpponentTest {
         verify(mOpponent, times(1)).onLost(any(Board.class));
     }
 
+//    @Test
+//    public void when_opponent_bid_with_higher_bid__opponent_goes() {
+//        when(mRandom.nextInt(anyInt())).thenReturn(1);
+//        mAndroid.onEnemyBid(2);
+//        assertThat(mAndroid.isOpponentTurn(), is(true));
+//        verify(mOpponent, times(1)).go();
+//    }
+//
+//    @Test
+//    public void when_opponent_bid_with_lower_bid__opponent_gets_my_bid() {
+//        int myBid = 2;
+//        when(mRandom.nextInt(anyInt())).thenReturn(myBid);
+//        mAndroid.onEnemyBid(1);
+//        assertThat(mAndroid.isOpponentTurn(), is(false));
+//        verify(mOpponent, times(1)).onEnemyBid(myBid);
+//    }
 }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -51,7 +52,6 @@ import org.commons.logger.Ln;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -716,7 +716,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         private void resetPlayer() {
             Ln.d("match is over - blocking the player for further messages until start of the next round");
-            mPlayer.reset(new Random());
+            mPlayer.reset(new Bidder().newBid());
             // need to de-associate UI from the enemy opponent
             mEnemy.setOpponent(mPlayer);
         }
