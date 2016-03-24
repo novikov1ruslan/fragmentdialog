@@ -45,7 +45,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     }
 
     @Override
-    protected void reset(int myBid) {
+    protected final void reset(int myBid) {
         super.reset(myBid);
         mMyBoard = mPlacement.generateBoard();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME

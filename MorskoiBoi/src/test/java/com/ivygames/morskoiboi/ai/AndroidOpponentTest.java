@@ -24,7 +24,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -60,16 +59,9 @@ public class AndroidOpponentTest {
     }
 
     @Test
-    public void after_android_is_reset__it_is_not_enemy_turn() {
+    public void after_android_is_reset__it_is_not_opponents_turn() {
         mAndroid.reset(new Bidder().newBid());
         assertThat(mAndroid.isOpponentTurn(), is(false));
-    }
-
-    @Test
-    public void when_enemy_bids_with_higher_bid__enemy_goes() {
-        mAndroid.reset(1);
-        mAndroid.onEnemyBid(2);
-        verify(mOpponent, times(1)).go();
     }
 
     @Test

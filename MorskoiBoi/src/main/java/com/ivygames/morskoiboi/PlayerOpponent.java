@@ -37,7 +37,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void reset(int myBid) {
+    public final void reset(int myBid) {
         super.reset(myBid);
         mMyBoard = new Board();
         mOpponentReady = false;
