@@ -15,6 +15,7 @@ public class AppodealAdProvider implements AdProvider {
     public AppodealAdProvider(final Activity activity) {
         mActivity = activity;
 
+        Appodeal.disableLocationPermissionCheck();
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
         Appodeal.initialize(activity, appKey, Appodeal.BANNER);
         Appodeal.initialize(activity, appKey, Appodeal.INTERSTITIAL);

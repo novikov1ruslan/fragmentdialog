@@ -71,6 +71,7 @@ public final class Vector2 {
         return POOL[i][j];
     }
 
+    // TODO: remove getters
     public int getX() {
         return mX;
     }

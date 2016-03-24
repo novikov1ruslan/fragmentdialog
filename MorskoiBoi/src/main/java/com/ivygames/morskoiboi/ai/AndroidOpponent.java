@@ -6,7 +6,7 @@ import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.GameConstants;
-import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -22,14 +22,16 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private volatile BotAlgorithm mBot;
     private final String mName;
-    private final PlacementAlgorithm mPlacement;
     private final CancellableOpponent mDelegate;
+    private final Rules mRules;
 
     public AndroidOpponent(@NonNull String name,
                            @NonNull PlacementAlgorithm placement,
+                           @NonNull Rules rules,
                            @NonNull CancellableOpponent delegate) {
-        mPlacement = placement;
+        super(placement);
         mName = name;
+        mRules = rules;
         mDelegate = delegate;
         reset(new Random());
         Ln.v("new android opponent created");
@@ -61,7 +63,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void onShotAt(@NonNull Vector2 aim) {
         PokeResult result = createResultForShootingAt(aim);
         mDelegate.onShotResult(result);
-        boolean andGo = result.cell.isHit() && !RulesFactory.getRules().isItDefeatedBoard(mMyBoard);
+        boolean andGo = result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard);
         if (andGo) {
             Ln.d("Android is hit, passing turn to " + mOpponent);
             mDelegate.go();
@@ -78,7 +80,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             Ln.d(this + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
         } else if (result.ship != null) {
-            if (RulesFactory.getRules().isItDefeatedBoard(mEnemyBoard)) {
+            if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I lost - notifying " + mOpponent);
                 mOpponent.onLost(mMyBoard);
                 reset(new Random());

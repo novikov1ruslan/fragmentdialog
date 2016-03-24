@@ -1,10 +1,12 @@
 package com.ivygames.morskoiboi.model;
 
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.RussianRules;
 
 import junit.framework.TestCase;
 
@@ -29,7 +31,10 @@ public class BoardTest extends TestCase {
 		mBoard = new Board();
 		Random random = mock(Random.class);
 		when(random.nextInt(anyInt())).thenReturn(0);
-		PlacementFactory.setPlacementAlgorithm(new RussianPlacement(random, RulesFactory.getRules().getTotalShips()));
+		Rules rules = new RussianRules();
+		RulesFactory.setRules(rules);
+		RussianPlacement placement = new RussianPlacement(random, rules.getTotalShips());
+		PlacementFactory.setPlacementAlgorithm(placement);
 		mPlacementAlgorithm = PlacementFactory.getAlgorithm();
 	}
 

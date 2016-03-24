@@ -39,7 +39,7 @@ public class RussianBot implements BotAlgorithm {
     }
 
     private static boolean isEmptyCell(Board board, int x, int y) {
-        return board.containsCell(x, y) && board.getCell(x, y).isEmpty();
+        return Board.containsCell(x, y) && board.getCell(x, y).isEmpty();
     }
 
     private static List<Vector2> getPossibleShotsAround(Board board, int x, int y) {
@@ -61,7 +61,7 @@ public class RussianBot implements BotAlgorithm {
     }
 
     private static void addCellIfEmpty(Board board, int x, int y, Collection<Vector2> out) {
-        if (board.containsCell(x, y)) {
+        if (Board.containsCell(x, y)) {
             Cell cell = board.getCell(x, y);
             if (cell.isEmpty()) {
                 out.add(Vector2.get(x, y));

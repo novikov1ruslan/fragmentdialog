@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -22,6 +22,11 @@ public abstract class AbstractOpponent implements Opponent {
     protected volatile int mMyBid = IMPOSSIBLE_BID;
 
     protected volatile int mEnemyBid = IMPOSSIBLE_BID;
+    protected final PlacementAlgorithm mPlacement;
+
+    protected AbstractOpponent(PlacementAlgorithm placement) {
+        mPlacement = placement;
+    }
 
     protected void reset(Random random) {
         Ln.d(this + ": initializing boards and bids");
@@ -67,7 +72,7 @@ public abstract class AbstractOpponent implements Opponent {
         if (ship == null) {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
-            PlacementFactory.getAlgorithm().putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
+            mPlacement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
         Ln.v(mEnemyBoard);
     }

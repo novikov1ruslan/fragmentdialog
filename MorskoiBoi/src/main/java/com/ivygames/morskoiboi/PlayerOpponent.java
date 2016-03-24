@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.text.TextUtils;
 
-import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -25,7 +25,8 @@ public final class PlayerOpponent extends AbstractOpponent {
     private final String mName;
     private int mOpponentVersion;
 
-    public PlayerOpponent(String name) {
+    public PlayerOpponent(String name, PlacementAlgorithm placement) {
+        super(placement);
         if (TextUtils.isEmpty(name)) {
             name = BattleshipApplication.get().getString(R.string.player);
             Ln.i("player name is empty - replaced by " + name);
@@ -64,7 +65,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     private void markNeighbouringCellsAsOccupied(final Ship ship) {
         // if is dead we remove and put ship back to mark adjacent cells as reserved
         mMyBoard.removeShipFrom(ship.getX(), ship.getY());
-        PlacementFactory.getAlgorithm().putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
+        mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
     }
 
     public PokeResult onShotAtForResult(Vector2 aim) {

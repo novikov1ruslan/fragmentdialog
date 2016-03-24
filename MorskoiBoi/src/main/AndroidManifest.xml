@@ -17,7 +17,7 @@
 
     <!-- for Appodeal-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
     <!-- Optional -->
     <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
 

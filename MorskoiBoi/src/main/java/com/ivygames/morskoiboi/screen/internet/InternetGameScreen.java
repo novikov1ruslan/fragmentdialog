@@ -149,7 +149,8 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         InternetOpponent mOpponent = new InternetOpponent(mInternetGame);
         mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
         String playerName = GameSettings.get().getPlayerName();
-        Model.instance.setOpponents(new PlayerOpponent(playerName), mOpponent);
+        PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement), mOpponent);
     }
 
     @Override

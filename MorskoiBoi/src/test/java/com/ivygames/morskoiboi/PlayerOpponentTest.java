@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -45,8 +46,8 @@ public class PlayerOpponentTest {
         MockitoAnnotations.initMocks(this);
         Rules rules = new RussianRules();
         RulesFactory.setRules(rules);
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(), rules.getTotalShips()));
-        mPlayer = new PlayerOpponent(PLAYER_NAME);
+        PlacementAlgorithm placement = new RussianPlacement(new Random(), rules.getTotalShips());
+        mPlayer = new PlayerOpponent(PLAYER_NAME, placement);
         mPlayer.setOpponent(mEnemy);
     }
 

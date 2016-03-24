@@ -1,7 +1,127 @@
 package com.ivygames.morskoiboi.ai;
 
-import static org.junit.Assert.*;
+import com.ivygames.morskoiboi.CancellableOpponent;
+import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Cell;
+import com.ivygames.morskoiboi.model.Opponent;
+import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.RussianRules;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Random;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AndroidOpponentTest {
+
+    private static final String ANDROID_NAME = "Android";
+    private AndroidOpponent mAndroid;
+    @Mock
+    private Opponent mOpponent;
+    @Mock
+    private Random mRandom;
+    @Mock
+    private PlacementAlgorithm mPlacement;
+    @Mock
+    private Rules mRules;
+
+    private final Board mBoard = new Board();
+    private RussianRules sRules;
+    private RussianPlacement sPlacement;
+
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        sRules = new RussianRules();
+        sPlacement = new RussianPlacement(new Random(), sRules.getTotalShips());
+        when(mPlacement.generateBoard()).thenReturn(mBoard);
+
+        CancellableOpponent mCancellableOpponent = new DelegateOpponent();
+
+        mAndroid = new AndroidOpponent(ANDROID_NAME, mPlacement, mRules, mCancellableOpponent);
+        mAndroid.setOpponent(mOpponent);
+    }
+
+    @Test
+    public void after_android_is_reset__it_is_not_enemy_turn() {
+        mAndroid.reset(new Random());
+        assertThat(mAndroid.isOpponentTurn(), is(false));
+    }
+
+    @Test
+    public void when_enemy_bids_with_higher_bid__enemy_goes() {
+        when(mRandom.nextInt(anyInt())).thenReturn(1);
+        mAndroid.reset(mRandom);
+        mAndroid.onEnemyBid(2);
+        verify(mOpponent, times(1)).go();
+    }
+
+    @Test
+    public void when_asking_for_name__actual_name_returned() {
+        assertThat(mAndroid.getName(), equalTo(ANDROID_NAME));
+    }
+
+    @Test
+    public void when_android_says_go_to_opponent__opponent_receives_aim() {
+        mAndroid.go();
+        verify(mOpponent, times(1)).onShotAt(any(Vector2.class));
+    }
+
+    @Test
+    public void after_android_is_shot_at__opponent_receives_shot_result() {
+        Vector2 aim = Vector2.get(5, 5);
+        ArgumentCaptor<PokeResult> argument = ArgumentCaptor.forClass(PokeResult.class);
+        mAndroid.onShotAt(aim);
+        verify(mOpponent, times(1)).onShotResult(argument.capture());
+        assertThat(argument.getValue().aim, equalTo(aim));
+    }
+
+    @Test
+    public void if_android_is_hit_but_NOT_lost__opponent_goes() {
+        sPlacement.putShipAt(mBoard, new Ship(2), 5, 5);
+        when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(false);
+        mAndroid.onShotAt(Vector2.get(5, 5));
+        verify(mOpponent, times(1)).go();
+    }
+
+    @Test
+    public void if_android_is_hit_and_lost__opponent_does_NOT_go() {
+        sPlacement.putShipAt(mBoard, new Ship(1), 5, 5);
+        when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
+        mAndroid.onShotAt(Vector2.get(5, 5));
+        verify(mOpponent, never()).go();
+    }
+
+    @Test
+    public void when_result_of_a_shot_is_miss__opponent_goes() {
+        PokeResult result = new PokeResult(Vector2.get(5, 5), Cell.newMiss());
+        mAndroid.onShotResult(result);
+        verify(mOpponent, times(1)).go();
+    }
+
+    @Test
+    public void when_result_of_a_shot_is_defeat__opponent_lost() {
+        PokeResult result = new PokeResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
+        mAndroid.onShotResult(result);
+        verify(mOpponent, times(1)).onLost(any(Board.class));
+    }
 
 }
