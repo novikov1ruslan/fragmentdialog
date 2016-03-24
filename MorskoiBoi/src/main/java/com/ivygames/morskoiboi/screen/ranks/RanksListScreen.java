@@ -4,10 +4,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 

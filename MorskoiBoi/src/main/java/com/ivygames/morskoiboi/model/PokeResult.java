@@ -2,8 +2,6 @@ package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.utils.GameUtils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

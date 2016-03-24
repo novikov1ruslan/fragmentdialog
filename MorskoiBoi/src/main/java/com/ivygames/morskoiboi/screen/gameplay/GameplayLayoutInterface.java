@@ -4,9 +4,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutListener;
-import com.ivygames.morskoiboi.screen.gameplay.ShotListener;
-import com.ivygames.morskoiboi.screen.gameplay.TimeConsumer;
 
 import java.util.Collection;
 

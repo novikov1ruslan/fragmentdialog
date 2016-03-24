@@ -5,6 +5,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
@@ -13,10 +14,9 @@ import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.screen.DialogUtils;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;

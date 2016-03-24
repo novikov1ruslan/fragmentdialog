@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.variant;
 
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 

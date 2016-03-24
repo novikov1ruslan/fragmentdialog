@@ -9,19 +9,19 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
-import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.help.HelpScreen;
+import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 

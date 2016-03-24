@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.SystemClock;
 
-import com.ivygames.morskoiboi.model.Vector2;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,8 +9,8 @@ import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Inventory;
 import com.ivygames.billing.Purchase;
-import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.GameSettings;
 
 import org.acra.ACRA;
 import org.apache.commons.lang3.Validate;

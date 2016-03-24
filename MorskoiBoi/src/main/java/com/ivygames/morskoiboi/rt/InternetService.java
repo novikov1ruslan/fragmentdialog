@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.R;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;

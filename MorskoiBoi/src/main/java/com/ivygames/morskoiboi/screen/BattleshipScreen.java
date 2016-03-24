@@ -13,10 +13,9 @@ import com.ivygames.morskoiboi.MusicPlayer;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 
 import org.acra.ACRA;
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-import static org.apache.commons.lang3.Validate.*;
+import static org.apache.commons.lang3.Validate.notNull;
 
 // TODO: Screen is never used in isolation - combine BattleshipScreen with Screen
 public abstract class BattleshipScreen extends Screen {

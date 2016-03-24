@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -24,7 +25,6 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
