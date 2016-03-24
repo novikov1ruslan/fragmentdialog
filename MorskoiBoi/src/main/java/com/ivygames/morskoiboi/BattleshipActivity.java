@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
      * volume stream is saved on onResume and restored on onPause
      */
     private int mVolumeControlStream;
-    private final Set<String> mIncomingInvitationIds = new HashSet<String>();
+    private final Set<String> mIncomingInvitationIds = new HashSet<>();
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -161,9 +162,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     private final ResultCallback<LoadInvitationsResult> mInvitationsResultCallback = new ResultCallback<LoadInvitationsResult>() {
         @Override
-        public void onResult(LoadInvitationsResult list) {
+        public void onResult(@NonNull LoadInvitationsResult list) {
             mIncomingInvitationIds.clear();
-            if (list != null && list.getInvitations().getCount() > 0) {
+            if (list.getInvitations().getCount() > 0) {
                 InvitationBuffer invitations = list.getInvitations();
                 Ln.v("loaded " + invitations.getCount() + " invitations");
                 for (int i = 0; i < invitations.getCount(); i++) {
@@ -493,7 +494,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Ln.d("connection failed - result: " + connectionResult);
 
         switch (connectionResult.getErrorCode()) {
