@@ -123,20 +123,20 @@ public class AndroidOpponentTest {
         verify(mOpponent, times(1)).onLost(any(Board.class));
     }
 
-//    @Test
-//    public void when_opponent_bid_with_higher_bid__opponent_goes() {
-//        when(mRandom.nextInt(anyInt())).thenReturn(1);
-//        mAndroid.onEnemyBid(2);
-//        assertThat(mAndroid.isOpponentTurn(), is(true));
-//        verify(mOpponent, times(1)).go();
-//    }
-//
-//    @Test
-//    public void when_opponent_bid_with_lower_bid__opponent_gets_my_bid() {
-//        int myBid = 2;
-//        when(mRandom.nextInt(anyInt())).thenReturn(myBid);
-//        mAndroid.onEnemyBid(1);
-//        assertThat(mAndroid.isOpponentTurn(), is(false));
-//        verify(mOpponent, times(1)).onEnemyBid(myBid);
-//    }
+    @Test
+    public void when_opponent_bid_with_higher_bid__opponent_goes() {
+        mAndroid.reset(1);
+        mAndroid.onEnemyBid(2);
+        assertThat(mAndroid.isOpponentTurn(), is(true));
+        verify(mOpponent, times(1)).go();
+    }
+
+    @Test
+    public void when_opponent_bid_with_lower_bid__opponent_gets_my_bid() {
+        int myBid = 2;
+        mAndroid.reset(myBid);
+        mAndroid.onEnemyBid(1);
+        assertThat(mAndroid.isOpponentTurn(), is(false));
+        verify(mOpponent, times(1)).onEnemyBid(myBid);
+    }
 }

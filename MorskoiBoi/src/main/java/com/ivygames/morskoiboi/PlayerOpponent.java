@@ -24,14 +24,6 @@ public final class PlayerOpponent extends AbstractOpponent {
     private int mOpponentVersion;
     private Rules mRules;
 
-    @Override
-    public void reset(int myBid) {
-        super.reset(myBid);
-        mOpponentReady = false;
-        mPlayerReady = false;
-        mOpponentVersion = 0;
-    }
-
     public PlayerOpponent(String name, PlacementAlgorithm placement, Rules rules) {
         super(placement);
         if (TextUtils.isEmpty(name)) {
@@ -42,6 +34,15 @@ public final class PlayerOpponent extends AbstractOpponent {
         mRules = rules;
         reset(new Bidder().newBid());
         Ln.v("new player created");
+    }
+
+    @Override
+    public void reset(int myBid) {
+        super.reset(myBid);
+        mMyBoard = new Board();
+        mOpponentReady = false;
+        mPlayerReady = false;
+        mOpponentVersion = 0;
     }
 
     @Override
