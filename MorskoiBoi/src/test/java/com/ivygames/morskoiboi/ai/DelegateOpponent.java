@@ -9,10 +9,11 @@ import com.ivygames.morskoiboi.model.Vector2;
 public class DelegateOpponent implements CancellableOpponent {
 
     private Opponent mOpponent;
+    public boolean cancelCalled;
 
     @Override
     public void cancel() {
-
+        cancelCalled = true;
     }
 
     @Override

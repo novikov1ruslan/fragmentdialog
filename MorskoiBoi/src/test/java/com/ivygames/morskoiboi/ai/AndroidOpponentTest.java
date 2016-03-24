@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.Bidder;
-import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -44,6 +43,7 @@ public class AndroidOpponentTest {
 
     private final Board mBoard = new Board();
     private RussianPlacement sPlacement;
+    private DelegateOpponent mCancellableOpponent;
 
     @Before
     public void setUp() {
@@ -52,7 +52,7 @@ public class AndroidOpponentTest {
         sPlacement = new RussianPlacement(new Random(), rules.getTotalShips());
         when(mPlacement.generateBoard()).thenReturn(mBoard);
 
-        CancellableOpponent mCancellableOpponent = new DelegateOpponent();
+        mCancellableOpponent = new DelegateOpponent();
 
         mAndroid = new AndroidOpponent(ANDROID_NAME, mPlacement, mRules, mCancellableOpponent);
         mAndroid.setOpponent(mOpponent);
@@ -130,5 +130,19 @@ public class AndroidOpponentTest {
         mAndroid.onEnemyBid(1);
         assertThat(mAndroid.isOpponentTurn(), is(false));
         verify(mOpponent, times(1)).onEnemyBid(myBid);
+    }
+
+    @Test
+    public void when_android_looses__its_cancellable_delegate_is_called() {
+        assertThat(mCancellableOpponent.cancelCalled, is(false));
+        mAndroid.onLost(mBoard);
+        assertThat(mCancellableOpponent.cancelCalled, is(true));
+    }
+
+    @Test
+    public void when_android_cancelled__its_cancellable_delegate_is_called() {
+        assertThat(mCancellableOpponent.cancelCalled, is(false));
+        mAndroid.cancel();
+        assertThat(mCancellableOpponent.cancelCalled, is(true));
     }
 }
