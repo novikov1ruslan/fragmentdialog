@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.CancellableOpponent;
-import com.ivygames.morskoiboi.DummyOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;

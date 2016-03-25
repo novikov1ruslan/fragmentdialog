@@ -1,11 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
-public class DummyOpponent implements Opponent {
+class DummyOpponent implements Opponent {
     @Override
     public void onShotAt(Vector2 aim) {
 

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -187,6 +188,10 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         BluetoothOpponent opponent = new BluetoothOpponent(connection);
         connection.setMessageReceiver(opponent);
         String playerName = GameSettings.get().getPlayerName();
+        if (TextUtils.isEmpty(playerName)) {
+            playerName = getString(R.string.player);
+            Ln.i("player name is empty - replaced by " + playerName);
+        }
         PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
         Rules rules = RulesFactory.getRules();
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);

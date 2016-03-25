@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -151,7 +152,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         Rules rules = RulesFactory.getRules();
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), placement, rules, new DelayedOpponent());
         Model.instance.game = new AndroidGame();
-        Model.instance.setOpponents(new PlayerOpponent(mLayout.getPlayerName(), placement, rules), opponent);
+        String playerName = mLayout.getPlayerName();
+        if (TextUtils.isEmpty(playerName)) {
+            playerName = getString(R.string.player);
+            Ln.i("player name is empty - replaced by " + playerName);
+        }
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         showBoardSetup();
     }
 

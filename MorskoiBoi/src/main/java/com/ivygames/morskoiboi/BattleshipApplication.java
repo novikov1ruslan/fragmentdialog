@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.analytics.ExceptionParser;
@@ -127,4 +128,5 @@ public class BattleshipApplication extends Application {
         float maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         return actualVolume / maxVolume;
     }
+
 }

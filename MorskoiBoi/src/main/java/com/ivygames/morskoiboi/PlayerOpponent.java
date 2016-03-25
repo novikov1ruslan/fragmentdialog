@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.text.TextUtils;
-
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -26,10 +24,6 @@ public final class PlayerOpponent extends AbstractOpponent {
 
     public PlayerOpponent(String name, PlacementAlgorithm placement, Rules rules) {
         super(placement);
-        if (TextUtils.isEmpty(name)) {
-            name = BattleshipApplication.get().getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + name);
-        }
         mName = name;
         mRules = rules;
         reset(new Bidder().newBid());

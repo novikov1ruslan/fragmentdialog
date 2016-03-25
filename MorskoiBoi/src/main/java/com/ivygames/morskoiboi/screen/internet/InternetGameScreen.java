@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.screen.internet;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -151,6 +152,10 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         InternetOpponent mOpponent = new InternetOpponent(mInternetGame);
         mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
         String playerName = GameSettings.get().getPlayerName();
+        if (TextUtils.isEmpty(playerName)) {
+            playerName = getString(R.string.player);
+            Ln.i("player name is empty - replaced by " + playerName);
+        }
         PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
         Rules rules = RulesFactory.getRules();
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), mOpponent);

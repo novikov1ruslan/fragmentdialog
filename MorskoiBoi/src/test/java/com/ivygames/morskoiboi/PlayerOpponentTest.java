@@ -48,6 +48,11 @@ public class PlayerOpponentTest {
         mPlayer.setOpponent(mEnemy);
     }
 
+    @Test(expected = RuntimeException.class)
+    public void onShotAt() {
+        mPlayer.onShotAt(Vector2.get(5, 5));
+    }
+
     @Test
     public void after_player_is_reset__enemy_is_not_ready() {
         mPlayer.reset(new Bidder().newBid());
