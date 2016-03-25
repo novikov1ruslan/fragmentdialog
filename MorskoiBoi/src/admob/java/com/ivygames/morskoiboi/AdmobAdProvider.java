@@ -22,6 +22,7 @@ public class AdmobAdProvider implements AdProvider {
 
     public AdmobAdProvider(Activity activity) {
         initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
+        mBanner = (AdView) activity.findViewById(R.id.banner);
         if (isSmallScreen(activity)) {
             mBanner.setVisibility(View.GONE);
         } else {

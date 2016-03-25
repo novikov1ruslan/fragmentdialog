@@ -228,7 +228,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         if (mSettings.noAds()) {
             hideAds();
         } else {
-            AdProviderFactory.setAdProvider(new AppodealAdProvider(this));
+            AdProviderFactory.init(this);
             if (isGoogleServicesAvailable()) {
                 createPurchaseHelper();
             } else {
