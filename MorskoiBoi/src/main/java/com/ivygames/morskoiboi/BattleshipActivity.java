@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,7 +29,6 @@ import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
@@ -178,6 +177,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
     };
 
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,7 +203,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         // the application context to avoid leaking the current context.
         GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(BattleshipApplication.get());
         if (GameConstants.IS_TEST_MODE) {
-            gaInstance.getLogger().setLogLevel(LogLevel.ERROR);
+//            Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
             gaInstance.setDryRun(true);
         }
 
@@ -513,7 +513,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         Ln.d("resolving connection failure");
-        mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient, connectionResult, RC_SIGN_IN, getString(R.string.error)); // TODO:
+        // TODO:
+        mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient, connectionResult, RC_SIGN_IN, getString(R.string.error));
         Ln.d("has resolution = " + mResolvingConnectionFailure);
     }
 
@@ -529,8 +530,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         Ln.d("signed in");
         mResolvingConnectionFailure = false;
         mSettings.enableAutoSignIn();
-        Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        AdProviderFactory.getAdProvider().setPerson(currentPerson);
+//        Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+//        AdProviderFactory.getAdProvider().setPerson(currentPerson);
 
         if (TextUtils.isEmpty(mSettings.getPlayerName())) {
             String name = Games.Players.getCurrentPlayer(getApiClient()).getDisplayName();
@@ -583,6 +584,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public void onNoAds() {
         if (mPurchaseHelper != null) {
             try {
+                Ln.d("No ads button clicked; launching purchase flow for upgrade.");
                 mPurchaseHelper.purchase(RC_PURCHASE, mPurchaseListener);
             } catch (Exception e) {
                 ACRA.getErrorReporter().handleException(e);

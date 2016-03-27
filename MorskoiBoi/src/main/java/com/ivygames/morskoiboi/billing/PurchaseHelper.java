@@ -1,10 +1,8 @@
 package com.ivygames.morskoiboi.billing;
 
-import android.app.AlertDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Inventory;
@@ -46,7 +44,7 @@ public class PurchaseHelper {
 
                 // Is it a failure?
                 if (result.isFailure()) {
-                    complain("Failed to query inventory: " + result);
+                    Ln.w("Failed to query inventory: " + result);
                     return;
                 }
 
@@ -70,16 +68,11 @@ public class PurchaseHelper {
         }
     };
 
-    public PurchaseHelper(BattleshipActivity activity) {
+    public PurchaseHelper(@NonNull BattleshipActivity activity) {
         mActivity = Validate.notNull(activity);
     }
 
     public void onCreate() {
-
-        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity) != ConnectionResult.SUCCESS) {
-            Ln.e("services not available");
-            return;
-        }
 
         // Create the helper, passing it our context and the public key to verify signatures with
         Ln.d("Creating IAB helper.");
@@ -102,7 +95,7 @@ public class PurchaseHelper {
                             mActivity.hideNoAdsButton();
                         }
                         // Oh noes, there was a problem.
-                        complain("Problem setting up in-app billing: " + result);
+                        Ln.w("Problem setting up in-app billing: " + result);
                         return;
                     }
 
@@ -120,9 +113,6 @@ public class PurchaseHelper {
     }
 
     public void purchase(int requestCode, IabHelper.OnIabPurchaseFinishedListener listener) {
-        // TODO: move to UI
-        Ln.d("Upgrade button clicked; launching purchase flow for upgrade.");
-
 		/*
          * TODO: for security, generate your payload here for verification. See the comments on verifyDeveloperPayload() for more info. Since this is a SAMPLE,
 		 * we just use an empty string, but on a production app you should carefully generate this.
@@ -180,16 +170,4 @@ public class PurchaseHelper {
         }
     }
 
-    private void complain(String message) {
-        Ln.e("**** Error: " + message);
-        alert("Error: " + message);
-    }
-
-    private void alert(String message) {
-        AlertDialog.Builder bld = new AlertDialog.Builder(mActivity);
-        bld.setMessage(message);
-        bld.setNeutralButton("OK", null);
-        Ln.d("Showing alert dialog: " + message);
-        bld.create().show();
-    }
 }

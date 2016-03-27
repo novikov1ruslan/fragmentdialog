@@ -40,7 +40,7 @@ public class PlayerOpponentTest {
     private PlacementAlgorithm mPlacement;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         Rules rules = new RussianRules();
         mPlacement = new RussianPlacement(new Random(), rules.getTotalShips());
