@@ -10,15 +10,15 @@ public class VibratorFacade {
 
     private static final int MIN_VERSION_SUPPORTING_HAS_VIBRATOR = 11;
     private final Vibrator mVibrator;
-    private final BattleshipScreen mFragment;
+    private final BattleshipScreen mScreen;
 
-    public VibratorFacade(BattleshipScreen fragment) {
-        mFragment = fragment;
-        mVibrator = (Vibrator) fragment.getParent().getSystemService(Context.VIBRATOR_SERVICE);
+    public VibratorFacade(BattleshipScreen screen) {
+        mScreen = screen;
+        mVibrator = (Vibrator) screen.getParent().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public void vibrate(int milliseconds) {
-        if (GameSettings.get().isVibrationOn() && hasVibrator() && mFragment.isResumed()) {
+        if (GameSettings.get().isVibrationOn() && hasVibrator() && mScreen.isResumed()) {
             mVibrator.vibrate(milliseconds);
         }
     }
