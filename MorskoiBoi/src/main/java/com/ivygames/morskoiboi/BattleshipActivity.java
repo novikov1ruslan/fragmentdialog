@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -191,20 +190,12 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mGoogleApiClient = createGoogleApiClient();
 
-        if (getResources().getBoolean(R.bool.is_tablet)) {
+        if (DeviceUtils.isTablet(getResources())) {
             Ln.d("device is tablet");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             Ln.d("device is handset");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
-        // Get the GoogleAnalytics singleton. Note that the SDK uses
-        // the application context to avoid leaking the current context.
-        GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(BattleshipApplication.get());
-        if (GameConstants.IS_TEST_MODE) {
-//            Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
-            gaInstance.setDryRun(true);
         }
 
         mAchievementsManager = new AchievementsManager(mGoogleApiClient);

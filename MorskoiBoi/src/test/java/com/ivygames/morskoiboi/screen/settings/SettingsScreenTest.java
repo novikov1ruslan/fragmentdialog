@@ -15,6 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.ShadowsAdapter;
+import org.robolectric.util.ActivityController;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -31,7 +33,12 @@ public class SettingsScreenTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        activity = Robolectric.buildActivity(TestActivity.class).get();
+//        activity = Robolectric.buildActivity(TestActivity.class).get();
+        activity = new TestActivity();
+        ShadowsAdapter shadowsAdapter = Robolectric.getShadowsAdapter();
+        ActivityController<TestActivity> activityController = new ActivityController<>(shadowsAdapter, activity);
+        activityController.create();
+//        activity.onCreate(null);
         activity.setScreen(new SettingsScreen(activity, apiClient, settings));
     }
 

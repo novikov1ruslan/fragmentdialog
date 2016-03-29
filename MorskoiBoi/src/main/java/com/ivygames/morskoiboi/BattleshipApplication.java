@@ -68,6 +68,26 @@ public class BattleshipApplication extends Application {
         ACRA.init(this);
 
         initLogger();
+        initAnalytics();
+
+
+        Bitmaps.getInstance().loadBitmaps(getResources());
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        // dependency injection
+        RulesFactory.setRules(new RussianRules());
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), RulesFactory.getRules().getTotalShips()));
+        BotFactory.setAlgorithm(new RussianBot(null));
+    }
+
+    public void initAnalytics() {
+        // Get the GoogleAnalytics singleton. Note that the SDK uses
+        // the application context to avoid leaking the current context.
+        if (GameConstants.IS_TEST_MODE) {
+//            Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
+            GoogleAnalytics.getInstance(BattleshipApplication.get()).setDryRun(true);
+        }
         GlobalTracker.sTracker = GoogleAnalytics.getInstance(this).newTracker(GameConstants.ANALYTICS_KEY);
         GlobalTracker.sTracker.enableAdvertisingIdCollection(true);
         UiEvent.set(new UiEventImpl());
@@ -78,15 +98,6 @@ public class BattleshipApplication extends Application {
         // TODO: Make exceptionReporter the new default uncaught exception handler.
         Thread.setDefaultUncaughtExceptionHandler(exceptionReporter);
         exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
-
-        Bitmaps.getInstance().loadBitmaps(getResources());
-
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        // dependency injection
-        RulesFactory.setRules(new RussianRules());
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), RulesFactory.getRules().getTotalShips()));
-        BotFactory.setAlgorithm(new RussianBot(null));
     }
 
     private void initLogger() {

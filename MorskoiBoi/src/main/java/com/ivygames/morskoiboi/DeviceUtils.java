@@ -52,6 +52,7 @@ public class DeviceUtils {
 
     public static boolean isTablet(Resources res) {
         return res.getBoolean(R.bool.is_tablet);
+//        return false;
     }
 
     private static void printExtras(Bundle extras) {
