@@ -1,10 +1,12 @@
 package com.ivygames.morskoiboi.screen.win;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -38,6 +40,8 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class WinScreen extends OnlineGameScreen implements BackPressListener, SignInListener {
     private static final String TAG = "WIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
@@ -56,9 +60,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private SoundBar mSoundBar;
     private final Bundle mArgs;
 
+    @NonNull
+    private final GoogleApiClient mApiClient;
+
     public WinScreen(Bundle args, BattleshipActivity parent) {
         super(parent);
         mArgs = Validate.notNull(args);
+        mApiClient = notNull(parent.getApiClient());
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.support.annotation.RawRes;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.MusicPlayer;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -21,16 +20,12 @@ import static org.apache.commons.lang3.Validate.notNull;
 public abstract class BattleshipScreen extends Screen {
 
     @NonNull
-    protected final GoogleApiClient mApiClient;
-
-    @NonNull
     protected final FragmentManager mFm;
 
     private boolean mResumed;
 
     public BattleshipScreen(BattleshipActivity parent) {
         super(parent);
-        mApiClient = notNull(parent.getApiClient());
         mFm = notNull(getFragmentManager());
         UiEvent.screenView(this.getClass().getSimpleName());
         Ln.v(this + " attached");

@@ -2,9 +2,11 @@ package com.ivygames.morskoiboi.screen.settings;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
@@ -30,8 +32,12 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     private SettingsLayout mLayout;
     private VibratorFacade mVibrator;
 
-    public SettingsScreen(BattleshipActivity parent) {
+    @NonNull
+    private final GoogleApiClient mApiClient;
+
+    public SettingsScreen(BattleshipActivity parent, @NonNull  GoogleApiClient apiClient) {
         super(parent);
+        mApiClient = apiClient;
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.analytics.ExceptionParser;
@@ -14,6 +13,8 @@ import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.GlobalTracker;
+import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.morskoiboi.analytics.UiEventImpl;
 import com.ivygames.morskoiboi.analytics.WarningEvent;
 import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
@@ -69,6 +70,7 @@ public class BattleshipApplication extends Application {
         initLogger();
         GlobalTracker.sTracker = GoogleAnalytics.getInstance(this).newTracker(GameConstants.ANALYTICS_KEY);
         GlobalTracker.sTracker.enableAdvertisingIdCollection(true);
+        UiEvent.set(new UiEventImpl());
         Log.i("Battleship", "created");
 
         UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();

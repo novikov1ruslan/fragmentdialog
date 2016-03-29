@@ -7,10 +7,12 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
@@ -46,6 +48,8 @@ import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions, SignInListener, BackPressListener {
     private static final String TAG = "SELECT_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
@@ -56,8 +60,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private View mTutView;
 
+    @NonNull
+    private final GoogleApiClient mApiClient;
+
     public SelectGameScreen(BattleshipActivity parent) {
         super(parent);
+        mApiClient = notNull(parent.getApiClient());
     }
 
     @Override

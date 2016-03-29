@@ -2,10 +2,12 @@ package com.ivygames.morskoiboi.screen.internet;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
@@ -43,6 +45,8 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class InternetGameScreen extends BattleshipScreen implements InternetGameLayoutListener, InternetGameListener, BackPressListener {
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
@@ -54,8 +58,12 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private InternetGameLayout mLayout;
     private WaitFragment mWaitFragment;
 
+    @NonNull
+    private final GoogleApiClient mApiClient;
+
     public InternetGameScreen(BattleshipActivity parent) {
         super(parent);
+        mApiClient = notNull(parent.getApiClient());
     }
 
     @Override
