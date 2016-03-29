@@ -16,6 +16,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayUtils;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -217,7 +218,11 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        mParent.setScreen(new SettingsScreen(getParent(), notNull(getParent().getApiClient())));
+        SettingsScreen settingsScreen = new SettingsScreen(getParent(),
+                notNull(getParent().getApiClient()), GameSettings.get());
+        VibratorFacade vibratorFacade = new VibratorFacade(settingsScreen);
+        settingsScreen.setVibrator(vibratorFacade);
+        mParent.setScreen(settingsScreen);
     }
 
     private void showLeaderboardsDialog() {

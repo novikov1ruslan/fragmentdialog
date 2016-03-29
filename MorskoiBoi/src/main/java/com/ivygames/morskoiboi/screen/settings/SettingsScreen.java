@@ -31,18 +31,20 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     private final GoogleApiClient mApiClient;
     @NonNull
     private final GameSettings mSettings;
-    @NonNull
-    private final VibratorFacade mVibrator;
 
+    private VibratorFacade mVibrator;
     private SettingsLayout mLayout;
 
     public SettingsScreen(@NonNull  BattleshipActivity parent,
-                          @NonNull  GoogleApiClient apiClient) {
+                          @NonNull  GoogleApiClient apiClient,
+                          @NonNull GameSettings settings) {
         super(parent);
         mApiClient = apiClient;
+        mSettings = settings;
+    }
 
-        mVibrator = new VibratorFacade(this);
-        mSettings = GameSettings.get();
+    public void setVibrator(VibratorFacade vibrator) {
+        mVibrator = vibrator;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         mLayout = (SettingsLayout) inflate(R.layout.settings, container);
         mLayout.setScreenActionsListener(this);
         mLayout.setSound(mSettings.isSoundOn());
-        if (mVibrator.hasVibrator()) {
+        if (mVibrator != null && mVibrator.hasVibrator()) {
             Ln.v("show vibration setting setting");
             mLayout.setVibration(mSettings.isVibrationOn());
         } else {
@@ -115,7 +117,9 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         boolean on = !mSettings.isVibrationOn();
         mSettings.setVibration(on);
         mLayout.setVibration(on);
-        mVibrator.vibrate(300);
+        if (mVibrator != null) {
+            mVibrator.vibrate(300);
+        }
     }
 
     @Override

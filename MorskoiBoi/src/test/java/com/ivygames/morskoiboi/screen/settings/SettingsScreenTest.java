@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 
 import org.junit.Before;
@@ -24,13 +25,14 @@ public class SettingsScreenTest {
     private TestActivity activity;
     @Mock
     private GoogleApiClient apiClient;
+    @Mock
+    private GameSettings settings;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         activity = Robolectric.buildActivity(TestActivity.class).get();
-//        activity.onCreate(null);
-        activity.setScreen(new SettingsScreen(activity, apiClient));
+        activity.setScreen(new SettingsScreen(activity, apiClient, settings));
     }
 
     @Test
