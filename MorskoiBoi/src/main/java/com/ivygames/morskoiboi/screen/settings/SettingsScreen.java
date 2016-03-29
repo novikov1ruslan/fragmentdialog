@@ -25,24 +25,22 @@ import org.commons.logger.Ln;
 
 public class SettingsScreen extends BattleshipScreen implements SettingsScreenActions, SignInListener, BackPressListener {
     private static final String TAG = "SETTINGS";
-
     private static final String EMAIL = "ivy.games.studio@gmail.com";
-
-    private GameSettings mSettings;
-    private SettingsLayout mLayout;
-    private VibratorFacade mVibrator;
 
     @NonNull
     private final GoogleApiClient mApiClient;
+    @NonNull
+    private final GameSettings mSettings;
+    @NonNull
+    private final VibratorFacade mVibrator;
 
-    public SettingsScreen(BattleshipActivity parent, @NonNull  GoogleApiClient apiClient) {
+    private SettingsLayout mLayout;
+
+    public SettingsScreen(@NonNull  BattleshipActivity parent,
+                          @NonNull  GoogleApiClient apiClient) {
         super(parent);
         mApiClient = apiClient;
-    }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
         mVibrator = new VibratorFacade(this);
         mSettings = GameSettings.get();
     }

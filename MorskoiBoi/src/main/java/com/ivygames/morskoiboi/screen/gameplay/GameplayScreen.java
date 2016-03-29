@@ -151,16 +151,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     public GameplayScreen(BattleshipActivity parent) {
         super(parent);
-    }
-
-    @Override
-    public View getView() {
-        return (View) mLayout;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
         mMatchStatusIntent = new Intent(getParent(), InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
 
@@ -181,6 +171,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
 
         Ln.d("game data prepared");
+    }
+
+    @Override
+    public View getView() {
+        return (View) mLayout;
     }
 
     private Intent getServiceIntent(String contentText) {

@@ -49,15 +49,15 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     public static final String EXTRA_OPPONENT_SURRENDERED = "EXTRA_OPPONENT_SURRENDERED";
     public static final String EXTRA_BOARD = "EXTRA_BOARD";
 
-    private Game mGame;
+    private final Game mGame;
     private WinLayoutSmall mLayout;
     private long mTime;
 
-    private Collection<Ship> mShips;
+    private final Collection<Ship> mShips;
 
     private int mScores;
 
-    private SoundBar mSoundBar;
+    private final SoundBar mSoundBar;
     private final Bundle mArgs;
 
     @NonNull
@@ -67,11 +67,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         super(parent);
         mArgs = Validate.notNull(args);
         mApiClient = notNull(parent.getApiClient());
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
 
         Board board = Board.fromJson(mArgs.getString(EXTRA_BOARD));
 

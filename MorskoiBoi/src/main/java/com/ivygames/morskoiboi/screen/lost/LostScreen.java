@@ -25,16 +25,12 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "LOST";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private SoundBar mSoundBar;
+    private final SoundBar mSoundBar;
+
     private View mView;
 
     public LostScreen(BattleshipActivity parent) {
         super(parent);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
         mSoundBar = SoundBarFactory.create(getParent().getAssets(), "lost.ogg");
         mSoundBar.play();
         GameSettings.get().incrementGamesPlayedCounter();

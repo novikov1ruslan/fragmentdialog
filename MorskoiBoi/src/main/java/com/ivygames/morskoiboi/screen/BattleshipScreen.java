@@ -28,11 +28,7 @@ public abstract class BattleshipScreen extends Screen {
         super(parent);
         mFm = notNull(getFragmentManager());
         UiEvent.screenView(this.getClass().getSimpleName());
-        Ln.v(this + " attached");
-    }
-
-    public void onCreate() {
-        Ln.v(this + " creating");
+        Ln.v(this + " created");
     }
 
     public abstract View onCreateView(ViewGroup container);

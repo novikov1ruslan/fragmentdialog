@@ -16,11 +16,6 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
 
     public OnlineGameScreen(BattleshipActivity parent) {
         super(parent);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
         Ln.v(this + " screen created - register event listener");
         EventBus.getDefault().register(this);
     }

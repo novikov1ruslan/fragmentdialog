@@ -21,14 +21,15 @@ import static org.junit.Assert.assertThat;
 @RunWith(RobolectricTestRunner.class)
 public class SettingsScreenTest {
 
-    private BattleshipActivity activity;
+    private TestActivity activity;
     @Mock
     private GoogleApiClient apiClient;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        activity = Robolectric.buildActivity(BattleshipActivity.class).get();
+        activity = Robolectric.buildActivity(TestActivity.class).get();
+//        activity.onCreate(null);
         activity.setScreen(new SettingsScreen(activity, apiClient));
     }
 

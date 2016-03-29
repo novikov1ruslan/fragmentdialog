@@ -34,8 +34,6 @@ import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.analytics.UiEvent;
-import com.ivygames.morskoiboi.analytics.UiEventImpl;
 import com.ivygames.morskoiboi.billing.PurchaseHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -621,7 +619,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         mCurrentScreen = screen;
-        mCurrentScreen.onCreate();
         View view = mCurrentScreen.onCreateView(mContainer);
 
         mContainer.addView(view);
