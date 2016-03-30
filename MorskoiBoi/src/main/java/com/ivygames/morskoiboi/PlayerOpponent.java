@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -21,6 +22,7 @@ public final class PlayerOpponent extends AbstractOpponent {
     private final String mName;
     private int mOpponentVersion;
     private Rules mRules;
+    protected Opponent mOpponent;
 
     public PlayerOpponent(String name, PlacementAlgorithm placement, Rules rules) {
         super(placement);
@@ -57,10 +59,10 @@ public final class PlayerOpponent extends AbstractOpponent {
         throw new RuntimeException("never used");
     }
 
-    private void markNeighbouringCellsAsOccupied(final Ship ship) {
-        // if is dead we remove and put ship back to mark adjacent cells as reserved
-        mMyBoard.removeShipFrom(ship.getX(), ship.getY());
-        mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
+    @Override
+    public void setOpponent(Opponent opponent) {
+        mOpponent = opponent;
+        Ln.d(this + ": my opponent is " + opponent);
     }
 
     public PokeResult onShotAtForResult(Vector2 aim) {
@@ -79,6 +81,12 @@ public final class PlayerOpponent extends AbstractOpponent {
             mOpponent.go();
         }
         return result;
+    }
+
+    private void markNeighbouringCellsAsOccupied(final Ship ship) {
+        // if is dead we remove and put ship back to mark adjacent cells as reserved
+        mMyBoard.removeShipFrom(ship.getX(), ship.getY());
+        mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
     }
 
     @Override

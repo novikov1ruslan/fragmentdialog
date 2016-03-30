@@ -15,7 +15,6 @@ public abstract class AbstractOpponent implements Opponent {
 
     protected Board mMyBoard;
     protected Board mEnemyBoard;
-    protected Opponent mOpponent;
 
     protected volatile int mMyBid = IMPOSSIBLE_BID;
     protected volatile int mEnemyBid = IMPOSSIBLE_BID;
@@ -31,12 +30,6 @@ public abstract class AbstractOpponent implements Opponent {
         mEnemyBoard = new Board();
         mMyBid = myBid;
         mEnemyBid = IMPOSSIBLE_BID;
-    }
-
-    @Override
-    public void setOpponent(Opponent opponent) {
-        mOpponent = opponent;
-        Ln.d(this + ": my opponent is " + opponent);
     }
 
     /**

@@ -17,12 +17,7 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     private static final boolean NO_NEED_TO_THINK = false;
     private Opponent mOpponent;
     private boolean mShouldWait = true;
-    private final ExecutorService mExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
-        @Override
-        public Thread newThread(@NonNull Runnable r) {
-            return new Thread(r, "bot" + sCounter++);
-        }
-    });
+    private ExecutorService mExecutor;
 
     @Override
     public void setOpponent(Opponent opponent) {
@@ -51,6 +46,16 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     public void onEnemyBid(int bid) {
         mShouldWait = true;
         mExecutor.submit(new OnEnemyBidCommand(mOpponent, bid));
+    }
+
+    @Override
+    public void init() {
+        mExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
+            @Override
+            public Thread newThread(@NonNull Runnable r) {
+                return new Thread(r, "bot" + sCounter++);
+            }
+        });
     }
 
     @Override

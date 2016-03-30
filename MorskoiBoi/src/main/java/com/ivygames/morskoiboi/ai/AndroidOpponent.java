@@ -25,6 +25,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private final String mName;
     private final CancellableOpponent mDelegate;
     private final Rules mRules;
+    protected Opponent mOpponent;
 
     public AndroidOpponent(@NonNull String name,
                            @NonNull PlacementAlgorithm placement,
@@ -40,7 +41,8 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        super.setOpponent(opponent);
+        mOpponent = opponent;
+        Ln.d(this + ": my opponent is " + opponent);
         mDelegate.setOpponent(opponent);
     }
 
@@ -128,6 +130,11 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void onNewMessage(@NonNull String text) {
         // mirroring
         mOpponent.onNewMessage(text + "!!!");
+    }
+
+    @Override
+    public void init() {
+        mDelegate.init();
     }
 
     @Override
