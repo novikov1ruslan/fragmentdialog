@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
@@ -42,20 +44,20 @@ public class AndroidOpponentTest {
     private Rules mRules;
 
     private final Board mBoard = new Board();
-    private RussianPlacement sPlacement;
     private DelegateOpponent mCancellableOpponent;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        Rules rules = new RussianRules();
-        sPlacement = new RussianPlacement(new Random(), rules.getTotalShips());
-        when(mPlacement.generateBoard()).thenReturn(mBoard);
-
         mCancellableOpponent = new DelegateOpponent();
 
         mAndroid = new AndroidOpponent(ANDROID_NAME, mPlacement, mRules, mCancellableOpponent);
         mAndroid.setOpponent(mOpponent);
+    }
+
+    @NonNull
+    public RussianPlacement getRussianPlacement() {
+        return new RussianPlacement(new Random(), new RussianRules().getTotalShips());
     }
 
     @Test
@@ -86,15 +88,18 @@ public class AndroidOpponentTest {
 
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
-        sPlacement.putShipAt(mBoard, new Ship(2), 5, 5);
+        // set the board
+        getRussianPlacement().putShipAt(mBoard, new Ship(2), 5, 5);
+        when(mPlacement.generateBoard()).thenReturn(mBoard);
+        mAndroid.onEnemyBid(2);
+
         when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(false);
         mAndroid.onShotAt(Vector2.get(5, 5));
         verify(mOpponent, times(1)).go();
     }
 
     @Test
-    public void if_android_is_hit_and_lost__opponent_does_NOT_go() {
-        sPlacement.putShipAt(mBoard, new Ship(1), 5, 5);
+    public void if_android_is_lost__opponent_does_NOT_go() {
         when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
         mAndroid.onShotAt(Vector2.get(5, 5));
         verify(mOpponent, never()).go();
@@ -135,6 +140,7 @@ public class AndroidOpponentTest {
     @Test
     public void when_android_looses__its_cancellable_delegate_is_called() {
         assertThat(mCancellableOpponent.cancelCalled, is(false));
+//        when(mPlacement.generateBoard()).thenReturn(mBoard);
         mAndroid.onLost(mBoard);
         assertThat(mCancellableOpponent.cancelCalled, is(true));
     }

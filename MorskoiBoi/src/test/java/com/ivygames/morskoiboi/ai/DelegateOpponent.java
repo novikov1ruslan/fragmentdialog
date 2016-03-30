@@ -17,6 +17,11 @@ public class DelegateOpponent implements CancellableOpponent {
     }
 
     @Override
+    public void init() {
+        cancelCalled = false;
+    }
+
+    @Override
     public void onShotAt(Vector2 aim) {
         mOpponent.onShotAt(aim);
     }

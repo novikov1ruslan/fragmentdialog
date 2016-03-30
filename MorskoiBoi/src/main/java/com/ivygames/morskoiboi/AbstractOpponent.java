@@ -30,6 +30,7 @@ public abstract class AbstractOpponent implements Opponent {
     protected void reset(int myBid) {
         Ln.d(this + ": initializing boards and bids");
         mEnemyBoard = new Board();
+        mMyBoard = new Board();
         mMyBid = myBid;
         mEnemyBid = IMPOSSIBLE_BID;
         mOpponentReady = false;
