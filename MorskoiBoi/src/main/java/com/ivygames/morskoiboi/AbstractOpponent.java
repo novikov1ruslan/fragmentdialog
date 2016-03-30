@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -19,13 +21,7 @@ public abstract class AbstractOpponent implements Opponent {
     protected volatile int mMyBid;
     protected volatile int mEnemyBid;
 
-    protected final PlacementAlgorithm mPlacement;
-
     private boolean mOpponentReady;
-
-    protected AbstractOpponent(PlacementAlgorithm placement) {
-        mPlacement = placement;
-    }
 
     protected void reset(int myBid) {
         Ln.d(this + ": initializing boards and bids");
@@ -51,6 +47,8 @@ public abstract class AbstractOpponent implements Opponent {
     @Override
     public void onEnemyBid(int bid) {
         mOpponentReady = true;
+        mEnemyBid = bid;
+        Ln.d(this + ": opponent is ready: " + bid);
     }
 
     /**
@@ -77,12 +75,13 @@ public abstract class AbstractOpponent implements Opponent {
         return new PokeResult(aim, cell);
     }
 
-    protected final void updateEnemyBoard(PokeResult result) {
+    protected final void updateEnemyBoard(@NonNull PokeResult result,
+                                          @NonNull PlacementAlgorithm placement) {
         Ship ship = result.ship;
         if (ship == null) {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
-            mPlacement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
+            placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
         Ln.v(mEnemyBoard);
     }

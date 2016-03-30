@@ -18,13 +18,16 @@ public final class PlayerOpponent extends AbstractOpponent {
     public static volatile Board debug_board;
 
     private boolean mPlayerReady;
+
     private final String mName;
+    private final PlacementAlgorithm mPlacement;
     private int mOpponentVersion;
     private Rules mRules;
-    protected Opponent mOpponent;
+
+    private Opponent mOpponent;
 
     public PlayerOpponent(String name, PlacementAlgorithm placement, Rules rules) {
-        super(placement);
+        mPlacement = placement;
         mName = name;
         mRules = rules;
         reset(new Bidder().newBid());
@@ -41,7 +44,7 @@ public final class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onShotResult(PokeResult result) {
-        updateEnemyBoard(result);
+        updateEnemyBoard(result, mPlacement);
     }
 
     @Override
@@ -106,9 +109,6 @@ public final class PlayerOpponent extends AbstractOpponent {
     @Override
     public void onEnemyBid(int bid) {
         super.onEnemyBid(bid);
-        mEnemyBid = bid;
-        Ln.d(this + ": opponent is ready");
-
         if (mPlayerReady && isOpponentTurn()) {
             Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
             mOpponent.go();

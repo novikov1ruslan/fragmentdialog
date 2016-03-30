@@ -22,17 +22,19 @@ import java.util.Random;
 public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private volatile BotAlgorithm mBot;
+
     private final String mName;
+    private final PlacementAlgorithm mPlacement;
     private final CancellableOpponent mDelegate;
     private final Rules mRules;
-    protected Opponent mOpponent;
+    private Opponent mOpponent;
 
     public AndroidOpponent(@NonNull String name,
                            @NonNull PlacementAlgorithm placement,
                            @NonNull Rules rules,
                            @NonNull CancellableOpponent delegate) {
-        super(placement);
         mName = name;
+        mPlacement = placement;
         mRules = rules;
         mDelegate = delegate;
         reset(new Bidder().newBid());
@@ -83,7 +85,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onShotResult(@NonNull PokeResult result) {
         mBot.setLastResult(result);
-        updateEnemyBoard(result);
+        updateEnemyBoard(result, mPlacement);
         Ln.v(result);
 
         if (result.cell.isMiss()) {
@@ -109,8 +111,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         super.onEnemyBid(bid);
         init();
         placeShips();
-        Ln.v(this + ": enemy bid=" + bid);
-        mEnemyBid = bid;
         if (mEnemyBid == mMyBid) {
             ACRA.getErrorReporter().handleException(new RuntimeException("stall"));
             mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
