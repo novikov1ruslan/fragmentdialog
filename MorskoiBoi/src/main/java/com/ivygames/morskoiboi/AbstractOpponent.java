@@ -13,7 +13,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 import org.commons.logger.Ln;
 
 public abstract class AbstractOpponent implements Opponent {
-    private static final int IMPOSSIBLE_BID = -1;
+    private static final int OPPONENT_NOT_READY_BID = -2;
+    private static final int OPPONENT_READY_BID = -1;
 
     protected Board mMyBoard;
     protected Board mEnemyBoard;
@@ -21,34 +22,30 @@ public abstract class AbstractOpponent implements Opponent {
     protected volatile int mMyBid;
     protected volatile int mEnemyBid;
 
-    private boolean mOpponentReady;
-
     protected void reset(int myBid) {
         Ln.d(this + ": initializing boards and bids");
         mEnemyBoard = new Board();
         mMyBoard = new Board();
         mMyBid = myBid;
-        mEnemyBid = IMPOSSIBLE_BID;
-        mOpponentReady = false;
+        mEnemyBid = OPPONENT_NOT_READY_BID;
     }
 
     @Override
     public void go() {
-        if (!mOpponentReady) {
+        if (!isOpponentReady()) {
             Ln.d(this + ": opponent is ready");
-            mOpponentReady = true;
+            mEnemyBid = OPPONENT_READY_BID;
         }
     }
 
     public boolean isOpponentReady() {
-        return mOpponentReady;
+        return mEnemyBid != OPPONENT_NOT_READY_BID;
     }
 
     @Override
     public void onEnemyBid(int bid) {
-        mOpponentReady = true;
         mEnemyBid = bid;
-        Ln.d(this + ": opponent is ready: " + bid);
+        Ln.d(this + ": opponent is ready, bid = " + bid);
     }
 
     /**
