@@ -17,7 +17,6 @@ public final class PlayerOpponent extends AbstractOpponent {
 
     public static volatile Board debug_board;
 
-    private boolean mOpponentReady;
     private boolean mPlayerReady;
     private final String mName;
     private int mOpponentVersion;
@@ -36,17 +35,8 @@ public final class PlayerOpponent extends AbstractOpponent {
     public final void reset(int myBid) {
         super.reset(myBid);
         mMyBoard = new Board();
-        mOpponentReady = false;
         mPlayerReady = false;
         mOpponentVersion = 0;
-    }
-
-    @Override
-    public void go() {
-        if (!mOpponentReady) {
-            Ln.d(this + ": opponent is ready");
-            mOpponentReady = true;
-        }
     }
 
     @Override
@@ -115,8 +105,8 @@ public final class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onEnemyBid(int bid) {
+        super.onEnemyBid(bid);
         mEnemyBid = bid;
-        mOpponentReady = true;
         Ln.d(this + ": opponent is ready");
 
         if (mPlayerReady && isOpponentTurn()) {
@@ -132,17 +122,13 @@ public final class PlayerOpponent extends AbstractOpponent {
 
     public void startBidding() {
         mPlayerReady = true;
-        if (mOpponentReady && isOpponentTurn()) {
+        if (isOpponentReady() && isOpponentTurn()) {
             Ln.d(this + ": opponent is ready and it is his turn");
             mOpponent.go();
         } else {
             Ln.d(this + ": opponent is not ready - sending him my bid");
             mOpponent.onEnemyBid(mMyBid);
         }
-    }
-
-    public boolean isOpponentReady() {
-        return mOpponentReady;
     }
 
     @Override

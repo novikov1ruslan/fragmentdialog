@@ -49,9 +49,13 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     protected final void reset(int myBid) {
         super.reset(myBid);
-        mMyBoard = mPlacement.generateBoard();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
+        placeShips();
+    }
+
+    private void placeShips() {
+        mMyBoard = mPlacement.generateBoard();
         if (GameConstants.IS_TEST_MODE) {
             Ln.i(this + ": my board: " + mMyBoard);
         }
@@ -59,6 +63,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void go() {
+        super.go();
         mDelegate.onShotAt(mBot.shoot(mEnemyBoard));
     }
 
@@ -99,6 +104,8 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void onEnemyBid(int bid) {
+        super.onEnemyBid(bid);
+        placeShips();
         Ln.v(this + ": enemy bid=" + bid);
         mEnemyBid = bid;
         if (mEnemyBid == mMyBid) {

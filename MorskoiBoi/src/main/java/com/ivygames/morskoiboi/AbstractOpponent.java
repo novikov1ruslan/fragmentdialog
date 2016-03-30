@@ -16,10 +16,12 @@ public abstract class AbstractOpponent implements Opponent {
     protected Board mMyBoard;
     protected Board mEnemyBoard;
 
-    protected volatile int mMyBid = IMPOSSIBLE_BID;
-    protected volatile int mEnemyBid = IMPOSSIBLE_BID;
+    protected volatile int mMyBid;
+    protected volatile int mEnemyBid;
 
     protected final PlacementAlgorithm mPlacement;
+
+    private boolean mOpponentReady;
 
     protected AbstractOpponent(PlacementAlgorithm placement) {
         mPlacement = placement;
@@ -30,6 +32,24 @@ public abstract class AbstractOpponent implements Opponent {
         mEnemyBoard = new Board();
         mMyBid = myBid;
         mEnemyBid = IMPOSSIBLE_BID;
+        mOpponentReady = false;
+    }
+
+    @Override
+    public void go() {
+        if (!mOpponentReady) {
+            Ln.d(this + ": opponent is ready");
+            mOpponentReady = true;
+        }
+    }
+
+    public boolean isOpponentReady() {
+        return mOpponentReady;
+    }
+
+    @Override
+    public void onEnemyBid(int bid) {
+        mOpponentReady = true;
     }
 
     /**
