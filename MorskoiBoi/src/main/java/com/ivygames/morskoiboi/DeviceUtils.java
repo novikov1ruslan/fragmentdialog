@@ -13,6 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
 import org.commons.logger.Ln;
 
 import java.util.List;
@@ -93,4 +96,9 @@ public class DeviceUtils {
         return audio.getRingerMode() != AudioManager.RINGER_MODE_SILENT;
     }
 
+    public static boolean isGoogleServicesAvailable(Context context) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        return apiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+//        return false;
+    }
 }

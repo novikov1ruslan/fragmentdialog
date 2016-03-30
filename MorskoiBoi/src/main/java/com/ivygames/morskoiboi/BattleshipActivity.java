@@ -203,7 +203,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mSettings = GameSettings.get();
 
-        Ln.d("google play services available = " + isGoogleServicesAvailable());
+        Ln.d("google play services available = " + DeviceUtils.isGoogleServicesAvailable(this));
 
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
@@ -220,7 +220,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             hideAds();
         } else {
             AdProviderFactory.init(this);
-            if (isGoogleServicesAvailable()) {
+            if (DeviceUtils.isGoogleServicesAvailable(this)) {
                 createPurchaseHelper();
             } else {
                 Ln.e("gpgs_not_available");
@@ -253,10 +253,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         } catch (Exception e) {
             ACRA.getErrorReporter().handleException(e);
         }
-    }
-
-    private boolean isGoogleServicesAvailable() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS;
     }
 
     public void hideAds() {
