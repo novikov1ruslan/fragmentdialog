@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.settings;
 
+import android.os.Build;
 import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -22,25 +23,25 @@ import org.robolectric.util.ActivityController;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@Config(manifest = "src/main/AndroidManifest.xml", sdk=16)
-@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/test/AndroidManifest.xml", sdk = Build.VERSION_CODES.JELLY_BEAN)
+@RunWith(RobolectricGradleTestRunner.class)
 public class SettingsScreenTest {
 
     private TestActivity activity;
-    @Mock
+//    @Mock
     private GoogleApiClient apiClient;
     @Mock
     private GameSettings settings;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+//        MockitoAnnotations.initMocks(this);
 ////        activity = Robolectric.buildActivity(TestActivity.class).get();
 //        activity = new TestActivity();
 //        ShadowsAdapter shadowsAdapter = Robolectric.getShadowsAdapter();
 //        ActivityController<TestActivity> activityController = new ActivityController<>(shadowsAdapter, activity);
 //        activityController.create();
-////        activity.onCreate(null);
+//        apiClient = activityController.get().getApiClient();
 //        activity.setScreen(new SettingsScreen(activity, apiClient, settings));
     }
 

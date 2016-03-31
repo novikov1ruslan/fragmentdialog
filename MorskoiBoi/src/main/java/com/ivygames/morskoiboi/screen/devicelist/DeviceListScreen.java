@@ -186,7 +186,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen(getParent()));
+            setScreen(new MainScreen(getParent(), getParent().getApiClient()));
         }
     }
 

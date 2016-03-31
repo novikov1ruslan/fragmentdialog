@@ -45,9 +45,9 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @NonNull
     private final GoogleApiClient mApiClient;
 
-    public MainScreen(BattleshipActivity parent) {
+    public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClient apiClient) {
         super(parent);
-        mApiClient = notNull(parent.getApiClient());
+        mApiClient = notNull(apiClient);
     }
 
     @Override
@@ -211,8 +211,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        SettingsScreen settingsScreen = new SettingsScreen(getParent(),
-                notNull(getParent().getApiClient()), GameSettings.get());
+        SettingsScreen settingsScreen = new SettingsScreen(getParent(), mApiClient, GameSettings.get());
         VibratorFacade vibratorFacade = new VibratorFacade(settingsScreen);
         settingsScreen.setVibrator(vibratorFacade);
         mParent.setScreen(settingsScreen);

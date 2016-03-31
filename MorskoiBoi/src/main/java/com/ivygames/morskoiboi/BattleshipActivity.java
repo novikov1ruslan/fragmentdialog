@@ -209,7 +209,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         setContentView(mLayout);
         mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
 
-        setScreen(new MainScreen(this));
+        setScreen(new MainScreen(this, getApiClient()));
 
         if (mSettings.shouldAutoSignIn()) {
             Ln.d("should auto-signin - connecting...");

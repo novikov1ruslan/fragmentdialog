@@ -155,7 +155,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen(getParent()));
+        mParent.setScreen(new MainScreen(getParent(), getParent().getApiClient()));
     }
 
     @Override

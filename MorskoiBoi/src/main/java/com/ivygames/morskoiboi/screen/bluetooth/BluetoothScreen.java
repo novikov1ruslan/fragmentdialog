@@ -142,7 +142,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen(getParent()));
+            setScreen(new MainScreen(getParent(), getParent().getApiClient()));
         }
     }
 
