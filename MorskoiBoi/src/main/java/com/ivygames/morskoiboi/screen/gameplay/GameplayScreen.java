@@ -1,9 +1,11 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -88,7 +90,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private ChatAdapter mChatAdapter;
 
-    private final GameplaySoundManager mSoundManager = new GameplaySoundManager(this);
+    private final GameplaySoundManager mSoundManager;
 
     private Runnable mBackToSelectGameCommand;
 
@@ -153,7 +155,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         super(parent);
         mMatchStatusIntent = new Intent(getParent(), InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
-
+        mSoundManager = new GameplaySoundManager(this, (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE));
         mSoundManager.prepareSoundPool(getParent().getAssets());
         mBackPressEnabled = true;
         mPlayer = Model.instance.player;

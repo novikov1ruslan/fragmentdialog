@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.screen.lost;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -31,7 +33,8 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     public LostScreen(BattleshipActivity parent) {
         super(parent);
-        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "lost.ogg");
+        AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
+        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
         GameSettings.get().incrementGamesPlayedCounter();
     }

@@ -622,4 +622,5 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
     }
+
 }

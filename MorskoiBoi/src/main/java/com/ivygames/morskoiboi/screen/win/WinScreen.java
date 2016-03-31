@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.screen.win;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -57,13 +59,16 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     private int mScores;
 
+    @NonNull
     private final SoundBar mSoundBar;
+
+    @NonNull
     private final Bundle mArgs;
 
     @NonNull
     private final GoogleApiClient mApiClient;
 
-    public WinScreen(Bundle args, BattleshipActivity parent) {
+    public WinScreen(@NonNull Bundle args, @NonNull BattleshipActivity parent) {
         super(parent);
         mArgs = Validate.notNull(args);
         mApiClient = notNull(parent.getApiClient());
@@ -72,7 +77,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
         mGame = Model.instance.game;
 
-        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "win.ogg");
+        AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
+        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "win.ogg", audioManager);
         mSoundBar.play();
 
         mTime = mGame.getTimeSpent();

@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.BattleshipApplication;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
@@ -37,10 +37,12 @@ public class GameplaySoundManager {
     private int mKillStream;
 
     private final Random mRandom = new Random(System.currentTimeMillis());
-    private final BattleshipScreen mFragment;
+    private final BattleshipScreen mScreen;
+    private final AudioManager mAudioManager;
 
-    public GameplaySoundManager(BattleshipScreen fragment) {
-        mFragment = fragment;
+    public GameplaySoundManager(@NonNull BattleshipScreen screen, @NonNull AudioManager audioManager) {
+        mScreen = screen;
+        mAudioManager = audioManager;
         int soundsCount = HIT_SOUNDS_COUNT + KILL_SOUNDS_COUNT + SPLASH_SOUNDS_COUNT;
         mSoundPool = new SoundPool(soundsCount, AudioManager.STREAM_MUSIC, 0);
 
@@ -112,7 +114,7 @@ public class GameplaySoundManager {
 
     public void playSplash() {
         if (isSoundOn()) {
-            float volume = BattleshipApplication.get().getVolume();
+            float volume = getVolume();
             volume = volume * 0.2f;
             mSplashStream = mSoundPool.play(mSplashSounds[mRandom.nextInt(SPLASH_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
         }
@@ -120,14 +122,14 @@ public class GameplaySoundManager {
 
     public void playHitSound() {
         if (isSoundOn()) {
-            float volume = BattleshipApplication.get().getVolume();
+            float volume = getVolume();
             mHitStream = mSoundPool.play(mHitSounds[mRandom.nextInt(HIT_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
         }
     }
 
     public void playKillSound() {
         if (isSoundOn()) {
-            float volume = BattleshipApplication.get().getVolume();
+            float volume = getVolume();
             mKillStream = mSoundPool.play(mKillSounds[mRandom.nextInt(KILL_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
         }
     }
@@ -149,6 +151,12 @@ public class GameplaySoundManager {
     }
 
     public boolean isSoundOn() {
-        return GameSettings.get().isSoundOn() && mFragment.isResumed();
+        return GameSettings.get().isSoundOn() && mScreen.isResumed();
+    }
+
+    private float getVolume() {
+        float actualVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        return actualVolume / maxVolume;
     }
 }

@@ -1,16 +1,17 @@
 package com.ivygames.morskoiboi;
 
 import android.content.res.AssetManager;
+import android.media.AudioManager;
 
 import org.commons.logger.Ln;
 
 import java.io.IOException;
 
 public class SoundBarFactory {
-    public static SoundBar create(AssetManager assets, String soundName) {
+    public static SoundBar create(AssetManager assets, String soundName, AudioManager audioManager) {
         if (GameSettings.get().isSoundOn()) {
             try {
-                return new SoundBarImpl(assets.openFd(soundName));
+                return new SoundBarImpl(assets.openFd(soundName), audioManager);
             } catch (IOException ioe) {
                 Ln.w(ioe);
             }
