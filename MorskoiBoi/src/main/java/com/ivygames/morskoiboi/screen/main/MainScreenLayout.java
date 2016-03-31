@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.google.android.gms.plus.PlusOneButton;
-import com.ivygames.morskoiboi.PlayUtils;
+import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
@@ -13,8 +13,6 @@ import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 import org.commons.logger.Ln;
 
 public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener {
-
-    private View mTutView;
 
     public interface MainScreenActions {
         void play();
@@ -116,8 +114,4 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         findViewById(R.id.no_ads).setVisibility(GONE);
     }
 
-    public View setTutView(View view) {
-        mTutView = view;
-        return view;
-    }
 }

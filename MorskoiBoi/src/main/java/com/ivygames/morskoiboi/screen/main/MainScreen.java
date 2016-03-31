@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.screen.main;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -11,10 +10,11 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
+import com.ivygames.common.PlayUtils;
+import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.PlayUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -48,13 +48,6 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public MainScreen(BattleshipActivity parent) {
         super(parent);
         mApiClient = notNull(parent.getApiClient());
-    }
-
-    private static Intent createShareIntent(Context context, String greeting) {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + PlayUtils.getPlayUrl(context));
-        return shareIntent;
     }
 
     @Override
@@ -145,7 +138,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void share() {
         UiEvent.send("share");
-        startActivity(MainScreen.createShareIntent(getParent(), getString(R.string.share_greeting)));
+        startActivity(Sharing.createShareIntent(getParent(), getString(R.string.share_greeting)));
     }
 
     @Override

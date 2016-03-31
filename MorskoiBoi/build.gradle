@@ -58,6 +58,7 @@ android {
 }
 
 dependencies {
+    compile project(':common')
     compile project(':AppTheme')
     compile project(':fragmentdialog')
     compile project(':BaseGameUtils')
@@ -80,10 +81,11 @@ dependencies {
     appodealCompile project(':unity-ads-1.5.6')
     appodealCompile fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support:support-annotations:23.2.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 
     testCompile "org.robolectric:robolectric:3.0"
     testCompile 'junit:junit:4.12'

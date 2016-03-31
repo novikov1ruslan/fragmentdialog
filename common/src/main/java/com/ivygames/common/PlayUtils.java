@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common;
 
 import android.content.Context;
 import android.content.Intent;
