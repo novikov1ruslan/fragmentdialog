@@ -16,11 +16,13 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.ShadowsAdapter;
+import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@Config(manifest = "src/main/AndroidManifest.xml", sdk=16)
 @RunWith(RobolectricTestRunner.class)
 public class SettingsScreenTest {
 
@@ -32,7 +34,7 @@ public class SettingsScreenTest {
 
     @Before
     public void setup() {
-//        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);
 ////        activity = Robolectric.buildActivity(TestActivity.class).get();
 //        activity = new TestActivity();
 //        ShadowsAdapter shadowsAdapter = Robolectric.getShadowsAdapter();
