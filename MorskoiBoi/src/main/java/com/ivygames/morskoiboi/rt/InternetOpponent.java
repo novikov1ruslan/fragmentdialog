@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.rt;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
@@ -13,9 +14,11 @@ import org.commons.logger.Ln;
 
 public class InternetOpponent extends AbstractOnlineOpponent implements RealTimeMessageReceivedListener {
 
+    @NonNull
     private final RtmSender mRtmSender;
 
-    public InternetOpponent(RtmSender rtmSender) {
+    public InternetOpponent(@NonNull RtmSender rtmSender, @NonNull String defaultName) {
+        super(defaultName);
         mRtmSender = Validate.notNull(rtmSender);
         Ln.v("new internet opponent created");
     }

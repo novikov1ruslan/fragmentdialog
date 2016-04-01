@@ -10,8 +10,8 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
 
     private final BluetoothConnection mSender;
 
-    public BluetoothOpponent(BluetoothConnection sender) {
-        super();
+    public BluetoothOpponent(BluetoothConnection sender, String defaultName) {
+        super(defaultName);
         mSender = Validate.notNull(sender);
         Ln.v("new bluetooth opponent created");
     }

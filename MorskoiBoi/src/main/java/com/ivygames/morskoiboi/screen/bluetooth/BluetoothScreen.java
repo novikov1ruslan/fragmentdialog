@@ -180,7 +180,8 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onConnected(BluetoothConnection connection) {
         Ln.d(TAG + ": connected - creating opponent and showing board setup");
-        BluetoothOpponent opponent = new BluetoothOpponent(connection);
+        String defaultName = getString(R.string.player);
+        BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
         connection.setMessageReceiver(opponent);
         String playerName = GameSettings.get().getPlayerName();
         if (TextUtils.isEmpty(playerName)) {

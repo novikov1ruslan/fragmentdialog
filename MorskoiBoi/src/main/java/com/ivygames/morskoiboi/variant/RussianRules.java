@@ -1,6 +1,8 @@
 package com.ivygames.morskoiboi.variant;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
@@ -30,6 +32,13 @@ public class RussianRules extends AbstractRules {
 
     private static final float MAX_TIME_BONUS_MULTIPLIER = 2f;
     private static final float MIN_TIME_BONUS_MULTIPLIER = 1f;
+
+    @NonNull
+    private final Resources mResources;
+
+    public RussianRules(@NonNull Resources resources) {
+        mResources = resources;
+    }
 
     @Override
     public boolean isCellConflicting(Cell cell) {
@@ -106,14 +115,14 @@ public class RussianRules extends AbstractRules {
         Bitmaps bitmaps = Bitmaps.getInstance();
         switch (size) {
             case 4:
-                return bitmaps.getBitmap(R.drawable.aircraft_carrier);
+                return bitmaps.getBitmap(mResources, R.drawable.aircraft_carrier);
             case 3:
-                return bitmaps.getBitmap(R.drawable.battleship);
+                return bitmaps.getBitmap(mResources, R.drawable.battleship);
             case 2:
-                return bitmaps.getBitmap(R.drawable.frigate);
+                return bitmaps.getBitmap(mResources, R.drawable.frigate);
             case 1:
             default:
-                return bitmaps.getBitmap(R.drawable.gunboat);
+                return bitmaps.getBitmap(mResources, R.drawable.gunboat);
         }
     }
 

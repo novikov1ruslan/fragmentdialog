@@ -57,7 +57,7 @@ public class AndroidOpponentTest {
 
     @NonNull
     public RussianPlacement getRussianPlacement() {
-        return new RussianPlacement(new Random(), new RussianRules().getTotalShips());
+        return new RussianPlacement(new Random(), new RussianRules(null).getTotalShips());
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
 import org.commons.logger.Ln;
@@ -74,10 +75,10 @@ public final class Bitmaps {
         }
     }
 
-    public Bitmap getBitmap(int resId) {
+    public Bitmap getBitmap(@NonNull Resources res, int resId) {
         Bitmap bitmap = mBitmaps.get(resId);
         if (bitmap == null) {
-            bitmap = BitmapFactory.decodeResource(BattleshipApplication.get().getResources(), resId);
+            bitmap = BitmapFactory.decodeResource(res, resId);
             if (bitmap != null) {
                 Ln.e("bitmap_crash_saved");
                 mBitmaps.put(resId, bitmap);

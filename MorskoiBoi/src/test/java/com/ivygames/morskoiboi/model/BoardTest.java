@@ -31,7 +31,7 @@ public class BoardTest extends TestCase {
 		mBoard = new Board();
 		Random random = mock(Random.class);
 		when(random.nextInt(anyInt())).thenReturn(0);
-		Rules rules = new RussianRules();
+		Rules rules = new RussianRules(null);
 		RulesFactory.setRules(rules);
 		RussianPlacement placement = new RussianPlacement(random, rules.getTotalShips());
 		PlacementFactory.setPlacementAlgorithm(placement);

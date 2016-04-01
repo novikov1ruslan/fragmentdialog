@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -69,8 +70,9 @@ public class FleetView extends View {
         mMarginBetweenShips = attributesArray.getDimensionPixelOffset(R.styleable.Status_verticalMargin, DEFAULT_MARGIN_BETWEEN_SHIPS);
         attributesArray.recycle();
 
-        mLinePaint = UiUtils.newStrokePaint(getResources(), R.color.line);
-        float mTextSize = getResources().getDimension(R.dimen.status_text_size);
+        Resources resources = getResources();
+        mLinePaint = UiUtils.newStrokePaint(resources, R.color.line);
+        float mTextSize = resources.getDimension(R.dimen.status_text_size);
         mTextPaint.setTextSize(mTextSize);
         Typeface typeface = Typeface.DEFAULT_BOLD;
         mTextPaint.setTypeface(typeface);
@@ -78,13 +80,13 @@ public class FleetView extends View {
 
         mLetterWidth = mTextPaint.measureText(WIDEST_LETTER);
 
-        mTextColor = getResources().getColor(R.color.status_text);
-        mZeroTextColor = getResources().getColor(R.color.status_zero_text);
+        mTextColor = resources.getColor(R.color.status_text);
+        mZeroTextColor = resources.getColor(R.color.status_zero_text);
 
-        mAircraftCarrier = Bitmaps.getInstance().getBitmap(R.drawable.aircraft_carrier);
-        mBattleship = Bitmaps.getInstance().getBitmap(R.drawable.battleship);
-        mDestroyer = Bitmaps.getInstance().getBitmap(R.drawable.frigate);
-        mGunboat = Bitmaps.getInstance().getBitmap(R.drawable.gunboat);
+        mAircraftCarrier = Bitmaps.getInstance().getBitmap(resources, R.drawable.aircraft_carrier);
+        mBattleship = Bitmaps.getInstance().getBitmap(resources, R.drawable.battleship);
+        mDestroyer = Bitmaps.getInstance().getBitmap(resources, R.drawable.frigate);
+        mGunboat = Bitmaps.getInstance().getBitmap(resources, R.drawable.gunboat);
 
         mCarrierSrc = createRectForBitmap(mAircraftCarrier);
         mBattleshipSrc = createRectForBitmap(mBattleship);

@@ -39,8 +39,7 @@ public class DeviceUtils {
         return false;
     }
 
-    public static boolean resolverAvailableForIntent(Intent intent) {
-        PackageManager pm = BattleshipApplication.get().getPackageManager();
+    public static boolean resolverAvailableForIntent(@NonNull PackageManager pm, @NonNull Intent intent) {
         List<ResolveInfo> resolveInfo = pm.queryIntentActivities(intent, 0);
         return !resolveInfo.isEmpty();
     }

@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.variant;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import com.ivygames.morskoiboi.Bitmaps;
@@ -13,6 +14,11 @@ import java.util.Collection;
 public class AmericanRules extends AbstractRules {
 
     private static final int[] TOTAL_SHIPS = {5, 4, 3, 3, 2};
+    private final Resources mResources;
+
+    public AmericanRules(Resources resources) {
+        this.mResources = resources;
+    }
 
     @Override
     public boolean isCellConflicting(Cell cell) {
@@ -35,14 +41,14 @@ public class AmericanRules extends AbstractRules {
         Bitmaps bitmaps = Bitmaps.getInstance();
         switch (size) {
             case 5:
-                return bitmaps.getBitmap(R.drawable.aircraft_carrier);
+                return bitmaps.getBitmap(mResources, R.drawable.aircraft_carrier);
             case 4:
-                return bitmaps.getBitmap(R.drawable.battleship);
+                return bitmaps.getBitmap(mResources, R.drawable.battleship);
             case 3:
-                return bitmaps.getBitmap(R.drawable.frigate);
+                return bitmaps.getBitmap(mResources, R.drawable.frigate);
             case 2:
             default:
-                return bitmaps.getBitmap(R.drawable.gunboat);
+                return bitmaps.getBitmap(mResources, R.drawable.gunboat);
         }
     }
 

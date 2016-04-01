@@ -47,7 +47,7 @@ public class SetupBoardPresenterTest {
         mPresenter = new SetupBoardPresenter(10, 2);
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
-        Rules rules = new RussianRules();
+        Rules rules = new RussianRules(null);
         RulesFactory.setRules(rules);
         PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(), rules.getTotalShips()));
         mPlacement = PlacementFactory.getAlgorithm();

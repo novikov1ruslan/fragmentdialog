@@ -157,7 +157,8 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     private void createGame() {
         mInternetGame = new InternetGame(mApiClient, this);
-        InternetOpponent mOpponent = new InternetOpponent(mInternetGame);
+        String defaultName = getString(R.string.player);
+        InternetOpponent mOpponent = new InternetOpponent(mInternetGame, defaultName);
         mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
         String playerName = GameSettings.get().getPlayerName();
         if (TextUtils.isEmpty(playerName)) {

@@ -32,15 +32,15 @@ import java.util.Random;
 public class ApplicationInitializer {
     public static void initialize(Application application) {
         ACRA.init(application);
+        GameSettings.init(application);
 
         initLogger(application);
         initAnalytics(application);
 
-
         Bitmaps.getInstance().loadBitmaps(application.getResources());
 
         // dependency injection
-        RulesFactory.setRules(new RussianRules());
+        RulesFactory.setRules(new RussianRules(application.getResources()));
         PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), RulesFactory.getRules().getTotalShips()));
         BotFactory.setAlgorithm(new RussianBot(null));
     }
@@ -50,7 +50,7 @@ public class ApplicationInitializer {
         // the application context to avoid leaking the current context.
         if (GameConstants.IS_TEST_MODE) {
 //            Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
-            GoogleAnalytics.getInstance(BattleshipApplication.get()).setDryRun(true);
+            GoogleAnalytics.getInstance(application).setDryRun(true);
         }
         GlobalTracker.sTracker = GoogleAnalytics.getInstance(application).newTracker(GameConstants.ANALYTICS_KEY);
         GlobalTracker.sTracker.enableAdvertisingIdCollection(true);

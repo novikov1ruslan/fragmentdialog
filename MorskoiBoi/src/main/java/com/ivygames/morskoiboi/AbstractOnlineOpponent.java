@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -9,7 +11,9 @@ import org.commons.logger.Ln;
 
 public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     protected Opponent mOpponent;
-    private String mName = BattleshipApplication.get().getString(R.string.player);
+
+    @NonNull
+    private String mName;
 
     protected static final char NAME = 'N';
     protected static final char BID = 'B';
@@ -19,6 +23,10 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     protected static final char WIN = 'W';
     protected static final char VERSION = 'V';
     protected static final char MESSAGE = 'M';
+
+    public AbstractOnlineOpponent(@NonNull String defaultName) {
+        mName = defaultName;
+    }
 
     protected void onRealTimeMessageReceived(String message) {
         char opCode = message.charAt(0);

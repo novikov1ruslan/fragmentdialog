@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi;
 
 import android.app.Application;
 import android.content.Context;
-import android.media.AudioManager;
 import android.support.multidex.MultiDex;
 
 import org.acra.ReportField;
@@ -18,15 +17,6 @@ import org.acra.annotation.ReportsCrashes;
         "-t", "2000", "-v", "time"})
 public class BattleshipApplication extends Application {
 
-    private static BattleshipApplication sContext;
-
-    /**
-     * @return global application context
-     */
-    public static BattleshipApplication get() {
-        return sContext;
-    }
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -36,7 +26,6 @@ public class BattleshipApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sContext = this;
         ApplicationInitializer.initialize(this);
     }
 
