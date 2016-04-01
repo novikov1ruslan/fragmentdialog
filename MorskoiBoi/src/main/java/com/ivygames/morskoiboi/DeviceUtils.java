@@ -23,9 +23,14 @@ import java.util.List;
 public class DeviceUtils {
 
     private static final int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
+    private static GoogleApiAvailability sApiAvailability;
 
     private DeviceUtils() {
         // utils
+    }
+
+    public static void init(GoogleApiAvailability apiAvailability) {
+        sApiAvailability = apiAvailability;
     }
 
     public static boolean isConnectedToNetwork(Context context) {
@@ -96,8 +101,7 @@ public class DeviceUtils {
     }
 
     public static boolean isGoogleServicesAvailable(Context context) {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        return apiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+        return sApiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
 //        return false;
     }
 }

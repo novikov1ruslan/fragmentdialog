@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
@@ -33,6 +34,7 @@ public class ApplicationInitializer {
     public static void initialize(Application application) {
         ACRA.init(application);
         GameSettings.init(application);
+        DeviceUtils.init(GoogleApiAvailability.getInstance());
 
         initLogger(application);
         initAnalytics(application);

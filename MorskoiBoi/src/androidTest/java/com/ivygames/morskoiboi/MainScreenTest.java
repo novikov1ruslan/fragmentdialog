@@ -13,6 +13,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
@@ -51,21 +52,25 @@ import org.mockito.MockitoAnnotations;
 @LargeTest
 public class MainScreenTest {
 
-//    @Mock
-    private GoogleApiClient apiClient;
-
     @Rule
     public ActivityTestRule<BattleshipActivity> rule = new ActivityTestRule<>(
             BattleshipActivity.class);
 
+    //    @Mock
+//    private GoogleApiClient apiClient;
+
+//    @Mock
+//    private GoogleApiAvailability apiAvailability;
+
     @Before
     @UiThreadTest
     public void startup() {
-//        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);
 //        Intents.init();
 //        apiClient = Mockito.mock(GoogleApiClient.class);
-        BattleshipActivity activity = rule.getActivity();
-        activity.setScreen(new MainScreen(activity, activity.getApiClient()));
+//        DeviceUtils.init(apiAvailability);
+//        BattleshipActivity activity = rule.getActivity();
+//        activity.setScreen(new MainScreen(activity, activity.getApiClient()));
     }
 
     @Test

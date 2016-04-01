@@ -1,6 +1,8 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import org.acra.ReportField;
 import org.acra.annotation.ReportsCrashes;
@@ -14,6 +16,12 @@ import org.acra.annotation.ReportsCrashes;
         ReportField.USER_COMMENT, ReportField.DEVICE_FEATURES, ReportField.SHARED_PREFERENCES, ReportField.BUILD_CONFIG, ReportField.LOGCAT}, logcatArguments = {
         "-t", "2000", "-v", "time"})
 public class BattleshipApplication extends Application {
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {
