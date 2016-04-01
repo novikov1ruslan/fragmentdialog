@@ -1,10 +1,13 @@
 package com.ivygames.morskoiboi.achievement;
 
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
@@ -38,18 +41,19 @@ public final class AchievementsManager {
 
     public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
-    private final GoogleApiClient mApiClient;
+    @NonNull
+    private final GoogleApiClientWrapper mApiClient;
     private final GameSettings mSettings = GameSettings.get();
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManager(GoogleApiClient apiClient) {
-        mApiClient = Validate.notNull(apiClient);
+    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient) {
+        mApiClient = apiClient;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient);
     }
 
     public void loadAchievements() {
-        PendingResult<LoadAchievementsResult> loadResult = Games.Achievements.load(mApiClient, true);
+        PendingResult<LoadAchievementsResult> loadResult = mApiClient.load(true);
         loadResult.setResultCallback(mAchievementsLoadCallback);
     }
 
@@ -163,14 +167,14 @@ public final class AchievementsManager {
         mSettings.unlockAchievement(achievementId);
         AnalyticsEvent.send("achievement", achievementId);
         if (mApiClient.isConnected()) {
-            Games.Achievements.unlock(mApiClient, achievementId);
+            mApiClient.unlock(achievementId);
         }
     }
 
     private void increment(String achievementId, int steps) {
         Ln.d("incrementing achievement: " + AchievementsManager.name(achievementId) + " by " + steps);
         if (mApiClient.isConnected()) {
-            Games.Achievements.increment(mApiClient, achievementId, steps);
+            mApiClient.increment(achievementId, steps);
         }
     }
 
@@ -178,7 +182,7 @@ public final class AchievementsManager {
         Ln.d("revealing achievement: " + AchievementsManager.name(achievementId));
         AchievementsUtils.setRevealed(achievementId);
         if (mApiClient.isConnected()) {
-            Games.Achievements.reveal(mApiClient, achievementId);
+            mApiClient.reveal(achievementId);
         }
     }
 

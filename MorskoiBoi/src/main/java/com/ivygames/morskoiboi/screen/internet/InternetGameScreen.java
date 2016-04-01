@@ -17,6 +17,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -59,11 +60,11 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private WaitFragment mWaitFragment;
 
     @NonNull
-    private final GoogleApiClient mApiClient;
+    private final GoogleApiClientWrapper mApiClient;
 
-    public InternetGameScreen(BattleshipActivity parent) {
+    public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mApiClient = notNull(parent.getApiClient());
+        mApiClient = parent.getApiClient();
     }
 
     @Override
@@ -151,7 +152,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         createGame();
 
         showWaitingScreen();
-        Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mApiClient, InternetGame.MIN_OPPONENTS, InternetGame.MAX_OPPONENTS, false);
+        Intent intent = mApiClient.getSelectOpponentsIntent(InternetGame.MIN_OPPONENTS, InternetGame.MAX_OPPONENTS, false);
         startActivityForResult(intent, BattleshipActivity.RC_SELECT_PLAYERS);
     }
 
@@ -183,7 +184,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         createGame();
 
         showWaitingScreen();
-        Intent intent = Games.Invitations.getInvitationInboxIntent(mApiClient);
+        Intent intent = mApiClient.getInvitationInboxIntent();
         startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
     }
 
@@ -283,7 +284,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
      * Show the waiting room UI to track the progress of other players as they enter the room and get connected.
      */
     private void showWaitingRoom(Room room) {
-        Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(mApiClient, room, MIN_PLAYERS);
+        Intent intent = mApiClient.getWaitingRoomIntent(room, MIN_PLAYERS);
         startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
     }
 

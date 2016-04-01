@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.rt;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
@@ -12,6 +13,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.RtmSender;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
@@ -45,13 +47,15 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         void onError(int statusCode);
     }
 
-    private final GoogleApiClient mApiClient;
+    @NonNull
+    private final GoogleApiClientWrapper mApiClient;
     private Room mRoom;
     private String mRecipientId;
     private InternetGameListener mGameListener;
     private RealTimeMessageReceivedListener mRtListener;
 
     private boolean mConnectionLostSent;
+    @NonNull
     private final Queue<String> mMessages = new LinkedList<String>();
 
     private int mLastSentToken;
@@ -62,9 +66,8 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     // private final RoomLeaveListener mRoomLeaveListener = new RoomLeaveListener();
 
-    public InternetGame(GoogleApiClient apiClient, InternetGameListener listener) {
+    public InternetGame(@NonNull GoogleApiClientWrapper apiClient, @NonNull InternetGameListener listener) {
         super();
-        Validate.notNull(apiClient);
         mApiClient = apiClient;
 
         Validate.notNull(listener);
@@ -299,7 +302,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         }
 
         Ln.d("leaving room: " + mRoom.getRoomId());
-        Games.RealTimeMultiplayer.leave(mApiClient, this, mRoom.getRoomId());
+        mApiClient.leave(this, mRoom.getRoomId());
         mRoom = null;
     }
 
@@ -308,7 +311,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         Ln.d("accepting invitation: " + invId);
         RoomConfig.Builder builder = getRoomConfigBuilder();
         builder.setInvitationIdToAccept(invId);
-        Games.RealTimeMultiplayer.join(mApiClient, builder.build());
+        mApiClient.join(builder.build());
     }
 
     public void create(ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers) {
@@ -321,7 +324,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
             builder.setAutoMatchCriteria(autoMatchCriteria);
         }
 
-        Games.RealTimeMultiplayer.create(mApiClient, builder.build());
+        mApiClient.create(builder.build());
     }
 
     private Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
@@ -337,7 +340,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         // quick-start a game with 1 randomly selected opponent
         RoomConfig.Builder builder = getRoomConfigBuilder();
         builder.setAutoMatchCriteria(createAutomatchCriteria(MIN_OPPONENTS, MAX_OPPONENTS));
-        Games.RealTimeMultiplayer.create(mApiClient, builder.build());
+        mApiClient.create(builder.build());
     }
 
     private RoomConfig.Builder getRoomConfigBuilder() {
@@ -392,7 +395,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
     private void sendMessage(String message) {
         mIsSending = true;
         byte[] messageData = message.getBytes();
-        mLastSentToken = Games.RealTimeMultiplayer.sendReliableMessage(mApiClient, this, messageData, mRoom.getRoomId(), mRecipientId);
+        mLastSentToken = mApiClient.sendReliableMessage(this, messageData, mRoom.getRoomId(), mRecipientId);
         Ln.v(mLastSentToken + " sent: [" + message + "], to " + mRecipientId + ", " + messageData.length + " bytes, messages left = " + mMessages.size());
     }
 

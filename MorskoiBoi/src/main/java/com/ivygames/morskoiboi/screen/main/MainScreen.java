@@ -15,6 +15,7 @@ import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -43,18 +44,17 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private MainScreenLayout mLayout;
 
     @NonNull
-    private final GoogleApiClient mApiClient;
+    private final GoogleApiClientWrapper mApiClient;
 
-    public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClient apiClient) {
+    public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClientWrapper apiClient) {
         super(parent);
-        mApiClient = notNull(apiClient);
+        mApiClient = apiClient;
     }
 
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (MainScreenLayout) inflate(R.layout.main, container);
         mLayout.setScreenActionsListener(this);
-//        mTutView = mLayout.setTutView(inflate(R.layout.main_tut));
 
         Ln.d(this + " screen created");
 
@@ -160,7 +160,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void showAchievementsScreen() {
-        startActivityForResult(Games.Achievements.getAchievementsIntent(mApiClient), BattleshipActivity.RC_UNUSED);
+        startActivityForResult(mApiClient.getAchievementsIntent(), BattleshipActivity.RC_UNUSED);
     }
 
     @Override
@@ -206,7 +206,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void showLeaderboardsScreen() {
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mApiClient, getString(R.string.leaderboard_normal)), BattleshipActivity.RC_UNUSED);
+        startActivityForResult(mApiClient.getLeaderboardIntent(getString(R.string.leaderboard_normal)), BattleshipActivity.RC_UNUSED);
     }
 
     @Override

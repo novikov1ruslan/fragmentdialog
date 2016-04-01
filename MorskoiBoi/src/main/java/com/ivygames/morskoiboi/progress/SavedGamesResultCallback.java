@@ -1,10 +1,13 @@
 package com.ivygames.morskoiboi.progress;
 
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
@@ -12,14 +15,15 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 
 final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSnapshotResult> {
-    private final GoogleApiClient mApiClient;
+    @NonNull
+    private final GoogleApiClientWrapper mApiClient;
 
-    SavedGamesResultCallback(GoogleApiClient apiClient) {
-        mApiClient = Validate.notNull(apiClient);
+    SavedGamesResultCallback(@NonNull GoogleApiClientWrapper apiClient) {
+        mApiClient = apiClient;
     }
 
     @Override
-    public void onResult(Snapshots.OpenSnapshotResult result) {
+    public void onResult(@NonNull Snapshots.OpenSnapshotResult result) {
         try {
             Status status = result.getStatus();
             if (status.isSuccess()) {

@@ -14,6 +14,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -28,7 +29,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     private static final String EMAIL = "ivy.games.studio@gmail.com";
 
     @NonNull
-    private final GoogleApiClient mApiClient;
+    private final GoogleApiClientWrapper mApiClient;
     @NonNull
     private final GameSettings mSettings;
 
@@ -36,7 +37,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     private SettingsLayout mLayout;
 
     public SettingsScreen(@NonNull  BattleshipActivity parent,
-                          @NonNull  GoogleApiClient apiClient,
+                          @NonNull GoogleApiClientWrapper apiClient,
                           @NonNull GameSettings settings) {
         super(parent);
         mApiClient = apiClient;

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -16,6 +15,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SoundBar;
@@ -37,12 +37,9 @@ import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.Collection;
-
-import static org.apache.commons.lang3.Validate.notNull;
 
 public class WinScreen extends OnlineGameScreen implements BackPressListener, SignInListener {
     private static final String TAG = "WIN";
@@ -66,12 +63,12 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private final Bundle mArgs;
 
     @NonNull
-    private final GoogleApiClient mApiClient;
+    private final GoogleApiClientWrapper mApiClient;
 
     public WinScreen(@NonNull Bundle args, @NonNull BattleshipActivity parent) {
         super(parent);
-        mArgs = Validate.notNull(args);
-        mApiClient = notNull(parent.getApiClient());
+        mArgs = args;
+        mApiClient = parent.getApiClient();
 
         Board board = Board.fromJson(mArgs.getString(EXTRA_BOARD));
 
@@ -241,9 +238,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     private void submitScore(int totalScores) {
         Ln.d("submitting scores: " + totalScores);
-        Games.Leaderboards.submitScore(mApiClient, getString(R.string.leaderboard_normal), totalScores);
+        mApiClient.submitScore(getString(R.string.leaderboard_normal), totalScores);
 
-        Player currentPlayer = Games.Players.getCurrentPlayer(mApiClient);
+        Player currentPlayer = mApiClient.getCurrentPlayer();
         if (currentPlayer != null) {
             String playerName = currentPlayer.getDisplayName();
             String player = String.valueOf(playerName.hashCode());

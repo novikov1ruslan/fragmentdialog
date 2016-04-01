@@ -16,19 +16,14 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
-import com.google.android.gms.plus.Plus;
-import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
@@ -87,7 +82,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private int mVolumeControlStream;
     private final Set<String> mIncomingInvitationIds = new HashSet<>();
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClientWrapper mGoogleApiClient;
 
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure;
@@ -188,7 +183,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
         mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
-        mGoogleApiClient = createGoogleApiClient();
+        mGoogleApiClient = new GoogleApiClientWrapper(this, this, this);
 
         if (DeviceUtils.isTablet(getResources())) {
             Ln.d("device is tablet");
@@ -262,18 +257,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         hideNoAdsButton();
     }
 
-    private GoogleApiClient createGoogleApiClient() {
-        ConnectionCallbacks connectedListener = this;
-        OnConnectionFailedListener connectionFailedListener = this;
-
-        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this, connectedListener, connectionFailedListener);
-        builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
-        builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
-        builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
-
-        return builder.build();
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -301,13 +284,13 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     private void registerInvitationListener() {
-        Games.Invitations.registerInvitationListener(mGoogleApiClient, mInvitationReceivedListener);
+        mGoogleApiClient.registerInvitationListener(mInvitationReceivedListener);
         loadInvitations();
     }
 
     public void loadInvitations() {
         Ln.d("loading invitations...");
-        PendingResult<LoadInvitationsResult> invitations = Games.Invitations.loadInvitations(mGoogleApiClient);
+        PendingResult<LoadInvitationsResult> invitations = mGoogleApiClient.loadInvitations();
         invitations.setResultCallback(mInvitationsResultCallback);
     }
 
@@ -364,7 +347,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         stopKeepingScreenOn();
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - unregister invitation listener");
-            Games.Invitations.unregisterInvitationListener(mGoogleApiClient);
+            mGoogleApiClient.unregisterInvitationListener();
         }
         EventBus.getDefault().unregister(this);
         Ln.d("game fully obscured - stop keeping screen On");
@@ -501,7 +484,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         Ln.d("resolving connection failure");
         // TODO:
-        mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(this, mGoogleApiClient, connectionResult, RC_SIGN_IN, getString(R.string.error));
+        mResolvingConnectionFailure = mGoogleApiClient.resolveConnectionFailure(this, connectionResult, RC_SIGN_IN, getString(R.string.error));
         Ln.d("has resolution = " + mResolvingConnectionFailure);
     }
 
@@ -521,7 +504,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 //        AdProviderFactory.getAdProvider().setPerson(currentPerson);
 
         if (TextUtils.isEmpty(mSettings.getPlayerName())) {
-            String name = Games.Players.getCurrentPlayer(getApiClient()).getDisplayName();
+            String name = mGoogleApiClient.getDisplayName();
             Ln.i("player's name is not set - setting to G+ name [" + name + "]");
             mSettings.setPlayerName(name);
         }
@@ -554,7 +537,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public GoogleApiClient getApiClient() {
+    public GoogleApiClientWrapper getApiClient() {
         return mGoogleApiClient;
     }
 

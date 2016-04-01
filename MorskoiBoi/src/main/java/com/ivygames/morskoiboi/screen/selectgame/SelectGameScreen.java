@@ -19,6 +19,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
@@ -61,11 +62,11 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private View mTutView;
 
     @NonNull
-    private final GoogleApiClient mApiClient;
+    private final GoogleApiClientWrapper mApiClient;
 
-    public SelectGameScreen(BattleshipActivity parent) {
+    public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mApiClient = notNull(parent.getApiClient());
+        mApiClient = parent.getApiClient();
     }
 
     @Override

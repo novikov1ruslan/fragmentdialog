@@ -1,22 +1,21 @@
 package com.ivygames.morskoiboi.progress;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.acra.ACRA;
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -24,13 +23,14 @@ import java.io.IOException;
 public class ProgressManager {
     public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
-    private final GoogleApiClient mApiClient;
+    @NonNull
+    private final GoogleApiClientWrapper mApiClient;
 
-    public ProgressManager(GoogleApiClient apiClient) {
-        mApiClient = Validate.notNull(apiClient);
+    public ProgressManager(@NonNull GoogleApiClientWrapper apiClient) {
+        mApiClient = apiClient;
     }
 
-    public static void processSuccessResult(GoogleApiClient apiClient, Snapshot snapshot) throws IOException {
+    public static void processSuccessResult(@NonNull GoogleApiClientWrapper apiClient, Snapshot snapshot) throws IOException {
         Progress cloudProgress = ProgressUtils.getProgressFromSnapshot(snapshot);
         Progress localProgress = GameSettings.get().getProgress();
         Ln.v("progress loaded: local =" + localProgress + ", cloud =" + cloudProgress);
@@ -44,7 +44,7 @@ public class ProgressManager {
     }
 
     public void loadProgress() {
-        Games.Snapshots.open(mApiClient, SNAPSHOT_NAME, false).setResultCallback(new SavedGamesResultCallback(mApiClient));
+        mApiClient.open(SNAPSHOT_NAME, false).setResultCallback(new SavedGamesResultCallback(mApiClient));
     }
 
     public void incrementProgress(int increment) {
@@ -82,14 +82,14 @@ public class ProgressManager {
      * played time, and description with each Snapshot update.  After update, the UI will
      * be cleared.
      */
-    static void update(final GoogleApiClient apiClient, final byte[] data) {
+    static void update(final @NonNull GoogleApiClientWrapper apiClient, final byte[] data) {
         final boolean CREATE_IF_MISSING = true;
 
         AsyncTask<Void, Void, Boolean> updateTask = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                Snapshots.OpenSnapshotResult open = Games.Snapshots.open(apiClient, SNAPSHOT_NAME, CREATE_IF_MISSING).await();
+                Snapshots.OpenSnapshotResult open = apiClient.open(SNAPSHOT_NAME, CREATE_IF_MISSING).await();
                 if (!open.getStatus().isSuccess()) {
                     int statusCode = open.getStatus().getStatusCode();
                     Ln.w("Could not open Snapshot for update: " + statusCode);
@@ -106,7 +106,7 @@ public class ProgressManager {
 
                 // Change data but leave existing metadata
                 snapshot.getSnapshotContents().writeBytes(data);
-                Snapshots.CommitSnapshotResult commit = Games.Snapshots.commitAndClose(apiClient, snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
+                Snapshots.CommitSnapshotResult commit = apiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
                 if (!commit.getStatus().isSuccess()) {
                     Ln.w("Failed to commit Snapshot: " + commit.getStatus().getStatusCode());
                     return false;
@@ -128,11 +128,11 @@ public class ProgressManager {
         updateTask.execute();
     }
 
-    public static void resolveConflict(final GoogleApiClient apiClient, String conflictId, Snapshot snapshot) {
-        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = Games.Snapshots.resolveConflict(apiClient, conflictId, snapshot);
+    public static void resolveConflict(final @NonNull GoogleApiClientWrapper apiClient, String conflictId, Snapshot snapshot) {
+        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = apiClient.resolveConflict(conflictId, snapshot);
         pendingResult.setResultCallback(new ResultCallback<Snapshots.OpenSnapshotResult>() {
                                             @Override
-                                            public void onResult(Snapshots.OpenSnapshotResult result) {
+                                            public void onResult(@NonNull Snapshots.OpenSnapshotResult result) {
                                                 Status status = result.getStatus();
                                                 if (status.isSuccess()) {
                                                     Ln.d("conflict solved successfully");
