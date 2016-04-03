@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
+import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
 
@@ -15,25 +15,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.AllOf.allOf;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import java.util.Random;
 
 
 //@RunWith(AndroidJUnit4.class)
@@ -44,37 +34,52 @@ public class MainScreenTest {
     public ActivityTestRule<BattleshipActivity> rule = new ActivityTestRule<>(
             BattleshipActivity.class);
 
-    @Mock
     private GoogleApiClientWrapper apiClient;
+
+    private IdlingResource idlingResource;
 
     @Before
     public void startup() {
-        MockitoAnnotations.initMocks(this);
-        GoogleApiFactory.inject(apiClient);
+//        MockitoAnnotations.initMocks(this);
+//        GoogleApiFactory.inject(apiClient);
 //        Intents.init();
-//        apiClient = Mockito.mock(GoogleApiClient.class);
 //        DeviceUtils.init(apiAvailability);
-//        BattleshipActivity activity = rule.getActivity();
-//        activity.setScreen(new MainScreen(activity, activity.getApiClient()));
+        final BattleshipActivity activity = rule.getActivity();
+//        apiClient = activity.getApiClient();
+        apiClient = mock(GoogleApiClientWrapper.class);
+        idlingResource = new ScreenSetterResource(new Runnable() {
+            @Override
+            public void run() {
+                activity.setScreen(new MainScreen(activity, apiClient));
+            }
+        });
+        Espresso.registerIdlingResources(idlingResource);
     }
 
-//    @Test
-//    public void when_play_button_is_pressed__select_game_screen_opens() {
-//        onView(withId(R.id.play)).perform(click());
-//        onView(Matchers.<View>instanceOf(SelectGameLayout.class)).check(matches(isDisplayed()));
-//    }
-//
-//    @Test
-//    public void when_help_button_is_pressed__help_screen_opens() {
-//        onView(withId(R.id.help)).perform(click());
-//        onView(Matchers.<View>instanceOf(HelpLayout.class)).check(matches(isDisplayed()));
-//    }
-//
-//    @Test
-//    public void when_settings_button_is_pressed__settings_screen_opens() {
-//        onView(withId(R.id.settings_button)).perform(click());
-//        onView(Matchers.<View>instanceOf(SettingsLayout.class)).check(matches(isDisplayed()));
-//    }
+    @After
+    public void teardown() {
+        if (idlingResource != null) {
+            Espresso.unregisterIdlingResources(idlingResource);
+        }
+    }
+
+    @Test
+    public void when_play_button_is_pressed__select_game_screen_opens() {
+        onView(withId(R.id.play)).perform(click());
+        onView(Matchers.<View>instanceOf(SelectGameLayout.class)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void when_help_button_is_pressed__help_screen_opens() {
+        onView(withId(R.id.help)).perform(click());
+        onView(Matchers.<View>instanceOf(HelpLayout.class)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void when_settings_button_is_pressed__settings_screen_opens() {
+        onView(withId(R.id.settings_button)).perform(click());
+        onView(Matchers.<View>instanceOf(SettingsLayout.class)).check(matches(isDisplayed()));
+    }
 
 //    @Test
 //    public void when_share_button_is_pressed__sharing_intent_is_fired() {
@@ -96,7 +101,7 @@ public class MainScreenTest {
     @Test
     public void when_achievements_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
 //        Intent intent = Games.Achievements.getAchievementsIntent(mApiClient);//, BattleshipActivity.RC_UNUSED);
-        when(apiClient.isConnected()).thenReturn(true);
+        when(apiClient.isConnected()).thenReturn(false);
         onView(withId(R.id.achievements_button)).perform(click());
         onView(withText(R.string.achievements_request)).check(matches(isDisplayed()));
     }
