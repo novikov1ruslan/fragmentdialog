@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
@@ -32,8 +30,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
-
-import static org.apache.commons.lang3.Validate.notNull;
 
 public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener {
     private static final String TAG = "MAIN";

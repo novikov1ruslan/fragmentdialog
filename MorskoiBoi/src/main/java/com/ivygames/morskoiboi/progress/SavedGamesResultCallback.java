@@ -2,14 +2,12 @@ package com.ivygames.morskoiboi.progress;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.io.IOException;

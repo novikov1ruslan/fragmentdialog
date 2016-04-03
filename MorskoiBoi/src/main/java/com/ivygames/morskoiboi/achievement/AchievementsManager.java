@@ -2,9 +2,7 @@ package com.ivygames.morskoiboi.achievement;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
@@ -13,7 +11,6 @@ import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.Collection;

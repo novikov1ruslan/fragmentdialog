@@ -1,33 +1,16 @@
 package com.ivygames.morskoiboi.screen.settings;
 
-import android.content.Context;
 import android.os.Build;
-import android.view.View;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.R;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.ShadowsAdapter;
 import org.robolectric.annotation.Config;
-import org.robolectric.util.ActivityController;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 
 @Config(manifest = "src/test/AndroidManifest.xml", sdk = Build.VERSION_CODES.JELLY_BEAN, resourceDir = "../main/res")
 @RunWith(RobolectricGradleTestRunner.class)

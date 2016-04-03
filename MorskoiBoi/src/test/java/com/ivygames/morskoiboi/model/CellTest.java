@@ -2,11 +2,11 @@ package com.ivygames.morskoiboi.model;
 
 import junit.framework.TestCase;
 
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 //@RunWith(RobolectricTestRunner.class)
 public class CellTest extends TestCase {
