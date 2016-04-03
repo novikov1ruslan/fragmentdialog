@@ -2,7 +2,9 @@ package com.ivygames.morskoiboi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,15 +25,16 @@ import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 
-public class GoogleApiClientWrapper {
+
+public class GoogleApiClientWrapper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     @NonNull
     private final GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient.ConnectionCallbacks mConnectedListener;
+    private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
 
-    GoogleApiClientWrapper(@NonNull Context context,
-                           @NonNull GoogleApiClient.ConnectionCallbacks connectedListener,
-                           @NonNull GoogleApiClient.OnConnectionFailedListener connectionFailedListener) {
-        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, connectedListener, connectionFailedListener);
+    GoogleApiClientWrapper(@NonNull Context context) {
+        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, this, this);
         builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
         builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
@@ -155,5 +158,34 @@ public class GoogleApiClientWrapper {
 
     public Player getCurrentPlayer() {
         return Games.Players.getCurrentPlayer(mGoogleApiClient);
+    }
+
+    public void setConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callback) {
+        mConnectedListener = callback;
+    }
+
+    public void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
+        mConnectionFailedListener = listener;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (mConnectedListener != null) {
+            mConnectedListener.onConnected(bundle);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        if (mConnectedListener != null) {
+            mConnectedListener.onConnectionSuspended(i);
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        if (mConnectionFailedListener != null) {
+            mConnectionFailedListener.onConnectionFailed(connectionResult);
+        }
     }
 }

@@ -183,7 +183,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
         mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
-        mGoogleApiClient = new GoogleApiClientWrapper(this, this, this);
+        mGoogleApiClient = GoogleApiFactory.getApiClient();
+        mGoogleApiClient.setConnectionCallbacks(this);
+        mGoogleApiClient.setOnConnectionFailedListener(this);
 
         if (DeviceUtils.isTablet(getResources())) {
             Ln.d("device is tablet");

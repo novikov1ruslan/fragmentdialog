@@ -31,10 +31,12 @@ import java.io.Writer;
 import java.util.Random;
 
 public class ApplicationInitializer {
+
     public static void initialize(Application application) {
         ACRA.init(application);
         GameSettings.init(application);
         DeviceUtils.init(GoogleApiAvailability.getInstance());
+        GoogleApiFactory.inject(new GoogleApiClientWrapper(application));
 
         initLogger(application);
         initAnalytics(application);
