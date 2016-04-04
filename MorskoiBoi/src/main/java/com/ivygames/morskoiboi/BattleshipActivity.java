@@ -47,7 +47,7 @@ import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, OnInvitationReceivedListener {
+public class BattleshipActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -62,6 +62,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
+    private final BattleshipGameManager battleshipGameManager = new BattleshipGameManager();
 
     public interface BackPressListener {
         void onBackPressed();
@@ -541,16 +542,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     public GoogleApiClientWrapper getApiClient() {
         return mGoogleApiClient;
-    }
-
-    @Override
-    public void onInvitationReceived(Invitation invitation) {
-        Ln.i("invitation received: " + invitation);
-    }
-
-    @Override
-    public void onInvitationRemoved(String invitationId) {
-        Ln.i("invitation withdrawn: " + invitationId);
     }
 
     public void onNoAds() {
