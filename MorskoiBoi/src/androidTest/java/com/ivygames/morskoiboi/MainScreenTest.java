@@ -1,10 +1,12 @@
 package com.ivygames.morskoiboi;
 
+import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
+import com.google.android.gms.games.Games;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
@@ -31,8 +33,7 @@ import static org.mockito.Mockito.when;
 public class MainScreenTest {
 
     @Rule
-    public ActivityTestRule<BattleshipActivity> rule = new ActivityTestRule<>(
-            BattleshipActivity.class);
+    public MainScreenTestRule rule = new MainScreenTestRule();
 
     private GoogleApiClientWrapper apiClient;
 
@@ -41,19 +42,21 @@ public class MainScreenTest {
     @Before
     public void startup() {
 //        MockitoAnnotations.initMocks(this);
-//        GoogleApiFactory.inject(apiClient);
 //        Intents.init();
 //        DeviceUtils.init(apiAvailability);
-        final BattleshipActivity activity = rule.getActivity();
+//        final BattleshipActivity activity = rule.getActivity();
 //        apiClient = activity.getApiClient();
-        apiClient = mock(GoogleApiClientWrapper.class);
-        idlingResource = new ScreenSetterResource(new Runnable() {
-            @Override
-            public void run() {
-                activity.setScreen(new MainScreen(activity, apiClient));
-            }
-        });
-        Espresso.registerIdlingResources(idlingResource);
+//        apiClient = mock(GoogleApiClientWrapper.class);
+        apiClient = rule.getApiClient();
+//        GoogleApiFactory.inject(apiClient);
+
+//        idlingResource = new ScreenSetterResource(new Runnable() {
+//            @Override
+//            public void run() {
+//                activity.setScreen(new MainScreen(activity, apiClient));
+//            }
+//        });
+//        Espresso.registerIdlingResources(idlingResource);
     }
 
     @After
@@ -93,6 +96,18 @@ public class MainScreenTest {
 //    }
 
 //    @Test
+//    public void when_NOT_signed_in__plus_one_button_is_NOT_displayed() {
+//        when(apiClient.isConnected()).thenReturn(false);
+//        onView(withId(R.id.plus_one_button)).check(matches(isDisplayed()));
+//    }
+
+//    @Test
+//    public void when_signed_in__plus_one_button_is_displayed() {
+//        when(apiClient.isConnected()).thenReturn(true);
+//        onView(withId(R.id.plus_one_button)).check(matches(isDisplayed()));
+//    }
+
+//    @Test
 //    public void when_plus_one_button_is_pressed__plus_one_intent_is_fired() {
 //        onView(withId(R.id.plus_one_button)).perform(click());
 //        // TODO:
@@ -100,23 +115,24 @@ public class MainScreenTest {
 //
     @Test
     public void when_achievements_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
-//        Intent intent = Games.Achievements.getAchievementsIntent(mApiClient);//, BattleshipActivity.RC_UNUSED);
         when(apiClient.isConnected()).thenReturn(false);
         onView(withId(R.id.achievements_button)).perform(click());
         onView(withText(R.string.achievements_request)).check(matches(isDisplayed()));
     }
-//
-//    @Test
-//    public void when_leader_boards_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
-//        onView(withId(R.id.high_score)).perform(click());
-//        // TODO:
-//    }
-//
-//    @Test
-//    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
-//        onView(withId(R.id.achievements_button)).perform(click());
-//        // TODO:
-//    }
+
+    @Test
+    public void when_leader_boards_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
+        when(apiClient.isConnected()).thenReturn(false);
+        onView(withId(R.id.high_score)).perform(click());
+        onView(withText(R.string.leaderboards_request)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
+            Intent intent = Games.Achievements.getAchievementsIntent(mApiClient);//, BattleshipActivity.RC_UNUSED)
+        onView(withId(R.id.achievements_button)).perform(click());
+        // TODO:
+    }
 //
 //    @Test
 //    public void when_leader_boards_button_is_pressed__leader_board_intent_is_fired() {

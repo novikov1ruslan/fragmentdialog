@@ -59,7 +59,6 @@ public class DeviceUtils {
 
     public static boolean isTablet(Resources res) {
         return res.getBoolean(R.bool.is_tablet);
-//        return false;
     }
 
     private static void printExtras(Bundle extras) {
@@ -102,6 +101,5 @@ public class DeviceUtils {
 
     public static boolean isGoogleServicesAvailable(Context context) {
         return sApiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
-//        return false;
     }
 }
