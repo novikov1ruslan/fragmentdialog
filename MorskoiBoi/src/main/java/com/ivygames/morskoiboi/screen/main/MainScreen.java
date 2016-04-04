@@ -15,6 +15,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
+import com.ivygames.morskoiboi.PurchaseManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -46,10 +47,14 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @NonNull
     private final InvitationManager mInvitationManager;
 
+    @NonNull
+    private final PurchaseManager mPurchaseManager;
+
     public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClientWrapper apiClient) {
         super(parent);
         mApiClient = apiClient;
         mInvitationManager = parent.getInvitationManager();
+        mPurchaseManager = parent.getPurchaseManager();
     }
 
     @Override
@@ -157,7 +162,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void noAds() {
         UiEvent.send("no_ads");
-        mParent.onNoAds();
+        mPurchaseManager.purchase(BattleshipActivity.RC_PURCHASE);
     }
 
     private void showAchievementsScreen() {

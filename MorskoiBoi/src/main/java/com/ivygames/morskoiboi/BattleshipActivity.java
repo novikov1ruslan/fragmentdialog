@@ -18,11 +18,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.ivygames.billing.IabHelper;
-import com.ivygames.billing.IabResult;
-import com.ivygames.billing.Purchase;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.billing.PurchaseHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -30,14 +26,15 @@ import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, InvitationManager.InvitationReceivedListener {
+public class BattleshipActivity extends Activity implements ConnectionCallbacks,
+        OnConnectionFailedListener,
+        InvitationManager.InvitationReceivedListener, PurchaseManager.PurchaseStatusListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -49,10 +46,11 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public static final int RC_UNUSED = 0;
     public static final int PLUS_ONE_REQUEST_CODE = 20001;
     public static final int RC_ENABLE_BT = 2;
-    private static final int RC_PURCHASE = 10003;
+    public static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
     private final InvitationManager mInvitationManager = new InvitationManager(this);
+    private final PurchaseManager mPurchaseManager = new PurchaseManager(this);
 
     @Override
     public void showReceivedInvitationCrouton(String displayName) {
@@ -62,6 +60,22 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     public InvitationManager getInvitationManager() {
         return mInvitationManager;
+    }
+
+    public PurchaseManager getPurchaseManager() {
+        return mPurchaseManager;
+    }
+
+    @Override
+    public void onPurchaseFailed() {
+        FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
+    }
+
+    @Override
+    public void onPurchaseSucceeded() {
+        Ln.d("Purchase is premium upgrade. Congratulating user.");
+        mSettings.setNoAds();
+        hideAds();
     }
 
     public interface BackPressListener {
@@ -98,36 +112,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private View mTutView;
 
     private boolean mResumed;
-    private PurchaseHelper mPurchaseHelper;
-
     private MusicPlayer mMusicPlayer;
-
-    // Callback for when a purchase is finished
-    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        @Override
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Ln.d("Purchase finished: " + result + ", purchase: " + purchase);
-
-            // if we were disposed of in the meantime, quit.
-            if (mPurchaseHelper == null) {
-                return;
-            }
-
-            if (result.isFailure()) {
-                Ln.w("Error purchasing: " + result);
-                FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
-                return;
-            }
-
-            Ln.d("Purchase successful.");
-
-            if (purchase.getSku().equals(PurchaseHelper.SKU_NO_ADS)) {
-                Ln.d("Purchase is premium upgrade. Congratulating user.");
-                mSettings.setNoAds();
-                hideAds();
-            }
-        }
-    };
 
     @SuppressLint("InflateParams")
     @Override
@@ -176,7 +161,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         } else {
             AdProviderFactory.init(this);
             if (DeviceUtils.isGoogleServicesAvailable(this)) {
-                createPurchaseHelper();
+                mPurchaseManager.init(this);
             } else {
                 Ln.e("gpgs_not_available");
                 hideNoAdsButton();
@@ -198,15 +183,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public void hideNoAdsButton() {
         if (mCurrentScreen instanceof MainScreen) {
             ((MainScreen) mCurrentScreen).hideNoAdsButton();
-        }
-    }
-
-    private void createPurchaseHelper() {
-        mPurchaseHelper = new PurchaseHelper(this);
-        try {
-            mPurchaseHelper.onCreate();
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
         }
     }
 
@@ -315,7 +291,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         Crouton.cancelAllCroutons();
         AdProviderFactory.getAdProvider().destroy();
 
-        destroyPurchaseHelper();
+        mPurchaseManager.destroy();
 
         mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);
@@ -323,17 +299,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mMusicPlayer.release();
         Ln.d("game destroyed");
-    }
-
-    private void destroyPurchaseHelper() {
-        if (mPurchaseHelper != null) {
-            try {
-                mPurchaseHelper.onDestroy();
-            } catch (Exception e) {
-                ACRA.getErrorReporter().handleException(e);
-            }
-            mPurchaseHelper = null;
-        }
     }
 
     public void dismissTutorial() {
@@ -399,13 +364,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
                 mResolvingConnectionFailure = false;
             }
         } else if (requestCode == RC_PURCHASE) {
-            if (mPurchaseHelper != null) {
-                try {
-                    mPurchaseHelper.onActivityResult(requestCode, resultCode, data);
-                } catch (Exception e) {
-                    ACRA.getErrorReporter().handleException(e);
-                }
-            }
+            mPurchaseManager.onActivityResult(requestCode, resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }
@@ -449,8 +408,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         Ln.d("signed in");
         mResolvingConnectionFailure = false;
         mSettings.enableAutoSignIn();
-//        Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-//        AdProviderFactory.getAdProvider().setPerson(currentPerson);
 
         if (TextUtils.isEmpty(mSettings.getPlayerName())) {
             String name = mGoogleApiClient.getDisplayName();
@@ -488,17 +445,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     public GoogleApiClientWrapper getApiClient() {
         return mGoogleApiClient;
-    }
-
-    public void onNoAds() {
-        if (mPurchaseHelper != null) {
-            try {
-                Ln.d("No ads button clicked; launching purchase flow for upgrade.");
-                mPurchaseHelper.purchase(RC_PURCHASE, mPurchaseListener);
-            } catch (Exception e) {
-                ACRA.getErrorReporter().handleException(e);
-            }
-        }
     }
 
     public void onEventMainThread(ChatMessage message) {
