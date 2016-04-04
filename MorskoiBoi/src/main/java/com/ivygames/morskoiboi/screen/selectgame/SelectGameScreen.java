@@ -19,6 +19,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationManager;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
@@ -61,9 +62,13 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
 
+    @NonNull
+    private final InvitationManager mInvitationManager;
+
     public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
         mApiClient = parent.getApiClient();
+        mInvitationManager = parent.getInvitationManager();
     }
 
     @Override
@@ -112,7 +117,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        showInvitationIfHas(mParent.hasInvitation());
+        showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     @Override
@@ -131,7 +136,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     public void onEventMainThread(InvitationEvent event) {
-        showInvitationIfHas(mParent.hasInvitation());
+        showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     private void showInvitationIfHas(boolean hasInvitations) {

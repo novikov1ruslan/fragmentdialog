@@ -14,6 +14,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
@@ -42,9 +43,13 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
 
+    @NonNull
+    private final InvitationManager mInvitationManager;
+
     public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClientWrapper apiClient) {
         super(parent);
         mApiClient = apiClient;
+        mInvitationManager = parent.getInvitationManager();
     }
 
     @Override
@@ -80,7 +85,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        showInvitationIfHas(mParent.hasInvitation());
+        showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     @Override
@@ -113,7 +118,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     public void onEventMainThread(InvitationEvent event) {
-        showInvitationIfHas(mParent.hasInvitation());
+        showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     @Override

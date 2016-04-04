@@ -18,12 +18,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.InvitationBuffer;
-import com.google.android.gms.games.multiplayer.Invitations.LoadInvitationsResult;
-import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
@@ -31,7 +25,6 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.billing.PurchaseHelper;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.utils.UiUtils;
@@ -40,14 +33,11 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 import org.acra.ACRA;
 import org.commons.logger.Ln;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class BattleshipActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, InvitationManager.InvitationReceivedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -62,7 +52,17 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
-    private final BattleshipGameManager battleshipGameManager = new BattleshipGameManager();
+    private final InvitationManager mInvitationManager = new InvitationManager(this);
+
+    @Override
+    public void showReceivedInvitationCrouton(String displayName) {
+        View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, displayName), mLayout);
+        Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
+    }
+
+    public InvitationManager getInvitationManager() {
+        return mInvitationManager;
+    }
 
     public interface BackPressListener {
         void onBackPressed();
@@ -81,7 +81,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
      * volume stream is saved on onResume and restored on onPause
      */
     private int mVolumeControlStream;
-    private final Set<String> mIncomingInvitationIds = new HashSet<>();
 
     private GoogleApiClientWrapper mGoogleApiClient;
 
@@ -127,48 +126,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
                 mSettings.setNoAds();
                 hideAds();
             }
-        }
-    };
-
-    private final OnInvitationReceivedListener mInvitationReceivedListener = new OnInvitationReceivedListener() {
-
-        @Override
-        public void onInvitationReceived(Invitation invitation) {
-            String displayName = invitation.getInviter().getDisplayName();
-            Ln.d("received invitation from: " + displayName);
-            showReceivedInvitationCrouton(displayName);
-            mIncomingInvitationIds.add(invitation.getInvitationId());
-            EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
-        }
-
-        private void showReceivedInvitationCrouton(String displayName) {
-            View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, displayName), mLayout);
-            Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
-        }
-
-        @Override
-        public void onInvitationRemoved(String invitationId) {
-            Ln.d("invitationId=" + invitationId + " withdrawn");
-            mIncomingInvitationIds.remove(invitationId);
-            EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
-        }
-    };
-
-    private final ResultCallback<LoadInvitationsResult> mInvitationsResultCallback = new ResultCallback<LoadInvitationsResult>() {
-        @Override
-        public void onResult(@NonNull LoadInvitationsResult list) {
-            mIncomingInvitationIds.clear();
-            if (list.getInvitations().getCount() > 0) {
-                InvitationBuffer invitations = list.getInvitations();
-                Ln.v("loaded " + invitations.getCount() + " invitations");
-                for (int i = 0; i < invitations.getCount(); i++) {
-                    mIncomingInvitationIds.add(invitations.get(i).getInvitationId());
-                }
-                list.getInvitations().release();
-            } else {
-                Ln.v("no invitations");
-            }
-            EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
         }
     };
 
@@ -281,20 +238,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         keepScreenOn();
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - register invitation listener");
-            registerInvitationListener();
+            mInvitationManager.registerInvitationListener(mGoogleApiClient);
         }
         EventBus.getDefault().register(this);
-    }
-
-    private void registerInvitationListener() {
-        mGoogleApiClient.registerInvitationListener(mInvitationReceivedListener);
-        loadInvitations();
-    }
-
-    public void loadInvitations() {
-        Ln.d("loading invitations...");
-        PendingResult<LoadInvitationsResult> invitations = mGoogleApiClient.loadInvitations();
-        invitations.setResultCallback(mInvitationsResultCallback);
     }
 
     @Override
@@ -521,7 +467,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         if (mStarted) {
             Ln.d("started - register invitation listener");
-            registerInvitationListener();
+            mInvitationManager.registerInvitationListener(mGoogleApiClient);
         }
     }
 
@@ -560,10 +506,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             View layout = UiUtils.inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
             Crouton.make(this, layout).setConfiguration(CONFIGURATION_LONG).show();
         }
-    }
-
-    public boolean hasInvitation() {
-        return mIncomingInvitationIds.size() > 0;
     }
 
     public final void setScreen(BattleshipScreen screen) {

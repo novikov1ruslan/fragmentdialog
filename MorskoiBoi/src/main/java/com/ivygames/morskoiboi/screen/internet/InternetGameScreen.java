@@ -17,6 +17,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationManager;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -59,9 +60,13 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
 
+    @NonNull
+    private final InvitationManager mInvitationManager;
+
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
         mApiClient = parent.getApiClient();
+        mInvitationManager = parent.getInvitationManager();
     }
 
     @Override
@@ -82,7 +87,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        showInvitationIfHas(mParent.hasInvitation());
+        showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     @Override
@@ -92,7 +97,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     }
 
     public void onEventMainThread(InvitationEvent event) {
-        showInvitationIfHas(mParent.hasInvitation());
+        showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     private void showInvitationIfHas(boolean hasInvitations) {
@@ -113,7 +118,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     @Override
     public void onWaitingForOpponent(Room room) {
-        mParent.loadInvitations();
+        mInvitationManager.loadInvitations(mParent.getApiClient());
         showWaitingRoom(room);
     }
 
