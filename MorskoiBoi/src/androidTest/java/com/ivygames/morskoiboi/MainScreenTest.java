@@ -127,12 +127,12 @@ public class MainScreenTest {
         onView(withText(R.string.leaderboards_request)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
-            Intent intent = Games.Achievements.getAchievementsIntent(mApiClient);//, BattleshipActivity.RC_UNUSED)
-        onView(withId(R.id.achievements_button)).perform(click());
-        // TODO:
-    }
+//    @Test
+//    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
+////            Intent intent = Games.Achievements.getAchievementsIntent(mApiClient);//, BattleshipActivity.RC_UNUSED)
+//        onView(withId(R.id.achievements_button)).perform(click());
+//        // TODO:
+//    }
 //
 //    @Test
 //    public void when_leader_boards_button_is_pressed__leader_board_intent_is_fired() {

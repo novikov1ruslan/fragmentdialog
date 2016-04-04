@@ -103,8 +103,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         mHandler.removeCallbacks(mTimeoutTask);
         Crouton.cancelAllCroutons();
         Ln.d(this + " screen destroyed - all croutons canceled");

@@ -586,7 +586,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             oldView = mCurrentScreen.getView();
             mCurrentScreen.onPause();
             mCurrentScreen.onStop();
-            mCurrentScreen.onDestroyView();
             mCurrentScreen.onDestroy();
         }
 

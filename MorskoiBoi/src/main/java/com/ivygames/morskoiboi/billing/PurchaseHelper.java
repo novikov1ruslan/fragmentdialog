@@ -11,7 +11,6 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 
 import org.acra.ACRA;
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class PurchaseHelper {
@@ -31,6 +30,8 @@ public class PurchaseHelper {
     public static final String SKU_NO_ADS = "no_ads";
 
     private IabHelper mHelper;
+
+    @NonNull
     private final BattleshipActivity mActivity;
 
     // Listener that's called when we finish querying the items and subscriptions we own
@@ -69,7 +70,7 @@ public class PurchaseHelper {
     };
 
     public PurchaseHelper(@NonNull BattleshipActivity activity) {
-        mActivity = Validate.notNull(activity);
+        mActivity = activity;
     }
 
     public void onCreate() {

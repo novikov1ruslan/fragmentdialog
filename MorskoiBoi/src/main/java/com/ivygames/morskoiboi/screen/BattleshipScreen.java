@@ -37,10 +37,6 @@ public abstract class BattleshipScreen extends Screen {
         Ln.v(this + " started");
     }
 
-    public void onDestroyView() {
-        Ln.v(this + " screen view destroyed");
-    }
-
     public void onDestroy() {
         Ln.v(this + " screen destroyed");
     }

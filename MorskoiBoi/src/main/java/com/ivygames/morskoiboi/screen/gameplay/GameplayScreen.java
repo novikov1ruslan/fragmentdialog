@@ -320,8 +320,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         Fragment fragment = mFm.findFragmentByTag(DIALOG);
         if (fragment != null && !getParent().isFinishing()) {
             Ln.v("removing dialog: " + fragment);
