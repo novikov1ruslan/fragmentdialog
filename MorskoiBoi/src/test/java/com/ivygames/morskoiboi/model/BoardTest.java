@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Before;
@@ -17,11 +18,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
+import static junit.framework.Assert.*;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BoardTest extends TestCase {
+public class BoardTest {
 
 	private Board mBoard;
 	private PlacementAlgorithm mPlacementAlgorithm;

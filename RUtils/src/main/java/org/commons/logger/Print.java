@@ -87,7 +87,7 @@ public class Print {
         String fileName = trace.getFileName();
         SparseArray<String> fileScope = SCOPES.get(fileName);
         if (fileScope == null) {
-            fileScope = new SparseArray<String>();
+            fileScope = new SparseArray<>();
             SCOPES.put(fileName, fileScope);
         }
 

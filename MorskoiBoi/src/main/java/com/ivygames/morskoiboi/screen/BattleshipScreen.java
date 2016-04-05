@@ -87,6 +87,6 @@ public abstract class BattleshipScreen extends Screen {
     }
 
     public final BattleshipActivity getParent() {
-        return (BattleshipActivity) mParent;
+        return mParent;
     }
 }

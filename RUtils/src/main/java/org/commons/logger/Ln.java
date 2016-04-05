@@ -1,14 +1,5 @@
 package org.commons.logger;
 
-import android.util.Log;
-import android.util.SparseArray;
-
-import org.apache.commons.lang3.time.FastDateFormat;
-
-import java.util.Calendar;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * A more natural android logging facility.
  * <p/>

@@ -22,7 +22,7 @@ final class AchievementsResultCallback implements ResultCallback<Achievements.Lo
     }
 
     @Override
-    public void onResult(LoadAchievementsResult result) {
+    public void onResult(@NonNull LoadAchievementsResult result) {
         int statusCode = result.getStatus().getStatusCode();
         if (achievementsLoaded(statusCode)) {
             AchievementBuffer buffer = result.getAchievements();

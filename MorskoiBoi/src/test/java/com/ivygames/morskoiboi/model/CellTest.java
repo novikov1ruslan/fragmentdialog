@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi.model;
 
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-//@RunWith(RobolectricTestRunner.class)
-public class CellTest extends TestCase {
+public class CellTest {
 
 	private Cell mCell;
 

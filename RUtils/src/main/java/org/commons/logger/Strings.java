@@ -6,13 +6,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.security.InvalidParameterException;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 class Strings {
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
