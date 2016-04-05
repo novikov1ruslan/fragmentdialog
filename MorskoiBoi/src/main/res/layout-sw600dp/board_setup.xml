@@ -1,5 +1,7 @@
 <com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/default_background">
 
     <LinearLayout
@@ -13,34 +15,44 @@
             android:orientation="vertical">
 
             <View
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
             <Button
                 android:id="@+id/auto_setup"
                 style="@style/Button.Menu"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_button_layout_height"
                 android:text="@string/auto" />
 
             <View
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
             <Button
                 android:id="@+id/done"
                 style="@style/Button.Menu"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_button_layout_height"
                 android:text="@string/done" />
 
             <View
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
             <WebView
                 android:id="@+id/html_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/setup_buttons_margin"
                 android:layout_marginRight="@dimen/setup_buttons_margin"
                 tools:ignore="InconsistentLayout" />
 
             <View
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
         </LinearLayout>
@@ -48,6 +60,7 @@
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <com.ivygames.morskoiboi.screen.boardsetup.SetupBoardView

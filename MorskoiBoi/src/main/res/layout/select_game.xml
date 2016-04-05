@@ -6,6 +6,8 @@
     <ImageButton
         android:id="@+id/help_button"
         style="@style/HelpButton"
+        android:layout_width="@dimen/help_button_size"
+        android:layout_height="@dimen/help_button_size"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="2dp"

@@ -32,6 +32,7 @@
     <dimen name="settings_textSize">22dp</dimen>
     <dimen name="crouton_textSize">16dp</dimen>
     <dimen name="main_buttons_margin">10dp</dimen>
+    <dimen name="help_button_size">48dp</dimen>
 
     <!-- ranks -->
     <dimen name="rank_textSize">14dp</dimen>
