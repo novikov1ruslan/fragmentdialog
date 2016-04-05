@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.billing;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.billing.PurchaseHelper;
 
 import org.acra.ACRA;
@@ -56,7 +57,7 @@ public class PurchaseManager implements IabHelper.OnIabPurchaseFinishedListener 
         mPurchaseStatusListener = listener;
         mPurchaseHelper = new PurchaseHelper(mActivity);
         try {
-            mPurchaseHelper.onCreate();
+            mPurchaseHelper.query();
         } catch (Exception e) {
             ACRA.getErrorReporter().handleException(e);
         }
@@ -65,7 +66,7 @@ public class PurchaseManager implements IabHelper.OnIabPurchaseFinishedListener 
     public void destroy() {
         if (mPurchaseHelper != null) {
             try {
-                mPurchaseHelper.onDestroy();
+                mPurchaseHelper.destroy();
             } catch (Exception e) {
                 ACRA.getErrorReporter().handleException(e);
             }

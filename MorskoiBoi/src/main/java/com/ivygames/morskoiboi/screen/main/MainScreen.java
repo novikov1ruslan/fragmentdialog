@@ -15,7 +15,7 @@ import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
-import com.ivygames.morskoiboi.PurchaseManager;
+import com.ivygames.morskoiboi.billing.PurchaseManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;

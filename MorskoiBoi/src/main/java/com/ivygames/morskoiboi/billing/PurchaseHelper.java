@@ -13,7 +13,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import org.acra.ACRA;
 import org.commons.logger.Ln;
 
-public class PurchaseHelper {
+class PurchaseHelper {
 
     // TODO:
      /*
@@ -25,7 +25,7 @@ public class PurchaseHelper {
  	 * example, XOR with some other string) to hide the actual key. The key itself is not secret information, but we don't want to make it easy for an attacker
  	 * to replace the public key with one of their own and then fake messages from the server.
  	 */
-    static final String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsZ8ufj+4+R1sqPrTudIeXZBD6NUtKo8fWLpbQHp9ib9jtIv3PVOzVuNKIsG7eXqn0U+vWX8WYtoPGmogYr4GDJqdzOQb2xq5ZEsAzXoE+Yeiqpp/ASUs1IU2Tw+cu30rKStgktnFeIfcFowPyHeSgSQlqBFUrL0A8oipc5oesao7OiGGCwpUf6OJuvyK0DmdhdYUMPRxTgp0v5+JnXhNEqgiU00W468vf4rfUGqQWUNN902fphf8oADJT5FdlculaQva5t+55RdpqtP8UAficOUXh1xyAn1KQ0APKOPU5x7wAe/z3bLdjE1Ik4g4KXyHLGfP5PMjkfqvgNeU2WsN4QIDAQAB";
+    private static final String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsZ8ufj+4+R1sqPrTudIeXZBD6NUtKo8fWLpbQHp9ib9jtIv3PVOzVuNKIsG7eXqn0U+vWX8WYtoPGmogYr4GDJqdzOQb2xq5ZEsAzXoE+Yeiqpp/ASUs1IU2Tw+cu30rKStgktnFeIfcFowPyHeSgSQlqBFUrL0A8oipc5oesao7OiGGCwpUf6OJuvyK0DmdhdYUMPRxTgp0v5+JnXhNEqgiU00W468vf4rfUGqQWUNN902fphf8oADJT5FdlculaQva5t+55RdpqtP8UAficOUXh1xyAn1KQ0APKOPU5x7wAe/z3bLdjE1Ik4g4KXyHLGfP5PMjkfqvgNeU2WsN4QIDAQAB";
 
     public static final String SKU_NO_ADS = "no_ads";
 
@@ -36,14 +36,17 @@ public class PurchaseHelper {
 
     // Listener that's called when we finish querying the items and subscriptions we own
     private final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+
+        @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
             try {
                 Ln.d("Query inventory finished.");
 
-                // Have we been disposed of in the meantime? If so, quit.
-                if (mHelper == null) return;
+                if (mHelper == null) {
+                    Ln.w("purchase helper has been already destroyed");
+                    return;
+                }
 
-                // Is it a failure?
                 if (result.isFailure()) {
                     Ln.w("Failed to query inventory: " + result);
                     return;
@@ -51,14 +54,9 @@ public class PurchaseHelper {
 
                 Ln.d("Query inventory was successful.");
 
-			/*
-             * Check for items we own. Notice that for each purchase, we check the developer payload to see if it's correct! See verifyDeveloperPayload().
-			 */
-
                 // Do we have the premium upgrade?
                 Purchase noAdsPurchase = inventory.getPurchase(SKU_NO_ADS);
-                boolean noAds = (noAdsPurchase != null);
-                if (noAds) {
+                if (noAdsPurchase != null) {
                     Ln.d("removing ads");
                     GameSettings.get().setNoAds();
                     mActivity.hideAds();
@@ -73,7 +71,7 @@ public class PurchaseHelper {
         mActivity = activity;
     }
 
-    public void onCreate() {
+    public void query() {
 
         // Create the helper, passing it our context and the public key to verify signatures with
         Ln.d("Creating IAB helper.");
@@ -86,6 +84,8 @@ public class PurchaseHelper {
         // will be called once setup completes.
         Ln.d("Starting setup.");
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+
+            @Override
             public void onIabSetupFinished(IabResult result) {
                 try {
                     Ln.d("Setup finished.");
@@ -114,7 +114,7 @@ public class PurchaseHelper {
     }
 
     public void purchase(int requestCode, IabHelper.OnIabPurchaseFinishedListener listener) {
-		/*
+        /*
          * TODO: for security, generate your payload here for verification. See the comments on verifyDeveloperPayload() for more info. Since this is a SAMPLE,
 		 * we just use an empty string, but on a production app you should carefully generate this.
 		 */
@@ -125,17 +125,11 @@ public class PurchaseHelper {
             return;
         }
 
-//        if (!mHelper.isSetupDone()) {
-//            Ln.e("no_ads not setup", 1);
-//            return;
-//        }
-
         if (mHelper.isAsyncInProgress()) {
             Ln.e("no_ads in progress");
             return;
         }
 
-//        showWaitingScreen();
         mHelper.launchPurchaseFlow(mActivity, SKU_NO_ADS, requestCode, listener, payload);
     }
 
@@ -154,8 +148,7 @@ public class PurchaseHelper {
         return handled;
     }
 
-    public void onDestroy() {
-        // very important:
+    public void destroy() {
         Ln.d("Destroying helper.");
         if (mHelper != null) {
             try {
