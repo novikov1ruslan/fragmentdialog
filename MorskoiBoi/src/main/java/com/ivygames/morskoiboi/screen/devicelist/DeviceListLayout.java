@@ -31,7 +31,7 @@ public class DeviceListLayout extends NotepadLinearLayout implements OnItemClick
 
     public DeviceListLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mDevicesAdapter = new ArrayAdapter<String>(getContext(), R.layout.device_name);
+        mDevicesAdapter = new ArrayAdapter<>(getContext(), R.layout.device_name);
         mRotation = AnimationUtils.loadAnimation(context, R.anim.clockwise_refresh);
         mRotation.setRepeatCount(Animation.INFINITE);
     }

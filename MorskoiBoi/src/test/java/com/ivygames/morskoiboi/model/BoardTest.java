@@ -439,7 +439,7 @@ public class BoardTest extends TestCase {
 	}
 
 	public static Collection<Cell> getCellsAround(Board board, int x, int y) {
-		Collection<Cell> cells = new ArrayList<Cell>();
+		Collection<Cell> cells = new ArrayList<>();
 		addIfContains(board, cells, x + 1, y);
 		addIfContains(board, cells, x - 1, y);
 		addIfContains(board, cells, x, y + 1);
@@ -455,7 +455,7 @@ public class BoardTest extends TestCase {
 	}
 
 	public Collection<Vector2> getHitsAround(Board board, int x, int y) {
-		Collection<Vector2> hits = new ArrayList<Vector2>();
+		Collection<Vector2> hits = new ArrayList<>();
 		addIfHit(board, hits, x + 1, y);
 		addIfHit(board, hits, x - 1, y);
 		addIfHit(board, hits, x, y + 1);

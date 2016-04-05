@@ -44,7 +44,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 
     private Board mBoard = new Board();
-    private PriorityQueue<Ship> mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
+    private PriorityQueue<Ship> mFleet = new PriorityQueue<>(TOTAL_SHIPS, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
@@ -114,7 +114,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     public void autoSetup() {
         UiEvent.send("auto");
         mBoard = PlacementFactory.getAlgorithm().generateBoard();
-        mFleet = new PriorityQueue<Ship>(TOTAL_SHIPS, new ShipComparator());
+        mFleet = new PriorityQueue<>(TOTAL_SHIPS, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
     }
 

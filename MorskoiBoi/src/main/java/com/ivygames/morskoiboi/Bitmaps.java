@@ -12,7 +12,7 @@ public final class Bitmaps {
 
     private static final int BPP = 4;
 
-    private final SparseArray<Bitmap> mBitmaps = new SparseArray<Bitmap>();
+    private final SparseArray<Bitmap> mBitmaps = new SparseArray<>();
 
     private int mMemoryUsed;
 

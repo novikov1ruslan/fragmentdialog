@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ChatAdapter extends BaseAdapter {
-    private final List<ChatMessage> mMessages = new ArrayList<ChatMessage>();
+    private final List<ChatMessage> mMessages = new ArrayList<>();
     private final LayoutInflater mInflater;
 
     public ChatAdapter(LayoutInflater inflater) {

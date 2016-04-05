@@ -56,7 +56,7 @@ public final class GameUtils {
         Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
 
         // order is important
-        List<Ship> fullSet = new ArrayList<Ship>();
+        List<Ship> fullSet = new ArrayList<>();
         for (int length : shipsLength) {
             fullSet.add(new Ship(length, calcRandomOrientation(random)));
         }

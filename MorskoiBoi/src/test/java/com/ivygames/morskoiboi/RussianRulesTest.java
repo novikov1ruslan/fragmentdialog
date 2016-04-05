@@ -220,7 +220,7 @@ public class RussianRulesTest {
 
     @NonNull
     private Collection<Ship> mock_10_dead_ships() {
-        Collection<Ship> ships = new ArrayList<Ship>();
+        Collection<Ship> ships = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             ships.add(mockDeadShip());
         }
@@ -229,7 +229,7 @@ public class RussianRulesTest {
 
     @NonNull
     private Collection<Ship> mock_9_dead_1_alive_ship() {
-        Collection<Ship> ships = new ArrayList<Ship>();
+        Collection<Ship> ships = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             ships.add(mockDeadShip());
         }

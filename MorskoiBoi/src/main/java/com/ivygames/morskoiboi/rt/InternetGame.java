@@ -54,7 +54,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     private boolean mConnectionLostSent;
     @NonNull
-    private final Queue<String> mMessages = new LinkedList<String>();
+    private final Queue<String> mMessages = new LinkedList<>();
 
     private int mLastSentToken;
 
