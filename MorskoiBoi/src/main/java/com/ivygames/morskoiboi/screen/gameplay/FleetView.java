@@ -161,7 +161,7 @@ public class FleetView extends View {
     }
 
     private Map<Integer, Integer> generateEmptyShips() {
-        Map<Integer, Integer> ships = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> ships = new HashMap<>();
         int[] shipSizes = RulesFactory.getRules().getTotalShips();
         for (int shipSize: shipSizes) {
             ships.put(shipSize, 0);

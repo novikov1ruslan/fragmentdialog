@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class DigitalTimerView extends TextView implements TimerViewInterface {
@@ -38,7 +39,7 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
     private String format(int millis) {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes);
-        return String.format("%02d:%02d", minutes, seconds);
+        return String.format(Locale.US, "%02d:%02d", minutes, seconds);
     }
 
 

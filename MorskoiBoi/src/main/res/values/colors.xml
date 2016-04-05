@@ -45,5 +45,6 @@
     <color name="list_divider">#3388DD</color>
 
     <color name="ring_pressed">#7FFF7F7F</color>
+    <color name="tutorial_background">#88000000</color>
 
 </resources>

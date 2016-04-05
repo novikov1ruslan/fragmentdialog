@@ -10,6 +10,7 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.NotepadLinearLayout;
 
 import java.util.Collection;
+import java.util.Locale;
 
 public class WinLayoutSmall extends NotepadLinearLayout {
 
@@ -61,7 +62,7 @@ public class WinLayoutSmall extends NotepadLinearLayout {
     public void setTime(long millis) {
         long seconds = millis / 1000;
         long minutes = seconds / 60;
-        mTimeView.setText(String.format("%d:%02d", minutes, seconds % 60));
+        mTimeView.setText(String.format(Locale.US, "%d:%02d", minutes, seconds % 60));
     }
 
     public void setTotalScore(int score) {

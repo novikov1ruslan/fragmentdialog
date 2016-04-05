@@ -4,7 +4,6 @@
     style="@style/DialogFrame"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:context=".DialogsTester"
     tools:ignore="HardcodedText">
 
     <TextView
