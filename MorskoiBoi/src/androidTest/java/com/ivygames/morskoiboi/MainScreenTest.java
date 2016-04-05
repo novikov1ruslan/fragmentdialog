@@ -1,14 +1,10 @@
 package com.ivygames.morskoiboi;
 
-import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
-import com.google.android.gms.games.Games;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
 
@@ -23,8 +19,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
