@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.billing;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
 import com.ivygames.billing.IabHelper;
@@ -29,6 +30,7 @@ public class PurchaseManager implements IabHelper.OnIabPurchaseFinishedListener 
 
     public PurchaseManager(@NonNull BattleshipActivity activity) {
         mActivity = activity;
+        mPurchaseHelper = new PurchaseHelper(mActivity);
     }
 
     @Override
@@ -53,9 +55,8 @@ public class PurchaseManager implements IabHelper.OnIabPurchaseFinishedListener 
         }
     }
 
-    public void init(@NonNull PurchaseStatusListener listener) {
+    public void query(@NonNull PurchaseStatusListener listener) {
         mPurchaseStatusListener = listener;
-        mPurchaseHelper = new PurchaseHelper(mActivity);
         try {
             mPurchaseHelper.query();
         } catch (Exception e) {

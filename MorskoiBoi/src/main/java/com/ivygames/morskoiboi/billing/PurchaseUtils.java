@@ -1,6 +1,12 @@
 package com.ivygames.morskoiboi.billing;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+
 import com.ivygames.billing.Purchase;
+
+import java.util.List;
 
 public class PurchaseUtils {
     /**
@@ -27,5 +33,12 @@ public class PurchaseUtils {
 		 */
 
         return true;
+    }
+
+    public static boolean isBillingAvailable(PackageManager pm) {
+        Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        List<ResolveInfo> intentServices = pm.queryIntentServices(serviceIntent, 0);
+        return intentServices != null && !intentServices.isEmpty();
     }
 }

@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.billing.PurchaseManager;
+import com.ivygames.morskoiboi.billing.PurchaseUtils;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -161,8 +162,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             hideAds();
         } else {
             AdProviderFactory.init(this);
-            if (DeviceUtils.isGoogleServicesAvailable(this)) {
-                mPurchaseManager.init(this);
+            if (DeviceUtils.isGoogleServicesAvailable(this) && PurchaseUtils.isBillingAvailable(getPackageManager())) {
+                mPurchaseManager.query(this);
             } else {
                 Ln.e("gpgs_not_available");
                 hideNoAdsButton();
@@ -181,7 +182,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mMusicPlayer.stop();
     }
 
-    public void hideNoAdsButton() {
+    private void hideNoAdsButton() {
         if (mCurrentScreen instanceof MainScreen) {
             ((MainScreen) mCurrentScreen).hideNoAdsButton();
         }

@@ -1,6 +1,9 @@
 package com.ivygames.morskoiboi.billing;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
 import com.ivygames.billing.IabHelper;
@@ -12,6 +15,8 @@ import com.ivygames.morskoiboi.GameSettings;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;
+
+import java.util.List;
 
 class PurchaseHelper {
 
@@ -42,11 +47,6 @@ class PurchaseHelper {
             try {
                 Ln.d("Query inventory finished.");
 
-                if (mHelper == null) {
-                    Ln.w("purchase helper has been already destroyed");
-                    return;
-                }
-
                 if (result.isFailure()) {
                     Ln.w("Failed to query inventory: " + result);
                     return;
@@ -54,7 +54,6 @@ class PurchaseHelper {
 
                 Ln.d("Query inventory was successful.");
 
-                // Do we have the premium upgrade?
                 Purchase noAdsPurchase = inventory.getPurchase(SKU_NO_ADS);
                 if (noAdsPurchase != null) {
                     Ln.d("removing ads");
@@ -91,17 +90,14 @@ class PurchaseHelper {
                     Ln.d("Setup finished.");
 
                     if (!result.isSuccess()) {
-                        if (result.getResponse() == IabHelper.BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE) {
-                            Ln.w("billing_unavailable");
-                            mActivity.hideNoAdsButton();
-                        }
-                        // Oh noes, there was a problem.
                         Ln.w("Problem setting up in-app billing: " + result);
                         return;
                     }
 
-                    // Have we been disposed of in the meantime? If so, quit.
-                    if (mHelper == null) return;
+                    if (mHelper == null) {
+                        Ln.w("purchase helper has been already destroyed");
+                        return;
+                    }
 
                     // IAB is fully set up. Now, let's get an inventory of stuff we own.
                     Ln.d("Setup successful. Querying inventory.");
