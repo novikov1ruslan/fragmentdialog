@@ -26,10 +26,15 @@ public class InvitationManager implements OnInvitationReceivedListener, ResultCa
     private final InvitationReceivedListener mListener;
 
     @NonNull
+    private final GoogleApiClientWrapper mGoogleApiClient;
+
+    @NonNull
     private final Set<String> mIncomingInvitationIds = new HashSet<>();
 
-    public InvitationManager(@NonNull InvitationReceivedListener listener) {
+    public InvitationManager(@NonNull InvitationReceivedListener listener, @NonNull GoogleApiClientWrapper client) {
         mListener = listener;
+        mGoogleApiClient = client;
+        mGoogleApiClient.registerInvitationListener(this);
     }
 
     @Override
@@ -68,12 +73,7 @@ public class InvitationManager implements OnInvitationReceivedListener, ResultCa
         return mIncomingInvitationIds.size() > 0;
     }
 
-    public void registerInvitationListener(GoogleApiClientWrapper mGoogleApiClient) {
-        mGoogleApiClient.registerInvitationListener(this);
-        loadInvitations(mGoogleApiClient);
-    }
-
-    public void loadInvitations(GoogleApiClientWrapper mGoogleApiClient) {
+    public void loadInvitations() {
         Ln.d("loading invitations...");
         PendingResult<Invitations.LoadInvitationsResult> invitations = mGoogleApiClient.loadInvitations();
         invitations.setResultCallback(this);

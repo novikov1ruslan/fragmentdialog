@@ -52,26 +52,31 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
-    private final InvitationManager mInvitationManager = new InvitationManager(this);
     private final PurchaseManager mPurchaseManager = new PurchaseManager(this);
-
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
     private boolean mRecreating;
-    private GameSettings mSettings;
+
+    private final GameSettings mSettings = GameSettings.get();
 
     /**
      * volume stream is saved on onResume and restored on onPause
      */
     private int mVolumeControlStream;
 
-    private GoogleApiClientWrapper mGoogleApiClient;
+    @NonNull
+    private final GoogleApiClientWrapper mGoogleApiClient = GoogleApiFactory.getApiClient();
+
+    @NonNull
+    private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
+
+    private final InvitationManager mInvitationManager = new InvitationManager(this, mGoogleApiClient);
+
+    @NonNull
+    private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient);
 
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure;
-
-    private AchievementsManager mAchievementsManager;
-    private ProgressManager mProgressManager;
 
     private boolean mStarted;
     private ViewGroup mLayout;
@@ -81,7 +86,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private View mTutView;
 
     private boolean mResumed;
+
     private MusicPlayer mMusicPlayer;
+    private View mBanner;
 
     @SuppressLint("InflateParams")
     @Override
@@ -93,11 +100,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             finish();
             return;
         }
-        mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
-
-        mGoogleApiClient = GoogleApiFactory.getApiClient();
-        mGoogleApiClient.setConnectionCallbacks(this);
-        mGoogleApiClient.setOnConnectionFailedListener(this);
 
         if (DeviceUtils.isTablet(getResources())) {
             Ln.d("device is tablet");
@@ -107,19 +109,19 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        mAchievementsManager = new AchievementsManager(mGoogleApiClient);
-        mProgressManager = new ProgressManager(mGoogleApiClient);
-
-        mSettings = GameSettings.get();
+        mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
         Ln.d("google play services available = " + DeviceUtils.isGoogleServicesAvailable(this));
 
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
         mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
+        mBanner = mLayout.findViewById(R.id.banner);
 
-        setScreen(new MainScreen(this, getApiClient()));
+        setScreen(new MainScreen(this, mGoogleApiClient));
 
+        mGoogleApiClient.setConnectionCallbacks(this);
+        mGoogleApiClient.setOnConnectionFailedListener(this);
         if (mSettings.shouldAutoSignIn()) {
             Ln.d("should auto-signin - connecting...");
             mGoogleApiClient.connect();
@@ -158,7 +160,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public void hideAds() {
         AdProviderFactory.getAdProvider().destroy();
         AdProviderFactory.setAdProvider(new NoAdsAdProvider());
-        findViewById(R.id.banner).setVisibility(View.GONE);
+        mBanner.setVisibility(View.GONE);
         hideNoAdsButton();
     }
 
@@ -183,7 +185,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         keepScreenOn();
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - register invitation listener");
-            mInvitationManager.registerInvitationListener(mGoogleApiClient);
+            mInvitationManager.loadInvitations();
         }
         EventBus.getDefault().register(this);
     }
@@ -392,8 +394,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         if (mStarted) {
-            Ln.d("started - register invitation listener");
-            mInvitationManager.registerInvitationListener(mGoogleApiClient);
+            Ln.d("started - load invitations");
+            mInvitationManager.loadInvitations();
         }
     }
 
