@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.billing.PurchaseManager;
+import com.ivygames.morskoiboi.billing.PurchaseStatusListener;
 import com.ivygames.morskoiboi.billing.PurchaseUtils;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -36,7 +37,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         OnConnectionFailedListener,
-        InvitationManager.InvitationReceivedListener, PurchaseManager.PurchaseStatusListener {
+        InvitationManager.InvitationReceivedListener, PurchaseStatusListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -74,7 +75,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     @Override
-    public void onPurchaseSucceeded() {
+    public void onHasNoAds() {
         Ln.d("Purchase is premium upgrade. Congratulating user.");
         mSettings.setNoAds();
         hideAds();

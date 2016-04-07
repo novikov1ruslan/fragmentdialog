@@ -6,6 +6,8 @@ import android.content.pm.ResolveInfo;
 
 import com.ivygames.billing.Purchase;
 
+import org.commons.logger.Ln;
+
 import java.util.List;
 
 public class PurchaseUtils {
@@ -40,5 +42,9 @@ public class PurchaseUtils {
         serviceIntent.setPackage("com.android.vending");
         List<ResolveInfo> intentServices = pm.queryIntentServices(serviceIntent, 0);
         return intentServices != null && !intentServices.isEmpty();
+    }
+
+    static void alreadyDestroyedWarning() {
+        Ln.w("purchase helper has been already destroyed");
     }
 }
