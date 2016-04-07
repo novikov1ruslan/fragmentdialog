@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.billing;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Inventory;
@@ -9,9 +11,10 @@ import org.commons.logger.Ln;
 
 class QueryInventoryFinishedImpl implements IabHelper.QueryInventoryFinishedListener {
 
+    @NonNull
     private final HasNoAdsListener mHasNoAdsListener;
 
-    QueryInventoryFinishedImpl(HasNoAdsListener listener) {
+    QueryInventoryFinishedImpl(@NonNull HasNoAdsListener listener) {
         mHasNoAdsListener = listener;
     }
 

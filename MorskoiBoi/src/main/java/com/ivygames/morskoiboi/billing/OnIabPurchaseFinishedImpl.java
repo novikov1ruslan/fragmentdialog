@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.billing;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
@@ -7,9 +9,10 @@ import com.ivygames.billing.Purchase;
 import org.commons.logger.Ln;
 
 class OnIabPurchaseFinishedImpl implements IabHelper.OnIabPurchaseFinishedListener {
+    @NonNull
     private final PurchaseStatusListener mListener;
 
-    public OnIabPurchaseFinishedImpl(PurchaseStatusListener listener) {
+    public OnIabPurchaseFinishedImpl(@NonNull PurchaseStatusListener listener) {
         mListener = listener;
     }
 
