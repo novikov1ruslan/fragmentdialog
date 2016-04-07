@@ -1,11 +1,16 @@
 package com.ivygames.morskoiboi.billing;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.support.annotation.NonNull;
 
+import com.ivygames.billing.IabHelper;
+import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
 
+import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.util.List;
@@ -44,7 +49,58 @@ public class PurchaseUtils {
         return intentServices != null && !intentServices.isEmpty();
     }
 
-    static void alreadyDestroyedWarning() {
-        Ln.w("purchase helper has been already destroyed");
+    static void dispose(@NonNull IabHelper helper) {
+        try {
+            helper.dispose();
+        } catch (Exception e) {
+            handleException(e);
+        }
     }
+
+    static void handleActivityResult(int requestCode, int resultCode, Intent data,
+                                     @NonNull IabHelper helper) {
+        try {
+            // Pass on the activity result to the helper for handling
+            boolean handled = helper.handleActivityResult(requestCode, resultCode, data);
+            if (handled) {
+                Ln.d("onActivityResult handled by IABUtil.");
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    static void purchase(@NonNull Activity activity,
+                         int requestCode,
+                         @NonNull PurchaseStatusListener listener,
+                         @NonNull String payload,
+                         @NonNull IabHelper helper) {
+        try {
+            helper.launchPurchaseFlow(activity, PurchaseManager.SKU_NO_ADS, requestCode, new OnIabPurchaseFinishedImpl(listener), payload);
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    static void query(@NonNull IabResult result,
+                      @NonNull HasNoAdsListener listener,
+                      @NonNull IabHelper helper) {
+        try {
+            if (!result.isSuccess()) {
+                Ln.w("Problem setting up in-app billing: " + result);
+                return;
+            }
+
+            // IAB is fully set up. Now, let's get an inventory of stuff we own.
+            Ln.d("Setup successful. Querying inventory.");
+            helper.queryInventoryAsync(new QueryInventoryFinishedImpl(listener));
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private static void handleException(Exception e) {
+        ACRA.getErrorReporter().handleException(e);
+    }
+
 }

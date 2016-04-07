@@ -333,7 +333,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
                 mResolvingConnectionFailure = false;
             }
         } else if (requestCode == RC_PURCHASE) {
-            mPurchaseManager.onActivityResult(requestCode, resultCode, data);
+            mPurchaseManager.handleActivityResult(requestCode, resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }

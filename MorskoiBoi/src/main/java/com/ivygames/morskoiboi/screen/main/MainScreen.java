@@ -162,7 +162,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void noAds() {
         UiEvent.send("no_ads");
-        mPurchaseManager.purchase(BattleshipActivity.RC_PURCHASE);
+        mPurchaseManager.purchase((int) BattleshipActivity.RC_PURCHASE);
     }
 
     private void showAchievementsScreen() {

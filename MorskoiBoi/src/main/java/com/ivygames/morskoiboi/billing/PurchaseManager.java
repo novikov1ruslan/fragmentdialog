@@ -6,10 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
-import com.ivygames.billing.Purchase;
 import com.ivygames.morskoiboi.BattleshipActivity;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 public class PurchaseManager {
@@ -55,62 +53,39 @@ public class PurchaseManager {
             @Override
             public void onIabSetupFinished(IabResult result) {
                 if (mHelper == null) {
-                    PurchaseUtils.alreadyDestroyedWarning();
+                    alreadyDestroyedWarning();
                     return;
                 }
 
-                try {
-                    if (!result.isSuccess()) {
-                        Ln.w("Problem setting up in-app billing: " + result);
-                        return;
-                    }
-
-                    // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                    Ln.d("Setup successful. Querying inventory.");
-                    mHelper.queryInventoryAsync(new QueryInventoryFinishedImpl(listener));
-                } catch (Exception e) {
-                    ACRA.getErrorReporter().handleException(e);
-                }
+                PurchaseUtils.query(result, listener, mHelper);
             }
         });
     }
 
     public void destroy() {
         if (mHelper == null) {
-            PurchaseUtils.alreadyDestroyedWarning();
+            alreadyDestroyedWarning();
             return;
         }
 
         Ln.d("Destroying helper.");
-        try {
-            mHelper.dispose();
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
-        }
+        PurchaseUtils.dispose(mHelper);
         mHelper = null;
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if (mHelper == null) {
-            PurchaseUtils.alreadyDestroyedWarning();
+            alreadyDestroyedWarning();
             return;
         }
         Ln.v("request code = " + requestCode + "; response code = " + resultCode);
 
-        try {
-            // Pass on the activity result to the helper for handling
-            boolean handled = mHelper.handleActivityResult(requestCode, resultCode, data);
-            if (handled) {
-                Ln.d("onActivityResult handled by IABUtil.");
-            }
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
-        }
+        PurchaseUtils.handleActivityResult(requestCode, resultCode, data, mHelper);
     }
 
     public void purchase(int requestCode, final @NonNull PurchaseStatusListener listener) {
         if (mHelper == null) {
-            PurchaseUtils.alreadyDestroyedWarning();
+            alreadyDestroyedWarning();
             return;
         }
 
@@ -125,24 +100,11 @@ public class PurchaseManager {
             return;
         }
 
-        IabHelper.OnIabPurchaseFinishedListener purchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-            @Override
-            public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-                Ln.d("Purchase finished: " + result + ", purchase: " + purchase);
-                if (result.isFailure()) {
-                    Ln.w("Error purchasing: " + result);
-                    listener.onPurchaseFailed();
-                    return;
-                }
-                Ln.d("Purchase successful.");
+        PurchaseUtils.purchase(mActivity, requestCode, listener, payload, mHelper);
+    }
 
-                if (purchase.getSku().equals(SKU_NO_ADS)) {
-                    listener.onHasNoAds();
-                }
-            }
-        };
-
-        mHelper.launchPurchaseFlow(mActivity, SKU_NO_ADS, requestCode, purchaseFinishedListener, payload);
+    private static void alreadyDestroyedWarning() {
+        Ln.w("purchase helper has been already destroyed");
     }
 
 }
