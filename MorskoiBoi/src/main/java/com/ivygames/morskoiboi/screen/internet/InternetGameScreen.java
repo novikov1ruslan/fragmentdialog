@@ -14,7 +14,7 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;

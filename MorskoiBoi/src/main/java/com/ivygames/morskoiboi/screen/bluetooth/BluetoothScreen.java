@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -37,7 +38,7 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 
 
-public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout.BluetoothActions, BattleshipActivity.BackPressListener, ConnectionListener {
+public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout.BluetoothActions, BackPressListener, ConnectionListener {
     private static final String TAG = "bluetooth";
 
     private static final int DISCOVERABLE_DURATION = 300;

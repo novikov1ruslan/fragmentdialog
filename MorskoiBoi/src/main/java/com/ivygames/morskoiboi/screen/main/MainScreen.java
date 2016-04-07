@@ -11,7 +11,7 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
+import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;

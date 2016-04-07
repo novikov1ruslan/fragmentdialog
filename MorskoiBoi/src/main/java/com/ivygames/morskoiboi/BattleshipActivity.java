@@ -55,40 +55,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private final InvitationManager mInvitationManager = new InvitationManager(this);
     private final PurchaseManager mPurchaseManager = new PurchaseManager(this);
 
-    @Override
-    public void showReceivedInvitationCrouton(String displayName) {
-        View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, displayName), mLayout);
-        Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
-    }
-
-    public InvitationManager getInvitationManager() {
-        return mInvitationManager;
-    }
-
-    public PurchaseManager getPurchaseManager() {
-        return mPurchaseManager;
-    }
-
-    @Override
-    public void onPurchaseFailed() {
-        FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
-    }
-
-    @Override
-    public void onHasNoAds() {
-        Ln.d("Purchase is premium upgrade. Congratulating user.");
-        mSettings.setNoAds();
-        hideAds();
-    }
-
-    public interface BackPressListener {
-        void onBackPressed();
-    }
-
-    public interface SignInListener {
-        void onSignInSucceeded();
-    }
-
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
     private boolean mRecreating;
@@ -487,6 +453,32 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
+    }
+
+    @Override
+    public void showReceivedInvitationCrouton(String displayName) {
+        View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, displayName), mLayout);
+        Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
+    }
+
+    public InvitationManager getInvitationManager() {
+        return mInvitationManager;
+    }
+
+    public PurchaseManager getPurchaseManager() {
+        return mPurchaseManager;
+    }
+
+    @Override
+    public void onPurchaseFailed() {
+        FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
+    }
+
+    @Override
+    public void onHasNoAds() {
+        Ln.d("Purchase is premium upgrade. Congratulating user.");
+        mSettings.setNoAds();
+        hideAds();
     }
 
 }

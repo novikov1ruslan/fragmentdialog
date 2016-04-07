@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;

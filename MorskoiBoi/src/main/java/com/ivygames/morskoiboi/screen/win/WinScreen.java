@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
-import com.ivygames.morskoiboi.BattleshipActivity.SignInListener;
+import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;

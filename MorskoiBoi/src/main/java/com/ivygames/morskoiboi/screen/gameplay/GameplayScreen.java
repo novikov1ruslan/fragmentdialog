@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BattleshipActivity.BackPressListener;
+import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.GameSettings;
