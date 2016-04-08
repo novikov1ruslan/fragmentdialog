@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.billing;
+package com.ivygames.common.billing;
 
 import android.app.Activity;
 import android.content.Intent;

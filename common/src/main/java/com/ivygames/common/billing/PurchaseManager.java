@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.billing;
+package com.ivygames.common.billing;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
-import com.ivygames.morskoiboi.BattleshipActivity;
 
 import org.commons.logger.Ln;
 
@@ -31,7 +30,7 @@ public class PurchaseManager {
     @NonNull
     private final Activity mActivity;
 
-    public PurchaseManager(@NonNull BattleshipActivity activity) {
+    public PurchaseManager(@NonNull Activity activity) {
         mActivity = activity;
     }
 

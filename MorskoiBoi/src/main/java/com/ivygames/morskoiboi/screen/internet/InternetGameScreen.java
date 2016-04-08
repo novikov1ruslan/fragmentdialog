@@ -118,7 +118,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     @Override
     public void onWaitingForOpponent(Room room) {
-        mInvitationManager.loadInvitations(mParent.getApiClient());
+        mInvitationManager.loadInvitations();
         showWaitingRoom(room);
     }
 

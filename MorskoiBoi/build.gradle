@@ -61,7 +61,6 @@ dependencies {
     compile project(':fragmentdialog')
     compile project(':BaseGameUtils')
     compile project(':RUtils')
-    compile project(':BillingUtils')
     compile 'com.google.android.gms:play-services-games:8.4.0'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-identity:8.4.0'
