@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
 
+    @NonNull
     private final InvitationManager mInvitationManager = new InvitationManager(this, mGoogleApiClient);
 
     @NonNull
@@ -83,6 +85,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private FrameLayout mContainer;
 
     private BattleshipScreen mCurrentScreen;
+
+    @Nullable
     private View mTutView;
 
     private boolean mResumed;
@@ -177,12 +181,12 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             Ln.v("recreating");
             return;
         }
+        Ln.d("UI partially visible - keep screen On");
+        keepScreenOn();
 
         mCurrentScreen.onStart();
         mStarted = true;
 
-        Ln.d("UI partially visible - keep screen On");
-        keepScreenOn();
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - register invitation listener");
             mInvitationManager.loadInvitations();
@@ -219,12 +223,11 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             return;
         }
         Ln.v("pausing");
+        setVolumeControlStream(mVolumeControlStream);
+        AdProviderFactory.getAdProvider().pause();
 
         mCurrentScreen.onPause();
         mResumed = false;
-
-        setVolumeControlStream(mVolumeControlStream);
-        AdProviderFactory.getAdProvider().pause();
 
         mMusicPlayer.pause();
 //        AppEventsLogger.deactivateApp(this);
@@ -237,10 +240,10 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             Ln.v("recreating");
             return;
         }
+        stopKeepingScreenOn();
 
         mCurrentScreen.onStop();
         mStarted = false;
-        stopKeepingScreenOn();
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - unregister invitation listener");
             mGoogleApiClient.unregisterInvitationListener();
@@ -283,7 +286,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mTutView = null;
     }
 
-    public void showTutorial(View view) {
+    public void showTutorial(@Nullable View view) {
         if (mTutView == null) {
             mTutView = view;
             if (mTutView != null) {
@@ -362,7 +365,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         Ln.d("resolving connection failure");
-        // TODO:
         mResolvingConnectionFailure = mGoogleApiClient.resolveConnectionFailure(this, connectionResult, RC_SIGN_IN, getString(R.string.error));
         Ln.d("has resolution = " + mResolvingConnectionFailure);
     }
@@ -371,7 +373,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public void onConnectionSuspended(int cause) {
         Ln.d("connection suspended - trying to reconnect: " + GpgsUtils.connectionCauseToString(cause));
         // GoogleApiClient will automatically attempt to restore the connection.
-        // Applications should disable UI components that require the service, and wait for a call to onConnected(Bundle) to re-enable them.
+        // Applications should disable UI components that require the service,
+        // and wait for a call to onConnected(Bundle) to re-enable them.
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -187,6 +188,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     @Override
+    @Nullable
     public View getTutView() {
         if (!DeviceUtils.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
             Ln.v("setup tip needs to be shown");
