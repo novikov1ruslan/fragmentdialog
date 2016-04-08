@@ -34,7 +34,6 @@ public class InvitationManager implements OnInvitationReceivedListener, ResultCa
     public InvitationManager(@NonNull InvitationReceivedListener listener, @NonNull GoogleApiClientWrapper client) {
         mListener = listener;
         mGoogleApiClient = client;
-        mGoogleApiClient.registerInvitationListener(this);
     }
 
     @Override
@@ -74,6 +73,12 @@ public class InvitationManager implements OnInvitationReceivedListener, ResultCa
     }
 
     public void loadInvitations() {
+        if (!mGoogleApiClient.isConnected()) {
+            Ln.w("API client has to be connected");
+            return;
+        }
+        mGoogleApiClient.registerInvitationListener(this);
+
         Ln.d("loading invitations...");
         PendingResult<Invitations.LoadInvitationsResult> invitations = mGoogleApiClient.loadInvitations();
         invitations.setResultCallback(this);
