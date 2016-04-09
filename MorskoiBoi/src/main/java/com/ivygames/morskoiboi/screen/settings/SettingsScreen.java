@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.PlayUtils;
+import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.SignInListener;
-import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
@@ -61,7 +61,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         }
 
         Intent intent = getEmailIntent();
-        if (!DeviceUtils.canResolveIntent(getParent().getPackageManager(), intent)) {
+        if (!AndroidDevice.canResolveIntent(getParent().getPackageManager(), intent)) {
             mLayout.hideReportProblemButton();
         }
 
@@ -78,7 +78,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         Uri uri = Uri.parse("mailto:" + EMAIL);
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(uri);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + DeviceUtils.getVersionName(getResources()) + ")");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + AndroidDevice.getVersionName(getResources()) + ")");
 //        intent.putExtra(Intent.EXTRA_TEXT, "hi android jack!");
         return Intent.createChooser(intent, getString(R.string.report_problem));
     }
@@ -136,7 +136,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         public void onReportProblem() {
             UiEvent.send("report_problem");
             Intent intent = getEmailIntent();
-            if (DeviceUtils.canResolveIntent(getParent().getPackageManager(), intent)) {
+            if (AndroidDevice.canResolveIntent(getParent().getPackageManager(), intent)) {
                 startActivity(intent);
             } else {
                 Ln.e("email resolver is not available");

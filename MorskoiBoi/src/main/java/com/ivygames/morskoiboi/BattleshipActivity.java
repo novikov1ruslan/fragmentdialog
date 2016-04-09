@@ -22,7 +22,6 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
-import com.ivygames.common.billing.PurchaseUtils;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -105,7 +104,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             return;
         }
 
-        if (DeviceUtils.isTablet(getResources())) {
+        if (AndroidDevice.isTablet(getResources())) {
             Ln.d("device is tablet");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
@@ -115,14 +114,12 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
-        Ln.d("google play services available = " + DeviceUtils.isGoogleServicesAvailable(this));
+        Ln.d("google play services available = " + AndroidDevice.isGoogleServicesAvailable(this));
 
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
         mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
         mBanner = mLayout.findViewById(R.id.banner);
-
-        setScreen(new MainScreen(this, mGoogleApiClient));
 
         mGoogleApiClient.setConnectionCallbacks(this);
         mGoogleApiClient.setOnConnectionFailedListener(this);
@@ -135,7 +132,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             hideAds();
         } else {
             AdProviderFactory.init(this);
-            if (DeviceUtils.isGoogleServicesAvailable(this) && PurchaseUtils.isBillingAvailable(getPackageManager())) {
+            if (AndroidDevice.isBillingAvailable(this)) {
                 mPurchaseManager.query(this);
             } else {
                 Ln.e("gpgs_not_available");
@@ -145,6 +142,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
+
+        setScreen(new MainScreen(this, mGoogleApiClient));
     }
 
     public void playMusic(int music) {
@@ -171,7 +170,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        DeviceUtils.printIntent(intent);
+        AndroidDevice.printIntent(intent);
     }
 
     @Override

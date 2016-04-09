@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ivygames.morskoiboi.DeviceUtils;
+import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
@@ -152,7 +152,7 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         float padding = getResources().getDimension(R.dimen.tut_screen_padding);
         View gotIt = mTutView.findViewById(R.id.got_it_button);
         gotIt.setY(tap.getY() + tap.getHeight() + padding);
-        if (DeviceUtils.isTablet(getResources())) {
+        if (AndroidDevice.isTablet(getResources())) {
             padding += getResources().getDimension(R.dimen.battleship_margin_horizontal);
         }
         gotIt.setX(getWidth() - gotIt.getWidth() - padding);

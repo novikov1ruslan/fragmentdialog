@@ -29,7 +29,7 @@ public class SettingsScreenTest {
 //        MockitoAnnotations.initMocks(this);
 ////        activity = Robolectric.buildActivity(TestActivity.class).get();
 //        Mockito.when(apiAvailability.isGooglePlayServicesAvailable(any(Context.class))).thenReturn(ConnectionResult.SUCCESS);
-//        DeviceUtils.init(apiAvailability);
+//        AndroidDevice.init(apiAvailability);
 //        activity = new TestActivity();
 //        ShadowsAdapter shadowsAdapter = Robolectric.getShadowsAdapter();
 //        ActivityController<TestActivity> activityController = new ActivityController<>(shadowsAdapter, activity);

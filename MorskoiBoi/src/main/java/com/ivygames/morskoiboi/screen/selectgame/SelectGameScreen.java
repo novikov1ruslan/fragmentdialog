@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdProviderFactory;
+import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.SignInListener;
-import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
@@ -186,7 +186,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         } else {
             Ln.d("Bluetooth available, but not enabled - prompt to enable");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (DeviceUtils.canResolveIntent(getParent().getPackageManager(), enableIntent)) {
+            if (AndroidDevice.canResolveIntent(getParent().getPackageManager(), enableIntent)) {
                 startActivityForResult(enableIntent, BattleshipActivity.RC_ENABLE_BT);
             } else {
                 Ln.w("Bluetooth resolver is not available");

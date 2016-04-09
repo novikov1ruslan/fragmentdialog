@@ -16,14 +16,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -39,6 +42,26 @@ public class MainScreenTest extends ScreenTest {
     @Override
     public BattleshipScreen screen() {
         return new MainScreen(activity(), apiClient());
+    }
+
+//    @Test
+//    public void when_billing_available__no_ads_button_visible() {
+////        onView(withId(R.id.play)).perform(click());
+//        assertThat(viewById(R.id.no_ads).getVisibility(), is(View.VISIBLE));
+//    }
+//
+//    @Test
+//    public void when_billing_NOT_available__no_ads_button_gone() {
+////        onView(withId(R.id.play)).perform(click());
+//        assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
+//    }
+
+    @Test
+    public void when_billing_NOT_available__no_ads_button_gone_even_after_getting_to_another_screen_and_back() {
+        assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
+        onView(withId(R.id.help)).perform(click());
+        pressBack();
+        assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
     }
 
     @Test

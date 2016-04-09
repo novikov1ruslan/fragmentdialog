@@ -15,17 +15,18 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.ivygames.common.billing.PurchaseUtils;
 
 import org.commons.logger.Ln;
 
 import java.util.List;
 
-public class DeviceUtils {
+public class AndroidDevice {
 
     private static final int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
     private static GoogleApiAvailability sApiAvailability;
 
-    private DeviceUtils() {
+    private AndroidDevice() {
         // utils
     }
 
@@ -53,7 +54,7 @@ public class DeviceUtils {
         Ln.v("intent=" + intent);
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            DeviceUtils.printExtras(extras);
+            AndroidDevice.printExtras(extras);
         }
     }
 
@@ -101,5 +102,9 @@ public class DeviceUtils {
 
     public static boolean isGoogleServicesAvailable(Context context) {
         return sApiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    }
+
+    public static boolean isBillingAvailable(Context context) {
+        return isGoogleServicesAvailable(context) && PurchaseUtils.isBillingAvailable(context.getPackageManager());
     }
 }

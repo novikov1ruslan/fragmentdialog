@@ -8,9 +8,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
-import com.ivygames.morskoiboi.DeviceUtils;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
@@ -190,7 +190,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     @Nullable
     public View getTutView() {
-        if (!DeviceUtils.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
+        if (!AndroidDevice.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
             Ln.v("setup tip needs to be shown");
             return mTutView;
         }

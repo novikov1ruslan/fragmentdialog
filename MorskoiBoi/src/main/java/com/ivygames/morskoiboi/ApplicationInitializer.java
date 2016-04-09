@@ -35,7 +35,7 @@ public class ApplicationInitializer {
     public static void initialize(Application application) {
         ACRA.init(application);
         GameSettings.init(application);
-        DeviceUtils.init(GoogleApiAvailability.getInstance());
+        AndroidDevice.init(GoogleApiAvailability.getInstance());
         GoogleApiFactory.inject(new GoogleApiClientWrapper(application));
 
         initLogger(application);
@@ -69,7 +69,7 @@ public class ApplicationInitializer {
     }
 
     private static void initLogger(Application application) {
-        int minimumLogLevel = DeviceUtils.isDebug(application) ? Log.VERBOSE : Log.INFO;
+        int minimumLogLevel = AndroidDevice.isDebug(application) ? Log.VERBOSE : Log.INFO;
         String path = application.getFilesDir().getPath();
         // filesPath = Environment.getExternalStorageDirectory().getPath();
         Config logConfig = new Config(minimumLogLevel, path, "battleship");
@@ -92,7 +92,7 @@ public class ApplicationInitializer {
 
         @Override
         public String getDescription(String threadName, Throwable throwable) {
-            return "[" + threadName + "] " + getStackTrace(throwable) + " (" + DeviceUtils.getDeviceInfo() + ")";
+            return "[" + threadName + "] " + getStackTrace(throwable) + " (" + AndroidDevice.getDeviceInfo() + ")";
         }
 
         private String getStackTrace(Throwable throwable) {
