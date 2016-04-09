@@ -61,7 +61,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         }
 
         Intent intent = getEmailIntent();
-        if (!DeviceUtils.resolverAvailableForIntent(getParent().getPackageManager(), intent)) {
+        if (!DeviceUtils.canResolveIntent(getParent().getPackageManager(), intent)) {
             mLayout.hideReportProblemButton();
         }
 
@@ -135,7 +135,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         public void onReportProblem() {
             UiEvent.send("report_problem");
             Intent intent = getEmailIntent();
-            if (DeviceUtils.resolverAvailableForIntent(getParent().getPackageManager(), intent)) {
+            if (DeviceUtils.canResolveIntent(getParent().getPackageManager(), intent)) {
                 startActivity(intent);
             } else {
                 Ln.e("email resolver is not available");
