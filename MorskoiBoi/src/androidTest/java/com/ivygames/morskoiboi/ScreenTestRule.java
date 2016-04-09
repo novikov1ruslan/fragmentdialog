@@ -4,10 +4,10 @@ import android.support.test.rule.ActivityTestRule;
 
 import static org.mockito.Mockito.mock;
 
-public class MainScreenTestRule extends ActivityTestRule<BattleshipActivity> {
+public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     private GoogleApiClientWrapper apiClient;
 
-    public MainScreenTestRule() {
+    public ScreenTestRule() {
         super(BattleshipActivity.class);
     }
 

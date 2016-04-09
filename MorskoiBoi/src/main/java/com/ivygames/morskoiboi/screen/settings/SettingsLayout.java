@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.settings;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,6 +26,7 @@ public class SettingsLayout extends NotepadLinearLayout implements View.OnClickL
         void onRate();
     }
 
+    @Nullable
     private SettingsScreenActions mScreenActions;
     private View mSignOutBar;
     private View mSignInBar;
@@ -45,7 +47,6 @@ public class SettingsLayout extends NotepadLinearLayout implements View.OnClickL
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        // mRemoveAdsButton = findViewById(R.id.no_ads_btn);
         mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
         mVibrationButton.setOnClickListener(this);
         mSoundButton = (ImageButton) findViewById(R.id.sound_btn);
@@ -81,6 +82,7 @@ public class SettingsLayout extends NotepadLinearLayout implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (mScreenActions == null) {
+            Ln.w("listener not set");
             return;
         }
 
@@ -122,17 +124,5 @@ public class SettingsLayout extends NotepadLinearLayout implements View.OnClickL
     public void hideVibrationSetting() {
         findViewById(R.id.vibration_container).setVisibility(GONE);
     }
-
-    // public void hideIab() {
-    // mRemoveAdsButton.setVisibility(GONE);
-    // }
-    //
-    // public void showIab() {
-    // mRemoveAdsButton.setVisibility(VISIBLE);
-    // }
-    //
-    // public void temporarilyHideIab() {
-    // mRemoveAdsButton.setVisibility(INVISIBLE);
-    // }
 
 }

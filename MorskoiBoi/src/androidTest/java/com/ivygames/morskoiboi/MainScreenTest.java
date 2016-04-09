@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class MainScreenTest {
 
     @Rule
-    public MainScreenTestRule rule = new MainScreenTestRule();
+    public ScreenTestRule rule = new ScreenTestRule();
 
     private GoogleApiClientWrapper apiClient;
 

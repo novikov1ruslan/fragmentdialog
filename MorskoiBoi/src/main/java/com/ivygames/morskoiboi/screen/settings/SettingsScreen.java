@@ -23,7 +23,7 @@ import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActi
 
 import org.commons.logger.Ln;
 
-public class SettingsScreen extends BattleshipScreen implements SettingsScreenActions, SignInListener, BackPressListener {
+public class SettingsScreen extends BattleshipScreen implements SignInListener, BackPressListener {
     private static final String TAG = "SETTINGS";
     private static final String EMAIL = "ivy.games.studio@gmail.com";
 
@@ -35,7 +35,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     private VibratorFacade mVibrator;
     private SettingsLayout mLayout;
 
-    public SettingsScreen(@NonNull  BattleshipActivity parent,
+    public SettingsScreen(@NonNull BattleshipActivity parent,
                           @NonNull GoogleApiClientWrapper apiClient,
                           @NonNull GameSettings settings) {
         super(parent);
@@ -50,7 +50,7 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (SettingsLayout) inflate(R.layout.settings, container);
-        mLayout.setScreenActionsListener(this);
+        mLayout.setScreenActionsListener(mSettingsActions);
         mLayout.setSound(mSettings.isSoundOn());
         if (mVibrator != null && mVibrator.hasVibrator()) {
             Ln.v("show vibration setting setting");
@@ -98,60 +98,63 @@ public class SettingsScreen extends BattleshipScreen implements SettingsScreenAc
         mLayout.showSignOutBar();
     }
 
-    @Override
-    public void onSoundChanged() {
-        boolean on = !mSettings.isSoundOn();
-        mSettings.setSound(on);
-        mLayout.setSound(on);
+    private SettingsScreenActions mSettingsActions = new SettingsScreenActions() {
 
-        if (on) {
-            mParent.playMusic(getMusic());
+
+        @Override
+        public void onSoundChanged() {
+            boolean on = !mSettings.isSoundOn();
+            mSettings.setSound(on);
+            mLayout.setSound(on);
+
+            if (on) {
+                mParent.playMusic(getMusic());
+            } else {
+                mParent.stopMusic();
+            }
         }
-        else {
-            mParent.stopMusic();
+
+        @Override
+        public void onVibrationChanged() {
+            boolean on = !mSettings.isVibrationOn();
+            mSettings.setVibration(on);
+            mLayout.setVibration(on);
+            if (mVibrator != null) {
+                mVibrator.vibrate(300);
+            }
         }
-    }
 
-    @Override
-    public void onVibrationChanged() {
-        boolean on = !mSettings.isVibrationOn();
-        mSettings.setVibration(on);
-        mLayout.setVibration(on);
-        if (mVibrator != null) {
-            mVibrator.vibrate(300);
+        @Override
+        public void onRate() {
+            UiEvent.send("settings_rate");
+            mSettings.setRated();
+            PlayUtils.rateApp(getParent());
         }
-    }
 
-    @Override
-    public void onRate() {
-        UiEvent.send("settings_rate");
-        mSettings.setRated();
-        PlayUtils.rateApp(getParent());
-    }
-
-    @Override
-    public void onReportProblem() {
-        UiEvent.send("report_problem");
-        Intent intent = getEmailIntent();
-        if (DeviceUtils.resolverAvailableForIntent(getParent().getPackageManager(), intent)) {
-            startActivity(intent);
-        } else {
-            Ln.e("email resolver is not available");
+        @Override
+        public void onReportProblem() {
+            UiEvent.send("report_problem");
+            Intent intent = getEmailIntent();
+            if (DeviceUtils.resolverAvailableForIntent(getParent().getPackageManager(), intent)) {
+                startActivity(intent);
+            } else {
+                Ln.e("email resolver is not available");
+            }
         }
-    }
 
-    @Override
-    public void onSignIn() {
-        UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "settings");
-        mApiClient.connect();
-    }
+        @Override
+        public void onSignIn() {
+            UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "settings");
+            mApiClient.connect();
+        }
 
-    @Override
-    public void onSignOut() {
-        UiEvent.send("sign_out", "settings");
-        mApiClient.disconnect();
-        mLayout.showSignInBar();
-    }
+        @Override
+        public void onSignOut() {
+            UiEvent.send("sign_out", "settings");
+            mApiClient.disconnect();
+            mLayout.showSignInBar();
+        }
+    };
 
     @Override
     public void onBackPressed() {
