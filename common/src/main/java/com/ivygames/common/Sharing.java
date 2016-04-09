@@ -7,7 +7,7 @@ public class Sharing {
     public static Intent createShareIntent(Context context, String greeting) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + PlayUtils.getPlayUrl(context));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, greeting + PlayUtils.getPlayUrl(context.getPackageName()));
         return shareIntent;
     }
 }

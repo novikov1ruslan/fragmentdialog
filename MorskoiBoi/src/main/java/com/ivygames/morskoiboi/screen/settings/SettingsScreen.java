@@ -128,7 +128,8 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         public void onRate() {
             UiEvent.send("settings_rate");
             mSettings.setRated();
-            PlayUtils.rateApp(getParent());
+            Intent intent = PlayUtils.rateIntent(getParent().getPackageName());
+            getParent().startActivity(intent);
         }
 
         @Override

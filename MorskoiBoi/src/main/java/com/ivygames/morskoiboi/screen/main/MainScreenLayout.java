@@ -58,7 +58,7 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
     }
 
     public void onResume(int requestCode) {
-        mPlusOneButton.initialize(PlayUtils.getPlayUrl(getContext()), requestCode);
+        mPlusOneButton.initialize(PlayUtils.getPlayUrl(getContext().getPackageName()), requestCode);
     }
 
     @Override

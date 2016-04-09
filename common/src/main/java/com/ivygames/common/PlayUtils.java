@@ -10,14 +10,14 @@ public class PlayUtils {
         // utils
     }
 
-    public static void rateApp(Context context) {
+    public static Intent rateIntent(String packageName) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getPlayUrl(context)));
-        context.startActivity(intent);
+        intent.setData(Uri.parse(getPlayUrl(packageName)));
+        return intent;
     }
 
-    public static String getPlayUrl(Context context) {
-        return "https://play.google.com/store/apps/details?id=" + context.getPackageName();
+    public static String getPlayUrl(String packageName) {
+        return "https://play.google.com/store/apps/details?id=" + packageName;
     }
 
 }

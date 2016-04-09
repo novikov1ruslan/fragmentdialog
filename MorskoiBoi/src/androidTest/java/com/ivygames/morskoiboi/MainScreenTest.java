@@ -1,64 +1,44 @@
 package com.ivygames.morskoiboi;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
+import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
 
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 
-//@RunWith(AndroidJUnit4.class)
-//@LargeTest
-public class MainScreenTest {
-
-    @Rule
-    public ScreenTestRule rule = new ScreenTestRule();
-
-    private GoogleApiClientWrapper apiClient;
-
-    private IdlingResource idlingResource;
+public class MainScreenTest extends ScreenTest {
 
     @Before
     public void startup() {
-//        MockitoAnnotations.initMocks(this);
-//        Intents.init();
-//        DeviceUtils.init(apiAvailability);
-//        final BattleshipActivity activity = rule.getActivity();
-//        apiClient = activity.getApiClient();
-//        apiClient = mock(GoogleApiClientWrapper.class);
-        apiClient = rule.getApiClient();
-//        GoogleApiFactory.inject(apiClient);
-
-//        idlingResource = new ScreenSetterResource(new Runnable() {
-//            @Override
-//            public void run() {
-//                activity.setScreen(new MainScreen(activity, apiClient));
-//            }
-//        });
-//        Espresso.registerIdlingResources(idlingResource);
+        super.setup();
     }
 
-    @After
-    public void teardown() {
-        if (idlingResource != null) {
-            Espresso.unregisterIdlingResources(idlingResource);
-        }
+    @Override
+    public BattleshipScreen screen() {
+        return new MainScreen(activity(), apiClient());
     }
 
     @Test
@@ -79,30 +59,25 @@ public class MainScreenTest {
         onView(Matchers.<View>instanceOf(SettingsLayout.class)).check(matches(isDisplayed()));
     }
 
-//    @Test
-//    public void when_share_button_is_pressed__sharing_intent_is_fired() {
-////        Intents.init();
-////        Matcher<Intent> intentMatcher = allOf(hasAction(Intent.ACTION_SEND), hasType("text/plain"));
-//////        intending(intentMatcher).respondWith(null);
-////        intending(not(isInternal())).respondWith(new ActivityResult(Activity.RESULT_OK, null));
-////        onView(withId(R.id.share_button)).perform(click());
-////        intended(intentMatcher);
-////        Intents.release();
-//    }
+    @Test
+    public void when_share_button_is_pressed__sharing_intent_is_fired() {
+        Matcher<Intent> expectedIntent = allOf(hasAction(Intent.ACTION_SEND), hasType("text/plain"));
+        clickForIntent(withId(R.id.share_button), expectedIntent);
+    }
 
-//    @Test
-//    public void when_NOT_signed_in__plus_one_button_is_NOT_displayed() {
-//        when(apiClient.isConnected()).thenReturn(false);
-//        onView(withId(R.id.plus_one_button)).check(matches(isDisplayed()));
-//    }
+    @Test
+    public void when_signed_in__plus_one_button_is_displayed() {
+        setSignedIn(true);
+        onView(pusOneButton()).check(matches(isDisplayed()));
+    }
 
-//    @Test
-//    public void when_signed_in__plus_one_button_is_displayed() {
-//        when(apiClient.isConnected()).thenReturn(true);
-//        onView(withId(R.id.plus_one_button)).check(matches(isDisplayed()));
-//    }
+    @Test
+    public void when_NOT_signed_in__plus_one_button_is_NOT_displayed() {
+        setSignedIn(false);
+        onView(pusOneButton()).check(matches(not(isDisplayed())));
+    }
 
-//    @Test
+    //    @Test
 //    public void when_plus_one_button_is_pressed__plus_one_intent_is_fired() {
 //        onView(withId(R.id.plus_one_button)).perform(click());
 //        // TODO:
@@ -110,29 +85,51 @@ public class MainScreenTest {
 //
     @Test
     public void when_achievements_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
-        when(apiClient.isConnected()).thenReturn(false);
-        onView(withId(R.id.achievements_button)).perform(click());
+        setSignedIn(false);
+        onView(achievementsButton()).perform(click());
         onView(withText(R.string.achievements_request)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void when_leader_boards_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
-        when(apiClient.isConnected()).thenReturn(false);
-        onView(withId(R.id.high_score)).perform(click());
+    public void when_leader_board_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
+        setSignedIn(false);
+        onView(leaderboardButton()).perform(click());
         onView(withText(R.string.leaderboards_request)).check(matches(isDisplayed()));
     }
 
-//    @Test
-//    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
-////            Intent intent = Games.Achievements.getAchievementsIntent(mApiClient);//, BattleshipActivity.RC_UNUSED)
-//        onView(withId(R.id.achievements_button)).perform(click());
-//        // TODO:
-//    }
-//
-//    @Test
-//    public void when_leader_boards_button_is_pressed__leader_board_intent_is_fired() {
-//        onView(withId(R.id.high_score)).perform(click());
-//        // TODO:
-//    }
+    @Test
+    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
+        Intent intent = new Intent();
+        String expectedType = "expected type";
+        intent.setType(expectedType);
+        when(apiClient().getAchievementsIntent()).thenReturn(intent);
+        setSignedIn(true);
+        clickForIntent(achievementsButton(), hasType(expectedType));
+    }
+
+    @Test
+    public void when_leader_board_button_is_pressed_when_signed_in__leader_board_intent_is_fired() {
+        Intent intent = new Intent();
+        String expectedType = "expected type";
+        intent.setType(expectedType);
+        when(apiClient().getLeaderboardIntent(anyString())).thenReturn(intent);
+        setSignedIn(true);
+        clickForIntent(leaderboardButton(), hasType(expectedType));
+    }
+
+    @NonNull
+    private Matcher<View> leaderboardButton() {
+        return withId(R.id.high_score);
+    }
+
+    @NonNull
+    private Matcher<View> achievementsButton() {
+        return withId(R.id.achievements_button);
+    }
+
+    @NonNull
+    private Matcher<View> pusOneButton() {
+        return withId(R.id.plus_one_button);
+    }
 
 }
