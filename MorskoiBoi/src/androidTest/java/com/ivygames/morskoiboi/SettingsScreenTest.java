@@ -39,7 +39,7 @@ public class SettingsScreenTest extends ScreenTest {
     }
 
     @Override
-    public BattleshipScreen screen() {
+    public BattleshipScreen newScreen() {
         return new SettingsScreen(activity(), apiClient(), settings);
     }
 
@@ -74,7 +74,7 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Test
     public void when_sound_button_is_pressed__sound_setting_toggled() {
-        setScreen(screen());
+        setScreen(newScreen());
         settings.setSound(true);
         onView(withId(R.id.sound_btn)).perform(click());
         assertThat(settings.isSoundOn(), is(false));
@@ -92,14 +92,14 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Test
     public void when_report_problem_button_pressed__email_intent_fired() {
-        setScreen(screen());
+        setScreen(newScreen());
         Matcher<Intent> expectedIntent = hasAction(Intent.ACTION_SENDTO);
         clickForIntent(withId(R.id.report_problem), expectedIntent);
     }
 
     @Test
     public void when_rate_button_pressed__play_intent_fired() {
-        setScreen(screen());
+        setScreen(newScreen());
         Intent intent = PlayUtils.rateIntent(activity().getPackageName());
         Matcher<Intent> expectedIntent = allOf(hasAction(intent.getAction()), hasData(intent.getData()));
         clickForIntent(withId(R.id.rate_btn), expectedIntent);
@@ -107,7 +107,7 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Test
     public void when_back_button_pressed__main_screen_opens() {
-        setScreen(screen());
+        setScreen(newScreen());
         pressBack();
         onView(Matchers.<View>instanceOf(MainScreenLayout.class)).check(matches(isDisplayed()));
     }

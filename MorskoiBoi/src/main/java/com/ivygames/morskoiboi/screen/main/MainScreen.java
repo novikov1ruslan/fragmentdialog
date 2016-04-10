@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
+import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
@@ -50,11 +51,15 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @NonNull
     private final PurchaseManager mPurchaseManager;
 
+    @NonNull
+    private final AndroidDevice mDevice;
+
     public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClientWrapper apiClient) {
         super(parent);
         mApiClient = apiClient;
         mInvitationManager = parent.getInvitationManager();
         mPurchaseManager = parent.getPurchaseManager();
+        mDevice = parent.getDevice();
     }
 
     @Override
@@ -67,10 +72,6 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         if (GameSettings.get().shouldProposeRating()) {
             Ln.d("ask the user to rate the app");
             showRateDialog();
-        }
-
-        if (GameSettings.get().noAds()) {
-            hideNoAdsButton();
         }
 
         return mLayout;
@@ -96,7 +97,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             mLayout.showPlusOneButton();
         }
 
-        if (GameSettings.get().noAds()) {
+        if (GameSettings.get().noAds() || !mDevice.isBillingAvailable()) {
             hideNoAdsButton();
         }
     }

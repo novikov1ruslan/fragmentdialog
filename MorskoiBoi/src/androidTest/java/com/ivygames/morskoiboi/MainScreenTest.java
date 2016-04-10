@@ -34,31 +34,37 @@ import static org.mockito.Mockito.when;
 
 public class MainScreenTest extends ScreenTest {
 
+    private MainScreen screen;
+
     @Before
     public void startup() {
         super.setup();
     }
 
     @Override
-    public BattleshipScreen screen() {
-        return new MainScreen(activity(), apiClient());
+    public BattleshipScreen newScreen() {
+        screen = new MainScreen(activity(), apiClient());
+        return screen;
     }
 
     @Test
     public void when_billing_available__no_ads_button_visible() {
         setBillingAvailable(true);
+        setScreen(newScreen());
         assertThat(viewById(R.id.no_ads).getVisibility(), is(View.VISIBLE));
     }
 
     @Test
     public void when_billing_NOT_available__no_ads_button_gone() {
         setBillingAvailable(false);
+        setScreen(newScreen());
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
     }
 
     @Test
     public void when_billing_NOT_available__no_ads_button_gone_even_after_getting_to_another_screen_and_back() {
         setBillingAvailable(false);
+        setScreen(newScreen());
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
         onView(withId(R.id.help)).perform(click());
         pressBack();

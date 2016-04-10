@@ -29,7 +29,7 @@ public abstract class ScreenTest {
     private GoogleApiClientWrapper apiClient;
     private AndroidDevice androidDevice;
 
-    public abstract BattleshipScreen screen();
+    public abstract BattleshipScreen newScreen();
 
     public void setup() {
         activity = rule.getActivity();
@@ -50,7 +50,7 @@ public abstract class ScreenTest {
 
     protected void setSignedIn(boolean signedIn) {
         when(apiClient.isConnected()).thenReturn(signedIn);
-        setScreen(screen());
+        setScreen(newScreen());
     }
 
     protected void setScreen(final BattleshipScreen screen) {
