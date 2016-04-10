@@ -90,4 +90,7 @@ public abstract class ScreenTest {
         return androidDevice;
     }
 
+    public static Matcher<View> withDrawable(final int resourceId) {
+        return new DrawableMatcher(resourceId);
+    }
 }

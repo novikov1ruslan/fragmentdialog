@@ -214,7 +214,4 @@ public class SettingsScreenTest extends ScreenTest {
         when(vibratorFacade.hasVibrator()).thenReturn(false);
     }
 
-    public static Matcher<View> withDrawable(final int resourceId) {
-        return new DrawableMatcher(resourceId);
-    }
 }

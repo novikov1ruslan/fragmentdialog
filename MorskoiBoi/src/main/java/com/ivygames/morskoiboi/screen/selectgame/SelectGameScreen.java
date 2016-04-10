@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,7 +36,6 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
-import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -65,8 +63,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final AndroidDevice mDevice;
 
-    public SelectGameScreen(@NonNull BattleshipActivity parent) {
+    @NonNull
+    private final GameSettings mSettings;
+
+    public SelectGameScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
+        mSettings = settings;
         mApiClient = parent.getApiClient();
         mInvitationManager = parent.getInvitationManager();
         mDevice = parent.getDevice();
@@ -77,14 +79,13 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mLayout = (SelectGameLayout) inflate(R.layout.select_game, container);
         mLayout.setScreenActions(this);
 
-        if (!hasBluetooth()) {
+        if (!mDevice.hasBluetooth()) {
             Ln.d("Bluetooth is absent - hiding the BT option");
             mLayout.hideBluetooth();
         }
 
-        GameSettings settings = GameSettings.get();
-        mLayout.setPlayerName(settings.getPlayerName());
-        Rank rank = Rank.getBestRankForScore(settings.getProgress().getScores());
+        mLayout.setPlayerName(mSettings.getPlayerName());
+        Rank rank = Rank.getBestRankForScore(mSettings.getProgress().getScores());
         mLayout.setRank(rank);
         mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 
@@ -95,7 +96,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public View getTutView() {
-        if (GameSettings.get().showProgressHelp()) {
+        if (mSettings.showProgressHelp()) {
             Ln.v("rank tip needs to be shown");
             return mTutView;
         }
@@ -126,8 +127,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         super.onPause();
         Ln.d(this + " screen partially hidden - persisting player name");
         parent().dismissTutorial();
-        GameSettings.get().hideProgressHelp();
-        GameSettings.get().setPlayerName(mLayout.getPlayerName());
+        mSettings.hideProgressHelp();
+        mSettings.setPlayerName(mLayout.getPlayerName());
     }
 
     @Override
@@ -148,13 +149,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             Ln.v(this + ": there are no pending invitations");
             mLayout.hideInvitation();
         }
-    }
-
-    private boolean hasBluetooth() {
-        PackageManager pm = parent().getPackageManager();
-        boolean hasBluetooth = pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
-        hasBluetooth &= BluetoothAdapter.getDefaultAdapter() != null;
-        return hasBluetooth;
     }
 
     @Override
@@ -180,10 +174,10 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void viaBlueTooth() {
         // If BT is not on, request that it be enabled.
-        boolean enabled = BluetoothAdapter.getDefaultAdapter().isEnabled();
+        boolean enabled = mDevice.bluetoothEnabled();
         UiEvent.send("viaBluetooth", enabled ? 1 : 0);
         if (enabled) {
-            showDeviceListScreen();
+            showBluetoothScreen();
         } else {
             Ln.d("Bluetooth available, but not enabled - prompt to enable");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -197,7 +191,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         }
     }
 
-    private void showDeviceListScreen() {
+    private void showBluetoothScreen() {
         setScreen(GameHandler.newBluetoothScreen());
     }
 
@@ -205,7 +199,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Ln.v("result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         if (requestCode == BattleshipActivity.RC_ENABLE_BT && resultCode == Activity.RESULT_OK) {
-            showDeviceListScreen();
+            showBluetoothScreen();
         }
     }
 
@@ -229,7 +223,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public void dismissTutorial() {
-        GameSettings.get().hideProgressHelp();
+        mSettings.hideProgressHelp();
         parent().dismissTutorial();
     }
 
@@ -261,7 +255,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             return;
         }
 
-        mLayout.setPlayerName(GameSettings.get().getPlayerName());
+        mLayout.setPlayerName(mSettings.getPlayerName());
         if (mViaInternetRequested) {
             mViaInternetRequested = false;
             showInternetGameScreen();

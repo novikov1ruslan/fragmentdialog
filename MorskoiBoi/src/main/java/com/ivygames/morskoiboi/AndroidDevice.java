@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -108,5 +109,16 @@ public class AndroidDevice {
 
     public boolean isBillingAvailable() {
         return isGoogleServicesAvailable() && PurchaseUtils.isBillingAvailable(mContext.getPackageManager());
+    }
+
+    public boolean hasBluetooth() {
+        PackageManager pm = mContext.getPackageManager();
+        boolean hasBluetooth = pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
+        hasBluetooth &= BluetoothAdapter.getDefaultAdapter() != null;
+        return hasBluetooth;
+    }
+
+    public boolean bluetoothEnabled() {
+        return BluetoothAdapter.getDefaultAdapter().isEnabled();
     }
 }

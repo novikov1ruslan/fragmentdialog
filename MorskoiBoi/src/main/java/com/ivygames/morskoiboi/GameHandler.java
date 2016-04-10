@@ -1,8 +1,6 @@
 package com.ivygames.morskoiboi;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.screen.Screen;
@@ -55,7 +53,7 @@ public class GameHandler {
     }
 
     public static SelectGameScreen newSelectGameScreen() {
-        return new SelectGameScreen(parent);
+        return new SelectGameScreen(parent, settings);
     }
 
     public static BoardSetupScreen newBoardSetupScreen() {
