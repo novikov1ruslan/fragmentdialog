@@ -164,7 +164,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
 
-        mVibrator = new VibratorFacade(this);
+        mVibrator = new VibratorFacade(mParent);
         mUiThreadHandler = new Handler();
         mSettings = GameSettings.get();
 
@@ -610,7 +610,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.v("enemy ship is sunk!! - shake enemy board");
                 mLayout.shakeEnemyBoard();
                 mSoundManager.playKillSound();
-                mVibrator.vibrate(VIBRATION_ON_KILL);
+                vibrate(VIBRATION_ON_KILL);
 
                 if (mRules.isItDefeatedBoard(mEnemyPublicBoard)) {
                     Ln.d("enemy has lost!!!");
@@ -650,7 +650,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 // Ln.v("player's ship is sunk: " + result);
                 mLayout.shakePlayerBoard();
                 mSoundManager.playKillSound();
-                mVibrator.vibrate(VIBRATION_ON_KILL);
+                vibrate(VIBRATION_ON_KILL);
             } else if (result.cell.isMiss()) {
                 // Ln.v("opponent misses: " + result);
                 mSoundManager.playSplash();
@@ -749,6 +749,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return mPlayer.toString();
         }
 
+    }
+
+    private void vibrate(int duration) {
+        if (GameSettings.get().isVibrationOn() && isResumed()) {
+            mVibrator.vibrate(duration);
+        }
     }
 
     private void stopDetectingShotTimeout() {

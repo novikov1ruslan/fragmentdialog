@@ -1,6 +1,8 @@
 package com.ivygames.morskoiboi;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.screen.Screen;
@@ -48,7 +50,8 @@ public class GameHandler {
     }
 
     public static SettingsScreen newSettingsScreen() {
-        return new SettingsScreen(parent, apiClient, settings);
+        VibratorFacade vibratorFacade = new VibratorFacade(parent);
+        return new SettingsScreen(parent, apiClient, settings, vibratorFacade);
     }
 
     public static SelectGameScreen newSelectGameScreen() {

@@ -3,31 +3,33 @@ package com.ivygames.morskoiboi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Vibrator;
-
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import android.support.annotation.NonNull;
 
 public class VibratorFacade {
 
     private static final int MIN_VERSION_SUPPORTING_HAS_VIBRATOR = 11;
-    private final Vibrator mVibrator;
-    private final BattleshipScreen mScreen;
 
-    public VibratorFacade(BattleshipScreen screen) {
-        mScreen = screen;
-        mVibrator = (Vibrator) screen.parent().getSystemService(Context.VIBRATOR_SERVICE);
+    @NonNull
+    private final Vibrator mVibrator;
+
+    public static Vibrator getVibratorService(@NonNull Context context) {
+        return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    }
+
+    public VibratorFacade(@NonNull Context context) {
+        mVibrator = getVibratorService(context);
     }
 
     public void vibrate(int milliseconds) {
-        if (GameSettings.get().isVibrationOn() && hasVibrator() && mScreen.isResumed()) {
+        if (hasVibrator()) {
             mVibrator.vibrate(milliseconds);
         }
     }
 
     public boolean hasVibrator() {
-        boolean has = mVibrator != null;
-        if (has && Build.VERSION.SDK_INT >= MIN_VERSION_SUPPORTING_HAS_VIBRATOR) {
-            has = mVibrator.hasVibrator();
+        if (Build.VERSION.SDK_INT >= MIN_VERSION_SUPPORTING_HAS_VIBRATOR) {
+            return mVibrator.hasVibrator();
         }
-        return has;
+        return true;
     }
 }

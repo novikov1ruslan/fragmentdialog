@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi.screen.settings;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.PlayUtils;
+import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
@@ -25,14 +25,14 @@ import org.commons.logger.Ln;
 
 public class SettingsScreen extends BattleshipScreen implements SignInListener, BackPressListener {
     private static final String TAG = "SETTINGS";
-    private static final String EMAIL = "ivy.games.studio@gmail.com";
 
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
     @NonNull
     private final GameSettings mSettings;
 
-    private VibratorFacade mVibrator;
+    @NonNull
+    private final VibratorFacade mVibrator;
     private SettingsLayout mLayout;
 
     @NonNull
@@ -40,15 +40,13 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
 
     public SettingsScreen(@NonNull BattleshipActivity parent,
                           @NonNull GoogleApiClientWrapper apiClient,
-                          @NonNull GameSettings settings) {
+                          @NonNull GameSettings settings,
+                          @NonNull VibratorFacade vibratorFacade) {
         super(parent);
         mApiClient = apiClient;
         mSettings = settings;
         mDevice = parent().getDevice();
-    }
-
-    public void setVibrator(VibratorFacade vibrator) {
-        mVibrator = vibrator;
+        mVibrator = vibratorFacade;
     }
 
     @Override
@@ -56,7 +54,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         mLayout = (SettingsLayout) inflate(R.layout.settings, container);
         mLayout.setScreenActionsListener(mSettingsActions);
         mLayout.setSound(mSettings.isSoundOn());
-        if (mVibrator != null && mVibrator.hasVibrator()) {
+        if (mVibrator.hasVibrator()) {
             Ln.v("show vibration setting setting");
             mLayout.setVibration(mSettings.isVibrationOn());
         } else {
@@ -73,18 +71,13 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         return mLayout;
     }
 
+    private Intent getEmailIntent() {
+        return Sharing.getEmailIntent(getString(R.string.report_problem), getString(R.string.app_name), mDevice.getVersionName());
+    }
+
     @Override
     public View getView() {
         return mLayout;
-    }
-
-    private Intent getEmailIntent() {
-        Uri uri = Uri.parse("mailto:" + EMAIL);
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(uri);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + mDevice.getVersionName() + ")");
-//        intent.putExtra(Intent.EXTRA_TEXT, "hi android jack!");
-        return Intent.createChooser(intent, getString(R.string.report_problem));
     }
 
     @Override
@@ -123,9 +116,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
             boolean on = !mSettings.isVibrationOn();
             mSettings.setVibration(on);
             mLayout.setVibration(on);
-            if (mVibrator != null) {
-                mVibrator.vibrate(300);
-            }
+            mVibrator.vibrate(300);
         }
 
         @Override

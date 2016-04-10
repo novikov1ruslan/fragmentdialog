@@ -145,6 +145,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
         GameHandler.setParent(this);
         GameHandler.setApiClient(mGoogleApiClient);
+        GameHandler.setSettings(mSettings);
 
         setScreen(GameHandler.newMainScreen());
     }

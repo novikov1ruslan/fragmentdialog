@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -22,10 +23,14 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasDat
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class SettingsScreenTest extends ScreenTest {
@@ -33,14 +38,17 @@ public class SettingsScreenTest extends ScreenTest {
 
     private GameSettings settings = GameSettings.get();
 
+    private VibratorFacade vibratorFacade;
+
     @Before
     public void setup() {
         super.setup();
+        vibratorFacade = mock(VibratorFacade.class);
     }
 
     @Override
     public BattleshipScreen newScreen() {
-        return new SettingsScreen(activity(), apiClient(), settings);
+        return new SettingsScreen(activity(), apiClient(), settings, vibratorFacade);
     }
 
     @Test
@@ -80,18 +88,47 @@ public class SettingsScreenTest extends ScreenTest {
         assertThat(settings.isSoundOn(), is(false));
     }
 
-//    @Test
-//    public void when_vibration_button_is_pressed__vibration_setting_toggled() {
-//        setScreen(screen());
-//        settings.setVibration(true);
-//        Matcher<View> viewMatcher = withId(R.id.vibration_btn);
-//        onView(viewMatcher).perform(click());
-//        assertThat(settings.isVibrationOn(), is(false));
-    //  TODO:
-//    }
+    @Test
+    public void when_vibration_available__vibration_button_present() {
+        when(vibratorFacade.hasVibrator()).thenReturn(true);
+        setScreen(newScreen());
+        assertThat(vibrationButton().getVisibility(), is(View.VISIBLE));
+    }
+
+    @Test
+    public void when_vibration_NOT_available__vibration_button_NOT_present() {
+        when(vibratorFacade.hasVibrator()).thenReturn(false);
+        setScreen(newScreen());
+        assertThat(vibrationButton().getVisibility(), is(not(View.VISIBLE)));
+    }
+
+    @Test
+    public void when_vibration_button_is_pressed__vibration_setting_toggled() {
+        when(vibratorFacade.hasVibrator()).thenReturn(true);
+        setScreen(newScreen());
+        settings.setVibration(true);
+        Matcher<View> viewMatcher = withId(R.id.vibration_btn);
+        onView(viewMatcher).perform(click());
+        assertThat(settings.isVibrationOn(), is(false));
+    }
+
+    @Test
+    public void when_device_can_resolve_report_a_problem_intent__RP_button_present() {
+        when(device().canResolveIntent(any(Intent.class))).thenReturn(true);
+        setScreen(newScreen());
+        assertThat(reportProblem().getVisibility(), is(View.VISIBLE));
+    }
+
+    @Test
+    public void when_device_CANNOT_resolve_report_a_problem_intent__RP_button_NOT_present() {
+        when(device().canResolveIntent(any(Intent.class))).thenReturn(false);
+        setScreen(newScreen());
+        assertThat(reportProblem().getVisibility(), is(not(View.VISIBLE)));
+    }
 
     @Test
     public void when_report_problem_button_pressed__email_intent_fired() {
+        when(device().canResolveIntent(any(Intent.class))).thenReturn(true);
         setScreen(newScreen());
         Matcher<Intent> expectedIntent = hasAction(Intent.ACTION_SENDTO);
         clickForIntent(withId(R.id.report_problem), expectedIntent);
@@ -120,4 +157,17 @@ public class SettingsScreenTest extends ScreenTest {
         return viewById(R.id.sign_in_bar);
     }
 
+    private View reportProblem() {
+        return viewById(R.id.report_problem);
+    }
+
+    private View vibrationButton() {
+        return viewById(R.id.vibration_container);
+    }
+
+    private void foo() {
+//        ImageButton imageButton = null;
+//        imageButton.getDrawable().
+//                R.drawable.vibrate_on : R.drawable.vibrate_off
+    }
 }

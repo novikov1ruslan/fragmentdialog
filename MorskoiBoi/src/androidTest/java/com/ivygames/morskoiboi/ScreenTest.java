@@ -86,4 +86,8 @@ public abstract class ScreenTest {
         return apiClient;
     }
 
+    protected final AndroidDevice device() {
+        return androidDevice;
+    }
+
 }
