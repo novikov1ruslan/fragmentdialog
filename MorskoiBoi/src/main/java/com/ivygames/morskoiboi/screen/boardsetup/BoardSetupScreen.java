@@ -97,14 +97,14 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public void onResume() {
         super.onResume();
-        mParent.showTutorial(getTutView());
+        parent().showTutorial(getTutView());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         GameSettings.get().hideBoardSetupHelp();
-        mParent.dismissTutorial();
+        parent().dismissTutorial();
     }
 
     @Override
@@ -125,7 +125,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     @Override
     public void showHelp() {
-        mParent.showTutorial(mTutView);
+        parent().showTutorial(mTutView);
     }
 
     @Override
@@ -144,16 +144,16 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public void dismissTutorial() {
         GameSettings.get().hideBoardSetupHelp();
-        mParent.dismissTutorial();
+        parent().dismissTutorial();
     }
 
     private void showGameplayScreen() {
-        mParent.setScreen(new GameplayScreen(getParent()));
+        parent().setScreen(new GameplayScreen(parent()));
     }
 
     private void showSetupValidationError() {
         View view = getLayoutInflater().inflate(R.layout.ships_setup_validation_crouton, mLayout, false);
-        Crouton.make(getParent(), view).show();
+        Crouton.make(parent(), view).show();
     }
 
     @Override
@@ -168,7 +168,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     private void backToSelectGameScreen() {
-        new BackToSelectGameCommand(mParent).run();
+        new BackToSelectGameCommand(parent()).run();
     }
 
     private void showWantToLeaveRoomDialog() {

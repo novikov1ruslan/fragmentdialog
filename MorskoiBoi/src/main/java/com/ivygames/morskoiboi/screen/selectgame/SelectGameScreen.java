@@ -16,6 +16,7 @@ import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
@@ -39,7 +40,6 @@ import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
@@ -114,7 +114,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onResume() {
         super.onResume();
         AdProviderFactory.getAdProvider().showInterstitialAfterPlay();
-        mParent.showTutorial(getTutView());
+        parent().showTutorial(getTutView());
     }
 
     @Override
@@ -128,7 +128,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onPause() {
         super.onPause();
         Ln.d(this + " screen partially hidden - persisting player name");
-        mParent.dismissTutorial();
+        parent().dismissTutorial();
         GameSettings.get().hideProgressHelp();
         GameSettings.get().setPlayerName(mLayout.getPlayerName());
     }
@@ -154,7 +154,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private boolean hasBluetooth() {
-        PackageManager pm = getParent().getPackageManager();
+        PackageManager pm = parent().getPackageManager();
         boolean hasBluetooth = pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
         hasBluetooth &= BluetoothAdapter.getDefaultAdapter() != null;
         return hasBluetooth;
@@ -177,7 +177,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBoardSetup() {
-        mParent.setScreen(new BoardSetupScreen(getParent()));
+        parent().setScreen(new BoardSetupScreen(parent()));
     }
 
     @Override
@@ -202,7 +202,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private void showDeviceListScreen() {
 //        mParent.setScreen(new DeviceListScreen());
-        mParent.setScreen(new BluetoothScreen(getParent()));
+        parent().setScreen(new BluetoothScreen(parent()));
     }
 
     @Override
@@ -228,17 +228,17 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public void showHelp() {
-        mParent.showTutorial(mTutView);
+        parent().showTutorial(mTutView);
     }
 
     @Override
     public void dismissTutorial() {
         GameSettings.get().hideProgressHelp();
-        mParent.dismissTutorial();
+        parent().dismissTutorial();
     }
 
     private void showInternetGameScreen() {
-        mParent.setScreen(new InternetGameScreen(getParent()));
+        parent().setScreen(new InternetGameScreen(parent()));
     }
 
     private void showInternetDialog() {
@@ -254,7 +254,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBtErrorDialog() {
-        final FragmentManager fm = getParent().getFragmentManager();
+        final FragmentManager fm = parent().getFragmentManager();
         new AlertDialogBuilder().setMessage(R.string.bluetooth_not_available).setPositiveButton(R.string.ok).create().show(fm, null);
     }
 
@@ -275,12 +275,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void showRanks() {
         UiEvent.send("showRanks");
-        mParent.setScreen(new RanksListScreen(getParent()));
+        parent().setScreen(new RanksListScreen(parent()));
     }
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen(getParent(), getParent().getApiClient()));
+        parent().setScreen(GameHandler.newMainScreen());
     }
 
     @Override

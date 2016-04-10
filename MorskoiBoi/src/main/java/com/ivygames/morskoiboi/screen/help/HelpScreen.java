@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
@@ -33,7 +34,7 @@ public class HelpScreen extends BattleshipScreen implements BackPressListener {
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen(getParent(), getParent().getApiClient()));
+        parent().setScreen(GameHandler.newMainScreen());
     }
 
     @Override

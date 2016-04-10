@@ -143,7 +143,10 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
 
-        setScreen(new MainScreen(this, mGoogleApiClient));
+        GameHandler.setParent(this);
+        GameHandler.setApiClient(mGoogleApiClient);
+
+        setScreen(GameHandler.newMainScreen());
     }
 
     public void playMusic(int music) {

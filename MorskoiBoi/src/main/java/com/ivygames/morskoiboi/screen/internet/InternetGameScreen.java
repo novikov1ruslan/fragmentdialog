@@ -133,12 +133,12 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             FragmentAlertDialog.showNote(mFm, DIALOG, R.string.network_error);
         } else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
             mApiClient.disconnect();
-            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(mParent)).show(mFm, DIALOG);
+            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
         } else {
             // STATUS_REAL_TIME_CONNECTION_FAILED
             // STATUS_INTERNAL_ERROR
             ExceptionEvent.send("internet_game", RtUtils.name(statusCode));
-            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(mParent)).show(mFm, DIALOG);
+            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
         }
     }
 
@@ -210,7 +210,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required - returning to select game screen");
             hideWaitingScreen();
-            new BackToSelectGameCommand(mParent).run();
+            new BackToSelectGameCommand(parent()).run();
             mApiClient.disconnect();
             return;
         }
@@ -234,7 +234,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         if (resultCode == Activity.RESULT_OK) {
             Ln.d("starting game");
             Model.instance.game = mInternetGame;
-            mParent.setScreen(new BoardSetupScreen(getParent()));
+            parent().setScreen(new BoardSetupScreen(parent()));
         } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
             Ln.d("user explicitly chose to leave the room");
             // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
@@ -306,7 +306,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             mInternetGame.finish();
         }
 
-        mParent.setScreen(new SelectGameScreen(getParent()));
+        parent().setScreen(new SelectGameScreen(parent()));
     }
 
     protected final void showWaitingScreen() {

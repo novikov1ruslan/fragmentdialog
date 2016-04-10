@@ -34,7 +34,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     public LostScreen(BattleshipActivity parent) {
         super(parent);
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
-        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "lost.ogg", audioManager);
+        mSoundBar = SoundBarFactory.create(parent().getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
         GameSettings.get().incrementGamesPlayedCounter();
     }
@@ -97,20 +97,20 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         if (shouldNotifyOpponent()) {
             showWantToLeaveRoomDialog();
         } else {
-            new BackToSelectGameCommand(mParent).run();
+            new BackToSelectGameCommand(parent()).run();
         }
     }
 
     private void showWantToLeaveRoomDialog() {
         String displayName = Model.instance.opponent.getName();
         String message = getString(R.string.want_to_leave_room, displayName);
-        DialogUtils.newOkCancelDialog(message, new BackToSelectGameCommand(mParent)).show(mFm, DIALOG);
+        DialogUtils.newOkCancelDialog(message, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
     }
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        mParent.setScreen(new BoardSetupScreen(getParent()));
+        parent().setScreen(new BoardSetupScreen(parent()));
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -30,7 +31,6 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
 
 import org.commons.logger.Ln;
@@ -104,7 +104,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getParent().unregisterReceiver(mReceiver);
+        parent().unregisterReceiver(mReceiver);
 
         if (isDialogShown()) {
             hideDialog();
@@ -135,7 +135,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        setScreen(new DeviceListScreen(getParent()));
+        setScreen(new DeviceListScreen(parent()));
     }
 
     @Override
@@ -143,7 +143,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen(getParent(), getParent().getApiClient()));
+            setScreen(GameHandler.newMainScreen());
         }
     }
 
@@ -194,7 +194,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen(getParent()));
+        setScreen(new BoardSetupScreen(parent()));
     }
 
     @Override

@@ -74,7 +74,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mGame = Model.instance.game;
 
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
-        mSoundBar = SoundBarFactory.create(getParent().getAssets(), "win.ogg", audioManager);
+        mSoundBar = SoundBarFactory.create(parent().getAssets(), "win.ogg", audioManager);
         mSoundBar.play();
 
         mTime = mGame.getTimeSpent();
@@ -226,13 +226,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        mParent.setScreen(new BoardSetupScreen(getParent()));
+        parent().setScreen(new BoardSetupScreen(parent()));
     }
 
     private void showWantToLeaveRoomDialog() {
         String displayName = Model.instance.opponent.getName();
         String message = getString(R.string.want_to_leave_room, displayName);
-        DialogUtils.newOkCancelDialog(message, new BackToSelectGameCommand(mParent)).show(mFm, DIALOG);
+        DialogUtils.newOkCancelDialog(message, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
     }
 
     private void submitScore(int totalScores) {
@@ -251,7 +251,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         if (shouldNotifyOpponent() && !hasOpponentSurrendered()) {
             showWantToLeaveRoomDialog();
         } else {
-            new BackToSelectGameCommand(mParent).run();
+            new BackToSelectGameCommand(parent()).run();
         }
     }
 

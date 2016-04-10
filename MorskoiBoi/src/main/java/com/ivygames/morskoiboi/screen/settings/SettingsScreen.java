@@ -10,6 +10,7 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
@@ -18,7 +19,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActions;
 
 import org.commons.logger.Ln;
@@ -44,7 +44,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         super(parent);
         mApiClient = apiClient;
         mSettings = settings;
-        mDevice = getParent().getDevice();
+        mDevice = parent().getDevice();
     }
 
     public void setVibrator(VibratorFacade vibrator) {
@@ -112,9 +112,9 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
             mLayout.setSound(on);
 
             if (on) {
-                mParent.playMusic(getMusic());
+                parent().playMusic(getMusic());
             } else {
-                mParent.stopMusic();
+                parent().stopMusic();
             }
         }
 
@@ -132,8 +132,8 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         public void onRate() {
             UiEvent.send("settings_rate");
             mSettings.setRated();
-            Intent intent = PlayUtils.rateIntent(getParent().getPackageName());
-            getParent().startActivity(intent);
+            Intent intent = PlayUtils.rateIntent(parent().getPackageName());
+            parent().startActivity(intent);
         }
 
         @Override
@@ -163,7 +163,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
 
     @Override
     public void onBackPressed() {
-        mParent.setScreen(new MainScreen(getParent(), getParent().getApiClient()));
+        parent().setScreen(GameHandler.newMainScreen());
     }
 
     @Override

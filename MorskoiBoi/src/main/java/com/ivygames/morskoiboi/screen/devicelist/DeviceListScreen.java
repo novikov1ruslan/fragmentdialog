@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -28,7 +29,6 @@ import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
 
 import org.commons.logger.Ln;
@@ -70,8 +70,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     public void onStart() {
         super.onStart();
         Ln.d(TAG + ": register BT broadcast receiver, starting discovery...");
-        getParent().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-        getParent().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
+        parent().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        parent().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
         startDiscovery();
     }
 
@@ -79,7 +79,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     public void onStop() {
         super.onStop();
         cancelDiscovery();
-        getParent().unregisterReceiver(mReceiver);
+        parent().unregisterReceiver(mReceiver);
         Ln.d(TAG + ": receivers are unregistered, discovery canceled");
     }
 
@@ -171,7 +171,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen(getParent()));
+        setScreen(new BoardSetupScreen(parent()));
     }
 
     @Override
@@ -187,7 +187,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(new MainScreen(getParent(), getParent().getApiClient()));
+            setScreen(GameHandler.newMainScreen());
         }
     }
 

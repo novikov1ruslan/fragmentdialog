@@ -129,13 +129,13 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void play() {
-        mParent.setScreen(new SelectGameScreen(getParent()));
+        parent().setScreen(new SelectGameScreen(parent()));
     }
 
     @Override
     public void share() {
         UiEvent.send("share");
-        startActivity(Sharing.createShareIntent(getParent(), getString(R.string.share_greeting)));
+        startActivity(Sharing.createShareIntent(parent(), getString(R.string.share_greeting)));
     }
 
     @Override
@@ -153,7 +153,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void noAds() {
         UiEvent.send("no_ads");
-        mParent.purchase();
+        parent().purchase();
     }
 
     private void showAchievementsScreen() {
@@ -187,7 +187,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showHelp() {
-        mParent.setScreen(new HelpScreen(getParent()));
+        parent().setScreen(new HelpScreen(parent()));
     }
 
     @Override
@@ -208,10 +208,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        SettingsScreen settingsScreen = new SettingsScreen(getParent(), mApiClient, GameSettings.get());
+        SettingsScreen settingsScreen = new SettingsScreen(parent(), mApiClient, GameSettings.get());
         VibratorFacade vibratorFacade = new VibratorFacade(settingsScreen);
         settingsScreen.setVibrator(vibratorFacade);
-        mParent.setScreen(settingsScreen);
+        parent().setScreen(settingsScreen);
     }
 
     private void showLeaderboardsDialog() {
@@ -233,8 +233,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("rate");
                 GameSettings.get().setRated();
-                Intent intent = PlayUtils.rateIntent(getParent().getPackageName());
-                getParent().startActivity(intent);
+                Intent intent = PlayUtils.rateIntent(parent().getPackageName());
+                parent().startActivity(intent);
             }
 
         }).setNegativeButton(R.string.later, new OnClickListener() {

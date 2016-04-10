@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -13,7 +14,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 public abstract class Screen {
 
     @NonNull
-    protected final BattleshipActivity mParent;
+    protected final Activity mParent;
 
     protected Screen(@NonNull BattleshipActivity parent) {
         mParent = parent;

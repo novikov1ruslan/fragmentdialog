@@ -104,7 +104,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            mParent.setScreen(new LostScreen(getParent()));
+            parent().setScreen(new LostScreen(parent()));
         }
     };
 
@@ -153,10 +153,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     public GameplayScreen(BattleshipActivity parent) {
         super(parent);
-        mMatchStatusIntent = new Intent(getParent(), InternetService.class);
+        mMatchStatusIntent = new Intent(parent(), InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
         mSoundManager = new GameplaySoundManager(this, (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE));
-        mSoundManager.prepareSoundPool(getParent().getAssets());
+        mSoundManager.prepareSoundPool(parent().getAssets());
         mBackPressEnabled = true;
         mPlayer = Model.instance.player;
         mEnemy = Model.instance.opponent;
@@ -168,7 +168,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mUiThreadHandler = new Handler();
         mSettings = GameSettings.get();
 
-        mBackToSelectGameCommand = new BackToSelectGameCommand(mParent);
+        mBackToSelectGameCommand = new BackToSelectGameCommand(parent());
 
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
 
@@ -323,7 +323,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onDestroy() {
         super.onDestroy();
         Fragment fragment = mFm.findFragmentByTag(DIALOG);
-        if (fragment != null && !getParent().isFinishing()) {
+        if (fragment != null && !parent().isFinishing()) {
             Ln.v("removing dialog: " + fragment);
             mFm.beginTransaction().remove(fragment).commitAllowingStateLoss();
         }
@@ -336,7 +336,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             ((Cancellable) mEnemy).cancel();
         }
         mSoundManager.release();
-        getParent().stopService(mMatchStatusIntent);
+        parent().stopService(mMatchStatusIntent);
         Ln.d(this + " screen destroyed");
 
         stopDetectingShotTimeout();
@@ -347,7 +347,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onEventMainThread(GameEvent event) {
         if (event == GameEvent.OPPONENT_LEFT) {
             stopTurnTimer();
-            getParent().stopService(mMatchStatusIntent);
+            parent().stopService(mMatchStatusIntent);
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
                 AnalyticsEvent.send("opponent_surrendered");
@@ -359,7 +359,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         } else if (event == GameEvent.CONNECTION_LOST) {
             EventBus.getDefault().removeAllStickyEvents();
             stopTurnTimer();
-            getParent().stopService(mMatchStatusIntent);
+            parent().stopService(mMatchStatusIntent);
             if (mGame.hasFinished()) {
                 Ln.d(event + " received, but the game has already finished - skipping this event");
             } else {
@@ -550,7 +550,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showOpponentTurn() {
-        getParent().startService(getServiceIntent(getString(R.string.opponent_s_turn)));
+        parent().startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
     }
 
@@ -583,7 +583,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         private void showPlayerTurn() {
-            getParent().startService(getServiceIntent(getString(R.string.your_turn)));
+            parent().startService(getServiceIntent(getString(R.string.your_turn)));
             mLayout.playerTurn();
         }
 
@@ -812,7 +812,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Bundle args = new Bundle();
             args.putBoolean(WinScreen.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
             args.putString(WinScreen.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
-            mParent.setScreen(new WinScreen(args, getParent()));
+            parent().setScreen(new WinScreen(args, parent()));
         }
     };
 
