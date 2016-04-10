@@ -12,12 +12,11 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
-import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
@@ -49,16 +48,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private final InvitationManager mInvitationManager;
 
     @NonNull
-    private final PurchaseManager mPurchaseManager;
-
-    @NonNull
     private final AndroidDevice mDevice;
 
     public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClientWrapper apiClient) {
         super(parent);
         mApiClient = apiClient;
         mInvitationManager = parent.getInvitationManager();
-        mPurchaseManager = parent.getPurchaseManager();
         mDevice = parent.getDevice();
     }
 
@@ -158,7 +153,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void noAds() {
         UiEvent.send("no_ads");
-        mPurchaseManager.purchase(BattleshipActivity.RC_PURCHASE, mParent);
+        mParent.purchase();
     }
 
     private void showAchievementsScreen() {

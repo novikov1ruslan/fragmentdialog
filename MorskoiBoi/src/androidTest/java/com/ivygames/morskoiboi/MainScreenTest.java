@@ -72,6 +72,31 @@ public class MainScreenTest extends ScreenTest {
     }
 
     @Test
+    public void rate_dialog_shown() {
+
+    }
+
+    @Test
+    public void rate_dialog_NOT_shown() {
+
+    }
+
+    @Test
+    public void invitations_shown() {
+
+    }
+
+    @Test
+    public void invitations_NOT_shown() {
+
+    }
+
+    @Test
+    public void onActivityResult() {
+
+    }
+
+    @Test
     public void when_play_button_is_pressed__select_game_screen_opens() {
         onView(withId(R.id.play)).perform(click());
         onView(Matchers.<View>instanceOf(SelectGameLayout.class)).check(matches(isDisplayed()));

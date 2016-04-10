@@ -37,7 +37,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         OnConnectionFailedListener,
-        InvitationManager.InvitationReceivedListener, PurchaseStatusListener {
+        InvitationManager.InvitationReceivedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -93,7 +93,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private MusicPlayer mMusicPlayer;
     private View mBanner;
 
-    @NonNull
     private AndroidDevice mDevice;
 
     @SuppressLint("InflateParams")
@@ -138,7 +137,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         } else {
             AdProviderFactory.init(this);
             if (mDevice.isBillingAvailable()) {
-                mPurchaseManager.query(this);
+                mPurchaseManager.query(new PurchaseStatusListenerImpl());
             } else {
                 Ln.e("gpgs_not_available");
                 hideNoAdsButton();
@@ -165,7 +164,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
     }
 
-    public void hideAds() {
+    private void hideAds() {
         AdProviderFactory.getAdProvider().destroy();
         AdProviderFactory.setAdProvider(new NoAdsAdProvider());
         mBanner.setVisibility(View.GONE);
@@ -474,23 +473,25 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         return mInvitationManager;
     }
 
-    public PurchaseManager getPurchaseManager() {
-        return mPurchaseManager;
-    }
-
-    @Override
-    public void onPurchaseFailed() {
-        FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
-    }
-
-    @Override
-    public void onHasNoAds() {
-        Ln.d("Purchase is premium upgrade. Congratulating user.");
-        mSettings.setNoAds();
-        hideAds();
-    }
-
     public AndroidDevice getDevice() {
         return mDevice;
+    }
+
+    public void purchase() {
+        mPurchaseManager.purchase(BattleshipActivity.RC_PURCHASE, new PurchaseStatusListenerImpl());
+    }
+
+    private class PurchaseStatusListenerImpl implements PurchaseStatusListener {
+        @Override
+        public void onPurchaseFailed() {
+            FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
+        }
+
+        @Override
+        public void onHasNoAds() {
+            Ln.d("Purchase is premium upgrade. Congratulating user.");
+            mSettings.setNoAds();
+            hideAds();
+        }
     }
 }
