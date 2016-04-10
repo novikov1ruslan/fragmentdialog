@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 
 public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     private GoogleApiClientWrapper apiClient;
+    private AndroidDevice androidDevice;
 
     public ScreenTestRule() {
         super(BattleshipActivity.class);
@@ -16,10 +17,15 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         super.beforeActivityLaunched();
         apiClient = mock(GoogleApiClientWrapper.class);
         GoogleApiFactory.inject(apiClient);
+        androidDevice = mock(AndroidDevice.class);
+        AndroidDeviceFactory.inject(androidDevice);
     }
 
     public GoogleApiClientWrapper getApiClient() {
         return apiClient;
     }
 
+    public AndroidDevice getAndroidDevice() {
+        return androidDevice;
+    }
 }

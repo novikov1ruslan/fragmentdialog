@@ -24,18 +24,16 @@ import java.util.List;
 public class AndroidDevice {
 
     private static final int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_ETHERNET};
-    private static GoogleApiAvailability sApiAvailability;
 
-    private AndroidDevice() {
-        // utils
+    @NonNull
+    private final Context mContext;
+
+    public AndroidDevice(@NonNull Context context) {
+        mContext = context;
     }
 
-    public static void init(GoogleApiAvailability apiAvailability) {
-        sApiAvailability = apiAvailability;
-    }
-
-    public static boolean isConnectedToNetwork(Context context) {
-        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean isConnectedToNetwork() {
+        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         for (int networkType : NETWORK_TYPES) {
             NetworkInfo info = connManager.getNetworkInfo(networkType);
             if (info != null && info.isConnectedOrConnecting()) {
@@ -45,12 +43,18 @@ public class AndroidDevice {
         return false;
     }
 
-    public static boolean canResolveIntent(@NonNull PackageManager pm, @NonNull Intent intent) {
+    public boolean canResolveIntent(@NonNull Intent intent) {
+        PackageManager pm = mContext.getPackageManager();
         List<ResolveInfo> resolveInfo = pm.queryIntentActivities(intent, 0);
         return !resolveInfo.isEmpty();
     }
 
-    public static void printIntent(Intent intent) {
+    public boolean isTablet() {
+        Resources res = mContext.getResources();
+        return res.getBoolean(R.bool.is_tablet);
+    }
+
+    public static void printIntent(@NonNull Intent intent) {
         Ln.v("intent=" + intent);
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -58,11 +62,7 @@ public class AndroidDevice {
         }
     }
 
-    public static boolean isTablet(Resources res) {
-        return res.getBoolean(R.bool.is_tablet);
-    }
-
-    private static void printExtras(Bundle extras) {
+    private static void printExtras(@NonNull Bundle extras) {
         for (String key : extras.keySet()) {
             Object value = extras.get(key);
             if (value == null) {
@@ -73,7 +73,9 @@ public class AndroidDevice {
         }
     }
 
-    public static String getVersionName(Resources res) {
+    @NonNull
+    public String getVersionName() {
+        Resources res = mContext.getResources();
         return res.getString(R.string.versionName);
     }
 
@@ -85,26 +87,26 @@ public class AndroidDevice {
                 + Build.VERSION.SDK_INT;
     }
 
-    public static boolean isDebug(Context context) {
+    public boolean isDebug() {
         int flags;
         try {
-            flags = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0).flags;
+            flags = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), 0).flags;
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException(e);
         }
         return (flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 
-    public static boolean isVibrationOn(Context context) {
-        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    public boolean isVibrationOn() {
+        AudioManager audio = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         return audio.getRingerMode() != AudioManager.RINGER_MODE_SILENT;
     }
 
-    public static boolean isGoogleServicesAvailable(Context context) {
-        return sApiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    public boolean isGoogleServicesAvailable() {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS;
     }
 
-    public static boolean isBillingAvailable(Context context) {
-        return isGoogleServicesAvailable(context) && PurchaseUtils.isBillingAvailable(context.getPackageManager());
+    public boolean isBillingAvailable() {
+        return isGoogleServicesAvailable() && PurchaseUtils.isBillingAvailable(mContext.getPackageManager());
     }
 }

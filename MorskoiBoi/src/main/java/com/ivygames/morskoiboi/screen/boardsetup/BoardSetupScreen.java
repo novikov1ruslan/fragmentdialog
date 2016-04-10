@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     private View mTutView;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
+    @NonNull
+    private final AndroidDevice mDevice;
     private final Rules mRules = RulesFactory.getRules();
     private final Runnable mTimeoutTask = new Runnable() {
         @Override
@@ -67,8 +70,9 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
         }
     };
 
-    public BoardSetupScreen(BattleshipActivity parent) {
+    public BoardSetupScreen(@NonNull BattleshipActivity parent) {
         super(parent);
+        mDevice = parent.getDevice();
     }
 
     @Override
@@ -190,7 +194,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     @Nullable
     public View getTutView() {
-        if (!AndroidDevice.isTablet(getResources()) && GameSettings.get().showSetupHelp()) {
+        if (!mDevice.isTablet() && GameSettings.get().showSetupHelp()) {
             Ln.v("setup tip needs to be shown");
             return mTutView;
         }

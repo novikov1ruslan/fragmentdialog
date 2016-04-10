@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.help.HelpLayout;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 

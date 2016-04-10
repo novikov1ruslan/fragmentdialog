@@ -65,10 +65,14 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final InvitationManager mInvitationManager;
 
+    @NonNull
+    private final AndroidDevice mDevice;
+
     public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
         mApiClient = parent.getApiClient();
         mInvitationManager = parent.getInvitationManager();
+        mDevice = parent.getDevice();
     }
 
     @Override
@@ -186,7 +190,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         } else {
             Ln.d("Bluetooth available, but not enabled - prompt to enable");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (AndroidDevice.canResolveIntent(getParent().getPackageManager(), enableIntent)) {
+            if (mDevice.canResolveIntent(enableIntent)) {
                 startActivityForResult(enableIntent, BattleshipActivity.RC_ENABLE_BT);
             } else {
                 Ln.w("Bluetooth resolver is not available");

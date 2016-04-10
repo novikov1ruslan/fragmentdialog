@@ -27,12 +27,14 @@ public abstract class ScreenTest {
     private ScreenSetterResource idlingResource;
 
     private GoogleApiClientWrapper apiClient;
+    private AndroidDevice androidDevice;
 
     public abstract BattleshipScreen screen();
 
     public void setup() {
         activity = rule.getActivity();
         apiClient = rule.getApiClient();
+        androidDevice = rule.getAndroidDevice();
     }
 
     @After
@@ -40,6 +42,10 @@ public abstract class ScreenTest {
         if (idlingResource != null) {
             Espresso.unregisterIdlingResources(idlingResource);
         }
+    }
+
+    protected void setBillingAvailable(boolean isAvailable) {
+        when(androidDevice.isBillingAvailable()).thenReturn(isAvailable);
     }
 
     protected void setSignedIn(boolean signedIn) {

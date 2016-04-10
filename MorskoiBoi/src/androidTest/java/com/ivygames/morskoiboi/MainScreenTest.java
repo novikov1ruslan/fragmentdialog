@@ -44,20 +44,21 @@ public class MainScreenTest extends ScreenTest {
         return new MainScreen(activity(), apiClient());
     }
 
-//    @Test
-//    public void when_billing_available__no_ads_button_visible() {
-////        onView(withId(R.id.play)).perform(click());
-//        assertThat(viewById(R.id.no_ads).getVisibility(), is(View.VISIBLE));
-//    }
-//
-//    @Test
-//    public void when_billing_NOT_available__no_ads_button_gone() {
-////        onView(withId(R.id.play)).perform(click());
-//        assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
-//    }
+    @Test
+    public void when_billing_available__no_ads_button_visible() {
+        setBillingAvailable(true);
+        assertThat(viewById(R.id.no_ads).getVisibility(), is(View.VISIBLE));
+    }
+
+    @Test
+    public void when_billing_NOT_available__no_ads_button_gone() {
+        setBillingAvailable(false);
+        assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
+    }
 
     @Test
     public void when_billing_NOT_available__no_ads_button_gone_even_after_getting_to_another_screen_and_back() {
+        setBillingAvailable(false);
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
         onView(withId(R.id.help)).perform(click());
         pressBack();

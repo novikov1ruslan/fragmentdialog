@@ -77,11 +77,6 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     @Override
-    public View getTutView() {
-        return null;
-    }
-
-    @Override
     public View getView() {
         return mLayout;
     }

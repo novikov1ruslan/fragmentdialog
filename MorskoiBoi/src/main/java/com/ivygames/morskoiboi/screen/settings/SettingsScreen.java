@@ -35,12 +35,16 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     private VibratorFacade mVibrator;
     private SettingsLayout mLayout;
 
+    @NonNull
+    private final AndroidDevice mDevice;
+
     public SettingsScreen(@NonNull BattleshipActivity parent,
                           @NonNull GoogleApiClientWrapper apiClient,
                           @NonNull GameSettings settings) {
         super(parent);
         mApiClient = apiClient;
         mSettings = settings;
+        mDevice = getParent().getDevice();
     }
 
     public void setVibrator(VibratorFacade vibrator) {
@@ -61,7 +65,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         }
 
         Intent intent = getEmailIntent();
-        if (!AndroidDevice.canResolveIntent(getParent().getPackageManager(), intent)) {
+        if (!mDevice.canResolveIntent(intent)) {
             mLayout.hideReportProblemButton();
         }
 
@@ -78,7 +82,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         Uri uri = Uri.parse("mailto:" + EMAIL);
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(uri);
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + AndroidDevice.getVersionName(getResources()) + ")");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " (" + mDevice.getVersionName() + ")");
 //        intent.putExtra(Intent.EXTRA_TEXT, "hi android jack!");
         return Intent.createChooser(intent, getString(R.string.report_problem));
     }
@@ -136,7 +140,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         public void onReportProblem() {
             UiEvent.send("report_problem");
             Intent intent = getEmailIntent();
-            if (AndroidDevice.canResolveIntent(getParent().getPackageManager(), intent)) {
+            if (mDevice.canResolveIntent(intent)) {
                 startActivity(intent);
             } else {
                 Ln.e("email resolver is not available");

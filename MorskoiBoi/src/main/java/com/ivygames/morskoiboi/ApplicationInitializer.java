@@ -6,7 +6,6 @@ import android.util.Log;
 import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
@@ -35,10 +34,10 @@ public class ApplicationInitializer {
     public static void initialize(Application application) {
         ACRA.init(application);
         GameSettings.init(application);
-        AndroidDevice.init(GoogleApiAvailability.getInstance());
         GoogleApiFactory.inject(new GoogleApiClientWrapper(application));
+        AndroidDeviceFactory.inject(new AndroidDevice(application));
 
-        initLogger(application);
+        initLogger(application, AndroidDeviceFactory.getDevice().isDebug());
         initAnalytics(application);
 
         Bitmaps.getInstance().loadBitmaps(application.getResources());
@@ -68,8 +67,8 @@ public class ApplicationInitializer {
         exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
     }
 
-    private static void initLogger(Application application) {
-        int minimumLogLevel = AndroidDevice.isDebug(application) ? Log.VERBOSE : Log.INFO;
+    private static void initLogger(Application application, boolean isDebug) {
+        int minimumLogLevel = isDebug ? Log.VERBOSE : Log.INFO;
         String path = application.getFilesDir().getPath();
         // filesPath = Environment.getExternalStorageDirectory().getPath();
         Config logConfig = new Config(minimumLogLevel, path, "battleship");

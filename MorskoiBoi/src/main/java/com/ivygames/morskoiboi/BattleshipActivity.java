@@ -93,6 +93,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private MusicPlayer mMusicPlayer;
     private View mBanner;
 
+    @NonNull
+    private AndroidDevice mDevice;
+
     @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             return;
         }
 
-        if (AndroidDevice.isTablet(getResources())) {
+        mDevice = AndroidDeviceFactory.getDevice();
+
+        if (mDevice.isTablet()) {
             Ln.d("device is tablet");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
@@ -114,7 +119,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
-        Ln.d("google play services available = " + AndroidDevice.isGoogleServicesAvailable(this));
+        Ln.d("google play services available = " + mDevice.isGoogleServicesAvailable());
 
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
@@ -132,7 +137,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             hideAds();
         } else {
             AdProviderFactory.init(this);
-            if (AndroidDevice.isBillingAvailable(this)) {
+            if (mDevice.isBillingAvailable()) {
                 mPurchaseManager.query(this);
             } else {
                 Ln.e("gpgs_not_available");
@@ -485,4 +490,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         hideAds();
     }
 
+    public AndroidDevice getDevice() {
+        return mDevice;
+    }
 }
