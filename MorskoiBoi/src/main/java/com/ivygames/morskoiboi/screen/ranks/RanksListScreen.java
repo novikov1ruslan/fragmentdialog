@@ -4,14 +4,14 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 
 import org.commons.logger.Ln;
 
@@ -50,7 +50,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
 
     @Override
     public void onBackPressed() {
-        parent().setScreen(new SelectGameScreen(parent()));
+        setScreen(GameHandler.newSelectGameScreen());
     }
 
     @Override

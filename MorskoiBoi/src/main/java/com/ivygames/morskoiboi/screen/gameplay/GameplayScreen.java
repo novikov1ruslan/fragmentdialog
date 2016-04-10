@@ -14,10 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdProviderFactory;
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -42,7 +43,6 @@ import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
-import com.ivygames.morskoiboi.screen.lost.LostScreen;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
@@ -104,7 +104,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            parent().setScreen(new LostScreen(parent()));
+            setScreen(GameHandler.newLostScreen());
         }
     };
 
@@ -812,7 +812,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Bundle args = new Bundle();
             args.putBoolean(WinScreen.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
             args.putString(WinScreen.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
-            parent().setScreen(new WinScreen(args, parent()));
+            setScreen(GameHandler.newWinScreen(args));
         }
     };
 

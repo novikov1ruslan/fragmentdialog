@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.AndroidDevice;
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameHandler;
-import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
@@ -26,6 +25,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
@@ -37,9 +37,6 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
 import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
@@ -177,7 +174,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBoardSetup() {
-        parent().setScreen(new BoardSetupScreen(parent()));
+        setScreen(GameHandler.newBoardSetupScreen());
     }
 
     @Override
@@ -201,8 +198,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showDeviceListScreen() {
-//        mParent.setScreen(new DeviceListScreen());
-        parent().setScreen(new BluetoothScreen(parent()));
+        setScreen(GameHandler.newBluetoothScreen());
     }
 
     @Override
@@ -238,7 +234,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        parent().setScreen(new InternetGameScreen(parent()));
+        setScreen(GameHandler.newInternetGameScreen());
     }
 
     private void showInternetDialog() {
@@ -275,12 +271,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void showRanks() {
         UiEvent.send("showRanks");
-        parent().setScreen(new RanksListScreen(parent()));
+        setScreen(GameHandler.newRanksListScreen());
     }
 
     @Override
     public void onBackPressed() {
-        parent().setScreen(GameHandler.newMainScreen());
+        setScreen(GameHandler.newMainScreen());
     }
 
     @Override

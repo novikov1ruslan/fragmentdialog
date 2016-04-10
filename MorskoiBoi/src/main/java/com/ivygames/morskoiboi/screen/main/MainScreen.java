@@ -12,6 +12,7 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
@@ -22,9 +23,7 @@ import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
-import com.ivygames.morskoiboi.screen.help.HelpScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -129,7 +128,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void play() {
-        parent().setScreen(new SelectGameScreen(parent()));
+        setScreen(GameHandler.newSelectGameScreen());
     }
 
     @Override
@@ -187,7 +186,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showHelp() {
-        parent().setScreen(new HelpScreen(parent()));
+        setScreen(GameHandler.newHelpScreen());
     }
 
     @Override
@@ -208,10 +207,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        SettingsScreen settingsScreen = new SettingsScreen(parent(), mApiClient, GameSettings.get());
+        SettingsScreen settingsScreen = GameHandler.newSettingsScreen();
         VibratorFacade vibratorFacade = new VibratorFacade(settingsScreen);
         settingsScreen.setVibrator(vibratorFacade);
-        parent().setScreen(settingsScreen);
+        setScreen(settingsScreen);
     }
 
     private void showLeaderboardsDialog() {

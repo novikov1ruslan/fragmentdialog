@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
@@ -22,7 +23,7 @@ public final class BackToSelectGameCommand implements Runnable {
         if (game != null) {
             game.finish();
         }
-        mBattleshipActivity.setScreen(new SelectGameScreen(mBattleshipActivity));
+        mBattleshipActivity.setScreen(GameHandler.newHelpScreen());
     }
 
 }

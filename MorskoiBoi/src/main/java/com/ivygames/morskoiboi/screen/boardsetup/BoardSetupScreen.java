@@ -10,9 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AndroidDevice;
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -28,7 +29,6 @@ import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;
-import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -148,7 +148,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     private void showGameplayScreen() {
-        parent().setScreen(new GameplayScreen(parent()));
+        setScreen(GameHandler.newGameplayScreen());
     }
 
     private void showSetupValidationError() {

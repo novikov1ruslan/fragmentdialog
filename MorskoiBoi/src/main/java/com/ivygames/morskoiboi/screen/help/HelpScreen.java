@@ -34,7 +34,7 @@ public class HelpScreen extends BattleshipScreen implements BackPressListener {
 
     @Override
     public void onBackPressed() {
-        parent().setScreen(GameHandler.newMainScreen());
+        setScreen(GameHandler.newMainScreen());
     }
 
     @Override

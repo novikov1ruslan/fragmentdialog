@@ -29,8 +29,6 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
 import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
 
 import org.commons.logger.Ln;
@@ -135,7 +133,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        setScreen(new DeviceListScreen(parent()));
+        setScreen(GameHandler.newDeviceListScreen());
     }
 
     @Override
@@ -194,7 +192,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen(parent()));
+        setScreen(GameHandler.newBoardSetupScreen());
     }
 
     @Override

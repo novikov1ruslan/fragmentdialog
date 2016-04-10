@@ -171,7 +171,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
-        setScreen(new BoardSetupScreen(parent()));
+        setScreen(GameHandler.newBoardSetupScreen());
     }
 
     @Override

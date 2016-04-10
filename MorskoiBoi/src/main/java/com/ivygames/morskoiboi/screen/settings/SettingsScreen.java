@@ -163,7 +163,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
 
     @Override
     public void onBackPressed() {
-        parent().setScreen(GameHandler.newMainScreen());
+        setScreen(GameHandler.newMainScreen());
     }
 
     @Override

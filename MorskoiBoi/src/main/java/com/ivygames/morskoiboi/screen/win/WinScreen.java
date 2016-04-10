@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
@@ -226,7 +227,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
         Model.instance.game.clearState();
-        parent().setScreen(new BoardSetupScreen(parent()));
+        setScreen(GameHandler.newBoardSetupScreen());
     }
 
     private void showWantToLeaveRoomDialog() {
