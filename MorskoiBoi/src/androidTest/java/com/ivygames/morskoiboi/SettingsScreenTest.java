@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -13,6 +13,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.stubbing.OngoingStubbing;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -81,6 +82,20 @@ public class SettingsScreenTest extends ScreenTest {
     }
 
     @Test
+    public void if_sound_on__on_image_is_shown() {
+        settings.setSound(true);
+        setScreen(newScreen());
+        onView(soundButton()).check(matches(withDrawable(R.drawable.sound_on)));
+    }
+
+    @Test
+    public void if_sound_off__off_image_is_shown() {
+        settings.setSound(false);
+        setScreen(newScreen());
+        onView(soundButton()).check(matches(withDrawable(R.drawable.sound_off)));
+    }
+
+    @Test
     public void when_sound_button_is_pressed__sound_setting_toggled() {
         setScreen(newScreen());
         settings.setSound(true);
@@ -90,24 +105,40 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Test
     public void when_vibration_available__vibration_button_present() {
-        when(vibratorFacade.hasVibrator()).thenReturn(true);
+        hasVibration();
         setScreen(newScreen());
-        assertThat(vibrationButton().getVisibility(), is(View.VISIBLE));
+        assertThat(vibrationContainer().getVisibility(), is(View.VISIBLE));
     }
 
     @Test
     public void when_vibration_NOT_available__vibration_button_NOT_present() {
-        when(vibratorFacade.hasVibrator()).thenReturn(false);
+        vibrationAbsent();
         setScreen(newScreen());
-        assertThat(vibrationButton().getVisibility(), is(not(View.VISIBLE)));
+        assertThat(vibrationContainer().getVisibility(), is(not(View.VISIBLE)));
+    }
+
+    @Test
+    public void if_vibration_on__on_image_is_shown() {
+        hasVibration();
+        settings.setVibration(true);
+        setScreen(newScreen());
+        onView(vibrationButton()).check(matches(withDrawable(R.drawable.vibrate_on)));
+    }
+
+    @Test
+    public void if_vibration_off__off_image_is_shown() {
+        hasVibration();
+        settings.setVibration(false);
+        setScreen(newScreen());
+        onView(vibrationButton()).check(matches(withDrawable(R.drawable.vibrate_off)));
     }
 
     @Test
     public void when_vibration_button_is_pressed__vibration_setting_toggled() {
-        when(vibratorFacade.hasVibrator()).thenReturn(true);
+        hasVibration();
         setScreen(newScreen());
         settings.setVibration(true);
-        Matcher<View> viewMatcher = withId(R.id.vibration_btn);
+        Matcher<View> viewMatcher = vibrationButton();
         onView(viewMatcher).perform(click());
         assertThat(settings.isVibrationOn(), is(false));
     }
@@ -161,13 +192,29 @@ public class SettingsScreenTest extends ScreenTest {
         return viewById(R.id.report_problem);
     }
 
-    private View vibrationButton() {
+    private View vibrationContainer() {
         return viewById(R.id.vibration_container);
     }
 
-    private void foo() {
-//        ImageButton imageButton = null;
-//        imageButton.getDrawable().
-//                R.drawable.vibrate_on : R.drawable.vibrate_off
+    @NonNull
+    private Matcher<View> vibrationButton() {
+        return withId(R.id.vibration_btn);
+    }
+
+    @NonNull
+    private Matcher<View> soundButton() {
+        return withId(R.id.sound_btn);
+    }
+
+    private OngoingStubbing<Boolean> hasVibration() {
+        return when(vibratorFacade.hasVibrator()).thenReturn(true);
+    }
+
+    private void vibrationAbsent() {
+        when(vibratorFacade.hasVibrator()).thenReturn(false);
+    }
+
+    public static Matcher<View> withDrawable(final int resourceId) {
+        return new DrawableMatcher(resourceId);
     }
 }
