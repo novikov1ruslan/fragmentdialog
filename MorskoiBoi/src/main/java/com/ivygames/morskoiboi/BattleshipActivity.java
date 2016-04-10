@@ -13,31 +13,27 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
-import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
-import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends Activity implements ConnectionCallbacks,
-        OnConnectionFailedListener,
-        InvitationManager.InvitationReceivedListener {
+        OnConnectionFailedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -53,7 +49,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     private static final int SERVICE_RESOLVE = 9002;
     private final PurchaseManager mPurchaseManager = new PurchaseManager(this);
-    private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
     private boolean mRecreating;
 
@@ -71,7 +66,12 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
 
     @NonNull
-    private final InvitationManager mInvitationManager = new InvitationManager(this, mGoogleApiClient);
+    private final InvitationManager mInvitationManager = new InvitationManager(new InvitationManager.InvitationReceivedListener() {
+        @Override
+        public void showReceivedInvitationCrouton(String displayName) {
+            mScreenManager.showInvitationCrouton(getString(R.string.received_invitation, displayName));
+        }
+    }, mGoogleApiClient);
 
     @NonNull
     private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient);
@@ -79,21 +79,14 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure;
 
-    private boolean mStarted;
-    private ViewGroup mLayout;
-    private FrameLayout mContainer;
-
-    private BattleshipScreen mCurrentScreen;
-
-    @Nullable
-    private View mTutView;
-
-    private boolean mResumed;
-
     private MusicPlayer mMusicPlayer;
     private View mBanner;
 
     private AndroidDevice mDevice;
+
+    private ScreenManager mScreenManager;
+
+    private BattleshipScreen mCurrentScreen;
 
     @SuppressLint("InflateParams")
     @Override
@@ -120,10 +113,10 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         Ln.d("google play services available = " + mDevice.isGoogleServicesAvailable());
 
-        mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
-        setContentView(mLayout);
-        mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
-        mBanner = mLayout.findViewById(R.id.banner);
+        ViewGroup layout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
+        setContentView(layout);
+        mScreenManager = new ScreenManager(this, layout);
+        mBanner = layout.findViewById(R.id.banner);
 
         mGoogleApiClient.setConnectionCallbacks(this);
         mGoogleApiClient.setOnConnectionFailedListener(this);
@@ -159,9 +152,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     private void hideNoAdsButton() {
-        if (mCurrentScreen instanceof MainScreen) {
-            ((MainScreen) mCurrentScreen).hideNoAdsButton();
-        }
+        mScreenManager.hideNoAdsButton();
     }
 
     private void hideAds() {
@@ -187,8 +178,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         Ln.d("UI partially visible - keep screen On");
         keepScreenOn();
 
-        mCurrentScreen.onStart();
-        mStarted = true;
+        mScreenManager.onStart();
 
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - register invitation listener");
@@ -205,8 +195,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             return;
         }
 
-        mCurrentScreen.onResume();
-        mResumed = true;
+        mScreenManager.onResume();
 
         mVolumeControlStream = getVolumeControlStream();
 
@@ -229,8 +218,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         setVolumeControlStream(mVolumeControlStream);
         AdProviderFactory.getAdProvider().pause();
 
-        mCurrentScreen.onPause();
-        mResumed = false;
+        mScreenManager.onPause();
 
         mMusicPlayer.pause();
 //        AppEventsLogger.deactivateApp(this);
@@ -245,8 +233,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
         stopKeepingScreenOn();
 
-        mCurrentScreen.onStop();
-        mStarted = false;
+        mScreenManager.onStop();
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - unregister invitation listener");
             mGoogleApiClient.unregisterInvitationListener();
@@ -279,45 +266,16 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     public void dismissTutorial() {
-        if (mTutView == null) {
-            Ln.d("no tutorial view to remove");
-            return;
-        }
-
-        Ln.v("tutorial view present - removing");
-        mContainer.removeView(mTutView);
-        mTutView = null;
+        mScreenManager.dismissTutorial();
     }
 
     public void showTutorial(@Nullable View view) {
-        if (mTutView == null) {
-            mTutView = view;
-            if (mTutView != null) {
-                mContainer.addView(mTutView);
-            }
-        } else {
-            Ln.d("tutorial view already shown: " + mTutView);
-        }
+        mScreenManager.showTutorial(view);
     }
 
     @Override
     public void onBackPressed() {
-        Ln.v("top screen = " + mCurrentScreen);
-
-        if (mTutView != null) {
-            Ln.v("tutorial view present - removing");
-            mContainer.removeView(mTutView);
-            mTutView = null;
-            return;
-        }
-
-        if (mCurrentScreen instanceof BackPressListener) {
-            Ln.v("propagating backpress");
-            if (mCurrentScreen.isResumed()) {
-                ((BackPressListener) mCurrentScreen).onBackPressed();
-            } else {
-                Ln.w("back pressed to fast for " + mCurrentScreen);
-            }
+        if (mScreenManager.handleBackPress()) {
             return;
         }
 
@@ -345,7 +303,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }
-
     }
 
     @Override
@@ -395,11 +352,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mAchievementsManager.loadAchievements();
         mProgressManager.loadProgress();
 
-        if (mCurrentScreen instanceof SignInListener) {
-            ((SignInListener) mCurrentScreen).onSignInSucceeded();
-        }
+        mScreenManager.onSignInSucceeded();
 
-        if (mStarted) {
+        if (mScreenManager.isStarted()) {
             Ln.d("started - load invitations");
             mInvitationManager.loadInvitations();
         }
@@ -425,48 +380,19 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     public void onEventMainThread(ChatMessage message) {
-        if (mStarted) {
-            View layout = UiUtils.inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
-            Crouton.make(this, layout).setConfiguration(CONFIGURATION_LONG).show();
-        }
+        mScreenManager.showChatCrouton(message);
     }
 
-    public final void setScreen(BattleshipScreen screen) {
-        View oldView = null;
-
+    public final void setScreen(@NonNull BattleshipScreen screen) {
         if (mCurrentScreen != null) {
             if (mCurrentScreen.getMusic() != screen.getMusic()) {
                 mMusicPlayer.stop();
             }
-
-            oldView = mCurrentScreen.getView();
-            mCurrentScreen.onPause();
-            mCurrentScreen.onStop();
-            mCurrentScreen.onDestroy();
         }
-
         mCurrentScreen = screen;
-        View view = mCurrentScreen.onCreateView(mContainer);
 
-        mContainer.addView(view);
-        if (oldView != null) {
-            mContainer.removeView(oldView);
-        }
-
-        if (mStarted) {
-            mCurrentScreen.onStart();
-            if (mResumed) {
-                mCurrentScreen.onResume();
-            }
-        }
-
-        mMusicPlayer.play(mCurrentScreen.getMusic());
-    }
-
-    @Override
-    public void showReceivedInvitationCrouton(String displayName) {
-        View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, displayName), mLayout);
-        Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
+        mScreenManager.setScreen(screen);
+        mMusicPlayer.play(screen.getMusic());
     }
 
     public InvitationManager getInvitationManager() {
