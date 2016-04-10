@@ -135,7 +135,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void share() {
         UiEvent.send("share");
-        startActivity(Sharing.createShareIntent(parent(), getString(R.string.share_greeting)));
+        startActivity(Sharing.createShareIntent(mParent.getPackageName(), getString(R.string.share_greeting)));
     }
 
     @Override

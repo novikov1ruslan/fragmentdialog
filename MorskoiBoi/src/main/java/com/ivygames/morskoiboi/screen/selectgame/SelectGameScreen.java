@@ -254,7 +254,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBtErrorDialog() {
-        final FragmentManager fm = parent().getFragmentManager();
+        final FragmentManager fm = getFragmentManager();
         new AlertDialogBuilder().setMessage(R.string.bluetooth_not_available).setPositiveButton(R.string.ok).create().show(fm, null);
     }
 
