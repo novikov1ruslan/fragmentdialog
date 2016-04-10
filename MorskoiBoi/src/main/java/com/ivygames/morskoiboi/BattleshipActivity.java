@@ -32,8 +32,8 @@ import org.commons.logger.Ln;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends Activity implements ConnectionCallbacks,
-        OnConnectionFailedListener {
+public class BattleshipActivity extends Activity implements ConnectionCallbacks {
+//        OnConnectionFailedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -68,7 +68,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final InvitationManager mInvitationManager = new InvitationManager(new InvitationManager.InvitationReceivedListener() {
         @Override
-        public void showReceivedInvitationCrouton(String displayName) {
+        public void onInvitationReceived(String displayName) {
             mScreenManager.showInvitationCrouton(getString(R.string.received_invitation, displayName));
         }
     }, mGoogleApiClient);
@@ -87,6 +87,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private ScreenManager mScreenManager;
 
     private BattleshipScreen mCurrentScreen;
+
+    @NonNull
+    private final OnConnectionFailedListener mConnectionFailedListener = new OnConnectionFailedListenerImpl();
 
     @SuppressLint("InflateParams")
     @Override
@@ -119,7 +122,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mBanner = layout.findViewById(R.id.banner);
 
         mGoogleApiClient.setConnectionCallbacks(this);
-        mGoogleApiClient.setOnConnectionFailedListener(this);
+        mGoogleApiClient.setOnConnectionFailedListener(mConnectionFailedListener);
         if (mSettings.shouldAutoSignIn()) {
             Ln.d("should auto-signin - connecting...");
             mGoogleApiClient.connect();
@@ -259,7 +262,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);
-        mGoogleApiClient.unregisterConnectionFailedListener(this);
+        mGoogleApiClient.unregisterConnectionFailedListener(mConnectionFailedListener);
 
         mMusicPlayer.release();
         Ln.d("game destroyed");
@@ -303,30 +306,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Ln.d("connection failed - result: " + connectionResult);
-
-        switch (connectionResult.getErrorCode()) {
-            case ConnectionResult.SERVICE_MISSING:
-            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-            case ConnectionResult.SERVICE_DISABLED:
-                Ln.w("connection failed: " + connectionResult.getErrorCode());
-                Dialog errorDialog = GoogleApiAvailability.getInstance().getErrorDialog(this, connectionResult.getErrorCode(), SERVICE_RESOLVE);
-                errorDialog.show();
-                return;
-        }
-
-        if (mResolvingConnectionFailure) {
-            Ln.d("ignoring connection failure; already resolving.");
-            return;
-        }
-
-        Ln.d("resolving connection failure");
-        mResolvingConnectionFailure = mGoogleApiClient.resolveConnectionFailure(this, connectionResult, RC_SIGN_IN, getString(R.string.error));
-        Ln.d("has resolution = " + mResolvingConnectionFailure);
     }
 
     @Override
@@ -418,6 +397,32 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             Ln.d("Purchase is premium upgrade. Congratulating user.");
             mSettings.setNoAds();
             hideAds();
+        }
+    }
+
+    private class OnConnectionFailedListenerImpl implements OnConnectionFailedListener {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult result) {
+            Ln.d("connection failed - result: " + result);
+
+            switch (result.getErrorCode()) {
+                case ConnectionResult.SERVICE_MISSING:
+                case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+                case ConnectionResult.SERVICE_DISABLED:
+                    Ln.w("connection failed: " + result.getErrorCode());
+                    Dialog errorDialog = GoogleApiAvailability.getInstance().getErrorDialog(BattleshipActivity.this, result.getErrorCode(), SERVICE_RESOLVE);
+                    errorDialog.show();
+                    return;
+            }
+
+            if (mResolvingConnectionFailure) {
+                Ln.d("ignoring connection failure; already resolving.");
+                return;
+            }
+
+            Ln.d("resolving connection failure");
+            mResolvingConnectionFailure = mGoogleApiClient.resolveConnectionFailure(BattleshipActivity.this, result, RC_SIGN_IN, getString(R.string.error));
+            Ln.d("has resolution = " + mResolvingConnectionFailure);
         }
     }
 }

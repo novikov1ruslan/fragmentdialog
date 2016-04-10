@@ -19,7 +19,7 @@ import de.greenrobot.event.EventBus;
 
 public class InvitationManager implements OnInvitationReceivedListener, ResultCallback<Invitations.LoadInvitationsResult> {
     public interface InvitationReceivedListener {
-        void showReceivedInvitationCrouton(String displayName);
+        void onInvitationReceived(String displayName);
     }
 
     @NonNull
@@ -40,7 +40,7 @@ public class InvitationManager implements OnInvitationReceivedListener, ResultCa
     public void onInvitationReceived(Invitation invitation) {
         String displayName = invitation.getInviter().getDisplayName();
         Ln.d("received invitation from: " + displayName);
-        mListener.showReceivedInvitationCrouton(displayName);
+        mListener.onInvitationReceived(displayName);
         mIncomingInvitationIds.add(invitation.getInvitationId());
         EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
     }

@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,7 +67,7 @@ public class GoogleApiClientWrapper implements GoogleApiClient.ConnectionCallbac
         return Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
     }
 
-    public boolean resolveConnectionFailure(@NonNull BattleshipActivity activity,
+    public boolean resolveConnectionFailure(@NonNull Activity activity,
                                             @NonNull ConnectionResult connectionResult,
                                             int rcSignIn,
                                             @NonNull String string) {
