@@ -7,7 +7,6 @@ import android.view.View;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
 
 import org.hamcrest.Matcher;
@@ -99,19 +98,19 @@ public class MainScreenTest extends ScreenTest {
     @Test
     public void when_play_button_is_pressed__select_game_screen_opens() {
         onView(withId(R.id.play)).perform(click());
-        onView(Matchers.<View>instanceOf(SelectGameLayout.class)).check(matches(isDisplayed()));
+        onView(SELECT_GAME_LAYOUT).check(matches(isDisplayed()));
     }
 
     @Test
     public void when_help_button_is_pressed__help_screen_opens() {
         onView(withId(R.id.help)).perform(click());
-        onView(Matchers.<View>instanceOf(HelpLayout.class)).check(matches(isDisplayed()));
+        onView(HELP_LAYOUT).check(matches(isDisplayed()));
     }
 
     @Test
     public void when_settings_button_is_pressed__settings_screen_opens() {
         onView(withId(R.id.settings_button)).perform(click());
-        onView(Matchers.<View>instanceOf(SettingsLayout.class)).check(matches(isDisplayed()));
+        onView(SETTINGS_LAYOUT).check(matches(isDisplayed()));
     }
 
     @Test

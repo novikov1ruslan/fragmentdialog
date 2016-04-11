@@ -9,15 +9,9 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
-import com.ivygames.morskoiboi.screen.internet.InternetGameLayout;
-import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
-import com.ivygames.morskoiboi.screen.ranks.RanksLayout;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,7 +54,7 @@ public class SelectGameScreenTest extends ScreenTest {
     public void when_back_button_pressed__main_screen_opens() {
         setScreen(newScreen());
         pressBack();
-        onView(Matchers.<View>instanceOf(MainScreenLayout.class)).check(matches(isDisplayed()));
+        checkDisplayed(MAIN_LAYOUT);
     }
 
     @Test
@@ -134,14 +128,14 @@ public class SelectGameScreenTest extends ScreenTest {
     public void when_rank_button_is_pressed__ranks_screen_opens() {
         setScreen(newScreen());
         onView(withId(R.id.player_rank)).perform(click());
-        onView(Matchers.<View>instanceOf(RanksLayout.class)).check(matches(isDisplayed()));
+        checkDisplayed(RANKS_LAYOUT);
     }
 
     @Test
     public void when_vs_android_is_pressed__board_setup_screen_opens() {
         setScreen(newScreen());
         onView(withId(R.id.vs_android)).perform(click());
-        onView(Matchers.<View>instanceOf(BoardSetupLayout.class)).check(matches(isDisplayed()));
+        checkDisplayed(BOARD_SETUP_LAYOUT);
     }
 
     @Test
@@ -150,7 +144,7 @@ public class SelectGameScreenTest extends ScreenTest {
         when(device().bluetoothEnabled()).thenReturn(true);
         setScreen(newScreen());
         onView(viaBtButton()).perform(click());
-        onView(bluetoothScreenLayout()).check(matches(isDisplayed()));
+        checkDisplayed(BLUETOOTH_LAYOUT);
     }
 
     @Test
@@ -163,7 +157,7 @@ public class SelectGameScreenTest extends ScreenTest {
 
         Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, null);
         clickForIntent(viaBtButton(), hasAction(enableIntent.getAction()), result);
-        onView(bluetoothScreenLayout()).check(matches(isDisplayed()));
+        checkDisplayed(BLUETOOTH_LAYOUT);
     }
 
     @Test
@@ -174,7 +168,7 @@ public class SelectGameScreenTest extends ScreenTest {
         when(device().canResolveIntent(any(Intent.class))).thenReturn(false);
         setScreen(newScreen());
         onView(viaBtButton()).perform(click());
-        onView(bluetoothScreenLayout()).check(doesNotExist());
+        onView(BLUETOOTH_LAYOUT).check(doesNotExist());
         onView(withText(R.string.bluetooth_not_available)).check(matches(isDisplayed()));
     }
 
@@ -182,7 +176,7 @@ public class SelectGameScreenTest extends ScreenTest {
     public void when_internet_button_pressed__internet_game_screen_opens() {
         setSignedIn(true);
         onView(internetButton()).perform(click());
-        onView(internetGameScreenLayout()).check(matches(isDisplayed()));
+        checkDisplayed(INTERNET_GAME_LAYOUT);
     }
 
     @Test
@@ -199,17 +193,7 @@ public class SelectGameScreenTest extends ScreenTest {
         onView(withText(R.string.sign_in)).perform(click());
         verify(apiClient(), times(1)).connect();
         signInSucceeded((SignInListener) screen());
-        onView(internetGameScreenLayout()).check(matches(isDisplayed()));
-    }
-
-    @NonNull
-    private Matcher<View> bluetoothScreenLayout() {
-        return Matchers.instanceOf(BluetoothLayout.class);
-    }
-
-    @NonNull
-    private Matcher<View> internetGameScreenLayout() {
-        return Matchers.instanceOf(InternetGameLayout.class);
+        checkDisplayed(INTERNET_GAME_LAYOUT);
     }
 
     @NonNull

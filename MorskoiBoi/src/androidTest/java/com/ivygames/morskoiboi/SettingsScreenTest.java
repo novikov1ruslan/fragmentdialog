@@ -6,11 +6,9 @@ import android.view.View;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;
@@ -21,7 +19,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
@@ -177,7 +174,7 @@ public class SettingsScreenTest extends ScreenTest {
     public void when_back_button_pressed__main_screen_opens() {
         setScreen(newScreen());
         pressBack();
-        onView(Matchers.<View>instanceOf(MainScreenLayout.class)).check(matches(isDisplayed()));
+        checkDisplayed(MAIN_LAYOUT);
     }
 
     private View signOutBar() {
