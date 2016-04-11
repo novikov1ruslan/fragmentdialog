@@ -24,10 +24,12 @@ public abstract class ScreenTest {
     public ScreenTestRule rule = new ScreenTestRule();
 
     private BattleshipActivity activity;
-    private ScreenSetterResource idlingResource;
+    private TaskResource setScreenResource;
 
+    private TaskResource signInSucceeded;
     private GoogleApiClientWrapper apiClient;
     private AndroidDevice androidDevice;
+    private BattleshipScreen screen;
 
     public abstract BattleshipScreen newScreen();
 
@@ -39,8 +41,12 @@ public abstract class ScreenTest {
 
     @After
     public void teardown() {
-        if (idlingResource != null) {
-            Espresso.unregisterIdlingResources(idlingResource);
+        if (setScreenResource != null) {
+            Espresso.unregisterIdlingResources(setScreenResource);
+        }
+
+        if (signInSucceeded != null) {
+            Espresso.unregisterIdlingResources(signInSucceeded);
         }
     }
 
@@ -53,20 +59,42 @@ public abstract class ScreenTest {
         setScreen(newScreen());
     }
 
+    protected final BattleshipScreen screen() {
+        return screen;
+    }
+
     protected void setScreen(final BattleshipScreen screen) {
-        idlingResource = new ScreenSetterResource(new Runnable() {
+        this.screen = screen;
+        setScreenResource = new TaskResource(new Runnable() {
             @Override
             public void run() {
                 activity.setScreen(screen);
             }
         });
-        Espresso.registerIdlingResources(idlingResource);
+        Espresso.registerIdlingResources(setScreenResource);
+    }
+
+    protected void signInSucceeded(final SignInListener listener) {
+        signInSucceeded = new TaskResource(new Runnable() {
+            @Override
+            public void run() {
+                listener.onSignInSucceeded();
+            }
+        });
+        Espresso.registerIdlingResources(signInSucceeded);
     }
 
     protected static void clickForIntent(Matcher<View> view, Matcher<Intent> expectedIntent) {
+        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(0, null);
+        clickForIntent(view, expectedIntent, result);
+    }
+
+    protected static void clickForIntent(Matcher<View> view,
+                                         Matcher<Intent> expectedIntent,
+                                         Instrumentation.ActivityResult result) {
         Intents.init();
         try {
-            intending(expectedIntent).respondWith(new Instrumentation.ActivityResult(0, null));
+            intending(expectedIntent).respondWith(result);
             onView(view).perform(click());
             intended(expectedIntent);
         } finally {

@@ -251,6 +251,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onSignInSucceeded() {
         if (mLayout == null) {
+            // TODO: check if it is possible
             Ln.d("signed in before layout created - defer setting name");
             return;
         }

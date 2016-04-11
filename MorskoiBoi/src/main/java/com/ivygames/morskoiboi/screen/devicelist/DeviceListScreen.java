@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,15 +40,16 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     private static final String TAG = "bluetooth";
 
     private DeviceListLayout mLayout;
-    private final BluetoothAdapter mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+    private final BluetoothAdapter mBtAdapter;
 
     private ConnectThread mConnectThread;
 
     private ViewGroup mContainer;
     private SingleTextDialog mDialog;
 
-    public DeviceListScreen(BattleshipActivity parent) {
+    public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapter adapter) {
         super(parent);
+        mBtAdapter = adapter;
     }
 
     @Override

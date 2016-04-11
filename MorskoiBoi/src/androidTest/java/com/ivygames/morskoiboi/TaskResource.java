@@ -5,19 +5,19 @@ import android.os.Looper;
 import android.support.test.espresso.IdlingResource;
 
 
-public class ScreenSetterResource implements IdlingResource {
+public class TaskResource implements IdlingResource {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private volatile boolean isTransitionRunning;
     private volatile ResourceCallback resourceCallback;
 
-    public ScreenSetterResource(Runnable runnable) {
+    public TaskResource(Runnable runnable) {
         runTransition(runnable);
     }
 
     @Override
     public String getName() {
-        return ScreenSetterResource.class.getSimpleName();
+        return TaskResource.class.getSimpleName();
     }
 
     @Override

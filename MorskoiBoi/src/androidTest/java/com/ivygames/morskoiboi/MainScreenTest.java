@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
