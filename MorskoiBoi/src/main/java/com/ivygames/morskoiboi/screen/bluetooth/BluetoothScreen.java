@@ -130,7 +130,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
         // Start the thread to listen on a BluetoothServerSocket
         if (mAcceptThread == null) {
-            mAcceptThread = new AcceptThread(this);
+            mAcceptThread = new AcceptThread(this, mBtAdapter);
             mAcceptThread.start();
         } else {
             Ln.e("already accepting");
@@ -139,7 +139,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        setScreen(GameHandler.newDeviceListScreen());
+        setScreen(GameHandler.newDeviceListScreen(mBtAdapter));
     }
 
     @Override

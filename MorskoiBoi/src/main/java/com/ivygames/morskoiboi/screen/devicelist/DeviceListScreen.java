@@ -11,8 +11,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
@@ -29,7 +30,6 @@ import com.ivygames.morskoiboi.bluetooth.ConnectThread;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
 
 import org.commons.logger.Ln;
@@ -40,14 +40,16 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     private static final String TAG = "bluetooth";
 
     private DeviceListLayout mLayout;
-    private final BluetoothAdapter mBtAdapter;
+
+    @NonNull
+    private final BluetoothAdapterWrapper mBtAdapter;
 
     private ConnectThread mConnectThread;
 
     private ViewGroup mContainer;
     private SingleTextDialog mDialog;
 
-    public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapter adapter) {
+    public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {
         super(parent);
         mBtAdapter = adapter;
     }

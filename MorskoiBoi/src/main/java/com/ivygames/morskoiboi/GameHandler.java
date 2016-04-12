@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -66,8 +65,8 @@ public class GameHandler {
         return new BluetoothScreen(parent, adapter);
     }
 
-    public static DeviceListScreen newDeviceListScreen() {
-        return new DeviceListScreen(parent, BluetoothAdapter.getDefaultAdapter());
+    public static DeviceListScreen newDeviceListScreen(@NonNull BluetoothAdapterWrapper adapter) {
+        return new DeviceListScreen(parent, adapter);
     }
 
     public static InternetGameScreen newInternetGameScreen() {

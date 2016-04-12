@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.GameEvent;
 
@@ -26,12 +27,19 @@ public final class AcceptThread extends Thread {
     private volatile BluetoothSocket mSocket;
     private volatile boolean mCancelled;
 
+    @NonNull
     private final ConnectionListener mConnectionListener;
+
+    @NonNull
     private final Handler mHandler = new Handler(Looper.myLooper());
 
-    public AcceptThread(ConnectionListener listener) {
+    @NonNull
+    private final BluetoothAdapterWrapper mAdapter;
+
+    public AcceptThread(@NonNull ConnectionListener listener, @NonNull BluetoothAdapterWrapper adapter) {
         super("bt_accept");
         mConnectionListener = Validate.notNull(listener);
+        mAdapter = adapter;
     }
 
     @Override
@@ -82,7 +90,7 @@ public final class AcceptThread extends Thread {
 
     private BluetoothSocket obtainBluetoothSocket() throws IOException {
         try {
-            mServerSocket = BluetoothAdapter.getDefaultAdapter().listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
+            mServerSocket = mAdapter.listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
             Ln.v("server socket created, accepting connection...");
             // This is a blocking call and will only return on a successful connection or an exception
             return mServerSocket.accept();

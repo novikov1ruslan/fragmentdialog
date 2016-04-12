@@ -1,31 +1,30 @@
 package com.ivygames.morskoiboi;
 
-import android.bluetooth.BluetoothAdapter;
-
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 
 public class DeviceListScreenTest extends ScreenTest {
 
-    private BluetoothAdapter btAdapter;
+    @Mock
+    private BluetoothAdapterWrapper btAdapter;
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         super.setup();
     }
 
     @Override
     public BattleshipScreen newScreen() {
-//        btAdapter = mock(BluetoothAdapter.class);
 //        when(btAdapter.getBondedDevices()).thenReturn(new HashSet<BluetoothDevice>());
-        return new DeviceListScreen(activity(), BluetoothAdapter.getDefaultAdapter());
+        return new DeviceListScreen(activity(), btAdapter);
     }
 
     @Test

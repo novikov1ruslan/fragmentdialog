@@ -129,10 +129,6 @@ public class ScreenManager {
         View oldView = null;
 
         if (mCurrentScreen != null) {
-//            if (mCurrentScreen.getMusic() != screen.getMusic()) {
-//                mMusicPlayer.stop();
-//            }
-
             oldView = mCurrentScreen.getView();
             mCurrentScreen.onPause();
             mCurrentScreen.onStop();
