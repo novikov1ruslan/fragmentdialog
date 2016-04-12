@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.screen.Screen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -61,8 +62,8 @@ public class GameHandler {
         return new BoardSetupScreen(parent);
     }
 
-    public static BluetoothScreen newBluetoothScreen() {
-        return new BluetoothScreen(parent);
+    public static BluetoothScreen newBluetoothScreen(@NonNull BluetoothAdapterWrapper adapter) {
+        return new BluetoothScreen(parent, adapter);
     }
 
     public static DeviceListScreen newDeviceListScreen() {

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
 import org.hamcrest.Matcher;
@@ -68,6 +69,8 @@ public class SettingsScreenTest extends ScreenTest {
         setSignedIn(false);
         onView(withId(R.id.sign_in_button)).perform(click());
         verify(apiClient(), times(1)).connect();
+        signInSucceeded((SignInListener) screen());
+        assertThat(signOutBar().getVisibility(), is(View.VISIBLE));
     }
 
     @Test

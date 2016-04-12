@@ -1,21 +1,13 @@
 package com.ivygames.morskoiboi;
 
-import android.view.View;
-
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
-import com.ivygames.morskoiboi.screen.help.HelpScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 
 public class BluetoothScreenTest extends ScreenTest {
@@ -26,15 +18,16 @@ public class BluetoothScreenTest extends ScreenTest {
     }
 
     @Override
-    public BattleshipScreen newScreen() {
-        return new BluetoothScreen(activity());
+    public BluetoothScreen newScreen() {
+        BluetoothAdapterWrapper adapter = Mockito.mock(BluetoothAdapterWrapper.class);
+        return new BluetoothScreen(activity(), adapter);
     }
 
     @Test
     public void when_back_button_pressed__select_game_screen_opens() {
-//        setScreen(newScreen());
-//        pressBack();
-//        checkDisplayed(SELECT_GAME_LAYOUT);
+        setScreen(newScreen());
+        pressBack();
+        checkDisplayed(SELECT_GAME_LAYOUT);
     }
 
 }

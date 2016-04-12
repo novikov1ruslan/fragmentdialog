@@ -32,6 +32,7 @@ import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -192,7 +193,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showBluetoothScreen() {
-        setScreen(GameHandler.newBluetoothScreen());
+        BluetoothAdapterWrapper adapter = new BluetoothAdapterWrapper(BluetoothAdapter.getDefaultAdapter());
+        setScreen(GameHandler.newBluetoothScreen(adapter));
     }
 
     @Override

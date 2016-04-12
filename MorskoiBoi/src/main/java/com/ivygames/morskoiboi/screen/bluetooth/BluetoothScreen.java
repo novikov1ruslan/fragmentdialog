@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
@@ -36,7 +38,8 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 
 
-public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout.BluetoothActions, BackPressListener, ConnectionListener {
+public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout.BluetoothActions,
+        BackPressListener, ConnectionListener {
     private static final String TAG = "bluetooth";
 
     private static final int DISCOVERABLE_DURATION = 300;
@@ -44,7 +47,9 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     private BluetoothLayout mLayout;
     private ViewGroup mContainer;
     private SingleTextDialog mDialog;
-    private final BluetoothAdapter mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+
+    @NonNull
+    private final BluetoothAdapterWrapper mBtAdapter;
     private AcceptThread mAcceptThread;
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -57,15 +62,16 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
                 int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
                 Ln.d(TAG + ": scan mode changed to " + scanMode);
 
-                if (!isDiscoverable()) {
+                if (!mBtAdapter.isDiscoverable()) {
                     cancelGameCreation();
                 }
             }
         }
     };
 
-    public BluetoothScreen(BattleshipActivity parent) {
+    public BluetoothScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {
         super(parent);
+        mBtAdapter = adapter;
         parent.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
     }
 
@@ -141,7 +147,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(GameHandler.newMainScreen());
+            setScreen(GameHandler.newSelectGameScreen());
         }
     }
 
@@ -162,7 +168,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     private void ensureDiscoverable() {
-        if (isDiscoverable()) {
+        if (mBtAdapter.isDiscoverable()) {
             Ln.w(TAG + ": already discoverable");
         } else {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -170,10 +176,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
             Ln.v("ensuring discover-ability for " + DISCOVERABLE_DURATION);
             startActivityForResult(discoverableIntent, BattleshipActivity.RC_ENSURE_DISCOVERABLE);
         }
-    }
-
-    private boolean isDiscoverable() {
-        return mBtAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE;
     }
 
     @Override

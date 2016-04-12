@@ -1,25 +1,15 @@
 package com.ivygames.morskoiboi;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.view.View;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashSet;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 public class DeviceListScreenTest extends ScreenTest {

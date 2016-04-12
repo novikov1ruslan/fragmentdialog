@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
+import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
@@ -49,7 +50,6 @@ public abstract class ScreenTest {
 
     private BattleshipActivity activity;
     private TaskResource setScreenResource;
-
     private TaskResource signInSucceeded;
     private GoogleApiClientWrapper apiClient;
     private AndroidDevice androidDevice;
