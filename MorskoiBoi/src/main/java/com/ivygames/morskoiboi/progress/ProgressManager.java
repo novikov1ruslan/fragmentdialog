@@ -26,20 +26,24 @@ public class ProgressManager {
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
 
-    public ProgressManager(@NonNull GoogleApiClientWrapper apiClient) {
+    @NonNull
+    private final GameSettings mSettings;
+
+    public ProgressManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
+        mSettings = settings;
     }
 
-    public static void processSuccessResult(@NonNull GoogleApiClientWrapper apiClient, Snapshot snapshot) throws IOException {
+    public void processSuccessResult(@NonNull Snapshot snapshot) throws IOException {
         Progress cloudProgress = ProgressUtils.getProgressFromSnapshot(snapshot);
-        Progress localProgress = GameSettings.get().getProgress();
+        Progress localProgress = mSettings.getProgress();
         Ln.v("progress loaded: local =" + localProgress + ", cloud =" + cloudProgress);
         if (localProgress.getScores() > cloudProgress.getScores()) {
             AnalyticsEvent.send("save_game", "local_wins");
-            update(apiClient, ProgressUtils.getBytes(localProgress));
+            update(ProgressUtils.getBytes(localProgress));
         } else if (cloudProgress.getScores() > localProgress.getScores()) {
             AnalyticsEvent.send("save_game", "cloud_wins");
-            GameSettings.get().setProgress(cloudProgress);
+            mSettings.setProgress(cloudProgress);
         }
     }
 
@@ -52,7 +56,7 @@ public class ProgressManager {
             ACRA.getErrorReporter().handleException(new RuntimeException("invalid increment: " + increment));
         }
 
-        int oldScores = GameSettings.get().getProgress().getScores();
+        int oldScores = mSettings.getProgress().getScores();
         Ln.d("incrementing progress (" + oldScores + ") by " + increment);
 
         Progress newProgress = new Progress(oldScores + increment);
@@ -61,12 +65,12 @@ public class ProgressManager {
         AnalyticsEvent.trackPromotionEvent(oldScores, newProgress.getScores());
     }
 
-    private void saveProgress(Progress newProgress) {
-        GameSettings.get().setProgress(newProgress);
+    private void saveProgress(@NonNull Progress newProgress) {
+        mSettings.setProgress(newProgress);
 
         if (mApiClient.isConnected()) {
             Ln.d("posting progress to the cloud: " + newProgress);
-            update(mApiClient, ProgressUtils.getBytes(newProgress));
+            update(ProgressUtils.getBytes(newProgress));
         }
     }
 
@@ -82,20 +86,20 @@ public class ProgressManager {
      * played time, and description with each Snapshot update.  After update, the UI will
      * be cleared.
      */
-    static void update(final @NonNull GoogleApiClientWrapper apiClient, final byte[] data) {
+    void update(final byte[] data) {
         final boolean CREATE_IF_MISSING = true;
 
         AsyncTask<Void, Void, Boolean> updateTask = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                Snapshots.OpenSnapshotResult open = apiClient.open(SNAPSHOT_NAME, CREATE_IF_MISSING).await();
+                Snapshots.OpenSnapshotResult open = mApiClient.open(SNAPSHOT_NAME, CREATE_IF_MISSING).await();
                 if (!open.getStatus().isSuccess()) {
                     int statusCode = open.getStatus().getStatusCode();
                     Ln.w("Could not open Snapshot for update: " + statusCode);
                     if (statusCode == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
                         try {
-                            resolveConflict(apiClient, open.getConflictId(), ProgressUtils.getResolveSnapshot(open));
+                            resolveConflict(open.getConflictId(), ProgressUtils.getResolveSnapshot(open));
                         } catch (IOException ioe) {
                             Ln.w(ioe, "could not resolve conflict during update");
                         }
@@ -106,7 +110,7 @@ public class ProgressManager {
 
                 // Change data but leave existing metadata
                 snapshot.getSnapshotContents().writeBytes(data);
-                Snapshots.CommitSnapshotResult commit = apiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
+                Snapshots.CommitSnapshotResult commit = mApiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
                 if (!commit.getStatus().isSuccess()) {
                     Ln.w("Failed to commit Snapshot: " + commit.getStatus().getStatusCode());
                     return false;
@@ -128,8 +132,8 @@ public class ProgressManager {
         updateTask.execute();
     }
 
-    public static void resolveConflict(final @NonNull GoogleApiClientWrapper apiClient, String conflictId, Snapshot snapshot) {
-        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = apiClient.resolveConflict(conflictId, snapshot);
+    public void resolveConflict(String conflictId, Snapshot snapshot) {
+        PendingResult<Snapshots.OpenSnapshotResult> pendingResult = mApiClient.resolveConflict(conflictId, snapshot);
         pendingResult.setResultCallback(new ResultCallback<Snapshots.OpenSnapshotResult>() {
                                             @Override
                                             public void onResult(@NonNull Snapshots.OpenSnapshotResult result) {
@@ -138,7 +142,7 @@ public class ProgressManager {
                                                     Ln.d("conflict solved successfully");
                                                     AnalyticsEvent.send("conflict_solved");
                                                     try {
-                                                        processSuccessResult(apiClient, result.getSnapshot());
+                                                        processSuccessResult(result.getSnapshot());
                                                     } catch (IOException ioe) {
                                                         Ln.w(ioe, "failed to process conflict result");
                                                     }

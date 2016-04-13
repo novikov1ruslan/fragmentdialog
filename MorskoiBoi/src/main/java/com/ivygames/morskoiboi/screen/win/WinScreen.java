@@ -65,6 +65,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
 
+    @NonNull
+    private final GameSettings mSettings;
+
     public WinScreen(@NonNull Bundle args, @NonNull BattleshipActivity parent) {
         super(parent);
         mArgs = args;
@@ -83,7 +86,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mScores = RulesFactory.getRules().calcTotalScores(mShips, mGame);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
-        GameSettings.get().incrementGamesPlayedCounter();
+        mSettings = GameSettings.get();
+        mSettings.incrementGamesPlayedCounter();
         Ln.v("fleet: " + mShips);
     }
 
@@ -188,14 +192,14 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             progress = progress / 2;
         }
 
-        int penalty = GameSettings.get().getProgressPenalty();
+        int penalty = mSettings.getProgressPenalty();
         Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
         int progressIncrement = progress - penalty;
         if (progressIncrement > 0) {
-            new ProgressManager(mApiClient).incrementProgress(progressIncrement);
-            GameSettings.get().setProgressPenalty(0);
+            new ProgressManager(mApiClient, mSettings).incrementProgress(progressIncrement);
+            mSettings.setProgressPenalty(0);
         } else {
-            GameSettings.get().setProgressPenalty(-progressIncrement);
+            mSettings.setProgressPenalty(-progressIncrement);
         }
     }
 

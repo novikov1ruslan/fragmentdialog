@@ -6,6 +6,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 
 import org.commons.logger.Ln;
@@ -13,11 +14,12 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 
 final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSnapshotResult> {
+
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ProgressManager mProgressManager;
 
     SavedGamesResultCallback(@NonNull GoogleApiClientWrapper apiClient) {
-        mApiClient = apiClient;
+        mProgressManager = new ProgressManager(apiClient, GameSettings.get());
     }
 
     @Override
@@ -25,7 +27,7 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
         try {
             Status status = result.getStatus();
             if (status.isSuccess()) {
-                ProgressManager.processSuccessResult(mApiClient, result.getSnapshot());
+                mProgressManager.processSuccessResult(result.getSnapshot());
             } else {
                 if (status.getStatusCode() == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
                     Ln.w("conflict while loading progress");
@@ -40,7 +42,7 @@ final class SavedGamesResultCallback implements ResultCallback<Snapshots.OpenSna
     }
 
     private void resolveConflict(Snapshots.OpenSnapshotResult result) throws IOException {
-        ProgressManager.resolveConflict(mApiClient, result.getConflictId(), ProgressUtils.getResolveSnapshot(result));
+        mProgressManager.resolveConflict(result.getConflictId(), ProgressUtils.getResolveSnapshot(result));
     }
 
 }

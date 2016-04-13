@@ -74,7 +74,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     }, mGoogleApiClient);
 
     @NonNull
-    private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient);
+    private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient, mSettings);
 
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure;

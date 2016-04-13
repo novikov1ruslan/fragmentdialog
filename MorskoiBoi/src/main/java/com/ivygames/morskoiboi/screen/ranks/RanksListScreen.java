@@ -35,7 +35,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
         mLayout.debug_setDebugListener(new RanksLayout.DebugListener() {
             @Override
             public void onDebugScoreSet(int score) {
-                new ProgressManager(mApiClient).debug_setProgress(score);
+                new ProgressManager(mApiClient, GameSettings.get()).debug_setProgress(score);
             }
         });
 
