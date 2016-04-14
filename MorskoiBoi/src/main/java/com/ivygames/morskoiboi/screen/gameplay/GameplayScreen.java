@@ -48,7 +48,6 @@ import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.util.Collection;
@@ -57,6 +56,8 @@ import java.util.LinkedList;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+
+import static com.ivygames.morskoiboi.analytics.ExceptionHandler.reportException;
 
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "GAMEPLAY";
@@ -303,6 +304,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             @Override
             public void run() {
+                Ln.v("continue pressed");
                 if (isTimerPaused()) {
                     resumeTurnTimer();
                 } else {
@@ -374,7 +376,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private void pauseTurnTimer() {
         if (mTurnTimer != null) {
             mTimeLeft = mTurnTimer.getTimeLeft();
-            Ln.v("timer pausing with " + mTimeLeft);
+            Ln.d("timer pausing with " + mTimeLeft);
             mTurnTimer.cancel(true);
             mTurnTimer = null;
         }
@@ -393,8 +395,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
      * only called for android game
      */
     private void resumeTurnTimer() {
+        if (!isResumed()) {
+            Ln.w("timer resume cancelled due to background");
+            return;
+        }
+
         if (mTurnTimer != null) {
-            ACRA.getErrorReporter().handleException(new RuntimeException("already resumed"));
+            String message = "already resumed";
+            reportException(message);
             pauseTurnTimer();
         }
 
@@ -701,7 +709,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onLost(Board board) {
             if (!mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                 Ln.v("player private board: " + mPlayerPrivateBoard);
-                ACRA.getErrorReporter().handleException(new RuntimeException("lost while not defeated"));
+                reportException("lost while not defeated");
             }
             // revealing the enemy board
             mEnemyPublicBoard = board;
@@ -802,7 +810,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void startTurnTimer() {
         if (mTurnTimer != null) {
-            ACRA.getErrorReporter().handleException(new RuntimeException("already running"));
+            reportException("already running");
             stopTurnTimer();
         }
 

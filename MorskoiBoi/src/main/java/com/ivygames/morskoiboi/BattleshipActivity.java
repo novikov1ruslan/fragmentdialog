@@ -202,6 +202,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             return;
         }
 
+        Ln.v("resuming");
         mScreenManager.onResume();
 
         mVolumeControlStream = getVolumeControlStream();

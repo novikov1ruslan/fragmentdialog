@@ -1,15 +1,15 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 class TurnTimer extends AsyncTask<Void, Integer, Void> {
     private static final int RESOLUTION = 1000;
 
     private volatile int mTimeout;
-    private final TimeConsumer mLayout;
+    private final TimeConsumer mTimeConsumer;
     private final GameplaySoundManager mSoundManager;
     private final TimerListener mListener;
 
@@ -20,29 +20,31 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     /**
      * @param timeout timeout in milliseconds
      */
-    TurnTimer(int timeout, TimeConsumer layout, TimerListener listener, GameplaySoundManager soundManager) {
+    TurnTimer(int timeout, @NonNull TimeConsumer timeConsumer,
+              @NonNull TimerListener listener,
+              @NonNull GameplaySoundManager soundManager) {
         mTimeout = timeout;
-        mLayout = Validate.notNull(layout);
-        mListener = Validate.notNull(listener);
-        mSoundManager = Validate.notNull(soundManager);
+        mTimeConsumer = timeConsumer;
+        mListener = listener;
+        mSoundManager = soundManager;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mLayout.setCurrentTime(mTimeout);
+        mTimeConsumer.setCurrentTime(mTimeout);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        Thread.currentThread().setName("turn_timer");
+        currentThread().setName("turn_timer");
         Ln.v("timer started for " + mTimeout + "ms");
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!currentThread().isInterrupted()) {
             try {
                 Thread.sleep(RESOLUTION);
             } catch (InterruptedException ie) {
                 Ln.v("interrupted");
-                Thread.currentThread().interrupt();
+                currentThread().interrupt();
                 return null;
             }
             updateProgress();
@@ -60,7 +62,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
             publishProgress(mTimeout);
         } else {
             publishProgress(0);
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
         }
     }
 
@@ -75,7 +77,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        mLayout.setCurrentTime(values[0]);
+        mTimeConsumer.setCurrentTime(values[0]);
     }
 
     @Override
@@ -101,7 +103,10 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
         } else {
             Ln.v("timer canceled");
         }
-
     }
 
+    @NonNull
+    private Thread currentThread() {
+        return Thread.currentThread();
+    }
 }
