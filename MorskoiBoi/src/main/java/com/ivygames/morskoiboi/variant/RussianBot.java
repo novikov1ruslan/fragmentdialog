@@ -8,13 +8,13 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
 
-import org.acra.ACRA;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 
 public class RussianBot implements BotAlgorithm {
@@ -122,7 +122,7 @@ public class RussianBot implements BotAlgorithm {
             return possibleShots.get(mRandom.nextInt(possibleShotsSize));
         } catch (IllegalArgumentException e) {
             if (PlayerOpponent.debug_board != null) {
-                ACRA.getErrorReporter().handleException(new IllegalArgumentException(PlayerOpponent.debug_board.toString(), e));
+                reportException(new IllegalArgumentException(PlayerOpponent.debug_board.toString(), e));
             }
             throw e;
         }

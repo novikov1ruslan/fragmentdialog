@@ -15,6 +15,8 @@ import org.commons.logger.Ln;
 
 import java.util.List;
 
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
+
 public class PurchaseUtils {
     /**
      * Verifies the developer payload of a purchase.
@@ -97,10 +99,6 @@ public class PurchaseUtils {
         } catch (Exception e) {
             reportException(e);
         }
-    }
-
-    private static void reportException(Exception e) {
-        ACRA.getErrorReporter().handleException(e);
     }
 
 }

@@ -7,13 +7,13 @@ import android.support.annotation.RawRes;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.MusicPlayer;
-import com.ivygames.common.analytics.UiEvent;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 import static org.apache.commons.lang3.Validate.notNull;
 
 // TODO: Screen is never used in isolation - combine BattleshipScreen with Screen
@@ -74,7 +74,7 @@ public abstract class BattleshipScreen extends Screen {
             Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         } else {
             Ln.e("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-            ACRA.getErrorReporter().handleException(new RuntimeException(this + " unprocessed result: " + resultCode));
+            reportException(this + " unprocessed result: " + resultCode);
         }
     }
 

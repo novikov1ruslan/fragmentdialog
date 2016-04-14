@@ -12,8 +12,9 @@ import android.support.v4.app.NotificationCompat;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
+
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class InternetService extends Service {
     private static final int NOTIFICATION_ID = -100;
@@ -38,7 +39,7 @@ public class InternetService extends Service {
         Bundle extras = intent.getExtras();
         if (extras == null) {
             Ln.w("no extras - stop");
-            ACRA.getErrorReporter().handleException(new RuntimeException("no extras"));
+            reportException("no extras");
             stopSelf();
             return START_NOT_STICKY;
         }

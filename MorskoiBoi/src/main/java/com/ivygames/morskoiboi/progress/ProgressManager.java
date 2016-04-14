@@ -8,7 +8,6 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.common.analytics.Acra;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
@@ -16,10 +15,11 @@ import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.model.Progress;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
+
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class ProgressManager {
 
@@ -61,7 +61,7 @@ public class ProgressManager {
 
     public void incrementProgress(int increment) {
         if (increment <= 0) {
-            ACRA.getErrorReporter().handleException(new RuntimeException("invalid increment: " + increment));
+            reportException("invalid increment: " + increment);
         }
 
         int oldScores = mSettings.getProgress().getScores();
@@ -130,7 +130,7 @@ public class ProgressManager {
                 if (result) {
                     Ln.d("saved data updated");
                 } else {
-                    ACRA.getErrorReporter().handleException(new Acra("could not update"));
+                    reportException("could not update");
                 }
             }
         };

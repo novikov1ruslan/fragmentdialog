@@ -16,7 +16,6 @@ import com.ivygames.morskoiboi.RtmSender;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
 
-import org.acra.ACRA;
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
@@ -26,6 +25,8 @@ import java.util.List;
 import java.util.Queue;
 
 import de.greenrobot.event.EventBus;
+
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 /**
  * Opponent leaves: onDisconnectedFromRoom->onPeerLeft Network disconnected: onP2PDisconnected->onDisconnectedFromRoom->onPeersDisconnected
@@ -355,7 +356,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         if (statusCode == GamesStatusCodes.STATUS_OK) {
             if (tokenId != mLastSentToken) {
                 Ln.e("last sent token is wrong");
-                ACRA.getErrorReporter().handleException(new RuntimeException("last sent token is wrong"));
+                reportException("last sent token is wrong");
             }
 
             if (!mMessages.isEmpty()) {

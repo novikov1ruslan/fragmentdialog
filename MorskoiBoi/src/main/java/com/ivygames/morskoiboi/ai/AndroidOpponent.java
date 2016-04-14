@@ -14,10 +14,11 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.util.Random;
+
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
@@ -112,7 +113,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         init();
         placeShips();
         if (mEnemyBid == mMyBid) {
-            ACRA.getErrorReporter().handleException(new RuntimeException("stall"));
+            reportException("stall");
             mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
         }
         mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
