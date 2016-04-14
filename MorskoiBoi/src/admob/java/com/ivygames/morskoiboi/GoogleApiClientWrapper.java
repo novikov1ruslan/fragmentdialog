@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
@@ -110,8 +111,13 @@ public class GoogleApiClientWrapper implements GoogleApiClient.ConnectionCallbac
         Games.Achievements.increment(mGoogleApiClient, achievementId, steps);
     }
 
-    public PendingResult<Snapshots.OpenSnapshotResult> open(@NonNull String snapshotName, boolean b) {
-        return Games.Snapshots.open(mGoogleApiClient, snapshotName, b);
+    public PendingResult<Snapshots.OpenSnapshotResult> open(@NonNull String snapshotName, boolean createIfMissing) {
+        return Games.Snapshots.open(mGoogleApiClient, snapshotName, createIfMissing);
+    }
+
+    public void openAsynchronously(@NonNull String snapshotName, @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback) {
+        final boolean CREATE_IF_MISSING = false;
+        open(snapshotName, CREATE_IF_MISSING).setResultCallback(callback);
     }
 
     public PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot) {

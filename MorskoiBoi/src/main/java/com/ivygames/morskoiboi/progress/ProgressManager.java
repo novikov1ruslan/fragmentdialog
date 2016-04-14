@@ -48,7 +48,28 @@ public class ProgressManager {
     }
 
     public void loadProgress() {
-        mApiClient.open(SNAPSHOT_NAME, false).setResultCallback(new SavedGamesResultCallback(mApiClient));
+        mApiClient.openAsynchronously(SNAPSHOT_NAME, new ResultCallback<Snapshots.OpenSnapshotResult>() {
+
+            @Override
+            public void onResult(@NonNull Snapshots.OpenSnapshotResult result) {
+                try {
+                    Status status = result.getStatus();
+                    if (status.isSuccess()) {
+                        processSuccessResult(result.getSnapshot());
+                    } else {
+                        if (status.getStatusCode() == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
+                            Ln.w("conflict while loading progress");
+                            resolveConflict(result.getConflictId(), ProgressUtils.getResolveSnapshot(result));
+                        } else {
+                            Ln.e("failed to load saved game: " + status.getStatusCode());
+                        }
+                    }
+                } catch (IOException ioe) {
+                    Ln.w(ioe, "failed to load saved game");
+                }
+            }
+
+        });
     }
 
     public void incrementProgress(int increment) {
