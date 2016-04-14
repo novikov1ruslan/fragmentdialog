@@ -26,8 +26,8 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
-import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -57,7 +57,7 @@ import java.util.LinkedList;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-import static com.ivygames.morskoiboi.analytics.ExceptionHandler.reportException;
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "GAMEPLAY";

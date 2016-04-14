@@ -8,7 +8,7 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
+import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.commons.logger.Ln;

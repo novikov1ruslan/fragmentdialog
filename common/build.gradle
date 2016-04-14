@@ -24,5 +24,6 @@ dependencies {
     compile project(':BillingUtils')
     compile project(':RUtils')
     compile 'ch.acra:acra:4.6.2'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.android.support:appcompat-v7:23.2.0'
 }

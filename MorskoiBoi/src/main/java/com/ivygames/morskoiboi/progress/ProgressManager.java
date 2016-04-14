@@ -8,10 +8,12 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.common.analytics.Acra;
+import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.analytics.Acra;
-import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.acra.ACRA;
@@ -68,7 +70,7 @@ public class ProgressManager {
         Progress newProgress = new Progress(oldScores + increment);
         saveProgress(newProgress);
 
-        AnalyticsEvent.trackPromotionEvent(oldScores, newProgress.getScores());
+        trackPromotionEvent(oldScores, newProgress.getScores());
     }
 
     private void saveProgress(@NonNull Progress newProgress) {
@@ -138,6 +140,22 @@ public class ProgressManager {
     private void resolveConflict(String conflictId, Snapshot snapshot) {
         PendingResult<Snapshots.OpenSnapshotResult> pendingResult = mApiClient.resolveConflict(conflictId, snapshot);
         pendingResult.setResultCallback(new OpenSnapshotResultResultCallback(mSettings, mCallback));
+    }
+
+    private static void trackPromotionEvent(int oldScores, int newScores) {
+        Rank lastRank = Rank.getBestRankForScore(oldScores);
+        Rank newRank = Rank.getBestRankForScore(newScores);
+        if (newRank != lastRank) {
+            GameSettings.get().newRankAchieved(true);
+            String label = lastRank + " promoted to " + newRank;
+            if (GameConstants.IS_TEST_MODE) {
+                Ln.i("game is in test mode, not tracking promotion event: " + label);
+            }
+            else {
+                AnalyticsEvent.send("promotion", label);
+                Ln.i(label);
+            }
+        }
     }
 
 }

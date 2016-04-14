@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.analytics;
+package com.ivygames.common.analytics;
 
 public class UiEventDummy implements UiEventInterface {
     @Override

@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.analytics;
+package com.ivygames.common.analytics;
 
 import com.google.android.gms.analytics.Tracker;
 

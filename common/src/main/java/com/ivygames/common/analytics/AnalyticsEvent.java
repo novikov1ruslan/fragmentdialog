@@ -1,11 +1,6 @@
-package com.ivygames.morskoiboi.analytics;
+package com.ivygames.common.analytics;
 
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
-import com.ivygames.morskoiboi.GameConstants;
-import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Rank;
-
-import org.commons.logger.Ln;
 
 import java.util.Map;
 
@@ -27,22 +22,6 @@ public final class AnalyticsEvent {
 
     public AnalyticsEvent(String action, int value) {
         builder = new EventBuilder(AnalyticsEvent.GA_CAT_GAME, action).setValue(value);
-    }
-
-    public static void trackPromotionEvent(int oldScores, int newScores) {
-        Rank lastRank = Rank.getBestRankForScore(oldScores);
-        Rank newRank = Rank.getBestRankForScore(newScores);
-        if (newRank != lastRank) {
-            GameSettings.get().newRankAchieved(true);
-            String label = lastRank + " promoted to " + newRank;
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in test mode, not tracking promotion event: " + label);
-            }
-            else {
-                AnalyticsEvent.send("promotion", label);
-                Ln.i(label);
-            }
-        }
     }
 
     public Map<String, String> build() {

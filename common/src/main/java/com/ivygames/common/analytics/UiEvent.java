@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.analytics;
+package com.ivygames.common.analytics;
 
 import android.support.annotation.NonNull;
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.MusicPlayer;
-import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.common.analytics.UiEvent;
 
 import org.acra.ACRA;
 import org.commons.logger.Ln;

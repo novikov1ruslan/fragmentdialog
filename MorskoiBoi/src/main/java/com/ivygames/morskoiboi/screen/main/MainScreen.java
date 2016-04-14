@@ -1,10 +1,8 @@
 package com.ivygames.morskoiboi.screen.main;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +18,11 @@ import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
-import com.ivygames.morskoiboi.VibratorFacade;
-import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
-import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 

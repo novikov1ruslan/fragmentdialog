@@ -21,7 +21,7 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;

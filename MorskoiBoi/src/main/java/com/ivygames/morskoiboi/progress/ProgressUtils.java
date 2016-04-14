@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.progress;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.analytics.ExceptionEvent;
+import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.commons.logger.Ln;

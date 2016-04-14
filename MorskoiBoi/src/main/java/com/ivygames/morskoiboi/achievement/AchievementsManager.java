@@ -7,7 +7,7 @@ import com.google.android.gms.games.achievement.Achievements.LoadAchievementsRes
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
+import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 

@@ -14,7 +14,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
-import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;

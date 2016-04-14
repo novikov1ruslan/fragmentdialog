@@ -17,7 +17,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.VibratorFacade;
-import com.ivygames.morskoiboi.analytics.UiEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActions;
 

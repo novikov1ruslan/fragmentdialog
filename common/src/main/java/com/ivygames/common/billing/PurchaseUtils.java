@@ -53,7 +53,7 @@ public class PurchaseUtils {
         try {
             helper.dispose();
         } catch (Exception e) {
-            handleException(e);
+            reportException(e);
         }
     }
 
@@ -66,7 +66,7 @@ public class PurchaseUtils {
                 Ln.d("onActivityResult handled by IABUtil.");
             }
         } catch (Exception e) {
-            handleException(e);
+            reportException(e);
         }
     }
 
@@ -78,7 +78,7 @@ public class PurchaseUtils {
         try {
             helper.launchPurchaseFlow(activity, PurchaseManager.SKU_NO_ADS, requestCode, new OnIabPurchaseFinishedImpl(listener), payload);
         } catch (Exception e) {
-            handleException(e);
+            reportException(e);
         }
     }
 
@@ -95,11 +95,11 @@ public class PurchaseUtils {
             Ln.d("Setup successful. Querying inventory.");
             helper.queryInventoryAsync(new QueryInventoryFinishedImpl(listener));
         } catch (Exception e) {
-            handleException(e);
+            reportException(e);
         }
     }
 
-    private static void handleException(Exception e) {
+    private static void reportException(Exception e) {
         ACRA.getErrorReporter().handleException(e);
     }
 
