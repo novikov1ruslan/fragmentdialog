@@ -4,14 +4,13 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.analytics.Acra;
 import com.ivygames.morskoiboi.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
@@ -21,6 +20,12 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 
 public class ProgressManager {
+
+    public void debug_setProgress(int progress) {
+        Ln.i("setting debug progress to: " + progress);
+        saveProgress(new Progress(progress));
+    }
+
     public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
     @NonNull
@@ -29,47 +34,27 @@ public class ProgressManager {
     @NonNull
     private final GameSettings mSettings;
 
+    private SnapshotOpenResultListener mCallback = new SnapshotOpenResultListener() {
+
+        @Override
+        public void onConflict(String conflictId, Snapshot resolveSnapshot) {
+            Ln.w("conflict while loading progress");
+            resolveConflict(conflictId, resolveSnapshot);
+        }
+
+        @Override
+        public void onUpdateServerWith(byte[] localProgress) {
+            update(localProgress);
+        }
+    };
+
     public ProgressManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
         mSettings = settings;
     }
 
-    public void processSuccessResult(@NonNull Snapshot snapshot) throws IOException {
-        Progress cloudProgress = ProgressUtils.getProgressFromSnapshot(snapshot);
-        Progress localProgress = mSettings.getProgress();
-        Ln.v("progress loaded: local =" + localProgress + ", cloud =" + cloudProgress);
-        if (localProgress.getScores() > cloudProgress.getScores()) {
-            AnalyticsEvent.send("save_game", "local_wins");
-            update(ProgressUtils.getBytes(localProgress));
-        } else if (cloudProgress.getScores() > localProgress.getScores()) {
-            AnalyticsEvent.send("save_game", "cloud_wins");
-            mSettings.setProgress(cloudProgress);
-        }
-    }
-
     public void loadProgress() {
-        mApiClient.openAsynchronously(SNAPSHOT_NAME, new ResultCallback<Snapshots.OpenSnapshotResult>() {
-
-            @Override
-            public void onResult(@NonNull Snapshots.OpenSnapshotResult result) {
-                try {
-                    Status status = result.getStatus();
-                    if (status.isSuccess()) {
-                        processSuccessResult(result.getSnapshot());
-                    } else {
-                        if (status.getStatusCode() == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
-                            Ln.w("conflict while loading progress");
-                            resolveConflict(result.getConflictId(), ProgressUtils.getResolveSnapshot(result));
-                        } else {
-                            Ln.e("failed to load saved game: " + status.getStatusCode());
-                        }
-                    }
-                } catch (IOException ioe) {
-                    Ln.w(ioe, "failed to load saved game");
-                }
-            }
-
-        });
+        mApiClient.openAsynchronously(SNAPSHOT_NAME, new OpenSnapshotResultResultCallback(mSettings, mCallback));
     }
 
     public void incrementProgress(int increment) {
@@ -95,27 +80,23 @@ public class ProgressManager {
         }
     }
 
-    public void debug_setProgress(int progress) {
-        Ln.i("setting debug progress to: " + progress);
-
-        saveProgress(new Progress(progress));
-    }
-
     /**
      * Update the Snapshot in the Saved Games service with new data.  Metadata is not affected,
      * however for your own application you will likely want to update metadata such as cover image,
      * played time, and description with each Snapshot update.  After update, the UI will
      * be cleared.
      */
-    void update(final byte[] data) {
-        final boolean CREATE_IF_MISSING = true;
+    private void update(final byte[] data) {
 
         AsyncTask<Void, Void, Boolean> updateTask = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... params) {
+                final boolean CREATE_IF_MISSING = true;
                 Snapshots.OpenSnapshotResult open = mApiClient.open(SNAPSHOT_NAME, CREATE_IF_MISSING).await();
-                if (!open.getStatus().isSuccess()) {
+                if (open.getStatus().isSuccess()) {
+                    return commitAndClose(open.getSnapshot());
+                } else {
                     int statusCode = open.getStatus().getStatusCode();
                     Ln.w("Could not open Snapshot for update: " + statusCode);
                     if (statusCode == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
@@ -127,8 +108,9 @@ public class ProgressManager {
                     }
                     return false;
                 }
-                Snapshot snapshot = open.getSnapshot();
+            }
 
+            private boolean commitAndClose(Snapshot snapshot) {
                 // Change data but leave existing metadata
                 snapshot.getSnapshotContents().writeBytes(data);
                 Snapshots.CommitSnapshotResult commit = mApiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
@@ -146,36 +128,18 @@ public class ProgressManager {
                 if (result) {
                     Ln.d("saved data updated");
                 } else {
-                    ACRA.getErrorReporter().handleException(new RuntimeException("could not update"));
+                    ACRA.getErrorReporter().handleException(new Acra("could not update"));
                 }
             }
         };
         updateTask.execute();
     }
 
-    public void resolveConflict(String conflictId, Snapshot snapshot) {
+    private void resolveConflict(String conflictId, Snapshot snapshot) {
         PendingResult<Snapshots.OpenSnapshotResult> pendingResult = mApiClient.resolveConflict(conflictId, snapshot);
-        pendingResult.setResultCallback(new ResultCallback<Snapshots.OpenSnapshotResult>() {
-                                            @Override
-                                            public void onResult(@NonNull Snapshots.OpenSnapshotResult result) {
-                                                Status status = result.getStatus();
-                                                if (status.isSuccess()) {
-                                                    Ln.d("conflict solved successfully");
-                                                    AnalyticsEvent.send("conflict_solved");
-                                                    try {
-                                                        processSuccessResult(result.getSnapshot());
-                                                    } catch (IOException ioe) {
-                                                        Ln.w(ioe, "failed to process conflict result");
-                                                    }
-                                                } else {
-                                                    int statusCode = status.getStatusCode();
-                                                    Ln.w("conflict_failed_" + statusCode);
-                                                }
-                                            }
-                                        }
-
-        );
+        pendingResult.setResultCallback(new OpenSnapshotResultResultCallback(mSettings, mCallback));
     }
+
 }
 
 
