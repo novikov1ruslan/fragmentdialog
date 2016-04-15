@@ -16,7 +16,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.InvitationManager;
+import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.rt.InvitationEvent;

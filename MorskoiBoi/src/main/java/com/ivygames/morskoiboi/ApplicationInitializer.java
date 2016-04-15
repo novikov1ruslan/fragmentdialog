@@ -13,6 +13,7 @@ import com.ivygames.common.analytics.GlobalTracker;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.analytics.UiEventImpl;
 import com.ivygames.common.analytics.WarningEvent;
+import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
@@ -37,14 +38,7 @@ public class ApplicationInitializer {
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
         Dependencies.injectApiClient(apiClient);
-        InvitationManager invitationManager = null;
-//        new InvitationManager(new InvitationManager.InvitationReceivedListener() {
-//            @Override
-//            public void onInvitationReceived(String displayName) {
-//                mScreenManager.showInvitationCrouton(application.getString(R.string.received_invitation, displayName));
-//            }
-//        }, apiClient);
-        Dependencies.injectInvitationManager(invitationManager);
+        Dependencies.injectInvitationManager(new InvitationManager(apiClient));
 
         AndroidDeviceFactory.inject(new AndroidDevice(application));
 

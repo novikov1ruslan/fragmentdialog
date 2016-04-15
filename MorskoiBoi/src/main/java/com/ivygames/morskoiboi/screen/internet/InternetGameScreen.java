@@ -18,7 +18,7 @@ import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.InvitationManager;
+import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;

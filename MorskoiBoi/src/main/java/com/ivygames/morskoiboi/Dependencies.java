@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import com.ivygames.morskoiboi.invitations.InvitationManager;
+
 public class Dependencies {
 
     private static GoogleApiClientWrapper sApiClient;

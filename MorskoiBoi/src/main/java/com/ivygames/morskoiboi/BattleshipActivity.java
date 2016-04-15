@@ -21,6 +21,8 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -69,12 +71,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
 
     @NonNull
-    private final InvitationManager mInvitationManager = new InvitationManager(new InvitationManager.InvitationReceivedListener() {
-        @Override
-        public void onInvitationReceived(String displayName) {
-            showInvitationCrouton(getString(R.string.received_invitation, displayName));
-        }
-    }, mGoogleApiClient);
+    private final InvitationManager mInvitationManager = Dependencies.getsInvitationManager();
 
     @NonNull
     private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient, mSettings);
@@ -131,6 +128,13 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             Ln.d("should auto-signin - connecting...");
             mGoogleApiClient.connect();
         }
+
+        mInvitationManager.setInvitationReceivedListener(new InvitationReceivedListener() {
+            @Override
+            public void onInvitationReceived(String displayName) {
+                showInvitationCrouton(getString(R.string.received_invitation, displayName));
+            }
+        });
 
         if (mSettings.noAds()) {
             hideAds();
