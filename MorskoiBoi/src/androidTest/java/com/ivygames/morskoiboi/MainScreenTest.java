@@ -31,8 +31,6 @@ import static org.mockito.Mockito.when;
 
 public class MainScreenTest extends ScreenTest {
 
-    private MainScreen screen;
-
     private GameSettings settings;
 
     @Before
@@ -43,8 +41,7 @@ public class MainScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        screen = new MainScreen(activity(), apiClient(), settings);
-        return screen;
+        return new MainScreen(activity(), apiClient(), settings);
     }
 
     @Test
@@ -85,15 +82,21 @@ public class MainScreenTest extends ScreenTest {
         checkNotDisplayed(withText(R.string.rate_request));
     }
 
-    @Test
-    public void invitations_shown() {
-        // TODO:
-    }
-
-    @Test
-    public void invitations_NOT_shown() {
-        // TODO:
-    }
+//    @Test
+//    public void WhenThereIsInvitation__EnvelopeIsShown() {
+//        when(invitationManager().hasInvitation()).thenReturn(true);
+//        setScreen(newScreen());
+//        InvitationButton button = (InvitationButton) activity().findViewById(R.id.play);
+//        verify(button, times(1)).showInvitation();
+//    }
+//
+//    @Test
+//    public void WhenThereAreNoInvitations__EnvelopeIsHidden() {
+//        when(invitationManager().hasInvitation()).thenReturn(false);
+//        setScreen(newScreen());
+//        InvitationButton button = (InvitationButton) activity().findViewById(R.id.play);
+//        verify(button, times(1)).hideInvitation();
+//    }
 
     @Test
     public void when_play_button_is_pressed__select_game_screen_opens() {

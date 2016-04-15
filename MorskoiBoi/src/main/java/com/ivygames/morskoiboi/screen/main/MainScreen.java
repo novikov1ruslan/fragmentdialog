@@ -101,8 +101,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void processInvitations() {
-        boolean hasInvitations = mInvitationManager.hasInvitation();
-        if (hasInvitations) {
+        if (mInvitationManager.hasInvitation()) {
             Ln.d(this + ": there is a pending invitation ");
             mLayout.showInvitation();
         } else {

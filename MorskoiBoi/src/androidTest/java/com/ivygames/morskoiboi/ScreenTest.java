@@ -7,6 +7,7 @@ import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
+import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
@@ -52,6 +53,7 @@ public abstract class ScreenTest {
     private TaskResource setScreenResource;
     private TaskResource signInSucceeded;
     private GoogleApiClientWrapper apiClient;
+    private InvitationManager invitationManager;
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
 
@@ -61,6 +63,7 @@ public abstract class ScreenTest {
         activity = rule.getActivity();
         apiClient = rule.getApiClient();
         androidDevice = rule.getAndroidDevice();
+        invitationManager = rule.getInvitationManager();
     }
 
     @After
@@ -140,6 +143,10 @@ public abstract class ScreenTest {
 
     protected final AndroidDevice device() {
         return androidDevice;
+    }
+
+    protected final InvitationManager invitationManager() {
+        return invitationManager;
     }
 
     protected static Matcher<View> withDrawable(final int resourceId) {
