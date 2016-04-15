@@ -71,7 +71,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
 
     @NonNull
-    private final InvitationManager mInvitationManager = Dependencies.getsInvitationManager();
+    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
 
     @NonNull
     private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient, mSettings);
@@ -379,10 +379,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public GoogleApiClientWrapper getApiClient() {
-        return mGoogleApiClient;
-    }
-
     public void onEventMainThread(ChatMessage message) {
         showChatCrouton(message);
     }
@@ -397,10 +393,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
         mScreenManager.setScreen(screen);
         mMusicPlayer.play(screen.getMusic());
-    }
-
-    public InvitationManager getInvitationManager() {
-        return mInvitationManager;
     }
 
     public AndroidDevice getDevice() {

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
@@ -28,7 +29,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     public RanksListScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
         mSettings = settings;
-        mApiClient = parent.getApiClient();
+        mApiClient = Dependencies.getApiClient();
     }
 
     @Override

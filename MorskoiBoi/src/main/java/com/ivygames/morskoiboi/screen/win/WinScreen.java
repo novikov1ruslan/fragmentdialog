@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Player;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
@@ -71,7 +72,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     public WinScreen(@NonNull Bundle args, @NonNull BattleshipActivity parent) {
         super(parent);
         mArgs = args;
-        mApiClient = parent.getApiClient();
+        mApiClient = Dependencies.getApiClient();
 
         Board board = Board.fromJson(mArgs.getString(EXTRA_BOARD));
 

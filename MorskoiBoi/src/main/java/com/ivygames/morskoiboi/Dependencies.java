@@ -21,7 +21,7 @@ public class Dependencies {
         sInvitationManager = invitationManager;
     }
 
-    public static InvitationManager getsInvitationManager() {
+    public static InvitationManager getInvitationManager() {
         return sInvitationManager;
     }
 }

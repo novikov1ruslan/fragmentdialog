@@ -13,20 +13,21 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.common.analytics.ExceptionEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.common.analytics.ExceptionEvent;
-import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetGame.InternetGameListener;
@@ -64,8 +65,8 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mApiClient = parent.getApiClient();
-        mInvitationManager = parent.getInvitationManager();
+        mApiClient = Dependencies.getApiClient();
+        mInvitationManager = Dependencies.getInvitationManager();
     }
 
     @Override
