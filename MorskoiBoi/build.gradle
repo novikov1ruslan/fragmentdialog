@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.ivygames.morskoiboi"
         minSdkVersion 15
-        targetSdkVersion 16
+        targetSdkVersion 23
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

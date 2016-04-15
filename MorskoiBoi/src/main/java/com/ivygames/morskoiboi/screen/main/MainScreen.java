@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameHandler;
@@ -18,7 +19,6 @@ import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
@@ -42,14 +42,20 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private final GoogleApiClientWrapper mApiClient;
 
     @NonNull
+    private final GameSettings mSettings;
+
+    @NonNull
     private final InvitationManager mInvitationManager;
 
     @NonNull
     private final AndroidDevice mDevice;
 
-    public MainScreen(@NonNull BattleshipActivity parent, @NonNull GoogleApiClientWrapper apiClient) {
+    public MainScreen(@NonNull BattleshipActivity parent,
+                      @NonNull GoogleApiClientWrapper apiClient,
+                      @NonNull GameSettings settings) {
         super(parent);
         mApiClient = apiClient;
+        mSettings = settings;
         mInvitationManager = parent.getInvitationManager();
         mDevice = parent.getDevice();
     }
@@ -61,7 +67,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
         Ln.d(this + " screen created");
 
-        if (GameSettings.get().shouldProposeRating()) {
+        if (mSettings.shouldProposeRating()) {
             Ln.d("ask the user to rate the app");
             showRateDialog();
         }
@@ -78,7 +84,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        showInvitationIfHas(mInvitationManager.hasInvitation());
+        processInvitations();
     }
 
     @Override
@@ -89,12 +95,13 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             mLayout.showPlusOneButton();
         }
 
-        if (GameSettings.get().noAds() || !mDevice.isBillingAvailable()) {
+        if (mSettings.noAds() || !mDevice.isBillingAvailable()) {
             hideNoAdsButton();
         }
     }
 
-    private void showInvitationIfHas(boolean hasInvitations) {
+    private void processInvitations() {
+        boolean hasInvitations = mInvitationManager.hasInvitation();
         if (hasInvitations) {
             Ln.d(this + ": there is a pending invitation ");
             mLayout.showInvitation();
@@ -111,7 +118,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     public void onEventMainThread(InvitationEvent event) {
-        showInvitationIfHas(mInvitationManager.hasInvitation());
+        processInvitations();
     }
 
     @Override
@@ -226,7 +233,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("rate");
-                GameSettings.get().setRated();
+                mSettings.setRated();
                 Intent intent = PlayUtils.rateIntent(parent().getPackageName());
                 parent().startActivity(intent);
             }
@@ -236,7 +243,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("rate_later");
-                GameSettings.get().rateLater();
+                mSettings.rateLater();
             }
         }).create().show(mFm, DIALOG);
     }

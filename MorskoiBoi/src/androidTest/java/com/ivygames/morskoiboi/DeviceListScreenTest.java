@@ -7,7 +7,10 @@ import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.*;
 
 
 public class DeviceListScreenTest extends ScreenTest {
@@ -17,7 +20,7 @@ public class DeviceListScreenTest extends ScreenTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        btAdapter = mock(BluetoothAdapterWrapper.class);
         super.setup();
     }
 

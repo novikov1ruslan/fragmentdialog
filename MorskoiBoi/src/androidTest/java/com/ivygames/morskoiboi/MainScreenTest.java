@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 
 import org.hamcrest.Matcher;
@@ -26,6 +25,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
@@ -33,14 +33,17 @@ public class MainScreenTest extends ScreenTest {
 
     private MainScreen screen;
 
+    private GameSettings settings;
+
     @Before
     public void startup() {
+        settings = mock(GameSettings.class);
         super.setup();
     }
 
     @Override
     public BattleshipScreen newScreen() {
-        screen = new MainScreen(activity(), apiClient());
+        screen = new MainScreen(activity(), apiClient(), settings);
         return screen;
     }
 
@@ -69,28 +72,27 @@ public class MainScreenTest extends ScreenTest {
     }
 
     @Test
-    public void rate_dialog_shown() {
-
+    public void RateDialogShown() {
+        when(settings.shouldProposeRating()).thenReturn(true);
+        setScreen(newScreen());
+        checkDisplayed(withText(R.string.rate_request));
     }
 
     @Test
-    public void rate_dialog_NOT_shown() {
-
+    public void RateDialogNotShown() {
+        when(settings.shouldProposeRating()).thenReturn(false);
+        setScreen(newScreen());
+        checkNotDisplayed(withText(R.string.rate_request));
     }
 
     @Test
     public void invitations_shown() {
-
+        // TODO:
     }
 
     @Test
     public void invitations_NOT_shown() {
-
-    }
-
-    @Test
-    public void onActivityResult() {
-
+        // TODO:
     }
 
     @Test
@@ -129,17 +131,21 @@ public class MainScreenTest extends ScreenTest {
         onView(pusOneButton()).check(matches(not(isDisplayed())));
     }
 
-    //    @Test
-//    public void when_plus_one_button_is_pressed__plus_one_intent_is_fired() {
-//        onView(withId(R.id.plus_one_button)).perform(click());
+//    @Test
+//    public void WhenPlus1ButtonPressed_but_ReconnectionRequired__ApiClientDisconnects() {
 //        // TODO:
+//        setSignedIn(true);
+//        onView(pusOneButton()).perform(click());
+//        ActivityResult result = new ActivityResult(GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED, null);
+//        clickForIntent(pusOneButton(), anyIntent(), result);
+//        verify(apiClient(), times(1)).disconnect();
 //    }
-//
+
     @Test
     public void when_achievements_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
         setSignedIn(false);
         onView(achievementsButton()).perform(click());
-        onView(withText(R.string.achievements_request)).check(matches(isDisplayed()));
+        checkDisplayed(withText(R.string.achievements_request));
     }
 
     @Test

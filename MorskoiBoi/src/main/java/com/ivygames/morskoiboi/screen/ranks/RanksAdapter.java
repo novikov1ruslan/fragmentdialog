@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.PorterDuff.Mode;
+import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +21,20 @@ import java.util.List;
 
 class RanksAdapter extends BaseAdapter {
 
+    @NonNull
     private final List<Rank> mRanks;
-    private Rank mCurrentRank;
+    @NonNull
+    private final Rank mCurrentRank;
+    @NonNull
     private final ColorMatrixColorFilter mIdentityFilter;
     private final int mTextColor;
     private final float mRankTextSize;
     private final float mCurrentRankTextSize;
     private final int mCurrentTextColor;
+    @NonNull
     private final LayoutInflater mInflater;
 
-    RanksAdapter(Context context, List<Rank> ranks, Rank curRank) {
+    RanksAdapter(@NonNull Context context, @NonNull List<Rank> ranks, @NonNull Rank curRank) {
         super();
         mRanks = ranks;
         mCurrentRank = curRank;
@@ -55,7 +60,7 @@ class RanksAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int index) {
+    public Rank getItem(int index) {
         return mRanks.get(index);
     }
 

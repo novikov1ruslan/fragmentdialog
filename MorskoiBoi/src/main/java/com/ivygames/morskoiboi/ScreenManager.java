@@ -1,32 +1,19 @@
 package com.ivygames.morskoiboi;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
-import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.commons.logger.Ln;
 
-import de.keyboardsurfer.android.widget.crouton.Configuration;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-
 public class ScreenManager {
 
-    private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
-
-    private Activity mActivity;
     @NonNull
-    private final ViewGroup mLayout;
-
-    @NonNull
-    private final FrameLayout mContainer;
+    private final ViewGroup mContainer;
 
     private BattleshipScreen mCurrentScreen;
 
@@ -36,10 +23,8 @@ public class ScreenManager {
     private boolean mStarted;
     private boolean mResumed;
 
-    public ScreenManager(@NonNull Activity activity, @NonNull ViewGroup layout) {
-        mActivity = activity;
-        mLayout = layout;
-        mContainer = (FrameLayout) mLayout.findViewById(R.id.container);
+    public ScreenManager(@NonNull ViewGroup container) {
+        mContainer = container;
     }
 
     public void hideNoAdsButton() {
@@ -111,18 +96,6 @@ public class ScreenManager {
             return true;
         }
         return false;
-    }
-
-    public void showChatCrouton(ChatMessage message) {
-        if (mStarted) {
-            View layout = UiUtils.inflateChatCroutonLayout(mActivity.getLayoutInflater(), message.getText(), mLayout);
-            Crouton.make(mActivity, layout).setConfiguration(CONFIGURATION_LONG).show();
-        }
-    }
-
-    public void showInvitationCrouton(String message) {
-        View view = UiUtils.inflateInfoCroutonLayout(mActivity.getLayoutInflater(), message, mLayout);
-        Crouton.make(mActivity, view).setConfiguration(CONFIGURATION_LONG).show();
     }
 
     public BattleshipScreen setScreen(BattleshipScreen screen) {

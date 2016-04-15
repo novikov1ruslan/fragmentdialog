@@ -2,18 +2,18 @@ package com.ivygames.morskoiboi.model;
 
 public class Progress {
 
-    public Progress(int rank) {
-        mRank = rank;
+    public Progress(int progress) {
+        mProgress = progress;
     }
 
-    private final int mRank;
+    private final int mProgress;
 
     public int getScores() {
-        return mRank;
+        return mProgress;
     }
 
     @Override
     public String toString() {
-        return "[rank=" + mRank + "]";
+        return "[progress=" + mProgress + "]";
     }
 }

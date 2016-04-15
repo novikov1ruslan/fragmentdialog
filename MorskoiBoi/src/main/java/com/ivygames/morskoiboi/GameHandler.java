@@ -41,7 +41,7 @@ public class GameHandler {
     }
 
     public static MainScreen newMainScreen() {
-        return new MainScreen(parent, apiClient);
+        return new MainScreen(parent, apiClient, settings);
     }
 
     public static HelpScreen newHelpScreen() {
@@ -86,6 +86,6 @@ public class GameHandler {
     }
 
     public static RanksListScreen newRanksListScreen() {
-        return new RanksListScreen(parent);
+        return new RanksListScreen(parent, GameSettings.get());
     }
 }

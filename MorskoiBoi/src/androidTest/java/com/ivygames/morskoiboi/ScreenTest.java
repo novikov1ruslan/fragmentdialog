@@ -149,4 +149,8 @@ public abstract class ScreenTest {
     protected void checkDisplayed(Matcher<View> view) {
         onView(view).check(matches(isDisplayed()));
     }
+
+    protected void checkNotDisplayed(Matcher<View> view) {
+        onView(view).check(doesNotExist());
+    }
 }

@@ -24,16 +24,16 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
+import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
+import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends Activity implements ConnectionCallbacks {
-//        OnConnectionFailedListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -48,6 +48,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     public static final int RC_PURCHASE = 10003;
 
     private static final int SERVICE_RESOLVE = 9002;
+
+    private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
+
     private final PurchaseManager mPurchaseManager = new PurchaseManager(this);
 
     private boolean mRecreating;
@@ -60,7 +63,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     private int mVolumeControlStream;
 
     @NonNull
-    private final GoogleApiClientWrapper mGoogleApiClient = GoogleApiFactory.getApiClient();
+    private final GoogleApiClientWrapper mGoogleApiClient = Dependencies.getApiClient();
 
     @NonNull
     private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
@@ -69,7 +72,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     private final InvitationManager mInvitationManager = new InvitationManager(new InvitationManager.InvitationReceivedListener() {
         @Override
         public void onInvitationReceived(String displayName) {
-            mScreenManager.showInvitationCrouton(getString(R.string.received_invitation, displayName));
+            showInvitationCrouton(getString(R.string.received_invitation, displayName));
         }
     }, mGoogleApiClient);
 
@@ -90,6 +93,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
     @NonNull
     private final OnConnectionFailedListener mConnectionFailedListener = new OnConnectionFailedListenerImpl();
+    private ViewGroup mLayout;
 
     @SuppressLint("InflateParams")
     @Override
@@ -116,10 +120,10 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
         Ln.d("google play services available = " + mDevice.isGoogleServicesAvailable());
 
-        ViewGroup layout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
-        setContentView(layout);
-        mScreenManager = new ScreenManager(this, layout);
-        mBanner = layout.findViewById(R.id.banner);
+        mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
+        setContentView(mLayout);
+        mScreenManager = new ScreenManager((ViewGroup) mLayout.findViewById(R.id.container));
+        mBanner = mLayout.findViewById(R.id.banner);
 
         mGoogleApiClient.setConnectionCallbacks(this);
         mGoogleApiClient.setOnConnectionFailedListener(mConnectionFailedListener);
@@ -148,6 +152,18 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
         GameHandler.setSettings(mSettings);
 
         setScreen(GameHandler.newMainScreen());
+    }
+
+    public void showChatCrouton(ChatMessage message) {
+        if (mScreenManager.isStarted()) {
+            View layout = UiUtils.inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
+            Crouton.make(this, layout).setConfiguration(CONFIGURATION_LONG).show();
+        }
+    }
+
+    public void showInvitationCrouton(String message) {
+        View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), message, mLayout);
+        Crouton.make(this, view).setConfiguration(CONFIGURATION_LONG).show();
     }
 
     public void playMusic(int music) {
@@ -364,7 +380,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     }
 
     public void onEventMainThread(ChatMessage message) {
-        mScreenManager.showChatCrouton(message);
+        showChatCrouton(message);
     }
 
     public final void setScreen(@NonNull BattleshipScreen screen) {

@@ -16,7 +16,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();
         apiClient = mock(GoogleApiClientWrapper.class);
-        GoogleApiFactory.inject(apiClient);
+        Dependencies.injectApiClient(apiClient);
         androidDevice = mock(AndroidDevice.class);
         AndroidDeviceFactory.inject(androidDevice);
     }

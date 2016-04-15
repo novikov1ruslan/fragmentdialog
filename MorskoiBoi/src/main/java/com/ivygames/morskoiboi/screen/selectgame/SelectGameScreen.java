@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.analytics.ExceptionEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
@@ -30,8 +32,6 @@ import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.common.analytics.ExceptionEvent;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;

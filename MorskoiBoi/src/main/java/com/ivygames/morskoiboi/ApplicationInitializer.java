@@ -31,10 +31,21 @@ import java.util.Random;
 
 public class ApplicationInitializer {
 
-    public static void initialize(Application application) {
+    public static void initialize(final Application application) {
         ACRA.init(application);
         GameSettings.init(application);
-        GoogleApiFactory.inject(new GoogleApiClientWrapper(application));
+
+        GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
+        Dependencies.injectApiClient(apiClient);
+        InvitationManager invitationManager = null;
+//        new InvitationManager(new InvitationManager.InvitationReceivedListener() {
+//            @Override
+//            public void onInvitationReceived(String displayName) {
+//                mScreenManager.showInvitationCrouton(application.getString(R.string.received_invitation, displayName));
+//            }
+//        }, apiClient);
+        Dependencies.injectInvitationManager(invitationManager);
+
         AndroidDeviceFactory.inject(new AndroidDevice(application));
 
         initLogger(application, AndroidDeviceFactory.getDevice().isDebug());

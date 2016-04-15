@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 
 import org.hamcrest.Matcher;

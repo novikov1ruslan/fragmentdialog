@@ -22,20 +22,24 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
 
-    public RanksListScreen(@NonNull BattleshipActivity parent) {
+    @NonNull
+    private final GameSettings mSettings;
+
+    public RanksListScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
+        mSettings = settings;
         mApiClient = parent.getApiClient();
     }
 
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (RanksLayout) inflate(R.layout.ranks_list, container);
-        mLayout.setTotalScore(GameSettings.get().getProgress().getScores());
+        mLayout.setTotalScore(mSettings.getProgress().getScores());
 
         mLayout.debug_setDebugListener(new RanksLayout.DebugListener() {
             @Override
             public void onDebugScoreSet(int score) {
-                new ProgressManager(mApiClient, GameSettings.get()).debug_setProgress(score);
+                new ProgressManager(mApiClient, mSettings).debug_setProgress(score);
             }
         });
 
