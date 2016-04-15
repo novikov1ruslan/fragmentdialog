@@ -93,9 +93,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onResume() {
         super.onResume();
-        mLayout.onResume(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
         if (mApiClient.isConnected()) {
-            mLayout.showPlusOneButton();
+            mLayout.showPlusOneButton(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
         }
 
         if (mSettings.noAds() || !mDevice.isBillingAvailable()) {
@@ -168,7 +167,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void onSignInSucceeded() {
-        mLayout.showPlusOneButton();
+        mLayout.showPlusOneButton(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
 
         if (mAchievementsRequested) {
             mAchievementsRequested = false;

@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.screen.main;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewStub;
 
 import com.google.android.gms.plus.PlusOneButton;
 import com.ivygames.common.PlayUtils;
@@ -33,6 +34,7 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
     private MainScreenActions mScreenActions;
     private InvitationButton mPlayButton;
     private PlusOneButton mPlusOneButton;
+    private ViewStub mPlusStub;
 
     public MainScreenLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,7 +48,7 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mPlusOneButton = (PlusOneButton) findViewById(R.id.plus_one_button);
+        mPlusStub = (ViewStub) findViewById(R.id.plus_one_button);
         mPlayButton = (InvitationButton) findViewById(R.id.play);
         mPlayButton.setOnClickListener(this);
         findViewById(R.id.high_score).setOnClickListener(this);
@@ -55,10 +57,6 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         findViewById(R.id.settings_button).setOnClickListener(this);
         findViewById(R.id.achievements_button).setOnClickListener(this);
         findViewById(R.id.no_ads).setOnClickListener(this);
-    }
-
-    public void onResume(int requestCode) {
-        mPlusOneButton.initialize(PlayUtils.getPlayUrl(getContext().getPackageName()), requestCode);
     }
 
     @Override
@@ -106,7 +104,11 @@ public class MainScreenLayout extends NotepadRelativeLayout implements View.OnCl
         mPlayButton.showInvitation();
     }
 
-    public void showPlusOneButton() {
+    public void showPlusOneButton(int requestCode) {
+        if (mPlusOneButton == null) {
+            mPlusOneButton = (PlusOneButton) mPlusStub.inflate();
+            mPlusOneButton.initialize(PlayUtils.getPlayUrl(getContext().getPackageName()), requestCode);
+        }
         mPlusOneButton.setVisibility(VISIBLE);
     }
 

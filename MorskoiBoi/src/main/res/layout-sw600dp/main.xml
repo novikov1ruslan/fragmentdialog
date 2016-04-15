@@ -20,17 +20,19 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/share_menu" />
 
-    <com.google.android.gms.plus.PlusOneButton xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
+    <ViewStub
         android:id="@+id/plus_one_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/main_screen_circles_margin"
-        android:visibility="gone"
-        plus:annotation="bubble"
-        plus:size="tall" />
+        android:layout="@layout/plus_one" />
 
     <ImageView
         android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/game_services_box"
         android:layout_below="@+id/settings_button"
         android:layout_centerHorizontal="true"
@@ -38,6 +40,8 @@
 
     <LinearLayout
         android:id="@+id/game_services_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/play"
         android:layout_centerHorizontal="true">
 
