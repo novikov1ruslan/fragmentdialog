@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.common.analytics.ExceptionEvent;
@@ -14,6 +15,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.analytics.UiEventImpl;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
@@ -39,6 +41,8 @@ public class ApplicationInitializer {
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
         Dependencies.injectApiClient(apiClient);
         Dependencies.injectInvitationManager(new InvitationManager(apiClient));
+        Dependencies.injectAchievementsManager(new AchievementsManager(apiClient));
+        Dependencies.injectProgressManager(new ProgressManager(apiClient, GameSettings.get()));
 
         AndroidDeviceFactory.inject(new AndroidDevice(application));
 

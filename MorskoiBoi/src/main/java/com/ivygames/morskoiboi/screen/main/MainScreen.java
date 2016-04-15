@@ -12,14 +12,15 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
+import com.ivygames.morskoiboi.AndroidDeviceFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
+import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
@@ -58,7 +59,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         mApiClient = apiClient;
         mSettings = settings;
         mInvitationManager = Dependencies.getInvitationManager();
-        mDevice = parent.getDevice();
+        mDevice = AndroidDeviceFactory.getDevice();
     }
 
     @Override

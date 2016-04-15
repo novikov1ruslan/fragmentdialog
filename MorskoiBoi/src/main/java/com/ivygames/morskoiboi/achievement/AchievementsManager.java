@@ -15,7 +15,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public final class AchievementsManager {
+public class AchievementsManager {
 
     // achievements
     static final String NAVAL_MERIT = "CgkI8s_j3LsfEAIQAQ";

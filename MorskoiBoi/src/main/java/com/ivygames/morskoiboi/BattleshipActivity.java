@@ -68,13 +68,13 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     private final GoogleApiClientWrapper mGoogleApiClient = Dependencies.getApiClient();
 
     @NonNull
-    private final AchievementsManager mAchievementsManager = new AchievementsManager(mGoogleApiClient);
+    private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
 
     @NonNull
     private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
 
     @NonNull
-    private final ProgressManager mProgressManager = new ProgressManager(mGoogleApiClient, mSettings);
+    private final ProgressManager mProgressManager = Dependencies.getProgressManager();
 
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure;
@@ -393,10 +393,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
         mScreenManager.setScreen(screen);
         mMusicPlayer.play(screen.getMusic());
-    }
-
-    public AndroidDevice getDevice() {
-        return mDevice;
     }
 
     public void purchase() {

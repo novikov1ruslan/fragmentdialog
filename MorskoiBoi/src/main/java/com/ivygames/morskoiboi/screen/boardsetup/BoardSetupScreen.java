@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.AndroidDevice;
+import com.ivygames.morskoiboi.AndroidDeviceFactory;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameConstants;
@@ -72,7 +73,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mDevice = parent.getDevice();
+        mDevice = AndroidDeviceFactory.getDevice();
     }
 
     @Override

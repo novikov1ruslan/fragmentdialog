@@ -63,7 +63,7 @@ public abstract class ScreenTest {
         activity = rule.getActivity();
         apiClient = rule.getApiClient();
         androidDevice = rule.getAndroidDevice();
-        invitationManager = rule.getInvitationManager();
+        invitationManager = Dependencies.getInvitationManager();
     }
 
     @After
