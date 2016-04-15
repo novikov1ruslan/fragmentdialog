@@ -285,9 +285,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
         mPurchaseManager.destroy();
 
-        mGoogleApiClient.disconnect();
         mGoogleApiClient.unregisterConnectionCallbacks(this);
         mGoogleApiClient.unregisterConnectionFailedListener(mConnectionFailedListener);
+        mGoogleApiClient.disconnect();
 
         mMusicPlayer.release();
         Ln.d("game destroyed");

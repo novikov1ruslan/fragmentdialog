@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.progress;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
@@ -19,6 +20,7 @@ import org.commons.logger.Ln;
 
 import java.io.IOException;
 
+import static com.google.android.gms.games.snapshot.Snapshots.*;
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class ProgressManager {
@@ -95,12 +97,12 @@ public class ProgressManager {
             @Override
             protected Boolean doInBackground(Void... params) {
                 final boolean CREATE_IF_MISSING = true;
-                Snapshots.OpenSnapshotResult open = mApiClient.open(SNAPSHOT_NAME, CREATE_IF_MISSING).await();
+                OpenSnapshotResult open = mApiClient.open(SNAPSHOT_NAME, CREATE_IF_MISSING).await();
                 if (open.getStatus().isSuccess()) {
                     return commitAndClose(open.getSnapshot());
                 } else {
                     int statusCode = open.getStatus().getStatusCode();
-                    Ln.w("Could not open Snapshot for update: " + statusCode);
+                    Ln.w("Could not open Snapshot for update: " + GamesStatusCodes.getStatusString(statusCode));
                     if (statusCode == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
                         try {
                             resolveConflict(open.getConflictId(), ProgressUtils.getResolveSnapshot(open));
@@ -115,14 +117,16 @@ public class ProgressManager {
             private boolean commitAndClose(Snapshot snapshot) {
                 // Change data but leave existing metadata
                 snapshot.getSnapshotContents().writeBytes(data);
-                Snapshots.CommitSnapshotResult commit = mApiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
-                if (!commit.getStatus().isSuccess()) {
-                    Ln.w("Failed to commit Snapshot: " + commit.getStatus().getStatusCode());
+                CommitSnapshotResult commit = mApiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
+                com.google.android.gms.common.api.Status status = commit.getStatus();
+                if (status.isSuccess()) {
+                    return true;
+                } else {
+                    String commonCode = CommonStatusCodes.getStatusCodeString(status.getStatusCode());
+//                    String gameCode = GamesStatusCodes.getStatusString(status.getStatusCode());
+                    Ln.w("Failed to commit Snapshot: " + commonCode);
                     return false;
                 }
-
-                // No failures
-                return true;
             }
 
             @Override

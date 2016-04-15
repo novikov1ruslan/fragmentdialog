@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.main;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -127,7 +128,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required");
             mApiClient.disconnect();
-        } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE) {
+        } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             UiEvent.send("+1", "[" + resultCode + "]");
         }
     }

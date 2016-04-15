@@ -351,7 +351,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     @Override
     public void onRealTimeMessageSent(int statusCode, int tokenId, String recipientParticipantId) {
-        Ln.v(tokenId + " message sent, status=" + InternetGame.getStatusName(statusCode));
+        Ln.v(tokenId + " message sent, status=" + GamesStatusCodes.getStatusString(statusCode));
         mIsSending = false;
         if (statusCode == GamesStatusCodes.STATUS_OK) {
             if (tokenId != mLastSentToken) {
@@ -398,13 +398,4 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         Ln.v(mLastSentToken + " sent: [" + message + "], to " + mRecipientId + ", " + messageData.length + " bytes, messages left = " + mMessages.size());
     }
 
-    private static String getStatusName(int statusCode) {
-        switch (statusCode) {
-            case GamesStatusCodes.STATUS_PARTICIPANT_NOT_CONNECTED:
-                return "STATUS_PARTICIPANT_NOT_CONNECTED";
-
-            default:
-                return "" + statusCode;
-        }
-    }
 }

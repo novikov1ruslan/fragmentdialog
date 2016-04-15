@@ -33,7 +33,6 @@ import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetGame.InternetGameListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
-import com.ivygames.morskoiboi.rt.RtUtils;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
@@ -125,7 +124,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     @Override
     public void onError(int statusCode) {
         hideWaitingScreen();
-        Ln.w("error status code: " + RtUtils.name(statusCode));
+        Ln.w("error status code: " + GamesStatusCodes.getStatusString(statusCode));
 
         if (statusCode == GamesStatusCodes.STATUS_REAL_TIME_INACTIVE_ROOM) {
             FragmentAlertDialog.showNote(mFm, DIALOG, R.string.match_canceled);
@@ -137,7 +136,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         } else {
             // STATUS_REAL_TIME_CONNECTION_FAILED
             // STATUS_INTERNAL_ERROR
-            ExceptionEvent.send("internet_game", RtUtils.name(statusCode));
+            ExceptionEvent.send("internet_game", GamesStatusCodes.getStatusString(statusCode));
             SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
         }
     }

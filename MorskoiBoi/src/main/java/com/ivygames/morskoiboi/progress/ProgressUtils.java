@@ -75,10 +75,6 @@ public class ProgressUtils {
         return parseProgress(data);
     }
 
-    public static int getScoresFromSnapshot(Snapshot snapshot) throws IOException {
-        return getProgressFromSnapshot(snapshot).getScores();
-    }
-
     public static Snapshot getResolveSnapshot(Snapshots.OpenSnapshotResult result) throws IOException {
         Snapshot baseSnapshot = result.getSnapshot();
         Snapshot conflictingSnapshot = result.getConflictingSnapshot();
@@ -86,5 +82,9 @@ public class ProgressUtils {
         int conflictingScores = getScoresFromSnapshot(conflictingSnapshot);
 
         return baseScores > conflictingScores ? baseSnapshot : conflictingSnapshot;
+    }
+
+    private static int getScoresFromSnapshot(Snapshot snapshot) throws IOException {
+        return getProgressFromSnapshot(snapshot).getScores();
     }
 }

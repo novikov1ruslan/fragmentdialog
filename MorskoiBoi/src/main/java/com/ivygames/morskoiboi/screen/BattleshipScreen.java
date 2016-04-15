@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -72,8 +73,10 @@ public abstract class BattleshipScreen extends Screen {
             Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         } else if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
             Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+        } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
+            Ln.i("+1 request cancelled");
         } else {
-            Ln.e("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+            Ln.w("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
             reportException(this + " unprocessed result: " + resultCode);
         }
     }
@@ -82,7 +85,9 @@ public abstract class BattleshipScreen extends Screen {
         return null;
     }
 
-    public @RawRes int getMusic() {
+    public
+    @RawRes
+    int getMusic() {
         return MusicPlayer.NO_SOUND;
     }
 
