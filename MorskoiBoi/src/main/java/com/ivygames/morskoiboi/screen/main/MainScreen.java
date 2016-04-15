@@ -234,8 +234,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("rate");
                 mSettings.setRated();
-                Intent intent = PlayUtils.rateIntent(parent().getPackageName());
-                parent().startActivity(intent);
+                Intent intent = PlayUtils.rateIntent(mParent.getPackageName());
+                mParent.startActivity(intent);
             }
 
         }).setNegativeButton(R.string.later, new OnClickListener() {

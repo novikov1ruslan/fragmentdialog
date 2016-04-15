@@ -35,7 +35,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     public LostScreen(BattleshipActivity parent) {
         super(parent);
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
-        mSoundBar = SoundBarFactory.create(parent().getAssets(), "lost.ogg", audioManager);
+        mSoundBar = SoundBarFactory.create(mParent.getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
         GameSettings.get().incrementGamesPlayedCounter();
     }

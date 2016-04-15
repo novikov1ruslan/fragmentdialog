@@ -74,8 +74,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     public void onStart() {
         super.onStart();
         Ln.d(TAG + ": register BT broadcast receiver, starting discovery...");
-        parent().registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-        parent().registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
+        mParent.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        mParent.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
         startDiscovery();
     }
 
@@ -83,7 +83,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     public void onStop() {
         super.onStop();
         cancelDiscovery();
-        parent().unregisterReceiver(mReceiver);
+        mParent.unregisterReceiver(mReceiver);
         Ln.d(TAG + ": receivers are unregistered, discovery canceled");
     }
 

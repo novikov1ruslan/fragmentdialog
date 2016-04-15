@@ -79,7 +79,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mGame = Model.instance.game;
 
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
-        mSoundBar = SoundBarFactory.create(parent().getAssets(), "win.ogg", audioManager);
+        mSoundBar = SoundBarFactory.create(mParent.getAssets(), "win.ogg", audioManager);
         mSoundBar.play();
 
         mTime = mGame.getTimeSpent();
