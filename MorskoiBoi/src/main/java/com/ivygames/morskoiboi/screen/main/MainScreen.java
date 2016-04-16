@@ -13,7 +13,6 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
-import com.ivygames.morskoiboi.AndroidDeviceFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
@@ -60,7 +59,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         mApiClient = apiClient;
         mSettings = settings;
         mInvitationManager = Dependencies.getInvitationManager();
-        mDevice = AndroidDeviceFactory.getDevice();
+        mDevice = Dependencies.getDevice();
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         Dependencies.injectProgressManager(mock(ProgressManager.class));
 
         androidDevice = mock(AndroidDevice.class);
-        AndroidDeviceFactory.inject(androidDevice);
+        Dependencies.injectAndroidDevice(androidDevice);
     }
 
     public GoogleApiClientWrapper getApiClient() {

@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -11,6 +13,7 @@ public class Dependencies {
     private static InvitationManager sInvitationManager;
     private static AchievementsManager sAchievementsManager;
     private static ProgressManager sProgressManager;
+    private static AndroidDevice sAndroidDevice;
 
     static void injectApiClient(GoogleApiClientWrapper apiClient) {
         sApiClient = apiClient;
@@ -43,5 +46,13 @@ public class Dependencies {
 
     public static ProgressManager getProgressManager() {
         return sProgressManager;
+    }
+
+    public static AndroidDevice getDevice() {
+        return sAndroidDevice;
+    }
+
+    public static void injectAndroidDevice(@NonNull AndroidDevice androidDevice) {
+        sAndroidDevice = androidDevice;
     }
 }

@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.settings;
+package com.ivygames.morskoiboi;
 
 import org.junit.runners.model.InitializationError;
 import org.robolectric.RobolectricTestRunner;

@@ -43,10 +43,9 @@ public class ApplicationInitializer {
         Dependencies.injectInvitationManager(new InvitationManager(apiClient));
         Dependencies.injectAchievementsManager(new AchievementsManager(apiClient));
         Dependencies.injectProgressManager(new ProgressManager(apiClient, GameSettings.get()));
+        Dependencies.injectAndroidDevice(new AndroidDevice(application));
 
-        AndroidDeviceFactory.inject(new AndroidDevice(application));
-
-        initLogger(application, AndroidDeviceFactory.getDevice().isDebug());
+        initLogger(application, Dependencies.getDevice().isDebug());
         initAnalytics(application);
 
         Bitmaps.getInstance().loadBitmaps(application.getResources());

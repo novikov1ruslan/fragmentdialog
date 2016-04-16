@@ -15,7 +15,6 @@ import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.AndroidDevice;
-import com.ivygames.morskoiboi.AndroidDeviceFactory;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -74,7 +73,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mSettings = settings;
         mApiClient = Dependencies.getApiClient();
         mInvitationManager = Dependencies.getInvitationManager();
-        mDevice = AndroidDeviceFactory.getDevice();
+        mDevice = Dependencies.getDevice();
     }
 
     @Override

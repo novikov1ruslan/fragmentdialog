@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.morskoiboi.AndroidDevice;
-import com.ivygames.morskoiboi.AndroidDeviceFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
@@ -46,7 +46,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         super(parent);
         mApiClient = apiClient;
         mSettings = settings;
-        mDevice = AndroidDeviceFactory.getDevice();
+        mDevice = Dependencies.getDevice();
         mVibrator = vibratorFacade;
     }
 

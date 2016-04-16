@@ -103,7 +103,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             return;
         }
 
-        mDevice = AndroidDeviceFactory.getDevice();
+        mDevice = Dependencies.getDevice();
 
         if (mDevice.isTablet()) {
             Ln.d("device is tablet");

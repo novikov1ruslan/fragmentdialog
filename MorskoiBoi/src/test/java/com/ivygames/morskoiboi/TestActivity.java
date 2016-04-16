@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.settings;
+package com.ivygames.morskoiboi;
 
 import android.os.Bundle;
 
