@@ -46,16 +46,23 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     private static final int TOTAL_SHIPS = RulesFactory.getRules().getTotalShips().length;
     private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 
+    @NonNull
     private Board mBoard = new Board();
+    @NonNull
     private PriorityQueue<Ship> mFleet = new PriorityQueue<>(TOTAL_SHIPS, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @NonNull
-    private final AndroidDevice mDevice;
+    private final GameSettings mSettings = GameSettings.get();
+    @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
+    private final AndroidDevice mDevice = Dependencies.getDevice();
+    @NonNull
     private final Rules mRules = RulesFactory.getRules();
+    @NonNull
     private final Runnable mTimeoutTask = new Runnable() {
         @Override
         public void run() {
@@ -73,7 +80,6 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mDevice = Dependencies.getDevice();
     }
 
     @Override
@@ -104,7 +110,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public void onPause() {
         super.onPause();
-        GameSettings.get().hideBoardSetupHelp();
+        mSettings.hideBoardSetupHelp();
         parent().dismissTutorial();
     }
 
@@ -144,7 +150,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     @Override
     public void dismissTutorial() {
-        GameSettings.get().hideBoardSetupHelp();
+        mSettings.hideBoardSetupHelp();
         parent().dismissTutorial();
     }
 
@@ -195,7 +201,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     @Nullable
     public View getTutView() {
-        if (!mDevice.isTablet() && GameSettings.get().showSetupHelp()) {
+        if (!mDevice.isTablet() && mSettings.showSetupHelp()) {
             Ln.v("setup tip needs to be shown");
             return mTutView;
         }

@@ -45,6 +45,11 @@ public class MainScreenTest extends ScreenTest {
     }
 
     @Test
+    public void TestNoAds() {
+        // TODO:
+    }
+
+    @Test
     public void when_billing_available__no_ads_button_visible() {
         setBillingAvailable(true);
         setScreen(newScreen());
