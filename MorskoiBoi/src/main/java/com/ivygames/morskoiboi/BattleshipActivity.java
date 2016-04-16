@@ -184,7 +184,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
     private void hideAds() {
         AdProviderFactory.getAdProvider().destroy();
-        AdProviderFactory.setAdProvider(new NoAdsAdProvider());
+        AdProviderFactory.noAds();
         mBanner.setVisibility(View.GONE);
         hideNoAdsButton();
     }

@@ -6,7 +6,7 @@ public class AdProviderFactory {
     private static AdProvider sAdProvider = new NoAdsAdProvider();
 
     static void init(Activity activity) {
-        sAdProvider = new AdmobAdProvider(activity);
+
     }
 
     static void noAds() {
