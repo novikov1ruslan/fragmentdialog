@@ -51,7 +51,7 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int calcTotalScores(Collection<Ship> ships, Game game) {
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game) {
         float timeMultiplier = getTimeMultiplier(game.getTimeSpent());
         int shellsBonus = calcShellsBonus(game.getShells());
         int shipsBonus = calcSavedShipsBonus(ships);
@@ -81,7 +81,7 @@ public class RussianRules extends AbstractRules {
         return MIN_TIME_BONUS_MULTIPLIER + (float) (MAX_TIME_MILLIS - millis) / (float) (MAX_TIME_MILLIS - MIN_TIME_MILLIS);
     }
 
-    private int calcSavedShipsBonus(Collection<Ship> ships) {
+    private int calcSavedShipsBonus(@NonNull Collection<Ship> ships) {
 
         int shipsWeight = 0;
         for (Ship ship : ships) {

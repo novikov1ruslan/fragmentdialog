@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public final class GameUtils {
@@ -78,5 +79,11 @@ public final class GameUtils {
         }
 
         return true;
+    }
+
+    public static String formatDuration(long millis) {
+        long seconds = millis / 1000;
+        long minutes = seconds / 60;
+        return String.format(Locale.US, "%d:%02d", minutes, seconds % 60);
     }
 }

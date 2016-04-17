@@ -8,9 +8,9 @@ import android.widget.TextView;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.NotepadLinearLayout;
+import com.ivygames.morskoiboi.utils.GameUtils;
 
 import java.util.Collection;
-import java.util.Locale;
 
 public class WinLayoutSmall extends NotepadLinearLayout {
 
@@ -60,20 +60,18 @@ public class WinLayoutSmall extends NotepadLinearLayout {
     }
 
     public void setTime(long millis) {
-        long seconds = millis / 1000;
-        long minutes = seconds / 60;
-        mTimeView.setText(String.format(Locale.US, "%d:%02d", minutes, seconds % 60));
+        mTimeView.setText(GameUtils.formatDuration(millis));
     }
 
     public void setTotalScore(int score) {
         mScoreView.setText(String.valueOf(score));
     }
 
-    public void hideSignInBar() {
+    public void hideSignInForAchievements() {
         mSignInBar.setVisibility(View.INVISIBLE);
     }
 
-    public void showSignInBar() {
+    public void showSignInForAchievements() {
         mSignInBar.setVisibility(View.VISIBLE);
     }
 

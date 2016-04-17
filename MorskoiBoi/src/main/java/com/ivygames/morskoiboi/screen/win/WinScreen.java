@@ -2,30 +2,29 @@ package com.ivygames.morskoiboi.screen.win;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
-import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
-import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Model;
@@ -46,38 +45,31 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private static final String TAG = "WIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    public static final String EXTRA_OPPONENT_SURRENDERED = "EXTRA_OPPONENT_SURRENDERED";
-    public static final String EXTRA_BOARD = "EXTRA_BOARD";
-
     private final Game mGame;
     private WinLayoutSmall mLayout;
     private long mTime;
 
+    @NonNull
     private final Collection<Ship> mShips;
 
     private int mScores;
 
     @NonNull
     private final SoundBar mSoundBar;
-
     @NonNull
-    private final Bundle mArgs;
-
+    private final GoogleApiClientWrapper mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
-
-    @NonNull
-    private final GameSettings mSettings;
-
+    private final GameSettings mSettings = GameSettings.get();
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
+    @NonNull
+    private final Rules mRules = RulesFactory.getRules();
+    private final boolean mOpponentSurrendered;
 
-    public WinScreen(@NonNull Bundle args, @NonNull BattleshipActivity parent) {
+    public WinScreen(@NonNull BattleshipActivity parent,
+                     @NonNull Collection<Ship> fleet, boolean opponentSurrendered) {
         super(parent);
-        mArgs = args;
-        mApiClient = Dependencies.getApiClient();
-
-        Board board = Board.fromJson(mArgs.getString(EXTRA_BOARD));
+        mOpponentSurrendered = opponentSurrendered;
 
         mGame = Model.instance.game;
 
@@ -86,13 +78,21 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mSoundBar.play();
 
         mTime = mGame.getTimeSpent();
-        mShips = board.getShips();
-        mScores = RulesFactory.getRules().calcTotalScores(mShips, mGame);
+        mShips = fleet;
+        mScores = mRules.calcTotalScores(mShips, mGame);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
-        mSettings = GameSettings.get();
         mSettings.incrementGamesPlayedCounter();
         Ln.v("fleet: " + mShips);
+
+        if (mGame.getType() == Type.VS_ANDROID) {
+            if (GameConstants.IS_TEST_MODE) {
+                Ln.i("game is in test mode - achievements not updated");
+            } else {
+                mAchievementsManager.processAchievements(mGame, mShips);
+            }
+        }
+        updateProgress();
     }
 
     @Override
@@ -139,18 +139,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             }
         });
 
-        if (hasOpponentSurrendered()) {
+        if (mOpponentSurrendered) {
             Ln.d("opponent has surrendered - hiding continue option");
             mLayout.opponentSurrendered();
         }
 
         Ln.d(this + " screen created");
-        updateProgress();
         return mLayout;
-    }
-
-    private boolean hasOpponentSurrendered() {
-        return mArgs.getBoolean(EXTRA_OPPONENT_SURRENDERED);
     }
 
     @Override
@@ -158,9 +153,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         super.onResume();
         if (mGame.getType() == Type.VS_ANDROID && !mApiClient.isConnected()) {
             Ln.d("game vs Android, but client is not connected - show sign button");
-            mLayout.showSignInBar();
+            mLayout.showSignInForAchievements();
         } else {
-            mLayout.hideSignInBar();
+            mLayout.hideSignInForAchievements();
         }
         mSoundBar.resume();
     }
@@ -174,25 +169,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @Override
     public void onSignInSucceeded() {
         Ln.d("sign in succeeded - hiding sign in button");
-        mLayout.hideSignInBar();
+        mLayout.hideSignInForAchievements();
     }
 
     private void updateProgress() {
-        int progress;
-        if (mGame.getType() == Type.VS_ANDROID) {
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in test mode - achievements not updated");
-            } else {
-                mAchievementsManager.processAchievements(mGame, mShips);
-            }
-            progress = mScores * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
-        } else if (mGame.getType() == Type.INTERNET) {
-            progress = InternetGame.WIN_PROGRESS_POINTS;
-        } else {
-            progress = BluetoothGame.WIN_PROGRESS_POINTS;
-        }
+        int progress = calculateScoresForGameType();
 
-        if (hasOpponentSurrendered()) {
+        if (mOpponentSurrendered) {
             progress = progress / 2;
         }
 
@@ -207,6 +190,23 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         }
     }
 
+    private int calculateScoresForGameType() {
+        int progress;
+        if (mGame.getType() == Type.VS_ANDROID) {
+            if (GameConstants.IS_TEST_MODE) {
+                Ln.i("game is in test mode - achievements not updated");
+            } else {
+                mAchievementsManager.processAchievements(mGame, mShips);
+            }
+            progress = mScores * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
+        } else if (mGame.getType() == Type.INTERNET) {
+            progress = InternetGame.WIN_PROGRESS_POINTS;
+        } else {
+            progress = BluetoothGame.WIN_PROGRESS_POINTS;
+        }
+        return progress;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -216,6 +216,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             } else {
                 if (mApiClient.isConnected()) {
                     submitScore(mScores);
+                    sendAnalyticsForPlayersScores(mScores);
                 } else {
                     Ln.d("### client is not connected - could not submit scores!");
                 }
@@ -247,7 +248,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private void submitScore(int totalScores) {
         Ln.d("submitting scores: " + totalScores);
         mApiClient.submitScore(getString(R.string.leaderboard_normal), totalScores);
+    }
 
+    private void sendAnalyticsForPlayersScores(int totalScores) {
         Player currentPlayer = mApiClient.getCurrentPlayer();
         if (currentPlayer != null) {
             String playerName = currentPlayer.getDisplayName();
@@ -257,7 +260,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     }
 
     private void doNotContinue() {
-        if (shouldNotifyOpponent() && !hasOpponentSurrendered()) {
+        if (shouldNotifyOpponent() && !mOpponentSurrendered) {
             showWantToLeaveRoomDialog();
         } else {
             new BackToSelectGameCommand(parent()).run();

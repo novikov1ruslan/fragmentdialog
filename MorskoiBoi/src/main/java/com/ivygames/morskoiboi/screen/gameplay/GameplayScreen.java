@@ -6,13 +6,14 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -26,8 +27,6 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -43,7 +42,6 @@ import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
-import com.ivygames.morskoiboi.screen.win.WinScreen;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -823,10 +821,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            Bundle args = new Bundle();
-            args.putBoolean(WinScreen.EXTRA_OPPONENT_SURRENDERED, mOpponentSurrendered);
-            args.putString(WinScreen.EXTRA_BOARD, mPlayerPrivateBoard.toJson().toString());
-            setScreen(GameHandler.newWinScreen(args));
+            setScreen(GameHandler.newWinScreen(mPlayerPrivateBoard.getShips(), mOpponentSurrendered));
         }
     };
 

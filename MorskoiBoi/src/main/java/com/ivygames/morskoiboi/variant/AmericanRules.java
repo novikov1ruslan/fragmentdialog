@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.variant;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
@@ -31,7 +32,7 @@ public class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public int calcTotalScores(Collection<Ship> ships, Game game) {
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game) {
         // TODO: implement
         return 0;
     }

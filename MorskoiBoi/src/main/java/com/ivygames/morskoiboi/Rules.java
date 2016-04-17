@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -21,7 +22,7 @@ public interface Rules {
 
     int[] getTotalShips();
 
-    int calcTotalScores(Collection<Ship> ships, Game game);
+    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game);
 
     Bitmap getBitmapForShipSize(int size);
 

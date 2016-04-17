@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
+import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.Screen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -17,6 +18,8 @@ import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
+
+import java.util.Collection;
 
 public class GameHandler {
 
@@ -77,8 +80,8 @@ public class GameHandler {
         return new GameplayScreen(parent);
     }
 
-    public static WinScreen newWinScreen(@NonNull Bundle args) {
-        return new WinScreen(args, parent);
+    public static WinScreen newWinScreen(Collection<Ship> fleet, boolean opponentSurrendered) {
+        return new WinScreen(parent, fleet, opponentSurrendered);
     }
 
     public static LostScreen newLostScreen() {
