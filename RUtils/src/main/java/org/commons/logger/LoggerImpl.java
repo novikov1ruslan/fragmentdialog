@@ -5,14 +5,8 @@ import android.util.Log;
 
 public class LoggerImpl implements Logger {
 
-    /**
-     * config is initially set to BaseConfig() with sensible defaults, then replaced by BaseConfig(ContextSingleton) during guice static injection pass.
-     */
     private static Config config;
 
-    /**
-     * print is initially set to Print(), then replaced by guice during static injection pass. This allows overriding where the log message is delivered to.
-     */
     private final Print print;
 
     public LoggerImpl(Config config, WarningListener warningListener) {
@@ -149,8 +143,8 @@ public class LoggerImpl implements Logger {
         return "UNKNOWN";
     }
 
-    public static char logLevelToChar(int loglevel) {
-        switch (loglevel) {
+    public static char logLevelToChar(int logLevel) {
+        switch (logLevel) {
             case Log.VERBOSE:
                 return 'V';
             case Log.DEBUG:

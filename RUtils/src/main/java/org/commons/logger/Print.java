@@ -20,16 +20,10 @@ public class Print {
 
     private static final ThreadLocal<String> threadName = new ThreadLocal<>();
 
-    private final FastDateFormat dateFormat;
-
-    private final Calendar calendar;
-
     private final WarningListener mWarningListener;
 
     public Print(WarningListener warningListener) {
         mWarningListener = warningListener;
-        dateFormat = FastDateFormat.getInstance("HH:mm:ss.SSS");
-        calendar = Calendar.getInstance();
     }
 
     public int println(int priority, String msg) {
@@ -42,18 +36,6 @@ public class Print {
 
     public void push() {
 
-    }
-
-    protected String createFormattedMessage(int priority, String tag, String msg, String threadInfo) {
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        String time = dateFormat.format(calendar);
-        char level = LoggerImpl.logLevelToChar(priority);
-        String pid = Integer.toString(android.os.Process.myPid());
-        // 7 extra chars: level + ' ' + '\n' + '\t'. Note, that threadInfo includes trailing space
-//			int capacity = time.length() + tag.length() + msg.length() + 7 + pid.length() + threadInfo.length();
-
-        // format logs like logcat
-        return time + ' ' + level + ' ' + pid + ' ' + threadInfo + tag + '\t' + msg + '\n';
     }
 
     protected String getThreadInfo() {
