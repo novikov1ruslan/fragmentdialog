@@ -80,6 +80,7 @@ public class WinLayoutSmall extends NotepadLinearLayout {
      */
     public void hideScorables() {
         mScoreContainer.setVisibility(View.GONE);
+        // TODO: refactor
         mSignInBar.setVisibility(View.INVISIBLE);
         mTimeView.setVisibility(View.GONE);
     }

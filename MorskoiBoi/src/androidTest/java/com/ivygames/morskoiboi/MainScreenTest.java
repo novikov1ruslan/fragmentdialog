@@ -84,7 +84,7 @@ public class MainScreenTest extends ScreenTest {
     public void RateDialogNotShown() {
         when(settings.shouldProposeRating()).thenReturn(false);
         setScreen(newScreen());
-        checkNotDisplayed(withText(R.string.rate_request));
+        checkDoesNotExist(withText(R.string.rate_request));
     }
 
 //    @Test

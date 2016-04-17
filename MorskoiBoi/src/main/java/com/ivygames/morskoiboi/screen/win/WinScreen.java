@@ -127,8 +127,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         });
 
         mLayout.setTime(mTime);
-        mLayout.setShips(mShips);
         mLayout.setTotalScore(mScores);
+        mLayout.setShips(mShips);
 
         mLayout.setSignInClickListener(new OnClickListener() {
 

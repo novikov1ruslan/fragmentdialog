@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -43,24 +44,38 @@ public class WinScreenTest extends ScreenTest {
     }
 
     @Test
-    public void GameDurationShown() {
+    public void WhenGameTypeIsAndroid__ScoresAndDurationShown() {
+        when(game.getType()).thenReturn(Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(135000L);
-        setScreen(newScreen());
-        onView(withId(R.id.time)).check(matches(withText("2:15")));
-    }
-
-    @Test
-    public void ScoresAreShown() {
         when(rules.calcTotalScores(any(Collection.class), any(Game.class))).thenReturn(100);
         setScreen(newScreen());
+        onView(withId(R.id.time)).check(matches(withText("2:15")));
         onView(withId(R.id.total_scores)).check(matches(withText("100")));
     }
 
-//    @Test
-//    public void when_back_button_pressed__main_screen_opens() {
-//        setScreen(newScreen());
-//        pressBack();
-//        checkDisplayed(MAIN_LAYOUT);
-//    }
+
+    @Test
+    public void WhenSignedIn__SignInOptionHidden() {
+        when(game.getType()).thenReturn(Game.Type.VS_ANDROID);
+        when(apiClient().isConnected()).thenReturn(true);
+        setScreen(newScreen());
+        checkNotDisplayed(withId(R.id.sign_in_bar));
+    }
+
+    @Test
+    public void WhenNotAndroidGame__SignInOptionHidden() {
+        when(game.getType()).thenReturn(Game.Type.BLUETOOTH);
+//        when(apiClient().isConnected()).thenReturn(false);
+        setScreen(newScreen());
+        checkNotDisplayed(withId(R.id.sign_in_bar));
+    }
+
+    @Test
+    public void WhenOpponentSurrendersPressingBack__OpensSelectGameScreen() {
+        surrendered = true;
+        setScreen(newScreen());
+        pressBack();
+        checkDisplayed(SELECT_GAME_LAYOUT);
+    }
 
 }
