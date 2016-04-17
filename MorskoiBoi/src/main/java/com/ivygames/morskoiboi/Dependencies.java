@@ -4,16 +4,17 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 public class Dependencies {
 
     private static GoogleApiClientWrapper sApiClient;
-
     private static InvitationManager sInvitationManager;
     private static AchievementsManager sAchievementsManager;
     private static ProgressManager sProgressManager;
     private static AndroidDevice sAndroidDevice;
+    private static GameSettings sGameSettings;
 
     static void injectApiClient(GoogleApiClientWrapper apiClient) {
         sApiClient = apiClient;
@@ -48,11 +49,19 @@ public class Dependencies {
         return sProgressManager;
     }
 
+    public static void injectAndroidDevice(@NonNull AndroidDevice androidDevice) {
+        sAndroidDevice = androidDevice;
+    }
+
     public static AndroidDevice getDevice() {
         return sAndroidDevice;
     }
 
-    public static void injectAndroidDevice(@NonNull AndroidDevice androidDevice) {
-        sAndroidDevice = androidDevice;
+    public static void inject(@NonNull GameSettings settings) {
+        sGameSettings = settings;
+    }
+
+    public static GameSettings getGameSettings() {
+        return sGameSettings;
     }
 }

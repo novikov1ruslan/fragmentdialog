@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
 import org.hamcrest.Matcher;

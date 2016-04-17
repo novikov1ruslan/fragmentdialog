@@ -63,6 +63,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
     @NonNull
+    private final ProgressManager mProgressManager = Dependencies.getProgressManager();
+    @NonNull
     private final Rules mRules = RulesFactory.getRules();
     private final boolean mOpponentSurrendered;
 
@@ -183,7 +185,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
         int progressIncrement = progress - penalty;
         if (progressIncrement > 0) {
-            new ProgressManager(mApiClient, mSettings).incrementProgress(progressIncrement);
+            mProgressManager.incrementProgress(progressIncrement);
             mSettings.setProgressPenalty(0);
         } else {
             mSettings.setProgressPenalty(-progressIncrement);
