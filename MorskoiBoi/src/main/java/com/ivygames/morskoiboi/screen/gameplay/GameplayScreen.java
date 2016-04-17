@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -78,7 +80,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private PlayerOpponent mPlayer;
     private Opponent mEnemy;
     private Handler mUiThreadHandler;
-    private GameSettings mSettings;
+
+    @NonNull
+    private final GameSettings mSettings = Dependencies.getSettings();
     private VibratorFacade mVibrator;
     private Board mEnemyPublicBoard;
     private Board mPlayerPrivateBoard;
@@ -165,7 +169,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mVibrator = new VibratorFacade(mParent);
         mUiThreadHandler = new Handler();
-        mSettings = GameSettings.get();
 
         mBackToSelectGameCommand = new BackToSelectGameCommand(parent());
 
@@ -758,7 +761,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void vibrate(int duration) {
-        if (GameSettings.get().isVibrationOn() && isResumed()) {
+        if (mSettings.isVibrationOn() && isResumed()) {
             mVibrator.vibrate(duration);
         }
     }

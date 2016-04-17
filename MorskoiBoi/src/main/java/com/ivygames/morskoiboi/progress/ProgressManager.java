@@ -20,7 +20,8 @@ import org.commons.logger.Ln;
 
 import java.io.IOException;
 
-import static com.google.android.gms.games.snapshot.Snapshots.*;
+import static com.google.android.gms.games.snapshot.Snapshots.CommitSnapshotResult;
+import static com.google.android.gms.games.snapshot.Snapshots.OpenSnapshotResult;
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class ProgressManager {
@@ -72,7 +73,7 @@ public class ProgressManager {
         Progress newProgress = new Progress(oldScores + increment);
         saveProgress(newProgress);
 
-        trackPromotionEvent(oldScores, newProgress.getScores());
+        trackPromotionEvent(oldScores, newProgress.getScores(), mSettings);
     }
 
     private void saveProgress(@NonNull Progress newProgress) {
@@ -106,8 +107,8 @@ public class ProgressManager {
                     if (statusCode == GamesStatusCodes.STATUS_SNAPSHOT_CONFLICT) {
                         try {
                             resolveConflict(open.getConflictId(), ProgressUtils.getResolveSnapshot(open));
-                        } catch (IOException ioe) {
-                            Ln.w(ioe, "could not resolve conflict during update");
+                        } catch (IOException e) {
+                            Ln.w(e, "could not resolve conflict during update");
                         }
                     }
                     return false;
@@ -146,11 +147,11 @@ public class ProgressManager {
         pendingResult.setResultCallback(new OpenSnapshotResultResultCallback(mSettings, mCallback));
     }
 
-    private static void trackPromotionEvent(int oldScores, int newScores) {
+    private static void trackPromotionEvent(int oldScores, int newScores, @NonNull GameSettings settings) {
         Rank lastRank = Rank.getBestRankForScore(oldScores);
         Rank newRank = Rank.getBestRankForScore(newScores);
         if (newRank != lastRank) {
-            GameSettings.get().newRankAchieved(true);
+            settings.newRankAchieved(true);
             String label = lastRank + " promoted to " + newRank;
             if (GameConstants.IS_TEST_MODE) {
                 Ln.i("game is in test mode, not tracking promotion event: " + label);

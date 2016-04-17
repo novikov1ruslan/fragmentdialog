@@ -7,10 +7,8 @@ import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 
 public class DeviceListScreenTest extends ScreenTest {

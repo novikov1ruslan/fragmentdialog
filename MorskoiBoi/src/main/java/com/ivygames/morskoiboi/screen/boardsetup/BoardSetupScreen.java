@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -20,8 +22,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
@@ -55,7 +55,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     private View mTutView;
 
     @NonNull
-    private final GameSettings mSettings = GameSettings.get();
+    private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     @NonNull

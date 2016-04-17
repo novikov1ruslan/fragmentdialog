@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -48,6 +49,9 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     private ViewGroup mContainer;
     private SingleTextDialog mDialog;
+
+    @NonNull
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {
         super(parent);
@@ -165,7 +169,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         String defaultName = getString(R.string.player);
         BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
         connection.setMessageReceiver(opponent);
-        String playerName = GameSettings.get().getPlayerName();
+        String playerName = mSettings.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);

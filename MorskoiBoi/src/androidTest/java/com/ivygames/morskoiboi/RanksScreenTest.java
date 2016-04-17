@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 
 public class RanksScreenTest extends ScreenTest {
 
-    private GameSettings settings = GameSettings.get();
+    private GameSettings settings = Dependencies.getSettings();
 
     @Before
     public void setup() {

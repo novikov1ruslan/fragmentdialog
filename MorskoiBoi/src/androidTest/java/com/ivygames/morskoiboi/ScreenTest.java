@@ -3,14 +3,12 @@ package com.ivygames.morskoiboi;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
@@ -21,17 +19,18 @@ import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Rule;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.*;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.when;
 
 public abstract class ScreenTest {

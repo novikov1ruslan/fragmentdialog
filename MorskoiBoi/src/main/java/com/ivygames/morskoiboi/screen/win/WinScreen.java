@@ -59,7 +59,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final GoogleApiClientWrapper mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final GameSettings mSettings = GameSettings.get();
+    private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
     @NonNull

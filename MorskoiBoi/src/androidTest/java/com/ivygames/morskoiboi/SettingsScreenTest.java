@@ -33,8 +33,7 @@ import static org.mockito.Mockito.when;
 
 public class SettingsScreenTest extends ScreenTest {
 
-
-    private GameSettings settings = GameSettings.get();
+    private GameSettings settings = Dependencies.getSettings();
 
     private VibratorFacade vibratorFacade;
 

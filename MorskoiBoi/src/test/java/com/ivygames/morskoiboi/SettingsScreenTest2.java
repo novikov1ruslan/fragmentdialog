@@ -16,8 +16,8 @@ import org.robolectric.util.ActivityController;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @Config(manifest = "src/test/AndroidManifest.xml", sdk = Build.VERSION_CODES.JELLY_BEAN, resourceDir = "../main/res")
 @RunWith(RobolectricGradleTestRunner.class)

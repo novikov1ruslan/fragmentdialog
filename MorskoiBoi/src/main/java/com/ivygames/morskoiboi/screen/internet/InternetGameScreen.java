@@ -61,6 +61,8 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     @NonNull
     private final InvitationManager mInvitationManager;
+    @NonNull
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
@@ -71,7 +73,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
-        mLayout.setPlayerName(GameSettings.get().getPlayerName());
+        mLayout.setPlayerName(mSettings.getPlayerName());
         mLayout.setScreenActions(this);
         Ln.d(this + " screen created");
         return mLayout;
@@ -162,7 +164,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         String defaultName = getString(R.string.player);
         InternetOpponent mOpponent = new InternetOpponent(mInternetGame, defaultName);
         mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
-        String playerName = GameSettings.get().getPlayerName();
+        String playerName = mSettings.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);

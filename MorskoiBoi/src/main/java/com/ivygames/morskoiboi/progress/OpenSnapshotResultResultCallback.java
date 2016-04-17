@@ -7,8 +7,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.commons.logger.Ln;
@@ -41,8 +41,8 @@ class OpenSnapshotResultResultCallback implements ResultCallback<Snapshots.OpenS
                     Ln.e("failed to load saved game: " + status.getStatusCode());
                 }
             }
-        } catch (IOException ioe) {
-            Ln.w(ioe, "failed to load saved game");
+        } catch (IOException e) {
+            Ln.w(e, "failed to load saved game");
         }
     }
 

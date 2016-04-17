@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -21,7 +23,6 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
@@ -51,6 +52,9 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @NonNull
     private final BluetoothAdapterWrapper mBtAdapter;
     private AcceptThread mAcceptThread;
+
+    @NonNull
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -184,7 +188,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         String defaultName = getString(R.string.player);
         BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
         connection.setMessageReceiver(opponent);
-        String playerName = GameSettings.get().getPlayerName();
+        String playerName = mSettings.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);

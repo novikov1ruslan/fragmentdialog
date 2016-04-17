@@ -2,19 +2,21 @@ package com.ivygames.morskoiboi.screen.lost;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;
@@ -30,6 +32,9 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     private final SoundBar mSoundBar;
 
+    @NonNull
+    private final GameSettings mSettings = Dependencies.getSettings();
+
     private View mView;
 
     public LostScreen(BattleshipActivity parent) {
@@ -37,7 +42,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
         mSoundBar = SoundBarFactory.create(mParent.getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
-        GameSettings.get().incrementGamesPlayedCounter();
+        mSettings.incrementGamesPlayedCounter();
     }
 
     @Override

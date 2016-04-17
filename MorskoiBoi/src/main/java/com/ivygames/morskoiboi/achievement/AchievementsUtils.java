@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.achievement;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.GameSettings;
 
 import org.commons.logger.Ln;
@@ -37,28 +39,28 @@ class AchievementsUtils {
         return "UNKNOWN(" + id + ")";
     }
 
-    static void setUnlocked(String achievementId) {
-        if (AchievementsUtils.isUnlocked(achievementId)) {
-            Ln.v(AchievementsUtils.debugName(achievementId) + " already unlocked");
+    static void setUnlocked(String achievementId, @NonNull GameSettings settings) {
+        if (isUnlocked(achievementId, settings)) {
+            Ln.v(debugName(achievementId) + " already unlocked");
         } else {
-            GameSettings.get().unlockAchievement(achievementId);
+            settings.unlockAchievement(achievementId);
         }
     }
 
-    static void setRevealed(String achievementId) {
-        if (AchievementsUtils.isRevealed(achievementId)) {
-            Ln.v(AchievementsUtils.debugName(achievementId) + " already revealed");
+    static void setRevealed(String achievementId, @NonNull GameSettings settings) {
+        if (isRevealed(achievementId, settings)) {
+            Ln.v(debugName(achievementId) + " already revealed");
         } else {
-            GameSettings.get().revealAchievement(achievementId);
+            settings.revealAchievement(achievementId);
         }
     }
 
-    static boolean isUnlocked(String achievementId) {
-        return GameSettings.get().isAchievementUnlocked(achievementId);
+    static boolean isUnlocked(String achievementId, @NonNull GameSettings settings) {
+        return settings.isAchievementUnlocked(achievementId);
     }
 
-    static boolean isRevealed(String achievementId) {
-        return GameSettings.get().isAchievementRevealed(achievementId);
+    static boolean isRevealed(String achievementId, @NonNull GameSettings settings) {
+        return settings.isAchievementRevealed(achievementId);
     }
 
 }

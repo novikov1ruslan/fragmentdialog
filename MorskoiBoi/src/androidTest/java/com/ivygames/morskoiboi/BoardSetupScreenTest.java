@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ivygames.morskoiboi.screen.help.HelpScreen;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +22,11 @@ public class BoardSetupScreenTest extends ScreenTest {
         return new BoardSetupScreen(activity());
     }
 
-    @Test
-    public void WhenBackButtonPressed_SelectGameScreenOpens() {
-        setScreen(newScreen());
-        pressBack();
-        checkDisplayed(SELECT_GAME_LAYOUT);
-    }
+//    @Test
+//    public void WhenBackButtonPressed_SelectGameScreenOpens() {
+//        setScreen(newScreen());
+//        pressBack();
+//        checkDisplayed(SELECT_GAME_LAYOUT);
+//    }
 
 }

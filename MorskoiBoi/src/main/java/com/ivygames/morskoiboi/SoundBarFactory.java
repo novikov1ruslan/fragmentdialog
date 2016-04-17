@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class SoundBarFactory {
     public static SoundBar create(AssetManager assets, String soundName, AudioManager audioManager) {
-        if (GameSettings.get().isSoundOn()) {
+        if (Dependencies.getSettings().isSoundOn()) {
             try {
                 return new SoundBarImpl(assets.openFd(soundName), audioManager);
             } catch (IOException ioe) {

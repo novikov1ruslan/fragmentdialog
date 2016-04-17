@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.progress;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 
 import org.junit.After;
@@ -12,7 +13,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class OpenSnapshotResultResultCallbackTest {
 
     private OpenSnapshotResultResultCallback callback;
-    private GameSettings settings = GameSettings.get();
+    private GameSettings settings = Dependencies.getSettings();
 
     @Mock
     private SnapshotOpenResultListener listener;

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.Rules;
@@ -42,14 +43,14 @@ public class AchievementsManager {
     private final GoogleApiClientWrapper mApiClient;
     @NonNull
     private final Rules mRules;
-    private final GameSettings mSettings = GameSettings.get();
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
     public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull Rules rules) {
         mApiClient = apiClient;
         mRules = rules;
-        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient);
+        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, mSettings);
     }
 
     public void loadAchievements() {
@@ -180,7 +181,7 @@ public class AchievementsManager {
 
     private void reveal(String achievementId) {
         Ln.d("revealing achievement: " + AchievementsManager.name(achievementId));
-        AchievementsUtils.setRevealed(achievementId);
+        AchievementsUtils.setRevealed(achievementId, mSettings);
         if (mApiClient.isConnected()) {
             mApiClient.reveal(achievementId);
         }

@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.progress;
 
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
@@ -42,7 +41,7 @@ public class ProgressUtils {
         return toJson(progress).toString().getBytes();
     }
 
-    public static Progress parseProgress(byte[] loadedData) {
+    private static Progress parseProgress(byte[] loadedData) {
         try {
             return fromJson(loadedData);
         } catch (JSONException je) {
@@ -62,7 +61,7 @@ public class ProgressUtils {
                 }
             }
 
-            return GameSettings.get().getProgress();
+            return new Progress(0);
         }
     }
 

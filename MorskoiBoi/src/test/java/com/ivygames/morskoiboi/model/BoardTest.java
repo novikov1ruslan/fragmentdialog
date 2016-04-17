@@ -8,9 +8,6 @@ import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +15,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

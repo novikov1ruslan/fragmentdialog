@@ -35,19 +35,10 @@ public class GameSettings {
     private static final int RATING_STEP = 5;
     private static final int MAX_RATING_BAR = 50;
 
-    private static GameSettings INSTANCE = new GameSettings();
+    @NonNull
+    private final EditableSharedPreferences internal;
 
-    private static EditableSharedPreferences internal;
-
-    public static GameSettings get() {
-        return INSTANCE;
-    }
-
-    public static void set(GameSettings settings) {
-        INSTANCE = settings;
-    }
-
-    public static void init(@NonNull Context context) {
+    public GameSettings(@NonNull Context context) {
         internal = new EditableSharedPreferences(context);
     }
 

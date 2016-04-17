@@ -3,12 +3,11 @@ package com.ivygames.morskoiboi.screen.help;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
 
 import org.commons.logger.Ln;
 

@@ -57,7 +57,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
     private boolean mRecreating;
 
-    private final GameSettings mSettings = GameSettings.get();
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     /**
      * volume stream is saved on onResume and restored on onPause
@@ -82,8 +82,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
     private MusicPlayer mMusicPlayer;
     private View mBanner;
 
-    private AndroidDevice mDevice;
-
     private ScreenManager mScreenManager;
 
     private BattleshipScreen mCurrentScreen;
@@ -103,9 +101,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             return;
         }
 
-        mDevice = Dependencies.getDevice();
+        AndroidDevice device = Dependencies.getDevice();
 
-        if (mDevice.isTablet()) {
+        if (device.isTablet()) {
             Ln.d("device is tablet");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
@@ -115,7 +113,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 
         mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
-        Ln.d("google play services available = " + mDevice.isGoogleServicesAvailable());
+        Ln.d("google play services available = " + device.isGoogleServicesAvailable());
 
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
@@ -140,7 +138,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             hideAds();
         } else {
             AdProviderFactory.init(this);
-            if (mDevice.isBillingAvailable()) {
+            if (device.isBillingAvailable()) {
                 mPurchaseManager.query(new PurchaseStatusListenerImpl());
             } else {
                 Ln.e("gpgs_not_available");
@@ -151,7 +149,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
 
-        GameHandler.setParent(this);
+        GameHandler.setActivity(this);
         GameHandler.setApiClient(mGoogleApiClient);
         GameHandler.setSettings(mSettings);
 

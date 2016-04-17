@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
@@ -23,12 +22,15 @@ import java.util.Collection;
 
 public class GameHandler {
 
-    private static BattleshipActivity parent;
+    private static BattleshipActivity activity;
     private static GoogleApiClientWrapper apiClient;
     private static GameSettings settings;
 
-    public static void setParent(@NonNull BattleshipActivity activity) {
-        parent = activity;
+    private GameHandler() {
+    }
+
+    public static void setActivity(@NonNull BattleshipActivity activity) {
+        GameHandler.activity = activity;
     }
 
     public static void setApiClient(@NonNull GoogleApiClientWrapper apiClient) {
@@ -44,51 +46,51 @@ public class GameHandler {
     }
 
     public static MainScreen newMainScreen() {
-        return new MainScreen(parent, apiClient, settings);
+        return new MainScreen(activity, apiClient, settings);
     }
 
     public static HelpScreen newHelpScreen() {
-        return new HelpScreen(parent);
+        return new HelpScreen(activity);
     }
 
     public static SettingsScreen newSettingsScreen() {
-        VibratorFacade vibratorFacade = new VibratorFacade(parent);
-        return new SettingsScreen(parent, apiClient, settings, vibratorFacade);
+        VibratorFacade vibratorFacade = new VibratorFacade(activity);
+        return new SettingsScreen(activity, apiClient, settings, vibratorFacade);
     }
 
     public static SelectGameScreen newSelectGameScreen() {
-        return new SelectGameScreen(parent, settings);
+        return new SelectGameScreen(activity, settings);
     }
 
     public static BoardSetupScreen newBoardSetupScreen() {
-        return new BoardSetupScreen(parent);
+        return new BoardSetupScreen(activity);
     }
 
     public static BluetoothScreen newBluetoothScreen(@NonNull BluetoothAdapterWrapper adapter) {
-        return new BluetoothScreen(parent, adapter);
+        return new BluetoothScreen(activity, adapter);
     }
 
     public static DeviceListScreen newDeviceListScreen(@NonNull BluetoothAdapterWrapper adapter) {
-        return new DeviceListScreen(parent, adapter);
+        return new DeviceListScreen(activity, adapter);
     }
 
     public static InternetGameScreen newInternetGameScreen() {
-        return new InternetGameScreen(parent);
+        return new InternetGameScreen(activity);
     }
 
     public static GameplayScreen newGameplayScreen() {
-        return new GameplayScreen(parent);
+        return new GameplayScreen(activity);
     }
 
     public static WinScreen newWinScreen(Collection<Ship> fleet, boolean opponentSurrendered) {
-        return new WinScreen(parent, fleet, opponentSurrendered);
+        return new WinScreen(activity, fleet, opponentSurrendered);
     }
 
     public static LostScreen newLostScreen() {
-        return new LostScreen(parent);
+        return new LostScreen(activity);
     }
 
     public static RanksListScreen newRanksListScreen() {
-        return new RanksListScreen(parent, GameSettings.get());
+        return new RanksListScreen(activity, settings);
     }
 }

@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.help.HelpScreen;
 
 import org.junit.Before;

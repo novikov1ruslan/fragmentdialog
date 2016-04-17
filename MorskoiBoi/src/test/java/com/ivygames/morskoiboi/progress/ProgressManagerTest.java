@@ -1,11 +1,8 @@
 package com.ivygames.morskoiboi.progress;
 
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Result;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 
@@ -13,14 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
 
 public class ProgressManagerTest {
 
@@ -31,7 +21,7 @@ public class ProgressManagerTest {
 
     @Mock
     private GoogleApiClientWrapper apiClient;
-    private GameSettings settings = GameSettings.get();
+    private GameSettings settings = Dependencies.getSettings();
 
     @Before
     public void setUp() throws Exception {

@@ -8,6 +8,7 @@ import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.android.gms.games.achievement.Achievements;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
+import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 
 import org.commons.logger.Ln;
@@ -16,9 +17,12 @@ final class AchievementsResultCallback implements ResultCallback<Achievements.Lo
 
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
+    @NonNull
+    private final GameSettings mSettings;
 
-    AchievementsResultCallback(@NonNull GoogleApiClientWrapper apiClient) {
+    AchievementsResultCallback(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
+        mSettings = settings;
     }
 
     @Override
@@ -40,18 +44,18 @@ final class AchievementsResultCallback implements ResultCallback<Achievements.Lo
         Ln.v("processing achievement: " + achievement.getName());
         String achievementId = achievement.getAchievementId();
         if (achievement.getState() == Achievement.STATE_UNLOCKED) {
-            AchievementsUtils.setUnlocked(achievementId);
+            AchievementsUtils.setUnlocked(achievementId, mSettings);
         } else if (achievement.getState() == Achievement.STATE_REVEALED) {
-            if (AchievementsUtils.isUnlocked(achievementId)) {
+            if (AchievementsUtils.isUnlocked(achievementId, mSettings)) {
                 Ln.d("[" + achievement.getName() + "] was unlocked but not posted - posting to the cloud");
                 mApiClient.unlock(achievementId);
             } else {
-                AchievementsUtils.setRevealed(achievementId);
+                AchievementsUtils.setRevealed(achievementId, mSettings);
             }
-        } else if (AchievementsUtils.isUnlocked(achievementId)) {
+        } else if (AchievementsUtils.isUnlocked(achievementId, mSettings)) {
             Ln.d("[" + achievement.getName() + "] was unlocked but not posted - posting to the cloud");
             mApiClient.unlock(achievementId);
-        } else if (AchievementsUtils.isRevealed(achievementId)) {
+        } else if (AchievementsUtils.isRevealed(achievementId, mSettings)) {
             Ln.d("[" + achievement.getName() + "] was revealed but not posted - posting to the cloud");
             mApiClient.reveal(achievementId);
         }

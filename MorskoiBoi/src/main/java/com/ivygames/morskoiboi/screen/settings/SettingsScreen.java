@@ -7,18 +7,18 @@ import android.view.ViewGroup;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
+import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
-import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.VibratorFacade;
-import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActions;
 

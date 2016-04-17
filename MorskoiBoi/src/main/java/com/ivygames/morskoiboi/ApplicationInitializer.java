@@ -7,14 +7,14 @@ import android.util.Log;
 import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.ai.BotFactory;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.GlobalTracker;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.analytics.UiEventImpl;
 import com.ivygames.common.analytics.WarningEvent;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.ai.BotFactory;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.variant.RussianBot;
@@ -41,7 +41,7 @@ public class ApplicationInitializer {
         initLogger(application, device.isDebug());
         initAnalytics(application);
 
-        GameSettings.init(application);
+        GameSettings settings = new GameSettings(application);
 
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules(resources);
@@ -50,10 +50,11 @@ public class ApplicationInitializer {
         BotFactory.setAlgorithm(new RussianBot(null));
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
+        Dependencies.inject(settings);
         Dependencies.injectApiClient(apiClient);
         Dependencies.injectInvitationManager(new InvitationManager(apiClient));
         Dependencies.injectAchievementsManager(new AchievementsManager(apiClient, rules));
-        Dependencies.injectProgressManager(new ProgressManager(apiClient, GameSettings.get()));
+        Dependencies.injectProgressManager(new ProgressManager(apiClient, settings));
         Dependencies.injectAndroidDevice(device);
 
         Bitmaps.getInstance().loadBitmaps(resources);

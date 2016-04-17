@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 
-import org.commons.logger.Ln;
-
-import static org.commons.logger.Ln.*;
+import static org.commons.logger.Ln.d;
+import static org.commons.logger.Ln.e;
+import static org.commons.logger.Ln.v;
+import static org.commons.logger.Ln.w;
 
 public class ScreenManager {
 

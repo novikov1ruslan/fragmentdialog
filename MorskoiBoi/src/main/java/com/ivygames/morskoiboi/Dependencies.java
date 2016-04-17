@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 public class Dependencies {
@@ -61,7 +60,7 @@ public class Dependencies {
         sGameSettings = settings;
     }
 
-    public static GameSettings getGameSettings() {
+    public static GameSettings getSettings() {
         return sGameSettings;
     }
 }

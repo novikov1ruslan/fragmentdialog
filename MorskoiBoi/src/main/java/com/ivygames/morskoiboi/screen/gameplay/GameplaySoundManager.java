@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
@@ -39,6 +40,8 @@ public class GameplaySoundManager {
     private final Random mRandom = new Random(System.currentTimeMillis());
     private final BattleshipScreen mScreen;
     private final AudioManager mAudioManager;
+    @NonNull
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     public GameplaySoundManager(@NonNull BattleshipScreen screen, @NonNull AudioManager audioManager) {
         mScreen = screen;
@@ -151,7 +154,7 @@ public class GameplaySoundManager {
     }
 
     public boolean isSoundOn() {
-        return GameSettings.get().isSoundOn() && mScreen.isResumed();
+        return mSettings.isSoundOn() && mScreen.isResumed();
     }
 
     private float getVolume() {
