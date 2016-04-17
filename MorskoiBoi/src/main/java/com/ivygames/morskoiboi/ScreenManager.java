@@ -10,6 +10,8 @@ import com.ivygames.morskoiboi.screen.main.MainScreen;
 
 import org.commons.logger.Ln;
 
+import static org.commons.logger.Ln.*;
+
 public class ScreenManager {
 
     @NonNull
@@ -39,27 +41,40 @@ public class ScreenManager {
     }
 
     public void onResume() {
+        if (!mStarted) {
+            e("call start first");
+        }
         mCurrentScreen.onResume();
         mResumed = true;
     }
 
     public void onPause() {
+        if (!mResumed) {
+            e("call resume first");
+        }
         mCurrentScreen.onPause();
         mResumed = false;
     }
 
     public void onStop() {
+        if (!mStarted) {
+            e("call start first");
+        }
         mCurrentScreen.onStop();
         mStarted = false;
     }
 
+    public void onDestroy() {
+        mCurrentScreen.onDestroy();
+    }
+
     public void dismissTutorial() {
         if (mTutView == null) {
-            Ln.d("no tutorial view to remove");
+            d("no tutorial view to remove");
             return;
         }
 
-        Ln.v("tutorial view present - removing");
+        v("tutorial view present - removing");
         mContainer.removeView(mTutView);
         mTutView = null;
     }
@@ -72,26 +87,26 @@ public class ScreenManager {
                 mContainer.addView(mTutView);
             }
         } else {
-            Ln.d("tutorial view already shown: " + mTutView);
+            d("tutorial view already shown: " + mTutView);
         }
     }
 
     public boolean handleBackPress() {
-        Ln.v("top screen = " + mCurrentScreen);
+        v("top screen = " + mCurrentScreen);
 
         if (mTutView != null) {
-            Ln.v("tutorial view present - removing");
+            v("tutorial view present - removing");
             mContainer.removeView(mTutView);
             mTutView = null;
             return true;
         }
 
         if (mCurrentScreen instanceof BackPressListener) {
-            Ln.v("propagating backpress");
+            v("propagating backpress");
             if (mCurrentScreen.isResumed()) {
                 ((BackPressListener) mCurrentScreen).onBackPressed();
             } else {
-                Ln.w("back pressed to fast for " + mCurrentScreen);
+                w("back pressed to fast for " + mCurrentScreen);
             }
             return true;
         }
@@ -135,4 +150,5 @@ public class ScreenManager {
             ((SignInListener) mCurrentScreen).onSignInSucceeded();
         }
     }
+
 }

@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.model.Game;
@@ -9,9 +11,10 @@ import org.commons.logger.Ln;
 
 public final class BackToSelectGameCommand implements Runnable {
 
+    @NonNull
     private final BattleshipActivity mBattleshipActivity;
 
-    public BackToSelectGameCommand(BattleshipActivity activity) {
+    public BackToSelectGameCommand(@NonNull BattleshipActivity activity) {
         mBattleshipActivity = activity;
     }
 

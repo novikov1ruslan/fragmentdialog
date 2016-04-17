@@ -280,6 +280,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             return;
         }
 
+        mScreenManager.onDestroy();
+
+        // screens will cancel all their croutons, but activity has its own
         Crouton.cancelAllCroutons();
         AdProviderFactory.getAdProvider().destroy();
 

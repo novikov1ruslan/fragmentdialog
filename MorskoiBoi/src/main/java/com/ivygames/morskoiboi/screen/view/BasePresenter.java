@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.apache.commons.lang3.Validate;
+import org.commons.logger.Ln;
 
 public class BasePresenter {
 
@@ -37,6 +38,7 @@ public class BasePresenter {
 
         int smallestWidth = calcSmallestWidth(w, h, hPadding, vPadding);
         mCellSizePx = smallestWidth / mBoardSize;
+        Ln.d("cell size= " + mCellSizePx + "; w=" + w + "; h=" + h);
         int boardSizePx = mCellSizePx * mBoardSize;
 
         mBoardRect = calculateBoardRect(w, h, boardSizePx);
