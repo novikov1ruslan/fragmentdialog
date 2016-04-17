@@ -1,4 +1,4 @@
-package org.commons.settings;
+package com.ivygames.common.settings;
 
 import android.app.Application;
 import android.content.SharedPreferences;
