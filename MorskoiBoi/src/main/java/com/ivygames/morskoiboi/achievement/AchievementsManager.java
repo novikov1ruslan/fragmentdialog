@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
+import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 
@@ -40,12 +40,15 @@ public class AchievementsManager {
 
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
+    @NonNull
+    private final Rules mRules;
     private final GameSettings mSettings = GameSettings.get();
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient) {
+    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull Rules rules) {
         mApiClient = apiClient;
+        mRules = rules;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient);
     }
 
@@ -62,7 +65,7 @@ public class AchievementsManager {
         processTimeSpent(game.getTimeSpent());
         processShipsLeft(ships);
 
-        if (RulesFactory.getRules().calcTotalScores(ships, game) >= 15000) {
+        if (mRules.calcTotalScores(ships, game) >= 15000) {
             if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
                 Ln.v(AchievementsManager.name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
             } else {

@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Application;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.android.gms.analytics.ExceptionParser;
@@ -36,24 +37,26 @@ public class ApplicationInitializer {
 
     public static void initialize(final Application application) {
         ACRA.init(application);
+        AndroidDevice device = new AndroidDevice(application);
+        initLogger(application, device.isDebug());
+        initAnalytics(application);
+
         GameSettings.init(application);
+
+        Resources resources = application.getResources();
+        RussianRules rules = new RussianRules(resources);
+        RulesFactory.setRules(rules);
+        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), rules.getTotalShips()));
+        BotFactory.setAlgorithm(new RussianBot(null));
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
         Dependencies.injectApiClient(apiClient);
         Dependencies.injectInvitationManager(new InvitationManager(apiClient));
-        Dependencies.injectAchievementsManager(new AchievementsManager(apiClient));
+        Dependencies.injectAchievementsManager(new AchievementsManager(apiClient, rules));
         Dependencies.injectProgressManager(new ProgressManager(apiClient, GameSettings.get()));
-        Dependencies.injectAndroidDevice(new AndroidDevice(application));
+        Dependencies.injectAndroidDevice(device);
 
-        initLogger(application, Dependencies.getDevice().isDebug());
-        initAnalytics(application);
-
-        Bitmaps.getInstance().loadBitmaps(application.getResources());
-
-        // dependency injection
-        RulesFactory.setRules(new RussianRules(application.getResources()));
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), RulesFactory.getRules().getTotalShips()));
-        BotFactory.setAlgorithm(new RussianBot(null));
+        Bitmaps.getInstance().loadBitmaps(resources);
     }
 
     private static void initAnalytics(Application application) {
