@@ -141,6 +141,7 @@ public class GameSettings {
         internal.putString(PROGRESS, ProgressUtils.toJson(progress).toString());
     }
 
+    @NonNull
     public Progress getProgress() {
         String json = internal.getString(PROGRESS, "");
         Progress progress;

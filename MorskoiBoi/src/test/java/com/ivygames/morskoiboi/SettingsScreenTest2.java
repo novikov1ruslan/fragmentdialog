@@ -37,8 +37,8 @@ public class SettingsScreenTest2 {
     public void setup() {
         initMocks(this);
 //        activity = Robolectric.buildActivity(TestActivity.class).get();
-        Dependencies.injectApiClient(apiClient);
-        Dependencies.injectAndroidDevice(device);
+        Dependencies.inject(apiClient);
+        Dependencies.inject(device);
         when(device.isGoogleServicesAvailable()).thenReturn(false);
         activity = new TestActivity();
         ShadowsAdapter shadowsAdapter = Robolectric.getShadowsAdapter();

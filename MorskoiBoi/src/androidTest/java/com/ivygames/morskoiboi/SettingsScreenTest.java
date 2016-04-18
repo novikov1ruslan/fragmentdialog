@@ -33,8 +33,6 @@ import static org.mockito.Mockito.when;
 
 public class SettingsScreenTest extends ScreenTest {
 
-    private GameSettings settings = Dependencies.getSettings();
-
     private VibratorFacade vibratorFacade;
 
     @Before
@@ -45,12 +43,13 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new SettingsScreen(activity(), apiClient(), settings, vibratorFacade);
+        return new SettingsScreen(activity(), apiClient(), settings(), vibratorFacade);
     }
 
     @Test
     public void when_signed_in__sign_out_button_present() {
         setSignedIn(true);
+        setScreen(newScreen());
         assertThat(signInBar().getVisibility(), is(View.GONE));
         assertThat(signOutBar().getVisibility(), is(View.VISIBLE));
     }
@@ -58,6 +57,7 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void when_NOT_signed_in__sign_in_button_present() {
         setSignedIn(false);
+        setScreen(newScreen());
         assertThat(signInBar().getVisibility(), is(View.VISIBLE));
         assertThat(signOutBar().getVisibility(), is(View.GONE));
     }
@@ -65,6 +65,7 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void when_sign_in_button_is_pressed__connect() {
         setSignedIn(false);
+        setScreen(newScreen());
         onView(withId(R.id.sign_in_button)).perform(click());
         verify(apiClient(), times(1)).connect();
         signInSucceeded((SignInListener) screen());
@@ -74,6 +75,7 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void when_sign_out_button_is_pressed__disconnect_and_hide_sign_out() {
         setSignedIn(true);
+        setScreen(newScreen());
         onView(withId(R.id.sign_out_btn)).perform(click());
         verify(apiClient(), times(1)).disconnect();
         assertThat(signOutBar().getVisibility(), is(View.GONE));
@@ -81,24 +83,24 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Test
     public void if_sound_on__on_image_is_shown() {
-        settings.setSound(true);
+        setSound(true);
         setScreen(newScreen());
         onView(soundButton()).check(matches(withDrawable(R.drawable.sound_on)));
     }
 
     @Test
     public void if_sound_off__off_image_is_shown() {
-        settings.setSound(false);
+        setSound(false);
         setScreen(newScreen());
         onView(soundButton()).check(matches(withDrawable(R.drawable.sound_off)));
     }
 
     @Test
     public void when_sound_button_is_pressed__sound_setting_toggled() {
+        setSound(true);
         setScreen(newScreen());
-        settings.setSound(true);
         onView(withId(R.id.sound_btn)).perform(click());
-        assertThat(settings.isSoundOn(), is(false));
+        verify(settings(), times(1)).setSound(false);
     }
 
     @Test
@@ -118,7 +120,7 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void if_vibration_on__on_image_is_shown() {
         hasVibration();
-        settings.setVibration(true);
+        setVibration(true);
         setScreen(newScreen());
         onView(vibrationButton()).check(matches(withDrawable(R.drawable.vibrate_on)));
     }
@@ -126,7 +128,7 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void if_vibration_off__off_image_is_shown() {
         hasVibration();
-        settings.setVibration(false);
+        setVibration(false);
         setScreen(newScreen());
         onView(vibrationButton()).check(matches(withDrawable(R.drawable.vibrate_off)));
     }
@@ -134,11 +136,11 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void when_vibration_button_is_pressed__vibration_setting_toggled() {
         hasVibration();
+        setVibration(true);
         setScreen(newScreen());
-        settings.setVibration(true);
         Matcher<View> viewMatcher = vibrationButton();
         onView(viewMatcher).perform(click());
-        assertThat(settings.isVibrationOn(), is(false));
+        verify(settings(), times(1)).setVibration(false);
     }
 
     @Test
@@ -210,6 +212,14 @@ public class SettingsScreenTest extends ScreenTest {
 
     private void vibrationAbsent() {
         when(vibratorFacade.hasVibrator()).thenReturn(false);
+    }
+
+    private void setVibration(boolean on) {
+        when(settings().isVibrationOn()).thenReturn(on);
+    }
+
+    private void setSound(boolean on) {
+        when(settings().isSoundOn()).thenReturn(on);
     }
 
 }

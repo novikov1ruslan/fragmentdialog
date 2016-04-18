@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
 
@@ -21,8 +20,6 @@ import static org.hamcrest.core.Is.is;
 
 public class RanksScreenTest extends ScreenTest {
 
-    private GameSettings settings = Dependencies.getSettings();
-
     @Before
     public void setup() {
         super.setup();
@@ -30,7 +27,7 @@ public class RanksScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new RanksListScreen(activity(), settings);
+        return new RanksListScreen(activity(), settings());
     }
 
     @Test
@@ -42,15 +39,15 @@ public class RanksScreenTest extends ScreenTest {
 
     @Test
     public void ScoresCorrectlyDisplayed() {
-        int scores = 5678;
-        Progress progress = new Progress(scores);
-        settings.setProgress(progress);
+        final int scores = 5678;
+        setProgress(scores);
         setScreen(newScreen());
         onView(withId(R.id.total_score)).check(matches(withText("" + scores)));
     }
 
     @Test
     public void WhenRankInSettingsIsCaptain__CaptainImageIsDisplayed() {
+        setProgress(Rank.CAPTAIN.getScore());
         setScreen(newScreen());
         ListView list = (ListView) activity().findViewById(R.id.ranks);
         ListAdapter adapter = list.getAdapter();

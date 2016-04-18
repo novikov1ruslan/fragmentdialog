@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
 
@@ -26,7 +25,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,18 +34,15 @@ import static org.mockito.Mockito.when;
 public class SelectGameScreenTest extends ScreenTest {
 
     private static final java.lang.String TEST_NAME = "Sagi";
-    private GameSettings settings;
 
     @Before
     public void setup() {
-        settings = mock(GameSettings.class);
-        when(settings.getProgress()).thenReturn(new Progress(Rank.CAPTAIN.getScore()));
         super.setup();
     }
 
     @Override
     public BattleshipScreen newScreen() {
-        return new SelectGameScreen(activity(), settings);
+        return new SelectGameScreen(activity(), settings());
     }
 
     @Test
@@ -59,32 +54,32 @@ public class SelectGameScreenTest extends ScreenTest {
 
     @Test
     public void if_needs_to_show_help__tutorial_shown() {
-        when(settings.showProgressHelp()).thenReturn(true);
+        when(settings().showProgressHelp()).thenReturn(true);
         setScreen(newScreen());
         onView(tutorial()).check(matches(isDisplayed()));
     }
 
     @Test
     public void if_no_need_to_show_help__tutorial_NOT_shown() {
-        when(settings.showProgressHelp()).thenReturn(false);
+        when(settings().showProgressHelp()).thenReturn(false);
         setScreen(newScreen());
         onView(tutorial()).check(doesNotExist());
     }
 
     @Test
     public void if_tutorial_NOT_dismissed__it_is_shown_again() {
-        when(settings.showProgressHelp()).thenReturn(true);
+        when(settings().showProgressHelp()).thenReturn(true);
         setScreen(newScreen());
         pressBack();
-        verify(settings, never()).hideProgressHelp();
+        verify(settings(), never()).hideProgressHelp();
     }
 
     @Test
     public void if_tutorial_dismissed__it_is_not_shown_again() {
-        when(settings.showProgressHelp()).thenReturn(true);
+        when(settings().showProgressHelp()).thenReturn(true);
         setScreen(newScreen());
         onView(withId(R.id.got_it_button)).perform(click());
-        verify(settings, times(1)).hideProgressHelp();
+        verify(settings(), times(1)).hideProgressHelp();
     }
 
     @Test
@@ -96,7 +91,7 @@ public class SelectGameScreenTest extends ScreenTest {
 
     @Test
     public void proper_name_is_shown() {
-        when(settings.getPlayerName()).thenReturn(TEST_NAME);
+        when(settings().getPlayerName()).thenReturn(TEST_NAME);
         setScreen(newScreen());
         onView(withId(R.id.player_name)).check(matches(withText(TEST_NAME)));
     }
@@ -104,7 +99,7 @@ public class SelectGameScreenTest extends ScreenTest {
     @Test
     public void proper_rank_is_shown() {
         Rank rank = Rank.CAPTAIN;
-        when(settings.getProgress()).thenReturn(new Progress(rank.getScore()));
+        setProgress(rank.getScore());
         setScreen(newScreen());
         onView(withId(R.id.rank_text)).check(matches(withText(rank.getNameRes())));
         onView(withId(R.id.player_rank)).check(matches(withDrawable(rank.getBitmapRes())));
@@ -175,6 +170,7 @@ public class SelectGameScreenTest extends ScreenTest {
     @Test
     public void when_internet_button_pressed__internet_game_screen_opens() {
         setSignedIn(true);
+        setScreen(newScreen());
         onView(internetButton()).perform(click());
         checkDisplayed(INTERNET_GAME_LAYOUT);
     }
@@ -182,6 +178,7 @@ public class SelectGameScreenTest extends ScreenTest {
     @Test
     public void when_internet_button_pressed_but_NOT_signed_in__sign_in_dialog_opens() {
         setSignedIn(false);
+        setScreen(newScreen());
         onView(internetButton()).perform(click());
         onView(withText(R.string.internet_request)).check(matches(isDisplayed()));
     }
@@ -189,6 +186,7 @@ public class SelectGameScreenTest extends ScreenTest {
     @Test
     public void when_sign_in_pressed__internet_screen_displayed() {
         setSignedIn(false);
+        setScreen(newScreen());
         onView(internetButton()).perform(click());
         onView(withText(R.string.sign_in)).perform(click());
         verify(apiClient(), times(1)).connect();

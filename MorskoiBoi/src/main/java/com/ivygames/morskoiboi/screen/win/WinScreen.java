@@ -52,7 +52,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final Collection<Ship> mShips;
 
-    private int mScores;
+    private final int mScores;
 
     @NonNull
     private final SoundBar mSoundBar;
@@ -94,7 +94,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
                 mAchievementsManager.processAchievements(mGame, mShips);
             }
         }
-        updateProgress();
+        processScores();
     }
 
     @Override
@@ -128,8 +128,10 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             }
         });
 
+        // scorables ---
         mLayout.setTime(mTime);
         mLayout.setTotalScore(mScores);
+        // scorables ---
         mLayout.setShips(mShips);
 
         mLayout.setSignInClickListener(new OnClickListener() {
@@ -174,16 +176,12 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mLayout.hideSignInForAchievements();
     }
 
-    private void updateProgress() {
-        int progress = calculateScoresForGameType();
-
-        if (mOpponentSurrendered) {
-            progress = progress / 2;
-        }
+    private void processScores() {
+        int scores = calculateScores(mGame.getType(), mOpponentSurrendered);
 
         int penalty = mSettings.getProgressPenalty();
-        Ln.d("updating player's progress [" + progress + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
-        int progressIncrement = progress - penalty;
+        Ln.d("updating player's progress [" + scores + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
+        int progressIncrement = scores - penalty;
         if (progressIncrement > 0) {
             mProgressManager.incrementProgress(progressIncrement);
             mSettings.setProgressPenalty(0);
@@ -192,16 +190,19 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         }
     }
 
-    private int calculateScoresForGameType() {
+    private int calculateScores(Type type, boolean surrendered) {
+        int progress = calculateScoresForGameType(type);
+        if (surrendered) {
+            progress = progress / 2;
+        }
+        return progress;
+    }
+
+    private int calculateScoresForGameType(Type type) {
         int progress;
-        if (mGame.getType() == Type.VS_ANDROID) {
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in test mode - achievements not updated");
-            } else {
-                mAchievementsManager.processAchievements(mGame, mShips);
-            }
+        if (type == Type.VS_ANDROID) {
             progress = mScores * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
-        } else if (mGame.getType() == Type.INTERNET) {
+        } else if (type == Type.INTERNET) {
             progress = InternetGame.WIN_PROGRESS_POINTS;
         } else {
             progress = BluetoothGame.WIN_PROGRESS_POINTS;

@@ -3,9 +3,12 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
+import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
 
@@ -23,7 +26,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,12 +41,19 @@ public class WinScreenTest extends ScreenTest {
     private boolean surrendered;
     private Game game;
     private Rules rules;
+    private AchievementsManager achievementsManager;
+    private ProgressManager progressManager;
 
     @Before
     public void setup() {
         super.setup();
         game = mock(Game.class);
         rules = mock(Rules.class);
+        achievementsManager = mock(AchievementsManager.class);
+        Dependencies.inject(achievementsManager);
+        progressManager = mock(ProgressManager.class);
+        Dependencies.inject(progressManager);
+
         Model.instance.game = game;
         RulesFactory.setRules(rules);
     }
@@ -51,10 +64,43 @@ public class WinScreenTest extends ScreenTest {
     }
 
     @Test
+    public void WhenScreenDisplayed__GamesCounterIncremented() {
+        setScreen(newScreen());
+        verify(settings(), times(1)).incrementGamesPlayedCounter();
+    }
+
+    @Test
+    public void WhenScreenDisplayedForAndroidGame__AchievementsProcessed() {
+        setGameType(Game.Type.VS_ANDROID);
+        setScreen(newScreen());
+        verify(achievementsManager, times(1)).processAchievements(any(Game.class), any(Collection.class));
+    }
+
+    @Test
+    public void WhenScreenDisplayed__ProgressUpdated() {
+        setGameType(Game.Type.VS_ANDROID);
+        setScores(100);
+        setPenalty(0);
+        setScreen(newScreen());
+        verify(progressManager, times(1)).incrementProgress(anyInt());
+        verify(settings(), times(1)).setProgressPenalty(0);
+    }
+
+    @Test
+    public void WhenScreenDisplayed__PenaltyUpdated() {
+        setGameType(Game.Type.VS_ANDROID);
+        setScores(100);
+        setPenalty(200);
+        setScreen(newScreen());
+        verify(progressManager, never()).incrementProgress(anyInt());
+        verify(settings(), times(1)).setProgressPenalty(100);
+    }
+
+    @Test
     public void WhenGameTypeIsAndroid__ScoresAndDurationShown() {
         setGameType(Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(135000L);
-        when(rules.calcTotalScores(any(Collection.class), any(Game.class))).thenReturn(100);
+        setScores(100);
         setScreen(newScreen());
         onView(withId(R.id.time)).check(matches(withText("2:15")));
         onView(withId(R.id.total_scores)).check(matches(withText("100")));
@@ -66,10 +112,6 @@ public class WinScreenTest extends ScreenTest {
         when(apiClient().isConnected()).thenReturn(true);
         setScreen(newScreen());
         checkNotDisplayed(signInBar());
-    }
-
-    private void setGameType(Game.Type type) {
-        when(game.getType()).thenReturn(type);
     }
 
     @Test
@@ -92,10 +134,20 @@ public class WinScreenTest extends ScreenTest {
     public void WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed2() {
         setGameType(Game.Type.VS_ANDROID);
         setSignedIn(false);
+        setScreen(newScreen());
         onView(withId(R.id.sign_in_button)).perform(click());
         verify(apiClient(), times(1)).connect();
         signInSucceeded((SignInListener) screen());
         checkNotDisplayed(signInBar());
+    }
+
+    @Test
+    public void WhenScreenDestroyedForAndroidConnectedGame__ScoresSubmitted() {
+        setGameType(Game.Type.VS_ANDROID);
+        setSignedIn(true);
+        setScreen(newScreen());
+        pressBack();
+        verify(apiClient(), times(1)).submitScore(anyString(), anyInt());
     }
 
     @Test
@@ -109,5 +161,17 @@ public class WinScreenTest extends ScreenTest {
     @NonNull
     private Matcher<View> signInBar() {
         return withId(R.id.sign_in_bar);
+    }
+
+    private void setGameType(Game.Type type) {
+        when(game.getType()).thenReturn(type);
+    }
+
+    private void setScores(int scores) {
+        when(rules.calcTotalScores(any(Collection.class), any(Game.class))).thenReturn(scores);
+    }
+
+    private void setPenalty(Integer penalty) {
+        when(settings().getProgressPenalty()).thenReturn(penalty);
     }
 }

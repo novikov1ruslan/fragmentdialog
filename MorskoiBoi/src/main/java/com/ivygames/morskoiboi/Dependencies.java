@@ -15,7 +15,7 @@ public class Dependencies {
     private static AndroidDevice sAndroidDevice;
     private static GameSettings sGameSettings;
 
-    static void injectApiClient(GoogleApiClientWrapper apiClient) {
+    static void inject(GoogleApiClientWrapper apiClient) {
         sApiClient = apiClient;
     }
 
@@ -24,7 +24,7 @@ public class Dependencies {
     }
 
 
-    static void injectInvitationManager(InvitationManager invitationManager) {
+    static void inject(InvitationManager invitationManager) {
         sInvitationManager = invitationManager;
     }
 
@@ -32,7 +32,7 @@ public class Dependencies {
         return sInvitationManager;
     }
 
-    static void injectAchievementsManager(AchievementsManager achievementsManager) {
+    static void inject(AchievementsManager achievementsManager) {
         sAchievementsManager = achievementsManager;
     }
 
@@ -40,7 +40,7 @@ public class Dependencies {
         return sAchievementsManager;
     }
 
-    static void injectProgressManager(ProgressManager progressManager) {
+    static void inject(ProgressManager progressManager) {
         sProgressManager = progressManager;
     }
 
@@ -48,7 +48,7 @@ public class Dependencies {
         return sProgressManager;
     }
 
-    public static void injectAndroidDevice(@NonNull AndroidDevice androidDevice) {
+    public static void inject(@NonNull AndroidDevice androidDevice) {
         sAndroidDevice = androidDevice;
     }
 

@@ -55,6 +55,7 @@ public class ProgressManager {
 
     public ProgressManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
+        // TODO: setting do not belong to this class
         mSettings = settings;
     }
 

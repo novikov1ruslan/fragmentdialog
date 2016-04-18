@@ -7,6 +7,7 @@ import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
@@ -63,6 +64,7 @@ public abstract class ScreenTest {
         apiClient = rule.getApiClient();
         androidDevice = rule.getAndroidDevice();
         invitationManager = Dependencies.getInvitationManager();
+        setProgress(0);
     }
 
     @After
@@ -80,9 +82,8 @@ public abstract class ScreenTest {
         when(androidDevice.isBillingAvailable()).thenReturn(isAvailable);
     }
 
-    protected void setSignedIn(boolean signedIn) {
+    public void setSignedIn(boolean signedIn) {
         when(apiClient.isConnected()).thenReturn(signedIn);
-        setScreen(newScreen());
     }
 
     protected final BattleshipScreen screen() {
@@ -148,6 +149,10 @@ public abstract class ScreenTest {
         return invitationManager;
     }
 
+    protected final GameSettings settings() {
+        return rule.settings();
+    }
+
     protected static Matcher<View> withDrawable(final int resourceId) {
         return new DrawableMatcher(resourceId);
     }
@@ -162,5 +167,9 @@ public abstract class ScreenTest {
 
     protected void checkDoesNotExist(Matcher<View> view) {
         onView(view).check(doesNotExist());
+    }
+
+    protected final void setProgress(int progress) {
+        when(settings().getProgress()).thenReturn(new Progress(progress));
     }
 }

@@ -33,6 +33,7 @@ public class BluetoothScreenTest extends ScreenTest {
 
     @Test
     public void when_back_button_pressed__select_game_screen_opens() {
+        setProgress(100);
         setScreen(newScreen());
         doNothing().when(adapter).cancelDiscovery();
         pressBack();

@@ -51,11 +51,11 @@ public class ApplicationInitializer {
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
         Dependencies.inject(settings);
-        Dependencies.injectApiClient(apiClient);
-        Dependencies.injectInvitationManager(new InvitationManager(apiClient));
-        Dependencies.injectAchievementsManager(new AchievementsManager(apiClient, rules));
-        Dependencies.injectProgressManager(new ProgressManager(apiClient, settings));
-        Dependencies.injectAndroidDevice(device);
+        Dependencies.inject(apiClient);
+        Dependencies.inject(new InvitationManager(apiClient));
+        Dependencies.inject(new AchievementsManager(apiClient, rules));
+        Dependencies.inject(new ProgressManager(apiClient, settings));
+        Dependencies.inject(device);
 
         Bitmaps.getInstance().loadBitmaps(resources);
     }

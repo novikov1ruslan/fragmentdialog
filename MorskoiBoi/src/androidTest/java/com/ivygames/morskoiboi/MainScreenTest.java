@@ -25,23 +25,19 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
 public class MainScreenTest extends ScreenTest {
 
-    private GameSettings settings;
-
     @Before
     public void startup() {
-        settings = mock(GameSettings.class);
         super.setup();
     }
 
     @Override
     public BattleshipScreen newScreen() {
-        return new MainScreen(activity(), apiClient(), settings);
+        return new MainScreen(activity(), apiClient(), settings());
     }
 
     @Test
@@ -75,14 +71,14 @@ public class MainScreenTest extends ScreenTest {
 
     @Test
     public void RateDialogShown() {
-        when(settings.shouldProposeRating()).thenReturn(true);
+        when(settings().shouldProposeRating()).thenReturn(true);
         setScreen(newScreen());
         checkDisplayed(withText(R.string.rate_request));
     }
 
     @Test
     public void RateDialogNotShown() {
-        when(settings.shouldProposeRating()).thenReturn(false);
+        when(settings().shouldProposeRating()).thenReturn(false);
         setScreen(newScreen());
         checkDoesNotExist(withText(R.string.rate_request));
     }
@@ -130,12 +126,14 @@ public class MainScreenTest extends ScreenTest {
     @Test
     public void when_signed_in__plus_one_button_is_displayed() {
         setSignedIn(true);
+        setScreen(newScreen());
         onView(pusOneButton()).check(matches(isDisplayed()));
     }
 
     @Test
     public void when_NOT_signed_in__plus_one_button_is_NOT_displayed() {
         setSignedIn(false);
+        setScreen(newScreen());
         onView(pusOneButton()).check(matches(not(isDisplayed())));
     }
 
@@ -152,6 +150,7 @@ public class MainScreenTest extends ScreenTest {
     @Test
     public void when_achievements_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
         setSignedIn(false);
+        setScreen(newScreen());
         onView(achievementsButton()).perform(click());
         checkDisplayed(withText(R.string.achievements_request));
     }
@@ -159,6 +158,7 @@ public class MainScreenTest extends ScreenTest {
     @Test
     public void when_leader_board_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
         setSignedIn(false);
+        setScreen(newScreen());
         onView(leaderboardButton()).perform(click());
         onView(withText(R.string.leaderboards_request)).check(matches(isDisplayed()));
     }
@@ -170,6 +170,7 @@ public class MainScreenTest extends ScreenTest {
         intent.setType(expectedType);
         when(apiClient().getAchievementsIntent()).thenReturn(intent);
         setSignedIn(true);
+        setScreen(newScreen());
         clickForIntent(achievementsButton(), hasType(expectedType));
     }
 
@@ -180,6 +181,7 @@ public class MainScreenTest extends ScreenTest {
         intent.setType(expectedType);
         when(apiClient().getLeaderboardIntent(anyString())).thenReturn(intent);
         setSignedIn(true);
+        setScreen(newScreen());
         clickForIntent(leaderboardButton(), hasType(expectedType));
     }
 

@@ -9,25 +9,30 @@ import com.ivygames.morskoiboi.progress.ProgressManager;
 import static org.mockito.Mockito.mock;
 
 public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
+
     private GoogleApiClientWrapper apiClient;
     private AndroidDevice androidDevice;
+    private GameSettings settings;
 
     public ScreenTestRule() {
         super(BattleshipActivity.class);
+        GameConstants.IS_TEST_MODE = false;
+        settings = mock(GameSettings.class);
+        Dependencies.inject(settings);
     }
 
     @Override
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();
         apiClient = mock(GoogleApiClientWrapper.class);
-        Dependencies.injectApiClient(apiClient);
-        Dependencies.injectInvitationManager(mock(InvitationManager.class));
-        Dependencies.injectInvitationManager(mock(InvitationManager.class));
-        Dependencies.injectAchievementsManager(mock(AchievementsManager.class));
-        Dependencies.injectProgressManager(mock(ProgressManager.class));
+        Dependencies.inject(apiClient);
+        Dependencies.inject(mock(InvitationManager.class));
+        Dependencies.inject(mock(InvitationManager.class));
+        Dependencies.inject(mock(AchievementsManager.class));
+        Dependencies.inject(mock(ProgressManager.class));
 
         androidDevice = mock(AndroidDevice.class);
-        Dependencies.injectAndroidDevice(androidDevice);
+        Dependencies.inject(androidDevice);
     }
 
     public GoogleApiClientWrapper getApiClient() {
@@ -36,5 +41,9 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
     public AndroidDevice getAndroidDevice() {
         return androidDevice;
+    }
+
+    public GameSettings settings() {
+        return settings;
     }
 }

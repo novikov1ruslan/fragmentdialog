@@ -14,7 +14,6 @@ public class BoardSetupScreenTest extends ScreenTest {
     @Before
     public void setup() {
         super.setup();
-        GameConstants.IS_TEST_MODE = false;
     }
 
     @Override
