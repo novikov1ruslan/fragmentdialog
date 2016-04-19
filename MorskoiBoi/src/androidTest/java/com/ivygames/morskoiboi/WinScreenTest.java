@@ -5,8 +5,6 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -36,12 +34,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class WinScreenTest extends ScreenTest {
+public class WinScreenTest extends OnlineScreenTest {
 
-    private static final String OPPONENT_NAME = "Sagi";
     private Collection<Ship> fleet = new ArrayList<>();
     private boolean surrendered;
-    private Game game;
     private Rules rules;
     private AchievementsManager achievementsManager;
     private ProgressManager progressManager;
@@ -49,18 +45,13 @@ public class WinScreenTest extends ScreenTest {
     @Before
     public void setup() {
         super.setup();
-        game = mock(Game.class);
         rules = mock(Rules.class);
-        Opponent opponent = mock(Opponent.class);
         achievementsManager = mock(AchievementsManager.class);
         Dependencies.inject(achievementsManager);
         progressManager = mock(ProgressManager.class);
         Dependencies.inject(progressManager);
 
-        Model.instance.game = game;
-        Model.instance.opponent = opponent;
         RulesFactory.setRules(rules);
-        when(opponent.getName()).thenReturn(OPPONENT_NAME);
     }
 
     @Override
@@ -229,7 +220,7 @@ public class WinScreenTest extends ScreenTest {
     @Test
     public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
         WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
-        clickOn(withText(R.string.ok));
+        clickOn(okButton());
         backToSelectGameCommand();
     }
 
@@ -260,11 +251,6 @@ public class WinScreenTest extends ScreenTest {
         expectSubmitScoreBeCalled(never());
     }
 
-    private void backToSelectGameCommand() {
-        verify(game, times(1)).finish();
-        checkDisplayed(SELECT_GAME_LAYOUT);
-    }
-
     private void expectSubmitScoreBeCalled(VerificationMode never) {
         verify(apiClient(), never).submitScore(anyString(), anyInt());
     }
@@ -272,10 +258,6 @@ public class WinScreenTest extends ScreenTest {
     @NonNull
     private Matcher<View> signInBar() {
         return withId(R.id.sign_in_bar);
-    }
-
-    private void setGameType(Game.Type type) {
-        when(game.getType()).thenReturn(type);
     }
 
     private void setScores(int scores) {
@@ -303,11 +285,6 @@ public class WinScreenTest extends ScreenTest {
     @NonNull
     private Matcher<View> scoresView() {
         return withId(R.id.total_scores);
-    }
-
-    @NonNull
-    protected Matcher<View> cancelButton() {
-        return withText(R.string.cancel);
     }
 
     @NonNull

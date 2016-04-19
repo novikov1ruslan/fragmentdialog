@@ -47,6 +47,7 @@ public abstract class ScreenTest {
     protected static final Matcher<View> BOARD_SETUP_LAYOUT = instanceOf(BoardSetupLayout.class);
     protected static final Matcher<View> INTERNET_GAME_LAYOUT = instanceOf(InternetGameLayout.class);
     protected static final Matcher<View> WIN_LAYOUT = instanceOf(WinLayout.class);
+//    protected static final Matcher<View> LOST_LAYOUT = instanceOf(LostLayout.class);
 
     @Rule
     public ScreenTestRule rule = new ScreenTestRule();

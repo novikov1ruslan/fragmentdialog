@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 
@@ -15,26 +13,15 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
-public class LostScreenTest extends ScreenTest {
-    private static final String OPPONENT_NAME = "Sagi";
-
-    private Game game;
+public class LostScreenTest extends OnlineScreenTest {
 
     @Before
     public void setup() {
         super.setup();
-        game = mock(Game.class);
-        Opponent opponent = mock(Opponent.class);
-        Model.instance.game = game;
-        Model.instance.opponent = opponent;
-        when(opponent.getName()).thenReturn(OPPONENT_NAME);
     }
 
     @Override
@@ -57,12 +44,27 @@ public class LostScreenTest extends ScreenTest {
     }
 
     @Test
-    public void WhenBackButtonPressedForNonAndroid__SelectGameScreenShown() {
+    public void WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown() {
         setGameType(Game.Type.BLUETOOTH);
         showScreen();
         pressBack();
         String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
         checkDisplayed(withText(message));
+    }
+
+    @Test
+    public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
+        WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown();
+        clickOn(okButton());
+        backToSelectGameCommand();
+    }
+
+    @Test
+    public void PressingCancelOnWantToLeaveDialog__RemovesDialog() {
+        WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown();
+        clickOn(cancelButton());
+//        checkDisplayed(LOST);
+        checkDoesNotExist(cancelButton());
     }
 
     @Test
@@ -90,10 +92,6 @@ public class LostScreenTest extends ScreenTest {
         checkDisplayed(BOARD_SETUP_LAYOUT);
     }
 
-    private void setGameType(Game.Type type) {
-        when(game.getType()).thenReturn(type);
-    }
-
     @NonNull
     private Matcher<View> noButton() {
         return withText(R.string.no);
@@ -104,8 +102,4 @@ public class LostScreenTest extends ScreenTest {
         return withText(R.string.yes);
     }
 
-    private void backToSelectGameCommand() {
-        verify(game, times(1)).finish();
-        checkDisplayed(SELECT_GAME_LAYOUT);
-    }
 }
