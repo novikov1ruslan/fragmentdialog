@@ -105,49 +105,49 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (WinLayoutSmall) getLayoutInflater().inflate(R.layout.win, container, false);
-        if (mGame.getType() != Type.VS_ANDROID) {
+        if (mGame.getType() == Type.VS_ANDROID) {
+            mLayout.setDuration(mTime);
+            mLayout.setTotalScore(mScores);
+            mLayout.setSignInClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "win");
+                    mApiClient.connect();
+                }
+            });
+        } else {
             Ln.d("online game - hiding scores", mGame.getType());
-            mLayout.hideScorables();
+            mLayout.hideScores();
+            mLayout.hideDuration();
+            mLayout.hideSignInForAchievements();
         }
-
-        // TODO: !surrendered
-        mLayout.setYesClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                UiEvent.send("continue", "win");
-                backToBoardSetup();
-            }
-        });
-
-        mLayout.setNoClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                UiEvent.send("don't_continue", "win");
-                doNotContinue();
-            }
-        });
-
-        // scorables ---
-        mLayout.setTime(mTime);
-        mLayout.setTotalScore(mScores);
-        // scorables ---
-        mLayout.setShips(mShips);
-
-        mLayout.setSignInClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "win");
-                mApiClient.connect();
-            }
-        });
 
         if (mOpponentSurrendered) {
             Ln.d("opponent has surrendered - hiding continue option");
-            mLayout.opponentSurrendered();
+            mLayout.hideYesNoButtons();
+            mLayout.showContinueButton();
+        } else {
+            mLayout.setYesClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    UiEvent.send("continue", "win");
+                    backToBoardSetup();
+                }
+            });
+
+            mLayout.setNoClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    UiEvent.send("don't_continue", "win");
+                    doNotContinue();
+                }
+            });
         }
+
+        mLayout.setShips(mShips);
 
         Ln.d(this + " screen created");
         return mLayout;

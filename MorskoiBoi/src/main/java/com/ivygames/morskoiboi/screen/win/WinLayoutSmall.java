@@ -59,7 +59,7 @@ public class WinLayoutSmall extends NotepadLinearLayout {
         // for extension
     }
 
-    public void setTime(long millis) {
+    public void setDuration(long millis) {
         mTimeView.setText(GameUtils.formatDuration(millis));
     }
 
@@ -75,18 +75,19 @@ public class WinLayoutSmall extends NotepadLinearLayout {
         mSignInBar.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * removes time, scores_container and sign_in_bar from the layout
-     */
-    public void hideScorables() {
-        mScoreContainer.setVisibility(View.GONE);
-        // TODO: refactor
-        mSignInBar.setVisibility(View.INVISIBLE);
+    public void hideDuration() {
         mTimeView.setVisibility(View.GONE);
     }
 
-    public void opponentSurrendered() {
+    public void hideScores() {
+        mScoreContainer.setVisibility(View.GONE);
+    }
+
+    public void hideYesNoButtons() {
         findViewById(R.id.continue_panel).setVisibility(GONE);
+    }
+
+    public void showContinueButton() {
         findViewById(R.id.surrender_continue_panel).setVisibility(VISIBLE);
     }
 
