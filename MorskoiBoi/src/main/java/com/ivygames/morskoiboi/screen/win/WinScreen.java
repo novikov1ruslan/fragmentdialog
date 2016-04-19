@@ -110,6 +110,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             mLayout.hideScorables();
         }
 
+        // TODO: !surrendered
         mLayout.setYesClickListener(new OnClickListener() {
 
             @Override
@@ -123,7 +124,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
             @Override
             public void onClick(View v) {
-                UiEvent.send("dont_continue", "win");
+                UiEvent.send("don't_continue", "win");
                 doNotContinue();
             }
         });

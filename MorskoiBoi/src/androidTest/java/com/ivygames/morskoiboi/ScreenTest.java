@@ -18,6 +18,7 @@ import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
 import com.ivygames.morskoiboi.screen.ranks.RanksLayout;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
+import com.ivygames.morskoiboi.screen.win.WinLayout;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -45,6 +46,7 @@ public abstract class ScreenTest {
     protected static final Matcher<View> RANKS_LAYOUT = instanceOf(RanksLayout.class);
     protected static final Matcher<View> BOARD_SETUP_LAYOUT = instanceOf(BoardSetupLayout.class);
     protected static final Matcher<View> INTERNET_GAME_LAYOUT = instanceOf(InternetGameLayout.class);
+    protected static final Matcher<View> WIN_LAYOUT = instanceOf(WinLayout.class);
 
     @Rule
     public ScreenTestRule rule = new ScreenTestRule();
@@ -88,6 +90,10 @@ public abstract class ScreenTest {
 
     protected final BattleshipScreen screen() {
         return screen;
+    }
+
+    protected final void showScreen() {
+        setScreen(newScreen());
     }
 
     protected void setScreen(final BattleshipScreen screen) {
@@ -157,19 +163,31 @@ public abstract class ScreenTest {
         return new DrawableMatcher(resourceId);
     }
 
-    protected void checkDisplayed(Matcher<View> view) {
+    protected final void checkDisplayed(Matcher<View> view) {
         onView(view).check(matches(isDisplayed()));
     }
 
-    protected void checkNotDisplayed(Matcher<View> view) {
+    protected final void checkNotDisplayed(Matcher<View> view) {
         onView(view).check(matches(not(isDisplayed())));
     }
 
-    protected void checkDoesNotExist(Matcher<View> view) {
+    protected final void checkDoesNotExist(Matcher<View> view) {
         onView(view).check(doesNotExist());
     }
 
     protected final void setProgress(int progress) {
         when(settings().getProgress()).thenReturn(new Progress(progress));
+    }
+
+    protected final String getString(int id, String text) {
+        return activity().getString(id, text);
+    }
+
+    protected final String getString(int id) {
+        return activity().getString(id);
+    }
+
+    protected static void clickOn(Matcher<View> viewMatcher) {
+        onView(viewMatcher).perform(click());
     }
 }

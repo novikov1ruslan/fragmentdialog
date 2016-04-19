@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.utils;
 
-import com.ivygames.morskoiboi.RulesFactory;
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -20,16 +21,16 @@ public final class GameUtils {
         // utility
     }
 
-    public static Collection<Ship> populateFullHorizontalFleet(Collection<Ship> ships) {
-        int[] totalShips = RulesFactory.getRules().getTotalShips();
+    public static Collection<Ship> populateFullHorizontalFleet(@NonNull Collection<Ship> ships,
+                                                               @NonNull int[] totalShips) {
         for (int i = totalShips.length - 1; i >= 0 ; i--) {
             ships.add(new Ship(totalShips[i]));
         }
         return ships;
     }
 
-    public static Collection<Ship> generateFullHorizontalFleet() {
-        return populateFullHorizontalFleet(new ArrayList<Ship>());
+    public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] totalShips) {
+        return populateFullHorizontalFleet(new ArrayList<Ship>(), totalShips);
     }
 
     /**

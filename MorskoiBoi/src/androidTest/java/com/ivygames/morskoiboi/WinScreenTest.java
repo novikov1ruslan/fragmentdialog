@@ -6,7 +6,7 @@ import android.view.View;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -15,13 +15,13 @@ import com.ivygames.morskoiboi.screen.win.WinScreen;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.verification.VerificationMode;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -37,25 +37,30 @@ import static org.mockito.Mockito.when;
 
 public class WinScreenTest extends ScreenTest {
 
+    private static final String OPPONENT_NAME = "Sagi";
     private Collection<Ship> fleet = new ArrayList<>();
     private boolean surrendered;
     private Game game;
     private Rules rules;
     private AchievementsManager achievementsManager;
     private ProgressManager progressManager;
+    private Opponent opponent;
 
     @Before
     public void setup() {
         super.setup();
         game = mock(Game.class);
         rules = mock(Rules.class);
+        opponent = mock(Opponent.class);
         achievementsManager = mock(AchievementsManager.class);
         Dependencies.inject(achievementsManager);
         progressManager = mock(ProgressManager.class);
         Dependencies.inject(progressManager);
 
         Model.instance.game = game;
+        Model.instance.opponent = opponent;
         RulesFactory.setRules(rules);
+        when(opponent.getName()).thenReturn(OPPONENT_NAME);
     }
 
     @Override
@@ -65,34 +70,39 @@ public class WinScreenTest extends ScreenTest {
 
     @Test
     public void WhenScreenDisplayed__GamesCounterIncremented() {
-        setScreen(newScreen());
+        showScreen();
         verify(settings(), times(1)).incrementGamesPlayedCounter();
     }
 
     @Test
     public void WhenScreenDisplayedForAndroidGame__AchievementsProcessed() {
         setGameType(Game.Type.VS_ANDROID);
-        setScreen(newScreen());
-        verify(achievementsManager, times(1)).processAchievements(any(Game.class), any(Collection.class));
+        showScreen();
+        expectProcessAchievementsBeCalled(times(1));
     }
 
     @Test
-    public void WhenScreenDisplayed__ProgressUpdated() {
-        setGameType(Game.Type.VS_ANDROID);
+    public void WhenScreenDisplayedForNonAndroidGame__AchievementsNotProcessed() {
+        setGameType(Game.Type.BLUETOOTH);
+        showScreen();
+        expectProcessAchievementsBeCalled(never());
+    }
+
+    @Test
+    public void WhenScreenDisplayedWithPositiveScoreBalance__ProgressUpdated() {
         setScores(100);
         setPenalty(0);
-        setScreen(newScreen());
-        verify(progressManager, times(1)).incrementProgress(anyInt());
+        showScreen();
+        expectIncrementProgressBeCalled(times(1));
         verify(settings(), times(1)).setProgressPenalty(0);
     }
 
     @Test
-    public void WhenScreenDisplayed__PenaltyUpdated() {
-        setGameType(Game.Type.VS_ANDROID);
+    public void WhenScreenDisplayedWithNegativeScoreBalance__PenaltyUpdated() {
         setScores(100);
         setPenalty(200);
-        setScreen(newScreen());
-        verify(progressManager, never()).incrementProgress(anyInt());
+        showScreen();
+        expectIncrementProgressBeCalled(never());
         verify(settings(), times(1)).setProgressPenalty(100);
     }
 
@@ -101,61 +111,162 @@ public class WinScreenTest extends ScreenTest {
         setGameType(Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(135000L);
         setScores(100);
-        setScreen(newScreen());
-        onView(withId(R.id.time)).check(matches(withText("2:15")));
-        onView(withId(R.id.total_scores)).check(matches(withText("100")));
+        showScreen();
+        onView(timeView()).check(matches(withText("2:15")));
+        onView(scoresView()).check(matches(withText("100")));
+    }
+
+    @Test
+    public void WhenGameTypeIsNotAndroid__ScoresAndDurationNotShown() {
+        setGameType(Game.Type.BLUETOOTH);
+        showScreen();
+        checkNotDisplayed(timeView());
+        checkNotDisplayed(scoresView());
     }
 
     @Test
     public void WhenSignedIn__SignInOptionHidden() {
         setGameType(Game.Type.VS_ANDROID);
-        when(apiClient().isConnected()).thenReturn(true);
-        setScreen(newScreen());
+        setSignedIn(true);
+        showScreen();
         checkNotDisplayed(signInBar());
     }
 
     @Test
     public void WhenNotAndroidGame__SignInOptionHidden() {
         setGameType(Game.Type.BLUETOOTH);
-        when(apiClient().isConnected()).thenReturn(false);
-        setScreen(newScreen());
+        setSignedIn(false);
+        showScreen();
         checkNotDisplayed(signInBar());
     }
 
     @Test
     public void WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed() {
         setGameType(Game.Type.VS_ANDROID);
-        when(apiClient().isConnected()).thenReturn(false);
-        setScreen(newScreen());
+        setSignedIn(false);
+        showScreen();
         checkDisplayed(signInBar());
     }
 
     @Test
-    public void WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed2() {
-        setGameType(Game.Type.VS_ANDROID);
-        setSignedIn(false);
-        setScreen(newScreen());
-        onView(withId(R.id.sign_in_button)).perform(click());
+    public void AfterSignInClicked__SignInOptionHidden() {
+        WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed();
+        clickOn(withId(R.id.sign_in_button));
         verify(apiClient(), times(1)).connect();
         signInSucceeded((SignInListener) screen());
         checkNotDisplayed(signInBar());
     }
 
     @Test
-    public void WhenScreenDestroyedForAndroidConnectedGame__ScoresSubmitted() {
-        setGameType(Game.Type.VS_ANDROID);
-        setSignedIn(true);
-        setScreen(newScreen());
-        pressBack();
-        verify(apiClient(), times(1)).submitScore(anyString(), anyInt());
+    public void WhenOpponentNotSurrendered__YesNoButtonsShowed() {
+        surrendered = false;
+        showScreen();
+        checkDisplayed(yesButton());
+        checkDisplayed(noButton());
     }
 
     @Test
-    public void WhenOpponentSurrendersPressingBack__OpensSelectGameScreen() {
+    public void WhenOpponentSurrendered__InsteadOfYesNoContinueButtonShowed() {
         surrendered = true;
-        setScreen(newScreen());
+        showScreen();
+        checkNotDisplayed(yesButton());
+        checkNotDisplayed(noButton());
+        checkDisplayed(withText(R.string.continue_str));
+    }
+
+    @Test
+    public void AfterYesPressed__BoardSetupScreenShown() {
+        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        when(rules.getTotalShips()).thenReturn(new int[]{});
+        clickOn(yesButton());
+        checkDisplayed(BOARD_SETUP_LAYOUT);
+    }
+
+    @Test
+    public void AfterNoPressedForAndroid__SelectGameScreenShown() {
+        setGameType(Game.Type.VS_ANDROID);
+        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        clickOn(noButton());
+        backToSelectGameCommand();
+    }
+
+    @Test
+    public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
+        setGameType(Game.Type.BLUETOOTH);
+        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        clickOn(noButton());
+        String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
+        checkDisplayed(withText(message));
+    }
+
+    @Test
+    public void WhenOpponentSurrendersPressingBack__FinishesGameOpensSelectGameScreen() {
+        surrendered = true;
+        setGameType(Game.Type.VS_ANDROID);
+        showScreen();
         pressBack();
+        backToSelectGameCommand();
+    }
+
+    @Test
+    public void WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed() {
+        surrendered = false;
+        setGameType(Game.Type.BLUETOOTH);
+        showScreen();
+        pressBack();
+        String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
+        checkDisplayed(withText(message));
+    }
+
+    @Test
+    public void PressingCancelOnWantToLeaveDialog__RemovesDialogScreenDoesNotChange() {
+        WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
+        clickOn(cancelButton());
+        checkDisplayed(WIN_LAYOUT);
+        checkDoesNotExist(cancelButton());
+    }
+
+    @Test
+    public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
+        WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
+        clickOn(withText(R.string.ok));
+        backToSelectGameCommand();
+    }
+
+    @Test
+    public void WhenScreenDestroyedForAndroidConnectedGame__ScoresSubmitted() {
+        setGameType(Game.Type.VS_ANDROID);
+        setSignedIn(true);
+        showScreen();
+        pressBack();
+        expectSubmitScoreBeCalled(times(1));
+    }
+
+    @Test
+    public void WhenScreenDestroyedForNonAndroidGame__ScoresNotSubmitted() {
+        setGameType(Game.Type.BLUETOOTH);
+        setSignedIn(true);
+        showScreen();
+        pressBack();
+        expectSubmitScoreBeCalled(never());
+    }
+
+    @Test
+    public void WhenScreenDestroyedWhenNotConnected__ScoresNotSubmitted() {
+        setGameType(Game.Type.VS_ANDROID);
+        setSignedIn(false);
+        showScreen();
+        pressBack();
+        expectSubmitScoreBeCalled(never());
+    }
+
+    private void backToSelectGameCommand() {
+        verify(game, times(1)).finish();
         checkDisplayed(SELECT_GAME_LAYOUT);
+    }
+
+    private void expectSubmitScoreBeCalled(VerificationMode never) {
+        verify(apiClient(), never).submitScore(anyString(), anyInt());
     }
 
     @NonNull
@@ -168,10 +279,44 @@ public class WinScreenTest extends ScreenTest {
     }
 
     private void setScores(int scores) {
+        setGameType(Game.Type.VS_ANDROID);
         when(rules.calcTotalScores(any(Collection.class), any(Game.class))).thenReturn(scores);
     }
 
     private void setPenalty(Integer penalty) {
         when(settings().getProgressPenalty()).thenReturn(penalty);
+    }
+
+    private void expectProcessAchievementsBeCalled(VerificationMode times) {
+        verify(achievementsManager, times).processAchievements(any(Game.class), any(Collection.class));
+    }
+
+    private void expectIncrementProgressBeCalled(VerificationMode times) {
+        verify(progressManager, times).incrementProgress(anyInt());
+    }
+
+    @NonNull
+    private Matcher<View> timeView() {
+        return withId(R.id.time);
+    }
+
+    @NonNull
+    private Matcher<View> scoresView() {
+        return withId(R.id.total_scores);
+    }
+
+    @NonNull
+    protected Matcher<View> cancelButton() {
+        return withText(R.string.cancel);
+    }
+
+    @NonNull
+    protected Matcher<View> noButton() {
+        return withText(R.string.no);
+    }
+
+    @NonNull
+    protected Matcher<View> yesButton() {
+        return withText(R.string.yes);
     }
 }

@@ -43,13 +43,13 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 public final class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayoutListener, BackPressListener {
     public static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
-    private static final int TOTAL_SHIPS = RulesFactory.getRules().getTotalShips().length;
+    private static final int INITIAL_CAPACITY = 10;
     private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 
     @NonNull
     private Board mBoard = new Board();
     @NonNull
-    private PriorityQueue<Ship> mFleet = new PriorityQueue<>(TOTAL_SHIPS, new ShipComparator());
+    private PriorityQueue<Ship> mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
@@ -84,7 +84,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     @Override
     public View onCreateView(ViewGroup container) {
-        GameUtils.populateFullHorizontalFleet(mFleet);
+        GameUtils.populateFullHorizontalFleet(mFleet, mRules.getTotalShips());
         Ln.d("new board created, fleet initialized");
 
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
@@ -126,7 +126,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     public void autoSetup() {
         UiEvent.send("auto");
         mBoard = PlacementFactory.getAlgorithm().generateBoard();
-        mFleet = new PriorityQueue<>(TOTAL_SHIPS, new ShipComparator());
+        mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
     }
 
