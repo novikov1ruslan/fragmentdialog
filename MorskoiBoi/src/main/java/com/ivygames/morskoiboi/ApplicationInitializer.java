@@ -53,7 +53,7 @@ public class ApplicationInitializer {
         Dependencies.inject(settings);
         Dependencies.inject(apiClient);
         Dependencies.inject(new InvitationManager(apiClient));
-        Dependencies.inject(new AchievementsManager(apiClient, rules));
+        Dependencies.inject(new AchievementsManager(apiClient));
         Dependencies.inject(new ProgressManager(apiClient, settings));
         Dependencies.inject(device);
 

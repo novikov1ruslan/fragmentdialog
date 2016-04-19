@@ -24,13 +24,11 @@ import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
@@ -81,7 +79,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
         mTime = mGame.getTimeSpent();
         mShips = fleet;
-        mScores = mRules.calcTotalScores(mShips, mGame);
+        mScores = mRules.calcTotalScores(mShips, mGame, opponentSurrendered);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();
@@ -91,7 +89,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             if (GameConstants.IS_TEST_MODE) {
                 Ln.i("game is in test mode - achievements not updated");
             } else {
-                mAchievementsManager.processAchievements(mGame, mShips);
+                mAchievementsManager.processAchievements(mGame, mShips, mScores);
             }
         }
         processScores();
@@ -178,37 +176,15 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     }
 
     private void processScores() {
-        int scores = calculateScores(mGame.getType(), mOpponentSurrendered);
-
         int penalty = mSettings.getProgressPenalty();
-        Ln.d("updating player's progress [" + scores + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
-        int progressIncrement = scores - penalty;
+        Ln.d("updating player's progress [" + mScores + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
+        int progressIncrement = mScores - penalty;
         if (progressIncrement > 0) {
             mProgressManager.incrementProgress(progressIncrement);
             mSettings.setProgressPenalty(0);
         } else {
             mSettings.setProgressPenalty(-progressIncrement);
         }
-    }
-
-    private int calculateScores(Type type, boolean surrendered) {
-        int progress = calculateScoresForGameType(type);
-        if (surrendered) {
-            progress = progress / 2;
-        }
-        return progress;
-    }
-
-    private int calculateScoresForGameType(Type type) {
-        int progress;
-        if (type == Type.VS_ANDROID) {
-            progress = mScores * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
-        } else if (type == Type.INTERNET) {
-            progress = InternetGame.WIN_PROGRESS_POINTS;
-        } else {
-            progress = BluetoothGame.WIN_PROGRESS_POINTS;
-        }
-        return progress;
     }
 
     @Override

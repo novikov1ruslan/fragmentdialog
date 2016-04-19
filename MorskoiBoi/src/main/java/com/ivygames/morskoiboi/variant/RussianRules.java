@@ -6,9 +6,12 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.rt.InternetGame;
 
 import org.commons.logger.Ln;
 
@@ -32,6 +35,7 @@ public class RussianRules extends AbstractRules {
 
     private static final float MAX_TIME_BONUS_MULTIPLIER = 2f;
     private static final float MIN_TIME_BONUS_MULTIPLIER = 1f;
+    private static final int MAX_SCORE_FOR_SURRENDERED_GAME = 5000;
 
     @NonNull
     private final Resources mResources;
@@ -51,7 +55,32 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game) {
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered) {
+        int score = calculateScoresForGame(ships, game);
+
+        if (surrendered) {
+            score = score / 2;
+            if (score > MAX_SCORE_FOR_SURRENDERED_GAME) {
+                score = MAX_SCORE_FOR_SURRENDERED_GAME;
+            }
+        }
+        return score;
+    }
+
+    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull Game game) {
+        int progress;
+        Game.Type type = game.getType();
+        if (type == Game.Type.VS_ANDROID) {
+            progress = calcScoresForAndroidGame(ships, game) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
+        } else if (type == Game.Type.INTERNET) {
+            progress = InternetGame.WIN_PROGRESS_POINTS;
+        } else {
+            progress = BluetoothGame.WIN_PROGRESS_POINTS;
+        }
+        return progress;
+    }
+
+    private static int calcScoresForAndroidGame(@NonNull Collection<Ship> ships, @NonNull Game game) {
         float timeMultiplier = getTimeMultiplier(game.getTimeSpent());
         int shellsBonus = calcShellsBonus(game.getShells());
         int shipsBonus = calcSavedShipsBonus(ships);
@@ -60,16 +89,16 @@ public class RussianRules extends AbstractRules {
         return (int) (shellsBonus * timeMultiplier) + shipsBonus + comboBonus;
     }
 
-    private int calcComboBonus(int combo) {
+    private static int calcComboBonus(int combo) {
         return combo * COMBO_UNIT_BONUS;
     }
 
 
-    private int calcShellsBonus(int shells) {
+    private static int calcShellsBonus(int shells) {
         return shells * SHELL_UNIT_BONUS;
     }
 
-    private float getTimeMultiplier(long millis) {
+    private static float getTimeMultiplier(long millis) {
         if (millis >= MAX_TIME_MILLIS) {
             return MIN_TIME_BONUS_MULTIPLIER;
         }
@@ -81,7 +110,7 @@ public class RussianRules extends AbstractRules {
         return MIN_TIME_BONUS_MULTIPLIER + (float) (MAX_TIME_MILLIS - millis) / (float) (MAX_TIME_MILLIS - MIN_TIME_MILLIS);
     }
 
-    private int calcSavedShipsBonus(@NonNull Collection<Ship> ships) {
+    private static int calcSavedShipsBonus(@NonNull Collection<Ship> ships) {
 
         int shipsWeight = 0;
         for (Ship ship : ships) {
@@ -112,6 +141,7 @@ public class RussianRules extends AbstractRules {
 
     @Override
     public Bitmap getBitmapForShipSize(int size) {
+        // TODO: remove: part of variants, but not part of rules
         Bitmaps bitmaps = Bitmaps.getInstance();
         switch (size) {
             case 4:

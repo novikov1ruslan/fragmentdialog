@@ -8,7 +8,6 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 
@@ -41,15 +40,12 @@ public class AchievementsManager {
 
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
-    @NonNull
-    private final Rules mRules;
     private final GameSettings mSettings = Dependencies.getSettings();
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull Rules rules) {
+    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient) {
         mApiClient = apiClient;
-        mRules = rules;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, mSettings);
     }
 
@@ -58,7 +54,7 @@ public class AchievementsManager {
         loadResult.setResultCallback(mAchievementsLoadCallback);
     }
 
-    public void processAchievements(Game game, Collection<Ship> ships) {
+    public void processAchievements(Game game, Collection<Ship> ships, int scores) {
         Ln.v("game: " + game + "; ships: " + ships);
 
         processCombo(game.getCombo());
@@ -66,7 +62,7 @@ public class AchievementsManager {
         processTimeSpent(game.getTimeSpent());
         processShipsLeft(ships);
 
-        if (mRules.calcTotalScores(ships, game) >= 15000) {
+        if (scores >= 15000) {
             if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
                 Ln.v(AchievementsManager.name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
             } else {

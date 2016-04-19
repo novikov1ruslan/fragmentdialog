@@ -22,7 +22,7 @@ public interface Rules {
 
     int[] getTotalShips();
 
-    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game);
+    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered);
 
     Bitmap getBitmapForShipSize(int size);
 

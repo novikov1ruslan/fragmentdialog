@@ -26,6 +26,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -280,7 +281,7 @@ public class WinScreenTest extends ScreenTest {
 
     private void setScores(int scores) {
         setGameType(Game.Type.VS_ANDROID);
-        when(rules.calcTotalScores(any(Collection.class), any(Game.class))).thenReturn(scores);
+        when(rules.calcTotalScores(any(Collection.class), any(Game.class), anyBoolean())).thenReturn(scores);
     }
 
     private void setPenalty(Integer penalty) {
@@ -288,7 +289,7 @@ public class WinScreenTest extends ScreenTest {
     }
 
     private void expectProcessAchievementsBeCalled(VerificationMode times) {
-        verify(achievementsManager, times).processAchievements(any(Game.class), any(Collection.class));
+        verify(achievementsManager, times).processAchievements(any(Game.class), any(Collection.class), anyInt());
     }
 
     private void expectIncrementProgressBeCalled(VerificationMode times) {

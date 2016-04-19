@@ -32,7 +32,7 @@ public class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game) {
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered) {
         // TODO: implement
         return 0;
     }
