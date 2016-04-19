@@ -45,14 +45,13 @@ public class WinScreenTest extends ScreenTest {
     private Rules rules;
     private AchievementsManager achievementsManager;
     private ProgressManager progressManager;
-    private Opponent opponent;
 
     @Before
     public void setup() {
         super.setup();
         game = mock(Game.class);
         rules = mock(Rules.class);
-        opponent = mock(Opponent.class);
+        Opponent opponent = mock(Opponent.class);
         achievementsManager = mock(AchievementsManager.class);
         Dependencies.inject(achievementsManager);
         progressManager = mock(ProgressManager.class);
