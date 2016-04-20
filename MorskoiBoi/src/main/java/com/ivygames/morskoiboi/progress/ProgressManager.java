@@ -26,7 +26,7 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class ProgressManager {
 
-    private static final boolean USE_GAME_SAVE_SERVICE = false;
+    private static final boolean USE_GAME_SAVE_SERVICE = true;
 
     public void debug_setProgress(int progress) {
         Ln.i("setting debug progress to: " + progress);
@@ -68,6 +68,7 @@ public class ProgressManager {
     public void incrementProgress(int increment) {
         if (increment <= 0) {
             reportException("invalid increment: " + increment);
+            return;
         }
 
         int oldScores = mSettings.getProgress().getScores();

@@ -21,6 +21,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -161,7 +162,7 @@ public class SettingsScreenTest extends ScreenTest {
     public void when_report_problem_button_pressed__email_intent_fired() {
         when(device().canResolveIntent(any(Intent.class))).thenReturn(true);
         setScreen(newScreen());
-        Matcher<Intent> expectedIntent = hasAction(Intent.ACTION_SENDTO);
+        Matcher<Intent> expectedIntent = anyOf(hasAction(Intent.ACTION_SENDTO), hasAction(Intent.ACTION_CHOOSER));
         clickForIntent(withId(R.id.report_problem), expectedIntent);
     }
 
