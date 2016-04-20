@@ -26,6 +26,8 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class ProgressManager {
 
+    private static final boolean USE_GAME_SAVE_SERVICE = false;
+
     public void debug_setProgress(int progress) {
         Ln.i("setting debug progress to: " + progress);
         saveProgress(new Progress(progress));
@@ -80,9 +82,11 @@ public class ProgressManager {
     private void saveProgress(@NonNull Progress newProgress) {
         mSettings.setProgress(newProgress);
 
-        if (mApiClient.isConnected()) {
-            Ln.d("posting progress to the cloud: " + newProgress);
-            update(ProgressUtils.getBytes(newProgress));
+        if (USE_GAME_SAVE_SERVICE) {
+            if (mApiClient.isConnected()) {
+                Ln.d("posting progress to the cloud: " + newProgress);
+                update(ProgressUtils.getBytes(newProgress));
+            }
         }
     }
 
