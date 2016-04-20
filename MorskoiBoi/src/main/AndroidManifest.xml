@@ -28,9 +28,11 @@
     <application
         android:name="com.ivygames.morskoiboi.BattleshipApplication"
         android:allowBackup="true"
+        android:backupAgent="com.ivygames.morskoiboi.BackupAgent"
         android:icon="@drawable/ic_launcher"
         android:isGame="true"
         android:label="@string/app_name"
+        android:restoreAnyVersion="true"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -42,6 +44,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAITWmxCzz9K3hwsXUOwqNY9qPAoyXbPmCUVCp-xw" />
 
         <activity
             android:name="com.ivygames.morskoiboi.BattleshipActivity"

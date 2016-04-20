@@ -39,7 +39,7 @@ public class GameSettings {
     private final EditableSharedPreferences internal;
 
     public GameSettings(@NonNull Context context) {
-        internal = new EditableSharedPreferences(context);
+        internal = new BackupSharedPreferences(context);
     }
 
     public void enableAutoSignIn() {
