@@ -30,7 +30,11 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.when;
@@ -190,5 +194,13 @@ public abstract class ScreenTest {
 
     protected static void clickOn(Matcher<View> viewMatcher) {
         onView(viewMatcher).perform(click());
+    }
+
+    protected final Matcher<Intent> fromIntent(Intent intent) {
+        Matcher<Intent> action = hasAction(intent.getAction());
+        Matcher<Intent> data = hasData(intent.getData());
+        Matcher<Intent> type = hasType(intent.getType());
+        Matcher<Intent> intentMatcher = allOf(action, data, type);
+        return intentMatcher;
     }
 }

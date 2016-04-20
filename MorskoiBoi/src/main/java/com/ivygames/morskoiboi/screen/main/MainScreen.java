@@ -178,15 +178,16 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void showAchievementsDialog() {
-        new SignInDialog.Builder().setMessage(R.string.achievements_request).setPositiveButton(R.string.sign_in, new OnClickListener() {
+        new SignInDialog.Builder().setMessage(R.string.achievements_request)
+                .setPositiveButton(R.string.sign_in, new OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UiEvent.send("sign_in", "achievements");
-                mAchievementsRequested = true;
-                mApiClient.connect();
-            }
-        }).create().show(mFm, DIALOG);
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UiEvent.send("sign_in", "achievements");
+                        mAchievementsRequested = true;
+                        mApiClient.connect();
+                    }
+                }).create().show(mFm, DIALOG);
     }
 
     @Override
@@ -228,24 +229,25 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     private void showRateDialog() {
-        new AlertDialogBuilder().setMessage(R.string.rate_request).setPositiveButton(R.string.rate, new OnClickListener() {
+        new AlertDialogBuilder().setMessage(R.string.rate_request)
+                .setPositiveButton(R.string.rate, new OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UiEvent.send("rate");
-                mSettings.setRated();
-                Intent intent = PlayUtils.rateIntent(mParent.getPackageName());
-                mParent.startActivity(intent);
-            }
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UiEvent.send("rate");
+                        mSettings.setRated();
+                        Intent intent = PlayUtils.rateIntent(mParent.getPackageName());
+                        mParent.startActivity(intent);
+                    }
 
-        }).setNegativeButton(R.string.later, new OnClickListener() {
+                }).setNegativeButton(R.string.later, new OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UiEvent.send("rate_later");
-                mSettings.rateLater();
-            }
-        }).create().show(mFm, DIALOG);
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UiEvent.send("rate_later");
+                        mSettings.rateLater();
+                    }
+                }).create().show(mFm, DIALOG);
     }
 
     public void hideNoAdsButton() {

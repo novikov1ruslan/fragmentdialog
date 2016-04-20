@@ -24,8 +24,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 
 
 public class MainScreenTest extends ScreenTest {
@@ -69,21 +67,7 @@ public class MainScreenTest extends ScreenTest {
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
     }
 
-    @Test
-    public void RateDialogShown() {
-        when(settings().shouldProposeRating()).thenReturn(true);
-        setScreen(newScreen());
-        checkDisplayed(withText(R.string.rate_request));
-    }
-
-    @Test
-    public void RateDialogNotShown() {
-        when(settings().shouldProposeRating()).thenReturn(false);
-        setScreen(newScreen());
-        checkDoesNotExist(withText(R.string.rate_request));
-    }
-
-//    @Test
+    //    @Test
 //    public void WhenThereIsInvitation__EnvelopeIsShown() {
 //        when(invitationManager().hasInvitation()).thenReturn(true);
 //        setScreen(newScreen());
@@ -147,57 +131,18 @@ public class MainScreenTest extends ScreenTest {
 //        verify(apiClient(), times(1)).disconnect();
 //    }
 
-    @Test
-    public void when_achievements_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
-        setSignedIn(false);
-        setScreen(newScreen());
-        onView(achievementsButton()).perform(click());
-        checkDisplayed(withText(R.string.achievements_request));
-    }
-
-    @Test
-    public void when_leader_board_button_is_pressed_when_NOT_signed_in__sign_in_dialog_displayed() {
-        setSignedIn(false);
-        setScreen(newScreen());
-        onView(leaderboardButton()).perform(click());
-        onView(withText(R.string.leaderboards_request)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void when_achievements_button_is_pressed_when_signed_in__achievements_intent_is_fired() {
-        Intent intent = new Intent();
-        String expectedType = "expected type";
-        intent.setType(expectedType);
-        when(apiClient().getAchievementsIntent()).thenReturn(intent);
-        setSignedIn(true);
-        setScreen(newScreen());
-        clickForIntent(achievementsButton(), hasType(expectedType));
-    }
-
-    @Test
-    public void when_leader_board_button_is_pressed_when_signed_in__leader_board_intent_is_fired() {
-        Intent intent = new Intent();
-        String expectedType = "expected type";
-        intent.setType(expectedType);
-        when(apiClient().getLeaderboardIntent(anyString())).thenReturn(intent);
-        setSignedIn(true);
-        setScreen(newScreen());
-        clickForIntent(leaderboardButton(), hasType(expectedType));
-    }
-
-    @NonNull
-    private Matcher<View> leaderboardButton() {
-        return withId(R.id.high_score);
-    }
-
-    @NonNull
-    private Matcher<View> achievementsButton() {
-        return withId(R.id.achievements_button);
-    }
-
     @NonNull
     private Matcher<View> pusOneButton() {
         return withId(R.id.plus_one_button);
     }
 
+    @NonNull
+    protected Matcher<View> signInButton() {
+        return withText(R.string.sign_in);
+    }
+
+    @NonNull
+    protected Matcher<View> cancelButton() {
+        return withText(R.string.cancel);
+    }
 }
