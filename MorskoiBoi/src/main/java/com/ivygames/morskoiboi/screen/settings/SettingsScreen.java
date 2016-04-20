@@ -12,7 +12,6 @@ import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
@@ -141,7 +140,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
 
         @Override
         public void onSignIn() {
-            UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "settings");
+            UiEvent.send(UiEvent.GA_ACTION_SIGN_IN, "settings");
             mApiClient.connect();
         }
 

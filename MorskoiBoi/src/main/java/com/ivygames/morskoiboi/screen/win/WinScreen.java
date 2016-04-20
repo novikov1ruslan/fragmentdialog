@@ -110,7 +110,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
                 @Override
                 public void onClick(View v) {
-                    UiEvent.send(GameConstants.GA_ACTION_SIGN_IN, "win");
+                    UiEvent.send(UiEvent.GA_ACTION_SIGN_IN, "win");
                     mApiClient.connect();
                 }
             });
@@ -209,7 +209,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     @Override
     public void onBackPressed() {
-        UiEvent.send(GameConstants.GA_ACTION_BACK, "win");
+        UiEvent.send(UiEvent.GA_ACTION_BACK, "win");
         doNotContinue();
     }
 

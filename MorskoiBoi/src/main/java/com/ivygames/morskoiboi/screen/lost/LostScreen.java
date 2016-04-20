@@ -11,7 +11,6 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
@@ -96,7 +95,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     @Override
     public void onBackPressed() {
-        UiEvent.send(GameConstants.GA_ACTION_BACK, "lost");
+        UiEvent.send(UiEvent.GA_ACTION_BACK, "lost");
         doNotContinue();
     }
 

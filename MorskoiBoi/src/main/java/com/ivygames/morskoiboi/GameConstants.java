@@ -11,6 +11,4 @@ public final class GameConstants {
 //    public static boolean IS_TEST_MODE = false;
     public static boolean IS_TEST_MODE = true;
 
-    public static final String GA_ACTION_BACK = "back";
-    public static final String GA_ACTION_SIGN_IN = "sign_in";
 }
