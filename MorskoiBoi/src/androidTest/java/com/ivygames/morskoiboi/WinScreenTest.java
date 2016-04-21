@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 public class WinScreenTest extends OnlineScreenTest {
 
     private Collection<Ship> fleet = new ArrayList<>();
-    private boolean surrendered;
+    protected boolean surrendered;
     private Rules rules;
     private AchievementsManager achievementsManager;
     private ProgressManager progressManager;
@@ -186,45 +186,11 @@ public class WinScreenTest extends OnlineScreenTest {
     }
 
     @Test
-    public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
-        WhenOpponentNotSurrendered__YesNoButtonsShowed();
-        clickOn(noButton());
-        String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
-        checkDisplayed(withText(message));
-    }
-
-    @Test
     public void WhenOpponentSurrendersPressingBack__FinishesGameOpensSelectGameScreen() {
         surrendered = true;
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        backToSelectGameCommand();
-    }
-
-    @Test
-    public void WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed() {
-        surrendered = false;
-        setGameType(Game.Type.BLUETOOTH);
-        showScreen();
-        pressBack();
-        String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
-        checkDisplayed(withText(message));
-    }
-
-    @Test
-    public void PressingCancelOnWantToLeaveDialog__RemovesDialogScreenDoesNotChange() {
-        WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
-        clickOn(cancelButton());
-        checkDisplayed(WIN_LAYOUT);
-        checkDoesNotExist(cancelButton());
-    }
-
-    @Test
-    public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
-        WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
-        clickOn(okButton());
         backToSelectGameCommand();
     }
 
@@ -300,4 +266,5 @@ public class WinScreenTest extends OnlineScreenTest {
     protected Matcher<View> yesButton() {
         return withText(R.string.yes);
     }
+
 }
