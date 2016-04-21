@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Player;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -18,7 +19,6 @@ import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SignInListener;
@@ -184,7 +184,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         if (progressIncrement > 0) {
             int oldScores = mSettings.getProgress().getScores();
             Progress newProgress = mSettings.incrementProgress(progressIncrement);
-            boolean newRankAchieved = trackPromotionEvent(oldScores, newProgress.getScores());
+            boolean newRankAchieved = AnalyticsUtils.trackPromotionEvent(oldScores, newProgress.getScores());
             if (newRankAchieved) {
                 mSettings.newRankAchieved(true);
             }
@@ -193,25 +193,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         } else {
             mSettings.setProgressPenalty(-progressIncrement);
         }
-    }
-
-    public static boolean trackPromotionEvent(int oldScores, int newScores) {
-        Rank lastRank = Rank.getBestRankForScore(oldScores);
-        Rank newRank = Rank.getBestRankForScore(newScores);
-        if (newRank != lastRank) {
-            String label = lastRank + " promoted to " + newRank;
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in test mode, not tracking promotion event: " + label);
-            }
-            else {
-                AnalyticsEvent.send("promotion", label);
-                Ln.i(label);
-            }
-
-            return true;
-        }
-
-        return false;
     }
 
     @Override
