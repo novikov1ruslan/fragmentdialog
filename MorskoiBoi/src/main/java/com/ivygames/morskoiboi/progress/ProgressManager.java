@@ -45,6 +45,11 @@ public class ProgressManager {
         public void onUpdateServerWith(byte[] localProgress) {
             update(localProgress);
         }
+
+        @Override
+        public void onUpdateLocalWith(Progress cloudProgress) {
+            mSettings.setProgress(cloudProgress);
+        }
     };
 
     public ProgressManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
@@ -54,7 +59,7 @@ public class ProgressManager {
     }
 
     public void loadProgress() {
-        mApiClient.openAsynchronously(SNAPSHOT_NAME, new OpenSnapshotResultResultCallback(mSettings, mCallback));
+        mApiClient.openAsynchronously(SNAPSHOT_NAME, new OpenSnapshotResultResultCallback(mSettings.getProgress(), mCallback));
     }
 
     public void updateProgress(Progress newProgress) {
@@ -125,7 +130,7 @@ public class ProgressManager {
 
     private void resolveConflict(String conflictId, Snapshot snapshot) {
         PendingResult<Snapshots.OpenSnapshotResult> pendingResult = mApiClient.resolveConflict(conflictId, snapshot);
-        pendingResult.setResultCallback(new OpenSnapshotResultResultCallback(mSettings, mCallback));
+        pendingResult.setResultCallback(new OpenSnapshotResultResultCallback(mSettings.getProgress(), mCallback));
     }
 
 }
