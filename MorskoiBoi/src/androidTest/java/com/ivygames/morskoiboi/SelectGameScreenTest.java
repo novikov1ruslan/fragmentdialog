@@ -167,38 +167,6 @@ public class SelectGameScreenTest extends ScreenTest {
         onView(withText(R.string.bluetooth_not_available)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void when_internet_button_pressed__internet_game_screen_opens() {
-        setSignedIn(true);
-        setScreen(newScreen());
-        onView(internetButton()).perform(click());
-        checkDisplayed(INTERNET_GAME_LAYOUT);
-    }
-
-    @Test
-    public void when_internet_button_pressed_but_NOT_signed_in__sign_in_dialog_opens() {
-        setSignedIn(false);
-        setScreen(newScreen());
-        onView(internetButton()).perform(click());
-        onView(withText(R.string.internet_request)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void when_sign_in_pressed__internet_screen_displayed() {
-        setSignedIn(false);
-        setScreen(newScreen());
-        onView(internetButton()).perform(click());
-        onView(withText(R.string.sign_in)).perform(click());
-        verify(apiClient(), times(1)).connect();
-        signInSucceeded((SignInListener) screen());
-        checkDisplayed(INTERNET_GAME_LAYOUT);
-    }
-
-    @NonNull
-    private Matcher<View> internetButton() {
-        return withId(R.id.via_internet);
-    }
-
     @NonNull
     private Matcher<View> tutorial() {
         return withText(R.string.see_ranks);

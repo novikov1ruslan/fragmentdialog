@@ -20,7 +20,6 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasTyp
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -136,13 +135,4 @@ public class MainScreenTest extends ScreenTest {
         return withId(R.id.plus_one_button);
     }
 
-    @NonNull
-    protected Matcher<View> signInButton() {
-        return withText(R.string.sign_in);
-    }
-
-    @NonNull
-    protected Matcher<View> cancelButton() {
-        return withText(R.string.cancel);
-    }
 }

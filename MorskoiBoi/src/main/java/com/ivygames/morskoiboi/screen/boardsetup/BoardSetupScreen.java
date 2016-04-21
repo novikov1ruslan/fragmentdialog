@@ -80,13 +80,12 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent) {
         super(parent);
+        GameUtils.populateFullHorizontalFleet(mFleet, mRules.getTotalShips());
+        Ln.d("new board created, fleet initialized");
     }
 
     @Override
     public View onCreateView(ViewGroup container) {
-        GameUtils.populateFullHorizontalFleet(mFleet, mRules.getTotalShips());
-        Ln.d("new board created, fleet initialized");
-
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
         mLayout.setScreenActionsListener(this);
         mLayout.setBoard(mBoard, mFleet);

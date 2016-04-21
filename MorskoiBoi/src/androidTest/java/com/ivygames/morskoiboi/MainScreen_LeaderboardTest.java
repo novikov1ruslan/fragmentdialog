@@ -21,7 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MainScreen_Leaderboard extends MainScreenTest {
+public class MainScreen_LeaderboardTest extends MainScreenTest {
     @NonNull
     protected static Matcher<View> leaderboardButton() {
         return withId(R.id.high_score);

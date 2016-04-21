@@ -285,7 +285,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             Game game = Model.instance.game;
             if (!game.hasFinished()) {
                 Ln.e("application destroyed while game is on");
-                game.finish();
+//                game.finish();
             }
         }
 

@@ -8,15 +8,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class LostScreenTest extends OnlineScreenTest {
 
+    private Rules rules;
+
     @Before
     public void setup() {
         super.setup();
+        rules = mock(Rules.class);
+        RulesFactory.setRules(rules);
     }
 
     @Override
@@ -48,6 +54,7 @@ public class LostScreenTest extends OnlineScreenTest {
 
     @Test
     public void AfterYesPressed__GameStateClearedBoardSetupScreenShown() {
+        when(rules.getTotalShips()).thenReturn(new int[]{});
         showScreen();
         clickOn(yesButton());
         verify(game, times(1)).clearState();

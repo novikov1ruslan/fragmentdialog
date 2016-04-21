@@ -58,7 +58,7 @@ public class MainScreen_AchievementsTest extends MainScreenTest {
     }
 
     @Test
-    public void WhenAchievementsButtonPressedWhenConnected__achievements_intent_is_fired() {
+    public void WhenAchievementsButtonPressedWhenConnected__AchievementsIntentIsFired() {
         String expectedType = "expected type";
         when(apiClient().getAchievementsIntent()).thenReturn(new Intent().setType(expectedType));
         setSignedIn(true);

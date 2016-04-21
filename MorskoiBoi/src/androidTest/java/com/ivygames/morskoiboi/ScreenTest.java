@@ -215,4 +215,14 @@ public abstract class ScreenTest {
     protected final Matcher<View> yesButton() {
         return withText(R.string.yes);
     }
+
+    @NonNull
+    protected Matcher<View> signInButton() {
+        return withText(R.string.sign_in);
+    }
+
+    @NonNull
+    protected Matcher<View> cancelButton() {
+        return withText(R.string.cancel);
+    }
 }
