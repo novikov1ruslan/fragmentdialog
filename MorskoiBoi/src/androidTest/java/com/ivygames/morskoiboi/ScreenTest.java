@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.app.Instrumentation;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.Intents;
 import android.view.View;
@@ -34,6 +35,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
@@ -202,5 +204,15 @@ public abstract class ScreenTest {
         Matcher<Intent> type = hasType(intent.getType());
         Matcher<Intent> intentMatcher = allOf(action, data, type);
         return intentMatcher;
+    }
+
+    @NonNull
+    protected final Matcher<View> noButton() {
+        return withText(R.string.no);
+    }
+
+    @NonNull
+    protected final Matcher<View> yesButton() {
+        return withText(R.string.yes);
     }
 }

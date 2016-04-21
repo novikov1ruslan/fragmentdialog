@@ -41,8 +41,12 @@ public abstract class OnlineScreenTest extends ScreenTest {
     }
 
     protected void backToSelectGameCommand() {
-        verify(game, times(1)).finish();
+        verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);
+    }
+
+    private void verifyGameFinished() {
+        verify(game, times(1)).finish();
     }
 
     protected void setGameType(Game.Type type) {

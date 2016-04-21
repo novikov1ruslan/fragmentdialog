@@ -257,14 +257,4 @@ public class WinScreenTest extends OnlineScreenTest {
         return withId(R.id.total_scores);
     }
 
-    @NonNull
-    protected Matcher<View> noButton() {
-        return withText(R.string.no);
-    }
-
-    @NonNull
-    protected Matcher<View> yesButton() {
-        return withText(R.string.yes);
-    }
-
 }

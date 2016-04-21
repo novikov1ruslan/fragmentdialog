@@ -44,11 +44,6 @@ public class WinScreen__WantToLeaveDialogTest extends WinScreenTest {
         backToSelectGameCommand();
     }
 
-    @NonNull
-    protected Matcher<View> wantToLeaveDialog() {
-        return withText(getString(R.string.want_to_leave_room, OPPONENT_NAME));
-    }
-
     @Test
     public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
         setGameType(Game.Type.BLUETOOTH);
@@ -56,5 +51,10 @@ public class WinScreen__WantToLeaveDialogTest extends WinScreenTest {
         clickOn(noButton());
         String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
         checkDisplayed(withText(message));
+    }
+
+    @NonNull
+    protected Matcher<View> wantToLeaveDialog() {
+        return withText(getString(R.string.want_to_leave_room, OPPONENT_NAME));
     }
 }
