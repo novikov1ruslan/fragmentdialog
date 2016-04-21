@@ -42,8 +42,8 @@ public class ProgressManager {
         }
 
         @Override
-        public void onUpdateServerWith(byte[] localProgress) {
-            update(localProgress);
+        public void onUpdateServerWith(Progress localProgress) {
+            update(ProgressUtils.getBytes(localProgress));
         }
 
         @Override

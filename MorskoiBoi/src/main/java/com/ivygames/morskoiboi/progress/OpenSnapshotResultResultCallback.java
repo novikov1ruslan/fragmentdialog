@@ -51,7 +51,7 @@ class OpenSnapshotResultResultCallback implements ResultCallback<Snapshots.OpenS
         Ln.v("progress loaded: local =" + mLocalProgress + ", cloud =" + cloudProgress);
         if (mLocalProgress.getScores() > cloudProgress.getScores()) {
             AnalyticsEvent.send("save_game", "local_wins");
-            mListener.onUpdateServerWith(ProgressUtils.getBytes(mLocalProgress));
+            mListener.onUpdateServerWith(mLocalProgress);
         } else if (cloudProgress.getScores() > mLocalProgress.getScores()) {
             AnalyticsEvent.send("save_game", "cloud_wins");
             mListener.onUpdateLocalWith(cloudProgress);
