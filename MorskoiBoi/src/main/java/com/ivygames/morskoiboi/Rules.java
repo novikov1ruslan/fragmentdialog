@@ -30,4 +30,6 @@ public interface Rules {
      * @return array containing integers each representing length of a separate ship type
      */
     int[] newShipTypesArray();
+
+    Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell);
 }

@@ -7,7 +7,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class PlayerOpponentTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         Rules rules = new RussianRules(null);
-        mPlacement = new RussianPlacement(new Random(), rules.getTotalShips());
+        mPlacement = new Placement(new Random(), rules);
         mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
         mPlayer.setOpponent(mEnemy);
     }

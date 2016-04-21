@@ -10,7 +10,7 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.Aiming;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -49,7 +49,7 @@ public class SetupBoardPresenterTest {
         mPresenter.setBoardVerticalOffset(V_OFFSET);
         Rules rules = new RussianRules(null);
         RulesFactory.setRules(rules);
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(), rules.getTotalShips()));
+        PlacementFactory.setPlacementAlgorithm(new Placement(new Random(), rules));
         mPlacement = PlacementFactory.getAlgorithm();
     }
 

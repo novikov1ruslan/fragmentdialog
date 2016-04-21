@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -28,8 +28,9 @@ public class RussianPlacementTest {
 
     @Before
 	public void setup() {
-        RulesFactory.setRules(new RussianRules(null));
-        mAlgorithm = new RussianPlacement(new Random(1), RulesFactory.getRules().getTotalShips());
+        RussianRules rules = new RussianRules(null);
+        RulesFactory.setRules(rules);
+        mAlgorithm = new Placement(new Random(1), rules);
 	}
 
     @Test

@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -42,9 +42,9 @@ public class RussianRulesTest {
 
     @Before
     public void setUp() {
-        RulesFactory.setRules(new RussianRules(null));
-        Rules rules = RulesFactory.getRules();
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(1), rules.getTotalShips()));
+        RussianRules rules = new RussianRules(null);
+        RulesFactory.setRules(rules);
+        PlacementFactory.setPlacementAlgorithm(new Placement(new Random(1), rules));
         mAlgorithm = PlacementFactory.getAlgorithm();
         mRules = RulesFactory.getRules();
     }

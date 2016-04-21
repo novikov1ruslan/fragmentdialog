@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.variant;
 
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -12,14 +13,16 @@ import java.util.List;
 import java.util.Random;
 
 
-public abstract class AbstractPlacement implements PlacementAlgorithm {
+public class Placement implements PlacementAlgorithm {
 
     private final Random mRandom;
+    private Rules mRules;
     private final int[] mTotalShips;
 
-    public AbstractPlacement(Random random, int[] totalShips) {
+    public Placement(Random random, Rules rules) {
         mRandom = random;
-        mTotalShips = totalShips;
+        mRules = rules;
+        mTotalShips = rules.getTotalShips();
     }
 
     @Override
@@ -82,7 +85,7 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
                             cell.setHit();
                         }
                     } else {
-                        markAdjacentCellsIfNeeded(ship, cell);
+                        mRules.markAdjacentCellsIfNeeded(ship, cell);
                     }
                 }
             }
@@ -90,7 +93,5 @@ public abstract class AbstractPlacement implements PlacementAlgorithm {
 
         board.getShips().add(ship);
     }
-
-    protected abstract void markAdjacentCellsIfNeeded(Ship ship, Cell cell);
 
 }

@@ -14,11 +14,12 @@ import com.ivygames.common.analytics.UiEventImpl;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianBot;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.acra.ACRA;
@@ -46,7 +47,8 @@ public class ApplicationInitializer {
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules(resources);
         RulesFactory.setRules(rules);
-        PlacementFactory.setPlacementAlgorithm(new RussianPlacement(new Random(System.currentTimeMillis()), rules.getTotalShips()));
+        PlacementAlgorithm algorithm = new Placement(new Random(System.currentTimeMillis()), rules);
+        PlacementFactory.setPlacementAlgorithm(algorithm);
         BotFactory.setAlgorithm(new RussianBot(null));
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);

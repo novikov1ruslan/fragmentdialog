@@ -10,7 +10,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.variant.RussianPlacement;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -56,8 +56,8 @@ public class AndroidOpponentTest {
     }
 
     @NonNull
-    public RussianPlacement getRussianPlacement() {
-        return new RussianPlacement(new Random(), new RussianRules(null).getTotalShips());
+    public Placement getPlacement() {
+        return new Placement(new Random(), new RussianRules(null));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class AndroidOpponentTest {
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
         // set the board
-        getRussianPlacement().putShipAt(mBoard, new Ship(2), 5, 5);
+        getPlacement().putShipAt(mBoard, new Ship(2), 5, 5);
         when(mPlacement.generateBoard()).thenReturn(mBoard);
         mAndroid.onEnemyBid(2);
 
