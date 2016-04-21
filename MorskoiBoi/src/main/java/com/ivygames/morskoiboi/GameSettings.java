@@ -202,4 +202,15 @@ public class GameSettings {
         internal.putBoolean(PROGRESS_MIGRATED, true);
     }
 
+    @NonNull
+    public Progress incrementProgress(int increment) {
+        int oldScores = getProgress().getScores();
+        Ln.d("incrementing progress (" + oldScores + ") by " + increment);
+
+        int newScore = oldScores + increment;
+        Progress newProgress = new Progress(newScore);
+        setProgress(newProgress);
+
+        return newProgress;
+    }
 }

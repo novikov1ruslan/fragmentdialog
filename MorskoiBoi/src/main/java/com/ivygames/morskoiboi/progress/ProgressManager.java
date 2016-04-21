@@ -9,11 +9,8 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.commons.logger.Ln;
@@ -30,7 +27,9 @@ public class ProgressManager {
 
     public void debug_setProgress(int progress) {
         Ln.i("setting debug progress to: " + progress);
-        saveProgress(new Progress(progress));
+        Progress newProgress = new Progress(progress);
+        mSettings.setProgress(newProgress);
+        updateProgress(newProgress);
     }
 
     public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
@@ -65,24 +64,7 @@ public class ProgressManager {
         mApiClient.openAsynchronously(SNAPSHOT_NAME, new OpenSnapshotResultResultCallback(mSettings, mCallback));
     }
 
-    public void incrementProgress(int increment) {
-        if (increment <= 0) {
-            reportException("invalid increment: " + increment);
-            return;
-        }
-
-        int oldScores = mSettings.getProgress().getScores();
-        Ln.d("incrementing progress (" + oldScores + ") by " + increment);
-
-        Progress newProgress = new Progress(oldScores + increment);
-        saveProgress(newProgress);
-
-        trackPromotionEvent(oldScores, newProgress.getScores(), mSettings);
-    }
-
-    private void saveProgress(@NonNull Progress newProgress) {
-        mSettings.setProgress(newProgress);
-
+    public void updateProgress(Progress newProgress) {
         if (USE_GAME_SAVE_SERVICE) {
             if (mApiClient.isConnected()) {
                 Ln.d("posting progress to the cloud: " + newProgress);
@@ -151,22 +133,6 @@ public class ProgressManager {
     private void resolveConflict(String conflictId, Snapshot snapshot) {
         PendingResult<Snapshots.OpenSnapshotResult> pendingResult = mApiClient.resolveConflict(conflictId, snapshot);
         pendingResult.setResultCallback(new OpenSnapshotResultResultCallback(mSettings, mCallback));
-    }
-
-    private static void trackPromotionEvent(int oldScores, int newScores, @NonNull GameSettings settings) {
-        Rank lastRank = Rank.getBestRankForScore(oldScores);
-        Rank newRank = Rank.getBestRankForScore(newScores);
-        if (newRank != lastRank) {
-            settings.newRankAchieved(true);
-            String label = lastRank + " promoted to " + newRank;
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in test mode, not tracking promotion event: " + label);
-            }
-            else {
-                AnalyticsEvent.send("promotion", label);
-                Ln.i(label);
-            }
-        }
     }
 
 }

@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class ProgressUtils {
-    public static final String RANK = "rank";
+    private static final String RANK = "rank";
 
     public static JSONObject toJson(Progress progress) {
         JSONObject json = new JSONObject();

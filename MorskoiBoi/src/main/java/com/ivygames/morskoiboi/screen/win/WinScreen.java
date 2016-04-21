@@ -18,6 +18,7 @@ import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SignInListener;
@@ -27,6 +28,7 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Model;
+import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
@@ -180,11 +182,36 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + mScores + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
         int progressIncrement = mScores - penalty;
         if (progressIncrement > 0) {
-            mProgressManager.incrementProgress(progressIncrement);
+            int oldScores = mSettings.getProgress().getScores();
+            Progress newProgress = mSettings.incrementProgress(progressIncrement);
+            boolean newRankAchieved = trackPromotionEvent(oldScores, newProgress.getScores());
+            if (newRankAchieved) {
+                mSettings.newRankAchieved(true);
+            }
+            mProgressManager.updateProgress(newProgress);
             mSettings.setProgressPenalty(0);
         } else {
             mSettings.setProgressPenalty(-progressIncrement);
         }
+    }
+
+    public static boolean trackPromotionEvent(int oldScores, int newScores) {
+        Rank lastRank = Rank.getBestRankForScore(oldScores);
+        Rank newRank = Rank.getBestRankForScore(newScores);
+        if (newRank != lastRank) {
+            String label = lastRank + " promoted to " + newRank;
+            if (GameConstants.IS_TEST_MODE) {
+                Ln.i("game is in test mode, not tracking promotion event: " + label);
+            }
+            else {
+                AnalyticsEvent.send("promotion", label);
+                Ln.i(label);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override

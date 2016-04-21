@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -51,6 +52,7 @@ public class WinScreenTest extends OnlineScreenTest {
         progressManager = mock(ProgressManager.class);
         Dependencies.inject(progressManager);
 
+        when(settings().incrementProgress(anyInt())).thenReturn(new Progress(0));
         RulesFactory.setRules(rules);
     }
 
@@ -84,7 +86,8 @@ public class WinScreenTest extends OnlineScreenTest {
         setScores(100);
         setPenalty(0);
         showScreen();
-        expectIncrementProgressBeCalled(times(1));
+        expectUpdateProgressBeCalled(times(1));
+        verify(settings(), times(1)).incrementProgress(100);
         verify(settings(), times(1)).setProgressPenalty(0);
     }
 
@@ -93,7 +96,8 @@ public class WinScreenTest extends OnlineScreenTest {
         setScores(100);
         setPenalty(200);
         showScreen();
-        expectIncrementProgressBeCalled(never());
+        expectUpdateProgressBeCalled(never());
+        verify(settings(), never()).incrementProgress(anyInt());
         verify(settings(), times(1)).setProgressPenalty(100);
     }
 
@@ -273,8 +277,8 @@ public class WinScreenTest extends OnlineScreenTest {
         verify(achievementsManager, times).processAchievements(any(Game.class), any(Collection.class), anyInt());
     }
 
-    private void expectIncrementProgressBeCalled(VerificationMode times) {
-        verify(progressManager, times).incrementProgress(anyInt());
+    private void expectUpdateProgressBeCalled(VerificationMode times) {
+        verify(progressManager, times).updateProgress(any(Progress.class));
     }
 
     @NonNull
