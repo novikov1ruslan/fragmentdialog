@@ -11,7 +11,7 @@ import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.progress.ProgressManager;
+import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
 import org.commons.logger.Ln;
@@ -32,6 +32,13 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
         mApiClient = Dependencies.getApiClient();
     }
 
+    private static void debug_setProgress(int progress, GameSettings settings) {
+        Ln.i("setting debug progress to: " + progress);
+        Progress newProgress = new Progress(progress);
+        settings.setProgress(newProgress);
+        Dependencies.getProgressManager().updateProgress(newProgress);
+    }
+
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (RanksLayout) inflate(R.layout.ranks_list, container);
@@ -40,7 +47,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
         mLayout.debug_setDebugListener(new RanksLayout.DebugListener() {
             @Override
             public void onDebugScoreSet(int score) {
-                new ProgressManager(mApiClient, mSettings).debug_setProgress(score);
+                debug_setProgress(score, mSettings);
             }
         });
 

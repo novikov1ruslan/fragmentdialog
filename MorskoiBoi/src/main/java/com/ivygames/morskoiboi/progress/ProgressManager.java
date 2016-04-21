@@ -25,13 +25,6 @@ public class ProgressManager {
 
     private static final boolean USE_GAME_SAVE_SERVICE = true;
 
-    public void debug_setProgress(int progress) {
-        Ln.i("setting debug progress to: " + progress);
-        Progress newProgress = new Progress(progress);
-        mSettings.setProgress(newProgress);
-        updateProgress(newProgress);
-    }
-
     public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
     @NonNull
