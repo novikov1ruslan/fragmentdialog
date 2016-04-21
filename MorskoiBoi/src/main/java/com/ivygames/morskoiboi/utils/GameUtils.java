@@ -21,16 +21,12 @@ public final class GameUtils {
         // utility
     }
 
-    public static Collection<Ship> populateFullHorizontalFleet(@NonNull Collection<Ship> ships,
-                                                               @NonNull int[] totalShips) {
+    public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] totalShips) {
+        ArrayList<Ship> ships = new ArrayList<>(totalShips.length);
         for (int i = totalShips.length - 1; i >= 0 ; i--) {
             ships.add(new Ship(totalShips[i]));
         }
         return ships;
-    }
-
-    public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] totalShips) {
-        return populateFullHorizontalFleet(new ArrayList<Ship>(), totalShips);
     }
 
     /**
