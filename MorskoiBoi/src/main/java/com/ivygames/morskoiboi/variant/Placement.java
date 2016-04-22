@@ -27,7 +27,7 @@ public class Placement implements PlacementAlgorithm {
     public Board generateBoard() {
         Board board = new Board();
 
-        Collection<Ship> ships = mRules.generateFullFleet();
+        Collection<Ship> ships = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
         for (Ship ship : ships) {
             place(ship, board);
         }

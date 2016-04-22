@@ -4,17 +4,13 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.utils.GameUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public abstract class AbstractRules implements Rules {
-
-    private static volatile long sRandomCounter;
 
     @Override
     public boolean isBoardSet(Board board) {
@@ -48,22 +44,6 @@ public abstract class AbstractRules implements Rules {
     @Override
     public boolean isItDefeatedBoard(Board board) {
         return allShipsAreOnBoard(board) && Board.allAvailableShipsAreDestroyed(board);
-    }
-
-    @Override
-    public Collection<Ship> generateFullFleet() {
-        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
-
-        List<Ship> fleet = new ArrayList<>();
-        for (int length : getAllShipsSizes()) {
-            fleet.add(new Ship(length, calcRandomOrientation(random)));
-        }
-
-        return fleet;
-    }
-
-    private static Ship.Orientation calcRandomOrientation(Random random) {
-        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
     }
 
 }

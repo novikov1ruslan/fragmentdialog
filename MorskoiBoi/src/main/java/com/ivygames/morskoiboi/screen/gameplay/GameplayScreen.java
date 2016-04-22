@@ -806,7 +806,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void updateEnemyStatus() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fleet = mRules.generateFullFleet();
+        Collection<Ship> fleet = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
         for (Ship ship : killedShips) {
             GameUtils.removeShipFromFleet(fleet, ship);
         }

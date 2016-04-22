@@ -86,7 +86,12 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     protected Collection<Ship> generateFullHorizontalFleet() {
-        return Ship.setOrientationForShips(mRules.generateFullFleet(), Ship.Orientation.HORIZONTAL);
+        return Ship.setOrientationForShips(generateFullFleet(), Ship.Orientation.HORIZONTAL);
+    }
+
+    @NonNull
+    private Collection<Ship> generateFullFleet() {
+        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
     }
 
     @Override

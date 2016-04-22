@@ -28,6 +28,4 @@ public interface Rules {
 
     Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell);
 
-    Collection<Ship> generateFullFleet();
-
 }

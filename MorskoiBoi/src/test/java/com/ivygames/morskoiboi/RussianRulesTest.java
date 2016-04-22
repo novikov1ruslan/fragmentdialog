@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -110,7 +111,12 @@ public class RussianRulesTest {
         Game game = mockPerfectGame();
         setGameType(game, Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(mRules.generateFullFleet(), game, false), is(31250));
+        assertThat(mRules.calcTotalScores(generateFullFleet(), game, false), is(31250));
+    }
+
+    @NonNull
+    protected Collection<Ship> generateFullFleet() {
+        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
     }
 
     @Test
@@ -118,7 +124,7 @@ public class RussianRulesTest {
         Game game = mockPerfectGame();
         setGameType(game, Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(mRules.generateFullFleet(), game, true), is(5000));
+        assertThat(mRules.calcTotalScores(generateFullFleet(), game, true), is(5000));
     }
 
     @Test
@@ -144,7 +150,7 @@ public class RussianRulesTest {
         Game game = mockPerfectGame();
         setGameType(game, Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(mRules.calcTotalScores(mRules.generateFullFleet(), game, false), is(31250));
+        assertThat(mRules.calcTotalScores(generateFullFleet(), game, false), is(31250));
     }
 
     @Test

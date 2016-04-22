@@ -6,15 +6,18 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public final class GameUtils {
 
     public static final int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
+    private static volatile long sRandomCounter;
 
     private GameUtils() {
         // utility
@@ -79,5 +82,21 @@ public final class GameUtils {
                 break;
             }
         }
+    }
+
+    @NonNull
+    public static Collection<Ship> generateShipsForSizes(int[] allShipsSizes) {
+        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
+
+        List<Ship> fleet = new ArrayList<>();
+        for (int length : allShipsSizes) {
+            fleet.add(new Ship(length, calcRandomOrientation(random)));
+        }
+
+        return fleet;
+    }
+
+    private static Ship.Orientation calcRandomOrientation(Random random) {
+        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
     }
 }
