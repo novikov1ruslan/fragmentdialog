@@ -110,7 +110,7 @@ public class RussianRulesTest {
         Game game = mockPerfectGame();
         setGameType(game, Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(mAlgorithm.generateFullFleet(), game, false), is(31250));
+        assertThat(mRules.calcTotalScores(mRules.generateFullFleet(), game, false), is(31250));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class RussianRulesTest {
         Game game = mockPerfectGame();
         setGameType(game, Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(mAlgorithm.generateFullFleet(), game, true), is(5000));
+        assertThat(mRules.calcTotalScores(mRules.generateFullFleet(), game, true), is(5000));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class RussianRulesTest {
         Game game = mockPerfectGame();
         setGameType(game, Game.Type.VS_ANDROID);
         when(game.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(mRules.calcTotalScores(mAlgorithm.generateFullFleet(), game, false), is(31250));
+        assertThat(mRules.calcTotalScores(mRules.generateFullFleet(), game, false), is(31250));
     }
 
     @Test

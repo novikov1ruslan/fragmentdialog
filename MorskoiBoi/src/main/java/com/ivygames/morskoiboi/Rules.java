@@ -32,4 +32,7 @@ public interface Rules {
     int[] newShipTypesArray();
 
     Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell);
+
+    Collection<Ship> generateFullFleet();
+
 }

@@ -14,9 +14,4 @@ public interface PlacementAlgorithm {
 
     void putShipAt(Board board, Ship ship, int x, int y);
 
-    /**
-     * @return fleet of ships with random orientation
-     */
-    Collection<Ship> generateFullFleet();
-
 }

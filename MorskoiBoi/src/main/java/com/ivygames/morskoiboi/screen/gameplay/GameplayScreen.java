@@ -28,7 +28,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -483,10 +482,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private int getTotalHealth() {
-        Collection<Ship> ships = PlacementFactory.getAlgorithm().generateFullFleet();
+        int[] ships = mRules.getTotalShips();
         int totalHealth = 0;
-        for (Ship ship : ships) {
-            totalHealth += ship.getSize();
+        for (int ship : ships) {
+            totalHealth += ship;
         }
         return totalHealth;
     }

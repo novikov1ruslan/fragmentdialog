@@ -2,8 +2,11 @@ package com.ivygames.morskoiboi.variant;
 
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.utils.GameUtils;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,4 +45,10 @@ public abstract class AbstractRules implements Rules {
     public boolean isItDefeatedBoard(Board board) {
         return allShipsAreOnBoard(board) && Board.allAvailableShipsAreDestroyed(board);
     }
+
+    @Override
+    public Collection<Ship> generateFullFleet() {
+        return GameUtils.generateFullFleet(getTotalShips());
+    }
+
 }

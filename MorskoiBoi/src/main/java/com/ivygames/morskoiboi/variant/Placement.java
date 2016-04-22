@@ -25,8 +25,7 @@ public class Placement implements PlacementAlgorithm {
         mTotalShips = rules.getTotalShips();
     }
 
-    @Override
-    public Collection<Ship> generateFullFleet() {
+    private Collection<Ship> generateFullFleet() {
         return GameUtils.generateFullFleet(mTotalShips);
     }
 
