@@ -48,6 +48,7 @@ import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
+import org.json.JSONException;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -721,6 +722,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         private void resetPlayer() {
             Ln.d("match is over - blocking the player for further messages until start of the next round");
+            copyPlayerBoard();
+            copyEnemyBoard();
             mPlayer.reset(new Bidder().newBid());
             // need to de-associate UI from the enemy opponent
             mEnemy.setOpponent(mPlayer);
@@ -737,10 +740,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mPlayer.onNewMessage(text);
         }
 
-        private void lost(long mseconds) {
+        private void lost(long ms) {
             disableBackPress();
             mLayout.lost();
-            showLostScreenDelayed(mseconds);
+            showLostScreenDelayed(ms);
         }
 
         private void showLostScreenDelayed(long mseconds) {
@@ -757,6 +760,22 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return mPlayer.toString();
         }
 
+    }
+
+    private void copyPlayerBoard() {
+        try {
+            mPlayerPrivateBoard = Board.fromJson(mPlayerPrivateBoard.toJson());
+        } catch (JSONException je) {
+            Ln.e(je, "could not copy player's board");
+        }
+    }
+
+    private void copyEnemyBoard() {
+        try {
+            mEnemyPublicBoard = Board.fromJson(mEnemyPublicBoard.toJson());
+        } catch (JSONException je) {
+            Ln.e(je, "could not copy enemy's board");
+        }
     }
 
     private void vibrate(int duration) {
