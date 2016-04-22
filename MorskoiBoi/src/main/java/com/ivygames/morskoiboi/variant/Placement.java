@@ -29,13 +29,13 @@ public class Placement implements PlacementAlgorithm {
 
         Collection<Ship> ships = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
         for (Ship ship : ships) {
-            place(ship, board);
+            putShipOnBoard(ship, board);
         }
 
         return board;
     }
 
-    private boolean place(Ship ship, Board board) {
+    private boolean putShipOnBoard(Ship ship, Board board) {
         List<Vector2> cells = board.getEmptyCells();
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
@@ -78,7 +78,8 @@ public class Placement implements PlacementAlgorithm {
                             cell.setHit();
                         }
                     } else {
-                        mRules.markAdjacentCellsIfNeeded(ship, cell);
+                        cell = mRules.getAdjacentCellForShip(ship);
+                        board.setCell(cell, cellX, cellY);
                     }
                 }
             }

@@ -157,12 +157,10 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell) {
+    public Cell getAdjacentCellForShip(Ship ship) {
         if (ship.isDead()) {
-            cell.setMiss();
-        } else {
-            cell.setReserved();
+            return Cell.newMiss();
         }
-        return cell;
+        return Cell.newReserved();
     }
 }

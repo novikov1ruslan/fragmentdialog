@@ -53,8 +53,7 @@ public class AmericanRules extends AbstractRules {
         }
     }
 
-    @Override
-    public Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell) {
+    public Cell getAdjacentCellForShip(Ship ship) {
         return null;
     }
 }

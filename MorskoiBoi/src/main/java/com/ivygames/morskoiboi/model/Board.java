@@ -323,7 +323,7 @@ public class Board {
         setCell(cell, vector.getX(), vector.getY());
     }
 
-    private void setCell(Cell cell, int i, int j) {
+    public void setCell(Cell cell, int i, int j) {
         mCells[i][j] = cell;
     }
 
