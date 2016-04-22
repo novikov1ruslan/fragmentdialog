@@ -52,6 +52,7 @@ public final class GameUtils {
         return true;
     }
 
+    @NonNull
     public static String formatDuration(long millis) {
         long seconds = millis / 1000;
         long minutes = seconds / 60;

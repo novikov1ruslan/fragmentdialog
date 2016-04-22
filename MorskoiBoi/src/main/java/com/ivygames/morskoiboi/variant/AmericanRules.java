@@ -54,11 +54,6 @@ public class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public int[] getDistinctShipsSizes() {
-        return new int[]{5, 4, 3, 2};
-    }
-
-    @Override
     public Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell) {
         return null;
     }

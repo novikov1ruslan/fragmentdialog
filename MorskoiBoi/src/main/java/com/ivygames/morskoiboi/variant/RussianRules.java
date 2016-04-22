@@ -157,11 +157,6 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int[] getDistinctShipsSizes() {
-        return new int[]{4, 3, 2, 1};
-    }
-
-    @Override
     public Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell) {
         if (ship.isDead()) {
             cell.setMiss();

@@ -206,11 +206,6 @@ public class RussianRulesTest {
     }
 
     @Test
-    public void russian_fleet_has_following_ship_types_4_3_2_1() {
-        assertThat(mRules.getDistinctShipsSizes(), is(new int[]{4,3,2,1}));
-    }
-
-    @Test
     public void board_is_NOT_defeated_if_it_has_less_than_10_ships() {
         Board board = mock(Board.class);
         Collection<Ship> ships = mock(Collection.class);

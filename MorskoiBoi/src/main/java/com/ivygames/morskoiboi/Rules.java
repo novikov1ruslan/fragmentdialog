@@ -26,11 +26,6 @@ public interface Rules {
 
     Bitmap getBitmapForShipSize(int size);
 
-    /**
-     * @return array containing integers each representing length of a separate ship type
-     */
-    int[] getDistinctShipsSizes();
-
     Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell);
 
     Collection<Ship> generateFullFleet();
