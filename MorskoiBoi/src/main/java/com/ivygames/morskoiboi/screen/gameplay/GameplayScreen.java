@@ -51,8 +51,6 @@ import org.commons.logger.Ln;
 import org.json.JSONException;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -803,30 +801,16 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     public void updateMyStatus() {
-        Collection<Ship> ships = mPlayerPrivateBoard.getShips();
-        LinkedList<Ship> workingShips = new LinkedList<>();
-        for (Ship ship : ships) {
-            if (!ship.isDead()) {
-                workingShips.add(ship);
-            }
-        }
-        mLayout.setMyShips(workingShips);
+        mLayout.setMyShips(GameUtils.getWorkingShips(mPlayerPrivateBoard.getShips()));
     }
 
     private void updateEnemyStatus() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fullFleet = mRules.generateFullFleet();
+        Collection<Ship> fleet = mRules.generateFullFleet();
         for (Ship ship : killedShips) {
-            Iterator<Ship> iterator = fullFleet.iterator();
-            while (iterator.hasNext()) {
-                Ship next = iterator.next();
-                if (ship.getSize() == next.getSize()) {
-                    iterator.remove();
-                    break;
-                }
-            }
+            GameUtils.removeShipFromFleet(fleet, ship);
         }
-        mLayout.setEnemyShips(fullFleet);
+        mLayout.setEnemyShips(fleet);
     }
 
     private void startTurnTimer() {

@@ -6,6 +6,9 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,5 +56,27 @@ public final class GameUtils {
         long seconds = millis / 1000;
         long minutes = seconds / 60;
         return String.format(Locale.US, "%d:%02d", minutes, seconds % 60);
+    }
+
+    @NonNull
+    public static LinkedList<Ship> getWorkingShips(Collection<Ship> ships) {
+        LinkedList<Ship> workingShips = new LinkedList<>();
+        for (Ship ship : ships) {
+            if (!ship.isDead()) {
+                workingShips.add(ship);
+            }
+        }
+        return workingShips;
+    }
+
+    public static void removeShipFromFleet(Collection<Ship> fleet, Ship ship) {
+        Iterator<Ship> iterator = fleet.iterator();
+        while (iterator.hasNext()) {
+            Ship next = iterator.next();
+            if (ship.getSize() == next.getSize()) {
+                iterator.remove();
+                break;
+            }
+        }
     }
 }
