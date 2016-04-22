@@ -18,14 +18,14 @@ public final class GameUtils {
     }
 
     /**
-     * @return true if the cells are aligned horizontally
+     * @return true if coordinates {@code vector} are aligned horizontally
      */
-    public static boolean areCellsHorizontal(List<Vector2> vector) {
+    public static boolean coordinatesAlignedHorizontally(List<Vector2> coordinates) {
 
-        int y = vector.get(0).getY();
+        int y = coordinates.get(0).getY();
 
-        for (int i = 1; i < vector.size(); i++) {
-            if (y != vector.get(i).getY()) {
+        for (int i = 1; i < coordinates.size(); i++) {
+            if (y != coordinates.get(i).getY()) {
                 return false;
             }
         }

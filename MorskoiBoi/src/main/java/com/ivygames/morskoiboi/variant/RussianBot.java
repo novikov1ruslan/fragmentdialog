@@ -93,7 +93,7 @@ public class RussianBot implements BotAlgorithm {
             }
         }
 
-        if (GameUtils.areCellsHorizontal(mHitDecks)) { // TODO: miny == maxy
+        if (GameUtils.coordinatesAlignedHorizontally(mHitDecks)) { // TODO: miny == maxy
             addCellIfEmpty(board, --minX, minY, possibleShots);
             addCellIfEmpty(board, ++maxX, minY, possibleShots);
         } else {
