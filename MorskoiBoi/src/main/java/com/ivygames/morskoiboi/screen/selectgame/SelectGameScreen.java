@@ -30,7 +30,6 @@ import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
@@ -40,6 +39,7 @@ import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
+import com.ivygames.morskoiboi.Placement;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -157,7 +157,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
-        PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
+        Placement placement = PlacementFactory.getAlgorithm();
         Rules rules = RulesFactory.getRules();
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), new Board(),
                 placement, rules, new DelayedOpponent());

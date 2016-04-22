@@ -5,13 +5,12 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ivygames.morskoiboi.variant.Placement;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -41,7 +40,7 @@ public class SetupBoardPresenterTest {
 
     private static final Point IN_DOCK_AREA = new Point(100, 100);
     private static final Point IN_BOARD_AREA = new Point(200, 200);
-    private PlacementAlgorithm mPlacement;
+    private Placement mPlacement;
     private RussianRules rules;
 
     @Before

@@ -10,7 +10,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.variant.Placement;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -39,7 +39,7 @@ public class AndroidOpponentTest {
     @Mock
     private Random mRandom;
     @Mock
-    private PlacementAlgorithm mPlacement;
+    private Placement mPlacement;
     @Mock
     private Rules mRules;
 

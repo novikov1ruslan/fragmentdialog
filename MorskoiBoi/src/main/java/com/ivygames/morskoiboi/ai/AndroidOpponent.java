@@ -14,6 +14,7 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.commons.logger.Ln;
@@ -28,14 +29,14 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private volatile BotAlgorithm mBot;
 
     private final String mName;
-    private final PlacementAlgorithm mPlacement;
+    private final Placement mPlacement;
     private final CancellableOpponent mDelegate;
     private final Rules mRules;
     private Opponent mOpponent;
 
     public AndroidOpponent(@NonNull String name,
                            @NonNull Board board,
-                           @NonNull PlacementAlgorithm placement,
+                           @NonNull Placement placement,
                            @NonNull Rules rules,
                            @NonNull CancellableOpponent delegate) {
         mName = name;

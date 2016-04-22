@@ -2,10 +2,9 @@ package com.ivygames.morskoiboi.model;
 
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
-import com.ivygames.morskoiboi.variant.Placement;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -31,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class BoardTest {
 
 	private Board mBoard;
-	private PlacementAlgorithm mPlacementAlgorithm;
+	private Placement mPlacementAlgorithm;
 
 	@Before
 	public void setUp() throws Exception {

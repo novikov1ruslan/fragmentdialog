@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -75,7 +74,7 @@ public abstract class AbstractOpponent implements Opponent {
     }
 
     protected final void updateEnemyBoard(@NonNull PokeResult result,
-                                          @NonNull PlacementAlgorithm placement) {
+                                          @NonNull Placement placement) {
         Ship ship = result.ship;
         if (ship == null) {
             mEnemyBoard.setCell(result.cell, result.aim);

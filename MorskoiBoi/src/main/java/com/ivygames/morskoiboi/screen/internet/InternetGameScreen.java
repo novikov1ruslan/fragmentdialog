@@ -25,7 +25,6 @@ import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Model;
@@ -37,6 +36,7 @@ import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.screen.internet.InternetGameLayout.InternetGameLayoutListener;
+import com.ivygames.morskoiboi.Placement;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -169,7 +169,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
+        Placement placement = PlacementFactory.getAlgorithm();
         Rules rules = RulesFactory.getRules();
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), mOpponent);
     }

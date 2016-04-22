@@ -5,13 +5,13 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BasePresenter;
+import com.ivygames.morskoiboi.Placement;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
@@ -24,7 +24,7 @@ final class SetupBoardPresenter extends BasePresenter {
     private final Point shipDisplayCenter = new Point();
     private Rect mPickedShipRect = new Rect();
     private final Rect mRectForCell = new Rect();
-    private final PlacementAlgorithm mPlacementAlgorithm = PlacementFactory.getAlgorithm();
+    private final Placement mPlacementAlgorithm = PlacementFactory.getAlgorithm();
     /**
      * ship displayed at the top of the screen (selection area)
      */

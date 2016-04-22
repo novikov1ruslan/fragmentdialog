@@ -1,13 +1,11 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -37,7 +35,7 @@ public class PlayerOpponentTest {
     private Opponent mEnemy;
     @Mock
     private Random mRandom;
-    private PlacementAlgorithm mPlacement;
+    private Placement mPlacement;
 
     @Before
     public void setUp() {

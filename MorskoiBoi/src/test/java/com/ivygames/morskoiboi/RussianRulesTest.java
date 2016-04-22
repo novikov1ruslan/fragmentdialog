@@ -2,14 +2,12 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -34,7 +32,7 @@ public class RussianRulesTest {
     private static final long MAX_TIME = 300000;
 
     private Rules mRules;
-    private PlacementAlgorithm placement;
+    private Placement placement;
 
     @BeforeClass
     public static void runBeforeClass() {

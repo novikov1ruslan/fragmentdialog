@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
+import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
 import org.json.JSONArray;
@@ -236,7 +236,7 @@ public class Board {
 
         ship.rotate();
 
-        PlacementAlgorithm algorithm = PlacementFactory.getAlgorithm();
+        Placement algorithm = PlacementFactory.getAlgorithm();
         if (shipFitsTheBoard(ship, x, y)) {
             algorithm.putShipAt(this, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
         } else {

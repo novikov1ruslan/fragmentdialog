@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -20,13 +19,13 @@ public final class PlayerOpponent extends AbstractOpponent {
     private boolean mPlayerReady;
 
     private final String mName;
-    private final PlacementAlgorithm mPlacement;
+    private final Placement mPlacement;
     private int mOpponentVersion;
     private Rules mRules;
 
     private Opponent mOpponent;
 
-    public PlayerOpponent(String name, PlacementAlgorithm placement, Rules rules) {
+    public PlayerOpponent(String name, Placement placement, Rules rules) {
         mPlacement = placement;
         mName = name;
         mRules = rules;

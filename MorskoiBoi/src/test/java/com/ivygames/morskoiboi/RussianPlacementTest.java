@@ -2,11 +2,9 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -21,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 
 public class RussianPlacementTest {
 
-    private PlacementAlgorithm mAlgorithm;
+    private Placement mAlgorithm;
     private int mNumberOfDistinctShips;
     private Rules rules;
 

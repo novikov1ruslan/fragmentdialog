@@ -20,7 +20,6 @@ import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
-import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
@@ -32,6 +31,7 @@ import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
+import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
 
@@ -174,7 +174,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
+        Placement placement = PlacementFactory.getAlgorithm();
         Rules rules = RulesFactory.getRules();
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
         Model.instance.game = new BluetoothGame(connection);
