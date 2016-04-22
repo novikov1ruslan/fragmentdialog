@@ -36,6 +36,7 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
+import java.util.Collection;
 import java.util.PriorityQueue;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -80,8 +81,12 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mFleet.addAll(GameUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes()));
+        mFleet.addAll(generateFullHorizontalFleet());
         Ln.d("new board created, fleet initialized");
+    }
+
+    protected Collection<Ship> generateFullHorizontalFleet() {
+        return Ship.setOrientationForShips(mRules.generateFullFleet(), Ship.Orientation.HORIZONTAL);
     }
 
     @Override

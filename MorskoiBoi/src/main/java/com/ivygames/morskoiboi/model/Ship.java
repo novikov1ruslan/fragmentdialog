@@ -3,12 +3,22 @@ package com.ivygames.morskoiboi.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collection;
+
 public class Ship {
     private static final String HEALTH = "health";
     private static final String Y = "y";
     private static final String X = "x";
     private static final String IS_HORIZONTAL = "is_horizontal";
     private static final String SIZE = "size";
+
+    public static Collection<Ship> setOrientationForShips(Collection<Ship> ships, Orientation orientation) {
+        for (Ship ship: ships) {
+            ship.mOrientation = orientation;
+        }
+
+        return ships;
+    }
 
     public enum Orientation {
         HORIZONTAL, VERTICAL

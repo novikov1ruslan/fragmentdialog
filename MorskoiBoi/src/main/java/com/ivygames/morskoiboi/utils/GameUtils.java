@@ -6,8 +6,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,22 +15,6 @@ public final class GameUtils {
 
     private GameUtils() {
         // utility
-    }
-
-    public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] totalShips) {
-        ArrayList<Ship> ships = new ArrayList<>(totalShips.length);
-        for (int i = totalShips.length - 1; i >= 0; i--) {
-            ships.add(new Ship(totalShips[i]));
-        }
-        return ships;
-    }
-
-    public static void setOrientationForShips(Collection<Ship> ships) {
-        for (Ship ship: ships) {
-            if (!ship.isHorizontal()) {
-                ship.rotate();
-            }
-        }
     }
 
     /**
