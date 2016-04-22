@@ -19,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collection;
 import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -52,7 +51,7 @@ public class AndroidOpponentTest {
         MockitoAnnotations.initMocks(this);
         mCancellableOpponent = new DelegateOpponent();
 
-        mAndroid = new AndroidOpponent(ANDROID_NAME, mPlacement, mRules, mCancellableOpponent);
+        mAndroid = new AndroidOpponent(ANDROID_NAME, mBoard, mPlacement, mRules, mCancellableOpponent);
         mAndroid.setOpponent(mOpponent);
     }
 
@@ -92,7 +91,7 @@ public class AndroidOpponentTest {
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
         // set the board
         getPlacement().putShipAt(mBoard, new Ship(2), 5, 5);
-        when(mPlacement.generateBoard(any(Board.class), any(Collection.class))).thenReturn(mBoard);
+//        when(mPlacement.populateBoardWithShips(any(Board.class), any(Collection.class))).thenReturn(mBoard);
         when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(2);
 

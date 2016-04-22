@@ -34,6 +34,7 @@ import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -158,7 +159,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         UiEvent.send("vsAndroid");
         PlacementAlgorithm placement = PlacementFactory.getAlgorithm();
         Rules rules = RulesFactory.getRules();
-        AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), placement, rules, new DelayedOpponent());
+        AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), new Board(),
+                placement, rules, new DelayedOpponent());
         Model.instance.game = new AndroidGame();
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {

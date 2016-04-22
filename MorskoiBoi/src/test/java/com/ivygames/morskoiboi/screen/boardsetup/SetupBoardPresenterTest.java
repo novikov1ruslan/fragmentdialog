@@ -59,7 +59,7 @@ public class SetupBoardPresenterTest {
     @Test
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
-        mPlacement.generateBoard(board, generateFullFleet());
+        mPlacement.populateBoardWithShips(board, generateFullFleet());
         mPresenter.dropShip(board);
     }
 

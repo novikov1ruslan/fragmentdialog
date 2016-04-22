@@ -34,14 +34,21 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private Opponent mOpponent;
 
     public AndroidOpponent(@NonNull String name,
+                           @NonNull Board board,
                            @NonNull PlacementAlgorithm placement,
                            @NonNull Rules rules,
                            @NonNull CancellableOpponent delegate) {
         mName = name;
+        mMyBoard = board;
         mPlacement = placement;
         mRules = rules;
         mDelegate = delegate;
-        reset(new Bidder().newBid());
+        Ln.d(this + ": initializing boards and bids");
+//        mEnemyBoard.clearBoard();
+//        mMyBoard.clearBoard();
+        mMyBid = new Bidder().newBid();
+        mEnemyBid = OPPONENT_NOT_READY_BID;
+        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
         Ln.v("new android opponent created");
     }
 
@@ -59,7 +66,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        mMyBoard = mPlacement.generateBoard(mMyBoard, generateFullFleet());
+        mPlacement.populateBoardWithShips(mMyBoard, generateFullFleet());
         if (GameConstants.IS_TEST_MODE) {
             Ln.i(this + ": my board: " + mMyBoard);
         }

@@ -138,7 +138,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public void autoSetup() {
         UiEvent.send("auto");
-        mBoard = mPlacement.generateBoard(mBoard, generateFullFleet());
+        mBoard.clearBoard();
+        mPlacement.populateBoardWithShips(mBoard, generateFullFleet());
         mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
     }

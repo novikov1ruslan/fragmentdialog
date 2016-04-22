@@ -28,12 +28,10 @@ public class Placement implements PlacementAlgorithm {
     }
 
     @Override
-    public Board generateBoard(@NonNull Board board, @NonNull Collection<Ship> ships) {
+    public void populateBoardWithShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             putShipOnBoard(ship, board);
         }
-
-        return board;
     }
 
     private boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {

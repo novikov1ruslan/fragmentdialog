@@ -52,7 +52,9 @@ public class RussianRulesTest {
 
     @Test
     public void board_is_set_when_it_has_full_russian_fleet_and_no_conflicting_cells() {
-        assertThat(mRules.isBoardSet(placement.generateBoard(new Board(), generateFullFleet())), is(true));
+        Board board = new Board();
+        placement.populateBoardWithShips(board, generateFullFleet());
+        assertThat(mRules.isBoardSet(board), is(true));
     }
 
     @Test
@@ -62,7 +64,8 @@ public class RussianRulesTest {
 
     @Test
     public void board_is_not_set_when_it_has_less_than_full_russian_fleet() {
-        Board board = placement.generateBoard(new Board(), generateFullFleet());
+        Board board = new Board();
+        placement.populateBoardWithShips(board, generateFullFleet());
         Ship ship = board.getShips().iterator().next();
         board.removeShipFrom(ship.getX(), ship.getY());
         assertThat(mRules.isBoardSet(board), is(false));
@@ -70,7 +73,8 @@ public class RussianRulesTest {
 
     @Test
     public void board_is_not_set_when_it_has_conflicting_cells_although_all_the_fleet_is_on_a_board() {
-        Board board = placement.generateBoard(new Board(), generateFullFleet());
+        Board board = new Board();
+        placement.populateBoardWithShips(board, generateFullFleet());
         Collection<Ship> shipsCopy = new ArrayList<>(board.getShips());
         for (Ship ship : shipsCopy) {
             board.removeShipFrom(ship.getX(), ship.getY());

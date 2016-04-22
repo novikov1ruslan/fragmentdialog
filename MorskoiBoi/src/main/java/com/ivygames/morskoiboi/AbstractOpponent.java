@@ -13,7 +13,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 import org.commons.logger.Ln;
 
 public abstract class AbstractOpponent implements Opponent {
-    private static final int OPPONENT_NOT_READY_BID = -2;
+    protected static final int OPPONENT_NOT_READY_BID = -2;
     private static final int OPPONENT_READY_BID = -1;
 
     @NonNull

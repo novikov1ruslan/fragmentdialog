@@ -39,7 +39,8 @@ public class RussianPlacementTest {
 
     @Test
     public void after_generating_full_board_it_has_russian_fleet() {
-        Board board = mAlgorithm.generateBoard(new Board(), generateFullFleet());
+        Board board = new Board();
+        mAlgorithm.populateBoardWithShips(board, generateFullFleet());
         assertAllTheShipsAreRussianFleet(board.getShips());
     }
 
