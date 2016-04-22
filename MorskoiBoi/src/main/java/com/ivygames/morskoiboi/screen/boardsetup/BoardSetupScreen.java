@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
+import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
@@ -31,6 +32,7 @@ import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;
 import com.ivygames.morskoiboi.utils.GameUtils;
+import com.ivygames.morskoiboi.variant.Placement;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -63,6 +65,9 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     private final AndroidDevice mDevice = Dependencies.getDevice();
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
+    @NonNull
+    private final PlacementAlgorithm mPlacement = PlacementFactory.getAlgorithm();
+
     @NonNull
     private final Runnable mTimeoutTask = new Runnable() {
         @Override
@@ -134,7 +139,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public void autoSetup() {
         UiEvent.send("auto");
-        mBoard = PlacementFactory.getAlgorithm().generateBoard();
+        mBoard = mPlacement.generateBoard();
         mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
     }

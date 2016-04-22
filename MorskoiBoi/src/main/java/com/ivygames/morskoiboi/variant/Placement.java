@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.variant;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
@@ -15,10 +17,12 @@ import java.util.Random;
 
 public class Placement implements PlacementAlgorithm {
 
+    @NonNull
     private final Random mRandom;
-    private Rules mRules;
+    @NonNull
+    private final Rules mRules;
 
-    public Placement(Random random, Rules rules) {
+    public Placement(@NonNull Random random, @NonNull Rules rules) {
         mRandom = random;
         mRules = rules;
     }
@@ -35,7 +39,7 @@ public class Placement implements PlacementAlgorithm {
         return board;
     }
 
-    private boolean putShipOnBoard(Ship ship, Board board) {
+    private boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
         List<Vector2> cells = board.getEmptyCells();
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
@@ -57,7 +61,7 @@ public class Placement implements PlacementAlgorithm {
     }
 
     @Override
-    public void putShipAt(Board board, Ship ship, int x, int y) {
+    public void putShipAt(@NonNull Board board, @NonNull Ship ship, int x, int y) {
         if (!board.shipFitsTheBoard(ship, x, y)) {
             throw new IllegalArgumentException("cannot put ship " + ship + " at (" + x + "," + y + ")");
         }
