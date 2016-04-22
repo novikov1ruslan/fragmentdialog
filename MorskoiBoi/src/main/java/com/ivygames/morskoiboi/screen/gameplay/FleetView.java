@@ -72,8 +72,8 @@ public class FleetView extends View {
 
         Resources resources = getResources();
         mLinePaint = UiUtils.newStrokePaint(resources, R.color.line);
-        float mTextSize = resources.getDimension(R.dimen.status_text_size);
-        mTextPaint.setTextSize(mTextSize);
+        float textSize = resources.getDimension(R.dimen.status_text_size);
+        mTextPaint.setTextSize(textSize);
         Typeface typeface = Typeface.DEFAULT_BOLD;
         mTextPaint.setTypeface(typeface);
         mTextPaint.setTextAlign(Paint.Align.LEFT);

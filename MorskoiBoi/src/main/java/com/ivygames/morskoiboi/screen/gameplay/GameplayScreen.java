@@ -613,6 +613,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.setShotResult(result);
 
             mLayout.invalidateEnemyBoard();
+
+            // TODO: call this only if ship sank
             updateEnemyStatus();
 
             if (shipSank(result.ship)) {
@@ -811,9 +813,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setMyShips(workingShips);
     }
 
-    public void updateEnemyStatus() {
+    private void updateEnemyStatus() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fullFleet = GameUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes());
+        Collection<Ship> fullFleet = mRules.generateFullFleet();
         for (Ship ship : killedShips) {
             Iterator<Ship> iterator = fullFleet.iterator();
             while (iterator.hasNext()) {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 public final class GameUtils {
 
@@ -26,6 +25,14 @@ public final class GameUtils {
             ships.add(new Ship(totalShips[i]));
         }
         return ships;
+    }
+
+    public static void setOrientationForShips(Collection<Ship> ships) {
+        for (Ship ship: ships) {
+            if (!ship.isHorizontal()) {
+                ship.rotate();
+            }
+        }
     }
 
     /**
