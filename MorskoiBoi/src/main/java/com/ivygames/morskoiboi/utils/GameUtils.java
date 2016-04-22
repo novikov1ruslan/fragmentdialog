@@ -15,7 +15,6 @@ import java.util.Random;
 public final class GameUtils {
 
     public static final int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
-    private static volatile long sRandomCounter;
 
     private GameUtils() {
         // utility
@@ -23,7 +22,7 @@ public final class GameUtils {
 
     public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] totalShips) {
         ArrayList<Ship> ships = new ArrayList<>(totalShips.length);
-        for (int i = totalShips.length - 1; i >= 0 ; i--) {
+        for (int i = totalShips.length - 1; i >= 0; i--) {
             ships.add(new Ship(totalShips[i]));
         }
         return ships;
@@ -45,27 +44,10 @@ public final class GameUtils {
         return true;
     }
 
-    private static Ship.Orientation calcRandomOrientation(Random random) {
-        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
-    }
-
-    // TODO: do via priority queue
-    public static List<Ship> generateFullFleet(int[] shipsLength) {
-        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
-
-        // order is important
-        List<Ship> fullSet = new ArrayList<>();
-        for (int length : shipsLength) {
-            fullSet.add(new Ship(length, calcRandomOrientation(random)));
-        }
-
-        return fullSet;
-    }
-
     /**
-     * @return true if the {@code board} has empty space for the {@code ship} at coordinates
+     * @return true if the {@code board} has empty space for the {@code ship} at coordinates ({@code i},{@code j}
      */
-    public static boolean isPlaceEmpty(Ship ship, Board board, int i, int j) {
+    public static boolean isPlaceEmpty(@NonNull Ship ship, @NonNull Board board, int i, int j) {
         boolean isHorizontal = ship.isHorizontal();
         for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
             int x = isHorizontal ? k : i;

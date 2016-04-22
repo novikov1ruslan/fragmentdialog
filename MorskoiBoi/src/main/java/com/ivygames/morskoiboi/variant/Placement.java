@@ -17,23 +17,17 @@ public class Placement implements PlacementAlgorithm {
 
     private final Random mRandom;
     private Rules mRules;
-    private final int[] mTotalShips;
 
     public Placement(Random random, Rules rules) {
         mRandom = random;
         mRules = rules;
-        mTotalShips = rules.getTotalShips();
-    }
-
-    private Collection<Ship> generateFullFleet() {
-        return GameUtils.generateFullFleet(mTotalShips);
     }
 
     @Override
     public Board generateBoard() {
         Board board = new Board();
 
-        Collection<Ship> ships = generateFullFleet();
+        Collection<Ship> ships = mRules.generateFullFleet();
         for (Ship ship : ships) {
             place(ship, board);
         }
