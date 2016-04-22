@@ -15,6 +15,7 @@ public class Cell {
     public static final int RESERVED_PROXIMITY_VALUE = 8;
 
     private char mState;
+    // TODO: proximity calculation should move outside
     private int mProximity;
 
     public static Cell newEmpty() {

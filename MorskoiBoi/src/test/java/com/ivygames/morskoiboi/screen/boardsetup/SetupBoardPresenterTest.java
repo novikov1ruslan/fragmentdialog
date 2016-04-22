@@ -2,14 +2,15 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.Aiming;
+import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -19,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Collection;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -40,6 +42,7 @@ public class SetupBoardPresenterTest {
     private static final Point IN_DOCK_AREA = new Point(100, 100);
     private static final Point IN_BOARD_AREA = new Point(200, 200);
     private PlacementAlgorithm mPlacement;
+    private RussianRules rules;
 
     @Before
     public void setup() {
@@ -47,16 +50,22 @@ public class SetupBoardPresenterTest {
         mPresenter = new SetupBoardPresenter(10, 2);
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
-        Rules rules = new RussianRules(null);
+        rules = new RussianRules(null);
         RulesFactory.setRules(rules);
-        PlacementFactory.setPlacementAlgorithm(new Placement(new Random(), rules));
-        mPlacement = PlacementFactory.getAlgorithm();
+        mPlacement = new Placement(new Random(), rules);
+        PlacementFactory.setPlacementAlgorithm(mPlacement);
     }
 
     @Test
     public void dropping_ship_without_picking__has_no_effect() {
-        Board board = mPlacement.generateBoard();
+        Board board = new Board();
+        mPlacement.generateBoard(board, generateFullFleet());
         mPresenter.dropShip(board);
+    }
+
+    @NonNull
+    private Collection<Ship> generateFullFleet() {
+        return GameUtils.generateShipsForSizes(rules.getAllShipsSizes());
     }
 
     @Test

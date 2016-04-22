@@ -12,7 +12,7 @@ import com.ivygames.morskoiboi.model.Ship;
 
 import java.util.Collection;
 
-public class AmericanRules extends AbstractRules {
+public abstract class AmericanRules extends AbstractRules {
 
     private static final int[] TOTAL_SHIPS = {5, 4, 3, 3, 2};
     private final Resources mResources;

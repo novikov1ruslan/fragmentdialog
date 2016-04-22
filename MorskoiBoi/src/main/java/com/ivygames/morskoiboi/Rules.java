@@ -26,6 +26,6 @@ public interface Rules {
 
     Bitmap getBitmapForShipSize(int size);
 
-    Cell getAdjacentCellForShip(Ship ship);
+    Cell getAdjacentCellForShip(@NonNull Ship ship, @NonNull Cell cell);
 
 }

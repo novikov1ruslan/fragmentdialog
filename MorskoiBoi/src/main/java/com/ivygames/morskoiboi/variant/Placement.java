@@ -28,10 +28,7 @@ public class Placement implements PlacementAlgorithm {
     }
 
     @Override
-    public Board generateBoard() {
-        Board board = new Board();
-
-        Collection<Ship> ships = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
+    public Board generateBoard(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             putShipOnBoard(ship, board);
         }
@@ -82,7 +79,7 @@ public class Placement implements PlacementAlgorithm {
                             cell.setHit();
                         }
                     } else {
-                        cell = mRules.getAdjacentCellForShip(ship);
+                        cell = mRules.getAdjacentCellForShip(ship, cell);
                         board.setCell(cell, cellX, cellY);
                     }
                 }

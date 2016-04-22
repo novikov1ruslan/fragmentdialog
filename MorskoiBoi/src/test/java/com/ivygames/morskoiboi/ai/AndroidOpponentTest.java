@@ -19,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collection;
 import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -73,6 +74,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void when_android_says_go_to_opponent__opponent_receives_aim() {
+        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.go();
         verify(mOpponent, times(1)).onShotAt(any(Vector2.class));
     }
@@ -90,7 +92,8 @@ public class AndroidOpponentTest {
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
         // set the board
         getPlacement().putShipAt(mBoard, new Ship(2), 5, 5);
-        when(mPlacement.generateBoard()).thenReturn(mBoard);
+        when(mPlacement.generateBoard(any(Board.class), any(Collection.class))).thenReturn(mBoard);
+        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(2);
 
         when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(false);
@@ -121,8 +124,9 @@ public class AndroidOpponentTest {
     }
 
     @Test
-    public void when_opponent_bid_with_higher_bid__opponent_goes() {
+    public void WhenOpponentBidsWithHigherBid__OpponentGoes() {
         mAndroid.reset(1);
+        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(2);
         assertThat(mAndroid.isOpponentTurn(), is(true));
         verify(mOpponent, times(1)).go();
@@ -132,6 +136,7 @@ public class AndroidOpponentTest {
     public void when_opponent_bid_with_lower_bid__opponent_gets_my_bid() {
         int myBid = 2;
         mAndroid.reset(myBid);
+        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(1);
         assertThat(mAndroid.isOpponentTurn(), is(false));
         verify(mOpponent, times(1)).onEnemyBid(myBid);

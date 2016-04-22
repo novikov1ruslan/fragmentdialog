@@ -11,11 +11,14 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.commons.logger.Ln;
 
+import java.util.Collection;
 import java.util.Random;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
@@ -56,10 +59,15 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        mMyBoard = mPlacement.generateBoard();
+        mMyBoard = mPlacement.generateBoard(mMyBoard, generateFullFleet());
         if (GameConstants.IS_TEST_MODE) {
             Ln.i(this + ": my board: " + mMyBoard);
         }
+    }
+
+    @NonNull
+    private Collection<Ship> generateFullFleet() {
+        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
     }
 
     @Override

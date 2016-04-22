@@ -34,7 +34,7 @@ public class RussianRulesTest {
     private static final long MAX_TIME = 300000;
 
     private Rules mRules;
-    private PlacementAlgorithm mAlgorithm;
+    private PlacementAlgorithm placement;
 
     @BeforeClass
     public static void runBeforeClass() {
@@ -46,13 +46,13 @@ public class RussianRulesTest {
         RussianRules rules = new RussianRules(null);
         RulesFactory.setRules(rules);
         PlacementFactory.setPlacementAlgorithm(new Placement(new Random(1), rules));
-        mAlgorithm = PlacementFactory.getAlgorithm();
+        placement = PlacementFactory.getAlgorithm();
         mRules = RulesFactory.getRules();
     }
 
     @Test
     public void board_is_set_when_it_has_full_russian_fleet_and_no_conflicting_cells() {
-        assertThat(mRules.isBoardSet(mAlgorithm.generateBoard()), is(true));
+        assertThat(mRules.isBoardSet(placement.generateBoard(new Board(), generateFullFleet())), is(true));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class RussianRulesTest {
 
     @Test
     public void board_is_not_set_when_it_has_less_than_full_russian_fleet() {
-        Board board = mAlgorithm.generateBoard();
+        Board board = placement.generateBoard(new Board(), generateFullFleet());
         Ship ship = board.getShips().iterator().next();
         board.removeShipFrom(ship.getX(), ship.getY());
         assertThat(mRules.isBoardSet(board), is(false));
@@ -70,11 +70,11 @@ public class RussianRulesTest {
 
     @Test
     public void board_is_not_set_when_it_has_conflicting_cells_although_all_the_fleet_is_on_a_board() {
-        Board board = mAlgorithm.generateBoard();
+        Board board = placement.generateBoard(new Board(), generateFullFleet());
         Collection<Ship> shipsCopy = new ArrayList<>(board.getShips());
         for (Ship ship : shipsCopy) {
             board.removeShipFrom(ship.getX(), ship.getY());
-            mAlgorithm.putShipAt(board, ship, 0, 0);
+            placement.putShipAt(board, ship, 0, 0);
         }
         assertThat(board.getShips().size(), is(10));
         assertThat(mRules.isBoardSet(board), is(false));
@@ -94,15 +94,15 @@ public class RussianRulesTest {
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship() {
         Board board = new Board();
-        mAlgorithm.putShipAt(board, new Ship(1), 5, 5);
+        placement.putShipAt(board, new Ship(1), 5, 5);
         assertThat(mRules.isCellConflicting(board.getCell(5, 5)), is(false));
     }
 
     @Test
     public void cell_is_conflicting_if_it_is_occupied_by_ship_A_and_ship_B_is_touching_the_cell() {
         Board board = new Board();
-        mAlgorithm.putShipAt(board, new Ship(1), 5, 5);
-        mAlgorithm.putShipAt(board, new Ship(1), 6, 6);
+        placement.putShipAt(board, new Ship(1), 5, 5);
+        placement.putShipAt(board, new Ship(1), 6, 6);
         assertThat(mRules.isCellConflicting(board.getCell(5, 5)), is(true));
     }
 

@@ -32,7 +32,6 @@ import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ivygames.morskoiboi.variant.Placement;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -139,7 +138,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public void autoSetup() {
         UiEvent.send("auto");
-        mBoard = mPlacement.generateBoard();
+        mBoard = mPlacement.generateBoard(mBoard, generateFullFleet());
         mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
         mLayout.setBoard(mBoard, mFleet);
     }

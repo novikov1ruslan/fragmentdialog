@@ -1,8 +1,11 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.ai.PlacementAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -20,6 +23,7 @@ public class RussianPlacementTest {
 
     private PlacementAlgorithm mAlgorithm;
     private int mNumberOfDistinctShips;
+    private Rules rules;
 
     @BeforeClass
     public static void runBeforeClass() {
@@ -28,15 +32,20 @@ public class RussianPlacementTest {
 
     @Before
 	public void setup() {
-        RussianRules rules = new RussianRules(null);
+        rules = new RussianRules(null);
         RulesFactory.setRules(rules);
         mAlgorithm = new Placement(new Random(1), rules);
 	}
 
     @Test
     public void after_generating_full_board_it_has_russian_fleet() {
-        Board board = mAlgorithm.generateBoard();
+        Board board = mAlgorithm.generateBoard(new Board(), generateFullFleet());
         assertAllTheShipsAreRussianFleet(board.getShips());
+    }
+
+    @NonNull
+    private Collection<Ship> generateFullFleet() {
+        return GameUtils.generateShipsForSizes(rules.getAllShipsSizes());
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {
