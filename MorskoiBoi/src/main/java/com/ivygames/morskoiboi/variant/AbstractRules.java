@@ -16,25 +16,6 @@ public abstract class AbstractRules implements Rules {
 
     private static volatile long sRandomCounter;
 
-    private static Ship.Orientation calcRandomOrientation(Random random) {
-        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
-    }
-
-    /**
-     * TODO: do via priority queue
-     */
-    private static List<Ship> generateFullFleet(int[] shipsLength) {
-        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
-
-        // order is important
-        List<Ship> fullSet = new ArrayList<>();
-        for (int length : shipsLength) {
-            fullSet.add(new Ship(length, calcRandomOrientation(random)));
-        }
-
-        return fullSet;
-    }
-
     @Override
     public boolean isBoardSet(Board board) {
         return allShipsAreOnBoard(board) && getInvalidCells(board).isEmpty();
@@ -71,7 +52,18 @@ public abstract class AbstractRules implements Rules {
 
     @Override
     public Collection<Ship> generateFullFleet() {
-        return generateFullFleet(getTotalShips());
+        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
+
+        List<Ship> fullSet = new ArrayList<>();
+        for (int length : getTotalShips()) {
+            fullSet.add(new Ship(length, calcRandomOrientation(random)));
+        }
+
+        return fullSet;
+    }
+
+    private static Ship.Orientation calcRandomOrientation(Random random) {
+        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
     }
 
 }
