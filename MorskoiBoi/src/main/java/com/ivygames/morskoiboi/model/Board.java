@@ -167,7 +167,7 @@ public class Board {
     /**
      * clears cells and ships from the board - like a new board
      */
-    private void clearBoard() {
+    public void clearBoard() {
         mCells = createNewBoard();
         mShips = new ArrayList<>();
     }

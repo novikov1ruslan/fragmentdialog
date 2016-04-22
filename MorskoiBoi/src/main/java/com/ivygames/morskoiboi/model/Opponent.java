@@ -16,10 +16,25 @@ public interface Opponent {
      */
     void onShotResult(PokeResult pokeResult);
 
+    /**
+     * Called to indicate the turn is passed to this opponent.
+     * <p/>
+     * Called in 2 occasions:
+     * 1) enemy knows that his bid is lower
+     * 2) enemy is hit
+     */
     void go();
 
     void setOpponent(Opponent opponent);
 
+    /**
+     * Called when enemy opponent sends this opponent his bid.
+     * This can be the first method called on this opponent.
+     * The only preceding call to this can be {@link #go()},
+     * and only when enemy knows that his bid is lower.
+     *
+     * @param bid enemy's bid
+     */
     void onEnemyBid(int bid);
 
     String getName();

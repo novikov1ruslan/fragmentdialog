@@ -16,16 +16,18 @@ public abstract class AbstractOpponent implements Opponent {
     private static final int OPPONENT_NOT_READY_BID = -2;
     private static final int OPPONENT_READY_BID = -1;
 
-    protected Board mMyBoard;
-    protected Board mEnemyBoard;
+    @NonNull
+    protected Board mMyBoard = new Board();
+    @NonNull
+    protected Board mEnemyBoard = new Board();
 
     protected volatile int mMyBid;
     protected volatile int mEnemyBid;
 
     protected void reset(int myBid) {
         Ln.d(this + ": initializing boards and bids");
-        mEnemyBoard = new Board();
-        mMyBoard = new Board();
+        mEnemyBoard.clearBoard();
+        mMyBoard.clearBoard();
         mMyBid = myBid;
         mEnemyBid = OPPONENT_NOT_READY_BID;
     }
