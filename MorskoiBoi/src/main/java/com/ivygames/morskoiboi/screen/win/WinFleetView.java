@@ -82,8 +82,8 @@ public class WinFleetView extends View {
         mZeroTextColor = resources.getColor(R.color.status_zero_text);
 
         if (isInEditMode()) {
-            mMyBuckets = RulesFactory.getRules().newShipTypesArray();
-            mEnemyBuckets = RulesFactory.getRules().newShipTypesArray();
+            mMyBuckets = RulesFactory.getRules().getDistinctShipsSizes();
+            mEnemyBuckets = RulesFactory.getRules().getDistinctShipsSizes();
         } else {
             mMyBuckets = new int[TYPES_OF_SHIPS];
             mEnemyBuckets = new int[TYPES_OF_SHIPS];

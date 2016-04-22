@@ -22,7 +22,7 @@ public abstract class AbstractRules implements Rules {
     }
 
     private boolean allShipsAreOnBoard(Board board) {
-        return board.getShips().size() == getTotalShips().length;
+        return board.getShips().size() == getAllShipsSizes().length;
     }
 
     /**
@@ -54,12 +54,12 @@ public abstract class AbstractRules implements Rules {
     public Collection<Ship> generateFullFleet() {
         Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
 
-        List<Ship> fullSet = new ArrayList<>();
-        for (int length : getTotalShips()) {
-            fullSet.add(new Ship(length, calcRandomOrientation(random)));
+        List<Ship> fleet = new ArrayList<>();
+        for (int length : getAllShipsSizes()) {
+            fleet.add(new Ship(length, calcRandomOrientation(random)));
         }
 
-        return fullSet;
+        return fleet;
     }
 
     private static Ship.Orientation calcRandomOrientation(Random random) {

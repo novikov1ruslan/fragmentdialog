@@ -20,7 +20,7 @@ public interface Rules {
      */
     boolean isItDefeatedBoard(Board board);
 
-    int[] getTotalShips();
+    int[] getAllShipsSizes();
 
     int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered);
 
@@ -29,7 +29,7 @@ public interface Rules {
     /**
      * @return array containing integers each representing length of a separate ship type
      */
-    int[] newShipTypesArray();
+    int[] getDistinctShipsSizes();
 
     Cell markAdjacentCellsIfNeeded(Ship ship, Cell cell);
 

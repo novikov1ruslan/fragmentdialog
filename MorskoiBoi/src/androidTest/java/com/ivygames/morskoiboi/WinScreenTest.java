@@ -172,7 +172,7 @@ public class WinScreenTest extends OnlineScreenTest {
     @Test
     public void AfterYesPressed__BoardSetupScreenShown() {
         WhenOpponentNotSurrendered__YesNoButtonsShowed();
-        when(rules.getTotalShips()).thenReturn(new int[]{});
+        when(rules.getAllShipsSizes()).thenReturn(new int[]{});
         clickOn(yesButton());
         checkDisplayed(BOARD_SETUP_LAYOUT);
     }

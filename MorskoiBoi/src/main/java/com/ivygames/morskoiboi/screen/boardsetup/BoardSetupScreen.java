@@ -80,7 +80,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mFleet.addAll(GameUtils.generateFullHorizontalFleet(mRules.getTotalShips()));
+        mFleet.addAll(GameUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes()));
         Ln.d("new board created, fleet initialized");
     }
 

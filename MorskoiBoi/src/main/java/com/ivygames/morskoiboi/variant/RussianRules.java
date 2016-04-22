@@ -50,7 +50,7 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int[] getTotalShips() {
+    public int[] getAllShipsSizes() {
         return TOTAL_SHIPS;
     }
 
@@ -157,7 +157,7 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int[] newShipTypesArray() {
+    public int[] getDistinctShipsSizes() {
         return new int[]{4, 3, 2, 1};
     }
 

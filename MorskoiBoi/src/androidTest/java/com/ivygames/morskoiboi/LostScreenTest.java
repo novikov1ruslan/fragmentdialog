@@ -54,7 +54,7 @@ public class LostScreenTest extends OnlineScreenTest {
 
     @Test
     public void AfterYesPressed__GameStateClearedBoardSetupScreenShown() {
-        when(rules.getTotalShips()).thenReturn(new int[]{});
+        when(rules.getAllShipsSizes()).thenReturn(new int[]{});
         showScreen();
         clickOn(yesButton());
         verify(game, times(1)).clearState();

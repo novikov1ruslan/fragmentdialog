@@ -483,7 +483,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private int getTotalHealth() {
-        int[] ships = mRules.getTotalShips();
+        int[] ships = mRules.getAllShipsSizes();
         int totalHealth = 0;
         for (int ship : ships) {
             totalHealth += ship;
@@ -813,7 +813,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     public void updateEnemyStatus() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fullFleet = GameUtils.generateFullHorizontalFleet(mRules.getTotalShips());
+        Collection<Ship> fullFleet = GameUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes());
         for (Ship ship : killedShips) {
             Iterator<Ship> iterator = fullFleet.iterator();
             while (iterator.hasNext()) {

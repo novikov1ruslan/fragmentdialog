@@ -27,7 +27,7 @@ public class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public int[] getTotalShips() {
+    public int[] getAllShipsSizes() {
         return TOTAL_SHIPS;
     }
 
@@ -54,7 +54,7 @@ public class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public int[] newShipTypesArray() {
+    public int[] getDistinctShipsSizes() {
         return new int[]{5, 4, 3, 2};
     }
 

@@ -202,12 +202,12 @@ public class RussianRulesTest {
 
     @Test
     public void russian_fleet_has_following_ships_4_3_3_2_2_2_1_1_1_1() {
-        assertThat(mRules.getTotalShips(), is(new int[]{4,3,3,2,2,2,1,1,1,1}));
+        assertThat(mRules.getAllShipsSizes(), is(new int[]{4,3,3,2,2,2,1,1,1,1}));
     }
 
     @Test
     public void russian_fleet_has_following_ship_types_4_3_2_1() {
-        assertThat(mRules.newShipTypesArray(), is(new int[]{4,3,2,1}));
+        assertThat(mRules.getDistinctShipsSizes(), is(new int[]{4,3,2,1}));
     }
 
     @Test
