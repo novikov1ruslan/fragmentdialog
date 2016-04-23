@@ -57,7 +57,7 @@ public class AndroidOpponentTest {
 
     @NonNull
     public Placement getPlacement() {
-        return new Placement(new Random(), new RussianRules(null));
+        return new Placement(new Random(), new RussianRules());
     }
 
     @Test

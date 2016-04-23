@@ -49,7 +49,7 @@ public class SetupBoardPresenterTest {
         mPresenter = new SetupBoardPresenter(10, 2);
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
-        rules = new RussianRules(null);
+        rules = new RussianRules();
         RulesFactory.setRules(rules);
         mPlacement = new Placement(new Random(), rules);
         PlacementFactory.setPlacementAlgorithm(mPlacement);

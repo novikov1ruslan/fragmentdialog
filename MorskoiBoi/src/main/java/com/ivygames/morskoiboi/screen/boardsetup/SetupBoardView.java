@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.RulesFactory;
@@ -87,7 +88,7 @@ public class SetupBoardView extends BaseBoardView {
 
     private void drawDockedShip(Canvas canvas) {
         if (presenter().getDockedShip() != null) {
-            Bitmap bitmap = mRules.getBitmapForShipSize(presenter().getDockedShip().getSize());
+            Bitmap bitmap = Bitmaps.getBitmapForShipSize(getResources(), presenter().getDockedShip().getSize());
             Point center = presenter().getShipDisplayAreaCenter();
             int displayLeft = center.x - bitmap.getWidth() / 2;
             int displayTop = center.y - bitmap.getHeight() / 2;

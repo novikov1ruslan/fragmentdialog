@@ -41,7 +41,7 @@ public class RussianRulesTest {
 
     @Before
     public void setUp() {
-        RussianRules rules = new RussianRules(null);
+        RussianRules rules = new RussianRules();
         RulesFactory.setRules(rules);
         PlacementFactory.setPlacementAlgorithm(new Placement(new Random(1), rules));
         placement = PlacementFactory.getAlgorithm();

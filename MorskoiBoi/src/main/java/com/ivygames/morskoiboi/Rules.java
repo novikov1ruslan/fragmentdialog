@@ -24,8 +24,6 @@ public interface Rules {
 
     int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered);
 
-    Bitmap getBitmapForShipSize(int size);
-
     Cell setAdjacentCellForShip(@NonNull Ship ship, @NonNull Cell cell);
 
 }

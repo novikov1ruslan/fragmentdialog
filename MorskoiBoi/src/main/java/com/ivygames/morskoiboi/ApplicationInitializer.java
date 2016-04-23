@@ -17,7 +17,9 @@ import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
+import com.ivygames.morskoiboi.variant.FleetBitmaps;
 import com.ivygames.morskoiboi.variant.RussianBot;
+import com.ivygames.morskoiboi.variant.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.acra.ACRA;
@@ -43,7 +45,7 @@ public class ApplicationInitializer {
         GameSettings settings = new GameSettings(application);
 
         Resources resources = application.getResources();
-        RussianRules rules = new RussianRules(resources);
+        RussianRules rules = new RussianRules();
         RulesFactory.setRules(rules);
         Placement algorithm = new Placement(new Random(System.currentTimeMillis()), rules);
         PlacementFactory.setPlacementAlgorithm(algorithm);
@@ -57,7 +59,8 @@ public class ApplicationInitializer {
         Dependencies.inject(new ProgressManager(apiClient, settings));
         Dependencies.inject(device);
 
-        Bitmaps.loadBitmaps(resources);
+        FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
+        Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
     }
 
     private static void initAnalytics(Application application) {

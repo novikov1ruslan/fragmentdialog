@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
+import com.ivygames.morskoiboi.variant.FleetBitmaps;
+
 import org.commons.logger.Ln;
 
 public class Bitmaps {
@@ -16,11 +18,14 @@ public class Bitmaps {
     private static final SparseArray<Bitmap> sBitmaps = new SparseArray<>();
 
     private static int sMemoryUsed;
+    private static FleetBitmaps fleetBitmapsChooser;
 
     private Bitmaps() {
     }
 
-    public static void loadBitmaps(Resources res) {
+    public static void loadBitmaps(@NonNull FleetBitmaps fleetBitmapsChooser,
+                                   @NonNull Resources res) {
+        Bitmaps.fleetBitmapsChooser = fleetBitmapsChooser;
 
         put(res, R.drawable.aircraft_carrier);
         put(res, R.drawable.battleship);
@@ -80,5 +85,9 @@ public class Bitmaps {
         }
 
         return bitmap;
+    }
+
+    public static Bitmap getBitmapForShipSize(Resources resources, int size) {
+        return fleetBitmapsChooser.getBitmapForShipSize(resources, size);
     }
 }

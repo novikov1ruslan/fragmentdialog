@@ -40,7 +40,7 @@ public class PlayerOpponentTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        Rules rules = new RussianRules(null);
+        Rules rules = new RussianRules();
         mPlacement = new Placement(new Random(), rules);
         mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
         mPlayer.setOpponent(mEnemy);

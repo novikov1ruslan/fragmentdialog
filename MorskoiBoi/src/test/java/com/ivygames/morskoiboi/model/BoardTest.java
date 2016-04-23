@@ -37,7 +37,7 @@ public class BoardTest {
 		mBoard = new Board();
 		Random random = mock(Random.class);
 		when(random.nextInt(anyInt())).thenReturn(0);
-		Rules rules = new RussianRules(null);
+		Rules rules = new RussianRules();
 		RulesFactory.setRules(rules);
 		Placement placement = new Placement(random, rules);
 		PlacementFactory.setPlacementAlgorithm(placement);

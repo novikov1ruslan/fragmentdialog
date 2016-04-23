@@ -30,7 +30,7 @@ public class RussianPlacementTest {
 
     @Before
 	public void setup() {
-        rules = new RussianRules(null);
+        rules = new RussianRules();
         RulesFactory.setRules(rules);
         mAlgorithm = new Placement(new Random(1), rules);
 	}
