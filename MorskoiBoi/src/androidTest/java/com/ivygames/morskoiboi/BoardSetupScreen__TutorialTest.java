@@ -11,42 +11,16 @@ public class BoardSetupScreen__TutorialTest extends BoardSetupScreenTest {
 
     @Test
     public void WhenScreenIsShownFirstTime__TutorialIsShown() {
-        when(settings().showSetupHelp()).thenReturn(true);
+        setShowTutorial(true);
         showScreen();
         checkTutorialShown();
     }
 
     @Test
     public void WhenScreenIsShownSecondTime__TutorialIsNotShown() {
-        when(settings().showSetupHelp()).thenReturn(false);
+        setShowTutorial(false);
         showScreen();
         checkTutorialNotShown();
-    }
-
-    @Test
-    public void WhenTutorialShown_PressingBack__RemovesTutorial() {
-        when(settings().showSetupHelp()).thenReturn(true);
-        showScreen();
-        pressBack();
-        checkTutorialNotShown();
-        checkDisplayed(BOARD_SETUP_LAYOUT);
-    }
-
-    @Test
-    public void WhenGotItPressed__TutorialDismissed() {
-        when(settings().showSetupHelp()).thenReturn(true);
-        showScreen();
-        clickOn(gotIt());
-        checkTutorialDismissed();
-    }
-
-    @Test
-    public void WhenScreenIsPaused__TutorialDismissed() {
-//        when(settings().showSetupHelp()).thenReturn(true);
-//        showScreen();
-//        screen().onPause();
-//        checkTutorialDismissed();
-        // TODO:
     }
 
     @Test
@@ -56,8 +30,40 @@ public class BoardSetupScreen__TutorialTest extends BoardSetupScreenTest {
         checkTutorialShown();
     }
 
-    protected void checkTutorialDismissed() {
+    @Test
+    public void WhenTutorialShown_PressingBack__RemovesTutorial() {
+        showScreen();
+        clickOn(help());
+        pressBack();
+        checkTutorialNotShown();
+        checkDisplayed(BOARD_SETUP_LAYOUT);
+    }
+
+    @Test
+    public void WhenGotItPressed__TutorialDismissed() {
+        showScreen();
+        clickOn(help());
+        clickOn(gotIt());
+        checkTutorialDismissed();
+    }
+
+    @Test
+    public void WhenScreenIsPaused__TutorialDismissed() {
+        showScreen();
+        clickOn(help());
+        pause();
+        checkTutorialDismissed();
+    }
+
+    @Test
+    public void IfTutorialDismissed__ItIsNotShownAgain() {
+        showScreen();
+        clickOn(help());
+        clickOn(gotIt());
         verify(settings(), times(1)).hideBoardSetupHelp();
+    }
+
+    protected void checkTutorialDismissed() {
         checkDoesNotExist(placeInstructions());
         checkDoesNotExist(rotateInstructions());
     }
@@ -70,5 +76,9 @@ public class BoardSetupScreen__TutorialTest extends BoardSetupScreenTest {
     protected void checkTutorialNotShown() {
         checkDoesNotExist(placeInstructions());
         checkDoesNotExist(rotateInstructions());
+    }
+
+    protected void setShowTutorial(boolean show) {
+        when(settings().showSetupHelp()).thenReturn(show);
     }
 }

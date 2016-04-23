@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
@@ -27,6 +26,8 @@ import org.junit.After;
 import org.junit.Rule;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.registerIdlingResources;
+import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -63,6 +64,7 @@ public abstract class ScreenTest {
     private BattleshipActivity activity;
     private TaskResource setScreenResource;
     private TaskResource signInSucceeded;
+    private TaskResource pause;
     private GoogleApiClientWrapper apiClient;
     private InvitationManager invitationManager;
     private AndroidDevice androidDevice;
@@ -81,11 +83,15 @@ public abstract class ScreenTest {
     @After
     public void teardown() {
         if (setScreenResource != null) {
-            Espresso.unregisterIdlingResources(setScreenResource);
+            unregisterIdlingResources(setScreenResource);
         }
 
         if (signInSucceeded != null) {
-            Espresso.unregisterIdlingResources(signInSucceeded);
+            unregisterIdlingResources(signInSucceeded);
+        }
+
+        if (pause != null) {
+            unregisterIdlingResources(pause);
         }
     }
 
@@ -113,7 +119,7 @@ public abstract class ScreenTest {
                 activity.setScreen(screen);
             }
         });
-        Espresso.registerIdlingResources(setScreenResource);
+        registerIdlingResources(setScreenResource);
     }
 
     protected void signInSucceeded(final SignInListener listener) {
@@ -123,7 +129,17 @@ public abstract class ScreenTest {
                 listener.onSignInSucceeded();
             }
         });
-        Espresso.registerIdlingResources(signInSucceeded);
+        registerIdlingResources(signInSucceeded);
+    }
+
+    protected final void pause() {
+        pause = new TaskResource(new Runnable() {
+            @Override
+            public void run() {
+                activity().onPause();
+            }
+        });
+        registerIdlingResources(pause);
     }
 
     protected static void clickForIntent(Matcher<View> view, Matcher<Intent> expectedIntent) {

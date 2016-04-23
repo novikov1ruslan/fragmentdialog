@@ -25,9 +25,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -50,43 +47,6 @@ public class SelectGameScreenTest extends ScreenTest {
         setScreen(newScreen());
         pressBack();
         checkDisplayed(MAIN_LAYOUT);
-    }
-
-    @Test
-    public void if_needs_to_show_help__tutorial_shown() {
-        when(settings().showProgressHelp()).thenReturn(true);
-        setScreen(newScreen());
-        onView(tutorial()).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void if_no_need_to_show_help__tutorial_NOT_shown() {
-        when(settings().showProgressHelp()).thenReturn(false);
-        setScreen(newScreen());
-        onView(tutorial()).check(doesNotExist());
-    }
-
-    @Test
-    public void if_tutorial_NOT_dismissed__it_is_shown_again() {
-        when(settings().showProgressHelp()).thenReturn(true);
-        setScreen(newScreen());
-        pressBack();
-        verify(settings(), never()).hideProgressHelp();
-    }
-
-    @Test
-    public void if_tutorial_dismissed__it_is_not_shown_again() {
-        when(settings().showProgressHelp()).thenReturn(true);
-        setScreen(newScreen());
-        onView(withId(R.id.got_it_button)).perform(click());
-        verify(settings(), times(1)).hideProgressHelp();
-    }
-
-    @Test
-    public void when_help_button_pressed__tutorial_shown() {
-        setScreen(newScreen());
-        onView(withId(R.id.help_button)).perform(click());
-        onView(tutorial()).check(matches(isDisplayed()));
     }
 
     @Test
@@ -165,11 +125,6 @@ public class SelectGameScreenTest extends ScreenTest {
         onView(viaBtButton()).perform(click());
         onView(BLUETOOTH_LAYOUT).check(doesNotExist());
         onView(withText(R.string.bluetooth_not_available)).check(matches(isDisplayed()));
-    }
-
-    @NonNull
-    private Matcher<View> tutorial() {
-        return withText(R.string.see_ranks);
     }
 
     @NonNull
