@@ -63,7 +63,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (MainScreenLayout) inflate(R.layout.main, container);
         mLayout.setScreenActionsListener(this);
 
@@ -77,6 +77,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         return mLayout;
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;

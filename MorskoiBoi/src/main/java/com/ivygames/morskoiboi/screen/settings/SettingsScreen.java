@@ -50,7 +50,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (SettingsLayout) inflate(R.layout.settings, container);
         mLayout.setScreenActionsListener(mSettingsActions);
         mLayout.setSound(mSettings.isSoundOn());
@@ -75,6 +75,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         return Sharing.getEmailIntent(getString(R.string.report_problem), getString(R.string.app_name), mDevice.getVersionName());
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;

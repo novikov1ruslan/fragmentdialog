@@ -25,6 +25,7 @@ public abstract class Screen {
         return mParent.getFragmentManager();
     }
 
+    @NonNull
     public abstract View getView();
 
     protected final View inflate(int layoutId) {

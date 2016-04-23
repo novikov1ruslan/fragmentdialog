@@ -80,7 +80,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (SelectGameLayout) inflate(R.layout.select_game, container);
         mLayout.setScreenActions(this);
 
@@ -108,6 +108,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         return null;
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;

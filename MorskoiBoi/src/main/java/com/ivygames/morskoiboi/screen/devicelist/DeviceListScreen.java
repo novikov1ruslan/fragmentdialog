@@ -60,13 +60,14 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         mBtAdapter = adapter;
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mContainer = container;
         mLayout = (DeviceListLayout) inflate(R.layout.device_list, container);
         mLayout.setListener(this);

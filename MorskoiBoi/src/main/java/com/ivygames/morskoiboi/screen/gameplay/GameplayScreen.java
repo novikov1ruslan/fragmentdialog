@@ -175,6 +175,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         Ln.d("game data prepared");
     }
 
+    @NonNull
     @Override
     public View getView() {
         return (View) mLayout;
@@ -186,7 +187,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
         mLayout.setShipsSizes(mRules.getAllShipsSizes());
         if (mGame.getType() != Type.INTERNET) {

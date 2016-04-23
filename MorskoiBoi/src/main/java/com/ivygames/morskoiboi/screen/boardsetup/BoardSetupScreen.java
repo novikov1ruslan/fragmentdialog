@@ -100,7 +100,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
         mLayout.setScreenActionsListener(this);
         mLayout.setBoard(mBoard, mFleet);
@@ -209,11 +209,6 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     }
 
     @Override
-    public View getView() {
-        return mLayout;
-    }
-
-    @Override
     @Nullable
     public View getTutView() {
         if (!mDevice.isTablet() && mSettings.showSetupHelp()) {
@@ -221,6 +216,12 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
             return mTutView;
         }
         return null;
+    }
+
+    @Override
+    @NonNull
+    public View getView() {
+        return mLayout;
     }
 
     @Override

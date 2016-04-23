@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.help;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,12 +21,13 @@ public class HelpScreen extends BattleshipScreen implements BackPressListener {
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = inflate(R.layout.help, container);
         Ln.d(this + " screen created");
         return mLayout;
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;

@@ -97,13 +97,14 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         processScores();
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (WinLayoutSmall) getLayoutInflater().inflate(R.layout.win, container, false);
         if (mGame.getType() == Type.VS_ANDROID) {
             mLayout.setDuration(mTime);

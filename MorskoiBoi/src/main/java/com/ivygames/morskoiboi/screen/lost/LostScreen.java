@@ -44,13 +44,14 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         mSettings.incrementGamesPlayedCounter();
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mView;
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mView = getLayoutInflater().inflate(R.layout.lost, container, false);
         mView.findViewById(R.id.yes_button).setOnClickListener(new OnClickListener() {
 

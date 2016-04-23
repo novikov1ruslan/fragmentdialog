@@ -82,7 +82,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mContainer = container;
         mLayout = (BluetoothLayout) inflate(R.layout.bluetooth_common, container);
         mLayout.setListener(this);
@@ -91,6 +91,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         return mLayout;
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;

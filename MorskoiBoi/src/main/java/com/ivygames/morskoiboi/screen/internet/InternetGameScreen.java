@@ -73,7 +73,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     }
 
     @Override
-    public View onCreateView(ViewGroup container) {
+    public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
         mLayout.setPlayerName(mSettings.getPlayerName());
         mLayout.setScreenActions(this);
@@ -81,6 +81,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         return mLayout;
     }
 
+    @NonNull
     @Override
     public View getView() {
         return mLayout;
