@@ -83,10 +83,10 @@ public class FleetView extends View {
         mTextColor = resources.getColor(R.color.status_text);
         mZeroTextColor = resources.getColor(R.color.status_zero_text);
 
-        mAircraftCarrier = Bitmaps.getInstance().getBitmap(resources, R.drawable.aircraft_carrier);
-        mBattleship = Bitmaps.getInstance().getBitmap(resources, R.drawable.battleship);
-        mDestroyer = Bitmaps.getInstance().getBitmap(resources, R.drawable.frigate);
-        mGunboat = Bitmaps.getInstance().getBitmap(resources, R.drawable.gunboat);
+        mAircraftCarrier = Bitmaps.getBitmap(resources, R.drawable.aircraft_carrier);
+        mBattleship = Bitmaps.getBitmap(resources, R.drawable.battleship);
+        mDestroyer = Bitmaps.getBitmap(resources, R.drawable.frigate);
+        mGunboat = Bitmaps.getBitmap(resources, R.drawable.gunboat);
 
         mCarrierSrc = createRectForBitmap(mAircraftCarrier);
         mBattleshipSrc = createRectForBitmap(mBattleship);

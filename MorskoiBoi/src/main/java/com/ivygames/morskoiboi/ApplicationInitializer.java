@@ -57,7 +57,7 @@ public class ApplicationInitializer {
         Dependencies.inject(new ProgressManager(apiClient, settings));
         Dependencies.inject(device);
 
-        Bitmaps.getInstance().loadBitmaps(resources);
+        Bitmaps.loadBitmaps(resources);
     }
 
     private static void initAnalytics(Application application) {

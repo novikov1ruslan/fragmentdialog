@@ -39,17 +39,16 @@ public abstract class AmericanRules extends AbstractRules {
 
     @Override
     public Bitmap getBitmapForShipSize(int size) {
-        Bitmaps bitmaps = Bitmaps.getInstance();
         switch (size) {
             case 5:
-                return bitmaps.getBitmap(mResources, R.drawable.aircraft_carrier);
+                return Bitmaps.getBitmap(mResources, R.drawable.aircraft_carrier);
             case 4:
-                return bitmaps.getBitmap(mResources, R.drawable.battleship);
+                return Bitmaps.getBitmap(mResources, R.drawable.battleship);
             case 3:
-                return bitmaps.getBitmap(mResources, R.drawable.frigate);
+                return Bitmaps.getBitmap(mResources, R.drawable.frigate);
             case 2:
             default:
-                return bitmaps.getBitmap(mResources, R.drawable.gunboat);
+                return Bitmaps.getBitmap(mResources, R.drawable.gunboat);
         }
     }
 

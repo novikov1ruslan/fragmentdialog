@@ -8,24 +8,19 @@ import android.util.SparseArray;
 
 import org.commons.logger.Ln;
 
-public final class Bitmaps {
+public class Bitmaps {
 
     private static final int BPP = 4;
 
-    private final SparseArray<Bitmap> mBitmaps = new SparseArray<>();
+    @NonNull
+    private static final SparseArray<Bitmap> sBitmaps = new SparseArray<>();
 
-    private int mMemoryUsed;
-
-    private static final Bitmaps INSTANCE = new Bitmaps();
-
-    public static Bitmaps getInstance() {
-        return INSTANCE;
-    }
+    private static int sMemoryUsed;
 
     private Bitmaps() {
     }
 
-    public void loadBitmaps(Resources res) {
+    public static void loadBitmaps(Resources res) {
 
         put(res, R.drawable.aircraft_carrier);
         put(res, R.drawable.battleship);
@@ -62,25 +57,25 @@ public final class Bitmaps {
         put(res, R.drawable.explosion_17);
         put(res, R.drawable.explosion_18);
 
-        Ln.d("memory used by bitmaps: " + (mMemoryUsed / 1024) + "k");
+        Ln.d("memory used by bitmaps: " + (sMemoryUsed / 1024) + "k");
     }
 
-    private void put(Resources res, int resId) {
+    private static void put(Resources res, int resId) {
         Bitmap bitmap = BitmapFactory.decodeResource(res, resId);
-        mBitmaps.put(resId, bitmap);
+        sBitmaps.put(resId, bitmap);
 
         if (bitmap != null) {
-            mMemoryUsed += bitmap.getHeight() * bitmap.getWidth() * BPP;
+            sMemoryUsed += bitmap.getHeight() * bitmap.getWidth() * BPP;
         }
     }
 
-    public Bitmap getBitmap(@NonNull Resources res, int resId) {
-        Bitmap bitmap = mBitmaps.get(resId);
+    public static Bitmap getBitmap(@NonNull Resources res, int resId) {
+        Bitmap bitmap = sBitmaps.get(resId);
         if (bitmap == null) {
             bitmap = BitmapFactory.decodeResource(res, resId);
             if (bitmap != null) {
                 Ln.e("bitmap_crash_saved");
-                mBitmaps.put(resId, bitmap);
+                sBitmaps.put(resId, bitmap);
             }
         }
 

@@ -142,17 +142,16 @@ public class RussianRules extends AbstractRules {
     @Override
     public Bitmap getBitmapForShipSize(int size) {
         // TODO: remove: part of variants, but not part of rules
-        Bitmaps bitmaps = Bitmaps.getInstance();
         switch (size) {
             case 4:
-                return bitmaps.getBitmap(mResources, R.drawable.aircraft_carrier);
+                return Bitmaps.getBitmap(mResources, R.drawable.aircraft_carrier);
             case 3:
-                return bitmaps.getBitmap(mResources, R.drawable.battleship);
+                return Bitmaps.getBitmap(mResources, R.drawable.battleship);
             case 2:
-                return bitmaps.getBitmap(mResources, R.drawable.frigate);
+                return Bitmaps.getBitmap(mResources, R.drawable.frigate);
             case 1:
             default:
-                return bitmaps.getBitmap(mResources, R.drawable.gunboat);
+                return Bitmaps.getBitmap(mResources, R.drawable.gunboat);
         }
     }
 
