@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
@@ -72,4 +74,6 @@ public interface GameplayLayoutInterface extends TimeConsumer {
     void enemyTurn();
 
     void setMyShips(Collection<Ship> ships);
+
+    void setShipsSizes(@NonNull int[] shipsSizes);
 }

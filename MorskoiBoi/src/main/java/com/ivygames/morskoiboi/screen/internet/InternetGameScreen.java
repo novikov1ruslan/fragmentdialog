@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -36,7 +37,6 @@ import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.screen.internet.InternetGameLayout.InternetGameLayoutListener;
-import com.ivygames.morskoiboi.Placement;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -63,6 +63,8 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private final InvitationManager mInvitationManager;
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
+    @NonNull
+    private final Rules mRules = RulesFactory.getRules();
 
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
@@ -170,8 +172,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             Ln.i("player name is empty - replaced by " + playerName);
         }
         Placement placement = PlacementFactory.getAlgorithm();
-        Rules rules = RulesFactory.getRules();
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), mOpponent);
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules), mOpponent);
     }
 
     @Override

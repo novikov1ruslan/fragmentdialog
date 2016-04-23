@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -28,7 +29,7 @@ public class GameplayLayoutHandset extends LinearLayout implements View.OnClickL
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
-    private FleetView mFleet;
+    private FleetView mFleetView;
     private TextView mPlayerNameView;
     private TextView mEnemyNameView;
     private View mChatButton;
@@ -55,7 +56,7 @@ public class GameplayLayoutHandset extends LinearLayout implements View.OnClickL
         super.onFinishInflate();
         mMyBoardView = (FleetBoardView) findViewById(R.id.board_view_fleet);
         mEnemyBoardView = (EnemyBoardView) findViewById(R.id.board_view_enemy);
-        mFleet = (FleetView) findViewById(R.id.status);
+        mFleetView = (FleetView) findViewById(R.id.status);
         mChatButton = findViewById(R.id.chat_button);
         mChatButton.setOnClickListener(new OnClickListener() {
 
@@ -129,17 +130,16 @@ public class GameplayLayoutHandset extends LinearLayout implements View.OnClickL
     }
 
     public void setMyShips(Collection<Ship> ships) {
-        if (mFleet == null) {
-            return;
-        }
-        mFleet.setMyShips(ships);
+        mFleetView.setMyShips(ships);
+    }
+
+    @Override
+    public void setShipsSizes(@NonNull int[] shipsSizes) {
+        mFleetView.setShipsSizes(shipsSizes);
     }
 
     public void setEnemyShips(Collection<Ship> ships) {
-        if (mFleet == null) {
-            return;
-        }
-        mFleet.setEnemyShips(ships);
+        mFleetView.setEnemyShips(ships);
     }
 
     public void setShotListener(ShotListener listener) {

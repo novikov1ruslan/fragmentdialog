@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
@@ -62,6 +61,7 @@ public class FleetView extends View {
     private final int mZeroTextColor;
 
     private int mUnitHeight;
+    private int[] mShipsSizes;
 
     public FleetView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -160,10 +160,9 @@ public class FleetView extends View {
         invalidate();
     }
 
-    private Map<Integer, Integer> generateEmptyShips() {
+    private Map<Integer, Integer> initializeBucketsMap() {
         Map<Integer, Integer> ships = new HashMap<>();
-        int[] shipSizes = RulesFactory.getRules().getAllShipsSizes();
-        for (int shipSize: shipSizes) {
+        for (int shipSize: mShipsSizes) {
             ships.put(shipSize, 0);
         }
 
@@ -171,7 +170,7 @@ public class FleetView extends View {
     }
 
     private Map<Integer, Integer> generateShips(Collection<Ship> ships) {
-        Map<Integer, Integer> map = generateEmptyShips();
+        Map<Integer, Integer> map = initializeBucketsMap();
         for (Ship ship : ships) {
             map.put(ship.getSize(), map.get(ship.getSize()) + 1);
         }
@@ -222,5 +221,9 @@ public class FleetView extends View {
 
     private int calcDestHeight(Bitmap srcBitmap, int destWidth) {
         return (destWidth * srcBitmap.getHeight()) / srcBitmap.getWidth();
+    }
+
+    public void setShipsSizes(int[] shipsSizes) {
+        mShipsSizes = shipsSizes;
     }
 }

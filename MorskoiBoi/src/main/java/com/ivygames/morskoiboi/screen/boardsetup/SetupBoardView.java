@@ -37,7 +37,7 @@ public class SetupBoardView extends BaseBoardView {
     private PickShipTask mPickShipTask;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
-
+    @NonNull
     private final Rules mRules = RulesFactory.getRules();
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {

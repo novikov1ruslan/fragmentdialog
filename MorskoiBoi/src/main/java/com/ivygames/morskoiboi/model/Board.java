@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.ai.PlacementFactory;
 
 import org.commons.logger.Ln;
 import org.json.JSONArray;

@@ -7,6 +7,7 @@ import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -14,7 +15,6 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.commons.logger.Ln;

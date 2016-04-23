@@ -98,7 +98,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private int mTimeLeft = READY_TO_START;
 
     private boolean mOpponentSurrendered;
-
+    @NonNull
     private final Rules mRules = RulesFactory.getRules();
 
     private final Runnable mShowLostScreenCommand = new Runnable() {
@@ -188,6 +188,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @Override
     public View onCreateView(ViewGroup container) {
         mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
+        mLayout.setShipsSizes(mRules.getAllShipsSizes());
         if (mGame.getType() != Type.INTERNET) {
             Ln.d("not internet game - hide chat button");
             mLayout.hideChatButton();

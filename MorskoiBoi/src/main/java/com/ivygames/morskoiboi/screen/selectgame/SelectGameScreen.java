@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
@@ -39,7 +40,6 @@ import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
-import com.ivygames.morskoiboi.Placement;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -68,6 +68,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @NonNull
     private final GameSettings mSettings;
+    @NonNull
+    private final Rules mRules = RulesFactory.getRules();
 
     public SelectGameScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
@@ -158,16 +160,15 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
         Placement placement = PlacementFactory.getAlgorithm();
-        Rules rules = RulesFactory.getRules();
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), new Board(),
-                placement, rules, new DelayedOpponent());
+                placement, mRules, new DelayedOpponent());
         Model.instance.game = new AndroidGame();
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules), opponent);
         showBoardSetup();
     }
 

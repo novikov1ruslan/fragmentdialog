@@ -16,6 +16,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -31,7 +32,6 @@ import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
-import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
 
@@ -52,6 +52,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
+    @NonNull
+    private final Rules mRules = RulesFactory.getRules();
 
     public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {
         super(parent);
@@ -175,8 +177,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             Ln.i("player name is empty - replaced by " + playerName);
         }
         Placement placement = PlacementFactory.getAlgorithm();
-        Rules rules = RulesFactory.getRules();
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, rules), opponent);
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules), opponent);
         Model.instance.game = new BluetoothGame(connection);
 
         setScreen(GameHandler.newBoardSetupScreen());
