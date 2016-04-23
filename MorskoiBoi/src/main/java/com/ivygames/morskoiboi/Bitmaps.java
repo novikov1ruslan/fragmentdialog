@@ -31,7 +31,6 @@ public final class Bitmaps {
         put(res, R.drawable.battleship);
         put(res, R.drawable.frigate);
         put(res, R.drawable.gunboat);
-        put(res, R.drawable.combo_medal);
 
         put(res, R.drawable.splash_01);
         put(res, R.drawable.splash_02);
