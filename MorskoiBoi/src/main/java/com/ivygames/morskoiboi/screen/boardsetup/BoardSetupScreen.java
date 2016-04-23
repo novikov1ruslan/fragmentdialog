@@ -89,7 +89,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
         Ln.d("new board created, fleet initialized");
     }
 
-    protected Collection<Ship> generateFullHorizontalFleet() {
+    @NonNull
+    private Collection<Ship> generateFullHorizontalFleet() {
         return Ship.setOrientationForShips(generateFullFleet(), Ship.Orientation.HORIZONTAL);
     }
 

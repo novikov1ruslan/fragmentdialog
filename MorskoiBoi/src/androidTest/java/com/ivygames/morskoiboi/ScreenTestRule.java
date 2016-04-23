@@ -7,11 +7,12 @@ import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
     private GoogleApiClientWrapper apiClient;
-    private AndroidDevice androidDevice;
+    private AndroidDevice device;
     private GameSettings settings;
 
     public ScreenTestRule() {
@@ -31,16 +32,22 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         Dependencies.inject(mock(AchievementsManager.class));
         Dependencies.inject(mock(ProgressManager.class));
 
-        androidDevice = mock(AndroidDevice.class);
-        Dependencies.inject(androidDevice);
+        device = mock(AndroidDevice.class);
+        when(device.isTablet()).thenReturn(isTablet());
+        Dependencies.inject(device);
+    }
+
+    private boolean isTablet() {
+//        return getActivity().getResources().getBoolean(R.bool.is_tablet);
+        return false;
     }
 
     public GoogleApiClientWrapper getApiClient() {
         return apiClient;
     }
 
-    public AndroidDevice getAndroidDevice() {
-        return androidDevice;
+    public AndroidDevice getDevice() {
+        return device;
     }
 
     public GameSettings settings() {

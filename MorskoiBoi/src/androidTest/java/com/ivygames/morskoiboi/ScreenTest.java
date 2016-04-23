@@ -13,6 +13,7 @@ import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout;
+import com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutInterface;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
 import com.ivygames.morskoiboi.screen.internet.InternetGameLayout;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
@@ -54,6 +55,7 @@ public abstract class ScreenTest {
     protected static final Matcher<View> INTERNET_GAME_LAYOUT = instanceOf(InternetGameLayout.class);
     protected static final Matcher<View> WIN_LAYOUT = instanceOf(WinLayout.class);
 //    protected static final Matcher<View> LOST_LAYOUT = instanceOf(LostLayout.class);
+    protected static final Matcher<View> GAMEPLAY_LAYOUT = instanceOf(GameplayLayoutInterface.class);
 
     @Rule
     public ScreenTestRule rule = new ScreenTestRule();
@@ -71,7 +73,7 @@ public abstract class ScreenTest {
     public void setup() {
         activity = rule.getActivity();
         apiClient = rule.getApiClient();
-        androidDevice = rule.getAndroidDevice();
+        androidDevice = rule.getDevice();
         invitationManager = Dependencies.getInvitationManager();
         setProgress(0);
     }

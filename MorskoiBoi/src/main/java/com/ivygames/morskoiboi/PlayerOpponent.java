@@ -12,7 +12,7 @@ import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 
-public final class PlayerOpponent extends AbstractOpponent {
+public class PlayerOpponent extends AbstractOpponent {
 
     public static volatile Board debug_board;
 
