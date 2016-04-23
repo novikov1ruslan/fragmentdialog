@@ -73,7 +73,7 @@ public class Placement {
                             cell.setHit();
                         }
                     } else {
-                        cell = mRules.getAdjacentCellForShip(ship, cell);
+                        cell = mRules.setAdjacentCellForShip(ship, cell);
                         board.setCell(cell, cellX, cellY);
                     }
                 }
