@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
+import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;

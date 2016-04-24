@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.idlingresources;
 
 import android.os.Handler;
 import android.os.Looper;

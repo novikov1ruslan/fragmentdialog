@@ -11,7 +11,7 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class WinScreen__WantToLeaveDialogTest extends WinScreenTest {
+public class WinScreen_WantToLeaveDialogTest extends WinScreenTest {
     @Test
     public void WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed() {
         surrendered = false;

@@ -26,6 +26,7 @@ public class InvitationButton extends Button {
 
     public InvitationButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        // TODO: pass as an attribute
         mInvitation = createInvitationBitmap();
     }
 
