@@ -245,4 +245,10 @@ public abstract class ScreenTest {
     protected Matcher<View> cancelButton() {
         return withText(R.string.cancel);
     }
+
+    @NonNull
+    protected Matcher<View> okButton() {
+        return withText(R.string.ok);
+    }
+
 }

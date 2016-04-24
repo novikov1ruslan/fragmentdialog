@@ -22,13 +22,9 @@ import static org.mockito.Mockito.when;
 
 public class BoardSetupScreenTest extends OnlineScreenTest {
 
-    private PlayerOpponent player;
-
     @Before
     public void setup() {
         super.setup();
-        player = mock(PlayerOpponent.class);
-        Model.instance.player = player;
     }
 
     @Override
@@ -44,8 +40,6 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
 
     @Test
     public void WhenBoardIsSet__PressingDone_OpensGameplayScreen() {
-        when(player.getBoard()).thenReturn(new Board());
-        when(player.getEnemyBoard()).thenReturn(new Board());
         showScreen();
         clickOn(autoSetup());
         clickOn(done());

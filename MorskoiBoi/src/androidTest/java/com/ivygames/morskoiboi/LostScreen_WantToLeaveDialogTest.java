@@ -40,16 +40,16 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
     public void PressingCancelOnWantToLeaveDialog__RemovesDialog() {
         WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown();
         clickOn(cancelButton());
-        checkDisplayed(lostScreen());
         checkDoesNotExist(wantToLeaveDialog());
+        checkDisplayed(lostScreen());
     }
 
     @Test
     public void PressingBackOnWantToLeaveDialog__RemovesDialog() {
         WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown();
         pressBack();
-        checkDisplayed(lostScreen());
         checkDoesNotExist(wantToLeaveDialog());
+        checkDisplayed(lostScreen());
     }
 
     @NonNull
@@ -57,8 +57,4 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
         return withText(R.string.lost);
     }
 
-    @NonNull
-    protected Matcher<View> wantToLeaveDialog() {
-        return withText(getString(R.string.want_to_leave_room, OPPONENT_NAME));
-    }
 }

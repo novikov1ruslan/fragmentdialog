@@ -1,17 +1,13 @@
 package com.ivygames.morskoiboi;
 
-import android.support.annotation.NonNull;
-import android.view.View;
-
 import com.ivygames.morskoiboi.model.Game;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class WinScreen_WantToLeaveDialogTest extends WinScreenTest {
+
     @Test
     public void WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed() {
         surrendered = false;
@@ -22,19 +18,27 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreenTest {
     }
 
     @Test
+    public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
+        setGameType(Game.Type.BLUETOOTH);
+        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        clickOn(noButton());
+        checkDisplayed(wantToLeaveDialog());
+    }
+
+    @Test
     public void PressingCancelOnWantToLeaveDialog__RemovesDialogScreenRemains() {
         WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
         clickOn(cancelButton());
-        checkDisplayed(WIN_LAYOUT);
         checkDoesNotExist(wantToLeaveDialog());
+        checkDisplayed(WIN_LAYOUT);
     }
 
     @Test
     public void PressingBackOnWantToLeaveDialog__RemovesDialogScreenRemains() {
         WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
         pressBack();
-        checkDisplayed(WIN_LAYOUT);
         checkDoesNotExist(wantToLeaveDialog());
+        checkDisplayed(WIN_LAYOUT);
     }
 
     @Test
@@ -44,17 +48,4 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreenTest {
         backToSelectGameCommand();
     }
 
-    @Test
-    public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
-        WhenOpponentNotSurrendered__YesNoButtonsShowed();
-        clickOn(noButton());
-        String message = getString(R.string.want_to_leave_room, OPPONENT_NAME);
-        checkDisplayed(withText(message));
-    }
-
-    @NonNull
-    protected Matcher<View> wantToLeaveDialog() {
-        return withText(getString(R.string.want_to_leave_room, OPPONENT_NAME));
-    }
 }

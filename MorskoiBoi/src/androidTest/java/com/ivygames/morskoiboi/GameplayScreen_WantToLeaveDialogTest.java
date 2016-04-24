@@ -6,7 +6,8 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 
-public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreenTest {
+public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
+
     @Test
     public void WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed() {
         setGameType(Game.Type.BLUETOOTH);
@@ -16,15 +17,15 @@ public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreenTest
     }
 
     @Test
-    public void PressingCancelOnWantToLeaveDialog__DialogDismissed() {
+    public void PressingCancelOnWantToLeaveDialog__RemovesDialogScreenDoesNotChange() {
         WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
         clickOn(cancelButton());
         checkDoesNotExist(wantToLeaveDialog());
-        checkDisplayed(BOARD_SETUP_LAYOUT);
+        checkDisplayed(GAMEPLAY_LAYOUT);
     }
 
     @Test
-    public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
+    public void PressingOkOnWantToLeaveDialog__GameFinishes_SelectGameScreenDisplayed() {
         WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
         clickOn(okButton());
         backToSelectGameCommand();

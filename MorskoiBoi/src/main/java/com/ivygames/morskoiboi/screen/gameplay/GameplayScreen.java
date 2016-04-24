@@ -73,28 +73,31 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public static final int TURN_HANG_DETECTION_TIMEOUT = 60000; // milliseconds
     public static final int ALLOWED_SKIPPED_TURNS = 2;
 
-    private Game mGame;
-    private GameplayLayoutInterface mLayout;
+    @NonNull
+    private final Game mGame;
     private PlayerOpponent mPlayer;
     private Opponent mEnemy;
     private Handler mUiThreadHandler;
 
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
-    private VibratorFacade mVibrator;
+    @NonNull
+    private final VibratorFacade mVibrator;
+    @NonNull
     private Board mEnemyPublicBoard;
+    @NonNull
     private Board mPlayerPrivateBoard;
+    @NonNull
+    private final ChatAdapter mChatAdapter;
+    @NonNull
+    private final GameplaySoundManager mSoundManager;
+    @NonNull
+    private final Runnable mBackToSelectGameCommand;
 
+    private GameplayLayoutInterface mLayout;
     private boolean mBackPressEnabled;
 
     private TurnTimer mTurnTimer;
-
-    private ChatAdapter mChatAdapter;
-
-    private final GameplaySoundManager mSoundManager;
-
-    private Runnable mBackToSelectGameCommand;
-
     private int mTimeLeft = READY_TO_START;
 
     private boolean mOpponentSurrendered;
@@ -166,11 +169,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mPlayerPrivateBoard = mPlayer.getBoard();
 
         mVibrator = new VibratorFacade(mParent);
-        mUiThreadHandler = new Handler();
+        mUiThreadHandler = new Handler(Looper.getMainLooper());
 
         mBackToSelectGameCommand = new BackToSelectGameCommand(parent());
 
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
+        mChatAdapter = new ChatAdapter(getLayoutInflater());
 
         Ln.d("game data prepared");
     }
@@ -194,8 +198,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Ln.d("not internet game - hide chat button");
             mLayout.hideChatButton();
         }
-
-        mChatAdapter = new ChatAdapter(getLayoutInflater());
 
         mLayout.setListener(new GameplayLayoutListener() {
 

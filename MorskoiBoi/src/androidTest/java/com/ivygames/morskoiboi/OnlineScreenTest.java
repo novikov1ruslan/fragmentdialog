@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -18,30 +19,35 @@ import static org.mockito.Mockito.when;
 public abstract class OnlineScreenTest extends ScreenTest {
 
     protected static final String OPPONENT_NAME = "Sagi";
+
     protected Game game;
+    protected PlayerOpponent player;
 
     @Override
     public void setup() {
         super.setup();
-        game = mock(Game.class);
-        Model.instance.game = game;
         Opponent opponent = mock(Opponent.class);
         Model.instance.opponent = opponent;
         when(opponent.getName()).thenReturn(OPPONENT_NAME);
+        game = mock(Game.class);
+        Model.instance.game = game;
+        player = mock(PlayerOpponent.class);
+        Model.instance.player = player;
+
+        when(player.getBoard()).thenReturn(new Board());
+        when(player.getEnemyBoard()).thenReturn(new Board());
     }
 
     @NonNull
-    protected Matcher<View> cancelButton() {
-        return withText(R.string.cancel);
+    protected Matcher<View> wantToLeaveDialog() {
+        return withText(getString(R.string.want_to_leave_room, OPPONENT_NAME));
     }
 
-    @NonNull
-    protected Matcher<View> okButton() {
-        return withText(R.string.ok);
+    protected final void setGameType(Game.Type type) {
+        when(game.getType()).thenReturn(type);
     }
-
     // TODO: inline
-    protected void backToSelectGameCommand() {
+    protected final void backToSelectGameCommand() {
         verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);
     }
@@ -50,7 +56,4 @@ public abstract class OnlineScreenTest extends ScreenTest {
         verify(game, times(1)).finish();
     }
 
-    protected void setGameType(Game.Type type) {
-        when(game.getType()).thenReturn(type);
-    }
 }
