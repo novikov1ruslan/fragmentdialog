@@ -40,6 +40,7 @@ public abstract class OnlineScreenTest extends ScreenTest {
         return withText(R.string.ok);
     }
 
+    // TODO: inline
     protected void backToSelectGameCommand() {
         verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);

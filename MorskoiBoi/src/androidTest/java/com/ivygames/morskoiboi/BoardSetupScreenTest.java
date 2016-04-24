@@ -44,7 +44,7 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
     }
 
     @Test
-    public void WhenAutoPressed__PressingDoneOpensGameplayScreen() {
+    public void WhenBoardIsSet__PressingDone_OpensGameplayScreen() {
         when(player.getBoard()).thenReturn(new Board());
         when(player.getEnemyBoard()).thenReturn(new Board());
         showScreen();
@@ -58,6 +58,21 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
         showScreen();
         clickOn(done());
         checkDisplayed(mustSetShipsMessage());
+    }
+
+    @Test
+    public void ForInternetGame_IfPlayerSetsShipsForMoreThan60Seconds__SessionTimeoutDialogShown() {
+        // TODO:
+    }
+
+    @Test
+    public void ForNonInternetGames_SetupTimeIsUnlimited() {
+    // TODO:
+    }
+
+    @Test
+    public void WhenScreenDestroyed__AllCroutonsCanceled() {
+    // TODO:
     }
 
     @Test

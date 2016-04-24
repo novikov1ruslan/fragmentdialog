@@ -42,7 +42,7 @@ import java.util.PriorityQueue;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public final class BoardSetupScreen extends OnlineGameScreen implements BoardSetupLayoutListener, BackPressListener {
+public final class BoardSetupScreen extends OnlineGameScreen implements BackPressListener {
     public static final String TAG = "BOARD_SETUP";
     private static final String DIALOG = FragmentAlertDialog.TAG;
     private static final int INITIAL_CAPACITY = 10;
@@ -51,7 +51,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @NonNull
     private Board mBoard = new Board();
     @NonNull
-    private PriorityQueue<Ship> mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
+    private final PriorityQueue<Ship> mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
 
     private BoardSetupLayout mLayout;
     private View mTutView;
@@ -102,7 +102,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
-        mLayout.setScreenActionsListener(this);
+        mLayout.setScreenActionsListener(mLayoutListener);
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
@@ -136,38 +136,42 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BoardSet
         Ln.d(this + " screen destroyed - all croutons canceled");
     }
 
-    @Override
-    public void autoSetup() {
-        UiEvent.send("auto");
-        mBoard.clearBoard();
-        mPlacement.populateBoardWithShips(mBoard, generateFullFleet());
-        mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
-        mLayout.setBoard(mBoard, mFleet);
-    }
-
-    @Override
-    public void showHelp() {
-        parent().showTutorial(mTutView);
-    }
-
-    @Override
-    public void done() {
-        UiEvent.send("done");
-        if (mRules.isBoardSet(mBoard)) {
-            Ln.d("board set - showing gameplay screen");
-            Model.instance.player.setBoard(mBoard);
-            showGameplayScreen();
-        } else {
-            Ln.d("!: board is not set yet");
-            showSetupValidationError();
+    @NonNull
+    private final BoardSetupLayoutListener mLayoutListener = new BoardSetupLayoutListener() {
+        @Override
+        public void autoSetup() {
+            UiEvent.send("auto");
+            mBoard.clearBoard();
+            mPlacement.populateBoardWithShips(mBoard, generateFullFleet());
+            mFleet.clear();
+            mLayout.invalidate();
+//        mLayout.setBoard(mBoard, mFleet);
         }
-    }
 
-    @Override
-    public void dismissTutorial() {
-        mSettings.hideBoardSetupHelp();
-        parent().dismissTutorial();
-    }
+        @Override
+        public void showHelp() {
+            parent().showTutorial(mTutView);
+        }
+
+        @Override
+        public void done() {
+            UiEvent.send("done");
+            if (mRules.isBoardSet(mBoard)) {
+                Ln.d("board set - showing gameplay screen");
+                Model.instance.player.setBoard(mBoard);
+                showGameplayScreen();
+            } else {
+                Ln.d("!: board is not set yet");
+                showSetupValidationError();
+            }
+        }
+
+        @Override
+        public void dismissTutorial() {
+            mSettings.hideBoardSetupHelp();
+            parent().dismissTutorial();
+        }
+    };
 
     private void showGameplayScreen() {
         setScreen(GameHandler.newGameplayScreen());
