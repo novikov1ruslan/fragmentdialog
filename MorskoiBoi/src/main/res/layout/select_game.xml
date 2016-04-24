@@ -1,7 +1,9 @@
 <com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_background">
+    android:background="@color/default_background"
+    android:paddingLeft="@dimen/battleship_margin_horizontal"
+    android:paddingRight="@dimen/battleship_margin_horizontal">
 
     <ImageButton
         android:id="@+id/help_button"

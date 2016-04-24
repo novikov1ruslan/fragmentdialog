@@ -5,6 +5,8 @@
     android:background="@color/default_background"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/battleship_margin_horizontal"
+    android:paddingRight="@dimen/battleship_margin_horizontal"
     tools:ignore="HardcodedText">
 
     <FrameLayout

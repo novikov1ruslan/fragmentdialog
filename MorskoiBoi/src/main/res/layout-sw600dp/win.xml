@@ -59,12 +59,6 @@
             android:text="@string/sign_in_to_share" />
     </LinearLayout>
 
-    <TextView
-        style="@style/NormalText"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/win_horizontal_margin"
-        android:text="Your Fleet:"
-        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
