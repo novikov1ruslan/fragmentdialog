@@ -12,12 +12,8 @@ public class VibratorFacade {
     @NonNull
     private final Vibrator mVibrator;
 
-    public static Vibrator getVibratorService(@NonNull Context context) {
-        return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-    }
-
     public VibratorFacade(@NonNull Context context) {
-        mVibrator = getVibratorService(context);
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public void vibrate(int milliseconds) {

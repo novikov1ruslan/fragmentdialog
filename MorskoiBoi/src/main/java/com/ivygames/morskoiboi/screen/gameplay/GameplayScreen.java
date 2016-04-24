@@ -75,10 +75,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     @NonNull
     private final Game mGame;
-    private PlayerOpponent mPlayer;
-    private Opponent mEnemy;
-    private Handler mUiThreadHandler;
-
+    @NonNull
+    private final PlayerOpponent mPlayer;
+    @NonNull
+    private final Opponent mEnemy;
+    @NonNull
+    private final Handler mUiThreadHandler = new Handler(Looper.getMainLooper());
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
@@ -103,7 +105,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private boolean mOpponentSurrendered;
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
-
+    @NonNull
     private final Runnable mShowLostScreenCommand = new Runnable() {
 
         @Override
@@ -111,7 +113,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             setScreen(GameHandler.newLostScreen());
         }
     };
-
+    @NonNull
     private final TurnTimer.TimerListener mTurnTimerListener = new TurnTimer.TimerListener() {
 
         @Override
@@ -135,21 +137,20 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private int mTimerExpiredCounter;
 
-    private Intent mMatchStatusIntent;
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
-
+    @NonNull
+    private final Intent mMatchStatusIntent;
+    @NonNull
     private final Runnable mShotHangDetectionTask = new Runnable() {
         @Override
         public void run() {
-//            ACRA.getErrorReporter().handleException(new RuntimeException("shot_hanged"));
             Ln.w("shot_hanged");
             showConnectionLostDialog();
         }
     };
+    @NonNull
     private final Runnable mTurnHangDetectionTask = new Runnable() {
         @Override
         public void run() {
-//            ACRA.getErrorReporter().handleException(new RuntimeException("turn_hanged"));
             Ln.w("turn_hanged");
             showConnectionLostDialog();
         }
@@ -169,7 +170,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mPlayerPrivateBoard = mPlayer.getBoard();
 
         mVibrator = new VibratorFacade(mParent);
-        mUiThreadHandler = new Handler(Looper.getMainLooper());
 
         mBackToSelectGameCommand = new BackToSelectGameCommand(parent());
 
@@ -789,19 +789,19 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void stopDetectingShotTimeout() {
-        mHandler.removeCallbacks(mShotHangDetectionTask);
+        mUiThreadHandler.removeCallbacks(mShotHangDetectionTask);
     }
 
     private void startDetectingShotTimeout() {
-        mHandler.postDelayed(mShotHangDetectionTask, SHOT_HANG_DETECTION_TIMEOUT);
+        mUiThreadHandler.postDelayed(mShotHangDetectionTask, SHOT_HANG_DETECTION_TIMEOUT);
     }
 
     private void stopDetectingTurnTimeout() {
-        mHandler.removeCallbacks(mTurnHangDetectionTask);
+        mUiThreadHandler.removeCallbacks(mTurnHangDetectionTask);
     }
 
     private void startDetectingTurnTimeout() {
-        mHandler.postDelayed(mTurnHangDetectionTask, TURN_HANG_DETECTION_TIMEOUT);
+        mUiThreadHandler.postDelayed(mTurnHangDetectionTask, TURN_HANG_DETECTION_TIMEOUT);
     }
 
     public void updateMyStatus() {
