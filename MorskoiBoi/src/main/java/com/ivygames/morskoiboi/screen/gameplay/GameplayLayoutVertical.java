@@ -23,7 +23,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class GameplayLayoutTablet extends OldHandsetGameplayLayout implements View.OnClickListener {
+public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
 
     private FleetBoardView mMyBoardView;
     private EnemyBoardView mEnemyBoardView;
@@ -41,7 +41,7 @@ public class GameplayLayoutTablet extends OldHandsetGameplayLayout implements Vi
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
-    public GameplayLayoutTablet(Context context, AttributeSet attrs) {
+    public GameplayLayoutVertical(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
@@ -270,27 +270,6 @@ public class GameplayLayoutTablet extends OldHandsetGameplayLayout implements Vi
 
     public void setListener(GameplayLayoutListener listener) {
         mListener = listener;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mListener == null) {
-            return;
-        }
-
-        switch (v.getId()) {
-//            case R.id.vibration_btn:
-//                mListener.onVibrationChanged();
-//                break;
-
-            case R.id.sound_btn:
-                mListener.onSoundChanged();
-                break;
-
-            default:
-                Ln.w("unprocessed game button=" + v.getId());
-                break;
-        }
     }
 
     public void hideChatButton() {
