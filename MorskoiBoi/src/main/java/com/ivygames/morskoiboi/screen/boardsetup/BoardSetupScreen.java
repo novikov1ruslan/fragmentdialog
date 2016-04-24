@@ -144,6 +144,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             mBoard.clearBoard();
             mPlacement.populateBoardWithShips(mBoard, generateFullFleet());
             mFleet.clear();
+            mLayout.notifyDataChanged();
             mLayout.invalidate();
 //        mLayout.setBoard(mBoard, mFleet);
         }

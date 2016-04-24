@@ -36,6 +36,7 @@ public class SetupBoardView extends BaseBoardView {
      * needed to perform double clicks on the ships
      */
     private PickShipTask mPickShipTask;
+    @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
     @NonNull
@@ -87,8 +88,9 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void drawDockedShip(Canvas canvas) {
-        if (presenter().getDockedShip() != null) {
-            Bitmap bitmap = Bitmaps.getBitmapForShipSize(getResources(), presenter().getDockedShip().getSize());
+        Ship dockedShip = presenter().getDockedShip();
+        if (dockedShip != null) {
+            Bitmap bitmap = Bitmaps.getBitmapForShipSize(getResources(), dockedShip.getSize());
             Point center = presenter().getShipDisplayAreaCenter();
             int displayLeft = center.x - bitmap.getWidth() / 2;
             int displayTop = center.y - bitmap.getHeight() / 2;
@@ -207,6 +209,10 @@ public class SetupBoardView extends BaseBoardView {
         Ln.v(ships);
         presenter().setFleet(ships);
         invalidate();
+    }
+
+    public void notifyDataChanged() {
+        presenter().notifyDataChanged();
     }
 
     @Override

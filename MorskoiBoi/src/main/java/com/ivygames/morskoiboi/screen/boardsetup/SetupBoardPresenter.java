@@ -13,17 +13,22 @@ import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BasePresenter;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.PriorityQueue;
 
 final class SetupBoardPresenter extends BasePresenter {
+    @NonNull
     private final Rect mShipSelectionRect = new Rect();
+    @NonNull
     private final Rect mShipDisplayRect = new Rect();
+    @NonNull
     private final Point shipDisplayCenter = new Point();
+    @NonNull
     private Rect mPickedShipRect = new Rect();
+    @NonNull
     private final Rect mRectForCell = new Rect();
+    @NonNull
     private final Placement mPlacementAlgorithm = PlacementFactory.getAlgorithm();
     /**
      * ship displayed at the top of the screen (selection area)
@@ -272,7 +277,14 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
-        mShips = Validate.notNull(ships);
+        mShips = ships;
         setDockedShip();
+    }
+
+    public void notifyDataChanged() {
+        setDockedShip();
+        if (hasPickedShip()) {
+            updatePickedGeometry();
+        }
     }
 }

@@ -74,12 +74,27 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
         }
     }
 
+    public void setBoard(Board board, PriorityQueue<Ship> fleet) {
+        mBoardView.setBoard(board);
+        mBoardView.setFleet(fleet);
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setBackgroundTransparent(View view) {
         view.setBackgroundColor(0x00000000);
         if (Build.VERSION.SDK_INT >= 11) {
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
+    }
+
+    public void notifyDataChanged() {
+        mBoardView.notifyDataChanged();
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        mBoardView.invalidate();
     }
 
     public View setTutView(View view) {
@@ -109,11 +124,6 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
                 break;
         }
 
-    }
-
-    public void setBoard(Board board, PriorityQueue<Ship> fleet) {
-        mBoardView.setBoard(board);
-        mBoardView.setFleet(fleet);
     }
 
     @Override
