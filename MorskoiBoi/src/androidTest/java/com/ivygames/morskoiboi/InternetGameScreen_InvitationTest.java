@@ -8,7 +8,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
-public class InternetGameScreen_InvitationTest extends InternetGameScreenTest {
+public class InternetGameScreen_InvitationTest extends InternetGameScreen_ {
 
     @Test
     public void WhenThereIsInvitation__EnvelopeIsShown() {
