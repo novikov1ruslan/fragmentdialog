@@ -7,18 +7,17 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class SelectGameScreen__InternetTest extends SelectGameScreenTest {
+public class SelectGameScreen_InternetTest extends SelectGameScreenTest {
     @Test
     public void WhenInternetButtonPressedButNotConnected__SignInDialogOpens() {
         setSignedIn(false);
         showScreen();
-        clickOn(internetButton());
+        clickOn(internet());
         checkDisplayed(signInDialog());
     }
 
@@ -50,13 +49,8 @@ public class SelectGameScreen__InternetTest extends SelectGameScreenTest {
     public void WhenInternetPressedWhileConnected__InternetGameScreenOpens() {
         setSignedIn(true);
         showScreen();
-        clickOn(internetButton());
+        clickOn(internet());
         checkDisplayed(INTERNET_GAME_LAYOUT);
-    }
-
-    @NonNull
-    protected Matcher<View> internetButton() {
-        return withId(R.id.via_internet);
     }
 
     @NonNull

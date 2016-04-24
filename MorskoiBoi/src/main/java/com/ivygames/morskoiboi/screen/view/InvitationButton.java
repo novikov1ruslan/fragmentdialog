@@ -65,4 +65,8 @@ public class InvitationButton extends Button {
             mInvitationTop = (h - mInvitation.getHeight()) / 2;
         }
     }
+
+    public boolean hasInvitation() {
+        return mShowInvitation;
+    }
 }

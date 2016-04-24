@@ -132,4 +132,8 @@ public class SelectGameScreenTest extends ScreenTest {
         return withId(R.id.via_bluetooth);
     }
 
+    @NonNull
+    protected final Matcher<View> internet() {
+        return withId(R.id.via_internet);
+    }
 }

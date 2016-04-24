@@ -30,15 +30,17 @@ public class InvitationManager {
     @NonNull
     private final Set<String> mIncomingInvitationIds = new HashSet<>();
 
-    private OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
+    @NonNull
+    private final OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
 
+    @NonNull final
     private ResultCallback<Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultResultCallback();
 
     public InvitationManager(@NonNull GoogleApiClientWrapper client) {
         mGoogleApiClient = client;
     }
 
-    public void setInvitationReceivedListener(InvitationReceivedListener listener) {
+    public void setInvitationReceivedListener(@Nullable InvitationReceivedListener listener) {
         mListener = listener;
     }
 

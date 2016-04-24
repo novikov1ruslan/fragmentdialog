@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
+import com.ivygames.morskoiboi.screen.view.InvitationButton;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -23,6 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.Mockito.when;
 
 
 public class MainScreenTest extends ScreenTest {
@@ -37,7 +40,6 @@ public class MainScreenTest extends ScreenTest {
         return new MainScreen(activity(), apiClient(), settings());
     }
 
-    @Test
     public void TestNoAds() {
         // TODO:
     }
@@ -65,22 +67,6 @@ public class MainScreenTest extends ScreenTest {
         pressBack();
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
     }
-
-    //    @Test
-//    public void WhenThereIsInvitation__EnvelopeIsShown() {
-//        when(invitationManager().hasInvitation()).thenReturn(true);
-//        setScreen(newScreen());
-//        InvitationButton button = (InvitationButton) activity().findViewById(R.id.play);
-//        verify(button, times(1)).showInvitation();
-//    }
-//
-//    @Test
-//    public void WhenThereAreNoInvitations__EnvelopeIsHidden() {
-//        when(invitationManager().hasInvitation()).thenReturn(false);
-//        setScreen(newScreen());
-//        InvitationButton button = (InvitationButton) activity().findViewById(R.id.play);
-//        verify(button, times(1)).hideInvitation();
-//    }
 
     @Test
     public void when_play_button_is_pressed__select_game_screen_opens() {
@@ -121,18 +107,17 @@ public class MainScreenTest extends ScreenTest {
     }
 
 //    @Test
-//    public void WhenPlus1ButtonPressed_but_ReconnectionRequired__ApiClientDisconnects() {
+    public void WhenPlus1ButtonPressed_but_ReconnectionRequired__ApiClientDisconnects() {
 //        // TODO:
 //        setSignedIn(true);
 //        onView(pusOneButton()).perform(click());
 //        ActivityResult result = new ActivityResult(GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED, null);
 //        clickForIntent(pusOneButton(), anyIntent(), result);
 //        verify(apiClient(), times(1)).disconnect();
-//    }
+    }
 
     @NonNull
     private Matcher<View> pusOneButton() {
         return withId(R.id.plus_one_button);
     }
-
 }

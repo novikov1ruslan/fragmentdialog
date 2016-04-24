@@ -36,7 +36,6 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
         return new BoardSetupScreen(activity());
     }
 
-    @Test
     public void WhenAutoPressed__BoardIsSet() {
         showScreen();
         clickOn(autoSetup());
@@ -60,17 +59,14 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
         checkDisplayed(mustSetShipsMessage());
     }
 
-    @Test
     public void ForInternetGame_IfPlayerSetsShipsForMoreThan60Seconds__SessionTimeoutDialogShown() {
         // TODO:
     }
 
-    @Test
     public void ForNonInternetGames_SetupTimeIsUnlimited() {
     // TODO:
     }
 
-    @Test
     public void WhenScreenDestroyed__AllCroutonsCanceled() {
     // TODO:
     }
