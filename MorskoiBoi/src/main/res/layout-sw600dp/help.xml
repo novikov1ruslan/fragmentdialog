@@ -1,6 +1,5 @@
 <com.ivygames.morskoiboi.screen.help.HelpLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/default_background">
 
     <WebView
