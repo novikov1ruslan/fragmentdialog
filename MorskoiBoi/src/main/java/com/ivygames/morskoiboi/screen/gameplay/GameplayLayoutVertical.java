@@ -106,11 +106,12 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         invalidate();
     }
 
-    public void setMyShips(@NonNull Collection<Ship> ships) {
+    public void updateMyWorkingShips(@NonNull Collection<Ship> workingShips) {
         if (mFleetView == null) {
+            // TODO; check if these verifications needed
             return;
         }
-        mFleetView.setMyShips(ships);
+        mFleetView.setMyShips(workingShips);
     }
 
     @Override
@@ -118,11 +119,11 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mFleetView.setShipsSizes(shipsSizes);
     }
 
-    public void setEnemyShips(@NonNull Collection<Ship> ships) {
+    public void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips) {
         if (mFleetView == null) {
             return;
         }
-        mFleetView.setEnemyShips(ships);
+        mFleetView.setEnemyShips(workingShips);
     }
 
     public void setShotListener(@NonNull ShotListener listener) {

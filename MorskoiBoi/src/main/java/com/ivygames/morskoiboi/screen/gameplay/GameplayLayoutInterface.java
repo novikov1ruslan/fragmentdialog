@@ -13,7 +13,7 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void setSound(boolean soundOn);
 
-    void setPlayerBoard(@NonNull Board oard);
+    void setPlayerBoard(@NonNull Board board);
 
     void setEnemyBoard(@NonNull Board board);
 
@@ -40,6 +40,8 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void playerTurn();
 
+    void enemyTurn();
+
     void hideOpponentSettingBoardNotification();
 
     void removeAim();
@@ -60,15 +62,13 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void lost();
 
-    void setEnemyShips(@NonNull Collection<Ship> fullFleet);
+    void updateMyWorkingShips(@NonNull Collection<Ship> workingShips);
+
+    void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips);
 
     void hideChatButton();
 
     void setListener(@NonNull GameplayLayoutListener listener);
-
-    void enemyTurn();
-
-    void setMyShips(@NonNull Collection<Ship> ships);
 
     void setShipsSizes(@NonNull int[] shipsSizes);
 }

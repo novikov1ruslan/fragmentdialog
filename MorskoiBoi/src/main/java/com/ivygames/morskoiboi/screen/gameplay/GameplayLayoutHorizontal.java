@@ -129,8 +129,8 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         invalidate();
     }
 
-    public void setMyShips(@NonNull Collection<Ship> ships) {
-        mFleetView.setMyShips(ships);
+    public void updateMyWorkingShips(@NonNull Collection<Ship> workingShips) {
+        mFleetView.setMyShips(workingShips);
     }
 
     @Override
@@ -138,8 +138,8 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         mFleetView.setShipsSizes(shipsSizes);
     }
 
-    public void setEnemyShips(@NonNull Collection<Ship> ships) {
-        mFleetView.setEnemyShips(ships);
+    public void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips) {
+        mFleetView.setEnemyShips(workingShips);
     }
 
     public void setShotListener(@NonNull ShotListener listener) {
@@ -292,10 +292,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         }
 
         switch (v.getId()) {
-//            case R.id.vibration_btn:
-//                mListener.onVibrationChanged();
-//                break;
-
             case R.id.sound_btn:
                 mListener.onSoundChanged();
                 break;

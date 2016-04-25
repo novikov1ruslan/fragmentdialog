@@ -773,7 +773,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     public void updateMyStatus() {
-        mLayout.setMyShips(GameUtils.getWorkingShips(mPlayerPrivateBoard.getShips()));
+        mLayout.updateMyWorkingShips(GameUtils.getWorkingShips(mPlayerPrivateBoard.getShips()));
     }
 
     private void updateEnemyStatus() {
@@ -782,7 +782,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         for (Ship ship : killedShips) {
             GameUtils.removeShipFromFleet(fleet, ship);
         }
-        mLayout.setEnemyShips(fleet);
+        mLayout.updateEnemyWorkingShips(fleet);
     }
 
     private void startTurnTimer() {

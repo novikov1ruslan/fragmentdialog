@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: create presenter for this class
 public class FleetView extends View {
 
     private static final int DEFAULT_MARGIN_BETWEEN_SHIPS = 4;
@@ -99,7 +101,7 @@ public class FleetView extends View {
         mGunboatBounds = new Rect();
     }
 
-    private Rect createRectForBitmap(Bitmap bitmap) {
+    private @NonNull Rect createRectForBitmap(Bitmap bitmap) {
         return new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
     }
 
