@@ -202,23 +202,14 @@ final class SetupBoardPresenter extends BasePresenter {
             return;
         }
 
-        if (!tryPlaceShip(board, mPickedShip, mAim)) {
+        if (board.shipFitsTheBoard(mPickedShip, mAim)) {
+            mPlacement.putShipAt(board, mPickedShip, mAim.getX(), mAim.getY());
+        } else {
             returnShipToPool(mPickedShip);
         }
 
         setDockedShip();
         mPickedShip = null;
-    }
-
-    /**
-     * @return true if succeeded to put down currently picked-up ship
-     */
-    private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 aim) {
-        if (board.shipFitsTheBoard(ship, aim)) {
-            mPlacement.putShipAt(board, ship, aim.getX(), aim.getY());
-            return true;
-        }
-        return false;
     }
 
     private void returnShipToPool(@NonNull Ship ship) {
