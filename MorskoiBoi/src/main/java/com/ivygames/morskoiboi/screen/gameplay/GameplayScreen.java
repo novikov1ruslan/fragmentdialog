@@ -232,6 +232,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mLayout.setShotListener(new BoardShotListener(mPlayer));
         UiProxyOpponent uiProxy = new UiProxyOpponent(mPlayer);
+        // TODO: make android opponent return in UI thread
         mHandlerOpponent = new HandlerOpponent(mUiThreadHandler, uiProxy);
         mEnemy.setOpponent(mHandlerOpponent);
 

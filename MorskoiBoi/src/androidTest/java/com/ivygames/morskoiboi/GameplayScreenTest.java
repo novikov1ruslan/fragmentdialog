@@ -9,6 +9,8 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.when;
 
 public class GameplayScreenTest extends GameplayScreen_ {
 
@@ -38,6 +40,29 @@ public class GameplayScreenTest extends GameplayScreen_ {
         setGameType(Game.Type.INTERNET);
         showScreen();
         checkDisplayed(chat());
+    }
+
+    @Test
+    public void IfEnemyReady__OpponentSettingBoardNotificationNotShown() {
+        opponentReady(true);
+        showScreen();
+        checkDoesNotExist(opponentSettingBoardNotification());
+    }
+
+    @Test
+    public void IfEnemyNotReady__OpponentSettingBoardNotificationShown() {
+        opponentReady(false);
+        showScreen();
+        checkDisplayed(opponentSettingBoardNotification());
+    }
+
+    protected void opponentReady(boolean ready) {
+        when(player.isOpponentReady()).thenReturn(ready);
+    }
+
+    @NonNull
+    protected Matcher<View> opponentSettingBoardNotification() {
+        return withText(getString(R.string.opponent_setting_board, OPPONENT_NAME));
     }
 
     @NonNull
