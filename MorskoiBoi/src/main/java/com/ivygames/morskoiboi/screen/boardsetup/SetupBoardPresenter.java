@@ -29,7 +29,7 @@ final class SetupBoardPresenter extends BasePresenter {
     @NonNull
     private final Rect mRectForCell = new Rect();
     @NonNull
-    private final Placement mPlacementAlgorithm = PlacementFactory.getAlgorithm();
+    private final Placement mPlacement = PlacementFactory.getAlgorithm();
     /**
      * ship displayed at the top of the screen (selection area)
      */
@@ -46,11 +46,9 @@ final class SetupBoardPresenter extends BasePresenter {
     private Vector2 mAim = Vector2.INVALID_VECTOR;
     private int mX;
     private int mY;
-//    private int mI;
-//    private int mJ;
 
-    public SetupBoardPresenter(int boardSize, float dimension) {
-        super(boardSize, dimension);
+    public SetupBoardPresenter(int boardSize, float turnBorderSize) {
+        super(boardSize, turnBorderSize);
     }
 
     @Override
@@ -217,7 +215,7 @@ final class SetupBoardPresenter extends BasePresenter {
      */
     private boolean tryPlaceShip(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 aim) {
         if (board.shipFitsTheBoard(ship, aim)) {
-            mPlacementAlgorithm.putShipAt(board, ship, aim.getX(), aim.getY());
+            mPlacement.putShipAt(board, ship, aim.getX(), aim.getY());
             return true;
         }
         return false;
