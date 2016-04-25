@@ -73,7 +73,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     public void setSound(boolean on) {
     }
 
-    public void setAim(Vector2 aim) {
+    public void setAim(@NonNull Vector2 aim) {
         mEnemyBoardView.setAim(aim);
     }
 
@@ -85,28 +85,28 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         return mUnlockedTime;
     }
 
-    public void setPlayerName(CharSequence name) {
+    public void setPlayerName(@NonNull CharSequence name) {
         if (mPlayerNameView != null) {
             mPlayerNameView.setText(name);
         }
     }
 
-    public void setEnemyName(CharSequence name) {
+    public void setEnemyName(@NonNull CharSequence name) {
         if (mEnemyNameView != null) {
             mEnemyNameView.setText(name);
         }
     }
 
-    public void setPlayerBoard(Board board) {
+    public void setPlayerBoard(@NonNull Board board) {
         mMyBoardView.setBoard(board);
     }
 
-    public void setEnemyBoard(Board board) {
+    public void setEnemyBoard(@NonNull Board board) {
         mEnemyBoardView.setBoard(board);
         invalidate();
     }
 
-    public void setMyShips(Collection<Ship> ships) {
+    public void setMyShips(@NonNull Collection<Ship> ships) {
         if (mFleetView == null) {
             return;
         }
@@ -118,14 +118,14 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mFleetView.setShipsSizes(shipsSizes);
     }
 
-    public void setEnemyShips(Collection<Ship> ships) {
+    public void setEnemyShips(@NonNull Collection<Ship> ships) {
         if (mFleetView == null) {
             return;
         }
         mFleetView.setEnemyShips(ships);
     }
 
-    public void setShotListener(ShotListener listener) {
+    public void setShotListener(@NonNull ShotListener listener) {
         mEnemyBoardView.setShotListener(listener);
     }
 
@@ -251,7 +251,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         }
     }
 
-    public void setShotResult(PokeResult result) {
+    public void setShotResult(@NonNull PokeResult result) {
         mEnemyBoardView.setShotResult(result);
     }
 
@@ -264,7 +264,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mTimerView.setAlarmThreshold(alarmTimeSeconds);
     }
 
-    public void setListener(GameplayLayoutListener listener) {
+    public void setListener(@NonNull GameplayLayoutListener listener) {
         mListener = listener;
     }
 
@@ -272,7 +272,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mChatButton.setVisibility(GONE);
     }
 
-    public void showOpponentSettingBoardNotification(String message) {
+    public void showOpponentSettingBoardNotification(@NonNull String message) {
         mSettingBoardText.setText(message);
         mSettingBoardText.setVisibility(VISIBLE);
     }

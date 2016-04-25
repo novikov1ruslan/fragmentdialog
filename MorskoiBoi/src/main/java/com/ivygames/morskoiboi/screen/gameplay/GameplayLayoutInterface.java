@@ -13,9 +13,9 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void setSound(boolean soundOn);
 
-    void setPlayerBoard(Board mPlayerPrivateBoard);
+    void setPlayerBoard(@NonNull Board oard);
 
-    void setEnemyBoard(Board mEnemyPublicBoard);
+    void setEnemyBoard(@NonNull Board board);
 
     /**
      * @param millis time in milliseconds
@@ -24,19 +24,19 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void lock();
 
-    void setPlayerName(CharSequence name);
+    void setPlayerName(@NonNull CharSequence name);
 
-    void setEnemyName(CharSequence name);
+    void setEnemyName(@NonNull CharSequence name);
 
-    void setShotListener(ShotListener boardShotListener);
+    void setShotListener(@NonNull ShotListener listener);
 
     boolean isLocked();
 
     void unLock();
 
-    void showOpponentSettingBoardNotification(String message);
+    void showOpponentSettingBoardNotification(@NonNull String message);
 
-    void setAim(Vector2 aim);
+    void setAim(@NonNull Vector2 aim);
 
     void playerTurn();
 
@@ -44,7 +44,7 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void removeAim();
 
-    void setShotResult(PokeResult result);
+    void setShotResult(@NonNull PokeResult result);
 
     void invalidateEnemyBoard();
 
@@ -60,15 +60,15 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void lost();
 
-    void setEnemyShips(Collection<Ship> fullFleet);
+    void setEnemyShips(@NonNull Collection<Ship> fullFleet);
 
     void hideChatButton();
 
-    void setListener(GameplayLayoutListener gameplayLayoutListener);
+    void setListener(@NonNull GameplayLayoutListener listener);
 
     void enemyTurn();
 
-    void setMyShips(Collection<Ship> ships);
+    void setMyShips(@NonNull Collection<Ship> ships);
 
     void setShipsSizes(@NonNull int[] shipsSizes);
 }
