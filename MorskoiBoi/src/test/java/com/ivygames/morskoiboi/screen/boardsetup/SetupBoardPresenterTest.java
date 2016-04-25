@@ -4,13 +4,13 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -25,6 +25,7 @@ import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -217,12 +218,33 @@ public class SetupBoardPresenterTest {
         assertThat(mPresenter.isOnBoard(IN_BOARD_AREA), is(true));
     }
 
+    public void WhenDataChangedExternally__DockedShipDoesNotChange() {
+        Ship ship = new Ship(3);
+        PriorityQueue<Ship> ships = setFleet(ship);
+        Ship dockedShip1 = mPresenter.getDockedShip();
+        ships.clear();
+        Ship dockedShip2 = mPresenter.getDockedShip();
+        assertThat(dockedShip1, equalTo(dockedShip2));
+    }
+
+    public void WhenDataChangedExternally_AndPresenterNotified__DockedShipReflectsChange() {
+        Ship ship = new Ship(3);
+        PriorityQueue<Ship> ships = setFleet(ship);
+        Ship dockedShip1 = mPresenter.getDockedShip();
+        ships.clear();
+        mPresenter.notifyDataChanged();
+        Ship dockedShip2 = mPresenter.getDockedShip();
+        assertThat(dockedShip1, not(dockedShip2));
+    }
+
+    @NonNull
     private PriorityQueue<Ship> setFleet(Ship ship) {
         PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
         fleet.add(ship);
         mPresenter.setFleet(fleet);
         return fleet;
     }
+
     private PriorityQueue<Ship> pickDockedShip() {
         return pickDockedShip(new Ship(2));
     }

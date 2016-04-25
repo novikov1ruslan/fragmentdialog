@@ -1,8 +1,13 @@
 package com.ivygames.morskoiboi;
 
+import android.view.View;
+
+import com.ivygames.morskoiboi.model.Game;
+
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.pressBack;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class GameplayScreenTest extends GameplayScreen_ {
 
@@ -11,5 +16,16 @@ public class GameplayScreenTest extends GameplayScreen_ {
 //        showScreen();
 //        pressBack();
 //        checkDisplayed(MAIN_LAYOUT);
+    }
+
+    @Test
+    public void ForAndroidGame__ChatButtonHidden() {
+        setGameType(Game.Type.VS_ANDROID);
+        showScreen();
+        checkDisplayed(chat());
+    }
+
+    private Matcher<View> chat() {
+        return withId(R.id.chat_button);
     }
 }

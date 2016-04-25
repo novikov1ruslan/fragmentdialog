@@ -35,7 +35,7 @@ final class SetupBoardPresenter extends BasePresenter {
      */
     private Ship mDockedShip;
 
-    private PriorityQueue<Ship> mShips;
+    private PriorityQueue<Ship> mDockedShips;
 
     /**
      * currently picked ship (awaiting to be placed)
@@ -147,12 +147,12 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     public void pickDockedShip() {
-        mPickedShip = mShips.poll();
+        mPickedShip = mDockedShips.poll();
         if (mPickedShip == null) {
             Ln.v("no ships to pick");
         } else {
             mDockedShip = null;
-            Ln.v(mPickedShip + " picked from stack, stack: " + mShips);
+            Ln.v(mPickedShip + " picked from stack, stack: " + mDockedShips);
         }
 
         if (hasPickedShip()) {
@@ -225,14 +225,14 @@ final class SetupBoardPresenter extends BasePresenter {
         if (!ship.isHorizontal()) {
             ship.rotate();
         }
-        mShips.add(ship);
+        mDockedShips.add(ship);
     }
 
     private void setDockedShip() {
-        if (mShips.isEmpty()) {
+        if (mDockedShips.isEmpty()) {
             mDockedShip = null;
         } else {
-            mDockedShip = mShips.peek();
+            mDockedShip = mDockedShips.peek();
         }
     }
 
@@ -275,7 +275,7 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
-        mShips = ships;
+        mDockedShips = ships;
         setDockedShip();
     }
 
