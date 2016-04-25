@@ -68,7 +68,7 @@ public interface GameplayLayoutInterface extends TimeConsumer {
 
     void hideChatButton();
 
-    void setListener(@NonNull GameplayLayoutListener listener);
+    void setLayoutListener(@NonNull GameplayLayoutListener listener);
 
     void setShipsSizes(@NonNull int[] shipsSizes);
 }

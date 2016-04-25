@@ -199,7 +199,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.hideChatButton();
         }
 
-        mLayout.setListener(new GameplayLayoutListenerImpl());
+        mLayout.setLayoutListener(new GameplayLayoutListenerImpl());
 
         // --- for tablet ---
         mLayout.setSound(mSettings.isSoundOn());

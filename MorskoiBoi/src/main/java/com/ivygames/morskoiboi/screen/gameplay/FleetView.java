@@ -43,10 +43,14 @@ public class FleetView extends View {
     private final Bitmap mGunboat;
     private final float mLetterWidth;
 
-    private Rect mCarrierBounds;
-    private Rect mBattleshipBounds;
-    private Rect mDestroyerBounds;
-    private Rect mGunboatBounds;
+    @NonNull
+    private Rect mCarrierBounds = new Rect();
+    @NonNull
+    private Rect mBattleshipBounds = new Rect();
+    @NonNull
+    private Rect mDestroyerBounds = new Rect();
+    @NonNull
+    private Rect mGunboatBounds = new Rect();
 
     private final Rect mCarrierSrc;
     private final Rect mBattleshipSrc;
@@ -63,12 +67,11 @@ public class FleetView extends View {
     private final int mZeroTextColor;
 
     private int mUnitHeight;
-    private int[] mShipsSizes;
 
     public FleetView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray attributesArray = getContext().obtainStyledAttributes(attrs, R.styleable.Status);
+        TypedArray attributesArray = context.obtainStyledAttributes(attrs, R.styleable.Status);
         mMarginBetweenShips = attributesArray.getDimensionPixelOffset(R.styleable.Status_verticalMargin, DEFAULT_MARGIN_BETWEEN_SHIPS);
         attributesArray.recycle();
 
@@ -76,8 +79,7 @@ public class FleetView extends View {
         mLinePaint = UiUtils.newStrokePaint(resources, R.color.line);
         float textSize = resources.getDimension(R.dimen.status_text_size);
         mTextPaint.setTextSize(textSize);
-        Typeface typeface = Typeface.DEFAULT_BOLD;
-        mTextPaint.setTypeface(typeface);
+        mTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
         mTextPaint.setTextAlign(Paint.Align.LEFT);
 
         mLetterWidth = mTextPaint.measureText(WIDEST_LETTER);
@@ -94,14 +96,10 @@ public class FleetView extends View {
         mBattleshipSrc = createRectForBitmap(mBattleship);
         mDestroyerSrc = createRectForBitmap(mDestroyer);
         mGunboatSrc = createRectForBitmap(mGunboat);
-
-        mCarrierBounds = new Rect();
-        mBattleshipBounds = new Rect();
-        mDestroyerBounds = new Rect();
-        mGunboatBounds = new Rect();
     }
 
-    private @NonNull Rect createRectForBitmap(Bitmap bitmap) {
+    @NonNull
+    private Rect createRectForBitmap(Bitmap bitmap) {
         return new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
     }
 
@@ -157,31 +155,23 @@ public class FleetView extends View {
         return mTextColor;
     }
 
+    /**
+     * {@link #init(int[])} must be called before this methid
+     */
     public void setMyShips(Collection<Ship> ships) {
-        mMyShipsLeft = generateShips(ships);
+        putShipsToMap(ships, mMyShipsLeft);
         invalidate();
-    }
-
-    private Map<Integer, Integer> initializeBucketsMap() {
-        Map<Integer, Integer> ships = new HashMap<>();
-        for (int shipSize: mShipsSizes) {
-            ships.put(shipSize, 0);
-        }
-
-        return ships;
-    }
-
-    private Map<Integer, Integer> generateShips(Collection<Ship> ships) {
-        Map<Integer, Integer> map = initializeBucketsMap();
-        for (Ship ship : ships) {
-            map.put(ship.getSize(), map.get(ship.getSize()) + 1);
-        }
-        return map;
     }
 
     public void setEnemyShips(Collection<Ship> ships) {
-        mEnemyShipsLeft = generateShips(ships);
+        putShipsToMap(ships, mEnemyShipsLeft);
         invalidate();
+    }
+
+    private void putShipsToMap(Collection<Ship> ships, Map<Integer, Integer> map) {
+        for (Ship ship : ships) {
+            map.put(ship.getSize(), map.get(ship.getSize()) + 1);
+        }
     }
 
     @Override
@@ -225,7 +215,15 @@ public class FleetView extends View {
         return (destWidth * srcBitmap.getHeight()) / srcBitmap.getWidth();
     }
 
-    public void setShipsSizes(int[] shipsSizes) {
-        mShipsSizes = shipsSizes;
+    public void init(int[] shipsSizes) {
+        mMyShipsLeft = new HashMap<>();
+        for (int shipSize: shipsSizes) {
+            mMyShipsLeft.put(shipSize, 0);
+        }
+
+        mEnemyShipsLeft = new HashMap<>();
+        for (int shipSize: shipsSizes) {
+            mEnemyShipsLeft.put(shipSize, 0);
+        }
     }
 }

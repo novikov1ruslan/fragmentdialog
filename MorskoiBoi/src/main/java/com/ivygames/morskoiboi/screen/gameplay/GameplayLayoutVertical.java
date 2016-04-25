@@ -116,7 +116,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
 
     @Override
     public void setShipsSizes(@NonNull int[] shipsSizes) {
-        mFleetView.setShipsSizes(shipsSizes);
+        mFleetView.init(shipsSizes);
     }
 
     public void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips) {
@@ -265,7 +265,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mTimerView.setAlarmThreshold(alarmTimeSeconds);
     }
 
-    public void setListener(@NonNull GameplayLayoutListener listener) {
+    public void setLayoutListener(@NonNull GameplayLayoutListener listener) {
         mListener = listener;
     }
 
