@@ -42,12 +42,6 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
         return String.format(Locale.US, "%02d:%02d", minutes, seconds);
     }
 
-
-    @Override
-    public void setTotalTime(int time) {
-
-    }
-
     @Override
     public void setCurrentTime(int time) {
         mTime = time;

@@ -255,10 +255,6 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mEnemyBoardView.setShotResult(result);
     }
 
-    public void setTotalTime(int seconds) {
-        mTimerView.setTotalTime(seconds);
-    }
-
     @Override
     public void setCurrentTime(int seconds) {
         mTimerView.setCurrentTime(seconds);

@@ -199,44 +199,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.hideChatButton();
         }
 
-        mLayout.setListener(new GameplayLayoutListener() {
-
-            @Override
-            public void onChatClicked() {
-                UiEvent.send("chat", "open");
-                new ChatDialog.Builder(mChatAdapter).setName(mPlayer.getName()).setPositiveButton(R.string.send, new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        UiEvent.send("chat", "sent");
-                        String text = ((ChatDialog) dialog).getChatMessage().toString();
-                        if (TextUtils.isEmpty(text)) {
-                            Ln.d("chat text is empty - not sending");
-                        } else {
-                            mChatAdapter.add(ChatMessage.newMyMessage(text));
-                            mEnemy.onNewMessage(text);
-                        }
-                    }
-                }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
-            }
-
-            @Override
-            public void onSoundChanged() {
-                boolean on = !mSettings.isSoundOn();
-                mSettings.setSound(on);
-                mLayout.setSound(on);
-                if (!on) {
-                    mSoundManager.stopPlaying();
-                }
-            }
-
-        });
+        mLayout.setListener(new GameplayLayoutListenerImpl());
 
         // --- for tablet ---
         mLayout.setSound(mSettings.isSoundOn());
         // ------------------
 
-        mLayout.setTotalTime(mGame.getTurnTimeout());
         updateMyStatus();
         mLayout.setPlayerBoard(mPlayerPrivateBoard);
         updateEnemyStatus();
@@ -856,4 +824,36 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         return TAG + debugSuffix();
     }
 
+    private class GameplayLayoutListenerImpl implements GameplayLayoutListener {
+
+        @Override
+        public void onChatClicked() {
+            UiEvent.send("chat", "open");
+            new ChatDialog.Builder(mChatAdapter).setName(mPlayer.getName()).setPositiveButton(R.string.send, new OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    UiEvent.send("chat", "sent");
+                    String text = ((ChatDialog) dialog).getChatMessage().toString();
+                    if (TextUtils.isEmpty(text)) {
+                        Ln.d("chat text is empty - not sending");
+                    } else {
+                        mChatAdapter.add(ChatMessage.newMyMessage(text));
+                        mEnemy.onNewMessage(text);
+                    }
+                }
+            }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
+        }
+
+        @Override
+        public void onSoundChanged() {
+            boolean on = !mSettings.isSoundOn();
+            mSettings.setSound(on);
+            mLayout.setSound(on);
+            if (!on) {
+                mSoundManager.stopPlaying();
+            }
+        }
+
+    }
 }

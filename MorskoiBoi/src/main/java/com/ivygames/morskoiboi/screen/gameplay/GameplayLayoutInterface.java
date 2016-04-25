@@ -10,13 +10,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 import java.util.Collection;
 
 public interface GameplayLayoutInterface extends TimeConsumer {
+
     void setSound(boolean soundOn);
-
-//    void setVibration(boolean vibrationOn);
-
-//    void hideVibrationSetting();
-
-    void setTotalTime(int turnTimeout);
 
     void setPlayerBoard(Board mPlayerPrivateBoard);
 
