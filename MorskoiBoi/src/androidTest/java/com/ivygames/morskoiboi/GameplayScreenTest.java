@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.model.Game;
@@ -22,10 +23,26 @@ public class GameplayScreenTest extends GameplayScreen_ {
     public void ForAndroidGame__ChatButtonHidden() {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
+        checkNotDisplayed(chat());
+    }
+
+    @Test
+    public void ForBluetoothGame__ChatButtonHidden() {
+        setGameType(Game.Type.BLUETOOTH);
+        showScreen();
+        checkNotDisplayed(chat());
+    }
+
+    @Test
+    public void ForInternetGame__ChatButtonVisible() {
+        setGameType(Game.Type.INTERNET);
+        showScreen();
         checkDisplayed(chat());
     }
 
-    private Matcher<View> chat() {
+    @NonNull
+    protected final Matcher<View> chat() {
         return withId(R.id.chat_button);
     }
+
 }

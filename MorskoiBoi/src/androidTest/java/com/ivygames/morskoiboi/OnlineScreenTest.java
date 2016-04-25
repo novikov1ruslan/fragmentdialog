@@ -22,11 +22,12 @@ public abstract class OnlineScreenTest extends ScreenTest {
 
     protected Game game;
     protected PlayerOpponent player;
+    protected Opponent opponent;
 
     @Override
     public void setup() {
         super.setup();
-        Opponent opponent = mock(Opponent.class);
+        opponent = mock(Opponent.class);
         Model.instance.opponent = opponent;
         when(opponent.getName()).thenReturn(OPPONENT_NAME);
         game = mock(Game.class);
