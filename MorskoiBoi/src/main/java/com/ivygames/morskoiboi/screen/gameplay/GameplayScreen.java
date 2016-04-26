@@ -68,7 +68,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final int VIBRATION_ON_KILL = 500;
 
-    private static final int READY_TO_START = 0;
     public static final int SHOT_HANG_DETECTION_TIMEOUT = 10000; // milliseconds
     public static final int TURN_HANG_DETECTION_TIMEOUT = 60000; // milliseconds
     public static final int ALLOWED_SKIPPED_TURNS = 2;
@@ -99,8 +98,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private GameplayLayoutInterface mLayout;
     private boolean mBackPressEnabled;
 
-    private TurnTimer mTurnTimer;
-    private int mTimeLeft = READY_TO_START;
+    TurnTimerController mTimerController;
 
     private boolean mOpponentSurrendered;
     @NonNull
@@ -114,12 +112,15 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     };
     @NonNull
-    private final TurnTimer.TimerListener mTurnTimerListener = new TurnTimer.TimerListener() {
+    private final TimerListener mTurnTimerListener = new TimerListener() {
 
         @Override
         public void onTimerExpired() {
-            mTurnTimer = null;
-            mTimeLeft = READY_TO_START;
+            if (mSoundManager.isAlarmPlaying()) {
+                Ln.v("timer expired - stopping alarm");
+                mSoundManager.stopAlarmSound();
+            }
+
             mTimerExpiredCounter++;
             if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
                 AnalyticsEvent.send("surrendered_passively");
@@ -132,6 +133,28 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 startDetectingTurnTimeout();
                 mEnemy.go();
             }
+        }
+
+        @Override
+        public void setCurrentTime(int time) {
+            mLayout.setCurrentTime(time);
+            if (shouldPlayAlarmSound(time)) {
+                mSoundManager.playAlarmSound();
+            }
+        }
+
+        @Override
+        public void onCanceled() {
+            if (mSoundManager.isAlarmPlaying()) {
+                Ln.v("timer canceled - stopping alarm");
+                mSoundManager.stopAlarmSound();
+            } else {
+                Ln.v("timer canceled");
+            }
+        }
+
+        private boolean shouldPlayAlarmSound(int timeLeft) {
+            return timeLeft <= (GameplaySoundManager.ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
         }
     };
 
@@ -175,7 +198,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
         mChatAdapter = new ChatAdapter(getLayoutInflater());
-
+        mTimerController = new TurnTimerController(mGame.getTurnTimeout(), mTurnTimerListener);
         Ln.d("game data prepared");
     }
 
@@ -220,8 +243,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.d("opponent's turn");
                 showOpponentTurn();
                 startDetectingTurnTimeout();
-            }
-            else {
+            } else {
                 Ln.d("player's turn");
             }
         } else {
@@ -251,7 +273,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 //        mSoundManager.autoPause();
         if (mGame.getType() == Type.VS_ANDROID) {
             // timer is not running if it is not player's turn, but cancel it just in case
-            pauseTurnTimer();
+            mTimerController.pauseTurnTimer();
         }
     }
 
@@ -267,20 +289,20 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     }
 
-    private boolean isTimerPaused() {
-        return mTimeLeft != READY_TO_START;
-    }
-
     private void showPauseDialog() {
         Runnable pauseCommand = new Runnable() {
 
             @Override
             public void run() {
                 Ln.v("continue pressed");
-                if (isTimerPaused()) {
-                    resumeTurnTimer();
+                if (mTimerController.isTimerPaused()) {
+                    if (!isResumed()) {
+                        Ln.w("timer resume cancelled due to background");
+                        return;
+                    }
+                    mTimerController.resumeTurnTimer();
                 } else {
-                    startTurnTimer();
+                    mTimerController.startTurnTimer();
                 }
                 mLayout.unLock();
             }
@@ -304,7 +326,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         Crouton.cancelAllCroutons();
 
-        stopTurnTimer();
+        mTimerController.stopTurnTimer();
         mHandlerOpponent.stop();
         if (mEnemy instanceof Cancellable) {
             ((Cancellable) mEnemy).cancel();
@@ -320,7 +342,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @Override
     public void onEventMainThread(GameEvent event) {
         if (event == GameEvent.OPPONENT_LEFT) {
-            stopTurnTimer();
+            mTimerController.stopTurnTimer();
             mParent.stopService(mMatchStatusIntent);
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
@@ -332,7 +354,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         } else if (event == GameEvent.CONNECTION_LOST) {
             EventBus.getDefault().removeAllStickyEvents();
-            stopTurnTimer();
+            mTimerController.stopTurnTimer();
             mParent.stopService(mMatchStatusIntent);
             if (mGame.hasFinished()) {
                 Ln.d(event + " received, but the game has already finished - skipping this event");
@@ -345,44 +367,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         stopDetectingTurnTimeout();
     }
 
-    private void pauseTurnTimer() {
-        if (mTurnTimer != null) {
-            mTimeLeft = mTurnTimer.getTimeLeft();
-            Ln.d("timer pausing with " + mTimeLeft);
-            mTurnTimer.cancel(true);
-            mTurnTimer = null;
-        }
-    }
-
-    private void stopTurnTimer() {
-        if (mTurnTimer != null) {
-            mTurnTimer.cancel(true);
-            mTimeLeft = READY_TO_START;
-            Ln.v("timer stopped");
-            mTurnTimer = null;
-        }
-    }
-
-    /**
-     * only called for android game
-     */
-    private void resumeTurnTimer() {
-        if (!isResumed()) {
-            Ln.w("timer resume cancelled due to background");
-            return;
-        }
-
-        if (mTurnTimer != null) {
-            String message = "already resumed";
-            reportException(message);
-            pauseTurnTimer();
-        }
-
-        Ln.v("resuming timer for " + mTimeLeft);
-        mTurnTimer = new TurnTimer(mTimeLeft, mLayout, mTurnTimerListener, mSoundManager);
-        mTimeLeft = READY_TO_START;
-        mTurnTimer.execute();
-    }
 
     @Override
     public void onBackPressed() {
@@ -467,8 +451,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         private final PlayerOpponent mPlayer;
         private boolean debug_aiming_started;
 
-        BoardShotListener(@NonNull PlayerOpponent opponent) {
-            mPlayer = opponent;
+        BoardShotListener(@NonNull PlayerOpponent player) {
+            mPlayer = player;
         }
 
         @Override
@@ -501,7 +485,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             startDetectingShotTimeout();
 
-            stopTurnTimer();
+            mTimerController.stopTurnTimer();
             mTimerExpiredCounter = 0;
 
             Vector2 aim = Vector2.get(x, y);
@@ -557,7 +541,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showPlayerTurn();
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
-                startTurnTimer(); // for all practical scenarios - start will only be called from here
+                mTimerController.startTurnTimer(); // for all practical scenarios - start will only be called from here
             } else {
                 Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
             }
@@ -786,17 +770,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             GameUtils.removeShipFromFleet(fleet, ship);
         }
         mLayout.updateEnemyWorkingShips(fleet);
-    }
-
-    private void startTurnTimer() {
-        if (mTurnTimer != null) {
-            reportException("already running");
-            stopTurnTimer();
-        }
-
-        Ln.d("starting timer");
-        mTurnTimer = new TurnTimer(mGame.getTurnTimeout(), mLayout, mTurnTimerListener, mSoundManager);
-        mTurnTimer.execute();
     }
 
     private final Runnable mShowWinCommand = new Runnable() {

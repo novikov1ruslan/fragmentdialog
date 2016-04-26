@@ -1,5 +1,9 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
-interface TimeConsumer {
+interface TimerListener {
+    void onTimerExpired();
+
     void setCurrentTime(int mTimeout);
+
+    void onCanceled();
 }

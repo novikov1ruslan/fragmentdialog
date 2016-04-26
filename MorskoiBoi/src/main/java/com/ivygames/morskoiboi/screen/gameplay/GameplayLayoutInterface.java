@@ -9,7 +9,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.Collection;
 
-public interface GameplayLayoutInterface extends TimeConsumer {
+public interface GameplayLayoutInterface {
 
     void setSound(boolean soundOn);
 
@@ -71,4 +71,6 @@ public interface GameplayLayoutInterface extends TimeConsumer {
     void setLayoutListener(@NonNull GameplayLayoutListener listener);
 
     void setShipsSizes(@NonNull int[] shipsSizes);
+
+    void setCurrentTime(int time);
 }
