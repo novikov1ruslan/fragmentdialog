@@ -463,10 +463,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private class BoardShotListener implements ShotListener {
+        @NonNull
         private final PlayerOpponent mPlayer;
         private boolean debug_aiming_started;
 
-        BoardShotListener(PlayerOpponent opponent) {
+        BoardShotListener(@NonNull PlayerOpponent opponent) {
             mPlayer = opponent;
         }
 
@@ -543,9 +544,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
      */
     private class UiProxyOpponent implements Opponent {
 
+        @NonNull
         private final PlayerOpponent mPlayer;
 
-        public UiProxyOpponent(PlayerOpponent opponent) {
+        public UiProxyOpponent(@NonNull PlayerOpponent opponent) {
             mPlayer = opponent;
         }
 
@@ -573,7 +575,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onShotResult(final PokeResult result) {
+        public void onShotResult(@NonNull final PokeResult result) {
             stopDetectingShotTimeout();
 
             Ln.v(result);
@@ -622,7 +624,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onShotAt(Vector2 aim) {
+        public void onShotAt(@NonNull Vector2 aim) {
             stopDetectingTurnTimeout();
             PokeResult result = mPlayer.onShotAtForResult(aim);
 
@@ -659,7 +661,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void setOpponent(Opponent opponent) {
+        public void setOpponent(@NonNull Opponent opponent) {
             // do nothing
         }
 
@@ -680,7 +682,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onLost(Board board) {
+        public void onLost(@NonNull Board board) {
             if (!mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                 Ln.v("player private board: " + mPlayerPrivateBoard);
                 reportException("lost while not defeated");
@@ -708,7 +710,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onNewMessage(String text) {
+        public void onNewMessage(@NonNull String text) {
             mChatAdapter.add(ChatMessage.newEnemyMessage(text));
             mPlayer.onNewMessage(text);
         }

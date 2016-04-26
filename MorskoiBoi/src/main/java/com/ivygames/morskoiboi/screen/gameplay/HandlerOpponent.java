@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -21,7 +22,7 @@ final class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void onShotResult(final PokeResult pokeResult) {
+    public void onShotResult(@NonNull final PokeResult pokeResult) {
         mHandler.post(new Runnable() {
 
             @Override
@@ -36,7 +37,7 @@ final class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void onShotAt(final Vector2 aim) {
+    public void onShotAt(@NonNull final Vector2 aim) {
         mHandler.post(new Runnable() {
 
             @Override
@@ -66,7 +67,7 @@ final class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void setOpponent(final Opponent opponent) {
+    public void setOpponent(@NonNull final Opponent opponent) {
         mHandler.post(new Runnable() {
 
             @Override
@@ -101,7 +102,7 @@ final class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void onLost(final Board board) {
+    public void onLost(@NonNull final Board board) {
         mHandler.post(new Runnable() {
 
             @Override
@@ -131,7 +132,7 @@ final class HandlerOpponent implements Opponent {
     }
 
     @Override
-    public void onNewMessage(final String text) {
+    public void onNewMessage(@NonNull final String text) {
         mHandler.post(new Runnable() {
 
             @Override

@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.bluetooth;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.AbstractOnlineOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 
@@ -24,7 +26,7 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
     }
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
         String message = NAME + mOpponent.getName();
         sendRtm(message);

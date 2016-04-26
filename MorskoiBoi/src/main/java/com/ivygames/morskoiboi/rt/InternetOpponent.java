@@ -38,7 +38,7 @@ public class InternetOpponent extends AbstractOnlineOpponent implements RealTime
     }
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
         sendOpponentName();
     }

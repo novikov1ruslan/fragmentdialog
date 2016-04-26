@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -7,12 +9,12 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 class DummyOpponent implements Opponent {
     @Override
-    public void onShotAt(Vector2 aim) {
+    public void onShotAt(@NonNull Vector2 aim) {
 
     }
 
     @Override
-    public void onShotResult(PokeResult pokeResult) {
+    public void onShotResult(@NonNull PokeResult pokeResult) {
 
     }
 
@@ -22,7 +24,7 @@ class DummyOpponent implements Opponent {
     }
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
 
     }
 
@@ -37,7 +39,7 @@ class DummyOpponent implements Opponent {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void onLost(@NonNull Board board) {
 
     }
 
@@ -47,7 +49,7 @@ class DummyOpponent implements Opponent {
     }
 
     @Override
-    public void onNewMessage(String text) {
+    public void onNewMessage(@NonNull String text) {
 
     }
 }

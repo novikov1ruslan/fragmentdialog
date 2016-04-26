@@ -147,7 +147,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void onLost(@NonNull Board board) {
         Ln.d("android lost - preparing for the next round");
         mDelegate.cancel();
         reset(new Bidder().newBid());

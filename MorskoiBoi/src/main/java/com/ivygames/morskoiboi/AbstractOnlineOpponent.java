@@ -65,12 +65,12 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     }
 
     @Override
-    public void onShotResult(PokeResult pokeResult) {
+    public void onShotResult(@NonNull PokeResult pokeResult) {
         sendRtm(SHOOT_RESULT + pokeResult.toJson().toString());
     }
 
     @Override
-    public void onShotAt(Vector2 aim) {
+    public void onShotAt(@NonNull Vector2 aim) {
         sendRtm(SHOOT + aim.toJson().toString());
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void onLost(@NonNull Board board) {
         sendRtm(WIN + board.toJson().toString());
     }
 
@@ -101,7 +101,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     }
 
     @Override
-    public void onNewMessage(String text) {
+    public void onNewMessage(@NonNull String text) {
         sendRtm(MESSAGE + text);
     }
 

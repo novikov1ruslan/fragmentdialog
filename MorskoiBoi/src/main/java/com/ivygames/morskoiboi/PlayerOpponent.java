@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -41,17 +43,17 @@ public class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void onShotResult(PokeResult result) {
+    public void onShotResult(@NonNull PokeResult result) {
         updateEnemyBoard(result, mPlacement);
     }
 
     @Override
-    public void onShotAt(final Vector2 aim) {
+    public void onShotAt(@NonNull final Vector2 aim) {
         throw new RuntimeException("never used");
     }
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
         Ln.d(this + ": my opponent is " + opponent);
     }
@@ -114,7 +116,7 @@ public class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void onNewMessage(String text) {
+    public void onNewMessage(@NonNull String text) {
         EventBus.getDefault().post(ChatMessage.newEnemyMessage(text));
     }
 
@@ -130,7 +132,7 @@ public class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void onLost(@NonNull Board board) {
         Ln.e("never happens");
         ACRA.getErrorReporter().handleException(new RuntimeException("never happens"));
     }

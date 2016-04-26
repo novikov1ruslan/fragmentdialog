@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+
 public interface Opponent {
 
     int CURRENT_VERSION = 3;
@@ -9,12 +11,12 @@ public interface Opponent {
      * This call will trigger this opponent to call {@link #onShotResult(PokeResult)} on its opponent. <br>
      * If the result of the shot is {@link Cell#isHit()}, {@link #go()} method is called afterwards.
      */
-    void onShotAt(Vector2 aim);
+    void onShotAt(@NonNull Vector2 aim);
 
     /**
      * This opponent received result of his/her shot (Called on me)
      */
-    void onShotResult(PokeResult pokeResult);
+    void onShotResult(@NonNull PokeResult pokeResult);
 
     /**
      * Called to indicate the turn is passed to this opponent.
@@ -25,7 +27,7 @@ public interface Opponent {
      */
     void go();
 
-    void setOpponent(Opponent opponent);
+    void setOpponent(@NonNull Opponent opponent);
 
     /**
      * Called when enemy opponent sends this opponent his bid.
@@ -39,9 +41,9 @@ public interface Opponent {
 
     String getName();
 
-    void onLost(Board board);
+    void onLost(@NonNull Board board);
 
     void setOpponentVersion(int ver);
 
-    void onNewMessage(String text);
+    void onNewMessage(@NonNull String text);
 }

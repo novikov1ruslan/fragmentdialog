@@ -20,18 +20,18 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     private ExecutorService mExecutor;
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
     }
 
     @Override
-    public void onShotAt(Vector2 aim) {
+    public void onShotAt(@NonNull Vector2 aim) {
         mShouldWait = true;
         mExecutor.submit(new OnShootAtCommand(mOpponent, aim, NO_NEED_TO_THINK));
     }
 
     @Override
-    public void onShotResult(PokeResult result) {
+    public void onShotResult(@NonNull PokeResult result) {
         mShouldWait = false;
         mExecutor.submit(new OnShotResultCommand(mOpponent, result));
     }

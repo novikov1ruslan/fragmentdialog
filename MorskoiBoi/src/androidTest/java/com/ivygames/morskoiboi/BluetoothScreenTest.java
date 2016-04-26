@@ -59,4 +59,5 @@ public class BluetoothScreenTest extends ScreenTest {
     private Matcher<View> joinGameButton() {
         return withId(R.id.join_game_btn);
     }
+
 }

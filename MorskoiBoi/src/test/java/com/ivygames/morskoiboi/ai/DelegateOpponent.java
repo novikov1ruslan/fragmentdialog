@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -22,12 +24,12 @@ public class DelegateOpponent implements CancellableOpponent {
     }
 
     @Override
-    public void onShotAt(Vector2 aim) {
+    public void onShotAt(@NonNull Vector2 aim) {
         mOpponent.onShotAt(aim);
     }
 
     @Override
-    public void onShotResult(PokeResult pokeResult) {
+    public void onShotResult(@NonNull PokeResult pokeResult) {
         mOpponent.onShotResult(pokeResult);
     }
 
@@ -37,7 +39,7 @@ public class DelegateOpponent implements CancellableOpponent {
     }
 
     @Override
-    public void setOpponent(Opponent opponent) {
+    public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
     }
 
@@ -52,7 +54,7 @@ public class DelegateOpponent implements CancellableOpponent {
     }
 
     @Override
-    public void onLost(Board board) {
+    public void onLost(@NonNull Board board) {
         mOpponent.onLost(board);
     }
 
@@ -62,7 +64,7 @@ public class DelegateOpponent implements CancellableOpponent {
     }
 
     @Override
-    public void onNewMessage(String text) {
+    public void onNewMessage(@NonNull String text) {
         mOpponent.onNewMessage(text);
     }
 }
