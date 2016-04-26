@@ -41,7 +41,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     private long mUnlockedTime;
     private boolean mGameIsOn;
     private Bitmap mBwBitmap;
-    private TimerViewInterface mTimerView;
+    private DigitalTimerView mTimerView;
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
@@ -69,7 +69,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         });
         mPlayerNameView = (TextView) findViewById(R.id.player);
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
-        mTimerView = (TimerViewInterface) findViewById(R.id.timer);
+        mTimerView = (DigitalTimerView) findViewById(R.id.timer);
 
 //        mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
 //        if (mVibrationButton != null) {

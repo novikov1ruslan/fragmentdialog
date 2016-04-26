@@ -37,7 +37,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     private long mUnlockedTime;
     private boolean mGameIsOn;
     private Bitmap mBwBitmap;
-    private TimerViewInterface mTimerView;
+    private DigitalTimerView mTimerView;
     private GameplayLayoutListener mListener;
     private TextView mSettingBoardText;
 
@@ -65,7 +65,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         });
         mPlayerNameView = (TextView) findViewById(R.id.player);
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
-        mTimerView = (TimerViewInterface) findViewById(R.id.timer);
+        mTimerView = (DigitalTimerView) findViewById(R.id.timer);
 
         mSettingBoardText = (TextView) findViewById(R.id.setting_board_notification);
     }

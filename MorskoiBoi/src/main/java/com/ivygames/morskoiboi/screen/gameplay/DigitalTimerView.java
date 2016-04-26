@@ -12,7 +12,7 @@ import com.ivygames.morskoiboi.R;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class DigitalTimerView extends TextView implements TimerViewInterface {
+public class DigitalTimerView extends TextView {
     private static final String DEFAULT_TEXT = "00:00";
 
     private final int mNormalColor;
@@ -42,14 +42,12 @@ public class DigitalTimerView extends TextView implements TimerViewInterface {
         return String.format(Locale.US, "%02d:%02d", minutes, seconds);
     }
 
-    @Override
     public void setCurrentTime(int time) {
         mTime = time;
         updateColors();
         setText(format(time));
     }
 
-    @Override
     public void setAlarmThreshold(int millis) {
         mAlarmTime = millis;
     }

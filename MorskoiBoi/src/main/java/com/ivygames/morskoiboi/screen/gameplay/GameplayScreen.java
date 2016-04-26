@@ -72,6 +72,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public static final int TURN_HANG_DETECTION_TIMEOUT = 60000; // milliseconds
     public static final int ALLOWED_SKIPPED_TURNS = 2;
 
+    public static final int ALARM_TIME_SECONDS = 10;
+
     @NonNull
     private final Game mGame;
     @NonNull
@@ -154,7 +156,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         private boolean shouldPlayAlarmSound(int timeLeft) {
-            return timeLeft <= (GameplaySoundManager.ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
+            return timeLeft <= (ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
         }
     };
 
@@ -232,7 +234,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setPlayerBoard(mPlayerPrivateBoard);
         updateEnemyStatus();
         mLayout.setEnemyBoard(mEnemyPublicBoard);
-        mLayout.setAlarmTime(GameplaySoundManager.ALARM_TIME_SECONDS * 1000);
+        mLayout.setAlarmTime(ALARM_TIME_SECONDS * 1000);
         mLayout.lock();
 
         mLayout.setPlayerName(mPlayer.getName());
