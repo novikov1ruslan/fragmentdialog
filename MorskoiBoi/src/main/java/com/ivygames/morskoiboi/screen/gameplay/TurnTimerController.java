@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import org.commons.logger.Ln;
@@ -60,14 +59,8 @@ public class TurnTimerController {
     }
 
     private void processCancelRequest() {
-        AsyncTask temp = mTurnTimer;
         mTurnTimer = null;
-
-        if (temp.isCancelled()) {
-            mTimerListener.onCanceled();
-        } else {
-            Ln.i("task is not cancelled");
-        }
+        mTimerListener.onCanceled();
     }
 
     private class TimerListenerImpl implements TimerListener {

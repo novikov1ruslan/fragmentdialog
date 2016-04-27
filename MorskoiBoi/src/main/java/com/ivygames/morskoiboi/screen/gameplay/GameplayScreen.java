@@ -275,7 +275,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onPause() {
         super.onPause();
         Ln.d(this + " is partially obscured - pausing sounds");
-//        mSoundManager.autoPause();
         if (mGame.getType() == Type.VS_ANDROID) {
             // timer is not running if it is not player's turn, but cancel it just in case
             mTimerController.pause();
@@ -286,7 +285,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onResume() {
         super.onResume();
         Ln.d(this + " is fully visible - resuming sounds");
-//        mSoundManager.autoResume();
         if (!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
             Ln.v("showing pause dialog");
             mLayout.lock();
@@ -469,11 +467,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Ln.v("aiming finished");
             debug_aiming_started = false;
             mSoundManager.stopKantropSound();
-
-            if (mLayout.isLocked()) {
-                // ignore callbacks when layout is locked
-                return;
-            }
 
             if (!Board.containsCell(x, y)) {
                 Ln.d("pressing outside the board: " + x + "," + y);

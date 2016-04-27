@@ -47,7 +47,6 @@ public class EnemyBoardView extends BaseBoardView {
         return (EnemyBoardRenderer) mRenderer;
     }
 
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
