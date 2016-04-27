@@ -169,6 +169,9 @@ public class FleetView extends View {
     }
 
     private void putShipsToMap(Collection<Ship> ships, Map<Integer, Integer> map) {
+        for(Integer size : map.keySet()) {
+            map.put(size, 0);
+        }
         for (Ship ship : ships) {
             map.put(ship.getSize(), map.get(ship.getSize()) + 1);
         }
