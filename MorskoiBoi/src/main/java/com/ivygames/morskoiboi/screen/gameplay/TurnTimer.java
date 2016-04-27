@@ -8,7 +8,7 @@ import org.commons.logger.Ln;
 class TurnTimer extends AsyncTask<Void, Integer, Void> {
     private static final int RESOLUTION = 1000;
 
-    private volatile int mTimeout;
+    private volatile int mRemainedTime;
     @NonNull
     private final TimerListener mListener;
 
@@ -16,21 +16,21 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
      * @param timeout timeout in milliseconds
      */
     TurnTimer(int timeout, @NonNull TimerListener listener) {
-        mTimeout = timeout;
+        mRemainedTime = timeout;
         mListener = listener;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mListener.setCurrentTime(mTimeout);
+        mListener.setCurrentTime(mRemainedTime);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         currentThread().setName("turn_timer");
-        Ln.v("timer started for " + mTimeout + "ms");
-        while (!currentThread().isInterrupted()) {
+        Ln.v("timer started for " + mRemainedTime + "ms");
+        while (!currentThread().isInterrupted() && !isCancelled()) {
             try {
                 Thread.sleep(RESOLUTION);
             } catch (InterruptedException ie) {
@@ -44,9 +44,9 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     }
 
     private void updateProgress() {
-        mTimeout -= RESOLUTION;
-        if (mTimeout > 0) {
-            publishProgress(mTimeout);
+        mRemainedTime -= RESOLUTION;
+        if (mRemainedTime > 0) {
+            publishProgress(mRemainedTime);
         } else {
             publishProgress(0);
             currentThread().interrupt();
@@ -54,9 +54,8 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     }
 
 
-
-    public int getTimeLeft() {
-        return mTimeout;
+    public int getRemainedTime() {
+        return mRemainedTime;
     }
 
     @Override
@@ -67,20 +66,14 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
+        // This method won't be invoked if the task was cancelled.
         super.onPostExecute(result);
-        if (!isCancelled()) {
-            Ln.d("timer finished - transferring turn");
-            mListener.onTimerExpired();
-        }
-    }
-
-    @Override
-    protected void onCancelled() {
-        super.onCancelled();
+        Ln.d("timer finished - transferring turn");
+        mListener.onTimerExpired();
     }
 
     @NonNull
-    private Thread currentThread() {
+    private static Thread currentThread() {
         return Thread.currentThread();
     }
 }

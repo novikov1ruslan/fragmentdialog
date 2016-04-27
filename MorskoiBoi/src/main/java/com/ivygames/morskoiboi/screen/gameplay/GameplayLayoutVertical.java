@@ -34,6 +34,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
 
     private final Animation mShake;
     private long mStartTime;
+    // TODO: mUnlockedTime should be stored outside the layout - in the screen
     private long mUnlockedTime;
     private boolean mGameIsOn;
     private Bitmap mBwBitmap;
@@ -130,6 +131,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mEnemyBoardView.setShotListener(listener);
     }
 
+    @Override
     public void unLock() {
         mGameIsOn = true;
         mEnemyBoardView.unLock();

@@ -100,7 +100,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private GameplayLayoutInterface mLayout;
     private boolean mBackPressEnabled;
 
-    TurnTimerController mTimerController;
+    @NonNull
+    private final TurnTimerController mTimerController;
 
     private boolean mOpponentSurrendered;
     @NonNull
@@ -180,6 +181,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showConnectionLostDialog();
         }
     };
+    private boolean mMyTurn;
 
     public GameplayScreen(BattleshipActivity parent) {
         super(parent);
@@ -246,6 +248,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 showOpponentTurn();
                 startDetectingTurnTimeout();
             } else {
+                showPlayerTurn();
                 Ln.d("player's turn");
             }
         } else {
@@ -275,7 +278,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 //        mSoundManager.autoPause();
         if (mGame.getType() == Type.VS_ANDROID) {
             // timer is not running if it is not player's turn, but cancel it just in case
-            mTimerController.pauseTurnTimer();
+            mTimerController.pause();
         }
     }
 
@@ -284,7 +287,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         super.onResume();
         Ln.d(this + " is fully visible - resuming sounds");
 //        mSoundManager.autoResume();
-        if (/* isTimerPaused() && */!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
+        if (!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
             Ln.v("showing pause dialog");
             mLayout.lock();
             showPauseDialog();
@@ -297,15 +300,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             @Override
             public void run() {
                 Ln.v("continue pressed");
-                if (mTimerController.isTimerPaused()) {
-                    if (!isResumed()) {
-                        Ln.w("timer resume cancelled due to background");
-                        return;
-                    }
-                    mTimerController.resumeTurnTimer();
-                } else {
-                    mTimerController.startTurnTimer();
+                if (!isResumed()) {
+                    Ln.w("timer resume cancelled due to background");
+                    return;
                 }
+                // Dialog is shown only if it is player's turn.
+                // So it is safe to resume timer
+                mTimerController.start();
+                // before dialog was displayed, layout has been locked
                 mLayout.unLock();
             }
         };
@@ -328,7 +330,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         Crouton.cancelAllCroutons();
 
-        mTimerController.stopTurnTimer();
+        mTimerController.stop();
         mHandlerOpponent.stop();
         if (mEnemy instanceof Cancellable) {
             ((Cancellable) mEnemy).cancel();
@@ -344,7 +346,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @Override
     public void onEventMainThread(GameEvent event) {
         if (event == GameEvent.OPPONENT_LEFT) {
-            mTimerController.stopTurnTimer();
+            mTimerController.stop();
             mParent.stopService(mMatchStatusIntent);
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
@@ -356,7 +358,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         } else if (event == GameEvent.CONNECTION_LOST) {
             EventBus.getDefault().removeAllStickyEvents();
-            mTimerController.stopTurnTimer();
+            mTimerController.stop();
             mParent.stopService(mMatchStatusIntent);
             if (mGame.hasFinished()) {
                 Ln.d(event + " received, but the game has already finished - skipping this event");
@@ -487,7 +489,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             startDetectingShotTimeout();
 
-            mTimerController.stopTurnTimer();
+            mTimerController.stop();
             mTimerExpiredCounter = 0;
 
             Vector2 aim = Vector2.get(x, y);
@@ -519,10 +521,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private void showOpponentTurn() {
         mParent.startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
+        mMyTurn = false;
     }
 
     private void showConnectionLostDialog() {
         SimpleActionDialog.create(R.string.connection_lost, mBackToSelectGameCommand).show(mFm, DIALOG);
+    }
+
+    private void showPlayerTurn() {
+        mParent.startService(getServiceIntent(getString(R.string.your_turn)));
+        mLayout.playerTurn();
+        mMyTurn = true;
     }
 
     /**
@@ -543,16 +552,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showPlayerTurn();
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
-                mTimerController.startTurnTimer(); // for all practical scenarios - start will only be called from here
+                mTimerController.start(); // for all practical scenarios - start will only be called from here
             } else {
                 Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
             }
             hideOpponentSettingBoardNotification();
-        }
-
-        private void showPlayerTurn() {
-            mParent.startService(getServiceIntent(getString(R.string.your_turn)));
-            mLayout.playerTurn();
         }
 
         private void hideOpponentSettingBoardNotification() {
