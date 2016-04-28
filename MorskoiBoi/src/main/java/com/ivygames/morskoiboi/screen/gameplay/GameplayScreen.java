@@ -459,11 +459,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onAimingFinished(int x, int y) {
-            if (mLayout.isLocked()) {
-                // ignore callbacks when layout is locked
-                return;
-            }
-
             Ln.v("aiming finished");
             debug_aiming_started = false;
             mSoundManager.stopKantropSound();
@@ -495,11 +490,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onAimingStarted() {
-            if (mLayout.isLocked()) {
-                // ignore callbacks when layout is locked
-                return;
-            }
-
             Ln.v("aiming started");
             // FIXME
             if (debug_aiming_started) {

@@ -91,11 +91,15 @@ final class EnemyBoardPresenter extends BasePresenter {
         Ln.v("x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
         int action = mTouchState.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
-            mShotListener.onAimingStarted();
+            if (!mLocked) {
+                mShotListener.onAimingStarted();
+            }
         }
 
         if (action == MotionEvent.ACTION_UP) {
-            mShotListener.onAimingFinished(getTouchedI(), getTouchedJ());
+            if (!mLocked) {
+                mShotListener.onAimingFinished(getTouchedI(), getTouchedJ());
+            }
         }
     }
 
