@@ -5,9 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.view.View;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.commons.logger.Ln;
 
@@ -27,7 +24,6 @@ import java.util.Map;
 public class FleetView extends View {
 
     private static final int DEFAULT_MARGIN_BETWEEN_SHIPS = 4;
-    private static final String WIDEST_LETTER = "4";
     private static final int TYPES_OF_SHIPS = 4;
 
     private static final int CARRIER_VISUAL_LENGTH = 4;
@@ -41,7 +37,6 @@ public class FleetView extends View {
     private final Bitmap mBattleship;
     private final Bitmap mDestroyer;
     private final Bitmap mGunboat;
-    private final float mLetterWidth;
 
     @NonNull
     private Rect mCarrierBounds = new Rect();
@@ -57,18 +52,13 @@ public class FleetView extends View {
     private final Rect mDestroyerSrc;
     private final Rect mGunboatSrc;
 
-    private final Paint mLinePaint;
-    private final Paint mTextPaint = new Paint();
-
     private Map<Integer, Integer> mMyShipsLeft;
     private Map<Integer, Integer> mEnemyShipsLeft;
-
-    private final int mTextColor;
-    private final int mZeroTextColor;
 
     private int mUnitHeight;
 
     private final FleetViewPresenter mPresenter;
+    private final FleetViewRenderer mRenderer;
 
     public FleetView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -78,16 +68,6 @@ public class FleetView extends View {
         attributesArray.recycle();
 
         Resources resources = getResources();
-        mLinePaint = UiUtils.newStrokePaint(resources, R.color.line);
-        float textSize = resources.getDimension(R.dimen.status_text_size);
-        mTextPaint.setTextSize(textSize);
-        mTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
-
-        mLetterWidth = mTextPaint.measureText(WIDEST_LETTER);
-
-        mTextColor = resources.getColor(R.color.status_text);
-        mZeroTextColor = resources.getColor(R.color.status_zero_text);
 
         mAircraftCarrier = Bitmaps.getBitmap(resources, R.drawable.aircraft_carrier);
         mBattleship = Bitmaps.getBitmap(resources, R.drawable.battleship);
@@ -95,6 +75,7 @@ public class FleetView extends View {
         mGunboat = Bitmaps.getBitmap(resources, R.drawable.gunboat);
 
         mPresenter = new FleetViewPresenter();
+        mRenderer = new FleetViewRenderer(resources);
 
         mCarrierSrc = createRectForBitmap(mAircraftCarrier);
         mBattleshipSrc = createRectForBitmap(mBattleship);
@@ -118,51 +99,28 @@ public class FleetView extends View {
         int w = getWidth();
 
         int top = mUnitHeight + mMarginBetweenShips;
-        drawShip(canvas, mAircraftCarrier, mCarrierSrc, mCarrierBounds, w);
-        drawLine(canvas, 4, w);
+        mRenderer.drawShip(canvas, mAircraftCarrier, mCarrierSrc, mCarrierBounds, w, mUnitHeight);
+        int numOfMyShips = mMyShipsLeft.get(4);
+        int numOfEnemyShips = mEnemyShipsLeft.get(4);
+        mRenderer.drawLine(canvas, numOfMyShips, numOfEnemyShips, w, mUnitHeight);
 
         canvas.translate(0, top);
-        drawShip(canvas, mBattleship, mBattleshipSrc, mBattleshipBounds, w);
-        drawLine(canvas, 3, w);
+        mRenderer.drawShip(canvas, mBattleship, mBattleshipSrc, mBattleshipBounds, w, mUnitHeight);
+        numOfMyShips = mMyShipsLeft.get(3);
+        numOfEnemyShips = mEnemyShipsLeft.get(3);
+        mRenderer.drawLine(canvas, numOfMyShips, numOfEnemyShips, w, mUnitHeight);
 
         canvas.translate(0, top);
-        drawShip(canvas, mDestroyer, mDestroyerSrc, mDestroyerBounds, w);
-        drawLine(canvas, 2, w);
+        mRenderer.drawShip(canvas, mDestroyer, mDestroyerSrc, mDestroyerBounds, w, mUnitHeight);
+        numOfMyShips = mMyShipsLeft.get(2);
+        numOfEnemyShips = mEnemyShipsLeft.get(2);
+        mRenderer.drawLine(canvas, numOfMyShips, numOfEnemyShips, w, mUnitHeight);
 
         canvas.translate(0, top);
-        drawShip(canvas, mGunboat, mGunboatSrc, mGunboatBounds, w);
-        drawLine(canvas, 1, w);
-    }
-
-    private void drawLine(Canvas canvas, int shipSize, int w) {
-
-        Integer numOfShips = mMyShipsLeft.get(shipSize);
-        mTextPaint.setColor(getTextColor(numOfShips));
-        int textLeft = 0;
-        canvas.drawText(String.valueOf(numOfShips), textLeft, mUnitHeight, mTextPaint);
-
-        numOfShips = mEnemyShipsLeft.get(shipSize);
-        mTextPaint.setColor(getTextColor(numOfShips));
-        int textRight = (int) (w - mLetterWidth);
-        canvas.drawText(String.valueOf(numOfShips), textRight, mUnitHeight, mTextPaint);
-
-        canvas.drawLine(0, 0, w, 0, mLinePaint);
-        canvas.drawLine(0, mUnitHeight, w, mUnitHeight, mLinePaint);
-    }
-
-    private void drawShip(Canvas canvas, Bitmap bitmap, Rect src, Rect dst, int w) {
-        canvas.save();
-        canvas.translate((w - dst.width()) / 2, mUnitHeight - dst.height());
-        canvas.drawBitmap(bitmap, src, dst, null);
-        canvas.restore();
-    }
-
-    private int getTextColor(int numOfShips) {
-        if (numOfShips == 0) {
-            return mZeroTextColor;
-        }
-
-        return mTextColor;
+        mRenderer.drawShip(canvas, mGunboat, mGunboatSrc, mGunboatBounds, w, mUnitHeight);
+        numOfMyShips = mMyShipsLeft.get(1);
+        numOfEnemyShips = mEnemyShipsLeft.get(1);
+        mRenderer.drawLine(canvas, numOfMyShips, numOfEnemyShips, w, mUnitHeight);
     }
 
     /**
@@ -193,11 +151,11 @@ public class FleetView extends View {
         // Ln.v("w=" + w + ", h=" + h);
 
         int textMargin = w / 20;
-        int shipArea = (int) (w - mLetterWidth * 2 - textMargin * 2);
+        int shipArea = (int) (w - mRenderer.getLetterWidth() * 2 - textMargin * 2);
         int unitWidth = shipArea / CARRIER_VISUAL_LENGTH;
 
         if (unitWidth < 1) {
-            Ln.e("fleet: impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mLetterWidth);
+            Ln.e("fleet: impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mRenderer.getLetterWidth());
             // FIXME: maybe because you haven't implemented onMeasure() system thinks no size is needed
             return;
         }
