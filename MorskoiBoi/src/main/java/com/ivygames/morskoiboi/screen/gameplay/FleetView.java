@@ -68,6 +68,8 @@ public class FleetView extends View {
 
     private int mUnitHeight;
 
+    private final FleetViewPresenter mPresenter;
+
     public FleetView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -92,6 +94,8 @@ public class FleetView extends View {
         mDestroyer = Bitmaps.getBitmap(resources, R.drawable.frigate);
         mGunboat = Bitmaps.getBitmap(resources, R.drawable.gunboat);
 
+        mPresenter = new FleetViewPresenter();
+
         mCarrierSrc = createRectForBitmap(mAircraftCarrier);
         mBattleshipSrc = createRectForBitmap(mBattleship);
         mDestroyerSrc = createRectForBitmap(mDestroyer);
@@ -111,40 +115,46 @@ public class FleetView extends View {
             return;
         }
 
-        int top = 0;
-        drawShip(mAircraftCarrier, mCarrierSrc, mCarrierBounds, top, 4, canvas);
-
-        top += mUnitHeight + mMarginBetweenShips;
-        drawShip(mBattleship, mBattleshipSrc, mBattleshipBounds, top, 3, canvas);
-
-        top += mUnitHeight + mMarginBetweenShips;
-        drawShip(mDestroyer, mDestroyerSrc, mDestroyerBounds, top, 2, canvas);
-
-        top += mUnitHeight + mMarginBetweenShips;
-        drawShip(mGunboat, mGunboatSrc, mGunboatBounds, top, 1, canvas);
-    }
-
-    private void drawShip(Bitmap bitmap, Rect src, Rect dst, int top, int shipSize, Canvas canvas) {
         int w = getWidth();
 
-        canvas.save();
-        canvas.translate((w - dst.width()) / 2, top + mUnitHeight - dst.height());
-        canvas.drawBitmap(bitmap, src, dst, null);
-        canvas.restore();
+        int top = mUnitHeight + mMarginBetweenShips;
+        drawShip(canvas, mAircraftCarrier, mCarrierSrc, mCarrierBounds, w);
+        drawLine(canvas, 4, w);
+
+        canvas.translate(0, top);
+        drawShip(canvas, mBattleship, mBattleshipSrc, mBattleshipBounds, w);
+        drawLine(canvas, 3, w);
+
+        canvas.translate(0, top);
+        drawShip(canvas, mDestroyer, mDestroyerSrc, mDestroyerBounds, w);
+        drawLine(canvas, 2, w);
+
+        canvas.translate(0, top);
+        drawShip(canvas, mGunboat, mGunboatSrc, mGunboatBounds, w);
+        drawLine(canvas, 1, w);
+    }
+
+    private void drawLine(Canvas canvas, int shipSize, int w) {
 
         Integer numOfShips = mMyShipsLeft.get(shipSize);
         mTextPaint.setColor(getTextColor(numOfShips));
         int textLeft = 0;
-        canvas.drawText(String.valueOf(numOfShips), textLeft, top + mUnitHeight, mTextPaint);
+        canvas.drawText(String.valueOf(numOfShips), textLeft, mUnitHeight, mTextPaint);
 
         numOfShips = mEnemyShipsLeft.get(shipSize);
         mTextPaint.setColor(getTextColor(numOfShips));
         int textRight = (int) (w - mLetterWidth);
-        canvas.drawText(String.valueOf(numOfShips), textRight, top + mUnitHeight, mTextPaint);
+        canvas.drawText(String.valueOf(numOfShips), textRight, mUnitHeight, mTextPaint);
 
-        canvas.drawLine(0, top, w, top, mLinePaint);
-        int bottom = top + mUnitHeight;
-        canvas.drawLine(0, bottom, w, bottom, mLinePaint);
+        canvas.drawLine(0, 0, w, 0, mLinePaint);
+        canvas.drawLine(0, mUnitHeight, w, mUnitHeight, mLinePaint);
+    }
+
+    private void drawShip(Canvas canvas, Bitmap bitmap, Rect src, Rect dst, int w) {
+        canvas.save();
+        canvas.translate((w - dst.width()) / 2, mUnitHeight - dst.height());
+        canvas.drawBitmap(bitmap, src, dst, null);
+        canvas.restore();
     }
 
     private int getTextColor(int numOfShips) {
@@ -168,8 +178,8 @@ public class FleetView extends View {
         invalidate();
     }
 
-    private void putShipsToMap(Collection<Ship> ships, Map<Integer, Integer> map) {
-        for(Integer size : map.keySet()) {
+    private static void putShipsToMap(Collection<Ship> ships, Map<Integer, Integer> map) {
+        for (Integer size : map.keySet()) {
             map.put(size, 0);
         }
         for (Ship ship : ships) {
@@ -209,23 +219,31 @@ public class FleetView extends View {
         mUnitHeight = mCarrierBounds.height();
     }
 
-    private Rect scaleShip(Bitmap srcBitmap, int destWidth) {
-        int destHeight = calcDestHeight(srcBitmap, destWidth);
+    private static Rect scaleShip(Bitmap bitmap, int destWidth) {
+        return scaleShip(bitmap.getHeight(), bitmap.getWidth(), destWidth);
+    }
+
+    private static Rect scaleShip(int bitmapHeight, int bitmapWidth, int destWidth) {
+        int destHeight = calcDestHeight(bitmapHeight, bitmapWidth, destWidth);
         return new Rect(0, 0, destWidth, destHeight);
     }
 
-    private int calcDestHeight(Bitmap srcBitmap, int destWidth) {
-        return (destWidth * srcBitmap.getHeight()) / srcBitmap.getWidth();
+    private static int calcDestHeight(Bitmap bitmap, int destWidth) {
+        return calcDestHeight(bitmap.getHeight(), bitmap.getWidth(), destWidth);
+    }
+
+    private static int calcDestHeight(int bitmapHeight, int bitmapWidth, int destWidth) {
+        return (destWidth * bitmapHeight) / bitmapWidth;
     }
 
     public void init(int[] shipsSizes) {
         mMyShipsLeft = new HashMap<>();
-        for (int shipSize: shipsSizes) {
+        for (int shipSize : shipsSizes) {
             mMyShipsLeft.put(shipSize, 0);
         }
 
         mEnemyShipsLeft = new HashMap<>();
-        for (int shipSize: shipsSizes) {
+        for (int shipSize : shipsSizes) {
             mEnemyShipsLeft.put(shipSize, 0);
         }
     }
