@@ -21,6 +21,8 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     private final TouchState mTouchState = new TouchState();
 
+    private boolean mLocked = true;
+
     public EnemyBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
     }
@@ -102,9 +104,19 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     public void unlock() {
+        mLocked = false;
         int action = mTouchState.getAction();
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
             mShotListener.onAimingStarted();
         }
     }
+
+    public void lock() {
+        mLocked = true;
+    }
+
+    public boolean isLocked() {
+        return mLocked;
+    }
+
 }

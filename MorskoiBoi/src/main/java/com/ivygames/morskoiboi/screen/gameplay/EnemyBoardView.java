@@ -18,8 +18,6 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 
 public class EnemyBoardView extends BaseBoardView {
 
-    private boolean mLocked = true;
-
     private final Paint mAimingLockedPaint;
     private final TouchState mTouchState = new TouchState();
     private PokeResult mLastShotResult;
@@ -99,7 +97,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private Paint getAimingPaint(boolean isShot) {
-        return isShot || mLocked ? mAimingLockedPaint : mAimingPaint;
+        return isShot || presenter().isLocked() ? mAimingLockedPaint : mAimingPaint;
     }
 
     public void setAim(Vector2 aim) {
@@ -113,15 +111,14 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public boolean isLocked() {
-        return mLocked;
+        return presenter().isLocked();
     }
 
     public void lock() {
-        mLocked = true;
+        presenter().lock();
     }
 
     public void unLock() {
-        mLocked = false;
         presenter().unlock();
     }
 
