@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class EnemyBoardPresenterTest {
 
     private static final float CELL_RATIO = 2f;
@@ -53,52 +55,76 @@ public class EnemyBoardPresenterTest {
     }
 
     @Test
-    public void testGetAimRectDst() throws Exception {
+    public void testGetAimRectDst() {
         Rect aimRectDst = mPresenter.getAimRectDst(Vector2.get(5, 5));
         Rect expected = new Rect(160, 260, 191, 291);
         assertThat(aimRectDst, equalTo(expected));
     }
 
     @Test
-    public void testGetTouchedJ() throws Exception {
+    public void testGetTouchedJ() {
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
         int j = mPresenter.getTouchedJ();
         assertThat(j, is(3));
     }
 
     @Test
-    public void testGetTouchedI() throws Exception {
+    public void testGetTouchedI() {
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
         int i = mPresenter.getTouchedI();
         assertThat(i, is(3));
     }
 
     @Test
-    public void testGetBoardRect() throws Exception {
+    public void testGetBoardRect() {
         assertThat(mPresenter.getBoardRect(), equalTo(new Rect(5, 105, 315, 415)));
     }
 
     @Test
-    public void testOnTouch() throws Exception {
+    public void WhenUnlockedBoardTouchedDown__AimingStartedEventFired() {
+        mPresenter.unlock();
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
         verify(shotListener, times(1)).onAimingStarted();
     }
 
     @Test
-    public void testOnTouch2() throws Exception {
+    public void WhenUnlockedBoardTouchedUp__AimingFinishedEventFired() {
+        mPresenter.unlock();
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
         verify(shotListener, times(1)).onAimingFinished(3, 3);
     }
 
     @Test
-    public void testOnTouch3() throws Exception {
+    public void WhenBoardUnlockedAfterBeingTouchedDown__AimingStartedFired() {
+        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
+        mPresenter.unlock();
+        verify(shotListener, times(1)).onAimingStarted();
+    }
+
+    @Test
+    public void WhenBoardUnlockedAfterBeingTouchedMoved__AimingStartedFired() {
+        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_MOVE));
+        mPresenter.unlock();
+        verify(shotListener, times(1)).onAimingStarted();
+    }
+
+    @Test
+    public void WhenBoardUnlockedAfterBeingTouchedUp__AimingStartedNotFired() {
+        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
+        mPresenter.unlock();
+        verify(shotListener, never()).onAimingStarted();
+    }
+
+    @Test
+    public void DuringFingerMoveOnUnlockedBoard__NoShotListenerEventsFired() {
+        mPresenter.unlock();
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_MOVE));
         verify(shotListener, never()).onAimingStarted();
         verify(shotListener, never()).onAimingFinished(anyInt(), anyInt());
     }
 
     @Test
-    public void testStartedDragging() throws Exception {
+    public void testStartedDragging() {
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
         assertThat(mPresenter.startedDragging(), is(false));
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
@@ -114,19 +140,31 @@ public class EnemyBoardPresenterTest {
     }
 
     @Test
-    public void testUnlock() throws Exception {
-        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
-        reset(shotListener);
+    public void BoardIsCreatedLocked() {
+        assertThat(mPresenter.isLocked(), is(true));
+    }
+
+    @Test
+    public void WhenBoardIsUnlocked__IsLockedReturnsFalse() {
+        mPresenter.lock();
         mPresenter.unlock();
-        verify(shotListener, times(1)).onAimingStarted();
-        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
-        reset(shotListener);
+        assertThat(mPresenter.isLocked(), is(false));
+    }
+
+    @Test
+    public void WhenBoardIsLocked__IsLockedReturnsTrue() {
+        mPresenter.lock();
         mPresenter.unlock();
-        verify(shotListener, times(1)).onAimingStarted();
+        mPresenter.lock();
+        assertThat(mPresenter.isLocked(), is(true));
+    }
+
+    @Test
+    public void WhenBoardIsLocked__ShotListenerNotActive() {
+        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
-        reset(shotListener);
-        mPresenter.unlock();
         verify(shotListener, never()).onAimingStarted();
+        verify(shotListener, never()).onAimingFinished(anyInt(), anyInt());
     }
 
     @NonNull
@@ -137,4 +175,5 @@ public class EnemyBoardPresenterTest {
         when(event.getAction()).thenReturn(action);
         return event;
     }
+
 }
