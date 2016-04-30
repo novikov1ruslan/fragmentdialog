@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
@@ -20,8 +21,9 @@ import java.util.Random;
 class EnemyBoardRenderer extends BaseBoardRenderer {
     private static final int TEXTURE_SIZE = 512;
     private static final float CELL_RATIO = 2f;
-
+    @NonNull
     private final Animation mSplashAnimation = new Animation(1000);
+    @NonNull
     private final Animation mExplosionAnimation = new Animation(1000);
 
     private Bitmap mNauticalBitmap;
@@ -31,12 +33,13 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
     private Rect mLockSrcRect;
 
     private Animation mCurrentAnimation;
-
+    @NonNull
     private final EnemyBoardPresenter mPresenter;
-    private Resources mResources;
+    @NonNull
+    private final Resources mResources;
 
 
-    EnemyBoardRenderer(EnemyBoardPresenter presenter, Resources resources) {
+    EnemyBoardRenderer(@NonNull EnemyBoardPresenter presenter, @NonNull Resources resources) {
         super(resources);
         mPresenter = presenter;
         mResources = resources;
@@ -45,7 +48,7 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
         fillExplosionAnimation(resources);
     }
 
-    private void fillSplashAnimation(Resources resources) {
+    private void fillSplashAnimation(@NonNull Resources resources) {
         mSplashAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.splash_01));
         mSplashAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.splash_02));
         mSplashAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.splash_03));
@@ -58,7 +61,7 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
         mSplashAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.splash_10));
     }
 
-    private void fillExplosionAnimation(Resources resources) {
+    private void fillExplosionAnimation(@NonNull Resources resources) {
         mExplosionAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.explosion_01));
         mExplosionAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.explosion_03));
         mExplosionAnimation.adFrame(Bitmaps.getBitmap(resources, R.drawable.explosion_05));
@@ -79,44 +82,36 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
         return mCurrentAnimation != null && mCurrentAnimation.isRunning();
     }
 
-    public long animateExplosions(Canvas canvas, Vector2 aim) {
+    public long animateExplosions(@NonNull Canvas canvas, @NonNull Vector2 aim) {
         canvas.drawBitmap(mCurrentAnimation.getCurrentFrame(), mCurrentAnimation.getBounds(),
                 mPresenter.getAnimationDestination(aim, CELL_RATIO), null);
         return mCurrentAnimation.getFrameDuration();
     }
 
-    public void startAnimation(PokeResult result) {
+    public void startAnimation(@NonNull PokeResult result) {
         mCurrentAnimation = result.cell.isMiss() ? mSplashAnimation : mExplosionAnimation;
         mCurrentAnimation.start();
     }
 
-    public void drawNautical(Canvas canvas) {
+    public void drawNautical(@NonNull Canvas canvas) {
         if (mNauticalBitmap != null) {
             canvas.drawBitmap(mNauticalBitmap, mSrcRect, mPresenter.getBoardRect(), null);
         }
     }
 
-    public void drawAim(Canvas canvas, Rect rectDst) {
+    public void drawAim(@NonNull Canvas canvas, @NonNull Rect rectDst) {
         canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, rectDst, null);
     }
 
     public void init(long availableMemory) {
-//        if (size > getAvailableMemory() / 2) {
-//
-//        }
-
-        Bitmap tmp = BitmapFactory.decodeResource(mResources, R.drawable.nautical8);
-        if (tmp == null) {
+        mNauticalBitmap = BitmapFactory.decodeResource(mResources, R.drawable.nautical8);
+        if (mNauticalBitmap == null) {
             Ln.e("could not decode nautical");
         } else {
-            final Random mRandom = new Random(System.currentTimeMillis());
-            int x = mRandom.nextInt(tmp.getWidth() - TEXTURE_SIZE);
-            int y = mRandom.nextInt(tmp.getHeight() - TEXTURE_SIZE);
-            mNauticalBitmap = Bitmap.createBitmap(tmp, x, y, TEXTURE_SIZE, TEXTURE_SIZE);
-            mSrcRect = new Rect(0, 0, mNauticalBitmap.getWidth(), mNauticalBitmap.getHeight());
-            if (mNauticalBitmap.getWidth() != tmp.getWidth() || mNauticalBitmap.getHeight() != tmp.getHeight()) {
-                tmp.recycle();
-            }
+            final Random random = new Random(System.currentTimeMillis());
+            int x = random.nextInt(mNauticalBitmap.getWidth() - TEXTURE_SIZE);
+            int y = random.nextInt(mNauticalBitmap.getHeight() - TEXTURE_SIZE);
+            mSrcRect = new Rect(x, y, x + TEXTURE_SIZE, y + TEXTURE_SIZE);
         }
 
         mLockBitmapSrc = BitmapFactory.decodeResource(mResources, R.drawable.lock);

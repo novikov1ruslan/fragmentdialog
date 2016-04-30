@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
@@ -13,7 +12,7 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
 
