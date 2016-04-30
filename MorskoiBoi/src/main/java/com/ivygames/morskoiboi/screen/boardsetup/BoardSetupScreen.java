@@ -175,7 +175,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     };
 
     private void showGameplayScreen() {
-        setScreen(GameHandler.newGameplayScreen());
+        setScreen(GameHandler.newGameplayScreen(Model.instance.game.getTurnTimeout()));
     }
 
     private void showSetupValidationError() {

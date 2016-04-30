@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.commons.logger.Ln;
 
@@ -15,11 +16,11 @@ public class TurnTimerController {
     private int mTimeLeft;
 
     @NonNull
-    private final TimerListener mTimerListener;
+    private final TimerListenerImpl mTimerListener;
 
-    public TurnTimerController(int turnTimeout, @NonNull TimerListener listener) {
+    public TurnTimerController(int turnTimeout) {
         TURN_TIMEOUT = turnTimeout;
-        mTimerListener = new TimerListenerImpl(listener);
+        mTimerListener = new TimerListenerImpl();
         mTimeLeft = TURN_TIMEOUT;
     }
 
@@ -63,29 +64,39 @@ public class TurnTimerController {
         mTimerListener.onCanceled();
     }
 
-    private class TimerListenerImpl implements TimerListener {
-        @NonNull
-        private final TimerListener mDelegate;
+    public void setListener(TimerListener listener) {
+        mTimerListener.setDelegate(listener);
+    }
 
-        private TimerListenerImpl(@NonNull TimerListener listener) {
-            mDelegate = listener;
-        }
+    private class TimerListenerImpl implements TimerListener {
+        @Nullable
+        private TimerListener mDelegate;
 
         @Override
         public void onTimerExpired() {
             mTurnTimer = null;
             mTimeLeft = TURN_TIMEOUT;
-            mDelegate.onTimerExpired();
+            if (mDelegate != null) {
+                mDelegate.onTimerExpired();
+            }
         }
 
         @Override
         public void setCurrentTime(int time) {
-            mDelegate.setCurrentTime(time);
+            if (mDelegate != null) {
+                mDelegate.setCurrentTime(time);
+            }
         }
 
         @Override
         public void onCanceled() {
-            mDelegate.onCanceled();
+            if (mDelegate != null) {
+                mDelegate.onCanceled();
+            }
+        }
+
+        public void setDelegate(TimerListener listener) {
+            mDelegate = listener;
         }
     }
 }

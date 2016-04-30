@@ -38,7 +38,6 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
     @NonNull
     private final Resources mResources;
 
-
     EnemyBoardRenderer(@NonNull EnemyBoardPresenter presenter, @NonNull Resources resources) {
         super(resources);
         mPresenter = presenter;

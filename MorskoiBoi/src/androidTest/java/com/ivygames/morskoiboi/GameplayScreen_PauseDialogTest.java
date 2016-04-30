@@ -13,10 +13,20 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
 
     private TaskResource task;
+
+    @After
+    public void teardown() {
+        super.teardown();
+        if (task != null) {
+            unregisterIdlingResources(task);
+        }
+    }
 
     @Test
     public void WhenBoardIsLocked_ForAndroidGame_AfterResume__PauseDialogNotDisplayed() {
@@ -57,6 +67,19 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
         checkDisplayed(pauseDialog());
     }
 
+    @Test
+    public void PressingContinueOnPauseDialog__ResumesTimer__DismissesDialog() {
+        WhenBoardIsNotLocked_ForAndroidGame_AfterResume__PauseDialogDisplayed();
+        clickOn(continueButton());
+        checkDoesNotExist(pauseDialog());
+        verify(timeController, times(1)).start();
+    }
+
+//    @Test
+//    public void WhenPauseDialogIsDisplayed__BoardIsLocked() {
+//
+//    }
+
     private void unlockBoard() {
         task = new TaskResource(new Runnable() {
             @Override
@@ -68,15 +91,11 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
         registerIdlingResources(task);
     }
 
-    @After
-    public void teardown() {
-        super.teardown();
-        if (task != null) {
-            unregisterIdlingResources(task);
-        }
-    }
-
     private Matcher<View> pauseDialog() {
         return withText(R.string.pause);
+    }
+
+    private Matcher<View> continueButton() {
+        return withText(R.string.continue_str);
     }
 }

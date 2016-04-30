@@ -183,7 +183,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     };
     private boolean mMyTurn;
 
-    public GameplayScreen(BattleshipActivity parent) {
+    public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull TurnTimerController timerController) {
         super(parent);
         mMatchStatusIntent = new Intent(parent, InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
@@ -202,7 +202,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
         mChatAdapter = new ChatAdapter(getLayoutInflater());
-        mTimerController = new TurnTimerController(mGame.getTurnTimeout(), mTurnTimerListener);
+        mTimerController = timerController;
+        mTimerController.setListener(mTurnTimerListener);
         Ln.d("game data prepared");
     }
 
