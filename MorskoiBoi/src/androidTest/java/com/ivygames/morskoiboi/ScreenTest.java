@@ -67,6 +67,7 @@ public abstract class ScreenTest {
     private TaskResource setScreenResource;
     private TaskResource signInSucceeded;
     private TaskResource pause;
+    private TaskResource resume;
     private GoogleApiClientWrapper apiClient;
     private InvitationManager invitationManager;
     private AndroidDevice androidDevice;
@@ -94,6 +95,10 @@ public abstract class ScreenTest {
 
         if (pause != null) {
             unregisterIdlingResources(pause);
+        }
+
+        if (resume != null) {
+            unregisterIdlingResources(resume);
         }
     }
 
@@ -132,6 +137,16 @@ public abstract class ScreenTest {
             }
         });
         registerIdlingResources(signInSucceeded);
+    }
+
+    protected final void resume() {
+        resume = new TaskResource(new Runnable() {
+            @Override
+            public void run() {
+                activity().onResume();
+            }
+        });
+        registerIdlingResources(resume);
     }
 
     protected final void pause() {

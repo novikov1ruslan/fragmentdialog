@@ -52,6 +52,11 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @Override
+    protected void setBoardVerticalOffset(int offset) {
+        super.setBoardVerticalOffset(offset);
+    }
+
+    @Override
     public void measure(int w, int h, int hPadding, int vPadding) {
         // calculate mShipSelectionRect (it starts from left=0, top=0)
         mShipSelectionRect.right = w / 2;

@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -25,7 +26,6 @@ public class EnemyBoardView extends BaseBoardView {
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        mRenderer = new EnemyBoardRenderer(presenter(), getResources());
         mAimingLockedPaint = UiUtils.newFillPaint(getResources(), R.color.aim_locked);
     }
 
@@ -48,7 +48,14 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        getRenderer().init();
+        getRenderer().init(availableMemory());
+    }
+
+    private long availableMemory() {
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        ActivityManager am = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        am.getMemoryInfo(mi);
+        return mi.availMem;
     }
 
     @Override

@@ -34,6 +34,9 @@ public class BasePresenter {
         mTurnBorderSize = turnBorderSize;
     }
 
+    /**
+     * Called during {@link android.view.View#onLayout(boolean, int, int, int, int)}
+     */
     public void measure(int w, int h, int hPadding, int vPadding) {
 
         int smallestWidth = calcSmallestWidth(w, h, hPadding, vPadding);
@@ -49,7 +52,10 @@ public class BasePresenter {
         setBoardVerticalOffset(0);
     }
 
-    public void setBoardVerticalOffset(int offset) {
+    /**
+     * called during {@link #measure(int, int, int, int)}t
+     */
+    protected void setBoardVerticalOffset(int offset) {
         mBoardRect.top += offset;
         mBoardRect.bottom += offset;
 
@@ -76,7 +82,7 @@ public class BasePresenter {
     /**
      * Frame Rect is larger by border
      */
-    private void calcFrameRect(Rect boardRect) {
+    private void calcFrameRect(@NonNull Rect boardRect) {
         float halfBorderSize = mTurnBorderSize / 2;
         mTurnRect.left = (int) (boardRect.left - halfBorderSize);
         mTurnRect.right = (int) (boardRect.right + halfBorderSize);
@@ -154,7 +160,7 @@ public class BasePresenter {
     }
 
     @NonNull
-    public final Aiming getAiming(Vector2 aim, int widthCells, int heightCells) {
+    public final Aiming getAiming(@NonNull Vector2 aim, int widthCells, int heightCells) {
         return getAiming(aim.getX(), aim.getY(), widthCells, heightCells);
     }
 
@@ -209,15 +215,15 @@ public class BasePresenter {
 
     private final Rect mShipRect = new Rect();
 
-    public Rect getRectForShip(Ship ship) {
+    public Rect getRectForShip(@NonNull Ship ship) {
         return getRectForShip(ship, getLeft(ship.getX()), getTop(ship.getY()));
     }
 
-    public Rect getRectForShip(Ship ship, Point point) {
+    public Rect getRectForShip(@NonNull Ship ship, @NonNull Point point) {
         return getRectForShip(ship, point.x, point.y);
     }
 
-    private Rect getRectForShip(Ship ship, int left, int top) {
+    private Rect getRectForShip(@NonNull Ship ship, int left, int top) {
         isTrue(mCellSizePx > 0, "call measure first");
 
         mShipRect.left = left;
@@ -248,7 +254,7 @@ public class BasePresenter {
         mBoard.frame = mTurnRect;
     }
 
-    private static void isTrue(final boolean expression, final String message) {
+    private static void isTrue(boolean expression, String message) {
         if (!expression) {
             throw new IllegalStateException(message);
         }

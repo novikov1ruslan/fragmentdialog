@@ -14,11 +14,14 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     private int mAnimationHorOffset;
     private int mAnimationVerOffset;
+    @NonNull
     private final Rect mDstRect = new Rect();
+    @NonNull
     private final Rect mLockDstRect = new Rect();
 
     private ShotListener mShotListener;
 
+    @NonNull
     private final TouchState mTouchState = new TouchState();
 
     private boolean mLocked = true;
@@ -35,12 +38,12 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     @Override
-    public void setBoardVerticalOffset(int offset) {
+    protected void setBoardVerticalOffset(int offset) {
         super.setBoardVerticalOffset(offset);
         mAnimationVerOffset = mBoardRect.top + mHalfCellSize;
     }
 
-    public void setShotListener(ShotListener shotListener) {
+    public void setShotListener(@NonNull ShotListener shotListener) {
         mShotListener = shotListener;
     }
 
@@ -59,7 +62,7 @@ final class EnemyBoardPresenter extends BasePresenter {
     }
 
     @NonNull
-    public Rect getAimRectDst(Vector2 aim) {
+    public Rect getAimRectDst(@NonNull Vector2 aim) {
         int x = aim.getX();
         int y = aim.getY();
         int left = x * mCellSizePx + mBoardRect.left;
@@ -86,7 +89,7 @@ final class EnemyBoardPresenter extends BasePresenter {
         return mBoardRect;
     }
 
-    public void touch(MotionEvent event) {
+    public void touch(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
         Ln.v("x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
         int action = mTouchState.getAction();

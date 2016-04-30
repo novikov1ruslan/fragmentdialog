@@ -100,7 +100,11 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
         canvas.drawBitmap(mLockBitmapSrc, mLockSrcRect, rectDst, null);
     }
 
-    public void init() {
+    public void init(long availableMemory) {
+//        if (size > getAvailableMemory() / 2) {
+//
+//        }
+
         Bitmap tmp = BitmapFactory.decodeResource(mResources, R.drawable.nautical8);
         if (tmp == null) {
             Ln.e("could not decode nautical");
