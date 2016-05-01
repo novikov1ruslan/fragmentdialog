@@ -20,6 +20,7 @@ public abstract class OnlineScreenTest extends ScreenTest {
 
     protected static final String OPPONENT_NAME = "Sagi";
 
+    protected Rules rules;
     protected Game game;
     protected PlayerOpponent player;
     protected Opponent opponent;
@@ -37,6 +38,11 @@ public abstract class OnlineScreenTest extends ScreenTest {
 
         when(player.getBoard()).thenReturn(new Board());
         when(player.getEnemyBoard()).thenReturn(new Board());
+
+        rules = mock(Rules.class);
+        when(rules.getAllShipsSizes()).thenReturn(new int[]{4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
+
+        RulesFactory.setRules(rules);
     }
 
     @NonNull

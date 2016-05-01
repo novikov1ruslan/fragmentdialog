@@ -85,7 +85,7 @@ public final class GameUtils {
     }
 
     @NonNull
-    public static Collection<Ship> generateShipsForSizes(int[] allShipsSizes) {
+    public static Collection<Ship> generateShipsForSizes(@NonNull int[] allShipsSizes) {
         Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
 
         List<Ship> fleet = new ArrayList<>();

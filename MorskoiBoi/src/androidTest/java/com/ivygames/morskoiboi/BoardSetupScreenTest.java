@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
@@ -16,6 +15,7 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +41,7 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
     @Test
     public void WhenBoardIsSet__PressingDone_OpensGameplayScreen() {
         showScreen();
-        clickOn(autoSetup());
+        when(rules.isBoardSet(any(Board.class))).thenReturn(true);
         clickOn(done());
         checkDisplayed(GAMEPLAY_LAYOUT);
     }

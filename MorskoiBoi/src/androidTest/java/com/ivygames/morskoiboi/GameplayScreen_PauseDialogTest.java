@@ -10,6 +10,7 @@ import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Test;
 
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -71,6 +72,14 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
     public void PressingContinueOnPauseDialog__ResumesTimer__DismissesDialog() {
         WhenBoardIsNotLocked_ForAndroidGame_AfterResume__PauseDialogDisplayed();
         clickOn(continueButton());
+        checkDoesNotExist(pauseDialog());
+        verify(timeController, times(1)).start();
+    }
+
+    @Test
+    public void PressingBackOnPauseDialog__ResumesTimer__DismissesDialog() {
+        WhenBoardIsNotLocked_ForAndroidGame_AfterResume__PauseDialogDisplayed();
+        pressBack();
         checkDoesNotExist(pauseDialog());
         verify(timeController, times(1)).start();
     }

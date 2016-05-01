@@ -147,26 +147,26 @@ public class FleetViewRenderer {
         int top = marginBetweenShips + mUnitHeight;
 
         drawAircraftCarrier(canvas, w);
-        int numOfMyShips = myShipsLeft.get(4);
-        int numOfEnemyShips = enemyShipsLeft.get(4);
+        int numOfMyShips = myShipsLeft.get(FleetView.CARRIER_LENGTH);
+        int numOfEnemyShips = enemyShipsLeft.get(FleetView.CARRIER_LENGTH);
         drawLine(canvas, numOfMyShips, numOfEnemyShips, w);
 
         canvas.translate(0, top);
         drawBattleship(canvas, w);
-        numOfMyShips = myShipsLeft.get(3);
-        numOfEnemyShips = enemyShipsLeft.get(3);
+        numOfMyShips = myShipsLeft.get(BATTLESHIP_LENGTH);
+        numOfEnemyShips = enemyShipsLeft.get(BATTLESHIP_LENGTH);
         drawLine(canvas, numOfMyShips, numOfEnemyShips, w);
 
         canvas.translate(0, top);
         drawDestroyer(canvas, w);
-        numOfMyShips = myShipsLeft.get(2);
-        numOfEnemyShips = enemyShipsLeft.get(2);
+        numOfMyShips = myShipsLeft.get(DESTROYER_LENGTH);
+        numOfEnemyShips = enemyShipsLeft.get(DESTROYER_LENGTH);
         drawLine(canvas, numOfMyShips, numOfEnemyShips, w);
 
         canvas.translate(0, top);
         drawGunboat(canvas, w);
-        numOfMyShips = myShipsLeft.get(1);
-        numOfEnemyShips = enemyShipsLeft.get(1);
+        numOfMyShips = myShipsLeft.get(GUNBOAT_LENGTH);
+        numOfEnemyShips = enemyShipsLeft.get(GUNBOAT_LENGTH);
         drawLine(canvas, numOfMyShips, numOfEnemyShips, w);
     }
 
