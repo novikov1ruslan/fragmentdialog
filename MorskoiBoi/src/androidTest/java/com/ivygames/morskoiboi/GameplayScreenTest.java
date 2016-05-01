@@ -112,9 +112,4 @@ public class GameplayScreenTest extends GameplayScreen_ {
         return withText(getString(R.string.opponent_setting_board, OPPONENT_NAME));
     }
 
-    @NonNull
-    protected final Matcher<View> chat() {
-        return withId(R.id.chat_button);
-    }
-
 }

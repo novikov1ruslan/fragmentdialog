@@ -19,7 +19,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class GameplayScreen_ChatDialogTest extends GameplayScreenTest {
+public class GameplayScreen_ChatDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenChatButtonClicked__ChatDialogDisplayed() {

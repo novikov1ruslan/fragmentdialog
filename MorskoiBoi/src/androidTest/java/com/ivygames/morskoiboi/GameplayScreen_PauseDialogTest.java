@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
+public class GameplayScreen_PauseDialogTest extends GameplayScreen_ {
 
     private TaskResource task;
 
