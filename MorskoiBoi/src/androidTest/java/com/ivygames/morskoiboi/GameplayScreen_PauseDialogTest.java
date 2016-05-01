@@ -114,7 +114,4 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreenTest {
         return withText(R.string.pause);
     }
 
-    private Matcher<View> continueButton() {
-        return withText(R.string.continue_str);
-    }
 }

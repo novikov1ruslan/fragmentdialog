@@ -29,15 +29,16 @@ public abstract class OnlineScreenTest extends ScreenTest {
     public void setup() {
         super.setup();
         opponent = mock(Opponent.class);
-        Model.instance.opponent = opponent;
         when(opponent.getName()).thenReturn(OPPONENT_NAME);
+        Model.instance.opponent = opponent;
+
         game = mock(Game.class);
         Model.instance.game = game;
-        player = mock(PlayerOpponent.class);
-        Model.instance.player = player;
 
+        player = mock(PlayerOpponent.class);
         when(player.getBoard()).thenReturn(new Board());
         when(player.getEnemyBoard()).thenReturn(new Board());
+        Model.instance.player = player;
 
         rules = mock(Rules.class);
         when(rules.getAllShipsSizes()).thenReturn(new int[]{4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
@@ -57,6 +58,10 @@ public abstract class OnlineScreenTest extends ScreenTest {
     protected final void backToSelectGameCommand() {
         verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);
+    }
+
+    protected Matcher<View> continueButton() {
+        return withText(R.string.continue_str);
     }
 
     private void verifyGameFinished() {

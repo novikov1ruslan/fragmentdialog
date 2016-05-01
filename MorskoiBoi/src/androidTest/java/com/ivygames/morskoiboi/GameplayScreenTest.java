@@ -3,13 +3,18 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.morskoiboi.model.Model;
+import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,7 +72,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
     }
 
     @Test
-    public void WhenScreenDestroyed__TimerStopped() {
+    public void WhenScreenDestroyed__TimerStops() {
         showScreen();
         destroy();
         verify(timeController, times(1)).stop();
@@ -75,14 +80,31 @@ public class GameplayScreenTest extends GameplayScreen_ {
 
     @Test
     public void WhenScreenDestroyed_ForAndroidGame__AndroidOpponentIsCancelled() {
+        AndroidOpponent androidOpponent = mockAndroidOpponent();
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         destroy();
-        verify((Cancellable) opponent, times(1)).cancel();
+        verify(androidOpponent, times(1)).cancel();
     }
 
-    protected void opponentReady(boolean ready) {
+    @Test
+    public void WhenOpponentLeft__TimerStops() {
+        showScreen();
+        ((GameplayScreen)screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        verify(timeController, times(1)).stop();
+        // TODO: test service stops
+    }
+
+    private void opponentReady(boolean ready) {
         when(player.isOpponentReady()).thenReturn(ready);
+    }
+
+    @NonNull
+    private AndroidOpponent mockAndroidOpponent() {
+        AndroidOpponent androidOpponent = mock(AndroidOpponent.class);
+        when(androidOpponent.getName()).thenReturn(OPPONENT_NAME);
+        Model.instance.opponent = androidOpponent;
+        return androidOpponent;
     }
 
     @NonNull

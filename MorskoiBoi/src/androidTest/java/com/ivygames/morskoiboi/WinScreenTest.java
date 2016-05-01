@@ -166,7 +166,7 @@ public class WinScreenTest extends OnlineScreenTest {
         showScreen();
         checkNotDisplayed(yesButton());
         checkNotDisplayed(noButton());
-        checkDisplayed(withText(R.string.continue_str));
+        checkDisplayed(continueButton());
     }
 
     @Test

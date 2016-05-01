@@ -103,7 +103,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final TurnTimerController mTimerController;
 
-    private boolean mOpponentSurrendered;
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
     @NonNull
@@ -272,6 +271,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         return (View) mLayout;
     }
 
+    private void showOpponentSettingBoardNotification() {
+        String message = getString(R.string.opponent_setting_board, mEnemy.getName());
+        mLayout.showOpponentSettingBoardNotification(message);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -313,11 +317,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         SimpleActionDialog.create(R.string.pause, R.string.continue_str, pauseCommand).show(mFm, DIALOG);
     }
 
-    private void showOpponentSettingBoardNotification() {
-        String message = getString(R.string.opponent_setting_board, mEnemy.getName());
-        mLayout.showOpponentSettingBoardNotification(message);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -350,7 +349,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
                 AnalyticsEvent.send("opponent_surrendered");
-                mOpponentSurrendered = true;
                 showOpponentSurrenderedDialog();
             } else {
                 super.onEventMainThread(event);
@@ -762,22 +760,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.updateEnemyWorkingShips(fleet);
     }
 
-    private final Runnable mShowWinCommand = new Runnable() {
-
-        @Override
-        public void run() {
-            setScreen(GameHandler.newWinScreen(mPlayerPrivateBoard.getShips(), mOpponentSurrendered));
-        }
-    };
-
     private HandlerOpponent mHandlerOpponent;
 
     private void showWinScreenDelayed() {
-        mUiThreadHandler.postDelayed(mShowWinCommand, WON_GAME_DELAY);
+        mUiThreadHandler.postDelayed(new ShowWinCommand(false), WON_GAME_DELAY);
     }
 
     private void showOpponentSurrenderedDialog() {
-        SimpleActionDialog.create(R.string.opponent_surrendered, mShowWinCommand).show(mFm, DIALOG);
+        SimpleActionDialog.create(R.string.opponent_surrendered, new ShowWinCommand(true)).show(mFm, DIALOG);
     }
 
     private void surrender(final int penalty) {
@@ -821,5 +811,19 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         }
 
+    }
+
+    private class ShowWinCommand implements Runnable {
+
+        private final boolean mOpponentSurrendered;
+
+        private ShowWinCommand(boolean opponentSurrendered) {
+            mOpponentSurrendered = opponentSurrendered;
+        }
+
+        @Override
+        public void run() {
+            setScreen(GameHandler.newWinScreen(mPlayerPrivateBoard.getShips(), mOpponentSurrendered));
+        }
     }
 }
