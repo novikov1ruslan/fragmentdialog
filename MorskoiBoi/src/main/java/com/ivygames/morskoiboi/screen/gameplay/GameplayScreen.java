@@ -288,12 +288,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         Ln.d(this + " is fully visible - resuming sounds");
         if (!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
             Ln.v("showing pause dialog");
-            mLayout.lock();
             showPauseDialog();
         }
     }
 
     private void showPauseDialog() {
+        mLayout.lock();
         Runnable pauseCommand = new Runnable() {
 
             @Override
