@@ -93,7 +93,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final ChatAdapter mChatAdapter;
     @NonNull
-    private final GameplaySoundManager mSoundManager;
+    private final GameplaySoundManager mGameplaySounds;
     @NonNull
     private final Runnable mBackToSelectGameCommand;
 
@@ -119,9 +119,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onTimerExpired() {
-            if (mSoundManager.isAlarmPlaying()) {
+            if (mGameplaySounds.isAlarmPlaying()) {
                 Ln.v("timer expired - stopping alarm");
-                mSoundManager.stopAlarmSound();
+                mGameplaySounds.stopAlarmSound();
             }
 
             mTimerExpiredCounter++;
@@ -142,22 +142,22 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void setCurrentTime(int time) {
             mLayout.setCurrentTime(time);
             if (shouldPlayAlarmSound(time)) {
-                mSoundManager.playAlarmSound();
+                mGameplaySounds.playAlarmSound();
             }
         }
 
         @Override
         public void onCanceled() {
-            if (mSoundManager.isAlarmPlaying()) {
+            if (mGameplaySounds.isAlarmPlaying()) {
                 Ln.v("timer canceled - stopping alarm");
-                mSoundManager.stopAlarmSound();
+                mGameplaySounds.stopAlarmSound();
             } else {
                 Ln.v("timer canceled");
             }
         }
 
         private boolean shouldPlayAlarmSound(int timeLeft) {
-            return timeLeft <= (ALARM_TIME_SECONDS * 1000) && !mSoundManager.isAlarmPlaying();
+            return timeLeft <= (ALARM_TIME_SECONDS * 1000) && !mGameplaySounds.isAlarmPlaying();
         }
     };
 
@@ -187,8 +187,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         super(parent);
         mMatchStatusIntent = new Intent(parent, InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
-        mSoundManager = new GameplaySoundManager(this, (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE));
-        mSoundManager.prepareSoundPool(parent.getAssets());
+        mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
+        mGameplaySounds.prepareSoundPool(parent.getAssets());
         mBackPressEnabled = true;
         mPlayer = Model.instance.player;
         mEnemy = Model.instance.opponent;
@@ -330,11 +330,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         Crouton.cancelAllCroutons();
 
         mTimerController.stop();
-        mHandlerOpponent.stop();
+        mHandlerOpponent.stop(); // TODO: needed?
         if (mEnemy instanceof Cancellable) {
             ((Cancellable) mEnemy).cancel();
         }
-        mSoundManager.release();
+        mGameplaySounds.release();
         mParent.stopService(mMatchStatusIntent);
         Ln.d(this + " screen destroyed");
 
@@ -462,7 +462,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onAimingFinished(int x, int y) {
             Ln.v("aiming finished");
             debug_aiming_started = false;
-            mSoundManager.stopKantropSound();
+            mGameplaySounds.stopKantropSound();
 
             if (!Board.containsCell(x, y)) {
                 Ln.d("pressing outside the board: " + x + "," + y);
@@ -485,7 +485,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Ln.d("shooting at: " + aim + cell + ", timer cancelled, locking board");
             mLayout.lock();
             mLayout.setAim(aim);
-            mSoundManager.playWhistleSound();
+            mGameplaySounds.playWhistleSound();
             mPlayer.shoot(x, y);
         }
 
@@ -497,7 +497,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.e("aiming started");
             }
             debug_aiming_started = true;
-            mSoundManager.playKantrop();
+            mGameplaySounds.playKantrop();
         }
 
     }
@@ -567,7 +567,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (shipSank(result.ship)) {
                 Ln.v("enemy ship is sunk!! - shake enemy board");
                 mLayout.shakeEnemyBoard();
-                mSoundManager.playKillSound();
+                mGameplaySounds.playKillSound();
                 vibrate(VIBRATION_ON_KILL);
 
                 if (mRules.isItDefeatedBoard(mEnemyPublicBoard)) {
@@ -583,13 +583,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 }
             } else if (result.cell.isMiss()) {
                 Ln.d(mPlayer + ": I missed - passing the turn to " + mEnemy);
-                mSoundManager.playSplash();
+                mGameplaySounds.playSplash();
                 showOpponentTurn();
                 startDetectingTurnTimeout();
                 mEnemy.go();
             } else {
                 Ln.v("it's a hit! - player continues");
-                mSoundManager.playHitSound();
+                mGameplaySounds.playHitSound();
             }
         }
 
@@ -607,15 +607,15 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (shipSank(result.ship)) {
                 // Ln.v("player's ship is sunk: " + result);
                 mLayout.shakePlayerBoard();
-                mSoundManager.playKillSound();
+                mGameplaySounds.playKillSound();
                 vibrate(VIBRATION_ON_KILL);
             } else if (result.cell.isMiss()) {
                 // Ln.v("opponent misses: " + result);
-                mSoundManager.playSplash();
+                mGameplaySounds.playSplash();
             } else {
                 // Ln.v("player's ship is hit: " + result);
                 mLayout.invalidatePlayerBoard();
-                mSoundManager.playHitSound();
+                mGameplaySounds.playHitSound();
             }
 
             // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
@@ -817,7 +817,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mSettings.setSound(on);
             mLayout.setSound(on);
             if (!on) {
-                mSoundManager.stopPlaying();
+                mGameplaySounds.stopPlaying();
             }
         }
 

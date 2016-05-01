@@ -66,6 +66,21 @@ public class GameplayScreenTest extends GameplayScreen_ {
         checkDisplayed(opponentSettingBoardNotification());
     }
 
+    @Test
+    public void WhenScreenDestroyed__TimerStopped() {
+        showScreen();
+        destroy();
+        verify(timeController, times(1)).stop();
+    }
+
+    @Test
+    public void WhenScreenDestroyed_ForAndroidGame__AndroidOpponentIsCancelled() {
+        setGameType(Game.Type.VS_ANDROID);
+        showScreen();
+        destroy();
+        verify((Cancellable) opponent, times(1)).cancel();
+    }
+
     protected void opponentReady(boolean ready) {
         when(player.isOpponentReady()).thenReturn(ready);
     }

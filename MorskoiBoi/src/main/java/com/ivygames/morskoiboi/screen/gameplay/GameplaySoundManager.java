@@ -5,10 +5,6 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
-
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -37,13 +33,9 @@ public class GameplaySoundManager {
     private int mKillStream;
 
     private final Random mRandom = new Random(System.currentTimeMillis());
-    private final BattleshipScreen mScreen;
     private final AudioManager mAudioManager;
-    @NonNull
-    private final GameSettings mSettings = Dependencies.getSettings();
 
-    public GameplaySoundManager(@NonNull BattleshipScreen screen, @NonNull AudioManager audioManager) {
-        mScreen = screen;
+    public GameplaySoundManager(@NonNull AudioManager audioManager) {
         mAudioManager = audioManager;
         int soundsCount = HIT_SOUNDS_COUNT + KILL_SOUNDS_COUNT + SPLASH_SOUNDS_COUNT;
         mSoundPool = new SoundPool(soundsCount, AudioManager.STREAM_MUSIC, 0);
@@ -96,18 +88,16 @@ public class GameplaySoundManager {
     }
 
     public void playWhistleSound() {
-        if (isSoundOn()) {
-            float volume = mRandom.nextFloat() * 0.7f + 0.3f;
-            float rate = mRandom.nextFloat() * 0.7f + 0.8f;
-            mWhistleStream = mSoundPool.play(mWhistleSound, volume, volume, 1, 0, rate);
-        }
+        float volume = mRandom.nextFloat() * 0.7f + 0.3f;
+        float rate = mRandom.nextFloat() * 0.7f + 0.8f;
+        int sound = this.mWhistleSound;
+        int loop = 0;
+        mWhistleStream = play(sound, volume, loop, rate);
     }
 
     public void playKantrop() {
-        if (isSoundOn()) {
-            float volume = 0.5f;
-            mKantropStream = mSoundPool.play(mKantropSound, volume, volume, 1, -1, 1F);
-        }
+        float volume = 0.5f;
+        mKantropStream = play(mKantropSound, volume, -1, 1f);
     }
 
     public void stopKantropSound() {
@@ -115,25 +105,18 @@ public class GameplaySoundManager {
     }
 
     public void playSplash() {
-        if (isSoundOn()) {
-            float volume = getVolume();
-            volume = volume * 0.2f;
-            mSplashStream = mSoundPool.play(mSplashSounds[mRandom.nextInt(SPLASH_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
-        }
+        float volume = getVolume() * 0.2f;
+        mSplashStream = play(mSplashSounds[random(SPLASH_SOUNDS_COUNT)], volume, 0, 1f);
     }
 
     public void playHitSound() {
-        if (isSoundOn()) {
-            float volume = getVolume();
-            mHitStream = mSoundPool.play(mHitSounds[mRandom.nextInt(HIT_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
-        }
+        float volume = getVolume();
+        mHitStream = play(mHitSounds[random(HIT_SOUNDS_COUNT)], volume, 0, 1f);
     }
 
     public void playKillSound() {
-        if (isSoundOn()) {
-            float volume = getVolume();
-            mKillStream = mSoundPool.play(mKillSounds[mRandom.nextInt(KILL_SOUNDS_COUNT)], volume, volume, 1, 0, 1F);
-        }
+        float volume = getVolume();
+        mKillStream = play(mKillSounds[random(KILL_SOUNDS_COUNT)], volume, 0, 1f);
     }
 
     public boolean isAlarmPlaying() {
@@ -141,10 +124,8 @@ public class GameplaySoundManager {
     }
 
     public void playAlarmSound() {
-        if (isSoundOn()) {
-            float volume = 0.3f;
-            mAlarmStream = mSoundPool.play(mAlarmSound, volume, volume, 1, 0, 1);
-        }
+        float volume = 0.3f;
+        mAlarmStream = play(mAlarmSound, volume, 0, 1f);
     }
 
     public void stopAlarmSound() {
@@ -152,8 +133,12 @@ public class GameplaySoundManager {
         mAlarmStream = 0;
     }
 
-    public boolean isSoundOn() {
-        return mSettings.isSoundOn() && mScreen.isResumed();
+    private int play(int sound, float volume, int loop, float rate) {
+        return mSoundPool.play(sound, volume, volume, 1, loop, rate);
+    }
+
+    private int random(int count) {
+        return mRandom.nextInt(count);
     }
 
     private float getVolume() {
