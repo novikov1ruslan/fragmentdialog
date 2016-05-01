@@ -182,7 +182,7 @@ public class WinScreenTest extends OnlineScreenTest {
         setGameType(Game.Type.VS_ANDROID);
         WhenOpponentNotSurrendered__YesNoButtonsShowed();
         clickOn(noButton());
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 
     @Test
@@ -191,7 +191,7 @@ public class WinScreenTest extends OnlineScreenTest {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 
     @Test

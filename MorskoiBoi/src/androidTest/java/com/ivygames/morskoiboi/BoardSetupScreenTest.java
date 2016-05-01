@@ -70,7 +70,7 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 
     @NonNull

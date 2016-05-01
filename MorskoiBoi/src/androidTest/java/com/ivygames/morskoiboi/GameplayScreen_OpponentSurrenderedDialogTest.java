@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.scenario;
+package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 import android.view.View;

@@ -55,7 +55,7 @@ public abstract class OnlineScreenTest extends ScreenTest {
         when(game.getType()).thenReturn(type);
     }
     // TODO: inline
-    protected final void backToSelectGameCommand() {
+    protected final void FinishGame_BackToSelectGame() {
         verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);
     }
@@ -66,6 +66,10 @@ public abstract class OnlineScreenTest extends ScreenTest {
 
     private void verifyGameFinished() {
         verify(game, times(1)).finish();
+    }
+
+    protected final Matcher<View> opponentLeftDialog() {
+        return withText(R.string.opponent_left);
     }
 
 }

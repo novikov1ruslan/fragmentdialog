@@ -25,9 +25,17 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
     }
 
     @Test
+    public void PressingBackOnWantToLeaveDialog__RemovesDialogScreenDoesNotChange() {
+        WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
+        pressBack();
+        checkDoesNotExist(wantToLeaveDialog());
+        checkDisplayed(GAMEPLAY_LAYOUT);
+    }
+
+    @Test
     public void PressingOkOnWantToLeaveDialog__GameFinishes_SelectGameScreenDisplayed() {
         WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
         clickOn(okButton());
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 }

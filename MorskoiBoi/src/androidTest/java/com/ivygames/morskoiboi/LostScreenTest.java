@@ -41,7 +41,7 @@ public class LostScreenTest extends OnlineScreenTest {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class LostScreenTest extends OnlineScreenTest {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         clickOn(noButton());
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 
     @Test

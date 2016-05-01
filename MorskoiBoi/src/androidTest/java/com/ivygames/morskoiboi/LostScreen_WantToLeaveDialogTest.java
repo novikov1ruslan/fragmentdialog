@@ -33,7 +33,7 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
     public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
         WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown();
         clickOn(okButton());
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 
     @Test

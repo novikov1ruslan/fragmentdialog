@@ -27,6 +27,6 @@ public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreenTest
     public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
         WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
         clickOn(okButton());
-        backToSelectGameCommand();
+        FinishGame_BackToSelectGame();
     }
 }
