@@ -7,7 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class BoardSetupScreen_TutorialTest extends BoardSetupScreenTest {
+public class BoardSetupScreen_TutorialTest extends BoardSetupScreen_ {
 
     @Test
     public void WhenScreenIsShownFirstTime__TutorialIsShown() {

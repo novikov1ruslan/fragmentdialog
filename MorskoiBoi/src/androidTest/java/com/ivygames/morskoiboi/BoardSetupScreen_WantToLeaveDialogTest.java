@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 
-public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreenTest {
+public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreen_ {
     @Test
     public void WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed() {
         setGameType(Game.Type.BLUETOOTH);

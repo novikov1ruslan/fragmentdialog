@@ -5,32 +5,18 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
 import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class BoardSetupScreenTest extends OnlineScreenTest {
-
-    @Before
-    public void setup() {
-        super.setup();
-    }
-
-    @Override
-    public BattleshipScreen newScreen() {
-        return new BoardSetupScreen(activity());
-    }
+public class BoardSetupScreenTest extends BoardSetupScreen_ {
 
     public void WhenAutoPressed__BoardIsSet() {
         showScreen();
@@ -71,41 +57,6 @@ public class BoardSetupScreenTest extends OnlineScreenTest {
         showScreen();
         pressBack();
         FinishGame_BackToSelectGame();
-    }
-
-    @NonNull
-    protected final Matcher<View> placeInstructions() {
-        return withText(R.string.place_instruction);
-    }
-
-    @NonNull
-    protected final Matcher<View> rotateInstructions() {
-        return withText(R.string.rotate_instruction);
-    }
-
-    @NonNull
-    protected final Matcher<View> mustSetShipsMessage() {
-        return withText(R.string.ships_setup_validation);
-    }
-
-    protected final Matcher<View> autoSetup() {
-        return withId(R.id.auto_setup);
-    }
-
-    protected final Matcher<View> done() {
-        return withId(R.id.done);
-    }
-
-    protected final Matcher<View> boardView() {
-        return withId(R.id.board_view);
-    }
-
-    protected final Matcher<View> help() {
-        return withId(R.id.help_button);
-    }
-
-    protected final Matcher<View> gotIt() {
-        return withId(R.id.got_it_button);
     }
 
 }
