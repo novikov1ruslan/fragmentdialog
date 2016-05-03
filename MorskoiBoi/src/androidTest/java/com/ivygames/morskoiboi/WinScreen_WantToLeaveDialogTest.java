@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 
-public class WinScreen_WantToLeaveDialogTest extends WinScreenTest {
+public class WinScreen_WantToLeaveDialogTest extends WinScreen_ {
 
     @Test
     public void WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed() {
@@ -20,7 +20,8 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreenTest {
     @Test
     public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
         setGameType(Game.Type.BLUETOOTH);
-        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        surrendered = false;
+        showScreen();
         clickOn(noButton());
         checkDisplayed(wantToLeaveDialog());
     }

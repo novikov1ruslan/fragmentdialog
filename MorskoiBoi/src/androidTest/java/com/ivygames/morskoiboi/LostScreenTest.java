@@ -4,26 +4,15 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class LostScreenTest extends OnlineScreen_ {
-
-    private Rules rules;
-
-    @Before
-    public void setup() {
-        super.setup();
-        rules = mock(Rules.class);
-        RulesFactory.setRules(rules);
-    }
+public class LostScreenTest extends LostScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {

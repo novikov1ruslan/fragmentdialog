@@ -1,65 +1,22 @@
 package com.ivygames.morskoiboi;
 
-import android.support.annotation.NonNull;
-import android.view.View;
-
-import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Progress;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.win.WinScreen;
 
-import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.verification.VerificationMode;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class WinScreenTest extends OnlineScreen_ {
-
-    private Collection<Ship> fleet = new ArrayList<>();
-    protected boolean surrendered;
-    private Rules rules;
-    private AchievementsManager achievementsManager;
-    private ProgressManager progressManager;
-
-    @Before
-    public void setup() {
-        super.setup();
-        rules = mock(Rules.class);
-        achievementsManager = mock(AchievementsManager.class);
-        Dependencies.inject(achievementsManager);
-        progressManager = mock(ProgressManager.class);
-        Dependencies.inject(progressManager);
-
-        when(settings().incrementProgress(anyInt())).thenReturn(new Progress(0));
-        RulesFactory.setRules(rules);
-    }
-
-    @Override
-    public BattleshipScreen newScreen() {
-        return new WinScreen(activity(), fleet, surrendered);
-    }
+public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenScreenDisplayed__GamesCounterIncremented() {
@@ -171,7 +128,8 @@ public class WinScreenTest extends OnlineScreen_ {
 
     @Test
     public void AfterYesPressed__BoardSetupScreenShown() {
-        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        surrendered = false;
+        showScreen();
         when(rules.getAllShipsSizes()).thenReturn(new int[]{});
         clickOn(yesButton());
         checkDisplayed(BOARD_SETUP_LAYOUT);
@@ -180,7 +138,8 @@ public class WinScreenTest extends OnlineScreen_ {
     @Test
     public void AfterNoPressedForAndroid__SelectGameScreenShown() {
         setGameType(Game.Type.VS_ANDROID);
-        WhenOpponentNotSurrendered__YesNoButtonsShowed();
+        surrendered = false;
+        showScreen();
         clickOn(noButton());
         FinishGame_BackToSelectGame();
     }
@@ -219,42 +178,6 @@ public class WinScreenTest extends OnlineScreen_ {
         showScreen();
         pressBack();
         expectSubmitScoreBeCalled(never());
-    }
-
-    private void expectSubmitScoreBeCalled(VerificationMode never) {
-        verify(apiClient(), never).submitScore(anyString(), anyInt());
-    }
-
-    @NonNull
-    private Matcher<View> signInBar() {
-        return withId(R.id.sign_in_bar);
-    }
-
-    private void setScores(int scores) {
-        setGameType(Game.Type.VS_ANDROID);
-        when(rules.calcTotalScores(any(Collection.class), any(Game.class), anyBoolean())).thenReturn(scores);
-    }
-
-    private void setPenalty(Integer penalty) {
-        when(settings().getProgressPenalty()).thenReturn(penalty);
-    }
-
-    private void expectProcessAchievementsBeCalled(VerificationMode times) {
-        verify(achievementsManager, times).processAchievements(any(Game.class), any(Collection.class), anyInt());
-    }
-
-    private void expectUpdateProgressBeCalled(VerificationMode times) {
-        verify(progressManager, times).updateProgress(any(Progress.class));
-    }
-
-    @NonNull
-    private Matcher<View> timeView() {
-        return withId(R.id.time);
-    }
-
-    @NonNull
-    private Matcher<View> scoresView() {
-        return withId(R.id.total_scores);
     }
 
 }
