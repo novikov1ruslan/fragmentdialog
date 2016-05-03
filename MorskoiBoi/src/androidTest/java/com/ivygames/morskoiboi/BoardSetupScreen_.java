@@ -12,7 +12,7 @@ import org.junit.Before;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class BoardSetupScreen_ extends OnlineScreenTest {
+public class BoardSetupScreen_ extends OnlineScreen_ {
 
     @Before
     public void setup() {

@@ -7,8 +7,10 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Opponent;
+import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
 import org.hamcrest.Matcher;
+import org.junit.Before;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.mock;
@@ -16,7 +18,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public abstract class OnlineScreenTest extends ScreenTest {
+public abstract class OnlineScreen_ extends ScreenTest {
 
     protected static final String OPPONENT_NAME = "Sagi";
 
@@ -25,7 +27,7 @@ public abstract class OnlineScreenTest extends ScreenTest {
     protected PlayerOpponent player;
     protected Opponent opponent;
 
-    @Override
+    @Before
     public void setup() {
         super.setup();
         opponent = mock(Opponent.class);
@@ -44,6 +46,11 @@ public abstract class OnlineScreenTest extends ScreenTest {
         when(rules.getAllShipsSizes()).thenReturn(new int[]{4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
 
         RulesFactory.setRules(rules);
+    }
+
+    @Override
+    public BattleshipScreen newScreen() {
+        return null;
     }
 
     @NonNull
@@ -70,6 +77,10 @@ public abstract class OnlineScreenTest extends ScreenTest {
 
     protected final Matcher<View> opponentLeftDialog() {
         return withText(R.string.opponent_left);
+    }
+
+    protected final Matcher<View> connectionLostDialog() {
+        return withText(R.string.connection_lost);
     }
 
 }

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class LostScreenTest extends OnlineScreenTest {
+public class LostScreenTest extends OnlineScreen_ {
 
     private Rules rules;
 

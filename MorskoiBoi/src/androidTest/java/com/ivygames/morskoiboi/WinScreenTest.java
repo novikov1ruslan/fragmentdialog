@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class WinScreenTest extends OnlineScreenTest {
+public class WinScreenTest extends OnlineScreen_ {
 
     private Collection<Ship> fleet = new ArrayList<>();
     protected boolean surrendered;

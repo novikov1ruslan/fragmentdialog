@@ -16,7 +16,6 @@ import com.ivygames.morskoiboi.MusicPlayer;
 import org.commons.logger.Ln;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
-import static org.apache.commons.lang3.Validate.notNull;
 
 // TODO: Screen is never used in isolation - combine BattleshipScreen with Screen
 public abstract class BattleshipScreen extends Screen {
@@ -28,7 +27,7 @@ public abstract class BattleshipScreen extends Screen {
 
     public BattleshipScreen(BattleshipActivity parent) {
         super(parent);
-        mFm = notNull(getFragmentManager());
+        mFm = getFragmentManager();
         UiEvent.screenView(this.getClass().getSimpleName());
         Ln.v(this + " created");
     }
