@@ -368,7 +368,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         stopDetectingTurnTimeout();
     }
 
-
     @Override
     public void onBackPressed() {
         if (!mBackPressEnabled) {

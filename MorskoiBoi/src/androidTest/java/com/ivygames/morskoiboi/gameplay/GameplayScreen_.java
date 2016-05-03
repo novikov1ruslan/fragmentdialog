@@ -1,8 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.gameplay;
 
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
@@ -30,7 +33,7 @@ public class GameplayScreen_ extends OnlineScreen_ {
 
     @NonNull
     protected final Matcher<View> chat() {
-        return withId(R.id.chat_button);
+        return ViewMatchers.withId(R.id.chat_button);
     }
 
 }

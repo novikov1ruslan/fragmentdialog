@@ -1,9 +1,8 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.gameplay;
 
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.GameplayScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;

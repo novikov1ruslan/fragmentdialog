@@ -1,8 +1,9 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.gameplay;
 
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
@@ -91,6 +92,14 @@ public class GameplayScreenTest extends GameplayScreen_ {
     public void WhenOpponentLeft__TimerStops() {
         showScreen();
         ((GameplayScreen)screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        verify(timeController, times(1)).stop();
+        // TODO: test service stops
+    }
+
+    @Test
+    public void WhenConnectionLost__TimerStops() {
+        showScreen();
+        ((GameplayScreen)screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
         verify(timeController, times(1)).stop();
         // TODO: test service stops
     }

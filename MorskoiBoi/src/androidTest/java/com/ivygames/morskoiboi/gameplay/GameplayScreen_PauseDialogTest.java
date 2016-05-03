@@ -1,7 +1,8 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.gameplay;
 
 import android.view.View;
 
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.gameplay.EnemyBoardView;

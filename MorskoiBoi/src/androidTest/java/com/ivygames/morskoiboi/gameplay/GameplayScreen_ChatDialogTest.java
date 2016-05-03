@@ -1,7 +1,9 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.gameplay;
 
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.gameplay.ChatDialogLayout;
 
@@ -54,7 +56,7 @@ public class GameplayScreen_ChatDialogTest extends GameplayScreen_ {
     @Test
     public void AfterTextEntered_SendPressed__MessageSentToOpponent_DialogDismissed() {
         WhenChatButtonClicked__ChatDialogDisplayed();
-        onView(withId(R.id.message_text)).perform(typeText("test message"));
+        onView(ViewMatchers.withId(R.id.message_text)).perform(typeText("test message"));
         clickOn(send());
         checkDoesNotExist(chatDialog());
         verify(opponent, times(1)).onNewMessage("test message");
