@@ -126,7 +126,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mTimerExpiredCounter++;
             if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
                 AnalyticsEvent.send("surrendered_passively");
-                int penalty = calcSurrenderPenalty();
+                int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
                 Ln.d("player surrender passively with penalty: " + penalty);
                 surrender(penalty);
             } else {
@@ -410,7 +410,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showSurrenderDialog() {
-        final int penalty = calcSurrenderPenalty();
+        final int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
         String message = getString(R.string.surrender_question, -penalty);
 
         new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
@@ -422,28 +422,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 surrender(penalty);
             }
         }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
-    }
-
-    private int calcSurrenderPenalty() {
-        int decksLost = getTotalHealth() - getRemainedHealth();
-        return decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
-    }
-
-    private int getRemainedHealth() {
-        int health = 0;
-        for (Ship ship : mPlayerPrivateBoard.getShips()) {
-            health += ship.getHealth();
-        }
-        return health;
-    }
-
-    private int getTotalHealth() {
-        int[] ships = mRules.getAllShipsSizes();
-        int totalHealth = 0;
-        for (int ship : ships) {
-            totalHealth += ship;
-        }
-        return totalHealth;
     }
 
     private class BoardShotListener implements ShotListener {

@@ -240,6 +240,19 @@ public class RussianRulesTest {
         assertThat(mRules.isItDefeatedBoard(board), is(true));
     }
 
+    @Test
+    public void SurrenderPenaltyForTheFullFleet_1000() {
+        Collection<Ship> fullFleet = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
+        assertThat(mRules.calcSurrenderPenalty(fullFleet), is(1000));
+    }
+
+    @Test
+    public void SurrenderPenaltyFor_1_is_2900() {
+        Collection<Ship> fullFleet = new ArrayList<>();
+        fullFleet.add(new Ship(1));
+        assertThat(mRules.calcSurrenderPenalty(fullFleet), is(2900));
+    }
+
     @NonNull
     private Collection<Ship> mock_10_dead_ships() {
         Collection<Ship> ships = new ArrayList<>();
@@ -259,12 +272,14 @@ public class RussianRulesTest {
         return ships;
     }
 
+    @NonNull
     private Ship mockDeadShip() {
         Ship ship = mock(Ship.class);
         when(ship.isDead()).thenReturn(true);
         return ship;
     }
 
+    @NonNull
     private Ship mockAliveShip() {
         Ship ship = mock(Ship.class);
         when(ship.isDead()).thenReturn(false);

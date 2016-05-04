@@ -9,7 +9,15 @@ import static android.support.test.espresso.Espresso.pressBack;
 public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
 
     @Test
-    public void WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed() {
+    public void WhenBackPressedForInternetGame__DialogDisplayed() {
+        setGameType(Game.Type.INTERNET);
+        showScreen();
+        pressBack();
+        checkDisplayed(wantToLeaveDialog());
+    }
+
+    @Test
+    public void WhenBackPressedForBluetoothGame__WantToLeaveDialogDisplayed() {
         setGameType(Game.Type.BLUETOOTH);
         showScreen();
         pressBack();
@@ -18,7 +26,7 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
 
     @Test
     public void PressingCancelOnWantToLeaveDialog__RemovesDialogScreenDoesNotChange() {
-        WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
+        WhenBackPressedForBluetoothGame__WantToLeaveDialogDisplayed();
         clickOn(cancelButton());
         checkDoesNotExist(wantToLeaveDialog());
         checkDisplayed(GAMEPLAY_LAYOUT);
@@ -26,7 +34,7 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
 
     @Test
     public void PressingBackOnWantToLeaveDialog__RemovesDialogScreenDoesNotChange() {
-        WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
+        WhenBackPressedForBluetoothGame__WantToLeaveDialogDisplayed();
         pressBack();
         checkDoesNotExist(wantToLeaveDialog());
         checkDisplayed(GAMEPLAY_LAYOUT);
@@ -34,7 +42,7 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
 
     @Test
     public void PressingOkOnWantToLeaveDialog__GameFinishes_SelectGameScreenDisplayed() {
-        WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed();
+        WhenBackPressedForBluetoothGame__WantToLeaveDialogDisplayed();
         clickOn(okButton());
         FinishGame_BackToSelectGame();
     }
