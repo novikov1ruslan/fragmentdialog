@@ -14,6 +14,7 @@ public class TurnTimerController {
     private TurnTimer mTurnTimer;
 
     private final int TURN_TIMEOUT;
+    private TurnTimerFactory mTurnTimerFactory;
 
     private int mTimeLeft;
 
@@ -22,8 +23,9 @@ public class TurnTimerController {
     @NonNull
     private final TimerListenerImpl mTimerListener;
 
-    public TurnTimerController(int turnTimeout) {
+    public TurnTimerController(int turnTimeout, @NonNull TurnTimerFactory turnTimerFactory) {
         TURN_TIMEOUT = turnTimeout;
+        mTurnTimerFactory = turnTimerFactory;
         mTimerListener = new TimerListenerImpl();
         mTimeLeft = TURN_TIMEOUT;
     }
@@ -35,7 +37,7 @@ public class TurnTimerController {
         }
 
         Ln.d("starting timer");
-        mTurnTimer = new TurnTimer(mTimeLeft, mTimerListener);
+        mTurnTimer = mTurnTimerFactory.newTimer(mTimeLeft, mTimerListener);
         mTurnTimer.execute();
     }
 
