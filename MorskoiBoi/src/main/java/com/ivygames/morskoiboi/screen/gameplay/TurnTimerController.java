@@ -9,11 +9,15 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class TurnTimerController {
 
+    private static final int ALLOWED_SKIPPED_TURNS = 2;
+
     private TurnTimer mTurnTimer;
 
     private final int TURN_TIMEOUT;
 
     private int mTimeLeft;
+
+    private int mTimerExpiredCounter;
 
     @NonNull
     private final TimerListenerImpl mTimerListener;
@@ -48,6 +52,7 @@ public class TurnTimerController {
     }
 
     public void stop() {
+        mTimerExpiredCounter = 0;
         if (mTurnTimer == null) {
             reportException("stop: not running");
             return;
@@ -64,39 +69,44 @@ public class TurnTimerController {
         mTimerListener.onCanceled();
     }
 
-    public void setListener(TimerListener listener) {
+    public void setListener(@NonNull TurnListener listener) {
         mTimerListener.setDelegate(listener);
     }
 
     private class TimerListenerImpl implements TimerListener {
         @Nullable
-        private TimerListener mDelegate;
+        private TurnListener mTurnListener;
 
         @Override
         public void onTimerExpired() {
             mTurnTimer = null;
             mTimeLeft = TURN_TIMEOUT;
-            if (mDelegate != null) {
-                mDelegate.onTimerExpired();
+            mTimerExpiredCounter++;
+            if (mTurnListener != null) {
+                if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
+                    mTurnListener.onPlayerIdle();
+                }
+                else {
+                    mTurnListener.onTimerExpired();
+                }
             }
         }
 
         @Override
         public void setCurrentTime(int time) {
-            if (mDelegate != null) {
-                mDelegate.setCurrentTime(time);
+            if (mTurnListener != null) {
+                mTurnListener.setCurrentTime(time);
             }
         }
 
-        @Override
         public void onCanceled() {
-            if (mDelegate != null) {
-                mDelegate.onCanceled();
+            if (mTurnListener != null) {
+                mTurnListener.onCanceled();
             }
         }
 
-        public void setDelegate(TimerListener listener) {
-            mDelegate = listener;
+        public void setDelegate(@NonNull TurnListener listener) {
+            mTurnListener = listener;
         }
     }
 }

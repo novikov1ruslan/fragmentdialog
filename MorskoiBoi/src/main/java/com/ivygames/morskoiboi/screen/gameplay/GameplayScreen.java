@@ -70,7 +70,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     public static final int SHOT_HANG_DETECTION_TIMEOUT = 10000; // milliseconds
     public static final int TURN_HANG_DETECTION_TIMEOUT = 60000; // milliseconds
-    public static final int ALLOWED_SKIPPED_TURNS = 2;
 
     public static final int ALARM_TIME_SECONDS = 10;
 
@@ -114,27 +113,26 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     };
     @NonNull
-    private final TimerListener mTurnTimerListener = new TimerListener() {
+    private final TurnListener mTurnTimerListener = new TurnListener() {
 
         @Override
         public void onTimerExpired() {
-            if (mGameplaySounds.isAlarmPlaying()) {
-                Ln.v("timer expired - stopping alarm");
-                mGameplaySounds.stopAlarmSound();
-            }
+            stopAlarmSound();
 
-            mTimerExpiredCounter++;
-            if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
-                AnalyticsEvent.send("surrendered_passively");
-                int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
-                Ln.d("player surrender passively with penalty: " + penalty);
-                surrender(penalty);
-            } else {
-                Ln.d("turn skipped");
-                showOpponentTurn();
-                startDetectingTurnTimeout();
-                mEnemy.go();
-            }
+            Ln.d("turn skipped");
+            showOpponentTurn();
+            startDetectingTurnTimeout();
+            mEnemy.go();
+        }
+
+        @Override
+        public void onPlayerIdle() {
+            stopAlarmSound();
+
+            AnalyticsEvent.send("surrendered_passively");
+            int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
+            Ln.d("player surrender passively with penalty: " + penalty);
+            surrender(penalty);
         }
 
         @Override
@@ -155,12 +153,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         }
 
+        private void stopAlarmSound() {
+            if (mGameplaySounds.isAlarmPlaying()) {
+                Ln.v("timer expired - stopping alarm");
+                mGameplaySounds.stopAlarmSound();
+            }
+        }
+
         private boolean shouldPlayAlarmSound(int timeLeft) {
             return timeLeft <= (ALARM_TIME_SECONDS * 1000) && !mGameplaySounds.isAlarmPlaying();
         }
     };
-
-    private int mTimerExpiredCounter;
 
     @NonNull
     private final Intent mMatchStatusIntent;
@@ -428,6 +431,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @NonNull
         private final PlayerOpponent mPlayer;
         private boolean debug_aiming_started;
+        @NonNull
+        private GameplaySoundManager mGameplaySounds;
 
         BoardShotListener(@NonNull PlayerOpponent player) {
             mPlayer = player;
@@ -454,7 +459,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             startDetectingShotTimeout();
 
             mTimerController.stop();
-            mTimerExpiredCounter = 0;
 
             Vector2 aim = Vector2.get(x, y);
             Ln.d("shooting at: " + aim + cell + ", timer cancelled, locking board");

@@ -4,6 +4,4 @@ interface TimerListener {
     void onTimerExpired();
 
     void setCurrentTime(int mTimeout);
-
-    void onCanceled();
 }

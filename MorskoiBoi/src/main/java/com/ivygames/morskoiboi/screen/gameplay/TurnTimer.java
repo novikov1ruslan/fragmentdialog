@@ -68,7 +68,7 @@ class TurnTimer extends AsyncTask<Void, Integer, Void> {
     protected void onPostExecute(Void result) {
         // This method won't be invoked if the task was cancelled.
         super.onPostExecute(result);
-        Ln.d("timer finished - transferring turn");
+        Ln.d("timer expired");
         mListener.onTimerExpired();
     }
 
