@@ -8,9 +8,9 @@ import com.ivygames.morskoiboi.screen.Screen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
+import com.ivygames.morskoiboi.screen.gameplay.AsyncTurnTimerFactory;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
-import com.ivygames.morskoiboi.screen.gameplay.TurnTimerFactory;
 import com.ivygames.morskoiboi.screen.help.HelpScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
@@ -81,7 +81,7 @@ public class GameHandler {
     }
 
     public static GameplayScreen newGameplayScreen(int turnTimeout) {
-        return new GameplayScreen(activity, new TurnTimerController(turnTimeout, new TurnTimerFactory()));
+        return new GameplayScreen(activity, new TurnTimerController(turnTimeout, new AsyncTurnTimerFactory()));
     }
 
     public static WinScreen newWinScreen(Collection<Ship> fleet, boolean opponentSurrendered) {

@@ -5,16 +5,28 @@ import org.commons.logger.Ln;
 
 public class ExceptionHandler {
 
+    private static boolean sDryRun;
+
     private ExceptionHandler() {
         // utility
     }
 
+    public static void setDryRun(boolean dryRun) {
+        sDryRun = dryRun;
+    }
+
     public static void reportException(String message) {
+        if (sDryRun) {
+            return;
+        }
         reportException(new Acra(message));
         Ln.e(message);
     }
 
     public static void reportException(Exception e) {
+        if (sDryRun) {
+            return;
+        }
         ACRA.getErrorReporter().handleException(e);
     }
 }

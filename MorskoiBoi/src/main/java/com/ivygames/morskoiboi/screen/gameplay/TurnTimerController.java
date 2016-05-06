@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.commons.logger.Ln;
 
@@ -76,7 +75,6 @@ public class TurnTimerController {
     }
 
     private class TimerListenerImpl implements TimerListener {
-        @Nullable
         private TurnListener mTurnListener;
 
         @Override
@@ -84,27 +82,20 @@ public class TurnTimerController {
             mTurnTimer = null;
             mTimeLeft = TURN_TIMEOUT;
             mTimerExpiredCounter++;
-            if (mTurnListener != null) {
-                if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
-                    mTurnListener.onPlayerIdle();
-                }
-                else {
-                    mTurnListener.onTimerExpired();
-                }
+            if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
+                mTurnListener.onPlayerIdle();
+            } else {
+                mTurnListener.onTimerExpired();
             }
         }
 
         @Override
         public void setCurrentTime(int time) {
-            if (mTurnListener != null) {
-                mTurnListener.setCurrentTime(time);
-            }
+            mTurnListener.setCurrentTime(time);
         }
 
         public void onCanceled() {
-            if (mTurnListener != null) {
-                mTurnListener.onCanceled();
-            }
+            mTurnListener.onCanceled();
         }
 
         public void setDelegate(@NonNull TurnListener listener) {

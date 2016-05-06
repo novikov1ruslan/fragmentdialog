@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -134,7 +135,7 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void onLost(@NonNull Board board) {
         Ln.e("never happens");
-        ACRA.getErrorReporter().handleException(new RuntimeException("never happens"));
+        ExceptionHandler.reportException("never happens");
     }
 
     @Override

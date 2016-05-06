@@ -260,7 +260,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showOpponentSettingBoardNotification();
         }
 
-        mLayout.setShotListener(new BoardShotListener(mPlayer));
+        mLayout.setShotListener(new BoardShotListener(mPlayer, mGameplaySounds));
         UiProxyOpponent uiProxy = new UiProxyOpponent(mPlayer);
         // TODO: make android opponent return in UI thread
         mHandlerOpponent = new HandlerOpponent(mUiThreadHandler, uiProxy);
@@ -434,8 +434,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @NonNull
         private GameplaySoundManager mGameplaySounds;
 
-        BoardShotListener(@NonNull PlayerOpponent player) {
+        BoardShotListener(@NonNull PlayerOpponent player, @NonNull GameplaySoundManager gameplaySounds) {
             mPlayer = player;
+            mGameplaySounds = gameplaySounds;
         }
 
         @Override
