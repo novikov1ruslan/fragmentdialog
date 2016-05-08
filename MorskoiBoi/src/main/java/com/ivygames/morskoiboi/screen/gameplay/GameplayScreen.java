@@ -240,7 +240,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         updateEnemyStatus();
         mLayout.setEnemyBoard(mEnemyPublicBoard);
         mLayout.setAlarmTime(ALARM_TIME_SECONDS * 1000);
-        mLayout.lock();
 
         mLayout.setPlayerName(mPlayer.getName());
         mLayout.setEnemyName(mEnemy.getName());

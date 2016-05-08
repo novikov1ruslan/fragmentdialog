@@ -46,6 +46,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+        lock();
     }
 
     @Override

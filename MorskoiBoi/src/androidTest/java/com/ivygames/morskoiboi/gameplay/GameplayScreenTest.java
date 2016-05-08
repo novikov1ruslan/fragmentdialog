@@ -13,7 +13,6 @@ import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -21,13 +20,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GameplayScreenTest extends GameplayScreen_ {
-
-    @Test
-    public void WhenBackPressed__DialogDisplayed() {
-//        showScreen();
-//        pressBack();
-//        checkDisplayed(MAIN_LAYOUT);
-    }
 
     @Test
     public void WhenScreenPausedForAndroidGame__TimerPaused() {

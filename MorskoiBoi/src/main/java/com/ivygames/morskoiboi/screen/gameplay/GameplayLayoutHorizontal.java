@@ -34,7 +34,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     private TextView mEnemyNameView;
     private View mChatButton;
     private ImageButton mSoundButton;
-//    private ImageButton mVibrationButton;
 
     private final Animation mShake;
     private long mStartTime;
@@ -49,6 +48,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+        lock();
     }
 
     @Override
@@ -71,11 +71,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         mEnemyNameView = (TextView) findViewById(R.id.enemy);
         mTimerView = (DigitalTimerView) findViewById(R.id.timer);
 
-//        mVibrationButton = (ImageButton) findViewById(R.id.vibration_btn);
-//        if (mVibrationButton != null) {
-//            Ln.v("vibration control present");
-//            mVibrationButton.setOnClickListener(this);
-//        }
         mSoundButton = (ImageButton) findViewById(R.id.sound_btn);
         if (mSoundButton != null) {
             mSoundButton.setOnClickListener(this);
@@ -89,12 +84,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
             mSoundButton.setImageResource(on ? R.drawable.sound_on : R.drawable.sound_off);
         }
     }
-
-//    public void setVibration(boolean on) {
-//        if (mVibrationButton != null) {
-//            mVibrationButton.setImageResource(on ? R.drawable.vibrate_on : R.drawable.vibrate_off);
-//        }
-//    }
 
     public void setAim(@NonNull Vector2 aim) {
         mEnemyBoardView.setAim(aim);
@@ -306,12 +295,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     public void hideChatButton() {
         mChatButton.setVisibility(GONE);
     }
-
-//    public void hideVibrationSetting() {
-//        if (mVibrationButton != null) {
-////            mVibrationButton.setVisibility(GONE);
-//        }
-//    }
 
     public void showOpponentSettingBoardNotification(@NonNull String message) {
         mSettingBoardText.setText(message);
