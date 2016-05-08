@@ -44,7 +44,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
-        lock();
     }
 
     @Override
@@ -73,6 +72,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         }
 
         mSettingBoardText = (TextView) findViewById(R.id.setting_board_notification);
+        lock();
     }
 
     @Override

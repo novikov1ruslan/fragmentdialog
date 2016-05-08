@@ -39,7 +39,6 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         super(context, attrs);
 
         mShake = AnimationUtils.loadAnimation(context, R.anim.shake);
-        lock();
     }
 
     @Override
@@ -63,6 +62,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
         mTimerView = (DigitalTimerView) findViewById(R.id.timer);
 
         mSettingBoardText = (TextView) findViewById(R.id.setting_board_notification);
+        lock();
     }
 
     @Override

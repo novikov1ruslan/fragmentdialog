@@ -265,7 +265,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showOpponentSettingBoardNotification();
         }
 
-        mLayout.setShotListener(new BoardShotListener(mPlayer, mGameplaySounds));
+        mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
         UiProxyOpponent uiProxy = new UiProxyOpponent(mPlayer);
         // TODO: make android opponent return in UI thread
         mHandlerOpponent = new HandlerOpponent(mUiThreadHandler, uiProxy);
@@ -298,7 +298,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onResume() {
         super.onResume();
         Ln.d(this + " is fully visible - resuming sounds");
-        if (!mLayout.isLocked() && mGame.getType() == Type.VS_ANDROID) {
+        if (mGame.getType() == Type.VS_ANDROID && !mLayout.isLocked()) {
             Ln.v("showing pause dialog");
             showPauseDialog();
         }
@@ -437,13 +437,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private class BoardShotListener implements ShotListener {
         @NonNull
-        private final PlayerOpponent mPlayer;
+        private final Opponent mEnemy;
         private boolean debug_aiming_started;
         @NonNull
         private GameplaySoundManager mGameplaySounds;
 
-        BoardShotListener(@NonNull PlayerOpponent player, @NonNull GameplaySoundManager gameplaySounds) {
-            mPlayer = player;
+        BoardShotListener(@NonNull Opponent opponent, @NonNull GameplaySoundManager gameplaySounds) {
+            mEnemy = opponent;
             mGameplaySounds = gameplaySounds;
         }
 
@@ -464,9 +464,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 // TODO: play sound
                 return;
             }
-
-            startDetectingShotTimeout();
-
+            // ----------------------------------
             mTimerController.stop();
 
             Vector2 aim = Vector2.get(x, y);
@@ -474,9 +472,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.lock();
             updateUnlockedTime();
 
+            startDetectingShotTimeout();
             mLayout.setAim(aim);
+            mEnemy.onShotAt(aim);
+
             mGameplaySounds.playWhistleSound();
-            mPlayer.shoot(x, y);
         }
 
         @Override

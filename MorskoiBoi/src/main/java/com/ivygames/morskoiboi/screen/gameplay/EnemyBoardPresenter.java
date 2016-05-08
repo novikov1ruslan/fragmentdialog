@@ -97,9 +97,7 @@ final class EnemyBoardPresenter extends BasePresenter {
             if (!mLocked) {
                 mShotListener.onAimingStarted();
             }
-        }
-
-        if (action == MotionEvent.ACTION_UP) {
+        } else if (action == MotionEvent.ACTION_UP) {
             if (!mLocked) {
                 mShotListener.onAimingFinished(getTouchedI(), getTouchedJ());
             }

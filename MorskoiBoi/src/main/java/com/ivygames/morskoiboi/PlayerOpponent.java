@@ -10,7 +10,6 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
@@ -86,11 +85,6 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public String getName() {
         return mName;
-    }
-
-    public void shoot(int x, int y) {
-        Ln.v(x + "," + y);
-        mOpponent.onShotAt(Vector2.get(x, y));
     }
 
     public Board getEnemyBoard() {
