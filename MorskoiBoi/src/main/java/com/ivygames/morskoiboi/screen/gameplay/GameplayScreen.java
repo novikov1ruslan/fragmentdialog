@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -104,6 +105,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
+
+    private long mUnlockedTime;
+    private long mStartTime;
+    private boolean mGameIsOn;
+
     @NonNull
     private final Runnable mShowLostScreenCommand = new Runnable() {
 
@@ -300,6 +306,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void showPauseDialog() {
         mLayout.lock();
+        updateUnlockedTime();
         Runnable pauseCommand = new Runnable() {
 
             @Override
@@ -314,6 +321,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 mTimerController.start();
                 // before dialog was displayed, layout has been locked
                 mLayout.unLock();
+                mGameIsOn = true;
+                mStartTime = SystemClock.elapsedRealtime();
             }
         };
         SimpleActionDialog.create(R.string.pause, R.string.continue_str, pauseCommand).show(mFm, DIALOG);
@@ -463,6 +472,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             Vector2 aim = Vector2.get(x, y);
             Ln.d("shooting at: " + aim + cell + ", timer cancelled, locking board");
             mLayout.lock();
+            updateUnlockedTime();
+
             mLayout.setAim(aim);
             mGameplaySounds.playWhistleSound();
             mPlayer.shoot(x, y);
@@ -481,9 +492,19 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     }
 
+    private void updateUnlockedTime() {
+        if (!mGameIsOn) {
+            return;
+        }
+        long d = SystemClock.elapsedRealtime() - mStartTime;
+        mUnlockedTime += d;
+        Ln.v("d = " + d + ", mUnlockedTime=" + mUnlockedTime);
+    }
+
     private void showOpponentTurn() {
         mParent.startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
+        updateUnlockedTime();
         mMyTurn = false;
     }
 
@@ -494,6 +515,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private void showPlayerTurn() {
         mParent.startService(getServiceIntent(getString(R.string.your_turn)));
         mLayout.playerTurn();
+        mGameIsOn = true;
+        mStartTime = SystemClock.elapsedRealtime();
         mMyTurn = true;
     }
 
@@ -513,7 +536,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void go() {
             mPlayer.go();
             showPlayerTurn();
-            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
+            if (isResumed() || mGame.getType() != Type.VS_ANDROID) {
                 Ln.d("player's turn - starting timer");
                 mTimerController.start(); // for all practical scenarios - start will only be called from here
             } else {
@@ -553,7 +576,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     Ln.d("enemy has lost!!!");
                     disableBackPress();
 
-                    mGame.setTimeSpent(mLayout.getUnlockedTime());
+                    mGame.setTimeSpent(mUnlockedTime);
                     mEnemy.onLost(mPlayerPrivateBoard);
                     resetPlayer();
 

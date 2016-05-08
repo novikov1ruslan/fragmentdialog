@@ -38,8 +38,14 @@ public interface GameplayLayoutInterface {
 
     void setAim(@NonNull Vector2 aim);
 
+    /**
+     * unlocks and sets border
+     */
     void playerTurn();
 
+    /**
+     * locks and sets border
+     */
     void enemyTurn();
 
     void hideOpponentSettingBoardNotification();
@@ -53,8 +59,6 @@ public interface GameplayLayoutInterface {
     void shakeEnemyBoard();
 
     void win();
-
-    long getUnlockedTime();
 
     void shakePlayerBoard();
 

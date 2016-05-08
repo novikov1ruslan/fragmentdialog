@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -36,9 +35,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     private ImageButton mSoundButton;
 
     private final Animation mShake;
-    private long mStartTime;
-    private long mUnlockedTime;
-    private boolean mGameIsOn;
     private Bitmap mBwBitmap;
     private DigitalTimerView mTimerView;
     private GameplayLayoutListener mListener;
@@ -79,45 +75,49 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         mSettingBoardText = (TextView) findViewById(R.id.setting_board_notification);
     }
 
+    @Override
     public void setSound(boolean on) {
         if (mSoundButton != null) {
             mSoundButton.setImageResource(on ? R.drawable.sound_on : R.drawable.sound_off);
         }
     }
 
+    @Override
     public void setAim(@NonNull Vector2 aim) {
         mEnemyBoardView.setAim(aim);
     }
 
+    @Override
     public void removeAim() {
         mEnemyBoardView.removeAim();
     }
 
-    public long getUnlockedTime() {
-        return mUnlockedTime;
-    }
-
+    @Override
     public void setPlayerName(@NonNull CharSequence name) {
         if (mPlayerNameView != null) {
             mPlayerNameView.setText(name);
         }
     }
 
+    @Override
     public void setEnemyName(@NonNull CharSequence name) {
         if (mEnemyNameView != null) {
             mEnemyNameView.setText(name);
         }
     }
 
+    @Override
     public void setPlayerBoard(@NonNull Board board) {
         mMyBoardView.setBoard(board);
     }
 
+    @Override
     public void setEnemyBoard(@NonNull Board board) {
         mEnemyBoardView.setBoard(board);
         invalidate();
     }
 
+    @Override
     public void updateMyWorkingShips(@NonNull Collection<Ship> workingShips) {
         mFleetView.setMyShips(workingShips);
     }
@@ -127,72 +127,66 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         mFleetView.init(shipsSizes);
     }
 
+    @Override
     public void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips) {
         mFleetView.setEnemyShips(workingShips);
     }
 
+    @Override
     public void setShotListener(@NonNull ShotListener listener) {
         mEnemyBoardView.setShotListener(listener);
     }
 
     @Override
     public void unLock() {
-        mGameIsOn = true;
         mEnemyBoardView.unLock();
-        mStartTime = SystemClock.elapsedRealtime();
     }
 
+    @Override
     public boolean isLocked() {
         return mEnemyBoardView.isLocked();
     }
 
+    @Override
     public void lock() {
         mEnemyBoardView.lock();
-
-        // game is on after the first unlock
-        if (!mGameIsOn) {
-            return;
-        }
-
-        long d = SystemClock.elapsedRealtime() - mStartTime;
-        mUnlockedTime += d;
-        Ln.v("d = " + d + ", mUnlockedTime=" + mUnlockedTime);
     }
 
-    /**
-     * locks and sets border
-     */
+    @Override
     public void enemyTurn() {
         lock();
         mEnemyBoardView.hideTurnBorder();
         mMyBoardView.showTurnBorder();
     }
 
-    /**
-     * unlocks and sets border
-     */
+    @Override
     public void playerTurn() {
         unLock();
         mEnemyBoardView.showTurnBorder();
         mMyBoardView.hideTurnBorder();
     }
 
+    @Override
     public void invalidateEnemyBoard() {
         mEnemyBoardView.invalidate();
     }
 
+    @Override
     public void invalidatePlayerBoard() {
         mMyBoardView.invalidate();
     }
 
+    @Override
     public void shakePlayerBoard() {
         mMyBoardView.startAnimation(mShake);
     }
 
+    @Override
     public void shakeEnemyBoard() {
         mEnemyBoardView.startAnimation(mShake);
     }
 
+    @Override
     public void win() {
         ColorMatrix cm = new ColorMatrix();
         cm.setSaturation(2);
@@ -200,6 +194,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         gameOver(cf);
     }
 
+    @Override
     public void lost() {
         ColorMatrix cm = new ColorMatrix();
         cm.setSaturation(0);
@@ -258,6 +253,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         }
     }
 
+    @Override
     public void setShotResult(@NonNull PokeResult result) {
         mEnemyBoardView.setShotResult(result);
     }
@@ -267,10 +263,12 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         mTimerView.setCurrentTime(seconds);
     }
 
+    @Override
     public void setAlarmTime(int alarmTimeSeconds) {
         mTimerView.setAlarmThreshold(alarmTimeSeconds);
     }
 
+    @Override
     public void setLayoutListener(@NonNull GameplayLayoutListener listener) {
         mListener = listener;
     }
@@ -292,15 +290,18 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         }
     }
 
+    @Override
     public void hideChatButton() {
         mChatButton.setVisibility(GONE);
     }
 
+    @Override
     public void showOpponentSettingBoardNotification(@NonNull String message) {
         mSettingBoardText.setText(message);
         mSettingBoardText.setVisibility(VISIBLE);
     }
 
+    @Override
     public void hideOpponentSettingBoardNotification() {
         mSettingBoardText.setVisibility(GONE);
     }
