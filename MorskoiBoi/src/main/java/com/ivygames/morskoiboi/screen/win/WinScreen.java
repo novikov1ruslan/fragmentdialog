@@ -29,6 +29,7 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
@@ -51,6 +52,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     @NonNull
     private final Collection<Ship> mShips;
+    @NonNull
+    private final ScoreStatistics mStatistics;
 
     private final int mScores;
 
@@ -69,8 +72,12 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private final boolean mOpponentSurrendered;
 
     public WinScreen(@NonNull BattleshipActivity parent,
-                     @NonNull Collection<Ship> fleet, boolean opponentSurrendered) {
+                     @NonNull Collection<Ship> fleet,
+                     @NonNull ScoreStatistics statistics,
+                     boolean opponentSurrendered) {
         super(parent);
+        mShips = fleet;
+        mStatistics = statistics;
         mOpponentSurrendered = opponentSurrendered;
 
         mGame = Model.instance.game;
@@ -79,9 +86,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mSoundBar = SoundBarFactory.create(mParent.getAssets(), "win.ogg", audioManager);
         mSoundBar.play();
 
-        mTime = mGame.getTimeSpent();
-        mShips = fleet;
-        mScores = mRules.calcTotalScores(mShips, mGame, opponentSurrendered);
+        mTime = statistics.getTimeSpent();
+        mScores = mRules.calcTotalScores(mShips, mGame.getType(), mStatistics, opponentSurrendered);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();
@@ -91,9 +97,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             if (GameConstants.IS_TEST_MODE) {
                 Ln.i("game is in test mode - achievements not updated");
             } else {
-                mAchievementsManager.processCombo(mGame.getCombo());
-                mAchievementsManager.processShellsLeft(mGame.getShells());
-                mAchievementsManager.processTimeSpent(mGame.getTimeSpent());
+                mAchievementsManager.processCombo(mStatistics.getCombo());
+                mAchievementsManager.processShellsLeft(mStatistics.getShells());
+                mAchievementsManager.processTimeSpent(mStatistics.getTimeSpent());
                 mAchievementsManager.processShipsLeft(mShips);
                 mAchievementsManager.processScores(mScores);
             }
@@ -228,7 +234,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
-        Model.instance.game.clearState();
         setScreen(GameHandler.newBoardSetupScreen());
     }
 

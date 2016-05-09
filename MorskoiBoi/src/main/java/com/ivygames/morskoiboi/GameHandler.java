@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.Screen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
@@ -84,8 +85,9 @@ public class GameHandler {
         return new GameplayScreen(activity, new TurnTimerController(turnTimeout, new AsyncTurnTimerFactory()));
     }
 
-    public static WinScreen newWinScreen(Collection<Ship> fleet, boolean opponentSurrendered) {
-        return new WinScreen(activity, fleet, opponentSurrendered);
+    public static WinScreen newWinScreen(@NonNull Collection<Ship> fleet, @NonNull ScoreStatistics statistics,
+                                         boolean opponentSurrendered) {
+        return new WinScreen(activity, fleet, statistics, opponentSurrendered);
     }
 
     public static LostScreen newLostScreen() {

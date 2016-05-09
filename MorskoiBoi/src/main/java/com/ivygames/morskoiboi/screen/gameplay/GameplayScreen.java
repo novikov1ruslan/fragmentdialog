@@ -38,6 +38,7 @@ import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.rt.InternetService;
@@ -190,6 +191,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     };
     private boolean mMyTurn;
+    @NonNull
+    private final ScoreStatistics mStatistics;
 
     public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull TurnTimerController timerController) {
         super(parent);
@@ -198,6 +201,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mBackPressEnabled = true;
+        mStatistics = new ScoreStatistics();
         mPlayer = Model.instance.player;
         mEnemy = Model.instance.opponent;
         mGame = Model.instance.game;
@@ -556,7 +560,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             Ln.v(result);
             mPlayer.onShotResult(result);
-            mGame.updateWithNewShot(result.ship, result.cell);
+            mStatistics.updateWithNewShot(result.ship, result.cell);
 
             mLayout.removeAim();
             mLayout.setShotResult(result);
@@ -576,7 +580,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     Ln.d("enemy has lost!!!");
                     disableBackPress();
 
-                    mGame.setTimeSpent(mUnlockedTime);
+                    mStatistics.setTimeSpent(mUnlockedTime);
                     mEnemy.onLost(mPlayerPrivateBoard);
                     resetPlayer();
 
@@ -827,7 +831,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(GameHandler.newWinScreen(mPlayerPrivateBoard.getShips(), mOpponentSurrendered));
+            setScreen(GameHandler.newWinScreen(mPlayerPrivateBoard.getShips(), mStatistics, mOpponentSurrendered));
         }
     }
 }

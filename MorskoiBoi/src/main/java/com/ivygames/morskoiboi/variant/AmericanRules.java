@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ public abstract class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered) {
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type, @NonNull ScoreStatistics statistics, boolean surrendered) {
         // TODO: implement
         return 0;
     }

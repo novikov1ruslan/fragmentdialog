@@ -40,7 +40,7 @@ public class AchievementsManager {
     private final GoogleApiClientWrapper mApiClient;
     @NonNull
     private final GameSettings mSettings;
-
+    @NonNull
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
     public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {

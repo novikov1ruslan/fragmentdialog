@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.rt.InternetGame;
 
@@ -44,8 +45,8 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game, boolean surrendered) {
-        int score = calculateScoresForGame(ships, game);
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type, @NonNull ScoreStatistics statistics, boolean surrendered) {
+        int score = calculateScoresForGame(type, ships, statistics);
 
         if (surrendered) {
             score = score / 2;
@@ -56,11 +57,10 @@ public class RussianRules extends AbstractRules {
         return score;
     }
 
-    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull Game game) {
+    private static int calculateScoresForGame(@NonNull Game.Type type, @NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics) {
         int progress;
-        Game.Type type = game.getType();
         if (type == Game.Type.VS_ANDROID) {
-            progress = calcScoresForAndroidGame(ships, game) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
+            progress = calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
         } else if (type == Game.Type.INTERNET) {
             progress = InternetGame.WIN_PROGRESS_POINTS;
         } else {
@@ -69,11 +69,11 @@ public class RussianRules extends AbstractRules {
         return progress;
     }
 
-    private static int calcScoresForAndroidGame(@NonNull Collection<Ship> ships, @NonNull Game game) {
-        float timeMultiplier = getTimeMultiplier(game.getTimeSpent());
-        int shellsBonus = calcShellsBonus(game.getShells());
+    private static int calcScoresForAndroidGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics) {
+        float timeMultiplier = getTimeMultiplier(statistics.getTimeSpent());
+        int shellsBonus = calcShellsBonus(statistics.getShells());
         int shipsBonus = calcSavedShipsBonus(ships);
-        int comboBonus = calcComboBonus(game.getCombo());
+        int comboBonus = calcComboBonus(statistics.getCombo());
 
         return (int) (shellsBonus * timeMultiplier) + shipsBonus + comboBonus;
     }
