@@ -666,7 +666,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             // revealing the enemy board
             mEnemyPublicBoard = board;
             updateEnemyStatus();
-            mLayout.setEnemyBoard(mEnemyPublicBoard);
+            mLayout.setEnemyBoard(board);
             resetPlayer();
             lost(LOST_GAME_WITH_REVEAL_DELAY);
         }

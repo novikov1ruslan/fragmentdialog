@@ -163,12 +163,6 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void when_shooting__enemy_is_shot_at() throws Exception {
-        mPlayer.shoot(5, 5);
-        verify(mEnemy, times(1)).onShotAt(Vector2.get(5, 5));
-    }
-
-    @Test
     public void when_asking_for_board__actual_board_returned() {
         Board board = new Board();
         board.setCell(Cell.newMiss(), Vector2.get(4, 4));

@@ -29,6 +29,9 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class BoardTest {
 
+	private static final String EMPTY_BOARD = "{\"ships\":[],\"cells\":\"                                                                                                    \"}";
+	private static final String BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}],\"cells\":\"                                            000       000       000                                 \"}";
+
 	private Board mBoard;
 	private Placement mPlacementAlgorithm;
 
@@ -413,14 +416,27 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void successfull_Recreation_After_Serializing_To_String_Empty_Board() {
+	public void successful_Recreation_After_Serializing_To_String_Empty_Board() {
 		String json = mBoard.toJson().toString();
 		Board board = Board.fromJson(json);
 		assertBoardsEqual(mBoard, board);
 	}
 
 	@Test
-	public void successfull_Recreation_After_Serializing_To_String_Board_With_Ship() {
+	public void ParsingEmptyBoard() {
+		Board board = Board.fromJson(EMPTY_BOARD);
+		assertBoardIsEmpty(board);
+	}
+
+	@Test
+	public void ParsingBoardWithShip() {
+		Board board = Board.fromJson(BOARD_WITH_SHIP);
+		putShipAt(new Ship(1), 5, 5);
+		assertBoardsEqual(mBoard, board);
+	}
+
+	@Test
+	public void successful_Recreation_After_Serializing_To_String_Board_With_Ship() {
 		putShipAt(new Ship(1), 5, 5);
 		String json = mBoard.toJson().toString();
 		Board board = Board.fromJson(json);
