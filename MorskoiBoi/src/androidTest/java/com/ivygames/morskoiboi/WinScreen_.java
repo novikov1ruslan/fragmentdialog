@@ -6,6 +6,7 @@ import android.view.View;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -34,6 +35,7 @@ public class WinScreen_ extends OnlineScreen_ {
     private ProgressManager progressManager;
     private Collection<Ship> fleet = new ArrayList<>();
     protected boolean surrendered;
+    protected ScoreStatistics statistics;
 
     @Before
     public void setup() {
@@ -43,6 +45,7 @@ public class WinScreen_ extends OnlineScreen_ {
         Dependencies.inject(achievementsManager);
         progressManager = mock(ProgressManager.class);
         Dependencies.inject(progressManager);
+        statistics = mock(ScoreStatistics.class);
 
         when(settings().incrementProgress(anyInt())).thenReturn(new Progress(0));
         RulesFactory.setRules(rules);
@@ -50,7 +53,7 @@ public class WinScreen_ extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new WinScreen(activity(), fleet, surrendered);
+        return new WinScreen(activity, game, fleet, statistics, surrendered);
     }
 
     protected void expectProcessAchievementsBeCalled(VerificationMode times) {
@@ -82,7 +85,7 @@ public class WinScreen_ extends OnlineScreen_ {
 
     protected void setScores(int scores) {
         setGameType(Game.Type.VS_ANDROID);
-        when(rules.calcTotalScores(any(Collection.class), any(Game.class), anyBoolean())).thenReturn(scores);
+        when(rules.calcTotalScores(any(Collection.class), any(Game.Type.class), any(ScoreStatistics.class), anyBoolean())).thenReturn(scores);
     }
 
     protected void setPenalty(Integer penalty) {

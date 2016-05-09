@@ -137,12 +137,12 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             FragmentAlertDialog.showNote(mFm, DIALOG, R.string.network_error);
         } else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
             mApiClient.disconnect();
-            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
+            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
         } else {
             // STATUS_REAL_TIME_CONNECTION_FAILED
             // STATUS_INTERNAL_ERROR
             ExceptionEvent.send("internet_game", GamesStatusCodes.getStatusString(statusCode));
-            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
+            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
         }
     }
 
@@ -213,7 +213,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required - returning to select game screen");
             hideWaitingScreen();
-            new BackToSelectGameCommand(parent()).run();
+            new BackToSelectGameCommand(parent(), mInternetGame).run();
             mApiClient.disconnect();
             return;
         }
@@ -236,8 +236,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         hideWaitingScreen();
         if (resultCode == Activity.RESULT_OK) {
             Ln.d("starting game");
-            Model.instance.game = mInternetGame;
-            setScreen(GameHandler.newBoardSetupScreen());
+            setScreen(GameHandler.newBoardSetupScreen(mInternetGame));
         } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
             Ln.d("user explicitly chose to leave the room");
             // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room

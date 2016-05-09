@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
@@ -23,7 +22,8 @@ public interface Rules {
 
     int[] getAllShipsSizes();
 
-    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type, @NonNull ScoreStatistics statistics, boolean surrendered);
+    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type,
+                        @NonNull ScoreStatistics statistics, boolean surrendered);
 
     Cell setAdjacentCellForShip(@NonNull Ship ship, @NonNull Cell cell);
 

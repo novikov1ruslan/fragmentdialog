@@ -39,7 +39,7 @@ public class SelectGameScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new SelectGameScreen(activity(), settings());
+        return new SelectGameScreen(activity, settings());
     }
 
     @Test

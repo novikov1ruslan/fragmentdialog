@@ -1,14 +1,12 @@
 package com.ivygames.morskoiboi.scenario;
 
 import com.ivygames.morskoiboi.OnlineScreen_;
-import com.ivygames.morskoiboi.ScreenTest;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 public class ScenarioTest extends OnlineScreen_ {
@@ -18,7 +16,7 @@ public class ScenarioTest extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new GameplayScreen(activity(), timerController);
+        return new GameplayScreen(activity, game, timerController);
     }
 
     @Before
@@ -27,7 +25,7 @@ public class ScenarioTest extends OnlineScreen_ {
         timerController = Mockito.mock(TurnTimerController.class);
     }
 
-    @Test
+//    @Test
     public void WhenPlayerLooses__EnemyBoardShown() {
         // TODO:
         showScreen();

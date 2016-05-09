@@ -61,7 +61,7 @@ public class WinScreenTest extends WinScreen_ {
     @Test
     public void WhenGameTypeIsAndroid__ScoresAndDurationShown() {
         setGameType(Game.Type.VS_ANDROID);
-        when(game.getTimeSpent()).thenReturn(135000L);
+        when(statistics.getTimeSpent()).thenReturn(135000L);
         setScores(100);
         showScreen();
         onView(timeView()).check(matches(withText("2:15")));

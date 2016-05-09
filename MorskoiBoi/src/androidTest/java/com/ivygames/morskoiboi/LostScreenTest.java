@@ -16,7 +16,7 @@ public class LostScreenTest extends LostScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new LostScreen(activity());
+        return new LostScreen(activity, game);
     }
 
     @Test
@@ -42,11 +42,10 @@ public class LostScreenTest extends LostScreen_ {
     }
 
     @Test
-    public void AfterYesPressed__GameStateClearedBoardSetupScreenShown() {
+    public void AfterYesPressed__BoardSetupScreenShown() {
         when(rules.getAllShipsSizes()).thenReturn(new int[]{});
         showScreen();
         clickOn(yesButton());
-        verify(game, times(1)).clearState();
         checkDisplayed(BOARD_SETUP_LAYOUT);
     }
 

@@ -21,7 +21,7 @@ public class LostScreen_ extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new LostScreen(activity());
+        return new LostScreen(activity, game);
     }
 
 }

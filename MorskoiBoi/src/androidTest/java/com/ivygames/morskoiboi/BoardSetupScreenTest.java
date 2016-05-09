@@ -1,17 +1,11 @@
 package com.ivygames.morskoiboi;
 
-import android.support.annotation.NonNull;
-import android.view.View;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +19,7 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
     }
 
     @Test
-    public void WhenBoardIsSet__PressingDone_OpensGameplayScreen() {
+    public void WhenBoardIsSet_PressingDone__OpensGameplayScreen() {
         showScreen();
         when(rules.isBoardSet(any(Board.class))).thenReturn(true);
         clickOn(done());

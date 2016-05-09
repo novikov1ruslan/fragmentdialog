@@ -27,7 +27,7 @@ public class RanksScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new RanksListScreen(activity(), settings());
+        return new RanksListScreen(activity, settings());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class RanksScreenTest extends ScreenTest {
     public void WhenRankInSettingsIsCaptain__CaptainImageIsDisplayed() {
         setProgress(Rank.CAPTAIN.getScore());
         setScreen(newScreen());
-        ListView list = (ListView) activity().findViewById(R.id.ranks);
+        ListView list = (ListView) activity.findViewById(R.id.ranks);
         ListAdapter adapter = list.getAdapter();
         assertThat(getItemAt(adapter, 0), is(Rank.SEAMAN));
         assertThat(getItemAt(adapter, 6), is(Rank.WARRANT_OFFICER));

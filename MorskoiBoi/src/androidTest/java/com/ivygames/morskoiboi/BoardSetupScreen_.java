@@ -21,7 +21,7 @@ public class BoardSetupScreen_ extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new BoardSetupScreen(activity());
+        return new BoardSetupScreen(activity, game);
     }
 
     @NonNull

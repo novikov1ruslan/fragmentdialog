@@ -34,7 +34,7 @@ public class MainScreen_RateTest extends MainScreenTest {
     @Test
     public void WhenRateButtonPressed__RateIntentFiredAndChoiceSaved() {
         RateDialogShown();
-        Intent intent = PlayUtils.rateIntent(activity().getPackageName());
+        Intent intent = PlayUtils.rateIntent(activity.getPackageName());
         clickForIntent(withText(R.string.rate), fromIntent(intent));
         verify(settings(), times(1)).setRated();
         checkDoesNotExist(rateDialog());

@@ -42,7 +42,6 @@ import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.rt.InternetService;
-import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.utils.GameUtils;
@@ -76,8 +75,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public static final int ALARM_TIME_SECONDS = 10;
 
     @NonNull
-    private final Game mGame;
-    @NonNull
     private final PlayerOpponent mPlayer;
     @NonNull
     private final Opponent mEnemy;
@@ -95,8 +92,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final ChatAdapter mChatAdapter;
     @NonNull
     private final GameplaySoundManager mGameplaySounds;
-    @NonNull
-    private final Runnable mBackToSelectGameCommand;
 
     private GameplayLayoutInterface mLayout;
     private boolean mBackPressEnabled;
@@ -116,7 +111,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(GameHandler.newLostScreen());
+            setScreen(GameHandler.newLostScreen(mGame));
         }
     };
     @NonNull
@@ -194,8 +189,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final ScoreStatistics mStatistics;
 
-    public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull TurnTimerController timerController) {
-        super(parent);
+    public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull TurnTimerController timerController) {
+        super(parent, game);
+        mTimerController = timerController;
+
         mMatchStatusIntent = new Intent(parent, InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
@@ -204,17 +201,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mStatistics = new ScoreStatistics();
         mPlayer = Model.instance.player;
         mEnemy = Model.instance.opponent;
-        mGame = Model.instance.game;
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
 
         mVibrator = new VibratorFacade(mParent);
 
-        mBackToSelectGameCommand = new BackToSelectGameCommand(parent());
-
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
         mChatAdapter = new ChatAdapter(getLayoutInflater());
-        mTimerController = timerController;
         mTimerController.setListener(mTurnTimerListener);
         Ln.d("game data prepared");
     }
@@ -831,7 +824,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(GameHandler.newWinScreen(mPlayerPrivateBoard.getShips(), mStatistics, mOpponentSurrendered));
+            setScreen(GameHandler.newWinScreen(mGame, mPlayerPrivateBoard.getShips(),
+                    mStatistics, mOpponentSurrendered));
         }
     }
 }

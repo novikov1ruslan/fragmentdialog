@@ -32,7 +32,6 @@ import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -46,9 +45,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private static final String TAG = "WIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private final Game mGame;
     private WinLayoutSmall mLayout;
-    private long mTime;
+    private final long mTime;
 
     @NonNull
     private final Collection<Ship> mShips;
@@ -72,15 +70,14 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private final boolean mOpponentSurrendered;
 
     public WinScreen(@NonNull BattleshipActivity parent,
+                     @NonNull Game game,
                      @NonNull Collection<Ship> fleet,
                      @NonNull ScoreStatistics statistics,
                      boolean opponentSurrendered) {
-        super(parent);
+        super(parent, game);
         mShips = fleet;
         mStatistics = statistics;
         mOpponentSurrendered = opponentSurrendered;
-
-        mGame = Model.instance.game;
 
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
         mSoundBar = SoundBarFactory.create(mParent.getAssets(), "win.ogg", audioManager);
@@ -234,13 +231,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
-        setScreen(GameHandler.newBoardSetupScreen());
+        setScreen(GameHandler.newBoardSetupScreen(mGame));
     }
 
     private void showWantToLeaveRoomDialog() {
         String displayName = Model.instance.opponent.getName();
         String message = getString(R.string.want_to_leave_room, displayName);
-        DialogUtils.newOkCancelDialog(message, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
+        DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
     private void submitScore(int totalScores) {
@@ -261,7 +258,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         if (shouldNotifyOpponent() && !mOpponentSurrendered) {
             showWantToLeaveRoomDialog();
         } else {
-            new BackToSelectGameCommand(parent()).run();
+            mBackToSelectGameCommand.run();
         }
     }
 

@@ -6,17 +6,24 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
+    private static final int PENALTY = 2000;
 
-    private final int PENALTY = 3000;
+    @Before
+    public void setup() {
+        super.setup();
+        when(rules.calcSurrenderPenalty(anyCollection())).thenReturn(PENALTY);
+    }
 
     @Test
     public void WhenBackPressedForInternetGame_AndEnemyIsReady__DialogDisplayed() {
@@ -62,7 +69,7 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
     }
 
     private Matcher<View> surrenderDialog() {
-        String message = getString(R.string.surrender_question, "" + -PENALTY);
+        String message = getString(R.string.surrender_question, "-" + PENALTY);
         return withText(message);
     }
 }

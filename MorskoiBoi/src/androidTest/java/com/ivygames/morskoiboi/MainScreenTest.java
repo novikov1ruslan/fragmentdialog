@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
-import com.ivygames.morskoiboi.screen.view.InvitationButton;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -25,7 +23,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.mockito.Mockito.when;
 
 
 public class MainScreenTest extends ScreenTest {
@@ -37,7 +34,7 @@ public class MainScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new MainScreen(activity(), apiClient(), settings());
+        return new MainScreen(activity, apiClient(), settings());
     }
 
     public void TestNoAds() {

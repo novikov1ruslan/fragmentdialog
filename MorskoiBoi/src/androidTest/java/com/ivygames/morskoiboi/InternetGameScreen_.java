@@ -13,7 +13,7 @@ public class InternetGameScreen_ extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new InternetGameScreen(activity());
+        return new InternetGameScreen(activity);
     }
 
 }

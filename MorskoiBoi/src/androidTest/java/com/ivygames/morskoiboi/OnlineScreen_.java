@@ -13,6 +13,7 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,7 +36,6 @@ public abstract class OnlineScreen_ extends ScreenTest {
         Model.instance.opponent = opponent;
 
         game = mock(Game.class);
-        Model.instance.game = game;
 
         player = mock(PlayerOpponent.class);
         when(player.getBoard()).thenReturn(new Board());

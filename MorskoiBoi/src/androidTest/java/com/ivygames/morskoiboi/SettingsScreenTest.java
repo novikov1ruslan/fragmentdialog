@@ -44,7 +44,7 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new SettingsScreen(activity(), apiClient(), settings(), vibratorFacade);
+        return new SettingsScreen(activity, apiClient(), settings(), vibratorFacade);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class SettingsScreenTest extends ScreenTest {
     @Test
     public void when_rate_button_pressed__play_intent_fired() {
         setScreen(newScreen());
-        Intent intent = PlayUtils.rateIntent(activity().getPackageName());
+        Intent intent = PlayUtils.rateIntent(activity.getPackageName());
         Matcher<Intent> expectedIntent = allOf(hasAction(intent.getAction()), hasData(intent.getData()));
         clickForIntent(withId(R.id.rate_btn), expectedIntent);
     }

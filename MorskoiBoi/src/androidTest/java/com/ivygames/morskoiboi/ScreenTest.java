@@ -63,7 +63,7 @@ public abstract class ScreenTest {
     @Rule
     public ScreenTestRule rule = new ScreenTestRule();
 
-    private BattleshipActivity activity;
+    protected BattleshipActivity activity;
     private TaskResource setScreenResource;
     private TaskResource signInSucceeded;
     private TaskResource pause;
@@ -148,7 +148,7 @@ public abstract class ScreenTest {
         resume = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                activity().onResume();
+                activity.onResume();
             }
         });
         registerIdlingResources(resume);
@@ -158,7 +158,7 @@ public abstract class ScreenTest {
         pause = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                activity().onPause();
+                activity.onPause();
             }
         });
         registerIdlingResources(pause);
@@ -168,7 +168,7 @@ public abstract class ScreenTest {
         destroy = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                activity().onDestroy();
+                activity.onDestroy();
             }
         });
         registerIdlingResources(destroy);
@@ -194,10 +194,6 @@ public abstract class ScreenTest {
 
     protected final View viewById(int id) {
         return activity.findViewById(id);
-    }
-
-    protected final BattleshipActivity activity() {
-        return activity;
     }
 
     protected final GoogleApiClientWrapper apiClient() {
@@ -237,11 +233,11 @@ public abstract class ScreenTest {
     }
 
     protected final String getString(int id, String text) {
-        return activity().getString(id, text);
+        return activity.getString(id, text);
     }
 
     protected final String getString(int id) {
-        return activity().getString(id);
+        return activity.getString(id);
     }
 
     protected static void clickOn(Matcher<View> viewMatcher) {

@@ -25,7 +25,7 @@ public class DeviceListScreenTest extends ScreenTest {
     @Override
     public BattleshipScreen newScreen() {
 //        when(btAdapter.getBondedDevices()).thenReturn(new HashSet<BluetoothDevice>());
-        return new DeviceListScreen(activity(), btAdapter);
+        return new DeviceListScreen(activity, btAdapter);
     }
 
     @Test

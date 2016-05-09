@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
+import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.Screen;
@@ -65,8 +66,8 @@ public class GameHandler {
         return new SelectGameScreen(activity, settings);
     }
 
-    public static BoardSetupScreen newBoardSetupScreen() {
-        return new BoardSetupScreen(activity);
+    public static BoardSetupScreen newBoardSetupScreen(@NonNull Game game) {
+        return new BoardSetupScreen(activity, game);
     }
 
     public static BluetoothScreen newBluetoothScreen(@NonNull BluetoothAdapterWrapper adapter) {
@@ -81,17 +82,21 @@ public class GameHandler {
         return new InternetGameScreen(activity);
     }
 
-    public static GameplayScreen newGameplayScreen(int turnTimeout) {
-        return new GameplayScreen(activity, new TurnTimerController(turnTimeout, new AsyncTurnTimerFactory()));
+    public static GameplayScreen newGameplayScreen(@NonNull Game game) {
+        return new GameplayScreen(activity, game,
+                new TurnTimerController(game.getTurnTimeout(),
+                        new AsyncTurnTimerFactory()));
     }
 
-    public static WinScreen newWinScreen(@NonNull Collection<Ship> fleet, @NonNull ScoreStatistics statistics,
+    public static WinScreen newWinScreen(@NonNull Game game,
+                                         @NonNull Collection<Ship> fleet,
+                                         @NonNull ScoreStatistics statistics,
                                          boolean opponentSurrendered) {
-        return new WinScreen(activity, fleet, statistics, opponentSurrendered);
+        return new WinScreen(activity, game, fleet, statistics, opponentSurrendered);
     }
 
-    public static LostScreen newLostScreen() {
-        return new LostScreen(activity);
+    public static LostScreen newLostScreen(@NonNull Game game) {
+        return new LostScreen(activity, game);
     }
 
     public static RanksListScreen newRanksListScreen() {

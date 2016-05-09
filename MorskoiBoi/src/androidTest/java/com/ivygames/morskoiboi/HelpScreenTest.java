@@ -18,7 +18,7 @@ public class HelpScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new HelpScreen(activity());
+        return new HelpScreen(activity);
     }
 
     @Test

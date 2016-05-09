@@ -1,10 +1,11 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
-import com.ivygames.morskoiboi.model.Model;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -14,8 +15,17 @@ import de.greenrobot.event.EventBus;
 public abstract class OnlineGameScreen extends BattleshipScreen {
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    public OnlineGameScreen(BattleshipActivity parent) {
+    @NonNull
+    protected final Game mGame;
+
+    @NonNull
+    protected final Runnable mBackToSelectGameCommand;
+
+    public OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
         super(parent);
+        mGame = game;
+        mBackToSelectGameCommand = new BackToSelectGameCommand(parent, game);
+
         Ln.v(this + " screen created - register event listener");
         EventBus.getDefault().register(this);
     }
@@ -40,14 +50,15 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
     }
 
     private void showOpponentLeftDialog() {
-        SimpleActionDialog.create(R.string.opponent_left, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
+        SimpleActionDialog.create(R.string.opponent_left, new BackToSelectGameCommand(parent(), mGame)).show(mFm, DIALOG);
     }
 
     private void showConnectionLostDialog() {
-        SimpleActionDialog.create(R.string.connection_lost, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
+        SimpleActionDialog.create(R.string.connection_lost,
+                new BackToSelectGameCommand(parent(), mGame)).show(mFm, DIALOG);
     }
 
     protected final boolean shouldNotifyOpponent() {
-        return Model.instance.game.getType() != Game.Type.VS_ANDROID;
+        return mGame.getType() != Game.Type.VS_ANDROID;
     }
 }

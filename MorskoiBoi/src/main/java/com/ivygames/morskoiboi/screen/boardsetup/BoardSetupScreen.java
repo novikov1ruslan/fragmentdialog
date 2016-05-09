@@ -27,7 +27,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;
@@ -73,18 +72,18 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void run() {
             Ln.d("board setup timeout");
             AnalyticsEvent.send("board setup timeout");
-            Model.instance.game.finish();
+            mGame.finish();
             DialogUtils.newOkDialog(R.string.session_timeout, new Runnable() {
                 @Override
                 public void run() {
-                    backToSelectGameScreen();
+                    mBackToSelectGameCommand.run();
                 }
             }).show(mFm, FragmentAlertDialog.TAG);
         }
     };
 
-    public BoardSetupScreen(@NonNull BattleshipActivity parent) {
-        super(parent);
+    public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
+        super(parent, game);
         mFleet.addAll(generateFullHorizontalFleet());
         Ln.d("new board created, fleet initialized");
     }
@@ -106,7 +105,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
-        if (Model.instance.game.getType() == Game.Type.INTERNET || GameConstants.IS_TEST_MODE) {
+        if (mGame.getType() == Game.Type.INTERNET || GameConstants.IS_TEST_MODE) {
             Ln.d("initializing timeout: " + BOARD_SETUP_TIMEOUT);
             mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
         }
@@ -175,7 +174,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     };
 
     private void showGameplayScreen() {
-        setScreen(GameHandler.newGameplayScreen(Model.instance.game.getTurnTimeout()));
+        setScreen(GameHandler.newGameplayScreen(mGame));
     }
 
     private void showSetupValidationError() {
@@ -190,12 +189,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             Ln.d("match against a real human - ask the player if he really wants to exit");
             showWantToLeaveRoomDialog();
         } else {
-            backToSelectGameScreen();
+            mBackToSelectGameCommand.run();
         }
-    }
-
-    private void backToSelectGameScreen() {
-        new BackToSelectGameCommand(parent()).run();
     }
 
     private void showWantToLeaveRoomDialog() {
@@ -208,7 +203,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("left_from_setup", "ok");
                 Ln.d("player decided to leave the game - finishing");
-                backToSelectGameScreen();
+                mBackToSelectGameCommand.run();
             }
         }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
     }

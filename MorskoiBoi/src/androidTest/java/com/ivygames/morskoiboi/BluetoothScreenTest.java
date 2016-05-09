@@ -28,7 +28,7 @@ public class BluetoothScreenTest extends ScreenTest {
 
     @Override
     public BluetoothScreen newScreen() {
-        return new BluetoothScreen(activity(), adapter);
+        return new BluetoothScreen(activity, adapter);
     }
 
     @Test

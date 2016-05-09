@@ -16,8 +16,8 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
+import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -29,6 +29,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "LOST";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
+    @NonNull
     private final SoundBar mSoundBar;
 
     @NonNull
@@ -36,8 +37,8 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     private View mView;
 
-    public LostScreen(BattleshipActivity parent) {
-        super(parent);
+    public LostScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
+        super(parent, game);
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
         mSoundBar = SoundBarFactory.create(mParent.getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
@@ -103,19 +104,19 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         if (shouldNotifyOpponent()) {
             showWantToLeaveRoomDialog();
         } else {
-            new BackToSelectGameCommand(parent()).run();
+            mBackToSelectGameCommand.run();
         }
     }
 
     private void showWantToLeaveRoomDialog() {
         String displayName = Model.instance.opponent.getName();
         String message = getString(R.string.want_to_leave_room, displayName);
-        DialogUtils.newOkCancelDialog(message, new BackToSelectGameCommand(parent())).show(mFm, DIALOG);
+        DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
-        setScreen(GameHandler.newBoardSetupScreen());
+        setScreen(GameHandler.newBoardSetupScreen(mGame));
     }
 
     @Override

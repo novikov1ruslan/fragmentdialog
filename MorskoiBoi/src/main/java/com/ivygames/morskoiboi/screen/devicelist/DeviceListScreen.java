@@ -179,9 +179,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         }
         Placement placement = PlacementFactory.getAlgorithm();
         Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules), opponent);
-        Model.instance.game = new BluetoothGame(connection);
-
-        setScreen(GameHandler.newBoardSetupScreen());
+        setScreen(GameHandler.newBoardSetupScreen(new BluetoothGame(connection)));
     }
 
     @Override
