@@ -91,7 +91,11 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             if (GameConstants.IS_TEST_MODE) {
                 Ln.i("game is in test mode - achievements not updated");
             } else {
-                mAchievementsManager.processAchievements(mGame, mShips, mScores);
+                mAchievementsManager.processCombo(mGame.getCombo());
+                mAchievementsManager.processShellsLeft(mGame.getShells());
+                mAchievementsManager.processTimeSpent(mGame.getTimeSpent());
+                mAchievementsManager.processShipsLeft(mShips);
+                mAchievementsManager.processScores(mScores);
             }
         }
         processScores();

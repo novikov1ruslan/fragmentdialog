@@ -5,10 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
 
 import org.commons.logger.Ln;
@@ -40,13 +38,15 @@ public class AchievementsManager {
 
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
-    private final GameSettings mSettings = Dependencies.getSettings();
+    @NonNull
+    private final GameSettings mSettings;
 
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient) {
+    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
-        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, mSettings);
+        mSettings = settings;
+        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, settings);
     }
 
     public void loadAchievements() {
@@ -54,14 +54,8 @@ public class AchievementsManager {
         loadResult.setResultCallback(mAchievementsLoadCallback);
     }
 
-    public void processAchievements(Game game, Collection<Ship> ships, int scores) {
-        Ln.v("game: " + game + "; ships: " + ships);
-
-        processCombo(game.getCombo());
-        processShellsLeft(game.getShells());
-        processTimeSpent(game.getTimeSpent());
-        processShipsLeft(ships);
-
+    public void processScores(int scores) {
+        Ln.v("scores: " + scores);
         if (scores >= 15000) {
             if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
                 Ln.v(AchievementsManager.name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
@@ -85,7 +79,7 @@ public class AchievementsManager {
         }
     }
 
-    private void processCombo(int combo) {
+    public void processCombo(int combo) {
         Ln.v("combo=" + combo);
         if (combo >= 1) {
             if (unlockIfNotUnlocked(NAVAL_MERIT)) {
@@ -96,7 +90,7 @@ public class AchievementsManager {
         }
     }
 
-    private void processShellsLeft(int shells) {
+    public void processShellsLeft(int shells) {
         Ln.v("shells=" + shells);
         if (shells >= 50) {
             if (unlockIfNotUnlocked(BRAVERY_AND_COURAGE)) {
@@ -107,7 +101,7 @@ public class AchievementsManager {
         }
     }
 
-    private void processTimeSpent(long time) {
+    public void processTimeSpent(long time) {
         Ln.v("time=" + time);
         if (time <= 60000) {
             if (unlockIfNotUnlocked(FLYING_DUTCHMAN)) {
@@ -118,7 +112,7 @@ public class AchievementsManager {
         }
     }
 
-    private void processShipsLeft(Collection<Ship> ships) {
+    public void processShipsLeft(Collection<Ship> ships) {
         Ln.v("ships=" + ships);
 
         int shipsLeft = AchievementsManager.countAliveShips(ships);

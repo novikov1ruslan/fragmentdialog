@@ -54,7 +54,7 @@ public class WinScreen_ extends OnlineScreen_ {
     }
 
     protected void expectProcessAchievementsBeCalled(VerificationMode times) {
-        verify(achievementsManager, times).processAchievements(any(Game.class), any(Collection.class), anyInt());
+        verify(achievementsManager, times).processScores(anyInt());
     }
 
     protected void expectUpdateProgressBeCalled(VerificationMode times) {
