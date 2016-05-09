@@ -12,14 +12,12 @@ public class AndroidGame extends Game {
     }
 
     @Override
-    public void finish() {
-        if (hasFinished()) {
-            Ln.w(getType() + " already finished");
-            return;
+    public boolean finish() {
+        if (super.finish()) {
+            return true;
         }
-
-        super.finish();
         Ln.d("finishing Android game - AI stopped");
+        return true;
     }
 
     @Override

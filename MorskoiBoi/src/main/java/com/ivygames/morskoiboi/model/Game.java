@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import org.commons.logger.Ln;
+
 public abstract class Game {
     public enum Type {
         VS_ANDROID, BLUETOOTH, INTERNET
@@ -12,8 +14,13 @@ public abstract class Game {
 
     public abstract Type getType();
 
-    public void finish() {
+    public boolean finish() {
+        if (mFinished) {
+            Ln.w(getType() + " already finished");
+            return true;
+        }
         mFinished = true;
+        return false;
     }
 
     public boolean hasFinished() {

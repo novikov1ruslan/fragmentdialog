@@ -16,7 +16,6 @@ import com.ivygames.morskoiboi.RtmSender;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
  * Opponent leaves: onDisconnectedFromRoom->onPeerLeft Network disconnected: onP2PDisconnected->onDisconnectedFromRoom->onPeersDisconnected
  */
 public class InternetGame extends Game implements RoomStatusUpdateListener, RoomUpdateListener, ReliableMessageSentCallback, RtmSender {
-    public static final int WIN_PROGRESS_POINTS = 10000;
 
     public static final int MIN_OPPONENTS = 1;
     public static final int MAX_OPPONENTS = 1;
@@ -63,37 +61,31 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     private boolean mIsRoomConnected;
 
-    // private final RoomLeaveListener mRoomLeaveListener = new RoomLeaveListener();
-
     public InternetGame(@NonNull GoogleApiClientWrapper apiClient, @NonNull InternetGameListener listener) {
         super();
         mApiClient = apiClient;
-
-        Validate.notNull(listener);
         mGameListener = listener;
         EventBus.getDefault().removeAllStickyEvents();
         Ln.v("new internet game created");
     }
 
-    public void setRealTimeMessageReceivedListener(RealTimeMessageReceivedListener rtListener) {
-        Validate.notNull(rtListener);
+    public void setRealTimeMessageReceivedListener(@NonNull RealTimeMessageReceivedListener rtListener) {
         mRtListener = rtListener;
         Ln.v("rt listener set to " + rtListener);
     }
 
     @Override
-    public void finish() {
-        if (hasFinished()) {
-            Ln.w(getType() + " already finished");
-            return;
+    public boolean finish() {
+        if (super.finish()) {
+            return false;
         }
 
-        super.finish();
         EventBus.getDefault().removeAllStickyEvents();
         Ln.d("finishing internet game - leaving the room");
         leaveRoom();
         mIsRoomConnected = false;
         mGameListener = null;
+        return true;
     }
 
     @Override

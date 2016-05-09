@@ -3,18 +3,19 @@ package com.ivygames.morskoiboi.variant;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.rt.InternetGame;
 
 import org.commons.logger.Ln;
 
 import java.util.Collection;
 
 public class RussianRules extends AbstractRules {
+
+    private static final int BLUETOOTH_WIN_POINTS = 5000;
+    private static final int INTERNET_WIN_POINTS = 10000;
 
     private static final int[] TOTAL_SHIPS = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
 
@@ -62,9 +63,9 @@ public class RussianRules extends AbstractRules {
         if (type == Game.Type.VS_ANDROID) {
             progress = calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
         } else if (type == Game.Type.INTERNET) {
-            progress = InternetGame.WIN_PROGRESS_POINTS;
+            progress = INTERNET_WIN_POINTS;
         } else {
-            progress = BluetoothGame.WIN_PROGRESS_POINTS;
+            progress = BLUETOOTH_WIN_POINTS;
         }
         return progress;
     }
