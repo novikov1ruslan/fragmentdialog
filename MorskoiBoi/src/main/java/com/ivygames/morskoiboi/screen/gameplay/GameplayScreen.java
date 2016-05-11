@@ -264,9 +264,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
         UiProxyOpponent uiProxy = new UiProxyOpponent(mPlayer);
-        // TODO: make android opponent return in UI thread
-        mHandlerOpponent = new HandlerOpponent(mUiThreadHandler, uiProxy);
-        mEnemy.setOpponent(mHandlerOpponent);
+        mEnemy.setOpponent(uiProxy);
 
         Ln.d("screen is fully created - exchange protocol versions and start bidding");
         mEnemy.setOpponentVersion(Opponent.CURRENT_VERSION);
@@ -337,7 +335,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         Crouton.cancelAllCroutons();
 
         mTimerController.stop();
-        mHandlerOpponent.stop(); // TODO: needed?
         if (mEnemy instanceof Cancellable) {
             ((Cancellable) mEnemy).cancel();
         }
@@ -760,8 +757,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
         mLayout.updateEnemyWorkingShips(fleet);
     }
-
-    private HandlerOpponent mHandlerOpponent;
 
     private void showWinScreenDelayed() {
         mUiThreadHandler.postDelayed(new ShowWinCommand(false), WON_GAME_DELAY);

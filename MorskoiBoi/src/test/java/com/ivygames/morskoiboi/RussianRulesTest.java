@@ -6,13 +6,14 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +24,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RussianRulesTest {
 
@@ -34,13 +36,13 @@ public class RussianRulesTest {
     private Rules mRules;
     private Placement placement;
 
-    @BeforeClass
-    public static void runBeforeClass() {
+    @Mock
+    private ScoreStatistics statistics;
 
-    }
 
     @Before
     public void setUp() {
+        initMocks(this);
         RussianRules rules = new RussianRules();
         RulesFactory.setRules(rules);
         PlacementFactory.setPlacementAlgorithm(new Placement(new Random(1), rules));
@@ -110,10 +112,10 @@ public class RussianRulesTest {
 
     @Test
     public void max_scores_for_android_game_is_31250() {
-        Game game = mockPerfectGame();
-        setGameType(game, Game.Type.VS_ANDROID);
-        when(game.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(generateFullFleet(), game, false), is(31250));
+        ScoreStatistics statistics = mockPerfectGame();
+        when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
+        assertThat(mRules.calcTotalScores(generateFullFleet(), Game.Type.VS_ANDROID,
+                statistics, false), is(31250));
     }
 
     @NonNull
@@ -123,49 +125,51 @@ public class RussianRulesTest {
 
     @Test
     public void max_scores_for_surrendered_game_is_5000() {
-        Game game = mockPerfectGame();
-        setGameType(game, Game.Type.VS_ANDROID);
-        when(game.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(generateFullFleet(), game, true), is(5000));
+        ScoreStatistics statistics = mockPerfectGame();
+        when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
+        assertThat(mRules.calcTotalScores(generateFullFleet(), Game.Type.VS_ANDROID,
+                statistics, true), is(5000));
     }
 
     @Test
     public void max_score_for_BT_game_is_5000() {
-        Game game = mock(Game.class);
-        setGameType(game, Game.Type.BLUETOOTH);
+        ScoreStatistics statistics = new ScoreStatistics();
         int MAX_BT_SCORE = 5000;
-        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), game, false), is(MAX_BT_SCORE));
-        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), game, true), lessThan(MAX_BT_SCORE));
+        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), Game.Type.BLUETOOTH, statistics,
+                false), is(MAX_BT_SCORE));
+        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), Game.Type.BLUETOOTH, statistics,
+                true), lessThan(MAX_BT_SCORE));
     }
 
     @Test
     public void max_score_for_internet_game_is_5000() {
-        Game game = mock(Game.class);
-        setGameType(game, Game.Type.INTERNET);
+        ScoreStatistics statistics = new ScoreStatistics();
+
         int MAX_INTERNET_SCORE = 10000;
-        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), game, false), is(MAX_INTERNET_SCORE));
-        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), game, true), lessThan(MAX_INTERNET_SCORE));
+        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), Game.Type.INTERNET, statistics,
+                false), is(MAX_INTERNET_SCORE));
+        assertThat(mRules.calcTotalScores(new ArrayList<Ship>(), Game.Type.INTERNET, statistics,
+                true), lessThan(MAX_INTERNET_SCORE));
     }
 
     @Test
     public void it_is_impossible_to_score_more_than_31250() {
-        Game game = mockPerfectGame();
-        setGameType(game, Game.Type.VS_ANDROID);
-        when(game.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(mRules.calcTotalScores(generateFullFleet(), game, false), is(31250));
+        ScoreStatistics statistics = mockPerfectGame();
+
+        when(statistics.getTimeSpent()).thenReturn(MIN_TIME/2);
+        assertThat(mRules.calcTotalScores(generateFullFleet(), Game.Type.VS_ANDROID, statistics,
+                false), is(31250));
     }
 
     @Test
     public void exactly_min_scores_equals_230() {
         Collection<Ship> ships = new ArrayList<>();
         ships.add(new Ship(1));
-        Game game = mock(Game.class);
-        when(game.getCombo()).thenReturn(0);
-        when(game.getShells()).thenReturn(0);
-        when(game.getTimeSpent()).thenReturn(MAX_TIME);
-        setGameType(game, Game.Type.VS_ANDROID);
+        when(statistics.getCombo()).thenReturn(0);
+        when(statistics.getShells()).thenReturn(0);
+        when(statistics.getTimeSpent()).thenReturn(MAX_TIME);
 
-        int i = mRules.calcTotalScores(ships, game, false);
+        int i = mRules.calcTotalScores(ships, Game.Type.VS_ANDROID, statistics, false);
         assertThat(i, is(230));
     }
 
@@ -173,39 +177,38 @@ public class RussianRulesTest {
     public void it_is_impossible_to_score_less_than_230() {
         Collection<Ship> ships = new ArrayList<>();
         ships.add(new Ship(1));
-        Game game = mock(Game.class);
-        when(game.getCombo()).thenReturn(0);
-        when(game.getShells()).thenReturn(0);
-        when(game.getTimeSpent()).thenReturn(MAX_TIME*2);
-        setGameType(game, Game.Type.VS_ANDROID);
+        when(statistics.getCombo()).thenReturn(0);
+        when(statistics.getShells()).thenReturn(0);
+        when(statistics.getTimeSpent()).thenReturn(MAX_TIME*2);
 
-        assertThat(mRules.calcTotalScores(ships, game, false), is(230));
+        assertThat(mRules.calcTotalScores(ships, Game.Type.VS_ANDROID, statistics,
+                false), is(230));
     }
 
     @Test
     public void scores_2xCombo_1_4_ships_30xShells_150seconds_is_8737() {
         Collection<Ship> ships = ships_1_4();
-        Game game = game_2xCombo_30xShells_150seconds();
-        setGameType(game, Game.Type.VS_ANDROID);
-        assertThat(mRules.calcTotalScores(ships, game, false), is(8737));
+        ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
+        assertThat(mRules.calcTotalScores(ships, Game.Type.VS_ANDROID, statistics,
+                false), is(8737));
     }
 
     @Test
     public void surrendered_game_scores_2x_less() {
         Collection<Ship> ships = ships_1_4();
-        Game game = game_2xCombo_30xShells_150seconds();
-        setGameType(game, Game.Type.VS_ANDROID);
-        assertThat(mRules.calcTotalScores(ships, game, true), is(4368));
+        ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
+        assertThat(mRules.calcTotalScores(ships, Game.Type.VS_ANDROID, statistics,
+                true), is(4368));
     }
 
     @Test
     public void dead_ships_do_not_count() {
         Collection<Ship> ships = ships_1_4();
         ships.add(mockDeadShip());
-        Game game = game_2xCombo_30xShells_150seconds();
-        setGameType(game, Game.Type.VS_ANDROID);
+        ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
 
-        assertThat(mRules.calcTotalScores(ships, game, false), is(8737));
+        assertThat(mRules.calcTotalScores(ships, Game.Type.VS_ANDROID, statistics,
+                false), is(8737));
     }
 
     @Test
@@ -291,11 +294,11 @@ public class RussianRulesTest {
     }
 
     @NonNull
-    private Game mockPerfectGame() {
-        Game game = mock(Game.class);
-        when(game.getCombo()).thenReturn(TOTAL_SHIPS - 1);
-        when(game.getShells()).thenReturn(100 - TOTAL_SQUARES_OCCUPIED_BY_SHIPS);
-        return game;
+    private ScoreStatistics mockPerfectGame() {
+        ScoreStatistics statistics = mock(ScoreStatistics.class);
+        when(statistics.getCombo()).thenReturn(TOTAL_SHIPS - 1);
+        when(statistics.getShells()).thenReturn(100 - TOTAL_SQUARES_OCCUPIED_BY_SHIPS);
+        return statistics;
     }
 
     @NonNull
@@ -307,11 +310,11 @@ public class RussianRulesTest {
     }
 
     @NonNull
-    protected Game game_2xCombo_30xShells_150seconds() {
-        Game game = mock(Game.class);
-        when(game.getCombo()).thenReturn(2);
-        when(game.getShells()).thenReturn(30);
-        when(game.getTimeSpent()).thenReturn(MAX_TIME/2);
-        return game;
+    protected ScoreStatistics game_2xCombo_30xShells_150seconds() {
+        ScoreStatistics statistics = mock(ScoreStatistics.class);
+        when(statistics.getCombo()).thenReturn(2);
+        when(statistics.getShells()).thenReturn(30);
+        when(statistics.getTimeSpent()).thenReturn(MAX_TIME/2);
+        return statistics;
     }
 }

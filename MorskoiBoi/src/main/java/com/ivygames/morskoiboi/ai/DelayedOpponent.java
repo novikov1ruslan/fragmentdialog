@@ -1,23 +1,41 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import org.commons.logger.Ln;
 
 public class DelayedOpponent extends DummyOpponent implements CancellableOpponent {
-    private static int sCounter;
+    private static final int START_TIMEOUT = 3000;
+    private static final int WHISTLE_SOUND_DELAY = 1300;
     private static final boolean NO_NEED_TO_THINK = false;
+
     private Opponent mOpponent;
     private boolean mShouldWait = true;
-    private ExecutorService mExecutor;
+
+    @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    @Nullable
+    private Runnable mOnEnemyBidCommand;
+    @Nullable
+    private Runnable mGoCommand;
+    @Nullable
+    private Runnable mOnShotResultCommand;
+    @Nullable
+    private Runnable mOnShootAtCommand;
+
+    private static long getThinkingTime(boolean needThinking) {
+        int extraTime = needThinking ? 1000 : 0;
+        return (long) (1000 + (int) (Math.random() * (500 + extraTime)));
+    }
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
@@ -27,45 +45,43 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
         mShouldWait = true;
-        mExecutor.submit(new OnShootAtCommand(mOpponent, aim, NO_NEED_TO_THINK));
+        mOnShootAtCommand = new OnShootAtCommand(mOpponent, aim);
+        long thinkingTime = getThinkingTime(NO_NEED_TO_THINK);
+        Ln.v("scheduling " + mOnShootAtCommand + " in " + thinkingTime);
+        mHandler.postDelayed(mOnShootAtCommand, thinkingTime);
     }
 
     @Override
     public void onShotResult(@NonNull PokeResult result) {
         mShouldWait = false;
-        mExecutor.submit(new OnShotResultCommand(mOpponent, result));
+        mOnShotResultCommand = new OnShotResultCommand(mOpponent, result);
+        Ln.v("scheduling " + mOnShotResultCommand + " in " + WHISTLE_SOUND_DELAY);
+        mHandler.postDelayed(mOnShotResultCommand, WHISTLE_SOUND_DELAY);
     }
 
     @Override
     public void go() {
-        mExecutor.submit(new GoCommand(mOpponent, mShouldWait));
+        mGoCommand = new GoCommand(mOpponent);
+        Ln.v("scheduling " + mGoCommand + " in " + START_TIMEOUT);
+        mHandler.postDelayed(mGoCommand, mShouldWait ? START_TIMEOUT : 0);
         mShouldWait = true;
     }
 
     @Override
     public void onEnemyBid(int bid) {
         mShouldWait = true;
-        mExecutor.submit(new OnEnemyBidCommand(mOpponent, bid));
-    }
-
-    @Override
-    public void init() {
-        mExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
-            @Override
-            public Thread newThread(@NonNull Runnable r) {
-                return new Thread(r, "bot" + sCounter++);
-            }
-        });
+        mOnEnemyBidCommand = new OnEnemyBidCommand(mOpponent, bid);
+        Ln.v("scheduling " + mOnEnemyBidCommand + " in " + START_TIMEOUT);
+        mHandler.postDelayed(mOnEnemyBidCommand, START_TIMEOUT);
     }
 
     @Override
     public void cancel() {
-        mExecutor.shutdownNow();
-        try {
-            mExecutor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
+        Ln.v("cancelling all commands");
+        mHandler.removeCallbacks(mGoCommand);
+        mHandler.removeCallbacks(mOnEnemyBidCommand);
+        mHandler.removeCallbacks(mOnShootAtCommand);
+        mHandler.removeCallbacks(mOnShotResultCommand);
     }
 
 }

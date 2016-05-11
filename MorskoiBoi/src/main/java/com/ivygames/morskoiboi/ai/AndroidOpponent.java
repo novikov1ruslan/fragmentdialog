@@ -28,9 +28,13 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private volatile BotAlgorithm mBot;
 
+    @NonNull
     private final String mName;
+    @NonNull
     private final Placement mPlacement;
+    @NonNull
     private final CancellableOpponent mDelegate;
+    @NonNull
     private final Rules mRules;
     private Opponent mOpponent;
 
@@ -45,8 +49,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mRules = rules;
         mDelegate = delegate;
         Ln.d(this + ": initializing boards and bids");
-//        mEnemyBoard.clearBoard();
-//        mMyBoard.clearBoard();
         mMyBid = new Bidder().newBid();
         mEnemyBid = OPPONENT_NOT_READY_BID;
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
@@ -81,7 +83,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void go() {
         if (!isOpponentReady()) {
-            init();
             placeShips();
         }
         super.go();
@@ -126,7 +127,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onEnemyBid(int bid) {
         super.onEnemyBid(bid);
-        init();
         placeShips();
         if (mEnemyBid == mMyBid) {
             reportException("stall");
@@ -157,11 +157,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void onNewMessage(@NonNull String text) {
         // mirroring
         mOpponent.onNewMessage(text + "!!!");
-    }
-
-    @Override
-    public void init() {
-        mDelegate.init();
     }
 
     @Override
