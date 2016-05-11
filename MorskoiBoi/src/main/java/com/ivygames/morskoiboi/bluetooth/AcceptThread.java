@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.GameEvent;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -35,9 +34,10 @@ public final class AcceptThread extends Thread {
     @NonNull
     private final BluetoothAdapterWrapper mAdapter;
 
-    public AcceptThread(@NonNull ConnectionListener listener, @NonNull BluetoothAdapterWrapper adapter) {
+    public AcceptThread(@NonNull ConnectionListener listener,
+                        @NonNull BluetoothAdapterWrapper adapter) {
         super("bt_accept");
-        mConnectionListener = Validate.notNull(listener);
+        mConnectionListener = listener;
         mAdapter = adapter;
     }
 

@@ -4,10 +4,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.GameEvent;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -21,14 +21,18 @@ public final class ConnectThread extends Thread {
     private volatile BluetoothSocket mSocket;
     private volatile boolean mCancelled;
 
+    @NonNull
     private final BluetoothDevice mDevice;
+    @NonNull
     private final ConnectionListener mConnectionListener;
+    @NonNull
     private final Handler mHandler = new Handler(Looper.myLooper());
 
-    public ConnectThread(BluetoothDevice device, ConnectionListener connectionListener) {
+    public ConnectThread(@NonNull BluetoothDevice device,
+                         @NonNull ConnectionListener connectionListener) {
         super("bt_connect");
-        mDevice = Validate.notNull(device);
-        mConnectionListener = Validate.notNull(connectionListener);
+        mDevice = device;
+        mConnectionListener = connectionListener;
     }
 
     @Override

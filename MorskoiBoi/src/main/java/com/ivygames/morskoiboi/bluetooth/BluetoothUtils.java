@@ -1,5 +1,8 @@
 package com.ivygames.morskoiboi.bluetooth;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.commons.logger.Ln;
 
 import java.io.Closeable;
@@ -14,11 +17,11 @@ public class BluetoothUtils {
     /**
      * Get the device MAC address, which is the last 17 chars in the info
      */
-    public static String extractMacAddress(String info) {
+    public static String extractMacAddress(@NonNull String info) {
         return info.substring(info.length() - 17);
     }
 
-    static void close(Closeable closable) {
+    static void close(@Nullable Closeable closable) {
         if (closable != null) {
             try {
                 closable.close();
@@ -28,7 +31,7 @@ public class BluetoothUtils {
         }
     }
 
-    public static void join(Thread t) {
+    public static void join(@NonNull Thread t) {
         try {
             t.join();
         } catch (InterruptedException ie) {

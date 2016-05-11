@@ -1,14 +1,16 @@
 package com.ivygames.morskoiboi.bluetooth;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 
 public interface ConnectionListener {
 
-    void onConnected(BluetoothConnection connection);
+    void onConnected(@NonNull BluetoothConnection connection);
 
     /**
      * connection attempt failed
      */
-    void onConnectFailed(IOException exception);
+    void onConnectFailed(@NonNull IOException exception);
 
 }

@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.bluetooth;
 
+import android.support.annotation.NonNull;
+
 interface MessageReceiver {
-    void onMessageReceived(String message);
+    void onMessageReceived(@NonNull String message);
 }

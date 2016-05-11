@@ -33,7 +33,7 @@ public class InternetOpponent extends AbstractOnlineOpponent implements RealTime
     }
 
     @Override
-    public void sendRtm(String message) {
+    public void sendRtm(@NonNull String message) {
         mRtmSender.sendRtm(message);
     }
 

@@ -158,7 +158,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     }
 
     @Override
-    public void onConnectFailed(IOException exception) {
+    public void onConnectFailed(@NonNull IOException exception) {
         Ln.d(TAG + ": connection attempt failed");
 //        mLayout.connectionFailed();
         if (isDialogShown()) {
@@ -167,7 +167,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     }
 
     @Override
-    public void onConnected(BluetoothConnection connection) {
+    public void onConnected(@NonNull BluetoothConnection connection) {
         Ln.d(TAG + ": connected - creating opponent and showing board setup");
         String defaultName = getString(R.string.player);
         BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);

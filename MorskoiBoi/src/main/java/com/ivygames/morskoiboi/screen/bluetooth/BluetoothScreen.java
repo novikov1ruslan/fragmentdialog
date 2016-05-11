@@ -186,7 +186,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     @Override
-    public void onConnected(BluetoothConnection connection) {
+    public void onConnected(@NonNull BluetoothConnection connection) {
         Ln.d(TAG + ": connected - creating opponent and showing board setup");
         String defaultName = getString(R.string.player);
         BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
@@ -202,7 +202,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     @Override
-    public void onConnectFailed(IOException exception) {
+    public void onConnectFailed(@NonNull IOException exception) {
         if (isDialogShown()) {
             mDialog.setText(R.string.connection_failed);
         }

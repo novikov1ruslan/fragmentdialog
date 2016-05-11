@@ -374,7 +374,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
     }
 
     @Override
-    public void sendRtm(String message) {
+    public void sendRtm(@NonNull String message) {
         mMessages.offer(message);
         if (mIsRoomConnected && !mIsSending) {
             sendMessage(mMessages.poll());

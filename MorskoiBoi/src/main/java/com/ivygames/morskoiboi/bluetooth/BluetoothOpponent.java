@@ -5,21 +5,21 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.AbstractOnlineOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class BluetoothOpponent extends AbstractOnlineOpponent implements MessageReceiver {
 
+    @NonNull
     private final BluetoothConnection mSender;
 
-    public BluetoothOpponent(BluetoothConnection sender, String defaultName) {
+    public BluetoothOpponent(@NonNull BluetoothConnection sender, @NonNull String defaultName) {
         super(defaultName);
-        mSender = Validate.notNull(sender);
+        mSender = sender;
         Ln.v("new bluetooth opponent created");
     }
 
     @Override
-    public void sendRtm(String message) {
+    public void sendRtm(@NonNull String message) {
         Ln.v("sending: [" + message + "]");
         message = message + '|';
         mSender.write(message);
@@ -33,7 +33,7 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
     }
 
     @Override
-    public void onMessageReceived(String message) {
+    public void onMessageReceived(@NonNull String message) {
         onRealTimeMessageReceived(message);
         Ln.v("received [" + message + "] from [" + getName() + "]");
     }

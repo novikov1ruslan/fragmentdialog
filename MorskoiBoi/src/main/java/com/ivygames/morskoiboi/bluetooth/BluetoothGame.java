@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Game;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.util.UUID;
@@ -22,7 +21,7 @@ public class BluetoothGame extends Game {
 
     public BluetoothGame(@NonNull BluetoothConnection connection) {
         super();
-        mConnection = Validate.notNull(connection);
+        mConnection = connection;
         Ln.v("new bluetooth game created");
     }
 
