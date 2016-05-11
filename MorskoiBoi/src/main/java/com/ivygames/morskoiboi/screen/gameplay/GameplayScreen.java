@@ -49,8 +49,8 @@ import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
-import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import de.greenrobot.event.EventBus;
@@ -351,7 +351,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (mPlayer.isOpponentReady()) {
                 Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
                 AnalyticsEvent.send("opponent_surrendered");
-                showOpponentSurrenderedDialog();
+                showOpponentSurrenderedDialog(mPlayerPrivateBoard.getShips());
             } else {
                 super.onEventMainThread(event);
             }
@@ -571,10 +571,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
                     mStatistics.setTimeSpent(mUnlockedTime);
                     mEnemy.onLost(mPlayerPrivateBoard);
-                    resetPlayer();
-
                     mLayout.win();
-                    showWinScreenDelayed();
+
+                    Collection<Ship> fleet = new ArrayList<>();
+                    fleet.addAll(mPlayerPrivateBoard.getShips());
+
+                    resetPlayer();
+                    showWinScreenDelayed(fleet);
                 }
             } else if (result.cell.isMiss()) {
                 Ln.d(mPlayer + ": I missed - passing the turn to " + mEnemy);
@@ -621,9 +624,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 if (mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
                     Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
                     AnalyticsEvent.send("reveal_not_supported");
-                    resetPlayer();
                     disableBackPress();
                     mLayout.lost();
+
+                    resetPlayer();
                     showLostScreenDelayed(LOST_GAME_WO_REVEAL_DELAY);
                 }
             }
@@ -661,19 +665,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 reportException("lost while not defeated");
             }
             // revealing the enemy board
-            mEnemyPublicBoard = board;
             updateEnemyStatus();
             mLayout.setEnemyBoard(board);
-            resetPlayer();
             disableBackPress();
             mLayout.lost();
+
+            resetPlayer();
             showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
         }
 
         private void resetPlayer() {
             Ln.d("match is over - blocking the player for further messages until start of the next round");
-            copyPlayerBoard();
-            copyEnemyBoard();
             mPlayer.reset(new Bidder().newBid());
             // need to de-associate UI from the enemy opponent
             mEnemy.setOpponent(mPlayer);
@@ -704,22 +706,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return mPlayer.toString();
         }
 
-    }
-
-    private void copyPlayerBoard() {
-        try {
-            mPlayerPrivateBoard = Board.fromJson(mPlayerPrivateBoard.toJson());
-        } catch (JSONException je) {
-            Ln.e(je, "could not copy player's board");
-        }
-    }
-
-    private void copyEnemyBoard() {
-        try {
-            mEnemyPublicBoard = Board.fromJson(mEnemyPublicBoard.toJson());
-        } catch (JSONException je) {
-            Ln.e(je, "could not copy enemy's board");
-        }
     }
 
     private void vibrate(int duration) {
@@ -763,12 +749,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         return fleet;
     }
 
-    private void showWinScreenDelayed() {
-        mUiThreadHandler.postDelayed(new ShowWinCommand(false), WON_GAME_DELAY);
+    private void showWinScreenDelayed(@NonNull Collection<Ship> remainedFleet) {
+        mUiThreadHandler.postDelayed(new ShowWinCommand(false, remainedFleet), WON_GAME_DELAY);
     }
 
-    private void showOpponentSurrenderedDialog() {
-        SimpleActionDialog.create(R.string.opponent_surrendered, new ShowWinCommand(true)).show(mFm, DIALOG);
+    private void showOpponentSurrenderedDialog(@NonNull Collection<Ship> remainedFleet) {
+        SimpleActionDialog.create(R.string.opponent_surrendered, new ShowWinCommand(true, remainedFleet)).show(mFm, DIALOG);
     }
 
     private void surrender(final int penalty) {
@@ -817,15 +803,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private class ShowWinCommand implements Runnable {
 
         private final boolean mOpponentSurrendered;
+        @NonNull
+        private final Collection<Ship> mShips;
 
-        private ShowWinCommand(boolean opponentSurrendered) {
+        private ShowWinCommand(boolean opponentSurrendered, @NonNull Collection<Ship> ships) {
             mOpponentSurrendered = opponentSurrendered;
+            mShips = ships;
         }
 
         @Override
         public void run() {
-            setScreen(GameHandler.newWinScreen(mGame, mPlayerPrivateBoard.getShips(),
-                    mStatistics, mOpponentSurrendered));
+            setScreen(GameHandler.newWinScreen(mGame, mShips, mStatistics, mOpponentSurrendered));
         }
     }
 }
