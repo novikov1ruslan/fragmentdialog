@@ -289,10 +289,6 @@ public class RussianRulesTest {
         return ship;
     }
 
-    private void setGameType(Game game, Game.Type type) {
-        when(game.getType()).thenReturn(type);
-    }
-
     @NonNull
     private ScoreStatistics mockPerfectGame() {
         ScoreStatistics statistics = mock(ScoreStatistics.class);

@@ -63,8 +63,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private static final int LOST_GAME_WITH_REVEAL_DELAY = 5000; // milliseconds
-    private static final int LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
     private static final int WON_GAME_DELAY = 3000; // milliseconds
 
     private static final int VIBRATION_ON_KILL = 500;
@@ -94,7 +92,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final GameplaySoundManager mGameplaySounds;
 
     private GameplayLayoutInterface mLayout;
-    private boolean mBackPressEnabled;
+    private boolean mBackPressEnabled = true;
 
     @NonNull
     private final TurnTimerController mTimerController;
@@ -197,7 +195,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
-        mBackPressEnabled = true;
         mStatistics = new ScoreStatistics();
         mPlayer = Model.instance.player;
         mEnemy = Model.instance.opponent;
@@ -518,6 +515,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
      * methods of this class are called in UI thread
      */
     private class UiProxyOpponent implements Opponent {
+        private static final long LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
+        private static final long LOST_GAME_WITH_REVEAL_DELAY = 5000; // milliseconds
 
         @NonNull
         private final PlayerOpponent mPlayer;
@@ -530,7 +529,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void go() {
             mPlayer.go();
             showPlayerTurn();
-            if (isResumed() || mGame.getType() != Type.VS_ANDROID) {
+            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
                 mTimerController.start(); // for all practical scenarios - start will only be called from here
             } else {
@@ -596,7 +595,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onShotAt(@NonNull Vector2 aim) {
             stopDetectingTurnTimeout();
-            PokeResult result = mPlayer.onShotAtForResult(aim);
+            PokeResult result = mPlayer.createResultForShootingAt(aim);
+            mPlayer.onShotAtForResult(result);
+            Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
 
             updateMyStatus();
 
@@ -621,7 +622,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
                     AnalyticsEvent.send("reveal_not_supported");
                     resetPlayer();
-                    lost(LOST_GAME_WO_REVEAL_DELAY);
+                    disableBackPress();
+                    mLayout.lost();
+                    showLostScreenDelayed(LOST_GAME_WO_REVEAL_DELAY);
                 }
             }
         }
@@ -662,7 +665,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             updateEnemyStatus();
             mLayout.setEnemyBoard(board);
             resetPlayer();
-            lost(LOST_GAME_WITH_REVEAL_DELAY);
+            disableBackPress();
+            mLayout.lost();
+            showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
         }
 
         private void resetPlayer() {
@@ -683,12 +688,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onNewMessage(@NonNull String text) {
             mChatAdapter.add(ChatMessage.newEnemyMessage(text));
             mPlayer.onNewMessage(text);
-        }
-
-        private void lost(long ms) {
-            disableBackPress();
-            mLayout.lost();
-            showLostScreenDelayed(ms);
         }
 
         private void showLostScreenDelayed(long mseconds) {
@@ -745,17 +744,23 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mUiThreadHandler.postDelayed(mTurnHangDetectionTask, TURN_HANG_DETECTION_TIMEOUT);
     }
 
-    public void updateMyStatus() {
+    private void updateMyStatus() {
         mLayout.updateMyWorkingShips(GameUtils.getWorkingShips(mPlayerPrivateBoard.getShips()));
     }
 
     private void updateEnemyStatus() {
+        Collection<Ship> fleet = getWorkingEnemyShips();
+        mLayout.updateEnemyWorkingShips(fleet);
+    }
+
+    @NonNull
+    private Collection<Ship> getWorkingEnemyShips() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
         Collection<Ship> fleet = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
         for (Ship ship : killedShips) {
             GameUtils.removeShipFromFleet(fleet, ship);
         }
-        mLayout.updateEnemyWorkingShips(fleet);
+        return fleet;
     }
 
     private void showWinScreenDelayed() {

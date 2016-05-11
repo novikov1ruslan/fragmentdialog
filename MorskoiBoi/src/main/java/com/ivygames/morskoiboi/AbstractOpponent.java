@@ -52,7 +52,7 @@ public abstract class AbstractOpponent implements Opponent {
     /**
      * marks the aimed cell
      */
-    protected final PokeResult createResultForShootingAt(Vector2 aim) {
+    public final PokeResult createResultForShootingAt(Vector2 aim) {
         // ship if found will be shot and returned
         Ship ship = mMyBoard.getFirstShipAt(aim);
 

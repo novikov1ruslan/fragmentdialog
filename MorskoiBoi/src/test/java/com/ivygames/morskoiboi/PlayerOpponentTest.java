@@ -129,7 +129,8 @@ public class PlayerOpponentTest {
         Vector2 aim = Vector2.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
-        PokeResult result = mPlayer.onShotAtForResult(aim);
+        PokeResult result = mPlayer.createResultForShootingAt(aim);
+        mPlayer.onShotAtForResult(result);
         assertThat(result.cell.isMiss(), is(true));
         assertThat(result.ship, is(nullValue()));
     }
@@ -140,7 +141,8 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         mPlacement.putShipAt(board, new Ship(2), 5, 5);
-        PokeResult result = mPlayer.onShotAtForResult(aim);
+        PokeResult result = mPlayer.createResultForShootingAt(aim);
+        mPlayer.onShotAtForResult(result);
         assertThat(result.cell.isHit(), is(true));
         assertThat(result.ship, is(nullValue()));
     }
@@ -151,8 +153,10 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         mPlacement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
-        mPlayer.onShotAtForResult(aim);
-        PokeResult result = mPlayer.onShotAtForResult(Vector2.get(5, 6));
+        PokeResult result = mPlayer.createResultForShootingAt(aim);
+        mPlayer.onShotAtForResult(result);
+        result = mPlayer.createResultForShootingAt(Vector2.get(5, 6));
+        mPlayer.onShotAtForResult(result);
         assertThat(result.cell.isHit(), is(true));
         assertThat(result.ship, is(notNullValue()));
     }

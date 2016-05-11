@@ -58,9 +58,7 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.d(this + ": my opponent is " + opponent);
     }
 
-    public PokeResult onShotAtForResult(Vector2 aim) {
-        PokeResult result = createResultForShootingAt(aim);
-        Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
+    public final void onShotAtForResult(@NonNull PokeResult result) {
         mOpponent.onShotResult(result);
 
         final Ship ship = result.ship;
@@ -73,7 +71,6 @@ public class PlayerOpponent extends AbstractOpponent {
             Ln.d(this + ": I'm hit - " + mOpponent + " continues");
             mOpponent.go();
         }
-        return result;
     }
 
     private void markNeighbouringCellsAsOccupied(final Ship ship) {
