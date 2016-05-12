@@ -77,10 +77,10 @@ dependencies {
 //    compile 'com.android.support:support-annotations:23.2.0'
 
     admobCompile 'com.google.android.gms:play-services-ads:8.4.0'
-    emptyAdsCompile 'com.google.android.gms:play-services-ads:8.4.0'
     appodealCompile project(':unity-ads-1.5.6')
     appodealCompile fileTree(dir: 'libs', include: ['*.jar'])
     appodealCompile 'com.android.support:multidex:1.0.1'
+    appodealCompile 'com.google.android.gms:play-services-ads:8.4.0'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
