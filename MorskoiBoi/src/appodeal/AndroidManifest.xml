@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- for Appodeal-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Optional -->
     <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
 
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+
     <application>
 
-        <!-- appodeal -->
+
         <meta-data
             android:name="com.appodeal.framework"
             android:value="android" />
@@ -79,6 +86,7 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent" />
 
+
         <activity
             android:name="com.amazon.device.ads.AdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
@@ -95,9 +103,15 @@
             android:name="org.nexage.sourcekit.vast.activity.VPAIDActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
+        <!--suppress AndroidDomInspection -->
+        <activity
+            android:name="com.appodeal.ads.networks.vpaid.VPAIDActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
         <activity
             android:name="com.appodeal.ads.networks.SpotXActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name="com.facebook.ads.InterstitialAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
@@ -113,23 +127,28 @@
             android:hardwareAccelerated="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
+
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name="com.jirbo.adcolony.AdColonyOverlay"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name="com.jirbo.adcolony.AdColonyFullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name="com.jirbo.adcolony.AdColonyBrowser"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name="com.vungle.publisher.FullScreenAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name="com.startapp.android.publish.list3d.List3DActivity"
             android:theme="@android:style/Theme" />
@@ -155,7 +174,7 @@
             </intent-filter>
             <meta-data
                 android:name="metrica:api:level"
-                android:value="39" />
+                android:value="44" />
         </service>
         <receiver
             android:name="com.yandex.metrica.MetricaEventHandler"
