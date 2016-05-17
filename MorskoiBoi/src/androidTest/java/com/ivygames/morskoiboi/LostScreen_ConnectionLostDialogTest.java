@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.model.GameEvent;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 
 import org.junit.Test;

@@ -271,6 +271,10 @@ public abstract class ScreenTest {
         return intentMatcher;
     }
 
+    protected final void setInvitation(boolean hasInvitation) {
+        when(invitationManager().hasInvitation()).thenReturn(hasInvitation);
+    }
+
     @NonNull
     protected final Matcher<View> noButton() {
         return withText(R.string.no);

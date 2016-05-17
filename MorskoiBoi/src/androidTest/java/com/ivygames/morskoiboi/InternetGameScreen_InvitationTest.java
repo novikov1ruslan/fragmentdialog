@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
 
 public class InternetGameScreen_InvitationTest extends InternetGameScreen_ {
 
@@ -24,17 +23,12 @@ public class InternetGameScreen_InvitationTest extends InternetGameScreen_ {
         checkHasInvitation(false);
     }
 
+    @Test
     public void WhenInvitationArrives__EnvelopeIsShown() {
-//        setInvitation(false);
-//        showScreen();
-//        ((MainScreen)screen()).onEventMainThread(new InvitationEvent(null));
-//        checkHasInvitation(true);
-
-        // TODO:
-    }
-
-    private void setInvitation(boolean hasInvitation) {
-        when(invitationManager().hasInvitation()).thenReturn(hasInvitation);
+        setInvitation(false);
+        showScreen();
+        sendInvitation((InvitationReceiver) screen());
+        checkHasInvitation(true);
     }
 
     private void checkHasInvitation(boolean hasInvitation) {

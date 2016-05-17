@@ -1,17 +1,14 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.selectgame;
 
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.view.View;
+import android.support.test.espresso.matcher.ViewMatchers;
 
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.selectgame.SelectGameScreen;
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Rank;
 
-import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -28,19 +25,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 
-public class SelectGameScreenTest extends ScreenTest {
+public class SelectGameScreenTest extends SelectGameScreen_ {
 
     private static final java.lang.String TEST_NAME = "Sagi";
-
-    @Before
-    public void setup() {
-        super.setup();
-    }
-
-    @Override
-    public BattleshipScreen newScreen() {
-        return new SelectGameScreen(activity, settings());
-    }
 
     @Test
     public void when_back_button_pressed__main_screen_opens() {
@@ -53,7 +40,7 @@ public class SelectGameScreenTest extends ScreenTest {
     public void proper_name_is_shown() {
         when(settings().getPlayerName()).thenReturn(TEST_NAME);
         setScreen(newScreen());
-        onView(withId(R.id.player_name)).check(matches(withText(TEST_NAME)));
+        onView(ViewMatchers.withId(R.id.player_name)).check(matches(withText(TEST_NAME)));
     }
 
     @Test
@@ -125,15 +112,5 @@ public class SelectGameScreenTest extends ScreenTest {
         onView(viaBtButton()).perform(click());
         onView(BLUETOOTH_LAYOUT).check(doesNotExist());
         onView(withText(R.string.bluetooth_not_available)).check(matches(isDisplayed()));
-    }
-
-    @NonNull
-    private Matcher<View> viaBtButton() {
-        return withId(R.id.via_bluetooth);
-    }
-
-    @NonNull
-    protected final Matcher<View> internet() {
-        return withId(R.id.via_internet);
     }
 }

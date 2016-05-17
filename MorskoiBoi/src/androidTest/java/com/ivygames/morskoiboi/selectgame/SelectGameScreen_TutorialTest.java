@@ -1,7 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.selectgame;
 
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
+
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenTest;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -13,7 +17,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class SelectGameScreen_TutorialTest extends SelectGameScreenTest {
+public class SelectGameScreen_TutorialTest extends SelectGameScreen_ {
 
     @Test
     public void FirstTime__TutorialShown() {
@@ -32,32 +36,32 @@ public class SelectGameScreen_TutorialTest extends SelectGameScreenTest {
     @Test
     public void PressingHelp__ShowsTutorial() {
         showScreen();
-        clickOn(help());
+        ScreenTest.clickOn(help());
         checkDisplayed(tutorial());
     }
 
     @Test
     public void WhenTutorialShown_PressingBack__DismissesTutorial() {
         showScreen();
-        clickOn(help());
+        ScreenTest.clickOn(help());
         pressBack();
         checkDoesNotExist(tutorial());
-        checkDisplayed(SELECT_GAME_LAYOUT);
+        checkDisplayed(ScreenTest.SELECT_GAME_LAYOUT);
     }
 
     @Test
     public void WhenTutorialShown_PressingGotIt__DismissesTutorial() {
         showScreen();
-        clickOn(help());
-        clickOn(gotIt());
+        ScreenTest.clickOn(help());
+        ScreenTest.clickOn(gotIt());
         checkDoesNotExist(tutorial());
-        checkDisplayed(SELECT_GAME_LAYOUT);
+        checkDisplayed(ScreenTest.SELECT_GAME_LAYOUT);
     }
 
     @Test
     public void WhenScreenIsPaused__TutorialDismissed() {
         showScreen();
-        clickOn(help());
+        ScreenTest.clickOn(help());
         pause();
         checkDoesNotExist(tutorial());
     }
@@ -65,14 +69,14 @@ public class SelectGameScreen_TutorialTest extends SelectGameScreenTest {
     @Test
     public void IfTutorialDismissed__ItIsNotShownAgain() {
         setScreen(newScreen());
-        clickOn(help());
-        clickOn(gotIt());
+        ScreenTest.clickOn(help());
+        ScreenTest.clickOn(gotIt());
         verify(settings(), times(1)).hideProgressHelp();
     }
 
     @NonNull
     protected Matcher<View> help() {
-        return withId(R.id.help_button);
+        return ViewMatchers.withId(R.id.help_button);
     }
 
     @NonNull

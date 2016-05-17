@@ -6,7 +6,7 @@ import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class GameplayScreen_ConnectionLostDialogTest extends GameplayScreen_ {
 

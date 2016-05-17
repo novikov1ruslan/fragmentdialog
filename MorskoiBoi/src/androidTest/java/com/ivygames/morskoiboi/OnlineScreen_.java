@@ -13,7 +13,6 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

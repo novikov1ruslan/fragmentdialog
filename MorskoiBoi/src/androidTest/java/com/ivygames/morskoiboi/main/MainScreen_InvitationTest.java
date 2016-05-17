@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
 
 public class MainScreen_InvitationTest extends MainScreen_ {
 
@@ -32,10 +31,6 @@ public class MainScreen_InvitationTest extends MainScreen_ {
         showScreen();
         sendInvitation((InvitationReceiver) screen());
         checkHasInvitation(true);
-    }
-
-    private void setInvitation(boolean hasInvitation) {
-        when(invitationManager().hasInvitation()).thenReturn(hasInvitation);
     }
 
     private void checkHasInvitation(boolean hasInvitation) {

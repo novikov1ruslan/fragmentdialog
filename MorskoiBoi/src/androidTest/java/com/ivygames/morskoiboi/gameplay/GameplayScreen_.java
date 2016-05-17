@@ -13,8 +13,7 @@ import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class GameplayScreen_ extends OnlineScreen_ {
 
