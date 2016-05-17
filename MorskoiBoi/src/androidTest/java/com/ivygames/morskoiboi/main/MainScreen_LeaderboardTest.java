@@ -1,8 +1,12 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
+
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenTest;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -13,7 +17,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
@@ -21,10 +24,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MainScreen_LeaderboardTest extends MainScreenTest {
+public class MainScreen_LeaderboardTest extends MainScreen_ {
     @NonNull
     protected static Matcher<View> leaderboardButton() {
-        return withId(R.id.high_score);
+        return ViewMatchers.withId(R.id.high_score);
     }
 
     @NonNull
@@ -35,7 +38,7 @@ public class MainScreen_LeaderboardTest extends MainScreenTest {
     @Test
     public void WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed() {
         setSignedIn(false);
-        setScreen(newScreen());
+        showScreen();
         onView(leaderboardButton()).perform(click());
         onView(leaderBoardDialog()).check(matches(isDisplayed()));
     }
@@ -43,14 +46,14 @@ public class MainScreen_LeaderboardTest extends MainScreenTest {
     @Test
     public void WhenSignInPressedForLeaderBoardDialog__Connected() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
-        clickOn(signInButton());
+        ScreenTest.clickOn(signInButton());
         verify(apiClient(), times(1)).connect();
     }
 
     @Test
     public void WhenCancelPressedForSignInDialog__NotConnectedAndDialogDismissed() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
-        clickOn(cancelButton());
+        ScreenTest.clickOn(cancelButton());
         verify(apiClient(), never()).connect();
         checkDoesNotExist(leaderBoardDialog());
     }
@@ -69,8 +72,8 @@ public class MainScreen_LeaderboardTest extends MainScreenTest {
         intent.setType(expectedType);
         when(apiClient().getLeaderboardIntent(anyString())).thenReturn(intent);
         setSignedIn(true);
-        setScreen(newScreen());
-        clickForIntent(leaderboardButton(), hasType(expectedType));
+        showScreen();
+        ScreenTest.clickForIntent(leaderboardButton(), hasType(expectedType));
     }
 
 }

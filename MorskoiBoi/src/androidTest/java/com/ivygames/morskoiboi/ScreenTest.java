@@ -10,6 +10,7 @@ import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
@@ -25,6 +26,7 @@ import com.ivygames.morskoiboi.screen.win.WinLayout;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -69,6 +71,7 @@ public abstract class ScreenTest {
     private TaskResource pause;
     private TaskResource resume;
     private TaskResource destroy;
+    private TaskResource sendInvitation;
     private GoogleApiClientWrapper apiClient;
     private InvitationManager invitationManager;
     private AndroidDevice androidDevice;
@@ -76,6 +79,7 @@ public abstract class ScreenTest {
 
     public abstract BattleshipScreen newScreen();
 
+    @Before
     public void setup() {
         activity = rule.getActivity();
         apiClient = rule.getApiClient();
@@ -88,6 +92,10 @@ public abstract class ScreenTest {
     public void teardown() {
         if (setScreenResource != null) {
             unregisterIdlingResources(setScreenResource);
+        }
+
+        if (sendInvitation != null) {
+            unregisterIdlingResources(sendInvitation);
         }
 
         if (signInSucceeded != null) {
@@ -132,6 +140,17 @@ public abstract class ScreenTest {
             }
         });
         registerIdlingResources(setScreenResource);
+    }
+
+    protected final void sendInvitation(@NonNull final InvitationReceiver receiver) {
+        when(invitationManager.hasInvitation()).thenReturn(true);
+        sendInvitation = new TaskResource(new Runnable() {
+            @Override
+            public void run() {
+                receiver.onEventMainThread(new InvitationEvent(null));
+            }
+        });
+        registerIdlingResources(sendInvitation);
     }
 
     protected void signInSucceeded(final SignInListener listener) {

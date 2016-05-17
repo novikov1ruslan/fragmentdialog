@@ -1,25 +1,29 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
+
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenTest;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MainScreen_AchievementsTest extends MainScreenTest {
+public class MainScreen_AchievementsTest extends MainScreen_ {
+
     @NonNull
     protected static Matcher<View> achievementsButton() {
-        return withId(R.id.achievements_button);
+        return ViewMatchers.withId(R.id.achievements_button);
     }
 
     @NonNull
@@ -31,21 +35,21 @@ public class MainScreen_AchievementsTest extends MainScreenTest {
     public void WhenAchievementsButtonPressedWhenNonConnected__SignInDialogDisplayed() {
         setSignedIn(false);
         setScreen(newScreen());
-        clickOn(achievementsButton());
+        ScreenTest.clickOn(achievementsButton());
         checkDisplayed(achievementsDialog());
     }
 
     @Test
     public void WhenSignInButtonPressedForAchievementsDialog__Connected() {
         WhenAchievementsButtonPressedWhenNonConnected__SignInDialogDisplayed();
-        clickOn(signInButton());
+        ScreenTest.clickOn(signInButton());
         verify(apiClient(), times(1)).connect();
     }
 
     @Test
     public void WhenCancelPressedForAchievementsDialog__NotConnectedAndDialogDismissed() {
         WhenAchievementsButtonPressedWhenNonConnected__SignInDialogDisplayed();
-        clickOn(cancelButton());
+        ScreenTest.clickOn(cancelButton());
         verify(apiClient(), never()).connect();
         checkDoesNotExist(achievementsDialog());
     }
@@ -63,7 +67,7 @@ public class MainScreen_AchievementsTest extends MainScreenTest {
         when(apiClient().getAchievementsIntent()).thenReturn(new Intent().setType(expectedType));
         setSignedIn(true);
         showScreen();
-        clickForIntent(achievementsButton(), hasType(expectedType));
+        ScreenTest.clickForIntent(achievementsButton(), hasType(expectedType));
     }
 
 }

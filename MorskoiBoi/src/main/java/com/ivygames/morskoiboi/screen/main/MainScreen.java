@@ -18,6 +18,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
@@ -32,7 +33,7 @@ import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 
-public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener {
+public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener, InvitationReceiver {
     private static final String TAG = "MAIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -118,6 +119,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
     public void onEventMainThread(InvitationEvent event) {
         processInvitations();
     }

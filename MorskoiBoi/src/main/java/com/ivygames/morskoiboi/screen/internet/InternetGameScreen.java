@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -45,7 +46,8 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class InternetGameScreen extends BattleshipScreen implements InternetGameLayoutListener, InternetGameListener, BackPressListener {
+public class InternetGameScreen extends BattleshipScreen implements InternetGameLayoutListener,
+        InternetGameListener, BackPressListener, InvitationReceiver {
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -100,6 +102,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
     public void onEventMainThread(InvitationEvent event) {
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }

@@ -1,7 +1,7 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.main;
 
-import com.ivygames.morskoiboi.rt.InvitationEvent;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
+import com.ivygames.morskoiboi.InvitationReceiver;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 
 import org.junit.Test;
@@ -10,7 +10,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
-public class MainScreen_InvitationTest extends MainScreenTest {
+public class MainScreen_InvitationTest extends MainScreen_ {
 
     @Test
     public void WhenThereIsInvitation__EnvelopeIsShown() {
@@ -26,13 +26,12 @@ public class MainScreen_InvitationTest extends MainScreenTest {
         checkHasInvitation(false);
     }
 
+    @Test
     public void WhenInvitationArrives__EnvelopeIsShown() {
-//        setInvitation(false);
-//        showScreen();
-//        ((MainScreen)screen()).onEventMainThread(new InvitationEvent(null));
-//        checkHasInvitation(true);
-
-        // TODO:
+        setInvitation(false);
+        showScreen();
+        sendInvitation((InvitationReceiver) screen());
+        checkHasInvitation(true);
     }
 
     private void setInvitation(boolean hasInvitation) {

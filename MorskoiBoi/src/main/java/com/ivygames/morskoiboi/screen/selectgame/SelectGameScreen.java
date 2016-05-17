@@ -21,6 +21,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
@@ -48,7 +49,8 @@ import org.commons.logger.Ln;
 
 import de.greenrobot.event.EventBus;
 
-public class SelectGameScreen extends BattleshipScreen implements SelectGameActions, SignInListener, BackPressListener {
+public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
+        SignInListener, BackPressListener, InvitationReceiver {
     private static final String TAG = "SELECT_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -144,6 +146,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
     public void onEventMainThread(InvitationEvent event) {
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }

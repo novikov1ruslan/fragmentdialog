@@ -1,10 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
 import com.ivygames.common.PlayUtils;
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenTest;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -18,16 +21,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MainScreen_RateTest extends MainScreenTest {
+public class MainScreen_RateTest extends MainScreen_ {
     @NonNull
     protected static Matcher<View> rateDialog() {
-        return withText(R.string.rate_request);
+        return ViewMatchers.withText(R.string.rate_request);
     }
 
     @Test
     public void RateDialogShown() {
         when(settings().shouldProposeRating()).thenReturn(true);
-        setScreen(newScreen());
+        showScreen();
         checkDisplayed(rateDialog());
     }
 
@@ -35,7 +38,7 @@ public class MainScreen_RateTest extends MainScreenTest {
     public void WhenRateButtonPressed__RateIntentFiredAndChoiceSaved() {
         RateDialogShown();
         Intent intent = PlayUtils.rateIntent(activity.getPackageName());
-        clickForIntent(withText(R.string.rate), fromIntent(intent));
+        ScreenTest.clickForIntent(withText(R.string.rate), fromIntent(intent));
         verify(settings(), times(1)).setRated();
         checkDoesNotExist(rateDialog());
     }
@@ -60,7 +63,7 @@ public class MainScreen_RateTest extends MainScreenTest {
     @Test
     public void RateDialogNotShown() {
         when(settings().shouldProposeRating()).thenReturn(false);
-        setScreen(newScreen());
+        showScreen();
         checkDoesNotExist(rateDialog());
     }
 }

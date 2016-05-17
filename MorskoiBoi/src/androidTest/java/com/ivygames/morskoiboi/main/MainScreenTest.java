@@ -1,14 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.main;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 
 import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -25,12 +24,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 
-public class MainScreenTest extends ScreenTest {
-
-    @Before
-    public void startup() {
-        super.setup();
-    }
+public class MainScreenTest extends MainScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
@@ -44,21 +38,21 @@ public class MainScreenTest extends ScreenTest {
     @Test
     public void when_billing_available__no_ads_button_visible() {
         setBillingAvailable(true);
-        setScreen(newScreen());
+        showScreen();
         assertThat(viewById(R.id.no_ads).getVisibility(), is(View.VISIBLE));
     }
 
     @Test
     public void when_billing_NOT_available__no_ads_button_gone() {
         setBillingAvailable(false);
-        setScreen(newScreen());
+        showScreen();
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
     }
 
     @Test
     public void when_billing_NOT_available__no_ads_button_gone_even_after_getting_to_another_screen_and_back() {
         setBillingAvailable(false);
-        setScreen(newScreen());
+        showScreen();
         assertThat(viewById(R.id.no_ads).getVisibility(), is(not(View.VISIBLE)));
         onView(withId(R.id.help)).perform(click());
         pressBack();
@@ -92,14 +86,14 @@ public class MainScreenTest extends ScreenTest {
     @Test
     public void when_signed_in__plus_one_button_is_displayed() {
         setSignedIn(true);
-        setScreen(newScreen());
+        showScreen();
         onView(pusOneButton()).check(matches(isDisplayed()));
     }
 
     @Test
     public void when_NOT_signed_in__plus_one_button_is_NOT_displayed() {
         setSignedIn(false);
-        setScreen(newScreen());
+        showScreen();
         onView(pusOneButton()).check(matches(not(isDisplayed())));
     }
 
@@ -111,10 +105,5 @@ public class MainScreenTest extends ScreenTest {
 //        ActivityResult result = new ActivityResult(GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED, null);
 //        clickForIntent(pusOneButton(), anyIntent(), result);
 //        verify(apiClient(), times(1)).disconnect();
-    }
-
-    @NonNull
-    private Matcher<View> pusOneButton() {
-        return withId(R.id.plus_one_button);
     }
 }
