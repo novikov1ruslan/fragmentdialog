@@ -45,8 +45,7 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class InternetGameScreen extends BattleshipScreen implements InternetGameLayoutListener,
-        InternetGameListener, BackPressListener, InvitationReceiver {
+public class InternetGameScreen extends BattleshipScreen implements BackPressListener, InvitationReceiver {
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -78,7 +77,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
         mLayout.setPlayerName(mSettings.getPlayerName());
-        mLayout.setScreenActions(this);
+        mLayout.setScreenActions(mInternetGameLayoutListener);
         Ln.d(this + " screen created");
         return mLayout;
     }
@@ -123,49 +122,8 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         mKeyLock = false;
     }
 
-    @Override
-    public void onWaitingForOpponent(Room room) {
-        // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
-        mMultiplayerHub.showWaitingRoom(room);
-    }
-
-    @Override
-    public void onError(int statusCode) {
-        hideWaitingScreen();
-        Ln.w("error status code: " + GamesStatusCodes.getStatusString(statusCode));
-
-        if (statusCode == GamesStatusCodes.STATUS_REAL_TIME_INACTIVE_ROOM) {
-            FragmentAlertDialog.showNote(mFm, DIALOG, R.string.match_canceled);
-        } else if (statusCode == GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_FAILED) {
-            FragmentAlertDialog.showNote(mFm, DIALOG, R.string.network_error);
-        } else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
-            mApiClient.disconnect();
-            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
-        } else {
-            // STATUS_REAL_TIME_CONNECTION_FAILED
-            // STATUS_INTERNAL_ERROR
-            ExceptionEvent.send("internet_game", GamesStatusCodes.getStatusString(statusCode));
-            SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
-        }
-    }
-
-    @Override
-    public void invitePlayer() {
-        if (mKeyLock) {
-            Ln.w("keys are locked");
-            return;
-        }
-
-        mKeyLock = true;
-        UiEvent.send("invitePlayer");
-        createGame();
-
-        showWaitingScreen();
-        mMultiplayerHub.selectPlayers();
-    }
-
     private void createGame() {
-        mInternetGame = new InternetGame(mApiClient, this);
+        mInternetGame = new InternetGame(mApiClient, mInternetGameListener);
         InternetOpponent opponent = new InternetOpponent(mInternetGame, getString(R.string.player));
         mInternetGame.setRealTimeMessageReceivedListener(opponent);
         Model.instance.setOpponents(new PlayerOpponent(fetchPlayerName(), mPlacement, mRules), opponent);
@@ -180,37 +138,85 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         }
         return playerName;
     }
-
-    @Override
-    public void viewInvitations() {
-        if (mKeyLock) {
-            Ln.w("keys are locked");
-            return;
+    
+    @NonNull
+    private final InternetGameListener mInternetGameListener = new InternetGameListener() {
+        @Override
+        public void onWaitingForOpponent(Room room) {
+            // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
+            mMultiplayerHub.showWaitingRoom(room);
         }
 
-        mKeyLock = true;
-        UiEvent.send("viewInvitations");
-        Ln.d("requesting invitations screen...");
-        createGame();
+        @Override
+        public void onError(int statusCode) {
+            hideWaitingScreen();
+            Ln.w("error status code: " + GamesStatusCodes.getStatusString(statusCode));
 
-        showWaitingScreen();
-        mMultiplayerHub.showInbox();
-    }
+            if (statusCode == GamesStatusCodes.STATUS_REAL_TIME_INACTIVE_ROOM) {
+                FragmentAlertDialog.showNote(mFm, DIALOG, R.string.match_canceled);
+            } else if (statusCode == GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_FAILED) {
+                FragmentAlertDialog.showNote(mFm, DIALOG, R.string.network_error);
+            } else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
+                mApiClient.disconnect();
+                SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
+            } else {
+                // STATUS_REAL_TIME_CONNECTION_FAILED
+                // STATUS_INTERNAL_ERROR
+                ExceptionEvent.send("internet_game", GamesStatusCodes.getStatusString(statusCode));
+                SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
+            }
+        }
+    };
 
-    @Override
-    public void quickGame() {
-        if (mKeyLock) {
-            Ln.w("keys are locked");
-            return;
+    @NonNull
+    private final InternetGameLayoutListener mInternetGameLayoutListener = new InternetGameLayoutListener() {
+
+        @Override
+        public void invitePlayer() {
+            if (mKeyLock) {
+                Ln.w("keys are locked");
+                return;
+            }
+
+            mKeyLock = true;
+            UiEvent.send("invitePlayer");
+            createGame();
+
+            showWaitingScreen();
+            mMultiplayerHub.selectPlayers();
         }
 
-        mKeyLock = true;
-        UiEvent.send("quickGame");
-        createGame();
+        @Override
+        public void viewInvitations() {
+            if (mKeyLock) {
+                Ln.w("keys are locked");
+                return;
+            }
 
-        showWaitingScreen();
-        mInternetGame.quickGame();
-    }
+            mKeyLock = true;
+            UiEvent.send("viewInvitations");
+            Ln.d("requesting invitations screen...");
+            createGame();
+
+            showWaitingScreen();
+            mMultiplayerHub.showInbox();
+        }
+
+        @Override
+        public void quickGame() {
+            if (mKeyLock) {
+                Ln.w("keys are locked");
+                return;
+            }
+
+            mKeyLock = true;
+            UiEvent.send("quickGame");
+            createGame();
+
+            showWaitingScreen();
+            mInternetGame.quickGame();
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
