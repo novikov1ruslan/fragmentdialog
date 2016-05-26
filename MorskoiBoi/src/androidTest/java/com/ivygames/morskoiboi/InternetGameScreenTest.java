@@ -14,21 +14,36 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     @Test
     public void WhenBackPressed__SelectGameScreenOpens() {
         showScreen();
+
         pressBack();
+
         checkDisplayed(SELECT_GAME_LAYOUT);
     }
 
     @Test
     public void WhenScreenIsDisplayed__PlayerNameIsShown() {
         when(settings().getPlayerName()).thenReturn("Sagi");
+
         showScreen();
+
         onView(withId(R.id.player_name)).check(matches(withText("Sagi")));
     }
 
     @Test
     public void WhenInvitePlayerPressed__WaitDialogIsDisplayed() {
         showScreen();
+
         clickOn(inviteButton());
+
+        checkDisplayed(waitDialog());
+    }
+
+    @Test
+    public void WhenViewInvitationsPressed__WaitDialogIsDisplayed() {
+        showScreen();
+
+        clickOn(viewInvitations());
+
         checkDisplayed(waitDialog());
     }
 

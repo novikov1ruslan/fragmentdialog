@@ -9,6 +9,7 @@ import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class InternetGameScreen_ extends ScreenTest {
@@ -23,13 +24,17 @@ public class InternetGameScreen_ extends ScreenTest {
     }
 
     @NonNull
-    protected Matcher<View> inviteButton() {
-//        return withId(R.id.invite_player_button);
-        return withText(R.string.invite_player);
+    protected final Matcher<View> inviteButton() {
+        return withId(R.id.invite_player_button);
     }
 
     @NonNull
-    protected Matcher<View> waitDialog() {
+    protected final Matcher<View> viewInvitations() {
+        return withId(R.id.view_invitations_button);
+    }
+
+    @NonNull
+    protected final Matcher<View> waitDialog() {
         return withText(R.string.please_wait);
     }
 }

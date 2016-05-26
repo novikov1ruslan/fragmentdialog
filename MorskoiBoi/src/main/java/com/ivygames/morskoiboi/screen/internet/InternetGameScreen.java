@@ -202,7 +202,9 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
         showWaitingScreen();
         Intent intent = mApiClient.getInvitationInboxIntent();
-        startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
+        if (mDevice.canResolveIntent(intent)) {
+            startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
+        }
     }
 
     @Override
