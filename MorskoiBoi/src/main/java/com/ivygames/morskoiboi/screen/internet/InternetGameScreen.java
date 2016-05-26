@@ -138,7 +138,35 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         }
         return playerName;
     }
-    
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
+            Ln.i("reconnect required - returning to select game screen");
+            hideWaitingScreen();
+            new BackToSelectGameCommand(parent(), mInternetGame).run();
+            mApiClient.disconnect();
+            return;
+        }
+
+        mMultiplayerHub.handleResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mKeyLock) {
+            Ln.w("keys are locked");
+            return;
+        }
+
+        if (mWaitFragment != null) {
+            Ln.d("blocking backpress");
+            return;
+        }
+
+        new BackToSelectGameCommand(parent(), mInternetGame).run();
+    }
+
     @NonNull
     private final InternetGameListener mInternetGameListener = new InternetGameListener() {
         @Override
@@ -218,19 +246,6 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         }
     };
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
-            Ln.i("reconnect required - returning to select game screen");
-            hideWaitingScreen();
-            new BackToSelectGameCommand(parent(), mInternetGame).run();
-            mApiClient.disconnect();
-            return;
-        }
-
-        mMultiplayerHub.handleResult(requestCode, resultCode, data);
-    }
-
     @NonNull
     private final MultiplayerHubListener mMultiplayerHubListener = new MultiplayerHubListener() {
 
@@ -289,25 +304,6 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             mInternetGame.create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers);
         }
     };
-
-    @Override
-    public void onBackPressed() {
-        if (mKeyLock) {
-            Ln.w("keys are locked");
-            return;
-        }
-
-        if (mWaitFragment != null) {
-            Ln.d("blocking backpress");
-            return;
-        }
-
-        if (mInternetGame != null) {
-            mInternetGame.finish();
-        }
-
-        setScreen(GameHandler.newSelectGameScreen());
-    }
 
     private void showWaitingScreen() {
         Ln.d("please wait... ");
