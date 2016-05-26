@@ -32,7 +32,7 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InternetGame;
-import com.ivygames.morskoiboi.rt.InternetGame.InternetGameListener;
+import com.ivygames.morskoiboi.rt.InternetGameListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
@@ -128,8 +128,9 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
     @Override
     public void onWaitingForOpponent(Room room) {
-        mInvitationManager.loadInvitations();
-        showWaitingRoom(room);
+        // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
+        Intent intent = mApiClient.getWaitingRoomIntent(room, MIN_PLAYERS);
+        startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
     }
 
     @Override
@@ -293,14 +294,6 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
 
         mInternetGame.create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers);
-    }
-
-    /**
-     * Show the waiting room UI to track the progress of other players as they enter the room and get connected.
-     */
-    private void showWaitingRoom(Room room) {
-        Intent intent = mApiClient.getWaitingRoomIntent(room, MIN_PLAYERS);
-        startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
     }
 
     @Override

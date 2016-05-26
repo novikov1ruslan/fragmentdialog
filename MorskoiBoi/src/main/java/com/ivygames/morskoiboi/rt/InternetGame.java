@@ -37,13 +37,6 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     private static final int TURN_TIMEOUT = 40 * 1000;
 
-    public interface InternetGameListener {
-
-        void onWaitingForOpponent(Room room);
-
-        void onError(int statusCode);
-    }
-
     @NonNull
     private final GoogleApiClientWrapper mApiClient;
     private Room mRoom;
