@@ -29,7 +29,7 @@ public class InternetGameScreen_ extends ScreenTest {
     }
 
     @NonNull
-    protected final Matcher<View> inviteButton() {
+    protected final Matcher<View> invite() {
         return withId(R.id.invite_player_button);
     }
 
@@ -39,7 +39,13 @@ public class InternetGameScreen_ extends ScreenTest {
     }
 
     @NonNull
+    protected final Matcher<View> quickGame() {
+        return withId(R.id.quick_game_button);
+    }
+
+    @NonNull
     protected final Matcher<View> waitDialog() {
         return withText(R.string.please_wait);
     }
+
 }

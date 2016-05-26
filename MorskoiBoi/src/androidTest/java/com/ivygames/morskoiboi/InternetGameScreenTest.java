@@ -33,7 +33,7 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     public void WhenInvitePlayerPressed__WaitDialogIsDisplayed() {
         showScreen();
 
-        clickOn(inviteButton());
+        clickOn(invite());
 
         checkDisplayed(waitDialog());
     }
@@ -43,6 +43,15 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
         showScreen();
 
         clickOn(viewInvitations());
+
+        checkDisplayed(waitDialog());
+    }
+
+    @Test
+    public void WhenQuickGamePressed__WaitDialogIsDisplayed() {
+        showScreen();
+
+        clickOn(quickGame());
 
         checkDisplayed(waitDialog());
     }
