@@ -305,7 +305,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             return;
         }
 
-        if (isWaitShown()) {
+        if (mWaitFragment != null) {
             Ln.d("blocking backpress");
             return;
         }
@@ -317,24 +317,20 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         setScreen(GameHandler.newSelectGameScreen());
     }
 
-    protected final void showWaitingScreen() {
+    private void showWaitingScreen() {
         Ln.d("please wait... ");
         mWaitFragment = new WaitFragment();
         mFm.beginTransaction().add(R.id.container, mWaitFragment).commitAllowingStateLoss();
     }
 
-    protected final void hideWaitingScreen() {
-        if (isWaitShown()) {
+    private void hideWaitingScreen() {
+        if (mWaitFragment != null) {
             Ln.d("hiding waiting screen");
             mFm.beginTransaction().remove(mWaitFragment).commitAllowingStateLoss();
             mWaitFragment = null;
         } else {
             Ln.w("waiting screen isn't shown");
         }
-    }
-
-    protected final boolean isWaitShown() {
-        return mWaitFragment != null;
     }
 
     @Override
