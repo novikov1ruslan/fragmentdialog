@@ -12,13 +12,6 @@ import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 import org.commons.logger.Ln;
 
 public class InternetGameLayout extends NotepadRelativeLayout implements View.OnClickListener {
-    public interface InternetGameLayoutListener {
-        void invitePlayer();
-
-        void viewInvitations();
-
-        void quickGame();
-    }
 
     private InternetGameLayoutListener mListener;
     private TextView mPlayerNameView;

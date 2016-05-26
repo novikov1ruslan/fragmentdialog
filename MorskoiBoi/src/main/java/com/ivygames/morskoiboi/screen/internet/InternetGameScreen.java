@@ -15,6 +15,7 @@ import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -37,7 +38,6 @@ import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
-import com.ivygames.morskoiboi.screen.internet.InternetGameLayout.InternetGameLayoutListener;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -59,14 +59,17 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private WaitFragment mWaitFragment;
 
     @NonNull
+    private final AndroidDevice mDevice = Dependencies.getDevice();
+    @NonNull
     private final GoogleApiClientWrapper mApiClient;
-
     @NonNull
     private final InvitationManager mInvitationManager;
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
+    @NonNull
+    private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
@@ -162,21 +165,26 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
 
         showWaitingScreen();
         Intent intent = mApiClient.getSelectOpponentsIntent(InternetGame.MIN_OPPONENTS, InternetGame.MAX_OPPONENTS, false);
-        startActivityForResult(intent, BattleshipActivity.RC_SELECT_PLAYERS);
+        if (mDevice.canResolveIntent(intent)) {
+            startActivityForResult(intent, BattleshipActivity.RC_SELECT_PLAYERS);
+        }
     }
 
     private void createGame() {
         mInternetGame = new InternetGame(mApiClient, this);
-        String defaultName = getString(R.string.player);
-        InternetOpponent mOpponent = new InternetOpponent(mInternetGame, defaultName);
-        mInternetGame.setRealTimeMessageReceivedListener(mOpponent);
+        InternetOpponent opponent = new InternetOpponent(mInternetGame, getString(R.string.player));
+        mInternetGame.setRealTimeMessageReceivedListener(opponent);
+        Model.instance.setOpponents(new PlayerOpponent(fetchPlayerName(), mPlacement, mRules), opponent);
+    }
+
+    @NonNull
+    private String fetchPlayerName() {
         String playerName = mSettings.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        Placement placement = PlacementFactory.getAlgorithm();
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules), mOpponent);
+        return playerName;
     }
 
     @Override
