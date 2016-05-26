@@ -5,22 +5,27 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
+import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.mock;
 
 public class InternetGameScreen_ extends ScreenTest {
+    private MultiplayerHub multiplayerHub;
+
     @Before
     public void setup() {
         super.setup();
+        multiplayerHub = mock(MultiplayerHub.class);
     }
 
     @Override
     public BattleshipScreen newScreen() {
-        return new InternetGameScreen(activity);
+        return new InternetGameScreen(activity, multiplayerHub);
     }
 
     @NonNull

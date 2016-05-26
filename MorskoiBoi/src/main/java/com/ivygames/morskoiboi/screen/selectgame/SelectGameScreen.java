@@ -41,6 +41,7 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
+import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -238,7 +239,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        setScreen(GameHandler.newInternetGameScreen());
+        MultiplayerHub hub = new MultiplayerHub(mParent, mApiClient);
+        setScreen(GameHandler.newInternetGameScreen(hub));
     }
 
     private void showInternetDialog() {

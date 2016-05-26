@@ -15,7 +15,6 @@ import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
-import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -51,30 +50,28 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
-    private static final int MIN_PLAYERS = 2;
-
     private InternetGame mInternetGame;
     private boolean mKeyLock;
     private InternetGameLayout mLayout;
     private WaitFragment mWaitFragment;
 
     @NonNull
-    private final AndroidDevice mDevice = Dependencies.getDevice();
+    private final GoogleApiClientWrapper mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
-    @NonNull
-    private final InvitationManager mInvitationManager;
+    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    @NonNull
+    private final MultiplayerHub mMultiplayerHub;
 
-    public InternetGameScreen(@NonNull BattleshipActivity parent) {
+    public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull MultiplayerHub hub) {
         super(parent);
-        mApiClient = Dependencies.getApiClient();
-        mInvitationManager = Dependencies.getInvitationManager();
+        mMultiplayerHub = hub;
+        mMultiplayerHub.setResultListener(mMultiplayerHubListener);
     }
 
     @Override
@@ -129,8 +126,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
     @Override
     public void onWaitingForOpponent(Room room) {
         // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
-        Intent intent = mApiClient.getWaitingRoomIntent(room, MIN_PLAYERS);
-        startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
+        mMultiplayerHub.showWaitingRoom(room);
     }
 
     @Override
@@ -165,10 +161,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         createGame();
 
         showWaitingScreen();
-        Intent intent = mApiClient.getSelectOpponentsIntent(InternetGame.MIN_OPPONENTS, InternetGame.MAX_OPPONENTS, false);
-        if (mDevice.canResolveIntent(intent)) {
-            startActivityForResult(intent, BattleshipActivity.RC_SELECT_PLAYERS);
-        }
+        mMultiplayerHub.selectPlayers();
     }
 
     private void createGame() {
@@ -201,10 +194,7 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
         createGame();
 
         showWaitingScreen();
-        Intent intent = mApiClient.getInvitationInboxIntent();
-        if (mDevice.canResolveIntent(intent)) {
-            startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
-        }
+        mMultiplayerHub.showInbox();
     }
 
     @Override
@@ -232,71 +222,67 @@ public class InternetGameScreen extends BattleshipScreen implements InternetGame
             return;
         }
 
-        Ln.v("result=" + resultCode);
-        switch (requestCode) {
-            case BattleshipActivity.RC_SELECT_PLAYERS:
-                handleSelectPlayersResult(resultCode, data);
-                break;
-            case BattleshipActivity.RC_INVITATION_INBOX:
-                handleInvitationInboxResult(resultCode, data);
-                break;
-            case BattleshipActivity.RC_WAITING_ROOM:
-                handleWaitingRoomResult(resultCode);
-                break;
-        }
+        mMultiplayerHub.handleResult(requestCode, resultCode, data);
     }
 
-    private void handleWaitingRoomResult(int resultCode) {
-        hideWaitingScreen();
-        if (resultCode == Activity.RESULT_OK) {
-            Ln.d("starting game");
-            setScreen(GameHandler.newBoardSetupScreen(mInternetGame));
-        } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-            Ln.d("user explicitly chose to leave the room");
-            // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
-            mInternetGame.finish();
-        } else if (resultCode == Activity.RESULT_CANCELED) {
+    @NonNull
+    private final MultiplayerHubListener mMultiplayerHubListener = new MultiplayerHubListener() {
+
+        @Override
+        public void handleWaitingRoomResult(int resultCode) {
+            hideWaitingScreen();
+            if (resultCode == Activity.RESULT_OK) {
+                Ln.d("starting game");
+                setScreen(GameHandler.newBoardSetupScreen(mInternetGame));
+            } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
+                Ln.d("user explicitly chose to leave the room");
+                // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
+                mInternetGame.finish();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
             /*
              * Dialog was cancelled (user pressed back key, for instance). In our game, this means leaving the room too. In more elaborate games,this could mean
 			 * something else (like minimizing the waiting room UI but continue in the handshake process).
 			 */
-            Ln.d("user closed the waiting room - leaving");
-            mInternetGame.finish();
-        }
-    }
-
-    /**
-     * Handle the result of the invitation inbox UI, where the player can pick an invitation to accept. We react by accepting the selected invitation, if any.
-     */
-    private void handleInvitationInboxResult(int result, Intent data) {
-        if (result != Activity.RESULT_OK) {
-            Ln.d("invitation cancelled - hiding waiting screen; reason=" + result);
-            hideWaitingScreen();
-            return;
+                Ln.d("user closed the waiting room - leaving");
+                mInternetGame.finish();
+            }
         }
 
-        Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
-        // showWaitingScreen();
-        mInternetGame.accept(invitation);
-    }
+        /**
+         * Handle the result of the invitation inbox UI, where the player can pick an invitation to accept. We react by accepting the selected invitation, if any.
+         */
+        @Override
+        public void handleInvitationInboxResult(int result, Intent data) {
+            if (result != Activity.RESULT_OK) {
+                Ln.d("invitation cancelled - hiding waiting screen; reason=" + result);
+                hideWaitingScreen();
+                return;
+            }
 
-    // Handle the result of the "Select players UI" we launched when the user
-    // clicked the
-    // "Invite friends" button. We react by creating a room with those players.
-    private void handleSelectPlayersResult(int result, Intent data) {
-        if (result != Activity.RESULT_OK) {
-            Ln.d("select players UI cancelled - hiding waiting screen; reason=" + result);
-            hideWaitingScreen();
-            return;
+            Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
+            // showWaitingScreen();
+            mInternetGame.accept(invitation);
         }
 
-        final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
-        Ln.d("opponent selected: " + invitees + ", creating room...");
-        int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
-        int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+        // Handle the result of the "Select players UI" we launched when the user
+        // clicked the
+        // "Invite friends" button. We react by creating a room with those players.
+        @Override
+        public void handleSelectPlayersResult(int result, Intent data) {
+            if (result != Activity.RESULT_OK) {
+                Ln.d("select players UI cancelled - hiding waiting screen; reason=" + result);
+                hideWaitingScreen();
+                return;
+            }
 
-        mInternetGame.create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers);
-    }
+            final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+            Ln.d("opponent selected: " + invitees + ", creating room...");
+            int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+            int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+            mInternetGame.create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers);
+        }
+    };
 
     @Override
     public void onBackPressed() {
