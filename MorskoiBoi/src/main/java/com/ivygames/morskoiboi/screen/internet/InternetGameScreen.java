@@ -43,8 +43,6 @@ import org.commons.logger.Ln;
 
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
-
 public class InternetGameScreen extends BattleshipScreen implements BackPressListener, InvitationReceiver {
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
@@ -91,14 +89,14 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        mInvitationManager.registerInvitationReceiver(this);
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        mInvitationManager.unregisterInvitationReceiver(this);
     }
 
     @Override
@@ -211,7 +209,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayerHub.selectPlayers();
+            mMultiplayerHub.invitePlayers();
         }
 
         @Override
@@ -227,7 +225,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayerHub.showInbox();
+            mMultiplayerHub.showInvitations();
         }
 
         @Override

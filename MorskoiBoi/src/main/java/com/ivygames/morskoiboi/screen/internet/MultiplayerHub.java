@@ -34,12 +34,12 @@ public class MultiplayerHub {
         mActivity.startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
     }
 
-    public void selectPlayers() {
+    public void invitePlayers() {
         Intent intent = mApiClient.getSelectOpponentsIntent(InternetGame.MIN_OPPONENTS, InternetGame.MAX_OPPONENTS, false);
         mActivity.startActivityForResult(intent, BattleshipActivity.RC_SELECT_PLAYERS);
     }
 
-    public void showInbox() {
+    public void showInvitations() {
         Intent intent = mApiClient.getInvitationInboxIntent();
         mActivity.startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
     }

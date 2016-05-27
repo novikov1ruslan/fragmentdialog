@@ -48,8 +48,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-import de.greenrobot.event.EventBus;
-
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener, InvitationReceiver {
     private static final String TAG = "SELECT_GAME";
@@ -62,25 +60,19 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private View mTutView;
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
-
+    private final GoogleApiClientWrapper mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final InvitationManager mInvitationManager;
-
+    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
     @NonNull
-    private final AndroidDevice mDevice;
-
-    @NonNull
-    private final GameSettings mSettings;
+    private final AndroidDevice mDevice = Dependencies.getDevice();
     @NonNull
     private final Rules mRules = RulesFactory.getRules();
+    @NonNull
+    private final GameSettings mSettings;
 
     public SelectGameScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
         mSettings = settings;
-        mApiClient = Dependencies.getApiClient();
-        mInvitationManager = Dependencies.getInvitationManager();
-        mDevice = Dependencies.getDevice();
     }
 
     @Override
@@ -128,7 +120,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        mInvitationManager.registerInvitationReceiver(this);
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
@@ -144,7 +136,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        mInvitationManager.unregisterInvitationReceiver(this);
     }
 
     @Override

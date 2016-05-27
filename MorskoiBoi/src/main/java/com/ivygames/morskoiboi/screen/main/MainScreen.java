@@ -48,10 +48,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private final GameSettings mSettings;
 
     @NonNull
-    private final InvitationManager mInvitationManager;
+    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
 
     @NonNull
-    private final AndroidDevice mDevice;
+    private final AndroidDevice mDevice = Dependencies.getDevice();
 
     public MainScreen(@NonNull BattleshipActivity parent,
                       @NonNull GoogleApiClientWrapper apiClient,
@@ -59,8 +59,6 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         super(parent);
         mApiClient = apiClient;
         mSettings = settings;
-        mInvitationManager = Dependencies.getInvitationManager();
-        mDevice = Dependencies.getDevice();
     }
 
     @Override
@@ -87,7 +85,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        mInvitationManager.registerInvitationReceiver(this);
         processInvitations();
     }
 
@@ -116,7 +114,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        mInvitationManager.unregisterInvitationReceiver(this);
     }
 
     @Override
@@ -245,12 +243,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
                 }).setNegativeButton(R.string.later, new OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        UiEvent.send("rate_later");
-                        mSettings.rateLater();
-                    }
-                }).create().show(mFm, DIALOG);
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                UiEvent.send("rate_later");
+                mSettings.rateLater();
+            }
+        }).create().show(mFm, DIALOG);
     }
 
     public void hideNoAdsButton() {

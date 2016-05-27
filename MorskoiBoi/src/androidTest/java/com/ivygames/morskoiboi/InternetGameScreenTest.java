@@ -7,6 +7,8 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class InternetGameScreenTest extends InternetGameScreen_ {
@@ -30,21 +32,23 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     }
 
     @Test
-    public void WhenInvitePlayerPressed__WaitDialogIsDisplayed() {
+    public void WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown() {
         showScreen();
 
         clickOn(invite());
 
         checkDisplayed(waitDialog());
+        verify(multiplayerHub, times(1)).invitePlayers();
     }
 
     @Test
-    public void WhenViewInvitationsPressed__WaitDialogIsDisplayed() {
+    public void WhenViewInvitationsPressed__WaitDialogIsDisplayed_And_InvitationsShown() {
         showScreen();
 
         clickOn(viewInvitations());
 
         checkDisplayed(waitDialog());
+        verify(multiplayerHub, times(1)).showInvitations();
     }
 
     @Test
@@ -58,7 +62,7 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
 
     @Test
     public void WhenWaitDialogIsDisplayed__PressingBackHasNoEffect() {
-        WhenInvitePlayerPressed__WaitDialogIsDisplayed();
+        WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
 
         pressBack();
 

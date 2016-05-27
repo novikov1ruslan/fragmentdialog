@@ -10,14 +10,15 @@ import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.rt.InvitationEvent;
 
 import org.commons.logger.Ln;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import de.greenrobot.event.EventBus;
 
 public class InvitationManager {
 
@@ -33,8 +34,12 @@ public class InvitationManager {
     @NonNull
     private final OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
 
-    @NonNull final
+    @NonNull
+    final
     private ResultCallback<Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultResultCallback();
+
+    @NonNull
+    private final List<InvitationReceiver> mInvitationReceivers = new ArrayList<>();
 
     public InvitationManager(@NonNull GoogleApiClientWrapper client) {
         mGoogleApiClient = client;
@@ -42,6 +47,14 @@ public class InvitationManager {
 
     public void setInvitationReceivedListener(@Nullable InvitationReceivedListener listener) {
         mListener = listener;
+    }
+
+    public void registerInvitationReceiver(@NonNull InvitationReceiver receiver) {
+        mInvitationReceivers.add(receiver);
+    }
+
+    public void unregisterInvitationReceiver(@NonNull InvitationReceiver receiver) {
+        mInvitationReceivers.remove(receiver);
     }
 
     public boolean hasInvitation() {
@@ -60,6 +73,12 @@ public class InvitationManager {
         invitations.setResultCallback(mResultCallback);
     }
 
+    private void notifyReceivers() {
+        for (InvitationReceiver receiver : mInvitationReceivers) {
+            receiver.onEventMainThread(new InvitationEvent(mIncomingInvitationIds));
+        }
+    }
+
     private class OnInvitationReceivedListenerImpl implements OnInvitationReceivedListener {
 
         @Override
@@ -70,14 +89,14 @@ public class InvitationManager {
                 mListener.onInvitationReceived(displayName);
             }
             mIncomingInvitationIds.add(invitation.getInvitationId());
-            EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
+            notifyReceivers();
         }
 
         @Override
         public void onInvitationRemoved(String invitationId) {
             Ln.d("invitationId=" + invitationId + " withdrawn");
             mIncomingInvitationIds.remove(invitationId);
-            EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
+            notifyReceivers();
         }
     }
 
@@ -96,7 +115,7 @@ public class InvitationManager {
             } else {
                 Ln.v("no invitations");
             }
-            EventBus.getDefault().post(new InvitationEvent(mIncomingInvitationIds));
+            notifyReceivers();
         }
     }
 }

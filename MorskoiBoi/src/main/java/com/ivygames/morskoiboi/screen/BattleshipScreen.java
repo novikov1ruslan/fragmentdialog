@@ -86,9 +86,8 @@ public abstract class BattleshipScreen extends Screen {
         return null;
     }
 
-    public
     @RawRes
-    int getMusic() {
+    public int getMusic() {
         return MusicPlayer.NO_SOUND;
     }
 

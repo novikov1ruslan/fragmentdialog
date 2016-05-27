@@ -15,7 +15,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.mock;
 
 public class InternetGameScreen_ extends ScreenTest {
-    private MultiplayerHub multiplayerHub;
+    protected MultiplayerHub multiplayerHub;
 
     @Before
     public void setup() {
