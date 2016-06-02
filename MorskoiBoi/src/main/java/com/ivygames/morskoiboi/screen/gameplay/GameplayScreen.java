@@ -73,13 +73,32 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public static final int ALARM_TIME_SECONDS = 10;
 
     @NonNull
-    private final PlayerOpponent mPlayer;
-    @NonNull
-    private final Opponent mEnemy;
-    @NonNull
     private final Handler mUiThreadHandler = new Handler(Looper.getMainLooper());
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
+    @NonNull
+    private final Rules mRules = RulesFactory.getRules();
+    @NonNull
+    private final Runnable mShowLostScreenCommand = new ShowLostScreenCommand();
+    @NonNull
+    private final TurnListener mTurnTimerListener = new TurnTimerListener();
+    @NonNull
+    private final Runnable mShotHangDetectionTask = new ShotHangDetectionTask();
+    @NonNull
+    private final Runnable mTurnHangDetectionTask = new TurnHangDetectionTask();
+    @NonNull
+    private final ScoreStatistics mStatistics = new ScoreStatistics();
+
+    private boolean mMyTurn;
+    private long mUnlockedTime;
+    private long mStartTime;
+    private boolean mGameIsOn;
+    private GameplayLayoutInterface mLayout;
+    private boolean mBackPressEnabled = true;
+    @NonNull
+    private final PlayerOpponent mPlayer;
+    @NonNull
+    private final Opponent mEnemy;
     @NonNull
     private final VibratorFacade mVibrator;
     @NonNull
@@ -90,112 +109,18 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final ChatAdapter mChatAdapter;
     @NonNull
     private final GameplaySoundManager mGameplaySounds;
-
-    private GameplayLayoutInterface mLayout;
-    private boolean mBackPressEnabled = true;
-
     @NonNull
     private final TurnTimerController mTimerController;
-
-    @NonNull
-    private final Rules mRules = RulesFactory.getRules();
-
-    private long mUnlockedTime;
-    private long mStartTime;
-    private boolean mGameIsOn;
-
-    @NonNull
-    private final Runnable mShowLostScreenCommand = new Runnable() {
-
-        @Override
-        public void run() {
-            setScreen(GameHandler.newLostScreen(mGame));
-        }
-    };
-    @NonNull
-    private final TurnListener mTurnTimerListener = new TurnListener() {
-
-        @Override
-        public void onTimerExpired() {
-            stopAlarmSound();
-
-            Ln.d("turn skipped");
-            showOpponentTurn();
-            startDetectingTurnTimeout();
-            mEnemy.go();
-        }
-
-        @Override
-        public void onPlayerIdle() {
-            stopAlarmSound();
-
-            AnalyticsEvent.send("surrendered_passively");
-            int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
-            Ln.d("player surrender passively with penalty: " + penalty);
-            surrender(penalty);
-        }
-
-        @Override
-        public void setCurrentTime(int time) {
-            mLayout.setCurrentTime(time);
-            if (shouldPlayAlarmSound(time)) {
-                mGameplaySounds.playAlarmSound();
-            }
-        }
-
-        @Override
-        public void onCanceled() {
-            if (mGameplaySounds.isAlarmPlaying()) {
-                Ln.v("timer canceled - stopping alarm");
-                mGameplaySounds.stopAlarmSound();
-            } else {
-                Ln.v("timer canceled");
-            }
-        }
-
-        private void stopAlarmSound() {
-            if (mGameplaySounds.isAlarmPlaying()) {
-                Ln.v("timer expired - stopping alarm");
-                mGameplaySounds.stopAlarmSound();
-            }
-        }
-
-        private boolean shouldPlayAlarmSound(int timeLeft) {
-            return timeLeft <= (ALARM_TIME_SECONDS * 1000) && !mGameplaySounds.isAlarmPlaying();
-        }
-    };
-
     @NonNull
     private final Intent mMatchStatusIntent;
-    @NonNull
-    private final Runnable mShotHangDetectionTask = new Runnable() {
-        @Override
-        public void run() {
-            Ln.w("shot_hanged");
-            showConnectionLostDialog();
-        }
-    };
-    @NonNull
-    private final Runnable mTurnHangDetectionTask = new Runnable() {
-        @Override
-        public void run() {
-            Ln.w("turn_hanged");
-            showConnectionLostDialog();
-        }
-    };
-    private boolean mMyTurn;
-    @NonNull
-    private final ScoreStatistics mStatistics;
 
     public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull TurnTimerController timerController) {
         super(parent, game);
         mTimerController = timerController;
 
-        mMatchStatusIntent = new Intent(parent, InternetService.class);
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
-        mStatistics = new ScoreStatistics();
         mPlayer = Model.instance.player;
         mEnemy = Model.instance.opponent;
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
@@ -203,6 +128,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mVibrator = new VibratorFacade(mParent);
 
+        mMatchStatusIntent = new Intent(parent, InternetService.class);
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
         mChatAdapter = new ChatAdapter(getLayoutInflater());
         mTimerController.setListener(mTurnTimerListener);
@@ -814,6 +740,82 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void run() {
             setScreen(GameHandler.newWinScreen(mGame, mShips, mStatistics, mOpponentSurrendered));
+        }
+    }
+
+    private class ShowLostScreenCommand implements Runnable {
+
+        @Override
+        public void run() {
+            setScreen(GameHandler.newLostScreen(mGame));
+        }
+    }
+
+    private class TurnTimerListener implements TurnListener {
+
+        @Override
+        public void onTimerExpired() {
+            stopAlarmSound();
+
+            Ln.d("turn skipped");
+            showOpponentTurn();
+            startDetectingTurnTimeout();
+            mEnemy.go();
+        }
+
+        @Override
+        public void onPlayerIdle() {
+            stopAlarmSound();
+
+            AnalyticsEvent.send("surrendered_passively");
+            int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
+            Ln.d("player surrender passively with penalty: " + penalty);
+            surrender(penalty);
+        }
+
+        @Override
+        public void setCurrentTime(int time) {
+            mLayout.setCurrentTime(time);
+            if (shouldPlayAlarmSound(time)) {
+                mGameplaySounds.playAlarmSound();
+            }
+        }
+
+        @Override
+        public void onCanceled() {
+            if (mGameplaySounds.isAlarmPlaying()) {
+                Ln.v("timer canceled - stopping alarm");
+                mGameplaySounds.stopAlarmSound();
+            } else {
+                Ln.v("timer canceled");
+            }
+        }
+
+        private void stopAlarmSound() {
+            if (mGameplaySounds.isAlarmPlaying()) {
+                Ln.v("timer expired - stopping alarm");
+                mGameplaySounds.stopAlarmSound();
+            }
+        }
+
+        private boolean shouldPlayAlarmSound(int timeLeft) {
+            return timeLeft <= (ALARM_TIME_SECONDS * 1000) && !mGameplaySounds.isAlarmPlaying();
+        }
+    }
+
+    private class ShotHangDetectionTask implements Runnable {
+        @Override
+        public void run() {
+            Ln.w("shot_hanged");
+            showConnectionLostDialog();
+        }
+    }
+
+    private class TurnHangDetectionTask implements Runnable {
+        @Override
+        public void run() {
+            Ln.w("turn_hanged");
+            showConnectionLostDialog();
         }
     }
 }
