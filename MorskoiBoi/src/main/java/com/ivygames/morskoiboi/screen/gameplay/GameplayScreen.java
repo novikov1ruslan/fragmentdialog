@@ -689,7 +689,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onNewMessage(@NonNull String text) {
             mChatAdapter.add(ChatMessage.newEnemyMessage(text));
-            mPlayer.onNewMessage(text);
+            EventBus.getDefault().post(ChatMessage.newEnemyMessage(text));
         }
 
         private void showLostScreenDelayed(long mseconds) {

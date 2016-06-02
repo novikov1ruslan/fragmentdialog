@@ -18,16 +18,19 @@ public class PlayerOpponent extends AbstractOpponent {
 
     public static volatile Board debug_board;
 
-    private boolean mPlayerReady;
-
+    @NonNull
     private final String mName;
+    @NonNull
     private final Placement mPlacement;
-    private int mOpponentVersion;
+    @NonNull
     private Rules mRules;
+
+    private boolean mPlayerReady;
+    private int mOpponentVersion;
 
     private Opponent mOpponent;
 
-    public PlayerOpponent(String name, Placement placement, Rules rules) {
+    public PlayerOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
         mPlacement = placement;
         mName = name;
         mRules = rules;
@@ -109,7 +112,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onNewMessage(@NonNull String text) {
-        EventBus.getDefault().post(ChatMessage.newEnemyMessage(text));
+        Ln.e("onNewMessage never called");
     }
 
     public void startBidding() {
