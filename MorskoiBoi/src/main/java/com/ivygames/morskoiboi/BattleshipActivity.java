@@ -31,7 +31,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -209,7 +208,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             Ln.d("API is connected - register invitation listener");
             mInvitationManager.loadInvitations();
         }
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -264,7 +262,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
             Ln.d("API is connected - unregister invitation listener");
             mGoogleApiClient.unregisterInvitationListener();
         }
-        EventBus.getDefault().unregister(this);
         Ln.d("game fully obscured - stop keeping screen On");
     }
 
