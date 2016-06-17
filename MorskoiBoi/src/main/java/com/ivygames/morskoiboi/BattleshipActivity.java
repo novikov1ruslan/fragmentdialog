@@ -34,7 +34,7 @@ import org.commons.logger.Ln;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends Activity implements ConnectionCallbacks {
+public class BattleshipActivity extends Activity implements ConnectionCallbacks, ChatListener {
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -155,6 +155,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
         setScreen(GameHandler.newMainScreen());
     }
 
+    @Override
     public void showChatCrouton(ChatMessage message) {
         if (mScreenManager.isStarted()) {
             View layout = UiUtils.inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
@@ -382,10 +383,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks 
      */
     private void stopKeepingScreenOn() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    public void onEventMainThread(ChatMessage message) {
-        showChatCrouton(message);
     }
 
     public final void setScreen(@NonNull BattleshipScreen screen) {

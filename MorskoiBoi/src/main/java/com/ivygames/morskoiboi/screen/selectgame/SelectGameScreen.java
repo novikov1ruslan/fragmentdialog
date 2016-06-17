@@ -165,7 +165,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules), opponent);
+        Model.instance.setOpponents(new PlayerOpponent(playerName, placement, mRules, parent()), opponent);
         showBoardSetup(new AndroidGame());
     }
 

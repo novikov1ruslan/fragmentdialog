@@ -179,7 +179,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
 
     private void showSetupValidationError() {
         View view = getLayoutInflater().inflate(R.layout.ships_setup_validation_crouton, mLayout, false);
-        Crouton.make(parent(), view).show();
+        Crouton.make(mParent, view).show();
     }
 
     @Override

@@ -89,12 +89,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final ScoreStatistics mStatistics = new ScoreStatistics();
 
-    private boolean mMyTurn;
-    private long mUnlockedTime;
-    private long mStartTime;
-    private boolean mGameIsOn;
-    private GameplayLayoutInterface mLayout;
-    private boolean mBackPressEnabled = true;
     @NonNull
     private final PlayerOpponent mPlayer;
     @NonNull
@@ -113,6 +107,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final TurnTimerController mTimerController;
     @NonNull
     private final Intent mMatchStatusIntent;
+
+    private boolean mMyTurn;
+    private long mUnlockedTime;
+    private long mStartTime;
+    private boolean mGameIsOn;
+    private GameplayLayoutInterface mLayout;
+    private boolean mBackPressEnabled = true;
 
     public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull TurnTimerController timerController) {
         super(parent, game);
@@ -614,8 +615,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onNewMessage(@NonNull String text) {
-            mChatAdapter.add(ChatMessage.newEnemyMessage(text));
-            EventBus.getDefault().post(ChatMessage.newEnemyMessage(text));
+            ChatMessage message = ChatMessage.newEnemyMessage(text);
+            mChatAdapter.add(message);
+            mPlayer.onNewMessage(text);
         }
 
         private void showLostScreenDelayed(long mseconds) {

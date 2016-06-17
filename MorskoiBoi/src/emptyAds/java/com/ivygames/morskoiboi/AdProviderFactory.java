@@ -10,7 +10,7 @@ public class AdProviderFactory {
     }
 
     static void noAds() {
-        sAdProvider = new NoAdsAdProvider();
+
     }
 
     public static AdProvider getAdProvider() {

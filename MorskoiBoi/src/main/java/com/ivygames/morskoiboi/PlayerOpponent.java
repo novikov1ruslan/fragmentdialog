@@ -12,8 +12,6 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-import de.greenrobot.event.EventBus;
-
 public class PlayerOpponent extends AbstractOpponent {
 
     public static volatile Board debug_board;
@@ -24,16 +22,23 @@ public class PlayerOpponent extends AbstractOpponent {
     private final Placement mPlacement;
     @NonNull
     private Rules mRules;
+    @NonNull
+    private final ChatListener mChatListener;
 
     private boolean mPlayerReady;
     private int mOpponentVersion;
 
     private Opponent mOpponent;
 
-    public PlayerOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
+    public PlayerOpponent(@NonNull String name,
+                          @NonNull Placement placement,
+                          @NonNull Rules rules,
+                          @NonNull ChatListener listener) {
         mPlacement = placement;
         mName = name;
         mRules = rules;
+        mChatListener = listener;
+
         reset(new Bidder().newBid());
         Ln.v("new player created");
     }
@@ -112,7 +117,9 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onNewMessage(@NonNull String text) {
-        Ln.e("onNewMessage never called");
+        ChatMessage message = ChatMessage.newEnemyMessage(text);
+        Ln.d(this + " received: " + message);
+        mChatListener.showChatCrouton(message);
     }
 
     public void startBidding() {

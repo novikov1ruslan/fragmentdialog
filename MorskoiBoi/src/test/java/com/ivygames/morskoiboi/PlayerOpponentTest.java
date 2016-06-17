@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
+import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
@@ -42,7 +43,13 @@ public class PlayerOpponentTest {
         MockitoAnnotations.initMocks(this);
         Rules rules = new RussianRules();
         mPlacement = new Placement(new Random(), rules);
-        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
+        ChatListener listener = new ChatListener() {
+            @Override
+            public void showChatCrouton(ChatMessage message) {
+
+            }
+        };
+        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules, listener);
         mPlayer.setOpponent(mEnemy);
     }
 
