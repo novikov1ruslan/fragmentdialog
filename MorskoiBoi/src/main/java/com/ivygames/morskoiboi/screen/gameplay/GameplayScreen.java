@@ -122,8 +122,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
-        mPlayer = Model.instance.player;
-        mEnemy = Model.instance.opponent;
+        mPlayer = Model.player;
+        mEnemy = Model.opponent;
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
 

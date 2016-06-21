@@ -3,19 +3,17 @@ package com.ivygames.morskoiboi.model;
 import com.ivygames.morskoiboi.PlayerOpponent;
 
 public class Model {
-    public static final Model instance = new Model();
-
     private Model() {
 
     }
 
-    public PlayerOpponent player;
-    public Opponent opponent;
+    public static PlayerOpponent player;
+    public static Opponent opponent;
 
-    public void setOpponents(PlayerOpponent player, Opponent opponent) {
-        this.player = player;
-        this.opponent = opponent;
-        this.player.setOpponent(opponent);
-        this.opponent.setOpponent(player);
+    public static void setOpponents(PlayerOpponent player, Opponent opponent) {
+        Model.player = player;
+        Model.opponent = opponent;
+        Model.player.setOpponent(opponent);
+        Model.opponent.setOpponent(player);
     }
 }

@@ -124,7 +124,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mInternetGame = new InternetGame(mApiClient, mInternetGameListener);
         InternetOpponent opponent = new InternetOpponent(mInternetGame, getString(R.string.player));
         mInternetGame.setRealTimeMessageReceivedListener(opponent);
-        Model.instance.setOpponents(new PlayerOpponent(fetchPlayerName(), mPlacement, mRules, parent()), opponent);
+        Model.setOpponents(new PlayerOpponent(fetchPlayerName(), mPlacement, mRules, parent()), opponent);
     }
 
     @NonNull

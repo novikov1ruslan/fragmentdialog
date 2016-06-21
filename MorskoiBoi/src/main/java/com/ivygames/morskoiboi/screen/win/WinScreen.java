@@ -235,7 +235,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     }
 
     private void showWantToLeaveRoomDialog() {
-        String displayName = Model.instance.opponent.getName();
+        String displayName = Model.opponent.getName();
         String message = getString(R.string.want_to_leave_room, displayName);
         DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
     }

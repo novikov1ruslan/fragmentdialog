@@ -158,7 +158,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             UiEvent.send("done");
             if (mRules.isBoardSet(mBoard)) {
                 Ln.d("board set - showing gameplay screen");
-                Model.instance.player.setBoard(mBoard);
+                Model.player.setBoard(mBoard);
                 showGameplayScreen();
             } else {
                 Ln.d("!: board is not set yet");
@@ -194,7 +194,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     }
 
     private void showWantToLeaveRoomDialog() {
-        String displayName = Model.instance.opponent.getName();
+        String displayName = Model.opponent.getName();
         String message = getString(R.string.want_to_leave_room, displayName);
 
         new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
