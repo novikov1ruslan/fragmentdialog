@@ -32,14 +32,14 @@ public abstract class OnlineScreen_ extends ScreenTest {
         super.setup();
         opponent = mock(Opponent.class);
         when(opponent.getName()).thenReturn(OPPONENT_NAME);
-        Model.instance.opponent = opponent;
+        Model.opponent = opponent;
 
         game = mock(Game.class);
 
         player = mock(PlayerOpponent.class);
         when(player.getBoard()).thenReturn(new Board());
         when(player.getEnemyBoard()).thenReturn(new Board());
-        Model.instance.player = player;
+        Model.player = player;
 
         rules = mock(Rules.class);
         when(rules.getAllShipsSizes()).thenReturn(new int[]{4, 3, 3, 2, 2, 2, 1, 1, 1, 1});

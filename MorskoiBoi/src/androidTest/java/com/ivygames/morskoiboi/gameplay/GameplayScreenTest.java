@@ -104,7 +104,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
     private AndroidOpponent mockAndroidOpponent() {
         AndroidOpponent androidOpponent = mock(AndroidOpponent.class);
         when(androidOpponent.getName()).thenReturn(OPPONENT_NAME);
-        Model.instance.opponent = androidOpponent;
+        Model.opponent = androidOpponent;
         return androidOpponent;
     }
 
