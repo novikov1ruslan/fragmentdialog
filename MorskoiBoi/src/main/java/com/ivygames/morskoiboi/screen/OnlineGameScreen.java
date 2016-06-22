@@ -55,7 +55,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
         SimpleActionDialog.create(R.string.opponent_left, mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
-    private void showConnectionLostDialog() {
+    protected final void showConnectionLostDialog() {
         SimpleActionDialog.create(R.string.connection_lost,
                 mBackToSelectGameCommand).show(mFm, DIALOG);
     }

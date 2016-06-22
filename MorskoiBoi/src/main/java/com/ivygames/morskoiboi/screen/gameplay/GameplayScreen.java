@@ -42,7 +42,6 @@ import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.rt.InternetService;
-import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.utils.GameUtils;
@@ -421,10 +420,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.enemyTurn();
         updateUnlockedTime();
         mMyTurn = false;
-    }
-
-    private void showConnectionLostDialog() {
-        SimpleActionDialog.create(R.string.connection_lost, new BackToSelectGameCommand(parent(), mGame)).show(mFm, DIALOG);
     }
 
     private void showPlayerTurn() {
