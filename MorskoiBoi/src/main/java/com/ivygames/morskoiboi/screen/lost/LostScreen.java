@@ -18,16 +18,13 @@ import com.ivygames.morskoiboi.SoundBar;
 import com.ivygames.morskoiboi.SoundBarFactory;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
 public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "LOST";
-    private static final String DIALOG = FragmentAlertDialog.TAG;
 
     @NonNull
     private final SoundBar mSoundBar;
@@ -38,7 +35,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private View mView;
 
     public LostScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
-        super(parent, game);
+        super(parent, game, Model.opponent.getName());
         AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
         mSoundBar = SoundBarFactory.create(mParent.getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
@@ -104,14 +101,8 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         if (shouldNotifyOpponent()) {
             showWantToLeaveRoomDialog();
         } else {
-            mBackToSelectGameCommand.run();
+            backToSelectGame();
         }
-    }
-
-    private void showWantToLeaveRoomDialog() {
-        String displayName = Model.opponent.getName();
-        String message = getString(R.string.want_to_leave_room, displayName);
-        DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
     private void backToBoardSetup() {

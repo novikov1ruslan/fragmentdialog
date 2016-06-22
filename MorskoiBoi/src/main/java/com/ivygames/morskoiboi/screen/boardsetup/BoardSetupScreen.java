@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -31,7 +29,6 @@ import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;
 import com.ivygames.morskoiboi.utils.GameUtils;
-import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -51,10 +48,6 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     private Board mBoard = new Board();
     @NonNull
     private final PriorityQueue<Ship> mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
-
-    private BoardSetupLayout mLayout;
-    private View mTutView;
-
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
@@ -66,6 +59,9 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
+    private BoardSetupLayout mLayout;
+    private View mTutView;
+
     @NonNull
     private final Runnable mTimeoutTask = new Runnable() {
         @Override
@@ -76,14 +72,14 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             DialogUtils.newOkDialog(R.string.session_timeout, new Runnable() {
                 @Override
                 public void run() {
-                    mBackToSelectGameCommand.run();
+                    backToSelectGame();
                 }
             }).show(mFm, FragmentAlertDialog.TAG);
         }
     };
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
-        super(parent, game);
+        super(parent, game, Model.opponent.getName());
         mFleet.addAll(generateFullHorizontalFleet());
         Ln.d("new board created, fleet initialized");
     }
@@ -189,23 +185,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             Ln.d("match against a real human - ask the player if he really wants to exit");
             showWantToLeaveRoomDialog();
         } else {
-            mBackToSelectGameCommand.run();
+            backToSelectGame();
         }
-    }
-
-    private void showWantToLeaveRoomDialog() {
-        String displayName = Model.opponent.getName();
-        String message = getString(R.string.want_to_leave_room, displayName);
-
-        new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UiEvent.send("left_from_setup", "ok");
-                Ln.d("player decided to leave the game - finishing");
-                mBackToSelectGameCommand.run();
-            }
-        }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
     }
 
     @Override

@@ -17,15 +17,17 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
 
     @NonNull
     protected final Game mGame;
-
     @NonNull
-    protected final Runnable mBackToSelectGameCommand;
+    private final Runnable mBackToSelectGameCommand;
+    @NonNull
+    private final String mOpponentName;
 
-    public OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
+    public OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull String opponentName) {
         super(parent);
         mGame = game;
-        mBackToSelectGameCommand = new BackToSelectGameCommand(parent, game);
+        mOpponentName = opponentName;
 
+        mBackToSelectGameCommand = new BackToSelectGameCommand(parent, game);
         Ln.v(this + " screen created - register event listener");
         EventBus.getDefault().register(this);
     }
@@ -50,15 +52,25 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
     }
 
     private void showOpponentLeftDialog() {
-        SimpleActionDialog.create(R.string.opponent_left, new BackToSelectGameCommand(parent(), mGame)).show(mFm, DIALOG);
+        SimpleActionDialog.create(R.string.opponent_left, mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
     private void showConnectionLostDialog() {
         SimpleActionDialog.create(R.string.connection_lost,
-                new BackToSelectGameCommand(parent(), mGame)).show(mFm, DIALOG);
+                mBackToSelectGameCommand).show(mFm, DIALOG);
     }
 
     protected final boolean shouldNotifyOpponent() {
         return mGame.getType() != Game.Type.VS_ANDROID;
     }
+
+    protected final void showWantToLeaveRoomDialog() {
+        String message = getString(R.string.want_to_leave_room, mOpponentName);
+        DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
+    }
+
+    protected final void backToSelectGame() {
+        mBackToSelectGameCommand.run();
+    }
+
 }

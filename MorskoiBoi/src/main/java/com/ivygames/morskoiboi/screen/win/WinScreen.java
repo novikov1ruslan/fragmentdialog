@@ -32,10 +32,8 @@ import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
-import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
@@ -43,7 +41,6 @@ import java.util.Collection;
 
 public class WinScreen extends OnlineGameScreen implements BackPressListener, SignInListener {
     private static final String TAG = "WIN";
-    private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private WinLayoutSmall mLayout;
     private final long mTime;
@@ -74,7 +71,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
                      @NonNull Collection<Ship> fleet,
                      @NonNull ScoreStatistics statistics,
                      boolean opponentSurrendered) {
-        super(parent, game);
+        super(parent, game, Model.opponent.getName());
         mShips = fleet;
         mStatistics = statistics;
         mOpponentSurrendered = opponentSurrendered;
@@ -234,12 +231,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         setScreen(GameHandler.newBoardSetupScreen(mGame));
     }
 
-    private void showWantToLeaveRoomDialog() {
-        String displayName = Model.opponent.getName();
-        String message = getString(R.string.want_to_leave_room, displayName);
-        DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
-    }
-
     private void submitScore(int totalScores) {
         Ln.d("submitting scores: " + totalScores);
         mApiClient.submitScore(getString(R.string.leaderboard_normal), totalScores);
@@ -258,7 +249,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         if (shouldNotifyOpponent() && !mOpponentSurrendered) {
             showWantToLeaveRoomDialog();
         } else {
-            mBackToSelectGameCommand.run();
+            backToSelectGame();
         }
     }
 

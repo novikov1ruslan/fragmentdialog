@@ -42,6 +42,7 @@ import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.rt.InternetService;
+import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ivygames.morskoiboi.utils.GameUtils;
@@ -116,7 +117,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private boolean mBackPressEnabled = true;
 
     public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull TurnTimerController timerController) {
-        super(parent, game);
+        super(parent, game, Model.opponent.getName());
         mTimerController = timerController;
 
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
@@ -322,10 +323,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         showLeaveGameDialog(getString(R.string.abandon_game_question));
     }
 
-    private void showWantToLeaveRoomDialog() {
-        showLeaveGameDialog(getString(R.string.want_to_leave_room, mEnemy.getName()));
-    }
-
     private void showLeaveGameDialog(String message) {
         new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
 
@@ -333,7 +330,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("left_from_game", "ok");
                 Ln.d("player decided to leave the game");
-                mBackToSelectGameCommand.run();
+                backToSelectGame();
             }
         }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
     }
@@ -427,7 +424,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showConnectionLostDialog() {
-        SimpleActionDialog.create(R.string.connection_lost, mBackToSelectGameCommand).show(mFm, DIALOG);
+        SimpleActionDialog.create(R.string.connection_lost, new BackToSelectGameCommand(parent(), mGame)).show(mFm, DIALOG);
     }
 
     private void showPlayerTurn() {
@@ -687,7 +684,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void surrender(final int penalty) {
         mSettings.setProgressPenalty(mSettings.getProgressPenalty() + penalty);
-        mBackToSelectGameCommand.run();
+        backToSelectGame();
     }
 
     @Override
