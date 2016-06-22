@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -224,6 +225,15 @@ public class PlayerOpponentTest {
     public void testSetOpponentVersion() throws Exception {
         mPlayer.setOpponentVersion(2);
         assertThat(mPlayer.getOpponentVersion(), is(2));
+    }
+
+    @Test
+    public void WhenPlayerGoes__GoCallbackCalled() {
+        PlayerCallback callback = mock(PlayerCallback.class);
+        mPlayer.setCallback(callback);
+        mPlayer.go();
+
+        verify(callback, times(1)).go();
     }
 
     private Cell enemyCellAt(Vector2 aim) {

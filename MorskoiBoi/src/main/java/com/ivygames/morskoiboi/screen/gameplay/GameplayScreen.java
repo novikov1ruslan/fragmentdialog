@@ -24,6 +24,7 @@ import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -430,6 +431,21 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mMyTurn = true;
     }
 
+    private class UiPlayerCallback implements PlayerCallback {
+
+        @Override
+        public void go() {
+            showPlayerTurn();
+            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
+                Ln.d("player's turn - starting timer");
+                mTimerController.start(); // for all practical scenarios - start will only be called from here
+            } else {
+                Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
+            }
+            hideOpponentSettingBoardNotification();
+        }
+    }
+
     /**
      * methods of this class are called in UI thread
      */
@@ -455,11 +471,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
             }
             hideOpponentSettingBoardNotification();
-        }
-
-        private void hideOpponentSettingBoardNotification() {
-            Ln.d("hiding \"opponent setting board\" notification");
-            mLayout.hideOpponentSettingBoardNotification();
         }
 
         @Override
@@ -626,6 +637,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return mPlayer.toString();
         }
 
+    }
+
+    private void hideOpponentSettingBoardNotification() {
+        Ln.d("hiding \"opponent setting board\" notification");
+        mLayout.hideOpponentSettingBoardNotification();
     }
 
     private void vibrate(int duration) {

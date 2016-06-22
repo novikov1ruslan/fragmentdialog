@@ -29,6 +29,7 @@ public class PlayerOpponent extends AbstractOpponent {
     private int mOpponentVersion;
 
     private Opponent mOpponent;
+    private PlayerCallback mCallback;
 
     public PlayerOpponent(@NonNull String name,
                           @NonNull Placement placement,
@@ -48,6 +49,14 @@ public class PlayerOpponent extends AbstractOpponent {
         super.reset(myBid);
         mPlayerReady = false;
         mOpponentVersion = 0;
+    }
+
+    @Override
+    public void go() {
+        super.go();
+        if (mCallback != null) {
+            mCallback.go();
+        }
     }
 
     @Override
@@ -154,4 +163,7 @@ public class PlayerOpponent extends AbstractOpponent {
         return getName();
     }
 
+    public void setCallback(@NonNull PlayerCallback callback) {
+        mCallback = callback;
+    }
 }
