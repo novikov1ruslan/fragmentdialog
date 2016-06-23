@@ -1,5 +1,8 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 
@@ -24,7 +27,8 @@ public class Board {
     private Collection<Ship> mShips;
     private Cell[][] mCells;
 
-    public static Board fromJson(String json) {
+    @NonNull
+    public static Board fromJson(@NonNull String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
             return Board.fromJson(jsonObject);
@@ -33,16 +37,22 @@ public class Board {
         }
     }
 
-    public static Board fromJson(JSONObject jsonObject) throws JSONException {
+    @NonNull
+    public static Board fromJson(@NonNull JSONObject jsonObject) {
         Board board = new Board();
 
-        Board.populateCellsFromString(board.mCells, jsonObject.getString(CELLS));
-        Board.populateShipsFromJson(board, jsonObject.getJSONArray(SHIPS));
+        try {
+            Board.populateCellsFromString(board.mCells, jsonObject.getString(CELLS));
+            Board.populateShipsFromJson(board, jsonObject.getJSONArray(SHIPS));
+        } catch (JSONException e) {
+            Ln.e(e);
+            throw new IllegalArgumentException(e);
+        }
 
         return board;
     }
 
-    private static void populateCellsFromString(Cell[][] cells, String cellsString) {
+    private static void populateCellsFromString(@NonNull Cell[][] cells, @NonNull String cellsString) {
         int columns = cells.length;
         for (int i = 0; i < columns; i++) {
             int rows = cells[i].length;
@@ -52,7 +62,7 @@ public class Board {
         }
     }
 
-    private static void populateShipsFromJson(Board board, JSONArray shipsJson) throws JSONException {
+    private static void populateShipsFromJson(@NonNull Board board, @NonNull JSONArray shipsJson) throws JSONException {
         for (int i = 0; i < shipsJson.length(); i++) {
             JSONObject shipJson = shipsJson.getJSONObject(i);
             Ship ship = Ship.fromJson(shipJson);
@@ -60,11 +70,7 @@ public class Board {
         }
     }
 
-    public Board() {
-        clearBoard();
-    }
-
-    private static String getStringFromCells(Cell[][] cells) {
+    private static String getStringFromCells(@NonNull Cell[][] cells) {
         StringBuilder sb = new StringBuilder(200);
 
         for (int i = 0; i < cells.length; i++) {
@@ -76,13 +82,14 @@ public class Board {
         return sb.toString();
     }
 
-    public JSONObject toJson() {
+    @NonNull
+    public static JSONObject toJson(@NonNull Board board) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(CELLS, Board.getStringFromCells(mCells));
+            jsonObject.put(CELLS, Board.getStringFromCells(board.mCells));
 
             JSONArray shipsJson = new JSONArray();
-            for (Ship ship : mShips) {
+            for (Ship ship : board.mShips) {
                 shipsJson.put(ship.toJson());
             }
             jsonObject.put(SHIPS, shipsJson);
@@ -94,6 +101,10 @@ public class Board {
         return jsonObject;
     }
 
+    public Board() {
+        clearBoard();
+    }
+
     public Collection<Ship> getShips() {
         return mShips;
     }
@@ -101,6 +112,7 @@ public class Board {
     /**
      * @return all cells that will return true on {@link Cell#isEmpty()}
      */
+    @NonNull
     public List<Vector2> getEmptyCells() {
         List<Vector2> emptyCells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
@@ -113,7 +125,7 @@ public class Board {
         return emptyCells;
     }
 
-    public boolean shipFitsTheBoard(Ship ship, Vector2 aim) {
+    public boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 aim) {
         return shipFitsTheBoard(ship, aim.getX(), aim.getY());
     }
 
@@ -122,7 +134,7 @@ public class Board {
      *
      * @return true if the ship can be layed out on the board
      */
-    public boolean shipFitsTheBoard(Ship ship, int i, int j) {
+    public boolean shipFitsTheBoard(@NonNull Ship ship, int i, int j) {
         boolean canPut = containsCell(i, j);
 
         if (canPut) {
@@ -135,7 +147,7 @@ public class Board {
         return canPut;
     }
 
-    public static boolean containsCell(Vector2 aim) {
+    public static boolean containsCell(@NonNull Vector2 aim) {
         return containsCell(aim.getX(), aim.getY());
     }
 
@@ -150,17 +162,17 @@ public class Board {
         return mCells[x][y];
     }
 
-    public Cell getCellAt(Vector2 vector) {
+    public Cell getCellAt(@NonNull Vector2 vector) {
         return getCell(vector.getX(), vector.getY());
     }
 
-    private static void putShips(Board board, Collection<Ship> ships) {
+    private static void putShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             putShip(board, ship);
         }
     }
 
-    private static void putShip(Board board, Ship ship) {
+    private static void putShip(@NonNull Board board, @NonNull Ship ship) {
         PlacementFactory.getAlgorithm().putShipAt(board, ship, ship.getX(), ship.getY());
     }
 
@@ -176,6 +188,7 @@ public class Board {
      * @return null if no ship at (x,y) was found
      * @throws IllegalArgumentException if (x,y) is outside the board
      */
+    @Nullable
     public Ship removeShipFrom(int x, int y) { // TODO: bad, very bad method
         if (!containsCell(x, y)) {
             // throw new IllegalArgumentException("(" + x + "," + y +
@@ -248,10 +261,12 @@ public class Board {
         }
     }
 
-    public Collection<Ship> getShipsAt(Vector2 vector) {
+    @NonNull
+    public Collection<Ship> getShipsAt(@NonNull Vector2 vector) {
         return getShipsAt(vector.getX(), vector.getY());
     }
 
+    @NonNull
     public Collection<Ship> getShipsAt(int i, int j) {
         HashSet<Ship> ships = new HashSet<>();
         if (hasShipAt(i, j)) {
@@ -270,10 +285,12 @@ public class Board {
         return cell.isReserved() || cell.isHit()/* || cell.isSunk() */;
     }
 
-    public Ship getFirstShipAt(Vector2 vector) {
+    @Nullable
+    public Ship getFirstShipAt(@NonNull Vector2 vector) {
         return getFirstShipAt(vector.getX(), vector.getY());
     }
 
+    @Nullable
     private Ship getFirstShipAt(int i, int j) {
         if (hasShipAt(i, j)) {
             for (Ship ship : mShips) {
@@ -290,6 +307,7 @@ public class Board {
      * @return the first ship that contains the coordinate or null if no such ship found
      */
     // TODO: what is the difference from getFirstShipAt?
+    @Nullable
     private Ship getShipAt(int x, int y) {
         for (Ship ship : mShips) {
             if (ship.isInShip(x, y)) {
@@ -300,6 +318,7 @@ public class Board {
         return null;
     }
 
+    @NonNull
     private Cell[][] createNewBoard() {
         Cell[][] cells = new Cell[DIMENSION][DIMENSION];
         for (int i = 0; i < cells.length; i++) {
@@ -319,18 +338,18 @@ public class Board {
         return DIMENSION;
     }
 
-    public void setCell(Cell cell, Vector2 vector) {
+    public void setCell(@NonNull Cell cell, @NonNull Vector2 vector) {
         setCell(cell, vector.getX(), vector.getY());
     }
 
-    public void setCell(Cell cell, int i, int j) {
+    public void setCell(@NonNull Cell cell, int i, int j) {
         mCells[i][j] = cell;
     }
 
     /**
      * @return true if every ship on the board is sunk
      */
-    public static boolean allAvailableShipsAreDestroyed(Board board) {
+    public static boolean allAvailableShipsAreDestroyed(@NonNull Board board) {
         for (Ship ship : board.getShips()) {
             if (!ship.isDead()) {
                 return false;

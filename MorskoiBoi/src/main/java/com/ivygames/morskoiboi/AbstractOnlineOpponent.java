@@ -92,7 +92,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 
     @Override
     public void onLost(@NonNull Board board) {
-        sendRtm(WIN + board.toJson().toString());
+        sendRtm(WIN + Board.toJson(board).toString());
     }
 
     @Override

@@ -111,7 +111,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             mOpponent.go();
         } else if (result.ship != null) {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
-                Ln.d(this + ": I lost - notifying " + mOpponent);
+                Ln.d(this + ": I won - notifying " + mOpponent);
                 mOpponent.onLost(mMyBoard);
                 reset(new Bidder().newBid());
             }

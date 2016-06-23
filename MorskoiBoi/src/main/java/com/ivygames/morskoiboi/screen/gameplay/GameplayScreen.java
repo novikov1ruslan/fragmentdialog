@@ -513,11 +513,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onLost(@Nullable Board board) {
-            // revealing the enemy board
             if (board == null) {
+                Ln.d("player lost");
                 AnalyticsEvent.send("reveal_not_supported");
             } else {
-                mLayout.setEnemyBoard(board);
+                Ln.d("player lost, opponent is revealing board");
+                mLayout.setEnemyBoard(Board.fromJson(Board.toJson(board)));
             }
 
             disableBackPress();

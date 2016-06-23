@@ -416,8 +416,8 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void successful_Recreation_After_Serializing_To_String_Empty_Board() {
-		String json = mBoard.toJson().toString();
+	public void successful_Recreation_After_Serializing_To_Json_Empty_Board() {
+		String json = Board.toJson(mBoard).toString();
 		Board board = Board.fromJson(json);
 		assertBoardsEqual(mBoard, board);
 	}
@@ -438,7 +438,7 @@ public class BoardTest {
 	@Test
 	public void successful_Recreation_After_Serializing_To_String_Board_With_Ship() {
 		putShipAt(new Ship(1), 5, 5);
-		String json = mBoard.toJson().toString();
+		String json = Board.toJson(mBoard).toString();
 		Board board = Board.fromJson(json);
 		assertBoardsEqual(mBoard, board);
 	}
