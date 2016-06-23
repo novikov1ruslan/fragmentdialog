@@ -508,10 +508,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onShotAt(@NonNull Vector2 aim) {
             stopDetectingTurnTimeout();
-            PokeResult result = mPlayer.createResultForShootingAt(aim);
-            mPlayer.onShotAtForResult(result);
-            Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
-
             updateMyStatus();
         }
 

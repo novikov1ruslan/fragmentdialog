@@ -21,4 +21,8 @@ final class OnShootAtCommand implements Runnable {
         mOpponent.onShotAt(mAim);
     }
 
+    @Override
+    public String toString() {
+        return OnShootAtCommand.class.getSimpleName() + "#" + hashCode();
+    }
 }

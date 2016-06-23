@@ -81,7 +81,7 @@ public abstract class AbstractOpponent implements Opponent {
         } else {
             placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
-        Ln.v(mEnemyBoard);
+        Ln.v(this + ": " + mEnemyBoard);
     }
 
     public final boolean isOpponentTurn() {

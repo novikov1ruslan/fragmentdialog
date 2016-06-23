@@ -151,7 +151,7 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.d(this + ": my opponent is " + opponent);
     }
 
-    public final void onShotAtForResult(@NonNull PokeResult result) {
+    private void onShotAtForResult(@NonNull PokeResult result) {
         mOpponent.onShotResult(result);
 
         final Ship ship = result.ship;

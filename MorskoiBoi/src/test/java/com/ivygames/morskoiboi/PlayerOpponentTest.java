@@ -14,7 +14,6 @@ import com.ivygames.morskoiboi.variant.RussianRules;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
@@ -23,9 +22,8 @@ import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -139,28 +137,28 @@ public class PlayerOpponentTest {
         assertThat(actual, equalTo(ship));
     }
 
-    @Test
-    public void after_shooting_on_my_empty_cell__result_is_miss() {
-        Vector2 aim = Vector2.get(5, 5);
-        Board board = new Board();
-        mPlayer.setBoard(board);
-        PokeResult result = mPlayer.createResultForShootingAt(aim);
-        mPlayer.onShotAtForResult(result);
-        assertThat(result.cell.isMiss(), is(true));
-        assertThat(result.ship, is(nullValue()));
-    }
+//    @Test
+//    public void after_shooting_on_my_empty_cell__result_is_miss() {
+//        Vector2 aim = Vector2.get(5, 5);
+//        Board board = new Board();
+//        mPlayer.setBoard(board);
+//        PokeResult result = mPlayer.createResultForShootingAt(aim);
+//        mPlayer.onShotAtForResult(result);
+//        assertThat(result.cell.isMiss(), is(true));
+//        assertThat(result.ship, is(nullValue()));
+//    }
 
-    @Test
-    public void after_shooting_on_my_ship__result_is_hit() {
-        Vector2 aim = Vector2.get(5, 5);
-        Board board = new Board();
-        mPlayer.setBoard(board);
-        mPlacement.putShipAt(board, new Ship(2), 5, 5);
-        PokeResult result = mPlayer.createResultForShootingAt(aim);
-        mPlayer.onShotAtForResult(result);
-        assertThat(result.cell.isHit(), is(true));
-        assertThat(result.ship, is(nullValue()));
-    }
+//    @Test
+//    public void after_shooting_on_my_ship__result_is_hit() {
+//        Vector2 aim = Vector2.get(5, 5);
+//        Board board = new Board();
+//        mPlayer.setBoard(board);
+//        mPlacement.putShipAt(board, new Ship(2), 5, 5);
+//        PokeResult result = mPlayer.createResultForShootingAt(aim);
+//        mPlayer.onShotAtForResult(result);
+//        assertThat(result.cell.isHit(), is(true));
+//        assertThat(result.ship, is(nullValue()));
+//    }
 
 //    @Test
 //    public void after_killing_on_my_ship__result_is_kill() {
