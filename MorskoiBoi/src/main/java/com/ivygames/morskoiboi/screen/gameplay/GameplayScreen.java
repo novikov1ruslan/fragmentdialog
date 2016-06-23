@@ -518,7 +518,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 AnalyticsEvent.send("reveal_not_supported");
             } else {
                 Ln.d("player lost, opponent is revealing board");
-                mLayout.setEnemyBoard(Board.fromJson(Board.toJson(board)));
+                Board copy = Board.fromJson(Board.toJson(board));
+                mLayout.setEnemyBoard(copy);
             }
 
             disableBackPress();

@@ -8,7 +8,6 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -86,12 +85,6 @@ public class PlayerOpponentTest {
     public void after_player_is_reset__it_is_not_enemy_turn() {
         mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.isOpponentTurn(), is(false));
-    }
-
-    @Test
-    public void after_player_is_reset__enemy_version_is_0() {
-        mPlayer.reset(new Bidder().newBid());
-        assertThat(mPlayer.getOpponentVersion(), is(0));
     }
 
     @Test
@@ -229,12 +222,6 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void testSetOpponentVersion() throws Exception {
-        mPlayer.setOpponentVersion(2);
-        assertThat(mPlayer.getOpponentVersion(), is(2));
-    }
-
-    @Test
     public void WhenPlayerGoes__GoCallbackCalled() {
         mPlayer.go();
 
@@ -323,7 +310,7 @@ public class PlayerOpponentTest {
         when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
         mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules, listener);
         mPlayer.setOpponent(mEnemy);
-        mPlayer.setOpponentVersion(GameUtils.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+        mPlayer.setOpponentVersion(PlayerOpponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
         mPlayer.setCallback(callback);
 
         Board board = new Board();

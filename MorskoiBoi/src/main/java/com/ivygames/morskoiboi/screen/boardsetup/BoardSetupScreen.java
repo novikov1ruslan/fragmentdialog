@@ -141,7 +141,6 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             mFleet.clear();
             mLayout.notifyDataChanged();
             mLayout.invalidate();
-//        mLayout.setBoard(mBoard, mFleet);
         }
 
         @Override

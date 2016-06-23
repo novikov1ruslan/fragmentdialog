@@ -8,7 +8,6 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.utils.GameUtils;
 
 import org.commons.logger.Ln;
 
@@ -16,6 +15,7 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent extends AbstractOpponent {
 
+    public static final int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
     public static volatile Board debug_board;
 
     @NonNull
@@ -132,7 +132,7 @@ public class PlayerOpponent extends AbstractOpponent {
         // notifies about players defeat sending his board along.
         if (!versionSupportsBoardReveal()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
-                Ln.v("opponent version doesn't support board reveal = " + getOpponentVersion());
+                Ln.v("opponent version doesn't support board reveal = " + mOpponentVersion);
                 reset(new Bidder().newBid());
                 if (mCallback != null) {
                     mCallback.onLost(null);
@@ -142,7 +142,7 @@ public class PlayerOpponent extends AbstractOpponent {
     }
 
     private boolean versionSupportsBoardReveal() {
-        return getOpponentVersion() >= GameUtils.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
+        return mOpponentVersion >= PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
     }
 
     @Override
@@ -247,10 +247,6 @@ public class PlayerOpponent extends AbstractOpponent {
     public void setOpponentVersion(int ver) {
         mOpponentVersion = ver;
         Ln.d(this + ": opponent's protocol version: v" + ver);
-    }
-
-    public int getOpponentVersion() {
-        return mOpponentVersion;
     }
 
     @Override
