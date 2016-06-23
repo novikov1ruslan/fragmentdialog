@@ -91,13 +91,14 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     public void touch(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        Ln.v("x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
         int action = mTouchState.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
+            Ln.v("DOWN: x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
             if (!mLocked) {
                 mShotListener.onAimingStarted();
             }
         } else if (action == MotionEvent.ACTION_UP) {
+            Ln.v("UP: x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
             if (!mLocked) {
                 mShotListener.onAimingFinished(getTouchedI(), getTouchedJ());
             }
@@ -110,6 +111,7 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     public void unlock() {
         mLocked = false;
+        Ln.v("unlocked");
         int action = mTouchState.getAction();
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
             mShotListener.onAimingStarted();
@@ -118,6 +120,7 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     public void lock() {
         mLocked = true;
+        Ln.v("locked");
     }
 
     public boolean isLocked() {

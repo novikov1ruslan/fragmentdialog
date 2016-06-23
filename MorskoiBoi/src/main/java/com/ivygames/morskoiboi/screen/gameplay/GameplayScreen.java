@@ -442,7 +442,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             } else {
                 Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
             }
-            hideOpponentSettingBoardNotification();
         }
 
         @Override
@@ -532,7 +531,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void opponentReady() {
-            hideOpponentSettingBoardNotification();
+            Ln.d("hiding \"opponent setting board\" notification");
+            mLayout.hideOpponentSettingBoardNotification();
         }
 
         @Override
@@ -552,22 +552,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mUiThreadHandler.postDelayed(mShowLostScreenCommand, mseconds);
     }
 
-    private boolean versionSupportsBoardReveal() {
-        return mPlayer.getOpponentVersion() >= GameUtils.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
-    }
-
     private void disableBackPress() {
         Ln.d("disabling backpress");
         mBackPressEnabled = false;
-    }
-
-    private boolean shipSank(Ship ship) {
-        return ship != null;
-    }
-
-    private void hideOpponentSettingBoardNotification() {
-        Ln.d("hiding \"opponent setting board\" notification");
-        mLayout.hideOpponentSettingBoardNotification();
     }
 
     private void vibrate(int duration) {

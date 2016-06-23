@@ -16,11 +16,11 @@ public class ExceptionHandler {
     }
 
     public static void reportException(String message) {
+        Ln.e(message);
         if (sDryRun) {
             return;
         }
         reportException(new Acra(message));
-        Ln.e(message);
     }
 
     public static void reportException(Exception e) {

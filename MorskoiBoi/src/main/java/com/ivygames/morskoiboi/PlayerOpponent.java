@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -56,6 +55,11 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void go() {
+        if (mCallback != null) {
+            if (!isOpponentReady()) {
+                mCallback.opponentReady();
+            }
+        }
         super.go();
         if (mCallback != null) {
             mCallback.go();

@@ -346,6 +346,13 @@ public class PlayerOpponentTest {
     }
 
     @Test
+    public void IfPlayerCanGo__OpponentIsReady() {
+        mPlayer.go();
+
+        verify(callback, times(1)).opponentReady();
+    }
+
+    @Test
     public void WhenOpponentBidsHigher__ItIsOpponentsTurn() {
         mPlayer.reset(0);
         mPlayer.startBidding();

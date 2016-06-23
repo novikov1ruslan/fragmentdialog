@@ -8,6 +8,7 @@ import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.ivygames.common.analytics.ExceptionEvent;
+import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.analytics.GlobalTracker;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.analytics.UiEventImpl;
@@ -61,6 +62,10 @@ public class ApplicationInitializer {
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
+
+        if (GameConstants.IS_TEST_MODE) {
+            ExceptionHandler.setDryRun(true);
+        }
     }
 
     private static void initAnalytics(Application application) {
