@@ -20,7 +20,6 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.Bidder;
 import com.ivygames.morskoiboi.Cancellable;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
@@ -57,8 +56,6 @@ import java.util.Collection;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-
-import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "GAMEPLAY";
@@ -128,6 +125,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mPlayer = Model.player;
+        mPlayer.setCallback(new UiPlayerCallback());
         mEnemy = Model.opponent;
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
@@ -192,8 +190,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
-        UiProxyOpponent uiProxy = new UiProxyOpponent(mPlayer);
-        mEnemy.setOpponent(uiProxy);
 
         Ln.d("screen is fully created - exchange protocol versions and start bidding");
         mEnemy.setOpponentVersion(Opponent.CURRENT_VERSION);
@@ -552,173 +548,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     }
 
-    /**
-     * methods of this class are called in UI thread
-     */
-    private class UiProxyOpponent implements Opponent {
-
-        @NonNull
-        private final PlayerOpponent mPlayer;
-
-        public UiProxyOpponent(@NonNull PlayerOpponent opponent) {
-            mPlayer = opponent;
-        }
-
-        @Override
-        public void go() {
-            mPlayer.go();
-            showPlayerTurn();
-            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
-                Ln.d("player's turn - starting timer");
-                mTimerController.start(); // for all practical scenarios - start will only be called from here
-            } else {
-                Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
-            }
-            hideOpponentSettingBoardNotification();
-        }
-
-        @Override
-        public void onShotResult(@NonNull final PokeResult result) {
-            stopDetectingShotTimeout();
-
-            Ln.v(result);
-            mPlayer.onShotResult(result);
-            mStatistics.updateWithNewShot(result.ship, result.cell);
-
-            mLayout.removeAim();
-            mLayout.setShotResult(result);
-
-            mLayout.invalidateEnemyBoard();
-
-            // TODO: call this only if ship sank
-            updateEnemyStatus();
-
-            if (shipSank(result.ship)) {
-                Ln.v("enemy ship is sunk!! - shake enemy board");
-                mLayout.shakeEnemyBoard();
-                mGameplaySounds.playKillSound();
-                vibrate(VIBRATION_ON_KILL);
-
-                if (mRules.isItDefeatedBoard(mEnemyPublicBoard)) {
-                    Ln.d("enemy has lost!!!");
-                    disableBackPress();
-
-                    mStatistics.setTimeSpent(mUnlockedTime);
-                    mEnemy.onLost(mPlayerPrivateBoard);
-                    mLayout.win();
-
-                    Collection<Ship> fleet = new ArrayList<>();
-                    fleet.addAll(mPlayerPrivateBoard.getShips());
-
-                    resetPlayer();
-                    showWinScreenDelayed(fleet);
-                }
-            } else if (result.cell.isMiss()) {
-                Ln.d(mPlayer + ": I missed - passing the turn to " + mEnemy);
-                mGameplaySounds.playSplash();
-                showOpponentTurn();
-                startDetectingTurnTimeout();
-                mEnemy.go();
-            } else {
-                Ln.v("it's a hit! - player continues");
-                mGameplaySounds.playHitSound();
-            }
-        }
-
-        @Override
-        public void onShotAt(@NonNull Vector2 aim) {
-            stopDetectingTurnTimeout();
-            PokeResult result = mPlayer.createResultForShootingAt(aim);
-            mPlayer.onShotAtForResult(result);
-            Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
-
-            updateMyStatus();
-
-            if (shipSank(result.ship)) {
-                // Ln.v("player's ship is sunk: " + result);
-                mLayout.shakePlayerBoard();
-                mGameplaySounds.playKillSound();
-                vibrate(VIBRATION_ON_KILL);
-            } else if (result.cell.isMiss()) {
-                // Ln.v("opponent misses: " + result);
-                mGameplaySounds.playSplash();
-            } else {
-                // Ln.v("player's ship is hit: " + result);
-                mLayout.invalidatePlayerBoard();
-                mGameplaySounds.playHitSound();
-            }
-
-            // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
-            // notifies about players defeat sending his board along.
-            if (!versionSupportsBoardReveal()) {
-                if (mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
-                    Ln.v("opponent version doesn't support board reveal = " + mPlayer.getOpponentVersion());
-                    AnalyticsEvent.send("reveal_not_supported");
-                    disableBackPress();
-                    mLayout.lost();
-
-                    resetPlayer();
-                    showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
-                }
-            }
-        }
-
-        @Override
-        public void setOpponent(@NonNull Opponent opponent) {
-            // do nothing
-        }
-
-        @Override
-        public void onEnemyBid(final int bid) {
-            Ln.d("opponent's bid received: " + bid);
-            hideOpponentSettingBoardNotification();
-            mPlayer.onEnemyBid(bid);
-            if (mPlayer.isOpponentTurn()) {
-                showOpponentTurn();
-                startDetectingTurnTimeout();
-            }
-        }
-
-        @Override
-        public String getName() {
-            return mPlayer.getName();
-        }
-
-        @Override
-        public void onLost(@NonNull Board board) {
-            if (!mRules.isItDefeatedBoard(mPlayerPrivateBoard)) {
-                Ln.v("player private board: " + mPlayerPrivateBoard);
-                reportException("lost while not defeated");
-            }
-            // revealing the enemy board
-            updateEnemyStatus();
-            mLayout.setEnemyBoard(board);
-            disableBackPress();
-            mLayout.lost();
-
-            resetPlayer();
-            showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
-        }
-
-        @Override
-        public void setOpponentVersion(int ver) {
-            mPlayer.setOpponentVersion(ver);
-        }
-
-        @Override
-        public void onNewMessage(@NonNull String text) {
-            ChatMessage message = ChatMessage.newEnemyMessage(text);
-            mChatAdapter.add(message);
-            mPlayer.onNewMessage(text);
-        }
-
-        @Override
-        public String toString() {
-            return mPlayer.toString();
-        }
-
-    }
-
     private void showLostScreenDelayed(long mseconds) {
         mUiThreadHandler.postDelayed(mShowLostScreenCommand, mseconds);
     }
@@ -730,13 +559,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private void disableBackPress() {
         Ln.d("disabling backpress");
         mBackPressEnabled = false;
-    }
-
-    private void resetPlayer() {
-        Ln.d("match is over - blocking the player for further messages until start of the next round");
-        mPlayer.reset(new Bidder().newBid());
-        // need to de-associate UI from the enemy opponent
-        mEnemy.setOpponent(mPlayer);
     }
 
     private boolean shipSank(Ship ship) {
