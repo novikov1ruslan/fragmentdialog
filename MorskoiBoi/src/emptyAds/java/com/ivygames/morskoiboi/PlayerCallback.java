@@ -27,4 +27,9 @@ public interface PlayerCallback {
     void onShotAt(@NonNull Vector2 aim);
 
     void onLost();
+
+    void opponentReady();
+
+    void onOpponentTurn();
+
 }

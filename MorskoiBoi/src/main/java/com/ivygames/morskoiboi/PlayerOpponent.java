@@ -188,10 +188,19 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onEnemyBid(int bid) {
+        Ln.d("opponent's bid received: " + bid);
+        if (mCallback != null) {
+            mCallback.opponentReady();
+        }
+
         super.onEnemyBid(bid);
         if (mPlayerReady && isOpponentTurn()) {
             Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
             mOpponent.go();
+
+            if (mCallback != null) {
+                mCallback.onOpponentTurn();
+            }
         }
     }
 

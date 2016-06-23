@@ -307,6 +307,22 @@ public class PlayerOpponentTest {
         verify(callback, times(1)).onKill(PlayerCallback.Side.PLAYER);
     }
 
+    @Test
+    public void WhenEnemyBids__ItIsReady() {
+        mPlayer.onEnemyBid(0);
+
+        verify(callback, times(1)).opponentReady();
+    }
+
+    @Test
+    public void WhenEnemyBidsHigher__ItIsOpponentsTurn() {
+        mPlayer.reset(0);
+        mPlayer.startBidding();
+        mPlayer.onEnemyBid(1);
+
+        verify(callback, times(1)).onOpponentTurn();
+    }
+
     private Cell enemyCellAt(Vector2 aim) {
         return mPlayer.getEnemyBoard().getCellAt(aim);
     }

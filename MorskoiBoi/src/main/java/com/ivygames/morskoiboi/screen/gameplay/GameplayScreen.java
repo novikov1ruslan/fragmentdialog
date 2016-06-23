@@ -525,6 +525,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.lost();
             showLostScreenDelayed(LOST_GAME_WO_REVEAL_DELAY);
         }
+
+        @Override
+        public void opponentReady() {
+            hideOpponentSettingBoardNotification();
+        }
+
+        @Override
+        public void onOpponentTurn() {
+            showOpponentTurn();
+            startDetectingTurnTimeout();
+        }
     }
 
     /**
