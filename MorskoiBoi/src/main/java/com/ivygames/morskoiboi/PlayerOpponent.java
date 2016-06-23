@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -9,6 +10,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.utils.GameUtils;
 
 import org.commons.logger.Ln;
 
@@ -62,11 +64,80 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void onShotResult(@NonNull PokeResult result) {
         updateEnemyBoard(result, mPlacement);
+
+        if (mCallback != null) {
+            mCallback.onShotResult(result);
+        }
+        if (shipSank(result.ship)) {
+            if (mCallback != null) {
+                mCallback.onKill(PlayerCallback.Side.OPPONENT);
+            }
+            if (mRules.isItDefeatedBoard(mEnemyBoard)) {
+                mOpponent.onLost(mMyBoard);
+
+                reset(new Bidder().newBid());
+                if (mCallback != null) {
+                    mCallback.onWin();
+                }
+            }
+        } else if (result.cell.isMiss()) {
+            Ln.d(this + ": I missed - passing the turn to " + mOpponent);
+            mOpponent.go();
+            if (mCallback != null) {
+                mCallback.onMiss(PlayerCallback.Side.OPPONENT);
+            }
+        } else {
+            Ln.v("it's a hit! - player continues");
+            if (mCallback != null) {
+                mCallback.onHit(PlayerCallback.Side.OPPONENT);
+            }
+        }
+    }
+
+    private boolean shipSank(Ship ship) {
+        return ship != null;
     }
 
     @Override
     public void onShotAt(@NonNull final Vector2 aim) {
-        throw new RuntimeException("never used");
+        PokeResult result = createResultForShootingAt(aim);
+        onShotAtForResult(result);
+        Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
+
+        if (mCallback != null) {
+            mCallback.onShotAt(aim);
+        }
+        if (shipSank(result.ship)) {
+            if (mCallback != null) {
+                mCallback.onKill(PlayerCallback.Side.PLAYER);
+            }
+        } else if (result.cell.isMiss()) {
+            if (mCallback != null) {
+                mCallback.onMiss(PlayerCallback.Side.PLAYER);
+            }
+        } else {
+            Ln.v("player's ship is hit: " + result);
+            if (mCallback != null) {
+                mCallback.onHit(PlayerCallback.Side.PLAYER);
+            }
+        }
+
+        // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
+        // notifies about players defeat sending his board along.
+        if (!versionSupportsBoardReveal()) {
+            if (mRules.isItDefeatedBoard(mMyBoard)) {
+                Ln.v("opponent version doesn't support board reveal = " + getOpponentVersion());
+                AnalyticsEvent.send("reveal_not_supported");
+                reset(new Bidder().newBid());
+                if (mCallback != null) {
+                    mCallback.onLost();
+                }
+            }
+        }
+    }
+
+    private boolean versionSupportsBoardReveal() {
+        return getOpponentVersion() >= GameUtils.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
     }
 
     @Override

@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,6 +37,8 @@ public class PlayerOpponentTest {
     @Mock
     private Random mRandom;
     private Placement mPlacement;
+    @Mock
+    private PlayerCallback callback;
 
     @Before
     public void setUp() {
@@ -52,11 +53,7 @@ public class PlayerOpponentTest {
         };
         mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules, listener);
         mPlayer.setOpponent(mEnemy);
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void onShotAt() {
-        mPlayer.onShotAt(Vector2.get(5, 5));
+        mPlayer.setCallback(callback);
     }
 
     @Test
@@ -229,11 +226,85 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerGoes__GoCallbackCalled() {
-        PlayerCallback callback = mock(PlayerCallback.class);
-        mPlayer.setCallback(callback);
         mPlayer.go();
 
         verify(callback, times(1)).go();
+    }
+
+    @Test
+    public void WhenPlayerGetsShotResult__CallbackCalled() {
+        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit());
+        mPlayer.onShotResult(result);
+
+        verify(callback, times(1)).onShotResult(result);
+    }
+
+    @Test
+    public void WhenPlayerKillsShip__CallbackCalled() {
+        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit(), new Ship(1));
+        mPlayer.onShotResult(result);
+
+        verify(callback, times(1)).onKill(PlayerCallback.Side.OPPONENT);
+    }
+
+    @Test
+    public void WhenPlayerHitsShip__CallbackCalled() {
+        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit());
+        mPlayer.onShotResult(result);
+
+        verify(callback, times(1)).onHit(PlayerCallback.Side.OPPONENT);
+    }
+
+    @Test
+    public void WhenPlayerMissesShip__CallbackCalled() {
+        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newMiss());
+        mPlayer.onShotResult(result);
+
+        verify(callback, times(1)).onMiss(PlayerCallback.Side.OPPONENT);
+    }
+
+    @Test
+    public void WhenPlayerIsShotAt__CallbackCalled() {
+        Vector2 aim = Vector2.get(1, 1);
+        mPlayer.onShotAt(aim);
+
+        verify(callback, times(1)).onShotAt(aim);
+    }
+
+    @Test
+    public void WhenPlayerIsHit__CallbackCalled() {
+        Board board = new Board();
+        mPlacement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
+        mPlayer.setBoard(board);
+        Vector2 aim = Vector2.get(5, 5);
+
+        mPlayer.onShotAt(aim);
+
+        verify(callback, times(1)).onHit(PlayerCallback.Side.PLAYER);
+    }
+
+    @Test
+    public void WhenPlayerIsMissed__CallbackCalled() {
+        Board board = new Board();
+        mPlacement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
+        mPlayer.setBoard(board);
+        Vector2 aim = Vector2.get(1, 1);
+
+        mPlayer.onShotAt(aim);
+
+        verify(callback, times(1)).onMiss(PlayerCallback.Side.PLAYER);
+    }
+
+    @Test
+    public void WhenPlayerIsKilled__CallbackCalled() {
+        Board board = new Board();
+        mPlacement.putShipAt(board, new Ship(1, Ship.Orientation.VERTICAL), 5, 5);
+        mPlayer.setBoard(board);
+        Vector2 aim = Vector2.get(5, 5);
+
+        mPlayer.onShotAt(aim);
+
+        verify(callback, times(1)).onKill(PlayerCallback.Side.PLAYER);
     }
 
     private Cell enemyCellAt(Vector2 aim) {
