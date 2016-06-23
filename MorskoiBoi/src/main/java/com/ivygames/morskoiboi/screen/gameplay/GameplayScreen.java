@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     public static final int ALARM_TIME_SECONDS = 10;
 
-    private static final long LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
+//    private static final long LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
     private static final long LOST_GAME_WITH_REVEAL_DELAY = 5000; // milliseconds
 
     @NonNull
@@ -520,10 +521,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onLost() {
+        public void onLost(@Nullable Board board) {
+            // revealing the enemy board
+            if (board == null) {
+                AnalyticsEvent.send("reveal_not_supported");
+            } else {
+                mLayout.setEnemyBoard(board);
+            }
+
             disableBackPress();
             mLayout.lost();
-            showLostScreenDelayed(LOST_GAME_WO_REVEAL_DELAY);
+            showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
         }
 
         @Override
@@ -535,6 +543,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onOpponentTurn() {
             showOpponentTurn();
             startDetectingTurnTimeout();
+        }
+
+        @Override
+        public void onMessage(@NonNull String text) {
+            ChatMessage message = ChatMessage.newEnemyMessage(text);
+            mChatAdapter.add(message);
         }
     }
 
@@ -644,7 +658,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                     mLayout.lost();
 
                     resetPlayer();
-                    showLostScreenDelayed(LOST_GAME_WO_REVEAL_DELAY);
+                    showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
                 }
             }
         }

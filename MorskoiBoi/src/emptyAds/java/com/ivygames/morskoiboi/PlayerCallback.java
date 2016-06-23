@@ -1,7 +1,9 @@
 package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -26,10 +28,11 @@ public interface PlayerCallback {
 
     void onShotAt(@NonNull Vector2 aim);
 
-    void onLost();
+    void onLost(@Nullable Board board);
 
     void opponentReady();
 
     void onOpponentTurn();
 
+    void onMessage(@NonNull String message);
 }

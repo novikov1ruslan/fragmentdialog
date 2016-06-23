@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -13,6 +12,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
 
 import org.commons.logger.Ln;
+
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent extends AbstractOpponent {
 
@@ -122,15 +123,15 @@ public class PlayerOpponent extends AbstractOpponent {
             }
         }
 
+        // TODO: only execute when killed
         // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
         // notifies about players defeat sending his board along.
         if (!versionSupportsBoardReveal()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
                 Ln.v("opponent version doesn't support board reveal = " + getOpponentVersion());
-                AnalyticsEvent.send("reveal_not_supported");
                 reset(new Bidder().newBid());
                 if (mCallback != null) {
-                    mCallback.onLost();
+                    mCallback.onLost(null);
                 }
             }
         }
@@ -209,6 +210,9 @@ public class PlayerOpponent extends AbstractOpponent {
         ChatMessage message = ChatMessage.newEnemyMessage(text);
         Ln.d(this + " received: " + message);
         mChatListener.showChatCrouton(message);
+        if (mCallback != null) {
+            mCallback.onMessage(text);
+        }
     }
 
     public void startBidding() {
@@ -224,8 +228,15 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onLost(@NonNull Board board) {
-        Ln.e("never happens");
-        ExceptionHandler.reportException("never happens");
+        if (!mRules.isItDefeatedBoard(mMyBoard)) {
+            Ln.v("player private board: " + mMyBoard);
+            reportException("lost while not defeated");
+        }
+        reset(new Bidder().newBid());
+
+        if (mCallback != null) {
+            mCallback.onLost(board);
+        }
     }
 
     @Override
