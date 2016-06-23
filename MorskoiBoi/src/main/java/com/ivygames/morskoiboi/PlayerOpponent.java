@@ -205,7 +205,7 @@ public class PlayerOpponent extends AbstractOpponent {
         }
 
         super.onEnemyBid(bid);
-        if (mPlayerReady && isOpponentTurn()) {
+        if (mPlayerReady && opponentStarts()) {
             Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
             mOpponent.go();
 
@@ -227,7 +227,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     public void startBidding() {
         mPlayerReady = true;
-        if (isOpponentReady() && isOpponentTurn()) {
+        if (isOpponentReady() && opponentStarts()) {
             Ln.d(this + ": opponent is ready and it is his turn");
             mOpponent.go();
         } else {

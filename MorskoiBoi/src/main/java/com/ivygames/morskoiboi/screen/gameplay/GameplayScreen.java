@@ -176,7 +176,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mPlayer.setCallback(new UiPlayerCallback());
 
         if (mPlayer.isOpponentReady()) {
-            if (mPlayer.isOpponentTurn()) {
+            if (mPlayer.opponentStarts()) {
                 Ln.d("opponent's turn");
                 showOpponentTurn();
                 startDetectingTurnTimeout();

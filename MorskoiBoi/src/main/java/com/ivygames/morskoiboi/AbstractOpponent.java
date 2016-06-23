@@ -84,7 +84,7 @@ public abstract class AbstractOpponent implements Opponent {
         Ln.v(this + ": " + mEnemyBoard);
     }
 
-    public final boolean isOpponentTurn() {
+    public final boolean opponentStarts() {
         return mMyBid < mEnemyBid;
     }
 

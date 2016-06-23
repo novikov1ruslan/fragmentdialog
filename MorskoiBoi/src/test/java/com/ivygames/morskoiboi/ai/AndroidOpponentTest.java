@@ -63,7 +63,7 @@ public class AndroidOpponentTest {
     @Test
     public void after_android_is_reset__it_is_not_opponents_turn() {
         mAndroid.reset(new Bidder().newBid());
-        assertThat(mAndroid.isOpponentTurn(), is(false));
+        assertThat(mAndroid.opponentStarts(), is(false));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class AndroidOpponentTest {
         mAndroid.reset(1);
         when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(2);
-        assertThat(mAndroid.isOpponentTurn(), is(true));
+        assertThat(mAndroid.opponentStarts(), is(true));
         verify(mOpponent, times(1)).go();
     }
 
@@ -137,7 +137,7 @@ public class AndroidOpponentTest {
         mAndroid.reset(myBid);
         when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(1);
-        assertThat(mAndroid.isOpponentTurn(), is(false));
+        assertThat(mAndroid.opponentStarts(), is(false));
         verify(mOpponent, times(1)).onEnemyBid(myBid);
     }
 

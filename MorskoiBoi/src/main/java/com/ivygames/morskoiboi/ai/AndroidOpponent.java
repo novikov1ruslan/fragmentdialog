@@ -133,8 +133,8 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             reportException("stall");
             mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
         }
-        Ln.d("bidding against " + mOpponent + " with result " + isOpponentTurn());
-        if (isOpponentTurn()) {
+        Ln.d("bidding against " + mOpponent + " with result " + opponentStarts());
+        if (opponentStarts()) {
             mDelegate.go();
         } else {
             mDelegate.onEnemyBid(mMyBid);

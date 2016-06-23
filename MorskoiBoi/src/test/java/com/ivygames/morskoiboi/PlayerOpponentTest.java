@@ -353,7 +353,7 @@ public class PlayerOpponentTest {
     @Test
     public void WhenOpponentLooses__it_is_not_enemy_turn() {
         mPlayer.reset(new Bidder().newBid());
-        assertThat(mPlayer.isOpponentTurn(), is(false));
+        assertThat(mPlayer.opponentStarts(), is(false));
     }
 
     @Test
