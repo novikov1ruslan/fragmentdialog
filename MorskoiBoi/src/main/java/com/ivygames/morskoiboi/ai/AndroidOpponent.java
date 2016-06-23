@@ -59,6 +59,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
         Ln.d(this + ": my opponent is " + opponent);
+        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         mDelegate.setOpponent(opponent);
     }
 
@@ -132,7 +133,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             reportException("stall");
             mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
         }
-        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         Ln.d("bidding against " + mOpponent + " with result " + isOpponentTurn());
         if (isOpponentTurn()) {
             mDelegate.go();

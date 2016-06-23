@@ -186,14 +186,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
         } else {
             Ln.d("opponent is still setting board");
-            // we have to show this message in the same method (before) mEnemy.setOpponent() is called
             showOpponentSettingBoardNote();
         }
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
 
         Ln.d("screen is fully created - exchange protocol versions and start bidding");
-        mEnemy.setOpponentVersion(Opponent.CURRENT_VERSION);
         mPlayer.startBidding();
 
         Ln.d(this + " screen created");

@@ -154,6 +154,7 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
+        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         Ln.d(this + ": my opponent is " + opponent);
     }
 
