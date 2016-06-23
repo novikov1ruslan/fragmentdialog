@@ -25,6 +25,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -211,6 +212,14 @@ public class PlayerOpponentTest {
     }
 
     @Test
+    public void WhenPlayerGoes__ItIsPlayersTurn() {
+        reset(callback);
+        mPlayer.go();
+
+        verify(callback, times(1)).onPlayersTurn();
+    }
+
+    @Test
     public void WhenPlayerGetsShotResult__CallbackCalled() {
         PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit());
         mPlayer.onShotResult(result);
@@ -363,6 +372,9 @@ public class PlayerOpponentTest {
 
         verify(callback, times(1)).onMessage(message);
     }
+
+
+    // TODO: when callback is set - sticky
 
     private Cell enemyCellAt(Vector2 aim) {
         return mPlayer.getEnemyBoard().getCellAt(aim);

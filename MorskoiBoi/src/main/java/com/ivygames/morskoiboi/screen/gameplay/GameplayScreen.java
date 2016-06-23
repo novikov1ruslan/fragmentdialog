@@ -173,25 +173,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setPlayerName(mPlayer.getName());
         mLayout.setEnemyName(mEnemy.getName());
 
-        mPlayer.setCallback(new UiPlayerCallback());
+        Ln.d("opponent is still setting board");
+        showOpponentSettingBoardNote();
 
-        if (mPlayer.isOpponentReady()) {
-            if (mPlayer.opponentStarts()) {
-                Ln.d("opponent's turn");
-                showOpponentTurn();
-                startDetectingTurnTimeout();
-            } else {
-                showPlayerTurn();
-                Ln.d("player's turn");
-            }
-        } else {
-            Ln.d("opponent is still setting board");
-            showOpponentSettingBoardNote();
-        }
+        mPlayer.setCallback(new UiPlayerCallback());
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
 
-        Ln.d("screen is fully created - exchange protocol versions and start bidding");
+        Ln.d("screen is fully created - start bidding");
         mPlayer.startBidding();
 
         Ln.d(this + " screen created");
@@ -422,19 +411,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mMyTurn = false;
     }
 
-    private void showPlayerTurn() {
-        mParent.startService(getServiceIntent(getString(R.string.your_turn)));
-        mLayout.playerTurn();
-        mGameIsOn = true;
-        mStartTime = SystemClock.elapsedRealtime();
-        mMyTurn = true;
-    }
-
     private class UiPlayerCallback implements PlayerCallback {
 
         @Override
         public void go() {
-            showPlayerTurn();
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
                 mTimerController.start(); // for all practical scenarios - start will only be called from here
@@ -529,8 +509,19 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onOpponentTurn() {
+            Ln.d("opponent's turn");
             showOpponentTurn();
             startDetectingTurnTimeout();
+        }
+
+        @Override
+        public void onPlayersTurn() {
+            Ln.d("player's turn");
+            mParent.startService(getServiceIntent(getString(R.string.your_turn)));
+            mLayout.playerTurn();
+            mGameIsOn = true;
+            mStartTime = SystemClock.elapsedRealtime();
+            mMyTurn = true;
         }
 
         @Override

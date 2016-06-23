@@ -49,6 +49,15 @@ public class PlayerOpponent extends AbstractOpponent {
 
     public void setCallback(@NonNull PlayerCallback callback) {
         mCallback = callback;
+        if (isOpponentReady()) {
+            mCallback.opponentReady();
+        }
+
+        if (opponentStarts()) {
+            mCallback.onOpponentTurn();
+        } else {
+            mCallback.onPlayersTurn();
+        }
     }
 
     @Override
@@ -61,6 +70,7 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void go() {
         if (mCallback != null) {
+            mCallback.onPlayersTurn();
             if (!isOpponentReady()) {
                 mCallback.opponentReady();
             }

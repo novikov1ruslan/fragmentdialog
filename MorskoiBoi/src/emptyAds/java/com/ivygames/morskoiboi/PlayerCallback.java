@@ -34,5 +34,7 @@ public interface PlayerCallback {
 
     void onOpponentTurn();
 
+    void onPlayersTurn();
+
     void onMessage(@NonNull String message);
 }
