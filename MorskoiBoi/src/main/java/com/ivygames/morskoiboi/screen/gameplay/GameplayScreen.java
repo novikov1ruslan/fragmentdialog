@@ -489,11 +489,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onMiss(@NonNull Side side) {
             mGameplaySounds.playSplash();
-
-            if (side == Side.OPPONENT) {
-                showOpponentTurn();
-                startDetectingTurnTimeout();
-            }
         }
 
         @Override

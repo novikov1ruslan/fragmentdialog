@@ -70,24 +70,6 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void after_player_is_reset__his_board_is_empty() {
-        mPlayer.reset(new Bidder().newBid());
-        assertThat(mPlayer.getBoard().getEmptyCells().size(), is(100));
-    }
-
-    @Test
-    public void after_player_is_reset__enemy_board_is_empty() {
-        mPlayer.reset(new Bidder().newBid());
-        assertThat(mPlayer.getEnemyBoard().getEmptyCells().size(), is(100));
-    }
-
-    @Test
-    public void after_player_is_reset__it_is_not_enemy_turn() {
-        mPlayer.reset(new Bidder().newBid());
-        assertThat(mPlayer.isOpponentTurn(), is(false));
-    }
-
-    @Test
     public void when_enemy_bids_on_non_ready_player__enemy_does_not_go() {
         mPlayer.reset(1);
         mPlayer.onEnemyBid(2);
@@ -258,6 +240,7 @@ public class PlayerOpponentTest {
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onMiss(PlayerCallback.Side.OPPONENT);
+        verify(callback, times(1)).onOpponentTurn();
     }
 
     @Test
@@ -352,6 +335,25 @@ public class PlayerOpponentTest {
         mPlayer.onLost(board);
 
         verify(callback, times(1)).onLost(board);
+    }
+
+    // TODO: repeat the 3 for win as well
+    @Test
+    public void WhenOpponentLooses__his_board_is_empty() {
+        mPlayer.reset(new Bidder().newBid());
+        assertThat(mPlayer.getBoard().getEmptyCells().size(), is(100));
+    }
+
+    @Test
+    public void WhenOpponentLooses__enemy_board_is_empty() {
+        mPlayer.reset(new Bidder().newBid());
+        assertThat(mPlayer.getEnemyBoard().getEmptyCells().size(), is(100));
+    }
+
+    @Test
+    public void WhenOpponentLooses__it_is_not_enemy_turn() {
+        mPlayer.reset(new Bidder().newBid());
+        assertThat(mPlayer.isOpponentTurn(), is(false));
     }
 
     @Test

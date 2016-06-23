@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -46,8 +47,12 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.v("new player created");
     }
 
+    public void setCallback(@NonNull PlayerCallback callback) {
+        mCallback = callback;
+    }
+
     @Override
-    public final void reset(int myBid) {
+    protected final void reset(int myBid) {
         super.reset(myBid);
         mPlayerReady = false;
         mOpponentVersion = 0;
@@ -90,6 +95,7 @@ public class PlayerOpponent extends AbstractOpponent {
             mOpponent.go();
             if (mCallback != null) {
                 mCallback.onMiss(PlayerCallback.Side.OPPONENT);
+                mCallback.onOpponentTurn();
             }
         } else {
             Ln.v("it's a hit! - player continues");
@@ -99,12 +105,12 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
-    private boolean shipSank(Ship ship) {
+    private boolean shipSank(@Nullable Ship ship) {
         return ship != null;
     }
 
     @Override
-    public void onShotAt(@NonNull final Vector2 aim) {
+    public void onShotAt(@NonNull Vector2 aim) {
         PokeResult result = createResultForShootingAt(aim);
         onShotAtForResult(result);
         Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
@@ -154,10 +160,9 @@ public class PlayerOpponent extends AbstractOpponent {
     private void onShotAtForResult(@NonNull PokeResult result) {
         mOpponent.onShotResult(result);
 
-        final Ship ship = result.ship;
-        if (ship != null) {
-            Ln.v(this + ": my ship is destroyed - " + ship);
-            markNeighbouringCellsAsOccupied(ship);
+        if (result.ship != null) {
+            Ln.v(this + ": my ship is destroyed - " + result.ship);
+            markNeighbouringCellsAsOccupied(result.ship);
         }
 
         if (result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard)) {
@@ -166,7 +171,7 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
-    private void markNeighbouringCellsAsOccupied(final Ship ship) {
+    private void markNeighbouringCellsAsOccupied(@NonNull Ship ship) {
         // if is dead we remove and put ship back to mark adjacent cells as reserved
         mMyBoard.removeShipFrom(ship.getX(), ship.getY());
         mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
@@ -252,9 +257,5 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public String toString() {
         return getName();
-    }
-
-    public void setCallback(@NonNull PlayerCallback callback) {
-        mCallback = callback;
     }
 }
