@@ -279,7 +279,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     }
 
     @Override
-    public void showOpponentSettingBoardNotification(@NonNull String message) {
+    public void showOpponentSettingBoardNote(@NonNull String message) {
         mSettingBoardText.setText(message);
         mSettingBoardText.setVisibility(VISIBLE);
     }

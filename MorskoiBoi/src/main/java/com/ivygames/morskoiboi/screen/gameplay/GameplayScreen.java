@@ -125,7 +125,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mPlayer = Model.player;
-        mPlayer.setCallback(new UiPlayerCallback());
         mEnemy = Model.opponent;
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
@@ -174,6 +173,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setPlayerName(mPlayer.getName());
         mLayout.setEnemyName(mEnemy.getName());
 
+        mPlayer.setCallback(new UiPlayerCallback());
+
         if (mPlayer.isOpponentReady()) {
             if (mPlayer.isOpponentTurn()) {
                 Ln.d("opponent's turn");
@@ -186,7 +187,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         } else {
             Ln.d("opponent is still setting board");
             // we have to show this message in the same method (before) mEnemy.setOpponent() is called
-            showOpponentSettingBoardNotification();
+            showOpponentSettingBoardNote();
         }
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
@@ -199,9 +200,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         return (View) mLayout;
     }
 
-    private void showOpponentSettingBoardNotification() {
+    private void showOpponentSettingBoardNote() {
         String message = getString(R.string.opponent_setting_board, mEnemy.getName());
-        mLayout.showOpponentSettingBoardNotification(message);
+        mLayout.showOpponentSettingBoardNote(message);
     }
 
     @Override
