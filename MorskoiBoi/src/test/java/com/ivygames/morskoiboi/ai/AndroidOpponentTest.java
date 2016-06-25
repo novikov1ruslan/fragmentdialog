@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.ai;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Bidder;
+import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;

@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.morskoiboi.model.Opponent;
 

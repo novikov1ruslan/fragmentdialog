@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.ai;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.CancellableOpponent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;

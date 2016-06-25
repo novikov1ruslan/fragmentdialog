@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.MusicPlayer;
+import com.ivygames.morskoiboi.music.MusicPlayer;
 
 import org.commons.logger.Ln;
 

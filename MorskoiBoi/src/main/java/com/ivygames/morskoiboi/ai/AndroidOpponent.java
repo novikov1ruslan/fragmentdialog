@@ -3,9 +3,7 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.AbstractOpponent;
-import com.ivygames.morskoiboi.Bidder;
-import com.ivygames.morskoiboi.Cancellable;
-import com.ivygames.morskoiboi.CancellableOpponent;
+import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;

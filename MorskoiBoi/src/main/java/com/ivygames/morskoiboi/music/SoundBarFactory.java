@@ -1,7 +1,10 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.music;
 
 import android.content.res.AssetManager;
 import android.media.AudioManager;
+
+import com.ivygames.common.music.SoundBar;
+import com.ivygames.morskoiboi.Dependencies;
 
 import org.commons.logger.Ln;
 

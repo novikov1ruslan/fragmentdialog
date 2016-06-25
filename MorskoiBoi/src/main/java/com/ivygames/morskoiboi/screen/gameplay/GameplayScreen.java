@@ -20,7 +20,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.Cancellable;
+import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.GameSettings;

@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.common.analytics.ExceptionHandler;
+import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
