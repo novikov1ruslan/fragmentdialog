@@ -22,7 +22,7 @@ import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -644,7 +644,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(GameHandler.newWinScreen(mGame, mShips, mStatistics, mOpponentSurrendered));
+            setScreen(ScreenCreator.newWinScreen(mGame, mShips, mStatistics, mOpponentSurrendered));
         }
     }
 
@@ -652,7 +652,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(GameHandler.newLostScreen(mGame));
+            setScreen(ScreenCreator.newLostScreen(mGame));
         }
     }
 

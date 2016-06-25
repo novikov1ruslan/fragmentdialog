@@ -15,7 +15,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
@@ -145,7 +145,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void joinGame() {
-        setScreen(GameHandler.newDeviceListScreen(mBtAdapter));
+        setScreen(ScreenCreator.newDeviceListScreen(mBtAdapter));
     }
 
     @Override
@@ -153,7 +153,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         if (isDialogShown()) {
             cancelGameCreation();
         } else {
-            setScreen(GameHandler.newSelectGameScreen());
+            setScreen(ScreenCreator.newSelectGameScreen());
         }
     }
 
@@ -197,7 +197,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         }
         Placement placement = PlacementFactory.getAlgorithm();
         Model.setOpponents(new PlayerOpponent(playerName, placement, mRules, parent()), opponent);
-        setScreen(GameHandler.newBoardSetupScreen(new BluetoothGame(connection)));
+        setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection)));
     }
 
     @Override

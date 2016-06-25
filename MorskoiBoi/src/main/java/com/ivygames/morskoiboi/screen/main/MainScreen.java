@@ -15,7 +15,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationReceiver;
@@ -30,8 +30,6 @@ import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
-
-import de.greenrobot.event.EventBus;
 
 public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener, InvitationReceiver {
     private static final String TAG = "MAIN";
@@ -134,7 +132,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void play() {
-        setScreen(GameHandler.newSelectGameScreen());
+        setScreen(ScreenCreator.newSelectGameScreen());
     }
 
     @Override
@@ -193,7 +191,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showHelp() {
-        setScreen(GameHandler.newHelpScreen());
+        setScreen(ScreenCreator.newHelpScreen());
     }
 
     @Override
@@ -214,7 +212,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @Override
     public void showSettings() {
-        setScreen(GameHandler.newSettingsScreen());
+        setScreen(ScreenCreator.newSettingsScreen());
     }
 
     private void showLeaderboardsDialog() {

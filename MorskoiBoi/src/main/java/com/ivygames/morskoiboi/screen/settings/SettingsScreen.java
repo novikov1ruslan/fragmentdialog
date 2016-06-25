@@ -12,7 +12,7 @@ import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
@@ -155,7 +155,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
 
     @Override
     public void onBackPressed() {
-        setScreen(GameHandler.newMainScreen());
+        setScreen(ScreenCreator.newMainScreen());
     }
 
     @Override

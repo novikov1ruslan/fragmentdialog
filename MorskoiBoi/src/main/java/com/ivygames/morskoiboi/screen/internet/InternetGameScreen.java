@@ -18,7 +18,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationReceiver;
@@ -251,7 +251,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             hideWaitingScreen();
             if (resultCode == Activity.RESULT_OK) {
                 Ln.d("starting game");
-                setScreen(GameHandler.newBoardSetupScreen(mInternetGame));
+                setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame));
             } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
                 Ln.d("user explicitly chose to leave the room");
                 // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room

@@ -27,6 +27,7 @@ import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.music.MusicPlayer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -149,11 +150,11 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
 
-        GameHandler.setActivity(this);
-        GameHandler.setApiClient(mGoogleApiClient);
-        GameHandler.setSettings(mSettings);
+        ScreenCreator.setActivity(this);
+        ScreenCreator.setApiClient(mGoogleApiClient);
+        ScreenCreator.setSettings(mSettings);
 
-        setScreen(GameHandler.newMainScreen());
+        setScreen(ScreenCreator.newMainScreen());
     }
 
     @Override

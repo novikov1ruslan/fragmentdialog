@@ -14,7 +14,7 @@ import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameConstants;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
@@ -168,7 +168,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     };
 
     private void showGameplayScreen() {
-        setScreen(GameHandler.newGameplayScreen(mGame));
+        setScreen(ScreenCreator.newGameplayScreen(mGame));
     }
 
     private void showSetupValidationError() {

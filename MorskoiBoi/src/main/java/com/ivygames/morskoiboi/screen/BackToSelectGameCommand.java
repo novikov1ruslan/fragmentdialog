@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.GameHandler;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.commons.logger.Ln;
@@ -27,7 +26,7 @@ public final class BackToSelectGameCommand implements Runnable {
         if (mGame != null && !mGame.hasFinished()) {
             mGame.finish();
         }
-        mBattleshipActivity.setScreen(GameHandler.newSelectGameScreen());
+        mBattleshipActivity.setScreen(ScreenCreator.newSelectGameScreen());
     }
 
 }

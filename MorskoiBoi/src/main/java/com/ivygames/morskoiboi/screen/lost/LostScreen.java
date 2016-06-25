@@ -11,7 +11,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameHandler;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.common.music.SoundBar;
@@ -107,7 +107,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
-        setScreen(GameHandler.newBoardSetupScreen(mGame));
+        setScreen(ScreenCreator.newBoardSetupScreen(mGame));
     }
 
     @Override
