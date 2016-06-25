@@ -50,7 +50,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mDelegate = delegate;
         Ln.d(this + ": initializing boards and bids");
         mMyBid = new Bidder().newBid();
-        mEnemyBid = OPPONENT_NOT_READY_BID;
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
         Ln.v("new android opponent created");
     }

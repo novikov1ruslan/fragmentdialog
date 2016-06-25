@@ -12,40 +12,43 @@ import com.ivygames.morskoiboi.model.Vector2;
 import org.commons.logger.Ln;
 
 public abstract class AbstractOpponent implements Opponent {
-    protected static final int OPPONENT_NOT_READY_BID = -2;
-    private static final int OPPONENT_READY_BID = -1;
+    private static final int NOT_READY = -1;
 
     @NonNull
     protected Board mMyBoard = new Board();
     @NonNull
     protected Board mEnemyBoard = new Board();
 
-    protected volatile int mMyBid;
-    protected volatile int mEnemyBid;
+    protected int mMyBid = NOT_READY;
+    protected int mEnemyBid = NOT_READY;
+
+    private boolean mOpponentReady;
 
     protected void reset(int myBid) {
         Ln.d(this + ": initializing boards and bids");
-        mEnemyBoard.clearBoard();
-        mMyBoard.clearBoard();
+        mEnemyBoard = new Board();
+        mMyBoard = new Board();
         mMyBid = myBid;
-        mEnemyBid = OPPONENT_NOT_READY_BID;
+        mEnemyBid = NOT_READY;
+        mOpponentReady = false;
     }
 
     @Override
     public void go() {
-        if (!isOpponentReady()) {
+        if (!mOpponentReady) {
             Ln.d(this + ": opponent is ready");
-            mEnemyBid = OPPONENT_READY_BID;
+            mOpponentReady = true;
         }
     }
 
     public boolean isOpponentReady() {
-        return mEnemyBid != OPPONENT_NOT_READY_BID;
+        return mOpponentReady;
     }
 
     @Override
     public void onEnemyBid(int bid) {
         mEnemyBid = bid;
+        mOpponentReady = true;
         Ln.d(this + ": opponent is ready, bid = " + bid);
     }
 
