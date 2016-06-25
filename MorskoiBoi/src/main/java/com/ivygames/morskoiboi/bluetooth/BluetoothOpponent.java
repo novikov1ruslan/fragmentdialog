@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.bluetooth;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.AbstractOnlineOpponent;
+import com.ivygames.morskoiboi.multiplayer.AbstractOnlineOpponent;
 import com.ivygames.morskoiboi.model.Opponent;
 
 import org.commons.logger.Ln;

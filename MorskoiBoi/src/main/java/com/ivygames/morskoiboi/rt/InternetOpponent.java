@@ -5,8 +5,8 @@ import android.text.TextUtils;
 
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
-import com.ivygames.morskoiboi.AbstractOnlineOpponent;
-import com.ivygames.morskoiboi.RtmSender;
+import com.ivygames.morskoiboi.multiplayer.AbstractOnlineOpponent;
+import com.ivygames.morskoiboi.multiplayer.RtmSender;
 import com.ivygames.morskoiboi.model.Opponent;
 
 import org.apache.commons.lang3.Validate;

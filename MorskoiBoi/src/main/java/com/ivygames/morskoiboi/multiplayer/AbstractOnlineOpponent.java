@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.multiplayer;
 
 import android.support.annotation.NonNull;
 
@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.multiplayer.RtmSender;
 
 import org.commons.logger.Ln;
 
