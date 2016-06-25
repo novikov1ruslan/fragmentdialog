@@ -1,8 +1,10 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.backup;
 
 import android.app.backup.BackupManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.ivygames.common.settings.EditableSharedPreferences;
 
 public class BackupSharedPreferences extends EditableSharedPreferences {
 

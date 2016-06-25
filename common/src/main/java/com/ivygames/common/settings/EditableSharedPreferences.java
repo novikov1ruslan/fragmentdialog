@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,13 +10,13 @@ import org.commons.logger.Ln;
 import java.util.Map;
 import java.util.Set;
 
-class EditableSharedPreferences implements SharedPreferences, SharedPreferences.Editor {
+public class EditableSharedPreferences implements SharedPreferences, SharedPreferences.Editor {
 
     private final SharedPreferences sp;
     private final Editor editor;
 
     @SuppressLint("CommitPrefEdits")
-    EditableSharedPreferences(Context context) {
+    public EditableSharedPreferences(Context context) {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         editor = sp.edit();
     }

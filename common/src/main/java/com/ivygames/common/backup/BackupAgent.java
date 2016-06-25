@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.backup;
 
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.SharedPreferencesBackupHelper;

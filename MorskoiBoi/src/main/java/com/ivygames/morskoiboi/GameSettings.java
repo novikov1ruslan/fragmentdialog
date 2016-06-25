@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.ivygames.common.backup.BackupSharedPreferences;
+import com.ivygames.common.settings.EditableSharedPreferences;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.progress.ProgressUtils;
 
