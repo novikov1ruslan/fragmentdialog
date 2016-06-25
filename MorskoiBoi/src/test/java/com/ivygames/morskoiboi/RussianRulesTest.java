@@ -44,10 +44,10 @@ public class RussianRulesTest {
     public void setUp() {
         initMocks(this);
         RussianRules rules = new RussianRules();
-        RulesFactory.setRules(rules);
+        Dependencies.inject(rules);
         PlacementFactory.setPlacementAlgorithm(new Placement(new Random(1), rules));
         placement = PlacementFactory.getAlgorithm();
-        mRules = RulesFactory.getRules();
+        mRules = Dependencies.getRules();
     }
 
     @Test

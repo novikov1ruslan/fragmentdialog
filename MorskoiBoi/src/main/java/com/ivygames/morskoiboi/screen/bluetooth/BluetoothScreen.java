@@ -21,7 +21,6 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
@@ -56,7 +55,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
-    private final Rules mRules = RulesFactory.getRules();
+    private final Rules mRules = Dependencies.getRules();
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override

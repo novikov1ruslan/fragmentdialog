@@ -14,9 +14,9 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.ivygames.morskoiboi.Bitmaps;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
@@ -40,7 +40,7 @@ public class SetupBoardView extends BaseBoardView {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final int mTouchSlop;
     @NonNull
-    private final Rules mRules = RulesFactory.getRules();
+    private final Rules mRules = Dependencies.getRules();
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);

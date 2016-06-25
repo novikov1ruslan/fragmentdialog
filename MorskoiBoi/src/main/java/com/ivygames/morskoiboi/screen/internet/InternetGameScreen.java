@@ -26,7 +26,6 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Model;
@@ -59,7 +58,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
-    private final Rules mRules = RulesFactory.getRules();
+    private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
     @NonNull

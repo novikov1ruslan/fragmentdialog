@@ -16,7 +16,7 @@ public class LostScreen_ extends OnlineScreen_ {
     public void setup() {
         super.setup();
         rules = mock(Rules.class);
-        RulesFactory.setRules(rules);
+        Dependencies.inject(rules);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class ApplicationInitializer {
 
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules();
-        RulesFactory.setRules(rules);
+        Dependencies.inject(rules);
         Placement algorithm = new Placement(new Random(System.currentTimeMillis()), rules);
         PlacementFactory.setPlacementAlgorithm(algorithm);
         BotFactory.setAlgorithm(new RussianBot(null));

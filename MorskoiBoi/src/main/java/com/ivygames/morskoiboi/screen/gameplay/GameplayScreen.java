@@ -28,7 +28,6 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -79,7 +78,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
-    private final Rules mRules = RulesFactory.getRules();
+    private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final Runnable mShowLostScreenCommand = new ShowLostScreenCommand();
     @NonNull

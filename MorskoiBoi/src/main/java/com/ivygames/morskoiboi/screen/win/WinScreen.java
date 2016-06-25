@@ -20,7 +20,6 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.common.music.SoundBar;
 import com.ivygames.morskoiboi.music.SoundBarFactory;
@@ -63,7 +62,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();
     @NonNull
-    private final Rules mRules = RulesFactory.getRules();
+    private final Rules mRules = Dependencies.getRules();
     private final boolean mOpponentSurrendered;
 
     public WinScreen(@NonNull BattleshipActivity parent,

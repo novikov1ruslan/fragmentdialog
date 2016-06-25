@@ -27,7 +27,6 @@ import com.ivygames.morskoiboi.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
@@ -66,7 +65,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
     @NonNull
-    private final Rules mRules = RulesFactory.getRules();
+    private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final GameSettings mSettings;
 

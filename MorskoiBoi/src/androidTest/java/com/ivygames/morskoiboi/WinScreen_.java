@@ -48,7 +48,7 @@ public class WinScreen_ extends OnlineScreen_ {
         statistics = mock(ScoreStatistics.class);
 
         when(settings().incrementProgress(anyInt())).thenReturn(new Progress(0));
-        RulesFactory.setRules(rules);
+        Dependencies.inject(rules);
     }
 
     @Override

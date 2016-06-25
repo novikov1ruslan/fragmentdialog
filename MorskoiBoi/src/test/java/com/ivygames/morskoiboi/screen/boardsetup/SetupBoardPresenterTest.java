@@ -4,8 +4,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
@@ -51,7 +51,7 @@ public class SetupBoardPresenterTest {
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
         rules = new RussianRules();
-        RulesFactory.setRules(rules);
+        Dependencies.inject(rules);
         mPlacement = new Placement(new Random(), rules);
         PlacementFactory.setPlacementAlgorithm(mPlacement);
     }

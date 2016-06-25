@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.RulesFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.Placement;
@@ -41,7 +41,7 @@ public class BoardTest {
 		Random random = mock(Random.class);
 		when(random.nextInt(anyInt())).thenReturn(0);
 		Rules rules = new RussianRules();
-		RulesFactory.setRules(rules);
+		Dependencies.inject(rules);
 		Placement placement = new Placement(random, rules);
 		PlacementFactory.setPlacementAlgorithm(placement);
 		mPlacementAlgorithm = PlacementFactory.getAlgorithm();
