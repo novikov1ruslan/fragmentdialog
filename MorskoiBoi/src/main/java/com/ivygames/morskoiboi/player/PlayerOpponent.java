@@ -1,9 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.player;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.common.game.Bidder;
+import com.ivygames.morskoiboi.AbstractOpponent;
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.PlayerCallback;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -62,7 +66,7 @@ public class PlayerOpponent extends AbstractOpponent {
     }
 
     @Override
-    protected final void reset(int myBid) {
+    public final void reset(int myBid) {
         super.reset(myBid);
         mPlayerReady = false;
         mOpponentVersion = 0;

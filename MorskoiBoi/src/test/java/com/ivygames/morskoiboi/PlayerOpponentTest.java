@@ -9,6 +9,8 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.player.ChatListener;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.variant;
 
-import com.ivygames.morskoiboi.PlayerOpponent;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;

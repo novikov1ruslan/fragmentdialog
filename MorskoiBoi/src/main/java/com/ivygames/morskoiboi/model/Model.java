@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.model;
 
-import com.ivygames.morskoiboi.PlayerOpponent;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 
 public class Model {
     private Model() {

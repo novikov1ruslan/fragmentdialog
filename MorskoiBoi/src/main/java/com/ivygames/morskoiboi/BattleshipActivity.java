@@ -25,6 +25,7 @@ import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.music.MusicPlayer;
+import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;

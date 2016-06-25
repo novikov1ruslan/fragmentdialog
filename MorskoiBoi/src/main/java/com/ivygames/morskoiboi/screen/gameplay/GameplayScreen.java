@@ -25,7 +25,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerCallback;
-import com.ivygames.morskoiboi.PlayerOpponent;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.VibratorFacade;
