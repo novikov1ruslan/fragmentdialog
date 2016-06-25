@@ -55,7 +55,7 @@ public abstract class AbstractOpponent implements Opponent {
     /**
      * marks the aimed cell
      */
-    public final PokeResult createResultForShootingAt(Vector2 aim) {
+    public final PokeResult createResultForShootingAt(@NonNull Vector2 aim) {
         // ship if found will be shot and returned
         Ship ship = mMyBoard.getFirstShipAt(aim);
 
@@ -84,7 +84,7 @@ public abstract class AbstractOpponent implements Opponent {
         } else {
             placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
-        Ln.v(this + ": " + mEnemyBoard);
+        Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }
 
     public final boolean opponentStarts() {

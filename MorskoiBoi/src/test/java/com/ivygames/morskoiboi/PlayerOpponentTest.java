@@ -348,7 +348,7 @@ public class PlayerOpponentTest {
 
     // TODO: repeat the 3 for win as well
     @Test
-    public void WhenOpponentLooses__his_board_is_empty() {
+    public void WhenGameEnds__PlayersBoardIsEmpty() {
         mPlayer.reset(new Bidder().newBid());
         assertThat(mPlayer.getBoard().getEmptyCells().size(), is(100));
     }
