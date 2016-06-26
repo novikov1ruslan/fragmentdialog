@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.common.analytics.ExceptionHandler;
-import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -68,14 +67,14 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void after_player_is_reset__enemy_is_not_ready() {
-        mPlayer.reset(new Bidder().newBid());
+    public void AfterPlayerLoses__EnemyIsNotReady() {
+        mPlayer.onLost(new Board());
+
         assertThat(mPlayer.isOpponentReady(), is(false));
     }
 
     @Test
     public void when_enemy_bids_on_non_ready_player__enemy_does_not_go() {
-        mPlayer.reset(1);
         mPlayer.onEnemyBid(2);
         verify(mEnemy, never()).go();
     }
@@ -116,16 +115,15 @@ public class PlayerOpponentTest {
         assertThat(actual, equalTo(ship));
     }
 
-//    @Test
-//    public void after_shooting_on_my_empty_cell__result_is_miss() {
-//        Vector2 aim = Vector2.get(5, 5);
-//        Board board = new Board();
-//        mPlayer.setBoard(board);
-//        PokeResult result = mPlayer.createResultForShootingAt(aim);
-//        mPlayer.onShotAtForResult(result);
-//        assertThat(result.cell.isMiss(), is(true));
-//        assertThat(result.ship, is(nullValue()));
-//    }
+    @Test
+    public void after_shooting_on_my_empty_cell__result_is_miss() {
+        Vector2 aim = Vector2.get(5, 5);
+        Board board = new Board();
+        mPlayer.setBoard(board);
+        mPlayer.onShotAt(aim);
+
+        assertThat(board.getCell(5, 5).isMiss(), is(true));
+    }
 
 //    @Test
 //    public void after_shooting_on_my_ship__result_is_hit() {
@@ -176,33 +174,29 @@ public class PlayerOpponentTest {
 
     @Test
     public void player_bids_second_and_lower__enemy_goes() {
-        mPlayer.reset(0);
         mPlayer.onEnemyBid(1);
-        mPlayer.startBidding();
+        mPlayer.startBidding(0);
         verify(mEnemy, times(1)).go();
     }
 
     @Test
     public void player_bids_second_and_higher__enemy_gets_player_bid() {
         int myBid = 2;
-        mPlayer.reset(myBid);
         mPlayer.onEnemyBid(1);
-        mPlayer.startBidding();
+        mPlayer.startBidding(myBid);
         verify(mEnemy, times(1)).onEnemyBid(myBid);
     }
 
     @Test
     public void enemy_bids_second_and_higher__enemy_goes() {
-        mPlayer.reset(0);
-        mPlayer.startBidding();
+        mPlayer.startBidding(0);
         mPlayer.onEnemyBid(1);
         verify(mEnemy, times(1)).go();
     }
 
     @Test
     public void enemy_bids_second_and_lower__enemy_does_not_go() {
-        mPlayer.reset(2);
-        mPlayer.startBidding();
+        mPlayer.startBidding(2);
         mPlayer.onEnemyBid(1);
         verify(mEnemy, never()).go();
     }
@@ -334,8 +328,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenOpponentBidsHigher__ItIsOpponentsTurn() {
-        mPlayer.reset(0);
-        mPlayer.startBidding();
+        mPlayer.startBidding(0);
         mPlayer.onEnemyBid(1);
 
         verify(callback, times(1)).onOpponentTurn();
@@ -352,19 +345,22 @@ public class PlayerOpponentTest {
     // TODO: repeat the 3 for win as well
     @Test
     public void WhenGameEnds__PlayersBoardIsEmpty() {
-        mPlayer.reset(new Bidder().newBid());
+        mPlayer.onLost(new Board());
+
         assertThat(mPlayer.getBoard().getEmptyCells().size(), is(100));
     }
 
     @Test
     public void WhenOpponentLooses__enemy_board_is_empty() {
-        mPlayer.reset(new Bidder().newBid());
+        mPlayer.onLost(new Board());
+
         assertThat(mPlayer.getEnemyBoard().getEmptyCells().size(), is(100));
     }
 
     @Test
     public void WhenOpponentLooses__it_is_not_enemy_turn() {
-        mPlayer.reset(new Bidder().newBid());
+        mPlayer.onLost(new Board());
+
         assertThat(mPlayer.opponentStarts(), is(false));
     }
 

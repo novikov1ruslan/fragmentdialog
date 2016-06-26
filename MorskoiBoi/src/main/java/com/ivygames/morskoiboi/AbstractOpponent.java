@@ -24,11 +24,11 @@ public abstract class AbstractOpponent implements Opponent {
 
     private boolean mOpponentReady;
 
-    protected void reset(int myBid) {
+    protected final void reset() {
         Ln.d(this + ": initializing boards and bids");
         mEnemyBoard = new Board();
         mMyBoard = new Board();
-        mMyBid = myBid;
+        mMyBid = NOT_READY;
         mEnemyBid = NOT_READY;
         mOpponentReady = false;
     }
@@ -89,6 +89,10 @@ public abstract class AbstractOpponent implements Opponent {
 
     public final boolean opponentStarts() {
         return mMyBid < mEnemyBid;
+    }
+
+    public void startBidding(int bid) {
+        mMyBid = bid;
     }
 
 }

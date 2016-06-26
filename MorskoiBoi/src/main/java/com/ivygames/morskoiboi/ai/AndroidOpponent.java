@@ -24,8 +24,8 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
-    private volatile BotAlgorithm mBot;
-
+    @NonNull
+    private BotAlgorithm mBot;
     @NonNull
     private final String mName;
     @NonNull
@@ -60,10 +60,10 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mDelegate.setOpponent(opponent);
     }
 
-    @Override
-    protected final void reset(int myBid) {
-        super.reset(myBid);
+    private void reset2() {
+        super.reset();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+        startBidding(new Bidder().newBid());
     }
 
     private void placeShips() {
@@ -111,7 +111,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I won - notifying " + mOpponent);
                 mOpponent.onLost(mMyBoard);
-                reset(new Bidder().newBid());
+                reset2();
             }
         }
     }
@@ -128,7 +128,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         placeShips();
         if (mEnemyBid == mMyBid) {
             reportException("stall");
-            mMyBid = new Random(System.currentTimeMillis() + this.hashCode()).nextInt(Integer.MAX_VALUE);
+            mMyBid = new Random(System.currentTimeMillis() + hashCode()).nextInt(Integer.MAX_VALUE);
         }
         Ln.d("bidding against " + mOpponent + " with result " + opponentStarts());
         if (opponentStarts()) {
@@ -147,7 +147,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void onLost(@NonNull Board board) {
         Ln.d("android lost - preparing for the next round");
         mDelegate.cancel();
-        reset(new Bidder().newBid());
+        reset2();
     }
 
     @Override

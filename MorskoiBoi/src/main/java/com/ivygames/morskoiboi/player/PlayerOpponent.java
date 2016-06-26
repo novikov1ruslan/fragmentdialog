@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.player;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
@@ -47,27 +46,27 @@ public class PlayerOpponent extends AbstractOpponent {
         mName = name;
         mRules = rules;
         mChatListener = listener;
-
-        reset(new Bidder().newBid());
         Ln.v("new player created");
     }
 
     public void setCallback(@NonNull PlayerCallback callback) {
         mCallback = callback;
+
         if (isOpponentReady()) {
             mCallback.opponentReady();
-        }
 
-        if (opponentStarts()) {
-            mCallback.onOpponentTurn();
-        } else {
-            mCallback.onPlayersTurn();
+            if (mPlayerReady) {
+                if (opponentStarts()) {
+                    mCallback.onOpponentTurn();
+                } else {
+                    mCallback.onPlayersTurn();
+                }
+            }
         }
     }
 
-    @Override
-    public final void reset(int myBid) {
-        super.reset(myBid);
+    protected final void reset2() {
+        super.reset();
         mPlayerReady = false;
         mOpponentVersion = 0;
     }
@@ -100,7 +99,7 @@ public class PlayerOpponent extends AbstractOpponent {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 mOpponent.onLost(mMyBoard);
 
-                reset(new Bidder().newBid());
+                reset2();
                 if (mCallback != null) {
                     mCallback.onWin();
                 }
@@ -154,7 +153,7 @@ public class PlayerOpponent extends AbstractOpponent {
         if (!versionSupportsBoardReveal()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
                 Ln.v("opponent version doesn't support board reveal = " + mOpponentVersion);
-                reset(new Bidder().newBid());
+                reset2();
                 if (mCallback != null) {
                     mCallback.onLost(null);
                 }
@@ -240,8 +239,11 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
-    public void startBidding() {
+    @Override
+    public void startBidding(int bid) {
+        super.startBidding(bid);
         mPlayerReady = true;
+
         if (isOpponentReady() && opponentStarts()) {
             Ln.d(this + ": opponent is ready and it is his turn");
             mOpponent.go();
@@ -257,7 +259,7 @@ public class PlayerOpponent extends AbstractOpponent {
             Ln.v("player private board: " + mMyBoard);
             reportException("lost while not defeated");
         }
-        reset(new Bidder().newBid());
+        reset2();
 
         if (mCallback != null) {
             mCallback.onLost(board);

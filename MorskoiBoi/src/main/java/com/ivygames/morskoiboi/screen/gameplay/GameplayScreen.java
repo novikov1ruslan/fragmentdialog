@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -180,7 +181,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
 
         Ln.d("screen is fully created - start bidding");
-        mPlayer.startBidding();
+        mPlayer.startBidding(new Bidder().newBid());
 
         Ln.d(this + " screen created");
         return (View) mLayout;
