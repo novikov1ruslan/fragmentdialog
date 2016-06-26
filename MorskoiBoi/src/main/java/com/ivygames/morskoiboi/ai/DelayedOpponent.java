@@ -11,7 +11,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-public class DelayedOpponent extends DummyOpponent implements CancellableOpponent {
+public class DelayedOpponent extends DummyOpponent implements Opponent, Cancellable {
     private static final int START_TIMEOUT = 3000;
     private static final int WHISTLE_SOUND_DELAY = 1300;
     private static final boolean NO_NEED_TO_THINK = false;
@@ -19,7 +19,7 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     private Opponent mOpponent;
     private boolean mShouldWait = true;
 
-    @NonNull
+//    @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Nullable
@@ -27,7 +27,7 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     @Nullable
     private Runnable mGoCommand;
     @Nullable
-    private Runnable mOnShotResultCommand;
+    private OnShotResultCommand mOnShotResultCommand;
     @Nullable
     private Runnable mOnShootAtCommand;
 
@@ -63,7 +63,12 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
         mGoCommand = new GoCommand(mOpponent);
         int delay = mShouldWait ? START_TIMEOUT : 0;
         Ln.v("scheduling " + mGoCommand + " in " + delay);
-        mHandler.postDelayed(mGoCommand, delay);
+        if (mShouldWait) {
+            Ln.v("scheduling " + mGoCommand + " in " + START_TIMEOUT);
+            mHandler.postDelayed(mGoCommand, START_TIMEOUT);
+        } else {
+            mOnShotResultCommand.setNextCommand(mGoCommand);
+        }
         mShouldWait = true;
     }
 

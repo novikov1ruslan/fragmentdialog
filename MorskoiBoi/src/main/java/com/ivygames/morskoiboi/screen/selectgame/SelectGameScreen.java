@@ -157,8 +157,10 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
         Placement placement = PlacementFactory.getAlgorithm();
+        DelayedOpponent delegate = new DelayedOpponent();
         AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), new Board(),
-                placement, mRules, new DelayedOpponent());
+                placement, mRules, delegate);
+        opponent.setCancellable(delegate);
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);

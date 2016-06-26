@@ -7,7 +7,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
-public class DelegateOpponent implements CancellableOpponent {
+public class DelegateOpponent implements Opponent, Cancellable {
 
     private Opponent mOpponent;
     public boolean cancelCalled;

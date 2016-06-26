@@ -28,10 +28,11 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private BotAlgorithm mBot;
     @NonNull
     private final String mName;
+    private Cancellable mCancellable;
     @NonNull
     private final Placement mPlacement;
     @NonNull
-    private final CancellableOpponent mDelegate;
+    private final Opponent mDelegate;
     @NonNull
     private final Rules mRules;
     private Opponent mOpponent;
@@ -40,7 +41,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
                            @NonNull Board board,
                            @NonNull Placement placement,
                            @NonNull Rules rules,
-                           @NonNull CancellableOpponent delegate) {
+                           @NonNull Opponent delegate) {
         mName = name;
         mMyBoard = board;
         mPlacement = placement;
@@ -60,6 +61,10 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
         mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         mDelegate.setOpponent(opponent);
+    }
+
+    public void setCancellable (@NonNull Cancellable cancellable) {
+        mCancellable = cancellable;
     }
 
     private void reset2() {
@@ -148,7 +153,9 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onLost(@NonNull Board board) {
         Ln.d("android lost - preparing for the next round");
-        mDelegate.cancel();
+        if (mCancellable != null) {
+            mCancellable.cancel();
+        }
         reset2();
     }
 
@@ -160,7 +167,9 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void cancel() {
-        mDelegate.cancel();
+        if (mCancellable != null) {
+            mCancellable.cancel();
+        }
     }
 
     @Override
