@@ -352,7 +352,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onAimingFinished(int x, int y) {
-            Ln.v("aiming finished");
+            Ln.d("aiming finished");
             debug_aiming_started = false;
             mGameplaySounds.stopKantropSound();
 

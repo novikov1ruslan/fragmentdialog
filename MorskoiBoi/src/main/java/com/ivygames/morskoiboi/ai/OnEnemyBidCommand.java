@@ -20,4 +20,8 @@ class OnEnemyBidCommand implements Runnable {
         mOpponent.onEnemyBid(mMyBid);
     }
 
+    @Override
+    public String toString() {
+        return OnEnemyBidCommand.class.getSimpleName() + "#" + hashCode();
+    }
 }

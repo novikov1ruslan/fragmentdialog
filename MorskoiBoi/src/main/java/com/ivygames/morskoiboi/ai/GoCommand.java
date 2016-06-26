@@ -18,4 +18,8 @@ class GoCommand implements Runnable {
         mOpponent.go();
     }
 
+    @Override
+    public String toString() {
+        return GoCommand.class.getSimpleName() + "#" + hashCode();
+    }
 }

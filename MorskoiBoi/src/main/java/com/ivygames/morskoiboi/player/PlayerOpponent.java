@@ -73,6 +73,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void go() {
+        Ln.d("player goes");
         if (mCallback != null) {
             mCallback.onPlayersTurn();
             if (!isOpponentReady()) {
@@ -126,7 +127,17 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
         PokeResult result = createResultForShootingAt(aim);
-        onShotAtForResult(result);
+        mOpponent.onShotResult(result);
+
+        if (result.ship != null) {
+            Ln.v(this + ": my ship is destroyed - " + result.ship);
+            markNeighbouringCellsAsOccupied(result.ship);
+        }
+
+        if (result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard)) {
+            Ln.d(this + ": I'm hit - " + mOpponent + " continues");
+            mOpponent.go();
+        }
         Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
 
         if (mCallback != null) {
@@ -170,20 +181,6 @@ public class PlayerOpponent extends AbstractOpponent {
         mOpponent = opponent;
         mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         Ln.d(this + ": my opponent is " + opponent);
-    }
-
-    private void onShotAtForResult(@NonNull PokeResult result) {
-        mOpponent.onShotResult(result);
-
-        if (result.ship != null) {
-            Ln.v(this + ": my ship is destroyed - " + result.ship);
-            markNeighbouringCellsAsOccupied(result.ship);
-        }
-
-        if (result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard)) {
-            Ln.d(this + ": I'm hit - " + mOpponent + " continues");
-            mOpponent.go();
-        }
     }
 
     private void markNeighbouringCellsAsOccupied(@NonNull Ship ship) {

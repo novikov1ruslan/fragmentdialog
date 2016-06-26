@@ -46,6 +46,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mPlacement = placement;
         mRules = rules;
         mDelegate = delegate;
+
         Ln.d(this + ": initializing boards and bids");
         mMyBid = new Bidder().newBid();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
@@ -56,6 +57,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
         Ln.d(this + ": my opponent is " + opponent);
+
         mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         mDelegate.setOpponent(opponent);
     }

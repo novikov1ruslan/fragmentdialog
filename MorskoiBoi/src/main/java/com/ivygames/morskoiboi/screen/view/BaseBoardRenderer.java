@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
@@ -49,9 +48,7 @@ public class BaseBoardRenderer {
     }
 
     public void render(Canvas canvas, int x, int y) {
-        if (GameConstants.IS_TEST_MODE) {
-            canvas.drawCircle(x, y, 5, debug_paint);
-        }
+        canvas.drawCircle(x, y, 5, debug_paint);
     }
 
     public void renderBoard(Canvas canvas, BoardG board, Paint turnPaint) {

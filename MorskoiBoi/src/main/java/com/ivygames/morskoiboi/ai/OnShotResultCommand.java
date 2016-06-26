@@ -22,4 +22,8 @@ final class OnShotResultCommand implements Runnable {
         mOpponent.onShotResult(mResult);
     }
 
+    @Override
+    public String toString() {
+        return OnShotResultCommand.class.getSimpleName() + "#" + hashCode();
+    }
 }

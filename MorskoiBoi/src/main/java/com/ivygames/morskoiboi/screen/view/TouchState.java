@@ -7,23 +7,23 @@ import org.commons.logger.Ln;
 
 public class TouchState {
 
+    public static final int START_DRAGGING = 1;
+    private static final int STOP_DRAGGING = 0;
+
     private int mTouchX;
     private int mTouchY;
     private int mTouchAction = MotionEvent.ACTION_UP;
     private int mDragStatus;
-
-    public static final int START_DRAGGING = 1;
-    private static final int STOP_DRAGGING = 0;
 
     public void setEvent(@NonNull MotionEvent event) {
         mTouchX = (int) event.getX();
         mTouchY = (int) event.getY();
         mTouchAction = event.getAction();
         if (mTouchAction == MotionEvent.ACTION_DOWN) {
-            Ln.v("ACTION_DOWN: " + mTouchX + ":" + mTouchY);
+            Ln.v("DOWN: " + mTouchX + ":" + mTouchY);
             mDragStatus = START_DRAGGING;
-        } else if (getAction() == MotionEvent.ACTION_UP) {
-            Ln.v("ACTION_UP: " + mTouchX + ":" + mTouchY);
+        } else if (mTouchAction == MotionEvent.ACTION_UP) {
+            Ln.v("UP: " + mTouchX + ":" + mTouchY);
             mDragStatus = STOP_DRAGGING;
         }
     }
@@ -47,10 +47,10 @@ public class TouchState {
     @Override
     public String toString() {
         return "TouchState{" +
-                "mTouchX=" + mTouchX +
-                ", mTouchY=" + mTouchY +
-                ", mTouchAction=" + mTouchAction +
-                ", mDragStatus=" + mDragStatus +
+                "x=" + mTouchX +
+                ", y=" + mTouchY +
+                ", action=" + mTouchAction +
+                ", drag=" + mDragStatus +
                 '}';
     }
 }

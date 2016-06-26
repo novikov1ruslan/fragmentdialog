@@ -61,8 +61,9 @@ public class DelayedOpponent extends DummyOpponent implements CancellableOpponen
     @Override
     public void go() {
         mGoCommand = new GoCommand(mOpponent);
-        Ln.v("scheduling " + mGoCommand + " in " + START_TIMEOUT);
-        mHandler.postDelayed(mGoCommand, mShouldWait ? START_TIMEOUT : 0);
+        int delay = mShouldWait ? START_TIMEOUT : 0;
+        Ln.v("scheduling " + mGoCommand + " in " + delay);
+        mHandler.postDelayed(mGoCommand, delay);
         mShouldWait = true;
     }
 

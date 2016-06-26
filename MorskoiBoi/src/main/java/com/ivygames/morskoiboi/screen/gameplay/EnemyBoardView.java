@@ -14,13 +14,11 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
-import com.ivygames.morskoiboi.screen.view.TouchState;
 import com.ivygames.morskoiboi.utils.UiUtils;
 
 public class EnemyBoardView extends BaseBoardView {
 
     private final Paint mAimingLockedPaint;
-    private final TouchState mTouchState = new TouchState();
     private PokeResult mLastShotResult;
     private Vector2 mAim;
 
@@ -91,12 +89,13 @@ public class EnemyBoardView extends BaseBoardView {
             postInvalidateDelayed(getRenderer().animateExplosions(canvas, mLastShotResult.aim));
         }
 
-        getRenderer().render(canvas, mTouchState.getX(), mTouchState.getY());
+//        if (GameConstants.IS_TEST_MODE) {
+//            getRenderer().render(canvas, mTouchState.getX(), mTouchState.getY());
+//        }
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mTouchState.setEvent(event);
         presenter().touch(event);
         invalidate();
 
