@@ -63,12 +63,12 @@ public class BoardTest {
 
 	@Test
 	public void testWidth() {
-		assertEquals(10, mBoard.getHorizontalDim());
+		assertEquals(10, mBoard.horizontalDimension());
 	}
 
 	@Test
 	public void testHeight() {
-		assertEquals(10, mBoard.getVerticalDim());
+		assertEquals(10, mBoard.verticalDimension());
 	}
 
 	@Test
@@ -271,6 +271,7 @@ public class BoardTest {
 		assertEquals(2, mBoard.getShips().size());
 		assertFalse(91 == mBoard.getEmptyCells().size());
 		Ship ship2 = mBoard.removeShipFrom(5, 5);
+		assert ship2 != null;
 
 		assertEquals(ship.getSize(), ship2.getSize());
 		assertEquals(ship.isHorizontal(), ship2.isHorizontal());

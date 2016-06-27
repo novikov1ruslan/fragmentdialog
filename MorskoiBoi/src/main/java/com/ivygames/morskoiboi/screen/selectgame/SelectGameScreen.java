@@ -37,7 +37,7 @@ import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.rt.InvitationEvent;
+import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
@@ -139,7 +139,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @Override
-    public void onEventMainThread(@NonNull InvitationEvent event) {
+    public void onNewInvitationReceived(@NonNull Invitation event) {
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 

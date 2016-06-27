@@ -44,7 +44,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 
     @NonNull
-    private Board mBoard = new Board();
+    private final Board mBoard = new Board();
     @NonNull
     private final PriorityQueue<Ship> mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
     @NonNull

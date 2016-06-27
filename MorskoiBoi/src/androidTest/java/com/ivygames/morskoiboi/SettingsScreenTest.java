@@ -207,8 +207,8 @@ public class SettingsScreenTest extends ScreenTest {
         return withId(R.id.sound_btn);
     }
 
-    private OngoingStubbing<Boolean> hasVibration() {
-        return when(vibratorFacade.hasVibrator()).thenReturn(true);
+    private void hasVibration() {
+        when(vibratorFacade.hasVibrator()).thenReturn(true);
     }
 
     private void vibrationAbsent() {

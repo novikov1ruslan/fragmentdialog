@@ -254,9 +254,9 @@ public class Board {
             algorithm.putShipAt(this, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
         } else {
             if (ship.isHorizontal()) {
-                algorithm.putShipAt(this, ship, getHorizontalDim() - ship.getSize(), y);
+                algorithm.putShipAt(this, ship, horizontalDimension() - ship.getSize(), y);
             } else {
-                algorithm.putShipAt(this, ship, x, getHorizontalDim() - ship.getSize());
+                algorithm.putShipAt(this, ship, x, horizontalDimension() - ship.getSize());
             }
         }
     }
@@ -330,11 +330,11 @@ public class Board {
         return cells;
     }
 
-    public int getHorizontalDim() {
+    public int horizontalDimension() {
         return DIMENSION;
     }
 
-    public int getVerticalDim() {
+    public int verticalDimension() {
         return DIMENSION;
     }
 

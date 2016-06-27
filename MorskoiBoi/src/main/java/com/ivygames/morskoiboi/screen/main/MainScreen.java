@@ -22,7 +22,7 @@ import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
-import com.ivygames.morskoiboi.rt.InvitationEvent;
+import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
@@ -116,7 +116,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     @Override
-    public void onEventMainThread(@NonNull InvitationEvent event) {
+    public void onNewInvitationReceived(@NonNull Invitation event) {
         processInvitations();
     }
 

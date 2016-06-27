@@ -114,7 +114,7 @@ public class ScreenManager {
         return false;
     }
 
-    public BattleshipScreen setScreen(BattleshipScreen screen) {
+    public void setScreen(BattleshipScreen screen) {
         View oldView = null;
 
         if (mCurrentScreen != null) {
@@ -139,7 +139,6 @@ public class ScreenManager {
                 mCurrentScreen.onResume();
             }
         }
-        return mCurrentScreen;
     }
 
     public boolean isStarted() {

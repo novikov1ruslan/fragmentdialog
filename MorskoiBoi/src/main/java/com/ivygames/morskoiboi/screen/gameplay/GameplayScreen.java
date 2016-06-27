@@ -98,9 +98,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final VibratorFacade mVibrator;
     @NonNull
-    private Board mEnemyPublicBoard;
+    private final Board mEnemyPublicBoard;
     @NonNull
-    private Board mPlayerPrivateBoard;
+    private final Board mPlayerPrivateBoard;
     @NonNull
     private final ChatAdapter mChatAdapter;
     @NonNull
@@ -343,7 +343,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         private final Opponent mEnemy;
         private boolean debug_aiming_started;
         @NonNull
-        private GameplaySoundManager mGameplaySounds;
+        private final GameplaySoundManager mGameplaySounds;
 
         BoardShotListener(@NonNull Opponent opponent, @NonNull GameplaySoundManager gameplaySounds) {
             mEnemy = opponent;

@@ -21,8 +21,8 @@ public abstract class AbstractRules implements Rules {
     }
 
     private boolean isThereConflictingCell(Board board) {
-        for (int i = 0; i < board.getHorizontalDim(); i++) {
-            for (int j = 0; j < board.getVerticalDim(); j++) {
+        for (int i = 0; i < board.horizontalDimension(); i++) {
+            for (int j = 0; j < board.verticalDimension(); j++) {
                 if (isCellConflicting(board.getCell(i, j))) {
                     return true;
                 }

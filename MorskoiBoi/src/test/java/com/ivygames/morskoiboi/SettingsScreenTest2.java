@@ -1,17 +1,12 @@
 package com.ivygames.morskoiboi;
 
-import android.os.Build;
 import android.view.View;
 
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.ShadowsAdapter;
-import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
 import static org.hamcrest.MatcherAssert.assertThat;

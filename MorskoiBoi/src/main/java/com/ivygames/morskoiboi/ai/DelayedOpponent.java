@@ -68,6 +68,7 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
             mHandler.postDelayed(mGoCommand, START_TIMEOUT);
         } else {
             Ln.v("scheduling " + mGoCommand + " after " + mOnShotResultCommand);
+            assert mOnShotResultCommand != null;
             mOnShotResultCommand.setNextCommand(mGoCommand);
         }
         mShouldWait = true;

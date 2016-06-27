@@ -1,14 +1,16 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 class PickShipTask implements Runnable {
 
     private final int mTouchX;
     private final int mTouchY;
-    private View.OnLongClickListener mListener;
+    @NonNull
+    private final View.OnLongClickListener mListener;
 
-    public PickShipTask(int x, int y, View.OnLongClickListener listener) {
+    public PickShipTask(int x, int y, @NonNull View.OnLongClickListener listener) {
         mTouchX = x;
         mTouchY = y;
         mListener = listener;

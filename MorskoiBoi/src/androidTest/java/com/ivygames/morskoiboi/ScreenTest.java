@@ -10,7 +10,7 @@ import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
-import com.ivygames.morskoiboi.rt.InvitationEvent;
+import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
@@ -28,6 +28,8 @@ import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+
+import java.util.HashSet;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
@@ -147,7 +149,7 @@ public abstract class ScreenTest {
         sendInvitation = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                receiver.onEventMainThread(new InvitationEvent(null));
+                receiver.onNewInvitationReceived(new Invitation(new HashSet<String>()));
             }
         });
         registerIdlingResources(sendInvitation);

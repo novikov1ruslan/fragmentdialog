@@ -2,8 +2,8 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.rt.InvitationEvent;
+import com.ivygames.morskoiboi.rt.Invitation;
 
 public interface InvitationReceiver {
-    void onEventMainThread(@NonNull InvitationEvent event);
+    void onNewInvitationReceived(@NonNull Invitation event);
 }

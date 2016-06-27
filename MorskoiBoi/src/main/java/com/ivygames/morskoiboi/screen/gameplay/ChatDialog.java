@@ -27,6 +27,8 @@ public class ChatDialog extends FragmentAlertDialog {
         }
 
         ChatDialogLayout layout = (ChatDialogLayout) super.onCreateView(inflater, container, null);
+        assert layout != null;
+
         layout.setAdapter(mChatAdapter);
         return layout;
     }

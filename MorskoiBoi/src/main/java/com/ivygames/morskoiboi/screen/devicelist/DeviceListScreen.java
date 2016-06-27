@@ -34,8 +34,6 @@ import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
 
 import org.commons.logger.Ln;
 
-import java.io.IOException;
-
 public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, ConnectionListener, BackPressListener {
     private static final String TAG = "bluetooth";
 
@@ -157,9 +155,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     }
 
     @Override
-    public void onConnectFailed(@NonNull IOException exception) {
+    public void onConnectFailed() {
         Ln.d(TAG + ": connection attempt failed");
-//        mLayout.connectionFailed();
         if (isDialogShown()) {
             mDialog.setText(R.string.connection_failed);
         }

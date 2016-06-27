@@ -48,7 +48,7 @@ public final class ConnectThread extends Thread {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mConnectionListener.onConnectFailed(ioe);
+                        mConnectionListener.onConnectFailed();
                     }
                 });
             }

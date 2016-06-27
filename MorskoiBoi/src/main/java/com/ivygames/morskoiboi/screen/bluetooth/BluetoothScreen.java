@@ -35,8 +35,6 @@ import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
 
 import org.commons.logger.Ln;
 
-import java.io.IOException;
-
 
 public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout.BluetoothActions,
         BackPressListener, ConnectionListener {
@@ -201,7 +199,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     @Override
-    public void onConnectFailed(@NonNull IOException exception) {
+    public void onConnectFailed() {
         if (isDialogShown()) {
             mDialog.setText(R.string.connection_failed);
         }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
@@ -32,7 +31,7 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetGameListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
-import com.ivygames.morskoiboi.rt.InvitationEvent;
+import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
@@ -99,7 +98,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     }
 
     @Override
-    public void onEventMainThread(@NonNull InvitationEvent event) {
+    public void onNewInvitationReceived(@NonNull Invitation event) {
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 
@@ -277,7 +276,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
                 return;
             }
 
-            Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
+            com.google.android.gms.games.multiplayer.Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
             // showWaitingScreen();
             mInternetGame.accept(invitation);
         }

@@ -11,6 +11,6 @@ public interface ConnectionListener {
     /**
      * connection attempt failed
      */
-    void onConnectFailed(@NonNull IOException exception);
+    void onConnectFailed();
 
 }

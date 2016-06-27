@@ -28,7 +28,7 @@ public class PlayerOpponent extends AbstractOpponent {
     @NonNull
     private final Placement mPlacement;
     @NonNull
-    private Rules mRules;
+    private final Rules mRules;
     @NonNull
     private final ChatListener mChatListener;
 

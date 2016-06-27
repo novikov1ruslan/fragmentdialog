@@ -49,10 +49,6 @@ public class ScreenCreator {
         ScreenCreator.settings = settings;
     }
 
-    public static void setScreen(Screen screen) {
-
-    }
-
     @NonNull
     public static MainScreen newMainScreen() {
         return new MainScreen(activity, apiClient, settings);
