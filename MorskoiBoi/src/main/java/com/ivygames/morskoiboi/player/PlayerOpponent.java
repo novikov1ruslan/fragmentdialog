@@ -51,6 +51,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     public void setCallback(@NonNull PlayerCallback callback) {
         mCallback = callback;
+        Ln.v("callback set, opponent ready = " + isOpponentReady());
 
         if (isOpponentReady()) {
             mCallback.opponentReady();
@@ -65,7 +66,8 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
-    protected final void reset2() {
+    private void reset2() {
+        Ln.v("resetting");
         super.reset();
         mPlayerReady = false;
         mOpponentVersion = 0;
@@ -88,6 +90,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onShotResult(@NonNull PokeResult result) {
+        Ln.v("shot result: " + result);
         updateEnemyBoard(result, mPlacement);
 
         if (mCallback != null) {
@@ -127,18 +130,24 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
         PokeResult result = createResultForShootingAt(aim);
-        mOpponent.onShotResult(result);
+        Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
 
         if (result.ship != null) {
             Ln.v(this + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
         }
 
-        if (result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard)) {
-            Ln.d(this + ": I'm hit - " + mOpponent + " continues");
-            mOpponent.go();
+        mOpponent.onShotResult(result);
+
+        if (result.cell.isHit()) {
+            if (mRules.isItDefeatedBoard(mMyBoard)) {
+                Ln.d(this + ": I'm defeated, no turn to pass");
+                reset2();
+            } else {
+                Ln.d(this + ": I'm hit - " + mOpponent + " continues");
+                mOpponent.go();
+            }
         }
-        Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
 
         if (mCallback != null) {
             mCallback.onShotAt(aim);
@@ -158,13 +167,11 @@ public class PlayerOpponent extends AbstractOpponent {
             }
         }
 
-        // TODO: only execute when killed
-        // If the opponent's version does not support board reveal, just switch screen in 3 seconds. In the later version of the protocol opponent
-        // notifies about players defeat sending his board along.
+        // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
+        // In the later version of the protocol opponent notifies about players defeat sending his board along.
         if (!versionSupportsBoardReveal()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
                 Ln.v("opponent version doesn't support board reveal = " + mOpponentVersion);
-                reset2();
                 if (mCallback != null) {
                     mCallback.onLost(null);
                 }
@@ -256,7 +263,6 @@ public class PlayerOpponent extends AbstractOpponent {
             Ln.v("player private board: " + mMyBoard);
             reportException("lost while not defeated");
         }
-        reset2();
 
         if (mCallback != null) {
             mCallback.onLost(board);
