@@ -27,6 +27,7 @@ public class EnemyBoardView extends BaseBoardView {
         mAimingLockedPaint = UiUtils.newFillPaint(getResources(), R.color.aim_locked);
     }
 
+    @NonNull
     @Override
     protected EnemyBoardPresenter presenter() {
         if (mPresenter == null) {
@@ -35,6 +36,7 @@ public class EnemyBoardView extends BaseBoardView {
         return (EnemyBoardPresenter) mPresenter;
     }
 
+    @NonNull
     @Override
     protected EnemyBoardRenderer getRenderer() {
         if (mRenderer == null) {
@@ -62,7 +64,7 @@ public class EnemyBoardView extends BaseBoardView {
         getRenderer().release();
     }
 
-    public void setShotListener(ShotListener shotListener) {
+    public void setShotListener(@NonNull ShotListener shotListener) {
         presenter().setShotListener(shotListener);
     }
 
@@ -106,7 +108,7 @@ public class EnemyBoardView extends BaseBoardView {
         return isShot || presenter().isLocked() ? mAimingLockedPaint : mAimingPaint;
     }
 
-    public void setAim(Vector2 aim) {
+    public void setAim(@NonNull Vector2 aim) {
         mAim = aim;
         invalidate();
     }
@@ -128,7 +130,7 @@ public class EnemyBoardView extends BaseBoardView {
         presenter().unlock();
     }
 
-    public void setShotResult(PokeResult result) {
+    public void setShotResult(@NonNull PokeResult result) {
         mLastShotResult = result;
         getRenderer().startAnimation(result);
     }

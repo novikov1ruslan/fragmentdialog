@@ -19,7 +19,7 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
     private Opponent mOpponent;
     private boolean mShouldWait = true;
 
-//    @NonNull
+    @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Nullable
@@ -67,6 +67,7 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
             Ln.v("scheduling " + mGoCommand + " in " + START_TIMEOUT);
             mHandler.postDelayed(mGoCommand, START_TIMEOUT);
         } else {
+            Ln.v("scheduling " + mGoCommand + " after " + mOnShotResultCommand);
             mOnShotResultCommand.setNextCommand(mGoCommand);
         }
         mShouldWait = true;

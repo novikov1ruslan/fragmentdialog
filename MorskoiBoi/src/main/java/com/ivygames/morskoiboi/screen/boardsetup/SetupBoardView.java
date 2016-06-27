@@ -49,6 +49,7 @@ public class SetupBoardView extends BaseBoardView {
         Ln.v("touch slop = " + mTouchSlop);
     }
 
+    @NonNull
     @Override
     protected BaseBoardRenderer getRenderer() {
         if (mRenderer == null) {
@@ -58,6 +59,7 @@ public class SetupBoardView extends BaseBoardView {
         return mRenderer;
     }
 
+    @NonNull
     @Override
     protected SetupBoardPresenter presenter() {
         if (mPresenter == null) {

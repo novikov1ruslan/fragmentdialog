@@ -50,8 +50,10 @@ public abstract class BaseBoardView extends View {
         mDisplayMetrics = getDisplayMetrics(windowManager);
     }
 
+    @NonNull
     protected abstract BaseBoardRenderer getRenderer();
 
+    @NonNull
     protected abstract BasePresenter presenter();
 
     public final void setBoard(Board board) {

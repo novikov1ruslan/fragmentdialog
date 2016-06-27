@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
 import com.ivygames.morskoiboi.R;
@@ -14,6 +15,7 @@ public class FleetBoardView extends BaseBoardView {
         super(context, attributeSet);
     }
 
+    @NonNull
     @Override
     protected BasePresenter presenter() {
         if (mPresenter == null) {
@@ -23,6 +25,7 @@ public class FleetBoardView extends BaseBoardView {
         return mPresenter;
     }
 
+    @NonNull
     @Override
     protected BaseBoardRenderer getRenderer() {
         if (mRenderer == null) {

@@ -23,6 +23,6 @@ final class OnShootAtCommand implements Runnable {
 
     @Override
     public String toString() {
-        return OnShootAtCommand.class.getSimpleName() + "#" + hashCode();
+        return OnShootAtCommand.class.getSimpleName() + mAim;
     }
 }
