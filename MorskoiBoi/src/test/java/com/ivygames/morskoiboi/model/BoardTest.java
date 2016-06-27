@@ -395,14 +395,14 @@ public class BoardTest {
 
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				assertTrue(mBoard.containsCell(i, j));
+				assertTrue(Board.containsCell(i, j));
 			}
 		}
 
-		assertFalse(mBoard.containsCell(-1, 0));
-		assertFalse(mBoard.containsCell(10, 0));
-		assertFalse(mBoard.containsCell(0, 10));
-		assertFalse(mBoard.containsCell(0, -1));
+		assertFalse(Board.containsCell(-1, 0));
+		assertFalse(Board.containsCell(10, 0));
+		assertFalse(Board.containsCell(0, 10));
+		assertFalse(Board.containsCell(0, -1));
 	}
 
 	private static void assertBoardsEqual(Board board1, Board board2) {
@@ -455,7 +455,7 @@ public class BoardTest {
 	}
 
 	private static void addIfContains(Board board, Collection<Cell> cells, int x, int y) {
-		if (board.containsCell(x, y)) {
+		if (Board.containsCell(x, y)) {
 			cells.add(board.getCell(x, y));
 		}
 	}
@@ -471,7 +471,7 @@ public class BoardTest {
 	}
 
 	public void addIfHit(Board board, Collection<Vector2> hits, int x, int y) {
-		if (board.containsCell(x, y) && board.getCell(x, y).isHit()) {
+		if (Board.containsCell(x, y) && board.getCell(x, y).isHit()) {
 			hits.add(Vector2.get(x, y));
 		}
 	}

@@ -12,7 +12,7 @@ public interface PlayerCallback {
     enum Side {
         PLAYER,
         OPPONENT
-    };
+    }
 
     void go();
 

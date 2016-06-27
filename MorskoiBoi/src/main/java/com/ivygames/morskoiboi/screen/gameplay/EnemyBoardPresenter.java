@@ -85,6 +85,7 @@ final class EnemyBoardPresenter extends BasePresenter {
         return x / mCellSizePx;
     }
 
+    @NonNull
     public Rect getBoardRect() {
         return mBoardRect;
     }

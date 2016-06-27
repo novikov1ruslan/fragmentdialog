@@ -21,6 +21,7 @@ public class BasePresenter {
 
     protected int mCellSizePx;
     protected int mHalfCellSize;
+    @NonNull
     protected Rect mBoardRect = new Rect();
 
     private final Rect hRect = new Rect();
