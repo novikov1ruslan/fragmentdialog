@@ -99,7 +99,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     }
 
     @Override
-    public void onEventMainThread(InvitationEvent event) {
+    public void onEventMainThread(@NonNull InvitationEvent event) {
         showInvitationIfHas(mInvitationManager.hasInvitation());
     }
 

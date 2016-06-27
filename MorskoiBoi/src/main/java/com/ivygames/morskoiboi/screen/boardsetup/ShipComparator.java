@@ -1,13 +1,15 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.model.Ship;
 
 import java.util.Comparator;
 
-public final class ShipComparator implements Comparator<Ship> {
+final class ShipComparator implements Comparator<Ship> {
 
     @Override
-    public int compare(Ship lhs, Ship rhs) {
+    public int compare(@NonNull Ship lhs, @NonNull Ship rhs) {
         return rhs.getSize() - lhs.getSize();
     }
 }

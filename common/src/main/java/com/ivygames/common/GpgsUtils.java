@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 

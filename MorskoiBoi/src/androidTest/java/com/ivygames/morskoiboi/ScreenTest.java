@@ -77,7 +77,7 @@ public abstract class ScreenTest {
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
 
-    public abstract BattleshipScreen newScreen();
+    protected abstract BattleshipScreen newScreen();
 
     @Before
     public void setup() {
@@ -119,7 +119,7 @@ public abstract class ScreenTest {
         when(androidDevice.isBillingAvailable()).thenReturn(isAvailable);
     }
 
-    public void setSignedIn(boolean signedIn) {
+    protected void setSignedIn(boolean signedIn) {
         when(apiClient.isConnected()).thenReturn(signedIn);
     }
 

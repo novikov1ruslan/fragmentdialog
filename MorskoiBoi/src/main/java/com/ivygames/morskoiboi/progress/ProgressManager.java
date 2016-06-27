@@ -25,7 +25,7 @@ public class ProgressManager {
 
     private static final boolean USE_GAME_SAVE_SERVICE = true;
 
-    public static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
+    private static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
     @NonNull
     private final GoogleApiClientWrapper mApiClient;

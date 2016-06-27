@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.screen.internet;
 
-public interface InternetGameLayoutListener {
+interface InternetGameLayoutListener {
     void invitePlayer();
 
     void viewInvitations();

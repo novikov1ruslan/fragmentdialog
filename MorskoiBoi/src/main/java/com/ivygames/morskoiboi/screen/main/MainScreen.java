@@ -116,7 +116,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     @Override
-    public void onEventMainThread(InvitationEvent event) {
+    public void onEventMainThread(@NonNull InvitationEvent event) {
         processInvitations();
     }
 

@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.view.View;
 
-public class PickShipTask implements Runnable {
+class PickShipTask implements Runnable {
 
     private final int mTouchX;
     private final int mTouchY;

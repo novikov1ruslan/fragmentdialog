@@ -7,26 +7,26 @@ public enum Rank {
             R.drawable.rank_o4), COMMANDER(R.drawable.rank_o5), CAPTAIN(R.drawable.rank_o6), REAR_ADMIRAL_LOWER_HALF(R.drawable.rank_o7), REAR_ADMIRAL(
             R.drawable.rank_o8), VICE_ADMIRAL(R.drawable.rank_o9), ADMIRAL(R.drawable.rank_o10), FLEET_ADMIRAL(R.drawable.rank_o11), NAVY_ADMIRAL(R.drawable.rank_o12);
 
-    public static final int PO3 = 50000; //
-    public static final int PO2 = 150000; // <!-- 100k -->
-    public static final int PO1 = 250000; // <!-- 100k -->
-    public static final int CPO = 350000; // <!-- 100k -->
-    public static final int CSPO = 450000; // <!-- 100k -->
-    public static final int WO = 600000; // <!-- 150k -->
-    public static final int CWO = 750000; // <!-- 150k -->
+    private static final int PO3 = 50000; //
+    private static final int PO2 = 150000; // <!-- 100k -->
+    private static final int PO1 = 250000; // <!-- 100k -->
+    private static final int CPO = 350000; // <!-- 100k -->
+    private static final int CSPO = 450000; // <!-- 100k -->
+    private static final int WO = 600000; // <!-- 150k -->
+    private static final int CWO = 750000; // <!-- 150k -->
 
-    public static final int O1 = 1000000; // <!-- 250k -->
-    public static final int O2 = 1250000; // <!-- 250k -->
-    public static final int O3 = 1500000; // <!-- 250k -->
-    public static final int O4 = 1750000; // <!-- 250k -->
-    public static final int O5 = 2000000; // <!-- 250k -->
-    public static final int O6 = 2250000; // <!-- 250k -->
-    public static final int O7 = 2600000; // <!-- 350k -->
-    public static final int O8 = 3000000; // <!-- 400k -->
-    public static final int O9 = 3500000; // <!-- 500k -->
-    public static final int O10 = 4000000; // <!-- 500k -->
-    public static final int O11 = 4500000; // <!-- 500k -->
-    public static final int O12 = 5500000; // <!-- 1000k -->
+    private static final int O1 = 1000000; // <!-- 250k -->
+    private static final int O2 = 1250000; // <!-- 250k -->
+    private static final int O3 = 1500000; // <!-- 250k -->
+    private static final int O4 = 1750000; // <!-- 250k -->
+    private static final int O5 = 2000000; // <!-- 250k -->
+    private static final int O6 = 2250000; // <!-- 250k -->
+    private static final int O7 = 2600000; // <!-- 350k -->
+    private static final int O8 = 3000000; // <!-- 400k -->
+    private static final int O9 = 3500000; // <!-- 500k -->
+    private static final int O10 = 4000000; // <!-- 500k -->
+    private static final int O11 = 4500000; // <!-- 500k -->
+    private static final int O12 = 5500000; // <!-- 1000k -->
 
     private final int mBitmap;
     private final int mSmallBitmap;
