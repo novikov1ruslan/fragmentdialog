@@ -27,7 +27,7 @@ public class FleetBoardView extends BaseBoardView {
 
     @NonNull
     @Override
-    protected BaseBoardRenderer getRenderer() {
+    protected BaseBoardRenderer renderer() {
         if (mRenderer == null) {
             mRenderer = new BaseBoardRenderer(getResources());
         }

@@ -44,14 +44,14 @@ public abstract class BaseBoardView extends View {
         mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
         mPresenter = presenter();
-        mRenderer = getRenderer();
+        mRenderer = renderer();
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mDisplayMetrics = getDisplayMetrics(windowManager);
     }
 
     @NonNull
-    protected abstract BaseBoardRenderer getRenderer();
+    protected abstract BaseBoardRenderer renderer();
 
     @NonNull
     protected abstract BasePresenter presenter();

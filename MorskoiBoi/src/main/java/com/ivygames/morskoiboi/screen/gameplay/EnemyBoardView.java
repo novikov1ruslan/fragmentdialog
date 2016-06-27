@@ -38,7 +38,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     @NonNull
     @Override
-    protected EnemyBoardRenderer getRenderer() {
+    protected EnemyBoardRenderer renderer() {
         if (mRenderer == null) {
             mRenderer = new EnemyBoardRenderer(presenter(), getResources());
         }
@@ -48,7 +48,7 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        getRenderer().init(availableMemory());
+        renderer().init(availableMemory());
     }
 
     private long availableMemory() {
@@ -61,7 +61,7 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        getRenderer().release();
+        renderer().release();
     }
 
     public void setShotListener(@NonNull ShotListener shotListener) {
@@ -70,11 +70,11 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        getRenderer().drawNautical(canvas);
+        renderer().drawNautical(canvas);
         super.onDraw(canvas);
 
         if (mAim != null) {
-            getRenderer().drawAim(canvas, presenter().getAimRectDst(mAim));
+            renderer().drawAim(canvas, presenter().getAimRectDst(mAim));
         }
 
         if (presenter().startedDragging()) {
@@ -87,8 +87,8 @@ public class EnemyBoardView extends BaseBoardView {
             }
         }
 
-        if (getRenderer().isAnimationRunning()) {
-            postInvalidateDelayed(getRenderer().animateExplosions(canvas, mLastShotResult.aim));
+        if (renderer().isAnimationRunning()) {
+            postInvalidateDelayed(renderer().animateExplosions(canvas, mLastShotResult.aim));
         }
 
 //        if (GameConstants.IS_TEST_MODE) {
@@ -132,6 +132,6 @@ public class EnemyBoardView extends BaseBoardView {
 
     public void setShotResult(@NonNull PokeResult result) {
         mLastShotResult = result;
-        getRenderer().startAnimation(result);
+        renderer().startAnimation(result);
     }
 }

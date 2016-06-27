@@ -51,7 +51,7 @@ public class SetupBoardView extends BaseBoardView {
 
     @NonNull
     @Override
-    protected BaseBoardRenderer getRenderer() {
+    protected BaseBoardRenderer renderer() {
         if (mRenderer == null) {
             mRenderer = new BaseBoardRenderer(getResources());
         }
@@ -83,7 +83,7 @@ public class SetupBoardView extends BaseBoardView {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (mRules.isCellConflicting(cell)) {
-                    getRenderer().renderConflictingCell(canvas, presenter().getRectForCell(i, j));
+                    renderer().renderConflictingCell(canvas, presenter().getRectForCell(i, j));
                 }
             }
         }
