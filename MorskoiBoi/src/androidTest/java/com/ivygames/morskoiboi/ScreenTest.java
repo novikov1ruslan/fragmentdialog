@@ -267,8 +267,7 @@ public abstract class ScreenTest {
         Matcher<Intent> action = hasAction(intent.getAction());
         Matcher<Intent> data = hasData(intent.getData());
         Matcher<Intent> type = hasType(intent.getType());
-        Matcher<Intent> intentMatcher = allOf(action, data, type);
-        return intentMatcher;
+        return allOf(action, data, type);
     }
 
     protected final void setInvitation(boolean hasInvitation) {

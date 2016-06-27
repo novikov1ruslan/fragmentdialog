@@ -166,7 +166,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
     }
 
-    public void showInvitationCrouton(String message) {
+    private void showInvitationCrouton(String message) {
         View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), message, mLayout);
         Crouton.make(this, view).setConfiguration(CONFIGURATION_LONG).show();
     }

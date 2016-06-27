@@ -162,7 +162,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         cancelAcceptAndCloseConnection();
     }
 
-    public synchronized void cancelAcceptAndCloseConnection() {
+    private synchronized void cancelAcceptAndCloseConnection() {
         if (mAcceptThread == null) {
             Ln.e("not accepting - cannot close");
             return;

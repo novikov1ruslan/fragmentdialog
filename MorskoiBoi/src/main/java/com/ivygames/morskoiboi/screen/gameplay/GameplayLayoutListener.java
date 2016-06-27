@@ -1,10 +1,8 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
-public interface GameplayLayoutListener {
+interface GameplayLayoutListener {
 
     void onChatClicked();
-
-//    void onVibrationChanged();
 
     void onSoundChanged();
 }

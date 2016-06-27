@@ -13,7 +13,7 @@ import org.hamcrest.TypeSafeMatcher;
 public class DrawableMatcher extends TypeSafeMatcher<View> {
 
     private final int expectedId;
-    String resourceName;
+    private String resourceName;
 
     public DrawableMatcher(int expectedId) {
         super(View.class);

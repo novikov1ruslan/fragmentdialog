@@ -14,7 +14,7 @@ import com.ivygames.morskoiboi.utils.UiUtils;
 
 import java.util.Map;
 
-public class FleetViewRenderer {
+class FleetViewRenderer {
     private static final int BATTLESHIP_LENGTH = 3;
     private static final int DESTROYER_LENGTH = 2;
     private static final int GUNBOAT_LENGTH = 1;
@@ -71,7 +71,7 @@ public class FleetViewRenderer {
         mGunboatSrc = createRectForBitmap(mGunboat);
     }
 
-    public void drawLine(Canvas canvas, int numOfMyShips, int numOfEnemyShips, int w) {
+    private void drawLine(Canvas canvas, int numOfMyShips, int numOfEnemyShips, int w) {
         if (mUnitHeight == 0) {
             // this happens if onSizeChanged() could not return good dimensions
             return;
@@ -89,7 +89,7 @@ public class FleetViewRenderer {
         canvas.drawLine(0, mUnitHeight, w, mUnitHeight, mLinePaint);
     }
 
-    public void drawShip(Canvas canvas, Bitmap bitmap, Rect src, Rect dst, int w) {
+    private void drawShip(Canvas canvas, Bitmap bitmap, Rect src, Rect dst, int w) {
         if (mUnitHeight == 0) {
             // this happens if onSizeChanged() could not return good dimensions
             return;
@@ -125,19 +125,19 @@ public class FleetViewRenderer {
         return new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public void drawAircraftCarrier(Canvas canvas, int w) {
+    private void drawAircraftCarrier(Canvas canvas, int w) {
         drawShip(canvas, mAircraftCarrier, mCarrierSrc, mCarrierBounds, w);
     }
 
-    public void drawBattleship(Canvas canvas, int w) {
+    private void drawBattleship(Canvas canvas, int w) {
         drawShip(canvas, mBattleship, mBattleshipSrc, mBattleshipBounds, w);
     }
 
-    public void drawDestroyer(Canvas canvas, int w) {
+    private void drawDestroyer(Canvas canvas, int w) {
         drawShip(canvas, mDestroyer, mDestroyerSrc, mDestroyerBounds, w);
     }
 
-    public void drawGunboat(Canvas canvas, int w) {
+    private void drawGunboat(Canvas canvas, int w) {
         drawShip(canvas, mGunboat, mGunboatSrc, mGunboatBounds, w);
     }
 
@@ -170,11 +170,11 @@ public class FleetViewRenderer {
         drawLine(canvas, numOfMyShips, numOfEnemyShips, w);
     }
 
-    static Rect scaleShip(Bitmap bitmap, int destWidth) {
+    private static Rect scaleShip(Bitmap bitmap, int destWidth) {
         return scaleShip(bitmap.getHeight(), bitmap.getWidth(), destWidth);
     }
 
-    static Rect scaleShip(int bitmapHeight, int bitmapWidth, int destWidth) {
+    private static Rect scaleShip(int bitmapHeight, int bitmapWidth, int destWidth) {
         int destHeight = FleetView.calcDestHeight(bitmapHeight, bitmapWidth, destWidth);
         return new Rect(0, 0, destWidth, destHeight);
     }

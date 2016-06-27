@@ -6,7 +6,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.multiplayer.RtmSender;
 
 import org.commons.logger.Ln;
 
@@ -17,19 +16,19 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     private String mName;
 
     protected static final char NAME = 'N';
-    protected static final char BID = 'B';
-    protected static final char GO = 'G';
-    protected static final char SHOOT = 'S';
-    protected static final char SHOOT_RESULT = 'R';
-    protected static final char WIN = 'W';
-    protected static final char VERSION = 'V';
-    protected static final char MESSAGE = 'M';
+    private static final char BID = 'B';
+    private static final char GO = 'G';
+    private static final char SHOOT = 'S';
+    private static final char SHOOT_RESULT = 'R';
+    private static final char WIN = 'W';
+    private static final char VERSION = 'V';
+    private static final char MESSAGE = 'M';
 
-    public AbstractOnlineOpponent(@NonNull String defaultName) {
+    protected AbstractOnlineOpponent(@NonNull String defaultName) {
         mName = defaultName;
     }
 
-    protected void onRealTimeMessageReceived(String message) {
+    protected final void onRealTimeMessageReceived(String message) {
         char opCode = message.charAt(0);
         String body = message.substring(1);
         switch (opCode) {

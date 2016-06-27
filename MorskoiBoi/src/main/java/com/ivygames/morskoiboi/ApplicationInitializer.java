@@ -35,7 +35,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Random;
 
-public class ApplicationInitializer {
+class ApplicationInitializer {
 
     public static void initialize(final Application application) {
         ACRA.init(application);

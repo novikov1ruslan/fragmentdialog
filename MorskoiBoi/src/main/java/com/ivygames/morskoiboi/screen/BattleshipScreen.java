@@ -91,7 +91,7 @@ public abstract class BattleshipScreen extends Screen {
         return MusicPlayer.NO_SOUND;
     }
 
-    public final BattleshipActivity parent() {
+    protected final BattleshipActivity parent() {
         return (BattleshipActivity) mParent;
     }
 }

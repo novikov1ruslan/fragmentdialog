@@ -12,8 +12,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class OpenSnapshotResultResultCallbackTest {
 
-    private OpenSnapshotResultResultCallback callback;
-
     @Mock
     private SnapshotOpenResultListener listener;
 
@@ -21,7 +19,7 @@ public class OpenSnapshotResultResultCallbackTest {
     public void setUp() {
         GameSettings settings = Mockito.mock(GameSettings.class);
         initMocks(this);
-        callback = new OpenSnapshotResultResultCallback(settings.getProgress(), listener);
+        OpenSnapshotResultResultCallback callback = new OpenSnapshotResultResultCallback(settings.getProgress(), listener);
     }
 
     @After

@@ -56,7 +56,7 @@ public class AndroidOpponentTest {
     }
 
     @NonNull
-    public Placement getPlacement() {
+    private Placement placement() {
         return new Placement(new Random(), new RussianRules());
     }
 
@@ -90,7 +90,7 @@ public class AndroidOpponentTest {
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
         // set the board
-        getPlacement().putShipAt(mBoard, new Ship(2), 5, 5);
+        placement().putShipAt(mBoard, new Ship(2), 5, 5);
 //        when(mPlacement.populateBoardWithShips(any(Board.class), any(Collection.class))).thenReturn(mBoard);
         when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.onEnemyBid(2);

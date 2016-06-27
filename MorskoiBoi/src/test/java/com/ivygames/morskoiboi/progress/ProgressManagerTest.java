@@ -14,8 +14,6 @@ import org.mockito.MockitoAnnotations;
 
 public class ProgressManagerTest {
 
-    private ProgressManager progressManager;
-
     @Mock
     private PendingResult<Snapshots.OpenSnapshotResult> pendingResult;
 
@@ -26,7 +24,7 @@ public class ProgressManagerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        progressManager = new ProgressManager(apiClient, settings);
+        ProgressManager progressManager = new ProgressManager(apiClient, settings);
     }
 
     @After
