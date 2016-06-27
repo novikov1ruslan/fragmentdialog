@@ -132,27 +132,12 @@ public class PlayerOpponent extends AbstractOpponent {
         PokeResult result = createResultForShootingAt(aim);
         Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
 
-        if (result.ship != null) {
-            Ln.v(this + ": my ship is destroyed - " + result.ship);
-            markNeighbouringCellsAsOccupied(result.ship);
-        }
-
-        mOpponent.onShotResult(result);
-
-        if (result.cell.isHit()) {
-            if (mRules.isItDefeatedBoard(mMyBoard)) {
-                Ln.d(this + ": I'm defeated, no turn to pass");
-                reset2();
-            } else {
-                Ln.d(this + ": I'm hit - " + mOpponent + " continues");
-                mOpponent.go();
-            }
-        }
-
         if (mCallback != null) {
             mCallback.onShotAt(aim);
         }
         if (shipSank(result.ship)) {
+            Ln.v(this + ": my ship is destroyed - " + result.ship);
+            markNeighbouringCellsAsOccupied(result.ship);
             if (mCallback != null) {
                 mCallback.onKill(PlayerCallback.Side.PLAYER);
             }
@@ -167,14 +152,23 @@ public class PlayerOpponent extends AbstractOpponent {
             }
         }
 
-        // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
-        // In the later version of the protocol opponent notifies about players defeat sending his board along.
-        if (!versionSupportsBoardReveal()) {
+        mOpponent.onShotResult(result);
+
+        if (result.cell.isHit()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
-                Ln.v("opponent version doesn't support board reveal = " + mOpponentVersion);
-                if (mCallback != null) {
-                    mCallback.onLost(null);
+                // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
+                // In the later version of the protocol opponent notifies about players defeat sending his board along.
+                if (!versionSupportsBoardReveal()) {
+                    Ln.v("opponent version doesn't support board reveal = " + mOpponentVersion);
+                    if (mCallback != null) {
+                        mCallback.onLost(null);
+                    }
                 }
+                Ln.d(this + ": I'm defeated, no turn to pass");
+                reset2();
+            } else {
+                Ln.d(this + ": I'm hit - " + mOpponent + " continues");
+                mOpponent.go();
             }
         }
     }
