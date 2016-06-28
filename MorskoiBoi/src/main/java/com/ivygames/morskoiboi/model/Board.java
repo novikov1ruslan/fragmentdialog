@@ -28,6 +28,11 @@ public class Board {
     private Cell[][] mCells;
 
     @NonNull
+    public static Board copy(@NonNull Board board) {
+        return Board.fromJson(Board.toJson(board));
+    }
+
+    @NonNull
     public static Board fromJson(@NonNull String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);

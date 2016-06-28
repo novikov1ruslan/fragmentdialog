@@ -7,6 +7,8 @@ import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -33,7 +37,7 @@ public class BoardTest {
 	private static final String BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}],\"cells\":\"                                            000       000       000                                 \"}";
 
 	private Board mBoard;
-	private Placement mPlacementAlgorithm;
+	private Placement mPlacement;
 
 	@Before
 	public void setUp() throws Exception {
@@ -44,7 +48,7 @@ public class BoardTest {
 		Dependencies.inject(rules);
 		Placement placement = new Placement(random, rules);
 		PlacementFactory.setPlacementAlgorithm(placement);
-		mPlacementAlgorithm = PlacementFactory.getAlgorithm();
+		mPlacement = PlacementFactory.getAlgorithm();
 	}
 
 	@Test
@@ -54,10 +58,10 @@ public class BoardTest {
 		assertEquals(board1, board2);
 
 		Ship ship = new Ship(3);
-		mPlacementAlgorithm.putShipAt(board2, ship, 5, 5);
+		mPlacement.putShipAt(board2, ship, 5, 5);
 		assertFalse(board1.equals(board2));
 
-		mPlacementAlgorithm.putShipAt(board1, ship, 5, 5);
+		mPlacement.putShipAt(board1, ship, 5, 5);
 		assertEquals(board1, board2);
 	}
 
@@ -98,8 +102,12 @@ public class BoardTest {
 	}
 
 	private void putShipAt(Ship ship, int x, int y) {
-		mPlacementAlgorithm.putShipAt(mBoard, ship, x, y);
+		putShipAt(mBoard, ship, x, y);
 	}
+
+    private void putShipAt(Board board, Ship ship, int x, int y) {
+        mPlacement.putShipAt(board, ship, x, y);
+    }
 
 	@Test
 	public void testEmptyBoard() {
@@ -435,6 +443,15 @@ public class BoardTest {
 		putShipAt(new Ship(1), 5, 5);
 		assertBoardsEqual(mBoard, board);
 	}
+
+    @Test
+    public void CopyOfABoard__IsIdenticalToOriginal() {
+        Board board = Board.fromJson(BOARD_WITH_SHIP);
+
+        Board copy = Board.copy(board);
+
+        assertThat(copy, equalTo(board));
+    }
 
 	@Test
 	public void successful_Recreation_After_Serializing_To_String_Board_With_Ship() {
