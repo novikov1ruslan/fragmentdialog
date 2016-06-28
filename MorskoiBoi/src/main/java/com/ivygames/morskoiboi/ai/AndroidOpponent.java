@@ -100,7 +100,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mDelegate.onShotResult(result);
         boolean andGo = result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard);
         if (andGo) {
-            Ln.d("Android is hit, passing turn to " + mOpponent);
+            Ln.d("Android is hit, passing turn to " + mDelegate);
             mDelegate.go();
         }
     }
@@ -112,11 +112,11 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         Ln.v(result);
 
         if (result.cell.isMiss()) {
-            Ln.d(this + ": I missed - passing the turn to " + mOpponent);
+            Ln.d(this + ": I missed - passing the turn to " + mDelegate);
             mOpponent.go();
         } else if (result.ship != null) {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
-                Ln.d(this + ": I won - notifying " + mOpponent);
+                Ln.d(this + ": I won - notifying " + mDelegate);
                 mOpponent.onLost(mMyBoard);
                 reset2();
             }

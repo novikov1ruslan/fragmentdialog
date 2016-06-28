@@ -91,4 +91,8 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
         mHandler.removeCallbacks(mOnShotResultCommand);
     }
 
+    @Override
+    public String toString() {
+        return mOpponent.toString() + "(D)";
+    }
 }
