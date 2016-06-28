@@ -62,6 +62,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
+    private static final int START_DELAY = 3000;
     private static final int WON_GAME_DELAY = 3000; // milliseconds
 
     private static final int VIBRATION_ON_KILL = 500;
@@ -71,7 +72,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final int ALARM_TIME_SECONDS = 10;
 
-//    private static final long LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
+    //    private static final long LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
     private static final long LOST_GAME_WITH_REVEAL_DELAY = 5000; // milliseconds
 
     @NonNull
@@ -180,10 +181,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
 
-        Ln.d("screen is fully created - start bidding");
-        mPlayer.startBidding(new Bidder().newBid());
+        Ln.d("screen is fully created - start bidding in " + START_DELAY + "ms");
+        mUiThreadHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPlayer.startBidding(new Bidder().newBid());
+            }
+        }, START_DELAY);
 
-        Ln.d(this + " screen created");
         return (View) mLayout;
     }
 
@@ -492,7 +497,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 AnalyticsEvent.send("reveal_not_supported");
             } else {
                 Ln.d("player lost, opponent is revealing board");
-                mLayout.setEnemyBoard(Board.copy(board));
+                mLayout.setEnemyBoard(board);
             }
 
             disableBackPress();

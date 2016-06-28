@@ -2,9 +2,10 @@ package com.ivygames.morskoiboi.ai;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.Command;
 import com.ivygames.morskoiboi.model.Opponent;
 
-class GoCommand implements Runnable {
+class GoCommand extends Command {
 
     @NonNull
     private final Opponent mOpponent;
@@ -14,7 +15,7 @@ class GoCommand implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void execute() {
         mOpponent.go();
     }
 

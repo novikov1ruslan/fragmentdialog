@@ -5,31 +5,30 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-public class DelayedOpponent extends DummyOpponent implements Opponent, Cancellable {
-    private static final int START_TIMEOUT = 3000;
+public class DelayedOpponent implements Opponent, Cancellable {
     private static final int WHISTLE_SOUND_DELAY = 1300;
     private static final boolean NO_NEED_TO_THINK = false;
 
     private Opponent mOpponent;
-    private boolean mShouldWait = true;
 
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Nullable
-    private Runnable mOnEnemyBidCommand;
+    private OnEnemyBidCommand mOnEnemyBidCommand;
     @Nullable
-    private Runnable mGoCommand;
+    private GoCommand mGoCommand;
     @Nullable
     private OnShotResultCommand mOnShotResultCommand;
     @Nullable
-    private Runnable mOnShootAtCommand;
+    private OnShootAtCommand mOnShootAtCommand;
 
     private static long getThinkingTime(boolean needThinking) {
         int extraTime = needThinking ? 1000 : 0;
@@ -43,7 +42,6 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
 
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
-        mShouldWait = true;
         mOnShootAtCommand = new OnShootAtCommand(mOpponent, aim);
         long thinkingTime = getThinkingTime(NO_NEED_TO_THINK);
         Ln.v("scheduling " + mOnShootAtCommand + " in " + thinkingTime);
@@ -52,7 +50,6 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
 
     @Override
     public void onShotResult(@NonNull PokeResult result) {
-        mShouldWait = false;
         mOnShotResultCommand = new OnShotResultCommand(mOpponent, result);
         Ln.v("scheduling " + mOnShotResultCommand + " in " + WHISTLE_SOUND_DELAY);
         mHandler.postDelayed(mOnShotResultCommand, WHISTLE_SOUND_DELAY);
@@ -60,26 +57,39 @@ public class DelayedOpponent extends DummyOpponent implements Opponent, Cancella
 
     @Override
     public void go() {
-        mGoCommand = new GoCommand(mOpponent);
-        int delay = mShouldWait ? START_TIMEOUT : 0;
-        Ln.v("scheduling " + mGoCommand + " in " + delay);
-        if (mShouldWait) {
-            Ln.v("scheduling " + mGoCommand + " in " + START_TIMEOUT);
-            mHandler.postDelayed(mGoCommand, START_TIMEOUT);
+        if (mOnShotResultCommand == null || mOnShotResultCommand.executed()) {
+            mOpponent.go();
         } else {
+            mGoCommand = new GoCommand(mOpponent);
             Ln.v("scheduling " + mGoCommand + " after " + mOnShotResultCommand);
             assert mOnShotResultCommand != null;
             mOnShotResultCommand.setNextCommand(mGoCommand);
         }
-        mShouldWait = true;
     }
 
     @Override
     public void onEnemyBid(int bid) {
-        mShouldWait = true;
-        mOnEnemyBidCommand = new OnEnemyBidCommand(mOpponent, bid);
-        Ln.v("scheduling " + mOnEnemyBidCommand + " in " + START_TIMEOUT);
-        mHandler.postDelayed(mOnEnemyBidCommand, START_TIMEOUT);
+        mOpponent.onEnemyBid(bid);
+    }
+
+    @Override
+    public String getName() {
+        return mOpponent.getName();
+    }
+
+    @Override
+    public void onLost(@NonNull Board board) {
+        mOpponent.onLost(board);
+    }
+
+    @Override
+    public void setOpponentVersion(int ver) {
+        mOpponent.setOpponentVersion(ver);
+    }
+
+    @Override
+    public void onNewMessage(@NonNull String text) {
+        mOpponent.onNewMessage(text);
     }
 
     @Override

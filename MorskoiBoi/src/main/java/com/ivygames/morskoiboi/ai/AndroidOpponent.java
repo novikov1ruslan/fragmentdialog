@@ -35,7 +35,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private final Opponent mDelegate;
     @NonNull
     private final Rules mRules;
-    private Opponent mOpponent;
+//    private Opponent mOpponent;
 
     public AndroidOpponent(@NonNull String name,
                            @NonNull Board board,
@@ -56,11 +56,10 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        mOpponent = opponent;
         Ln.d(this + ": my opponent is " + opponent);
 
-        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         mDelegate.setOpponent(opponent);
+        mDelegate.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
 
     public void setCancellable (@NonNull Cancellable cancellable) {
@@ -113,11 +112,11 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
         if (result.cell.isMiss()) {
             Ln.d(this + ": I missed - passing the turn to " + mDelegate);
-            mOpponent.go();
+            mDelegate.go();
         } else if (result.ship != null) {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I won - notifying " + mDelegate);
-                mOpponent.onLost(mMyBoard);
+                mDelegate.onLost(Board.copy(mMyBoard));
                 reset2();
             }
         }
@@ -137,7 +136,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             reportException("stall");
             mMyBid = new Random(System.currentTimeMillis() + hashCode()).nextInt(Integer.MAX_VALUE);
         }
-        Ln.d("bidding against " + mOpponent + " with result " + opponentStarts());
+        Ln.d("bidding against " + mDelegate + " with result " + opponentStarts());
         if (opponentStarts()) {
             mDelegate.go();
         } else {
@@ -162,7 +161,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onNewMessage(@NonNull String text) {
         // mirroring
-        mOpponent.onNewMessage(text + "!!!");
+        mDelegate.onNewMessage(text + "!!!");
     }
 
     @Override

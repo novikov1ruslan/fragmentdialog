@@ -2,10 +2,11 @@ package com.ivygames.morskoiboi.ai;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.Command;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.Vector2;
 
-final class OnShootAtCommand implements Runnable {
+final class OnShootAtCommand extends Command {
     @NonNull
     private final Opponent mOpponent;
     @NonNull
@@ -17,7 +18,7 @@ final class OnShootAtCommand implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void execute() {
         mOpponent.onShotAt(mAim);
     }
 
