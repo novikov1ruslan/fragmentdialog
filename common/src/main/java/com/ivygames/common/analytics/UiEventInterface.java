@@ -1,6 +1,6 @@
 package com.ivygames.common.analytics;
 
-public interface UiEventInterface {
+interface UiEventInterface {
 
     void screenView(String screenName);
 

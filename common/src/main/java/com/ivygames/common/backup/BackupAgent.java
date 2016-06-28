@@ -7,7 +7,7 @@ import org.commons.logger.Ln;
 
 public class BackupAgent extends BackupAgentHelper {
     // A key to uniquely identify the set of backup data
-    static final String PREFS_BACKUP_KEY = "prefs";
+    private static final String PREFS_BACKUP_KEY = "prefs";
 
     // Allocate a helper and add it to the backup agent
     @Override

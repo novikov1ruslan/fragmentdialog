@@ -1,5 +1,5 @@
 package com.ivygames.common.billing;
 
-public interface HasNoAdsListener {
+interface HasNoAdsListener {
     void onHasNoAds();
 }

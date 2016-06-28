@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 public class Sharing {
-    public static final String EMAIL = "ivy.games.studio@gmail.com";
+    private static final String EMAIL = "ivy.games.studio@gmail.com";
 
     public static Intent createShareIntent(String packageName, String greeting) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
