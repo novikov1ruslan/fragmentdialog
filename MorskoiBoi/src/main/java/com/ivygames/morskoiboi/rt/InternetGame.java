@@ -11,10 +11,10 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.multiplayer.RtmSender;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.morskoiboi.multiplayer.RtmSender;
 
 import org.commons.logger.Ln;
 
@@ -38,7 +38,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
     private static final int TURN_TIMEOUT = 40 * 1000;
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
     private Room mRoom;
     private String mRecipientId;
     private InternetGameListener mGameListener;
@@ -54,7 +54,7 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
 
     private boolean mIsRoomConnected;
 
-    public InternetGame(@NonNull GoogleApiClientWrapper apiClient, @NonNull InternetGameListener listener) {
+    public InternetGame(@NonNull ApiClient apiClient, @NonNull InternetGameListener listener) {
         super();
         mApiClient = apiClient;
         mGameListener = listener;

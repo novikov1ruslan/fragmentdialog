@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.model.Ship;
 
 import org.commons.logger.Ln;
@@ -37,13 +37,13 @@ public class AchievementsManager {
     public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
     @NonNull
     private final GameSettings mSettings;
     @NonNull
     private final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
+    public AchievementsManager(@NonNull ApiClient apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
         mSettings = settings;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, settings);

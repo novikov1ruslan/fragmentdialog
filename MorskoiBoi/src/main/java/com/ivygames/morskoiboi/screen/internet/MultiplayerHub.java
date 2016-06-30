@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.rt.InternetGame;
 
 import org.commons.logger.Ln;
@@ -17,10 +17,10 @@ public class MultiplayerHub {
     @NonNull
     private final Activity mActivity;
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
     private MultiplayerHubListener mListener;
 
-    public MultiplayerHub(@NonNull Activity activity, @NonNull GoogleApiClientWrapper apiClient) {
+    public MultiplayerHub(@NonNull Activity activity, @NonNull ApiClient apiClient) {
         mActivity = activity;
         mApiClient = apiClient;
     }

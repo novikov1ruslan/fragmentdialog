@@ -69,7 +69,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private int mVolumeControlStream;
 
     @NonNull
-    private final GoogleApiClientWrapper mGoogleApiClient = Dependencies.getApiClient();
+    private final ApiClient mGoogleApiClient = Dependencies.getApiClient();
 
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();

@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 
 import org.commons.logger.Ln;
 

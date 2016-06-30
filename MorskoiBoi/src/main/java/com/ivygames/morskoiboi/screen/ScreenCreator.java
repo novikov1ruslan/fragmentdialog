@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
@@ -31,7 +31,7 @@ import java.util.Collection;
 public class ScreenCreator {
 
     private static BattleshipActivity activity;
-    private static GoogleApiClientWrapper apiClient;
+    private static ApiClient apiClient;
     private static GameSettings settings;
 
     private ScreenCreator() {
@@ -41,7 +41,7 @@ public class ScreenCreator {
         ScreenCreator.activity = activity;
     }
 
-    public static void setApiClient(@NonNull GoogleApiClientWrapper apiClient) {
+    public static void setApiClient(@NonNull ApiClient apiClient) {
         ScreenCreator.apiClient = apiClient;
     }
 

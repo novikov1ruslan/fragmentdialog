@@ -14,11 +14,11 @@ import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -50,7 +50,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     private WaitFragment mWaitFragment;
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient = Dependencies.getApiClient();
+    private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
     private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
     @NonNull

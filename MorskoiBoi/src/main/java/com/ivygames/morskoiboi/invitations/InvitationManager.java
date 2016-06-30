@@ -7,7 +7,7 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
+import com.ivygames.morskoiboi.ApiClient;
 
 import org.commons.logger.Ln;
 
@@ -28,9 +28,9 @@ public class InvitationManager {
     private final List<OnInvitationReceivedListener> mInvitationReceivers = new ArrayList<>();
 
     @NonNull
-    private final GoogleApiClientWrapper mGoogleApiClient;
+    private final ApiClient mGoogleApiClient;
 
-    public InvitationManager(@NonNull GoogleApiClientWrapper client) {
+    public InvitationManager(@NonNull ApiClient client) {
         mGoogleApiClient = client;
     }
 

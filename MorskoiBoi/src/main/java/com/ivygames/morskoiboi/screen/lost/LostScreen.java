@@ -8,17 +8,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.music.SoundBar;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.common.music.SoundBar;
-import com.ivygames.morskoiboi.music.SoundBarFactory;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
+import com.ivygames.morskoiboi.music.SoundBarFactory;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
 import org.commons.logger.Ln;

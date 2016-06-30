@@ -9,16 +9,16 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActions;
 
 import org.commons.logger.Ln;
@@ -27,7 +27,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     private static final String TAG = "SETTINGS";
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
     @NonNull
     private final GameSettings mSettings;
 
@@ -39,7 +39,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     private final AndroidDevice mDevice;
 
     public SettingsScreen(@NonNull BattleshipActivity parent,
-                          @NonNull GoogleApiClientWrapper apiClient,
+                          @NonNull ApiClient apiClient,
                           @NonNull GameSettings settings,
                           @NonNull VibratorFacade vibratorFacade) {
         super(parent);

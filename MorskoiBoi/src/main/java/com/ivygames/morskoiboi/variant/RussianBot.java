@@ -1,11 +1,11 @@
 package com.ivygames.morskoiboi.variant;
 
-import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.utils.GameUtils;
 
 import java.util.ArrayList;

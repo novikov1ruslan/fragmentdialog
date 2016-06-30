@@ -10,19 +10,17 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Player;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.music.SoundBar;
 import com.ivygames.morskoiboi.AnalyticsUtils;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameConstants;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.SignInListener;
-import com.ivygames.common.music.SoundBar;
-import com.ivygames.morskoiboi.music.SoundBarFactory;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
@@ -30,8 +28,10 @@ import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.music.SoundBarFactory;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
 import org.commons.logger.Ln;
@@ -54,7 +54,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final SoundBar mSoundBar;
     @NonNull
-    private final GoogleApiClientWrapper mApiClient = Dependencies.getApiClient();
+    private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull

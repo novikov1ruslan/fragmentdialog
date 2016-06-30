@@ -28,7 +28,7 @@ import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 
 
-public class GoogleApiClientWrapper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GoogleApiClientWrapper implements ApiClient {
 
     @NonNull
     private final GoogleApiClient mGoogleApiClient;
@@ -36,7 +36,22 @@ public class GoogleApiClientWrapper implements GoogleApiClient.ConnectionCallbac
     private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
 
     GoogleApiClientWrapper(@NonNull Context context) {
-        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, this, this);
+        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+                mConnectedListener.onConnected(bundle);
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+                mConnectedListener.onConnectionSuspended(i);
+            }
+        }, new GoogleApiClient.OnConnectionFailedListener() {
+            @Override
+            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                mConnectionFailedListener.onConnectionFailed(connectionResult);
+            }
+        });
         builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
         builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
@@ -173,26 +188,5 @@ public class GoogleApiClientWrapper implements GoogleApiClient.ConnectionCallbac
 
     public void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
         mConnectionFailedListener = listener;
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (mConnectedListener != null) {
-            mConnectedListener.onConnected(bundle);
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        if (mConnectedListener != null) {
-            mConnectedListener.onConnectionSuspended(i);
-        }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        if (mConnectionFailedListener != null) {
-            mConnectionFailedListener.onConnectionFailed(connectionResult);
-        }
     }
 }

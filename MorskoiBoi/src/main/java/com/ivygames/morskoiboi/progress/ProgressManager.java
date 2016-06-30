@@ -9,8 +9,8 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.model.Progress;
 
 import org.commons.logger.Ln;
@@ -28,7 +28,7 @@ public class ProgressManager {
     private static final String SNAPSHOT_NAME = "Snapshot-0";//"Sea Battle Snapshot";
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
 
     @NonNull
     private final GameSettings mSettings;
@@ -52,7 +52,7 @@ public class ProgressManager {
         }
     };
 
-    public ProgressManager(@NonNull GoogleApiClientWrapper apiClient, @NonNull GameSettings settings) {
+    public ProgressManager(@NonNull ApiClient apiClient, @NonNull GameSettings settings) {
         mApiClient = apiClient;
         // TODO: setting do not belong to this class
         mSettings = settings;

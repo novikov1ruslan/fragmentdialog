@@ -13,10 +13,10 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
@@ -39,7 +39,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private MainScreenLayout mLayout;
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
 
     @NonNull
     private final GameSettings mSettings;
@@ -53,7 +53,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private InvitationPresenter mInvitationPresenter;
 
     public MainScreen(@NonNull BattleshipActivity parent,
-                      @NonNull GoogleApiClientWrapper apiClient,
+                      @NonNull ApiClient apiClient,
                       @NonNull GameSettings settings) {
         super(parent);
         mApiClient = apiClient;

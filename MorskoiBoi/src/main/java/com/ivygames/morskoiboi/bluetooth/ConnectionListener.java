@@ -2,8 +2,6 @@ package com.ivygames.morskoiboi.bluetooth;
 
 import android.support.annotation.NonNull;
 
-import java.io.IOException;
-
 public interface ConnectionListener {
 
     void onConnected(@NonNull BluetoothConnection connection);

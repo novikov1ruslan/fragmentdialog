@@ -52,7 +52,7 @@ class ApplicationInitializer {
         PlacementFactory.setPlacementAlgorithm(algorithm);
         BotFactory.setAlgorithm(new RussianBot(null));
 
-        GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
+        ApiClient apiClient = new GoogleApiClientWrapper(application);
         Dependencies.inject(settings);
         Dependencies.inject(apiClient);
         Dependencies.inject(new InvitationManager(apiClient));

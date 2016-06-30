@@ -20,7 +20,7 @@ public class SettingsScreenTest2 {
 
     private TestActivity activity;
     @Mock
-    private GoogleApiClientWrapper apiClient;
+    private ApiClient apiClient;
     @Mock
     private GameSettings settings;
     @Mock

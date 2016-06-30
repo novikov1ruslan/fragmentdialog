@@ -4,15 +4,15 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 
 import org.commons.logger.Ln;
 
@@ -21,7 +21,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     private RanksLayout mLayout;
 
     @NonNull
-    private final GoogleApiClientWrapper mApiClient;
+    private final ApiClient mApiClient;
 
     @NonNull
     private final GameSettings mSettings;

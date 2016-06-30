@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi.progress;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +18,7 @@ public class ProgressManagerTest {
     private PendingResult<Snapshots.OpenSnapshotResult> pendingResult;
 
     @Mock
-    private GoogleApiClientWrapper apiClient;
+    private ApiClient apiClient;
     private GameSettings settings = Dependencies.getSettings();
 
     @Before

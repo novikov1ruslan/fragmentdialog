@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.progress.ProgressManager;
 
 public class Dependencies {
 
-    private static GoogleApiClientWrapper sApiClient;
+    private static ApiClient sApiClient;
     private static InvitationManager sInvitationManager;
     private static AchievementsManager sAchievementsManager;
     private static ProgressManager sProgressManager;
@@ -16,11 +16,11 @@ public class Dependencies {
     private static GameSettings sGameSettings;
     private static Rules sRules;
 
-    static void inject(@NonNull GoogleApiClientWrapper apiClient) {
+    static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
     }
 
-    public static GoogleApiClientWrapper getApiClient() {
+    public static ApiClient getApiClient() {
         return sApiClient;
     }
 
