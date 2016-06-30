@@ -18,12 +18,10 @@ import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
@@ -37,8 +35,9 @@ import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
-import com.ivygames.morskoiboi.rt.Invitation;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
@@ -46,6 +45,8 @@ import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
+
+import java.util.Set;
 
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener, InvitationReceiver {
@@ -119,8 +120,9 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStart() {
         super.onStart();
+        Ln.d("displaying screen, registering invitation receiver");
         mInvitationManager.registerInvitationReceiver(this);
-        showInvitationIfHas(mInvitationManager.hasInvitation());
+        showInvitations(mInvitationManager.getInvitations());
     }
 
     @Override
@@ -139,17 +141,18 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @Override
-    public void onNewInvitationReceived(@NonNull Invitation event) {
-        showInvitationIfHas(mInvitationManager.hasInvitation());
+    public void onInvitationsUpdated(@NonNull Set<String> invitations) {
+        Ln.d("invitations: " + invitations);
+        showInvitations(invitations);
     }
 
-    private void showInvitationIfHas(boolean hasInvitations) {
-        if (hasInvitations) {
-            Ln.d(this + ": there is a pending invitation ");
-            mLayout.showInvitation();
-        } else {
-            Ln.v(this + ": there are no pending invitations");
+    private void showInvitations(@NonNull Set<String> invitations) {
+        if (invitations.isEmpty()) {
+            Ln.v("there are no pending invitations");
             mLayout.hideInvitation();
+        } else {
+            Ln.d("there is a pending invitation");
+            mLayout.showInvitation();
         }
     }
 

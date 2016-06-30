@@ -10,7 +10,6 @@ import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
-import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
@@ -24,12 +23,15 @@ import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
 import com.ivygames.morskoiboi.screen.win.WinLayout;
 
+import org.apache.commons.collections4.set.UnmodifiableSet;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
@@ -79,6 +81,9 @@ public abstract class ScreenTest {
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
 
+    protected final Set<String> INVITATIONS = new HashSet<>();
+    protected final Set<String> NO_INVITATIONS = UnmodifiableSet.<String>unmodifiableSet(Collections.<String>emptySet());
+
     protected abstract BattleshipScreen newScreen();
 
     @Before
@@ -88,6 +93,7 @@ public abstract class ScreenTest {
         androidDevice = rule.getDevice();
         invitationManager = Dependencies.getInvitationManager();
         setProgress(0);
+        INVITATIONS.add("test_id");
     }
 
     @After
@@ -145,11 +151,11 @@ public abstract class ScreenTest {
     }
 
     protected final void sendInvitation(@NonNull final InvitationReceiver receiver) {
-        when(invitationManager.hasInvitation()).thenReturn(true);
+        when(invitationManager.getInvitations()).thenReturn(INVITATIONS);
         sendInvitation = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                receiver.onNewInvitationReceived(new Invitation(new HashSet<String>()));
+                receiver.onInvitationsUpdated(INVITATIONS);
             }
         });
         registerIdlingResources(sendInvitation);
@@ -272,8 +278,8 @@ public abstract class ScreenTest {
         return allOf(action, data, type);
     }
 
-    protected final void setInvitation(boolean hasInvitation) {
-        when(invitationManager().hasInvitation()).thenReturn(hasInvitation);
+    protected final void setInvitation(@NonNull Set<String> invitations) {
+        when(invitationManager.getInvitations()).thenReturn(invitations);
     }
 
     @NonNull

@@ -15,21 +15,22 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.AndroidDevice;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
-import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
+
+import java.util.Set;
 
 public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener, InvitationReceiver {
     private static final String TAG = "MAIN";
@@ -84,7 +85,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public void onStart() {
         super.onStart();
         mInvitationManager.registerInvitationReceiver(this);
-        processInvitations();
+        showInvitations(mInvitationManager.getInvitations());
     }
 
     @Override
@@ -99,13 +100,13 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         }
     }
 
-    private void processInvitations() {
-        if (mInvitationManager.hasInvitation()) {
-            Ln.d(this + ": there is a pending invitation ");
-            mLayout.showInvitation();
-        } else {
-            Ln.v(this + ": there are no pending invitations");
+    private void showInvitations(@NonNull Set<String> invitations) {
+        if (invitations.isEmpty()) {
+            Ln.v("there are no pending invitations");
             mLayout.hideInvitation();
+        } else {
+            Ln.d("there is a pending invitation ");
+            mLayout.showInvitation();
         }
     }
 
@@ -116,8 +117,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     }
 
     @Override
-    public void onNewInvitationReceived(@NonNull Invitation event) {
-        processInvitations();
+    public void onInvitationsUpdated(@NonNull Set<String> invitations) {
+        showInvitations(invitations);
     }
 
     @Override

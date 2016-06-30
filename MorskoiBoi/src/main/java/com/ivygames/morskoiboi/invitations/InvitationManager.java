@@ -10,11 +10,11 @@ import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationReceiver;
-import com.ivygames.morskoiboi.rt.Invitation;
 
 import org.commons.logger.Ln;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,10 +56,6 @@ public class InvitationManager {
         mInvitationReceivers.remove(receiver);
     }
 
-    public boolean hasInvitation() {
-        return mIncomingInvitationIds.size() > 0;
-    }
-
     public void loadInvitations() {
         if (!mGoogleApiClient.isConnected()) {
             Ln.w("API client has to be connected");
@@ -72,10 +68,14 @@ public class InvitationManager {
         invitations.setResultCallback(mResultCallback);
     }
 
-    private void notifyReceivers() {
+    private void notifyReceivers(@NonNull Set<String> invitationIds) {
         for (InvitationReceiver receiver : mInvitationReceivers) {
-            receiver.onNewInvitationReceived(new Invitation(mIncomingInvitationIds));
+            receiver.onInvitationsUpdated(Collections.unmodifiableSet(invitationIds));
         }
+    }
+
+    public Set<String> getInvitations() {
+        return new HashSet<>(mIncomingInvitationIds);
     }
 
     private class OnInvitationReceivedListenerImpl implements OnInvitationReceivedListener {
@@ -88,14 +88,14 @@ public class InvitationManager {
                 mListener.onInvitationReceived(displayName);
             }
             mIncomingInvitationIds.add(invitation.getInvitationId());
-            notifyReceivers();
+            notifyReceivers(mIncomingInvitationIds);
         }
 
         @Override
         public void onInvitationRemoved(String invitationId) {
             Ln.d("invitationId=" + invitationId + " withdrawn");
             mIncomingInvitationIds.remove(invitationId);
-            notifyReceivers();
+            notifyReceivers(mIncomingInvitationIds);
         }
     }
 
@@ -114,7 +114,7 @@ public class InvitationManager {
             } else {
                 Ln.v("no invitations");
             }
-            notifyReceivers();
+            notifyReceivers(mIncomingInvitationIds);
         }
     }
 }

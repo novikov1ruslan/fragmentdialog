@@ -2,8 +2,8 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.rt.Invitation;
+import java.util.Set;
 
 public interface InvitationReceiver {
-    void onNewInvitationReceived(@NonNull Invitation event);
+    void onInvitationsUpdated(@NonNull Set<String> invitations);
 }

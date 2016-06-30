@@ -13,21 +13,21 @@ public class MainScreen_InvitationTest extends MainScreen_ {
 
     @Test
     public void WhenThereIsInvitation__EnvelopeIsShown() {
-        setInvitation(true);
+        setInvitation(INVITATIONS);
         showScreen();
         checkHasInvitation(true);
     }
 
     @Test
     public void WhenThereAreNoInvitations__EnvelopeIsHidden() {
-        setInvitation(false);
+        setInvitation(NO_INVITATIONS);
         showScreen();
         checkHasInvitation(false);
     }
 
     @Test
     public void WhenInvitationArrives__EnvelopeIsShown() {
-        setInvitation(false);
+        setInvitation(NO_INVITATIONS);
         showScreen();
         sendInvitation((InvitationReceiver) screen());
         checkHasInvitation(true);

@@ -17,29 +17,29 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Model;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetGameListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
-import com.ivygames.morskoiboi.rt.Invitation;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class InternetGameScreen extends BattleshipScreen implements BackPressListener, InvitationReceiver {
     private static final String TAG = "INTERNET_GAME";
@@ -88,7 +88,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     public void onStart() {
         super.onStart();
         mInvitationManager.registerInvitationReceiver(this);
-        showInvitationIfHas(mInvitationManager.hasInvitation());
+        showInvitations(mInvitationManager.getInvitations());
     }
 
     @Override
@@ -98,17 +98,17 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     }
 
     @Override
-    public void onNewInvitationReceived(@NonNull Invitation event) {
-        showInvitationIfHas(mInvitationManager.hasInvitation());
+    public void onInvitationsUpdated(@NonNull Set<String> invitations) {
+        showInvitations(invitations);
     }
 
-    private void showInvitationIfHas(boolean hasInvitations) {
-        if (hasInvitations) {
-            Ln.d(this + ": there is a pending invitation ");
-            mLayout.showInvitation();
-        } else {
-            Ln.v(this + ": there are no pending invitations");
+    private void showInvitations(@NonNull Set<String> invitations) {
+        if (invitations.isEmpty()) {
+            Ln.v("there are no pending invitations");
             mLayout.hideInvitation();
+        } else {
+            Ln.d("there is a pending invitation");
+            mLayout.showInvitation();
         }
     }
 
