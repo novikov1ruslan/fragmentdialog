@@ -17,11 +17,11 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
@@ -30,9 +30,7 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-import java.util.Set;
-
-public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener, InvitationReceiver {
+public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener {
     private static final String TAG = "MAIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -51,6 +49,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
+
+    private InvitationPresenter mInvitationPresenter;
 
     public MainScreen(@NonNull BattleshipActivity parent,
                       @NonNull GoogleApiClientWrapper apiClient,
@@ -72,6 +72,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             showRateDialog();
         }
 
+        mInvitationPresenter = new InvitationPresenter(mLayout, mInvitationManager);
+
         return mLayout;
     }
 
@@ -84,8 +86,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStart() {
         super.onStart();
-        mInvitationManager.registerInvitationReceiver(this);
-        showInvitations(mInvitationManager.getInvitations());
+        mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
+        mInvitationPresenter.updateInvitations();
     }
 
     @Override
@@ -100,25 +102,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         }
     }
 
-    private void showInvitations(@NonNull Set<String> invitations) {
-        if (invitations.isEmpty()) {
-            Ln.v("there are no pending invitations");
-            mLayout.hideInvitation();
-        } else {
-            Ln.d("there is a pending invitation ");
-            mLayout.showInvitation();
-        }
-    }
-
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.unregisterInvitationReceiver(this);
-    }
-
-    @Override
-    public void onInvitationsUpdated(@NonNull Set<String> invitations) {
-        showInvitations(invitations);
+        mInvitationManager.unregisterInvitationReceiver(mInvitationPresenter);
     }
 
     @Override
@@ -263,4 +250,5 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     public String toString() {
         return TAG + debugSuffix();
     }
+
 }

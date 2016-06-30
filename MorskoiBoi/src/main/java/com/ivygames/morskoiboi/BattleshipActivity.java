@@ -18,12 +18,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
-import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.music.MusicPlayer;
 import com.ivygames.morskoiboi.player.ChatListener;
@@ -92,6 +93,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final OnConnectionFailedListener mConnectionFailedListener = new OnConnectionFailedListenerImpl();
     private ViewGroup mLayout;
+    @NonNull
+    private final OnInvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
 
     @SuppressLint("InflateParams")
     @Override
@@ -130,13 +133,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             mGoogleApiClient.connect();
         }
 
-        mInvitationManager.setInvitationReceivedListener(new InvitationReceivedListener() {
-            @Override
-            public void onInvitationReceived(String displayName) {
-                showInvitationCrouton(getString(R.string.received_invitation, displayName));
-            }
-        });
-
         if (mSettings.noAds()) {
             hideAds();
         } else {
@@ -165,11 +161,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             View layout = UiUtils.inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
             Crouton.make(this, layout).setConfiguration(CONFIGURATION_LONG).show();
         }
-    }
-
-    private void showInvitationCrouton(String message) {
-        View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), message, mLayout);
-        Crouton.make(this, view).setConfiguration(CONFIGURATION_LONG).show();
     }
 
     public void playMusic(int music) {
@@ -209,6 +200,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mScreenManager.onStart();
 
+        mInvitationManager.registerInvitationReceiver(mInvitationReceivedListener);
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - register invitation listener");
             mInvitationManager.loadInvitations();
@@ -263,10 +255,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         stopKeepingScreenOn();
 
         mScreenManager.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            Ln.d("API is connected - unregister invitation listener");
-            mGoogleApiClient.unregisterInvitationListener();
-        }
+        mInvitationManager.unregisterInvitationReceiver(mInvitationReceivedListener);
         Ln.d("game fully obscured - stop keeping screen On");
     }
 
@@ -368,10 +357,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mScreenManager.onSignInSucceeded();
 
-        if (mScreenManager.isStarted()) {
-            Ln.d("started - load invitations");
-            mInvitationManager.loadInvitations();
-        }
+        mInvitationManager.loadInvitations();
     }
 
     /**
@@ -443,5 +429,19 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             mResolvingConnectionFailure = mGoogleApiClient.resolveConnectionFailure(BattleshipActivity.this, result, RC_SIGN_IN, getString(R.string.error));
             Ln.d("has resolution = " + mResolvingConnectionFailure);
         }
+    }
+
+    private class InvitationReceivedListenerImpl implements OnInvitationReceivedListener {
+        @Override
+        public void onInvitationReceived(Invitation invitation) {
+            View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, invitation.getInviter().getDisplayName()), mLayout);
+            Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
+        }
+
+        @Override
+        public void onInvitationRemoved(String s) {
+
+        }
+
     }
 }

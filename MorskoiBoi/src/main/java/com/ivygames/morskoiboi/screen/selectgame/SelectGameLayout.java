@@ -8,12 +8,13 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
+import com.ivygames.morskoiboi.screen.InvitationObserver;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 
 import org.commons.logger.Ln;
 
-public class SelectGameLayout extends NotepadRelativeLayout implements View.OnClickListener {
+public class SelectGameLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationObserver {
     public interface SelectGameActions {
 
         void vsAndroid();
@@ -114,10 +115,12 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         }
     }
 
+    @Override
     public void hideInvitation() {
         mViaInternetButton.hideInvitation();
     }
 
+    @Override
     public void showInvitation() {
         mViaInternetButton.showInvitation();
     }

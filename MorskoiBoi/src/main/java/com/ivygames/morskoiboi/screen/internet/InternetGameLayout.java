@@ -6,12 +6,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.screen.InvitationObserver;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 
 import org.commons.logger.Ln;
 
-public class InternetGameLayout extends NotepadRelativeLayout implements View.OnClickListener {
+public class InternetGameLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationObserver {
 
     private InternetGameLayoutListener mListener;
     private TextView mPlayerNameView;
@@ -61,10 +62,12 @@ public class InternetGameLayout extends NotepadRelativeLayout implements View.On
         mPlayerNameView.setText(playerName);
     }
 
+    @Override
     public void hideInvitation() {
         mViaInternetButton.hideInvitation();
     }
 
+    @Override
     public void showInvitation() {
         mViaInternetButton.showInvitation();
     }

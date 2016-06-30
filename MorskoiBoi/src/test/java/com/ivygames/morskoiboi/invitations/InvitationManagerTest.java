@@ -6,43 +6,40 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by novikov on 6/29/16.
- */
 public class InvitationManagerTest {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
 
     }
 
     @Test
-    public void testSetInvitationReceivedListener() throws Exception {
+    public void testSetInvitationReceivedListener() {
 
     }
 
     @Test
-    public void testRegisterInvitationReceiver() throws Exception {
+    public void testRegisterInvitationReceiver() {
 
     }
 
     @Test
-    public void testUnregisterInvitationReceiver() throws Exception {
+    public void testUnregisterInvitationReceiver() {
 
     }
 
     @Test
-    public void testHasInvitation() throws Exception {
+    public void testHasInvitation() {
 
     }
 
     @Test
-    public void testLoadInvitations() throws Exception {
+    public void testLoadInvitations() {
 
     }
 }

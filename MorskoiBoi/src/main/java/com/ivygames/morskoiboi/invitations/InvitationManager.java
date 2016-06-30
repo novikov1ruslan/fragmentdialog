@@ -1,58 +1,44 @@
 package com.ivygames.morskoiboi.invitations;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.InvitationReceiver;
 
 import org.commons.logger.Ln;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class InvitationManager {
 
-    @Nullable
-    private InvitationReceivedListener mListener;
+    @NonNull
+    private final Set<String> mIncomingInvitationIds = new HashSet<>();
+    @NonNull
+    private final OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
+    @NonNull
+    private final ResultCallback<Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultResultCallback();
+    @NonNull
+    private final List<OnInvitationReceivedListener> mInvitationReceivers = new ArrayList<>();
 
     @NonNull
     private final GoogleApiClientWrapper mGoogleApiClient;
-
-    @NonNull
-    private final Set<String> mIncomingInvitationIds = new HashSet<>();
-
-    @NonNull
-    private final OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
-
-    @NonNull
-    final
-    private ResultCallback<Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultResultCallback();
-
-    @NonNull
-    private final List<InvitationReceiver> mInvitationReceivers = new ArrayList<>();
 
     public InvitationManager(@NonNull GoogleApiClientWrapper client) {
         mGoogleApiClient = client;
     }
 
-    public void setInvitationReceivedListener(@Nullable InvitationReceivedListener listener) {
-        mListener = listener;
-    }
-
-    public void registerInvitationReceiver(@NonNull InvitationReceiver receiver) {
+    public void registerInvitationReceiver(@NonNull OnInvitationReceivedListener receiver) {
         mInvitationReceivers.add(receiver);
     }
 
-    public void unregisterInvitationReceiver(@NonNull InvitationReceiver receiver) {
+    public void unregisterInvitationReceiver(@NonNull OnInvitationReceivedListener receiver) {
         mInvitationReceivers.remove(receiver);
     }
 
@@ -61,41 +47,45 @@ public class InvitationManager {
             Ln.w("API client has to be connected");
             return;
         }
+        Ln.d("load invitations");
+
         mGoogleApiClient.registerInvitationListener(mInvitationListener);
 
         Ln.d("loading invitations...");
-        PendingResult<Invitations.LoadInvitationsResult> invitations = mGoogleApiClient.loadInvitations();
-        invitations.setResultCallback(mResultCallback);
-    }
-
-    private void notifyReceivers(@NonNull Set<String> invitationIds) {
-        for (InvitationReceiver receiver : mInvitationReceivers) {
-            receiver.onInvitationsUpdated(Collections.unmodifiableSet(invitationIds));
-        }
+        mGoogleApiClient.loadInvitations().setResultCallback(mResultCallback);
     }
 
     public Set<String> getInvitations() {
         return new HashSet<>(mIncomingInvitationIds);
     }
 
+    private void notifyReceived(@NonNull Invitation invitation) {
+        for (OnInvitationReceivedListener receiver : mInvitationReceivers) {
+            receiver.onInvitationReceived(invitation);
+        }
+    }
+
+    private void notifyRemoved(@NonNull String invitationId) {
+        for (OnInvitationReceivedListener receiver : mInvitationReceivers) {
+            receiver.onInvitationRemoved(invitationId);
+        }
+    }
+
     private class OnInvitationReceivedListenerImpl implements OnInvitationReceivedListener {
 
         @Override
-        public void onInvitationReceived(com.google.android.gms.games.multiplayer.Invitation invitation) {
+        public void onInvitationReceived(Invitation invitation) {
             String displayName = invitation.getInviter().getDisplayName();
             Ln.d("received invitation from: " + displayName);
-            if (mListener != null) {
-                mListener.onInvitationReceived(displayName);
-            }
             mIncomingInvitationIds.add(invitation.getInvitationId());
-            notifyReceivers(mIncomingInvitationIds);
+            notifyReceived(invitation);
         }
 
         @Override
         public void onInvitationRemoved(String invitationId) {
             Ln.d("invitationId=" + invitationId + " withdrawn");
             mIncomingInvitationIds.remove(invitationId);
-            notifyReceivers(mIncomingInvitationIds);
+            notifyRemoved(invitationId);
         }
     }
 
@@ -108,13 +98,20 @@ public class InvitationManager {
                 InvitationBuffer invitations = list.getInvitations();
                 Ln.v("loaded " + invitations.getCount() + " invitations");
                 for (int i = 0; i < invitations.getCount(); i++) {
-                    mIncomingInvitationIds.add(invitations.get(i).getInvitationId());
+                    Invitation invitation = invitations.get(i);
+                    String invitationId = invitation.getInvitationId();
+//                    if (mIncomingInvitationIds.contains(invitationId)) {
+//
+//                    } else {
+                    mIncomingInvitationIds.add(invitationId);
+                    notifyReceived(invitation);
+//                    }
                 }
                 list.getInvitations().release();
             } else {
                 Ln.v("no invitations");
             }
-            notifyReceivers(mIncomingInvitationIds);
+
         }
     }
 }

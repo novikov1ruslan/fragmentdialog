@@ -19,7 +19,6 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -32,6 +31,7 @@ import com.ivygames.morskoiboi.rt.InternetGameListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -39,9 +39,8 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 import org.commons.logger.Ln;
 
 import java.util.ArrayList;
-import java.util.Set;
 
-public class InternetGameScreen extends BattleshipScreen implements BackPressListener, InvitationReceiver {
+public class InternetGameScreen extends BattleshipScreen implements BackPressListener {
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -63,6 +62,8 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final MultiplayerHub mMultiplayerHub;
 
+    private InvitationPresenter mInvitationPresenter;
+
     public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull MultiplayerHub hub) {
         super(parent);
         mMultiplayerHub = hub;
@@ -74,6 +75,8 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
         mLayout.setPlayerName(mSettings.getPlayerName());
         mLayout.setScreenActions(mInternetGameLayoutListener);
+
+        mInvitationPresenter = new InvitationPresenter(mLayout, mInvitationManager);
         Ln.d(this + " screen created");
         return mLayout;
     }
@@ -87,29 +90,14 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public void onStart() {
         super.onStart();
-        mInvitationManager.registerInvitationReceiver(this);
-        showInvitations(mInvitationManager.getInvitations());
+        mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
+        mInvitationPresenter.updateInvitations();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.unregisterInvitationReceiver(this);
-    }
-
-    @Override
-    public void onInvitationsUpdated(@NonNull Set<String> invitations) {
-        showInvitations(invitations);
-    }
-
-    private void showInvitations(@NonNull Set<String> invitations) {
-        if (invitations.isEmpty()) {
-            Ln.v("there are no pending invitations");
-            mLayout.hideInvitation();
-        } else {
-            Ln.d("there is a pending invitation");
-            mLayout.showInvitation();
-        }
+        mInvitationManager.unregisterInvitationReceiver(mInvitationPresenter);
     }
 
     @Override
@@ -326,5 +314,4 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     public String toString() {
         return TAG + debugSuffix();
     }
-
 }

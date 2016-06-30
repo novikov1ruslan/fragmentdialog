@@ -20,7 +20,6 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.GoogleApiClientWrapper;
-import com.ivygames.morskoiboi.InvitationReceiver;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
@@ -37,6 +36,7 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
+import com.ivygames.morskoiboi.screen.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
@@ -46,10 +46,8 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-import java.util.Set;
-
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
-        SignInListener, BackPressListener, InvitationReceiver {
+        SignInListener, BackPressListener {
     private static final String TAG = "SELECT_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -69,6 +67,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final GameSettings mSettings;
+
+    private InvitationPresenter mInvitationPresenter;
 
     public SelectGameScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
@@ -90,8 +90,9 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mLayout.setRank(rank);
         mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 
-        Ln.d(this + " screen created, rank = " + rank);
+        mInvitationPresenter = new InvitationPresenter(mLayout, mInvitationManager);
 
+        Ln.d(this + " screen created, rank = " + rank);
         return mLayout;
     }
 
@@ -121,8 +122,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onStart() {
         super.onStart();
         Ln.d("displaying screen, registering invitation receiver");
-        mInvitationManager.registerInvitationReceiver(this);
-        showInvitations(mInvitationManager.getInvitations());
+        mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
+        mInvitationPresenter.updateInvitations();
     }
 
     @Override
@@ -137,23 +138,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.unregisterInvitationReceiver(this);
-    }
-
-    @Override
-    public void onInvitationsUpdated(@NonNull Set<String> invitations) {
-        Ln.d("invitations: " + invitations);
-        showInvitations(invitations);
-    }
-
-    private void showInvitations(@NonNull Set<String> invitations) {
-        if (invitations.isEmpty()) {
-            Ln.v("there are no pending invitations");
-            mLayout.hideInvitation();
-        } else {
-            Ln.d("there is a pending invitation");
-            mLayout.showInvitation();
-        }
+        mInvitationManager.unregisterInvitationReceiver(mInvitationPresenter);
     }
 
     @Override
