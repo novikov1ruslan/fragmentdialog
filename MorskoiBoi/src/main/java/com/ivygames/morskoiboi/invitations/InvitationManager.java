@@ -2,16 +2,14 @@ package com.ivygames.morskoiboi.invitations;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.InvitationBuffer;
-import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.morskoiboi.ApiClient;
 
 import org.commons.logger.Ln;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +21,7 @@ public class InvitationManager {
     @NonNull
     private final OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
     @NonNull
-    private final ResultCallback<Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultResultCallback();
+    private final InvitationLoadListener mResultCallback = new LoadInvitationsResultResultCallback();
     @NonNull
     private final List<OnInvitationReceivedListener> mInvitationReceivers = new ArrayList<>();
 
@@ -88,25 +86,18 @@ public class InvitationManager {
         }
     }
 
-    private class LoadInvitationsResultResultCallback implements ResultCallback<Invitations.LoadInvitationsResult> {
+    private class LoadInvitationsResultResultCallback implements InvitationLoadListener {
 
         @Override
-        public void onResult(@NonNull Invitations.LoadInvitationsResult list) {
+        public void onResult(@NonNull Collection<Invitation> invitations) {
             mIncomingInvitationIds.clear();
-            if (list.getInvitations().getCount() > 0) {
-                InvitationBuffer invitations = list.getInvitations();
-                Ln.v("loaded " + invitations.getCount() + " invitations");
-                for (int i = 0; i < invitations.getCount(); i++) {
-                    Invitation invitation = invitations.get(i);
+            if (invitations.size() > 0) {
+                Ln.v("loaded " + invitations.size() + " invitations");
+                for (Invitation invitation: invitations) {
                     String invitationId = invitation.getInvitationId();
-//                    if (mIncomingInvitationIds.contains(invitationId)) {
-//
-//                    } else {
                     mIncomingInvitationIds.add(invitationId);
                     notifyReceived(invitation);
-//                    }
                 }
-                list.getInvitations().release();
             } else {
                 Ln.v("no invitations");
             }

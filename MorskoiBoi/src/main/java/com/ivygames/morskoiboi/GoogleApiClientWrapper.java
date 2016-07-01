@@ -15,6 +15,8 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.achievement.Achievements;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
@@ -26,6 +28,12 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
+import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
+
+import org.commons.logger.Ln;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 
 public class GoogleApiClientWrapper implements ApiClient {
@@ -34,6 +42,8 @@ public class GoogleApiClientWrapper implements ApiClient {
     private final GoogleApiClient mGoogleApiClient;
     private GoogleApiClient.ConnectionCallbacks mConnectedListener;
     private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
+    private InvitationLoadListener mLoadListener;
+    private ResultCallback<? super Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultImpl();
 
     GoogleApiClientWrapper(@NonNull Context context) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
@@ -98,8 +108,10 @@ public class GoogleApiClientWrapper implements ApiClient {
         Games.Invitations.registerInvitationListener(mGoogleApiClient, listener);
     }
 
-    public void loadInvitations(ResultCallback<? super Invitations.LoadInvitationsResult> callback) {
-        Games.Invitations.loadInvitations(mGoogleApiClient).setResultCallback(callback);
+    @Override
+    public void loadInvitations(InvitationLoadListener listener) {
+        mLoadListener = listener;
+        Games.Invitations.loadInvitations(mGoogleApiClient).setResultCallback(mResultCallback);
     }
 
     public Intent getAchievementsIntent() {
@@ -189,4 +201,26 @@ public class GoogleApiClientWrapper implements ApiClient {
     public void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
         mConnectionFailedListener = listener;
     }
+
+    private class LoadInvitationsResultImpl implements ResultCallback<Invitations.LoadInvitationsResult> {
+
+        @Override
+        public void onResult(@NonNull Invitations.LoadInvitationsResult list) {
+            if (list.getInvitations().getCount() > 0) {
+                InvitationBuffer invitations = list.getInvitations();
+                Ln.v("loaded " + invitations.getCount() + " invitations");
+                Collection<Invitation> invitationsCopy = new HashSet<>();
+                for (int i = 0; i < invitations.getCount(); i++) {
+                    invitationsCopy.add(invitations.get(i));
+                }
+                list.getInvitations().release();
+                mLoadListener.onResult(invitationsCopy);
+            } else {
+                Ln.v("no invitations");
+            }
+
+        }
+    }
+
+
 }

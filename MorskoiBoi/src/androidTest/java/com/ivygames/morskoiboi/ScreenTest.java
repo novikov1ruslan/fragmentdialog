@@ -7,7 +7,6 @@ import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -76,8 +75,7 @@ public abstract class ScreenTest {
     private TaskResource resume;
     private TaskResource destroy;
     private TaskResource sendInvitation;
-    private GoogleApiClientWrapper apiClient;
-    private InvitationManager invitationManager;
+    private ApiClient apiClient;
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
 
@@ -91,9 +89,7 @@ public abstract class ScreenTest {
         activity = rule.getActivity();
         apiClient = rule.getApiClient();
         androidDevice = rule.getDevice();
-        invitationManager = Dependencies.getInvitationManager();
         setProgress(0);
-        INVITATIONS.add("test_id");
     }
 
     @After
@@ -150,15 +146,18 @@ public abstract class ScreenTest {
         registerIdlingResources(setScreenResource);
     }
 
-    protected final void sendInvitation(@NonNull final InvitationReceiver receiver) {
-        when(invitationManager.getInvitations()).thenReturn(INVITATIONS);
+    protected final void sendInvitation(final String displayName, final String invitationId) {
         sendInvitation = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                receiver.onInvitationsUpdated(INVITATIONS);
+                rule.getInvitationApiClient().sendInvitation(displayName, invitationId);
             }
         });
         registerIdlingResources(sendInvitation);
+    }
+
+    protected final void setInvitations(@NonNull Set<String> invitations) {
+        rule.getInvitationApiClient().setInvitations(invitations);
     }
 
     protected void signInSucceeded(final SignInListener listener) {
@@ -223,16 +222,12 @@ public abstract class ScreenTest {
         return activity.findViewById(id);
     }
 
-    protected final GoogleApiClientWrapper apiClient() {
+    protected final ApiClient apiClient() {
         return apiClient;
     }
 
     protected final AndroidDevice device() {
         return androidDevice;
-    }
-
-    protected final InvitationManager invitationManager() {
-        return invitationManager;
     }
 
     protected final GameSettings settings() {
@@ -276,10 +271,6 @@ public abstract class ScreenTest {
         Matcher<Intent> data = hasData(intent.getData());
         Matcher<Intent> type = hasType(intent.getType());
         return allOf(action, data, type);
-    }
-
-    protected final void setInvitation(@NonNull Set<String> invitations) {
-        when(invitationManager.getInvitations()).thenReturn(invitations);
     }
 
     @NonNull

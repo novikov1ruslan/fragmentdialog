@@ -10,7 +10,6 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.achievement.Achievements;
-import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
@@ -19,6 +18,7 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
 
 
 public interface ApiClient {
@@ -44,7 +44,7 @@ public interface ApiClient {
 
     void registerInvitationListener(@NonNull OnInvitationReceivedListener listener);
 
-    void loadInvitations(ResultCallback<? super Invitations.LoadInvitationsResult> callback);
+    void loadInvitations(InvitationLoadListener callback);
 
     Intent getAchievementsIntent();
 

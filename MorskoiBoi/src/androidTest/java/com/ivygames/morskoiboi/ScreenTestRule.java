@@ -1,19 +1,30 @@
 package com.ivygames.morskoiboi;
 
+import android.support.annotation.NonNull;
 import android.support.test.rule.ActivityTestRule;
 
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
+import com.google.android.gms.games.multiplayer.Participant;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
-    private GoogleApiClientWrapper apiClient;
+    private ApiClient apiClient;
     private AndroidDevice device;
     private GameSettings settings;
+
+    protected InvitationApiClient invitationApiClient = new InvitationApiClient();
 
     public ScreenTestRule() {
         super(BattleshipActivity.class);
@@ -25,9 +36,9 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     @Override
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();
-        apiClient = mock(GoogleApiClientWrapper.class);
+        apiClient = mock(ApiClient.class);
         Dependencies.inject(apiClient);
-        Dependencies.inject(mock(InvitationManager.class));
+//        Dependencies.inject(mock(InvitationManager.class));
         Dependencies.inject(mock(InvitationManager.class));
         Dependencies.inject(mock(AchievementsManager.class));
         Dependencies.inject(mock(ProgressManager.class));
@@ -35,6 +46,10 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         device = mock(AndroidDevice.class);
         when(device.isTablet()).thenReturn(isTablet());
         Dependencies.inject(device);
+
+        InvitationManager invitationManager = new InvitationManager(invitationApiClient);
+        Dependencies.inject(invitationManager);
+        Dependencies.inject(invitationApiClient);
     }
 
     private boolean isTablet() {
@@ -42,7 +57,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         return false;
     }
 
-    public GoogleApiClientWrapper getApiClient() {
+    public ApiClient getApiClient() {
         return apiClient;
     }
 
@@ -52,5 +67,53 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
     public GameSettings settings() {
         return settings;
+    }
+
+    public InvitationApiClient getInvitationApiClient() {
+        return invitationApiClient;
+    }
+
+    public static class InvitationApiClient extends DummyApiClient {
+
+        private OnInvitationReceivedListener listener;
+        private Set<String> invitations = new HashSet<>();
+
+        @Override
+        public void registerInvitationListener(@NonNull OnInvitationReceivedListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void loadInvitations(InvitationLoadListener listener) {
+            Collection<Invitation> invitationsCopy = new HashSet<>();
+            for (String id : invitations) {
+                invitationsCopy.add(createInvitation("Sagi " + id, id));
+            }
+            listener.onResult(invitationsCopy);
+        }
+
+        @Override
+        public boolean isConnected() {
+            return true;
+        }
+
+        public void sendInvitation(String displayName, String invitationId) {
+            listener.onInvitationReceived(createInvitation(displayName, invitationId));
+        }
+
+        @NonNull
+        private Invitation createInvitation(String displayName, String invitationId) {
+            Invitation invitation = mock(Invitation.class);
+            Participant inviter = mock(Participant.class);
+            when(invitation.getInviter()).thenReturn(inviter);
+            when(inviter.getDisplayName()).thenReturn(displayName);
+            when(invitation.getInvitationId()).thenReturn(invitationId);
+            return invitation;
+        }
+
+        public void setInvitations(Set<String> invitations) {
+            this.invitations = invitations;
+        }
+
     }
 }

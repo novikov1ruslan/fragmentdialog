@@ -11,23 +11,23 @@ public class InternetGameScreen_InvitationTest extends InternetGameScreen_ {
 
     @Test
     public void WhenThereIsInvitation__EnvelopeIsShown() {
-        setInvitation(INVITATIONS);
+        setInvitations(INVITATIONS);
         showScreen();
         checkHasInvitation(true);
     }
 
     @Test
     public void WhenThereAreNoInvitations__EnvelopeIsHidden() {
-        setInvitation(NO_INVITATIONS);
+        setInvitations(NO_INVITATIONS);
         showScreen();
         checkHasInvitation(false);
     }
 
     @Test
     public void WhenInvitationArrives__EnvelopeIsShown() {
-        setInvitation(NO_INVITATIONS);
+        setInvitations(NO_INVITATIONS);
         showScreen();
-        sendInvitation((InvitationReceiver) screen());
+        sendInvitation("Sagi", "test_id");
         checkHasInvitation(true);
     }
 
