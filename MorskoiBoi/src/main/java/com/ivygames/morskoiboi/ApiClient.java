@@ -44,7 +44,7 @@ public interface ApiClient {
 
     void registerInvitationListener(@NonNull OnInvitationReceivedListener listener);
 
-    PendingResult<Invitations.LoadInvitationsResult> loadInvitations();
+    void loadInvitations(ResultCallback<? super Invitations.LoadInvitationsResult> callback);
 
     Intent getAchievementsIntent();
 

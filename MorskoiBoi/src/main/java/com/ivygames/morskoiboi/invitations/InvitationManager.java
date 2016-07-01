@@ -48,11 +48,10 @@ public class InvitationManager {
             return;
         }
         Ln.d("load invitations");
-
         mGoogleApiClient.registerInvitationListener(mInvitationListener);
 
         Ln.d("loading invitations...");
-        mGoogleApiClient.loadInvitations().setResultCallback(mResultCallback);
+        mGoogleApiClient.loadInvitations(mResultCallback);
     }
 
     public Set<String> getInvitations() {

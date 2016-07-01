@@ -98,8 +98,8 @@ public class GoogleApiClientWrapper implements ApiClient {
         Games.Invitations.registerInvitationListener(mGoogleApiClient, listener);
     }
 
-    public PendingResult<Invitations.LoadInvitationsResult> loadInvitations() {
-        return Games.Invitations.loadInvitations(mGoogleApiClient);
+    public void loadInvitations(ResultCallback<? super Invitations.LoadInvitationsResult> callback) {
+        Games.Invitations.loadInvitations(mGoogleApiClient).setResultCallback(callback);
     }
 
     public Intent getAchievementsIntent() {
