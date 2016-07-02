@@ -127,6 +127,13 @@ public class WinScreenTest extends WinScreen_ {
     }
 
     @Test
+    public void WhenOpponentSurrendered__PressingContinueShowsSelectGameScreen() {
+        WhenOpponentSurrendered__InsteadOfYesNoContinueButtonShowed();
+        clickOn(continueButton());
+        checkDisplayed(SELECT_GAME_LAYOUT);
+    }
+
+    @Test
     public void AfterYesPressed__BoardSetupScreenShown() {
         surrendered = false;
         showScreen();

@@ -128,7 +128,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         }
 
         if (mOpponentSurrendered) {
-            Ln.d("opponent has surrendered - hiding continue option");
+            Ln.d("opponent has surrendered - hiding \"Yes\" option");
             mLayout.hideYesNoButtons();
             mLayout.showContinueButton();
         } else {
@@ -140,16 +140,16 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
                     backToBoardSetup();
                 }
             });
-
-            mLayout.setNoClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    UiEvent.send("don't_continue", "win");
-                    doNotContinue();
-                }
-            });
         }
+
+        mLayout.setNoClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                UiEvent.send("don't_continue" + (mOpponentSurrendered ? " because surrendered" : ""), "win");
+                doNotContinue();
+            }
+        });
 
         mLayout.setShips(mShips);
 
