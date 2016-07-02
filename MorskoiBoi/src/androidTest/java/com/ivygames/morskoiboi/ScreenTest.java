@@ -75,6 +75,7 @@ public abstract class ScreenTest {
     private TaskResource resume;
     private TaskResource destroy;
     private TaskResource sendInvitation;
+    private TaskResource setInvitation;
     private ApiClient apiClient;
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
@@ -90,6 +91,8 @@ public abstract class ScreenTest {
         apiClient = rule.getApiClient();
         androidDevice = rule.getDevice();
         setProgress(0);
+        INVITATIONS.add("id1");
+        INVITATIONS.add("id2");
     }
 
     @After
@@ -100,6 +103,10 @@ public abstract class ScreenTest {
 
         if (sendInvitation != null) {
             unregisterIdlingResources(sendInvitation);
+        }
+
+        if (setInvitation != null) {
+            unregisterIdlingResources(setInvitation);
         }
 
         if (signInSucceeded != null) {
@@ -156,8 +163,14 @@ public abstract class ScreenTest {
         registerIdlingResources(sendInvitation);
     }
 
-    protected final void setInvitations(@NonNull Set<String> invitations) {
-        rule.getInvitationApiClient().setInvitations(invitations);
+    protected final void setInvitations(@NonNull final Set<String> invitations) {
+        setInvitation = new TaskResource(new Runnable() {
+            @Override
+            public void run() {
+                rule.getInvitationApiClient().setInvitations(invitations);
+            }
+        });
+        registerIdlingResources(setInvitation);
     }
 
     protected void signInSucceeded(final SignInListener listener) {
