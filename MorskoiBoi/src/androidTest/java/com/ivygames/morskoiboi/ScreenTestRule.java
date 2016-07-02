@@ -37,6 +37,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();
         apiClient = mock(ApiClient.class);
+        when(apiClient.isConnected()).thenReturn(true);
         Dependencies.inject(apiClient);
         Dependencies.inject(mock(InvitationManager.class));
         Dependencies.inject(mock(AchievementsManager.class));

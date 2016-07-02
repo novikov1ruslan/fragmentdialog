@@ -174,8 +174,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setPlayerName(mPlayer.getName());
         mLayout.setEnemyName(mEnemy.getName());
 
-        Ln.d("opponent is still setting board");
-        showOpponentSettingBoardNote();
+        if (mPlayer.isOpponentReady()) {
+            showOpponentTurn();
+        } else {
+            Ln.d("opponent is still setting board");
+            showOpponentSettingBoardNote();
+        }
 
         mPlayer.setCallback(new UiPlayerCallback());
 
