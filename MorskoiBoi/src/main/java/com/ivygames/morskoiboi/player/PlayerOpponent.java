@@ -200,14 +200,6 @@ public class PlayerOpponent extends AbstractOpponent {
         mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
     }
 
-    public Board getEnemyBoard() {
-        return mEnemyBoard;
-    }
-
-    public Board getBoard() {
-        return mMyBoard;
-    }
-
     public void setBoard(Board board) {
         Ln.v("player's board set: " + board);
         mMyBoard = board;

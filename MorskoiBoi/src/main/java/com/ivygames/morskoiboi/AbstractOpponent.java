@@ -39,6 +39,14 @@ public abstract class AbstractOpponent implements Opponent {
         mOpponentReady = false;
     }
 
+    public Board getEnemyBoard() {
+        return mEnemyBoard;
+    }
+
+    public Board getBoard() {
+        return mMyBoard;
+    }
+
     @Override
     public String getName() {
         return mName;
