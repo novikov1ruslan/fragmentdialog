@@ -48,6 +48,26 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.v("new player created");
     }
 
+    private void reset2() {
+        Ln.v("resetting");
+        super.reset();
+        mPlayerReady = false;
+        mOpponentVersion = 0;
+    }
+
+    public void startBidding(int bid) {
+        mMyBid = bid;
+        mPlayerReady = true;
+
+        if (isOpponentReady() && opponentStarts()) {
+            Ln.d(this + ": opponent is ready and it is his turn");
+            mOpponent.go();
+        } else {
+            Ln.d(this + ": opponent is not ready - sending him my bid");
+            mOpponent.onEnemyBid(mMyBid);
+        }
+    }
+
     public void setCallback(@NonNull PlayerCallback callback) {
         mCallback = callback;
         Ln.v("callback set, opponent ready = " + isOpponentReady());
@@ -65,16 +85,9 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
-    private void reset2() {
-        Ln.v("resetting");
-        super.reset();
-        mPlayerReady = false;
-        mOpponentVersion = 0;
-    }
-
     @Override
     public void go() {
-        Ln.d("player goes");
+        Ln.v("player goes");
         if (mCallback != null) {
             mCallback.onPlayersTurn();
             if (!isOpponentReady()) {
@@ -83,7 +96,7 @@ public class PlayerOpponent extends AbstractOpponent {
         }
         super.go();
         if (mCallback != null) {
-            mCallback.go();
+            mCallback.onPlayerGoes();
         }
     }
 
@@ -178,9 +191,9 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        mOpponent = opponent;
-        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
         Ln.d(this + ": my opponent is " + opponent);
+        mOpponent = opponent;
+        opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
 
     private void markNeighbouringCellsAsOccupied(@NonNull Ship ship) {
@@ -233,20 +246,6 @@ public class PlayerOpponent extends AbstractOpponent {
         mChatListener.showChatCrouton(message);
         if (mCallback != null) {
             mCallback.onMessage(text);
-        }
-    }
-
-    @Override
-    public void startBidding(int bid) {
-        super.startBidding(bid);
-        mPlayerReady = true;
-
-        if (isOpponentReady() && opponentStarts()) {
-            Ln.d(this + ": opponent is ready and it is his turn");
-            mOpponent.go();
-        } else {
-            Ln.d(this + ": opponent is not ready - sending him my bid");
-            mOpponent.onEnemyBid(mMyBid);
         }
     }
 

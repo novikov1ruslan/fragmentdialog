@@ -14,7 +14,7 @@ public interface PlayerCallback {
         OPPONENT
     }
 
-    void go();
+    void onPlayerGoes();
 
     void onShotResult(@NonNull PokeResult result);
 

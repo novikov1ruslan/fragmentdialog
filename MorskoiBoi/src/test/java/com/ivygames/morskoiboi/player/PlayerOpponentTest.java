@@ -206,7 +206,7 @@ public class PlayerOpponentTest {
     public void WhenPlayerGoes__GoCallbackCalled() {
         mPlayer.go();
 
-        verify(callback, times(1)).go();
+        verify(callback, times(1)).onPlayerGoes();
     }
 
     @Test

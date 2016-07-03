@@ -54,22 +54,21 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         Ln.v("new android opponent created");
     }
 
-    @Override
-    public void setOpponent(@NonNull Opponent opponent) {
-        Ln.d(this + ": my opponent is " + opponent);
-
-        mDelegate.setOpponent(opponent);
-        mDelegate.setOpponentVersion(Opponent.CURRENT_VERSION);
+    private void reset2() {
+        super.reset();
+        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+        mMyBid = new Bidder().newBid();
     }
 
     public void setCancellable (@NonNull Cancellable cancellable) {
         mCancellable = cancellable;
     }
 
-    private void reset2() {
-        super.reset();
-        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
-        startBidding(new Bidder().newBid());
+    @Override
+    public void setOpponent(@NonNull Opponent opponent) {
+        Ln.d(this + ": my opponent is " + opponent);
+        mDelegate.setOpponent(opponent);
+        mDelegate.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
 
     private void placeShips() {

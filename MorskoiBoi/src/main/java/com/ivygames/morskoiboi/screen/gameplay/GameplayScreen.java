@@ -426,7 +426,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private class UiPlayerCallback implements PlayerCallback {
 
         @Override
-        public void go() {
+        public void onPlayerGoes() {
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");
                 mTimerController.start(); // for all practical scenarios - start will only be called from here

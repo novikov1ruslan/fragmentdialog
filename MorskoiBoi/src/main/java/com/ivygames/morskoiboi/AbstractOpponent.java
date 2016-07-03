@@ -91,8 +91,4 @@ public abstract class AbstractOpponent implements Opponent {
         return mMyBid < mEnemyBid;
     }
 
-    public void startBidding(int bid) {
-        mMyBid = bid;
-    }
-
 }
