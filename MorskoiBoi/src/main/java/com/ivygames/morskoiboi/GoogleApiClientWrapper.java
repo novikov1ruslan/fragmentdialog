@@ -28,6 +28,7 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
+import com.ivygames.morskoiboi.invitations.GameInvitation;
 import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
 
 import org.commons.logger.Ln;
@@ -209,9 +210,12 @@ public class GoogleApiClientWrapper implements ApiClient {
             if (list.getInvitations().getCount() > 0) {
                 InvitationBuffer invitations = list.getInvitations();
                 Ln.v("loaded " + invitations.getCount() + " invitations");
-                Collection<Invitation> invitationsCopy = new HashSet<>();
+                Collection<GameInvitation> invitationsCopy = new HashSet<>();
                 for (int i = 0; i < invitations.getCount(); i++) {
-                    invitationsCopy.add(invitations.get(i));
+                    Invitation invitation = invitations.get(i);
+                    invitationsCopy.add(
+                            new GameInvitation(invitation.getInviter().getDisplayName(),
+                                    invitation.getInvitationId()));
                 }
                 list.getInvitations().release();
                 mLoadListener.onResult(invitationsCopy);

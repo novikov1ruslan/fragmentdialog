@@ -2,13 +2,13 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
+import com.ivygames.morskoiboi.invitations.GameInvitation;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 
 import org.commons.logger.Ln;
 
-public class InvitationPresenter implements OnInvitationReceivedListener {
+public class InvitationPresenter implements InvitationReceivedListener {
 
     @NonNull
     private final InvitationObserver mObserver;
@@ -31,7 +31,7 @@ public class InvitationPresenter implements OnInvitationReceivedListener {
     }
 
     @Override
-    public void onInvitationReceived(Invitation invitation) {
+    public void onInvitationReceived(GameInvitation invitation) {
         updateInvitations();
     }
 

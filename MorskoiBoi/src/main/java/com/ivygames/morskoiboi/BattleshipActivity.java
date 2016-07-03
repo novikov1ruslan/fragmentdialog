@@ -18,13 +18,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.invitations.GameInvitation;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.music.MusicPlayer;
 import com.ivygames.morskoiboi.player.ChatListener;
@@ -94,7 +94,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private final OnConnectionFailedListener mConnectionFailedListener = new OnConnectionFailedListenerImpl();
     private ViewGroup mLayout;
     @NonNull
-    private final OnInvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
+    private final InvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
 
     @SuppressLint("InflateParams")
     @Override
@@ -431,10 +431,10 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
     }
 
-    private class InvitationReceivedListenerImpl implements OnInvitationReceivedListener {
+    private class InvitationReceivedListenerImpl implements InvitationReceivedListener {
         @Override
-        public void onInvitationReceived(Invitation invitation) {
-            View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, invitation.getInviter().getDisplayName()), mLayout);
+        public void onInvitationReceived(GameInvitation invitation) {
+            View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, invitation.name), mLayout);
             Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
         }
 

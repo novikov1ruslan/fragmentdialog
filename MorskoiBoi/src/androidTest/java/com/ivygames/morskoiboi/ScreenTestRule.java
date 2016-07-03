@@ -7,6 +7,7 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.invitations.GameInvitation;
 import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -84,7 +85,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         @Override
         public void loadInvitations(InvitationLoadListener listener) {
             loadListener = listener;
-            listener.onResult(createInvitations(invitations));
+            listener.onResult(createGameInvitations(invitations));
         }
 
         @Override
@@ -98,16 +99,16 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
         public void setInvitations(Set<String> invitations) {
             this.invitations = invitations;
-            loadListener.onResult(createInvitations(invitations));
+            loadListener.onResult(createGameInvitations(invitations));
         }
 
     }
 
     @NonNull
-    public static Collection<Invitation> createInvitations(Set<String> invitations) {
-        Collection<Invitation> invitationsCopy = new HashSet<>();
+    public static Collection<GameInvitation> createGameInvitations(Set<String> invitations) {
+        Collection<GameInvitation> invitationsCopy = new HashSet<>();
         for (String id : invitations) {
-            invitationsCopy.add(createInvitation("Sagi " + id, id));
+            invitationsCopy.add(new GameInvitation("Sagi " + id, id));
         }
         return invitationsCopy;
     }

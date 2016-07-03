@@ -23,7 +23,7 @@ public class InvitationManager {
     @NonNull
     private final InvitationLoadListener mResultCallback = new LoadInvitationsResultResultCallback();
     @NonNull
-    private final List<OnInvitationReceivedListener> mInvitationReceivers = new ArrayList<>();
+    private final List<InvitationReceivedListener> mInvitationReceivers = new ArrayList<>();
 
     @NonNull
     private final ApiClient mGoogleApiClient;
@@ -32,11 +32,11 @@ public class InvitationManager {
         mGoogleApiClient = client;
     }
 
-    public void registerInvitationReceiver(@NonNull OnInvitationReceivedListener receiver) {
+    public void registerInvitationReceiver(@NonNull InvitationReceivedListener receiver) {
         mInvitationReceivers.add(receiver);
     }
 
-    public void unregisterInvitationReceiver(@NonNull OnInvitationReceivedListener receiver) {
+    public void unregisterInvitationReceiver(@NonNull InvitationReceivedListener receiver) {
         mInvitationReceivers.remove(receiver);
     }
 
@@ -56,14 +56,14 @@ public class InvitationManager {
         return new HashSet<>(mIncomingInvitationIds);
     }
 
-    private void notifyReceived(@NonNull Invitation invitation) {
-        for (OnInvitationReceivedListener receiver : mInvitationReceivers) {
+    private void notifyReceived(@NonNull GameInvitation invitation) {
+        for (InvitationReceivedListener receiver : mInvitationReceivers) {
             receiver.onInvitationReceived(invitation);
         }
     }
 
     private void notifyRemoved(@NonNull String invitationId) {
-        for (OnInvitationReceivedListener receiver : mInvitationReceivers) {
+        for (InvitationReceivedListener receiver : mInvitationReceivers) {
             receiver.onInvitationRemoved(invitationId);
         }
     }
@@ -74,8 +74,9 @@ public class InvitationManager {
         public void onInvitationReceived(Invitation invitation) {
             String displayName = invitation.getInviter().getDisplayName();
             Ln.d("received invitation from: " + displayName);
-            mIncomingInvitationIds.add(invitation.getInvitationId());
-            notifyReceived(invitation);
+            String invitationId = invitation.getInvitationId();
+            mIncomingInvitationIds.add(invitationId);
+            notifyReceived(new GameInvitation(displayName, invitationId));
         }
 
         @Override
@@ -89,13 +90,12 @@ public class InvitationManager {
     private class LoadInvitationsResultResultCallback implements InvitationLoadListener {
 
         @Override
-        public void onResult(@NonNull Collection<Invitation> invitations) {
+        public void onResult(@NonNull Collection<GameInvitation> invitations) {
             mIncomingInvitationIds.clear();
             if (invitations.size() > 0) {
                 Ln.v("loaded " + invitations.size() + " invitations");
-                for (Invitation invitation: invitations) {
-                    String invitationId = invitation.getInvitationId();
-                    mIncomingInvitationIds.add(invitationId);
+                for (GameInvitation invitation: invitations) {
+                    mIncomingInvitationIds.add(invitation.id);
                     notifyReceived(invitation);
                 }
             } else {
