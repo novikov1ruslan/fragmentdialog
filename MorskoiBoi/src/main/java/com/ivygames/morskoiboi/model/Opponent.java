@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 public interface Opponent {
 
     int CURRENT_VERSION = 3;
+    int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
 
     /**
      * This opponent is being shot at given coordinate. <br>

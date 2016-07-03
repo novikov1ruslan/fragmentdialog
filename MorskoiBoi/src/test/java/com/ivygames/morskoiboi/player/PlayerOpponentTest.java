@@ -300,7 +300,7 @@ public class PlayerOpponentTest {
         when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
         mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules, listener);
         mPlayer.setOpponent(mEnemy);
-        mPlayer.setOpponentVersion(PlayerOpponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+        mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
         mPlayer.setCallback(callback);
 
         Board board = new Board();

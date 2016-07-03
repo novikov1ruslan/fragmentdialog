@@ -20,7 +20,6 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent extends AbstractOpponent {
 
-    public static final int PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL = 2;
     public static volatile Board debug_board;
 
     @NonNull
