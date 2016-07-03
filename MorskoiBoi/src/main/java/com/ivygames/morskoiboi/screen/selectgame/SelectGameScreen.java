@@ -24,6 +24,7 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
@@ -32,8 +33,6 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.InvitationPresenter;
@@ -155,12 +154,9 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        Model.setOpponents(new PlayerOpponent(playerName, placement, mRules, parent()), opponent);
-        showBoardSetup(new AndroidGame());
-    }
-
-    private void showBoardSetup(@NonNull Game game) {
-        setScreen(ScreenCreator.newBoardSetupScreen(game));
+        PlayerOpponent player = new PlayerOpponent(playerName, placement, mRules, parent());
+        Session session = new Session(player, opponent);
+        setScreen(ScreenCreator.newBoardSetupScreen(new AndroidGame(), session));
     }
 
     @Override

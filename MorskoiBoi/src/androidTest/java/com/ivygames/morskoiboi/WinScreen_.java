@@ -53,7 +53,7 @@ public class WinScreen_ extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new WinScreen(activity, game, fleet, statistics, surrendered);
+        return new WinScreen(activity, game, session, fleet, statistics, surrendered);
     }
 
     protected void expectProcessAchievementsBeCalled(VerificationMode times) {

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
@@ -71,8 +72,8 @@ public class ScreenCreator {
     }
 
     @NonNull
-    public static BoardSetupScreen newBoardSetupScreen(@NonNull Game game) {
-        return new BoardSetupScreen(activity, game);
+    public static BoardSetupScreen newBoardSetupScreen(@NonNull Game game, @NonNull Session session) {
+        return new BoardSetupScreen(activity, game, session);
     }
 
     @NonNull
@@ -91,23 +92,24 @@ public class ScreenCreator {
     }
 
     @NonNull
-    public static GameplayScreen newGameplayScreen(@NonNull Game game) {
-        return new GameplayScreen(activity, game,
+    public static GameplayScreen newGameplayScreen(@NonNull Game game, @NonNull Session session) {
+        return new GameplayScreen(activity, game, session,
                 new TurnTimerController(game.getTurnTimeout(),
                         new AsyncTurnTimerFactory()));
     }
 
     @NonNull
     public static WinScreen newWinScreen(@NonNull Game game,
+                                         @NonNull Session session,
                                          @NonNull Collection<Ship> fleet,
                                          @NonNull ScoreStatistics statistics,
                                          boolean opponentSurrendered) {
-        return new WinScreen(activity, game, fleet, statistics, opponentSurrendered);
+        return new WinScreen(activity, game, session, fleet, statistics, opponentSurrendered);
     }
 
     @NonNull
-    public static LostScreen newLostScreen(@NonNull Game game) {
-        return new LostScreen(activity, game);
+    public static LostScreen newLostScreen(@NonNull Game game, @NonNull Session session) {
+        return new LostScreen(activity, game, session);
     }
 
     @NonNull

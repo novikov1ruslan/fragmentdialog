@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -27,25 +26,32 @@ public abstract class OnlineScreen_ extends ScreenTest {
     protected Game game;
     protected PlayerOpponent player;
     protected Opponent opponent;
+    protected Session session;
 
     @Before
     public void setup() {
         super.setup();
         opponent = mock(Opponent.class);
         when(opponent.getName()).thenReturn(OPPONENT_NAME);
-        Model.opponent = opponent;
 
         game = mock(Game.class);
 
-        player = mock(PlayerOpponent.class);
-        when(player.getBoard()).thenReturn(new Board());
-        when(player.getEnemyBoard()).thenReturn(new Board());
-        Model.player = player;
+        player = mockPlayer();
+
+        session = new Session(player, opponent);
 
         rules = mock(Rules.class);
         when(rules.getAllShipsSizes()).thenReturn(new int[]{4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
 
         Dependencies.inject(rules);
+    }
+
+    public PlayerOpponent mockPlayer() {
+        PlayerOpponent player = mock(PlayerOpponent.class);
+        when(player.getBoard()).thenReturn(new Board());
+        when(player.getEnemyBoard()).thenReturn(new Board());
+
+        return player;
     }
 
     @Override

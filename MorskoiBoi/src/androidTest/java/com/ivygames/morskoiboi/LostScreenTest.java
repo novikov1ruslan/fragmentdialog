@@ -16,7 +16,7 @@ public class LostScreenTest extends LostScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new LostScreen(activity, game);
+        return new LostScreen(activity, game, session);
     }
 
     @Test

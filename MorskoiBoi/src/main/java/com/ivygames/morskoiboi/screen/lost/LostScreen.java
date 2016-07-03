@@ -14,8 +14,8 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.music.SoundBarFactory;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -33,11 +33,14 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private final GameSettings mSettings = Dependencies.getSettings();
 
     private View mView;
+    private Session mSession;
 
-    public LostScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
-        super(parent, game, Model.opponent.getName());
-        AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
-        mSoundBar = SoundBarFactory.create(mParent.getAssets(), "lost.ogg", audioManager);
+    public LostScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
+        super(parent, game, session.opponent.getName());
+        mSession = session;
+
+        AudioManager audioManager = (AudioManager) parent.getSystemService(Context.AUDIO_SERVICE);
+        mSoundBar = SoundBarFactory.create(parent.getAssets(), "lost.ogg", audioManager);
         mSoundBar.play();
         mSettings.incrementGamesPlayedCounter();
     }
@@ -107,7 +110,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
-        setScreen(ScreenCreator.newBoardSetupScreen(mGame));
+        setScreen(ScreenCreator.newBoardSetupScreen(mGame, mSession));
     }
 
     @Override

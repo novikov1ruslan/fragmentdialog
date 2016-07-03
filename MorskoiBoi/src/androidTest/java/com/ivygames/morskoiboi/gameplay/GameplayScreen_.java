@@ -27,7 +27,7 @@ public class GameplayScreen_ extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new GameplayScreen(activity, game, timeController);
+        return new GameplayScreen(activity, game, session, timeController);
     }
 
     @NonNull

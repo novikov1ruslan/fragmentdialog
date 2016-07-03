@@ -26,6 +26,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.VibratorFacade;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.Board;
@@ -34,7 +35,6 @@ import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.GameEvent;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -106,6 +106,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final ChatAdapter mChatAdapter;
     @NonNull
     private final GameplaySoundManager mGameplaySounds;
+    private Session mSession;
     @NonNull
     private final TurnTimerController mTimerController;
     @NonNull
@@ -118,15 +119,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private GameplayLayoutInterface mLayout;
     private boolean mBackPressEnabled = true;
 
-    public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull TurnTimerController timerController) {
-        super(parent, game, Model.opponent.getName());
+    public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session,
+                          @NonNull TurnTimerController timerController) {
+        super(parent, game, session.opponent.getName());
+        mSession = session;
         mTimerController = timerController;
 
         AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
-        mGameplaySounds = new GameplayScreenSounds((AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
+        mGameplaySounds = new GameplayScreenSounds((AudioManager) parent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
-        mPlayer = Model.player;
-        mEnemy = Model.opponent;
+        mPlayer = session.player;
+        mEnemy = session.opponent;
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
 
@@ -657,7 +660,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(ScreenCreator.newWinScreen(mGame, mShips, mStatistics, mOpponentSurrendered));
+            setScreen(ScreenCreator.newWinScreen(mGame, mSession, mShips, mStatistics, mOpponentSurrendered));
         }
     }
 
@@ -665,7 +668,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void run() {
-            setScreen(ScreenCreator.newLostScreen(mGame));
+            setScreen(ScreenCreator.newLostScreen(mGame, mSession));
         }
     }
 

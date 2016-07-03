@@ -18,10 +18,10 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
@@ -75,9 +75,11 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             }).show(mFm, FragmentAlertDialog.TAG);
         }
     };
+    private Session mSession;
 
-    public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game) {
-        super(parent, game, Model.opponent.getName());
+    public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
+        super(parent, game, session.opponent.getName());
+        mSession = session;
         mFleet.addAll(generateFullHorizontalFleet());
         Ln.d("new board created, fleet initialized");
     }
@@ -151,7 +153,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             UiEvent.send("done");
             if (mRules.isBoardSet(mBoard)) {
                 Ln.d("board set - showing gameplay screen");
-                Model.player.setBoard(mBoard);
+                mSession.player.setBoard(mBoard);
                 showGameplayScreen();
             } else {
                 Ln.d("!: board is not set yet");
@@ -167,7 +169,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     };
 
     private void showGameplayScreen() {
-        setScreen(ScreenCreator.newGameplayScreen(mGame));
+        setScreen(ScreenCreator.newGameplayScreen(mGame, mSession));
     }
 
     private void showSetupValidationError() {

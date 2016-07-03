@@ -18,6 +18,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
@@ -26,7 +27,6 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectThread;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -51,6 +51,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = Dependencies.getRules();
+    @NonNull
+    private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
     public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {
         super(parent);
@@ -173,9 +175,9 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        Placement placement = PlacementFactory.getAlgorithm();
-        Model.setOpponents(new PlayerOpponent(playerName, placement, mRules, parent()), opponent);
-        setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection)));
+        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules, parent());
+        Session session = new Session(player, opponent);
+        setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection), session));
     }
 
     @Override

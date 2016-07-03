@@ -19,6 +19,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
@@ -27,7 +28,6 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -54,6 +54,8 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = Dependencies.getRules();
+    @NonNull
+    private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -193,9 +195,10 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        Placement placement = PlacementFactory.getAlgorithm();
-        Model.setOpponents(new PlayerOpponent(playerName, placement, mRules, parent()), opponent);
-        setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection)));
+
+        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules, parent());
+        Session session = new Session(player, opponent);
+        setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection), session));
     }
 
     @Override

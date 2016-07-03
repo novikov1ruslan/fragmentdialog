@@ -4,10 +4,11 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
-import com.ivygames.morskoiboi.model.Model;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;
@@ -73,11 +74,16 @@ public class GameplayScreenTest extends GameplayScreen_ {
 
     @Test
     public void WhenScreenDestroyed_ForAndroidGame__AndroidOpponentIsCancelled() {
-        AndroidOpponent androidOpponent = mockAndroidOpponent();
+        PlayerOpponent player = mockPlayer();
+        AndroidOpponent android = mock(AndroidOpponent.class);
+        when(android.getName()).thenReturn(OPPONENT_NAME);
+        session = new Session(player, android);
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
+
         destroy();
-        verify(androidOpponent, times(1)).cancel();
+
+        verify(android, times(1)).cancel();
     }
 
     @Test
@@ -98,14 +104,6 @@ public class GameplayScreenTest extends GameplayScreen_ {
 
     private void opponentReady(boolean ready) {
         when(player.isOpponentReady()).thenReturn(ready);
-    }
-
-    @NonNull
-    private AndroidOpponent mockAndroidOpponent() {
-        AndroidOpponent androidOpponent = mock(AndroidOpponent.class);
-        when(androidOpponent.getName()).thenReturn(OPPONENT_NAME);
-        Model.opponent = androidOpponent;
-        return androidOpponent;
     }
 
     @NonNull

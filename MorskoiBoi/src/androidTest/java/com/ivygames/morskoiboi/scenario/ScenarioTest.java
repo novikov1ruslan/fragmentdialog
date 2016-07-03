@@ -16,7 +16,7 @@ public class ScenarioTest extends OnlineScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new GameplayScreen(activity, game, timerController);
+        return new GameplayScreen(activity, game, session, timerController);
     }
 
     @Before

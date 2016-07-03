@@ -19,11 +19,11 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
@@ -43,6 +43,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private WinLayoutSmall mLayout;
     private final long mTime;
 
+    private Session mSession;
     @NonNull
     private final Collection<Ship> mShips;
     @NonNull
@@ -66,10 +67,12 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     public WinScreen(@NonNull BattleshipActivity parent,
                      @NonNull Game game,
+                     @NonNull Session session,
                      @NonNull Collection<Ship> fleet,
                      @NonNull ScoreStatistics statistics,
                      boolean opponentSurrendered) {
-        super(parent, game, Model.opponent.getName());
+        super(parent, game, session.opponent.getName());
+        mSession = session;
         mShips = fleet;
         mStatistics = statistics;
         mOpponentSurrendered = opponentSurrendered;
@@ -218,7 +221,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     private void backToBoardSetup() {
         Ln.d("getting back to " + BoardSetupScreen.TAG);
-        setScreen(ScreenCreator.newBoardSetupScreen(mGame));
+        setScreen(ScreenCreator.newBoardSetupScreen(mGame, mSession));
     }
 
     private void submitScore(int totalScores) {

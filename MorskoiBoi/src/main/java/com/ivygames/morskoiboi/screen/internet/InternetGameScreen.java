@@ -23,9 +23,9 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
-import com.ivygames.morskoiboi.model.Model;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetGameListener;
@@ -64,6 +64,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     private final MultiplayerHub mMultiplayerHub;
 
     private InvitationPresenter mInvitationPresenter;
+    private Session mSession;
 
     public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull MultiplayerHub hub) {
         super(parent);
@@ -111,7 +112,8 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mInternetGame = new InternetGame(mApiClient, mInternetGameListener);
         InternetOpponent opponent = new InternetOpponent(mInternetGame, getString(R.string.player));
         mInternetGame.setRealTimeMessageReceivedListener(opponent);
-        Model.setOpponents(new PlayerOpponent(fetchPlayerName(), mPlacement, mRules, parent()), opponent);
+        PlayerOpponent player = new PlayerOpponent(fetchPlayerName(), mPlacement, mRules, parent());
+        mSession = new Session(player, opponent);
     }
 
     @NonNull
@@ -239,7 +241,8 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             hideWaitingScreen();
             if (resultCode == Activity.RESULT_OK) {
                 Ln.d("starting game");
-                setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame));
+                // TODO: call createGame() here
+                setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame, mSession));
             } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
                 Ln.d("user explicitly chose to leave the room");
                 // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
