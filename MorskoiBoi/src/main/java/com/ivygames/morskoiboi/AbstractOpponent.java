@@ -87,7 +87,7 @@ public abstract class AbstractOpponent implements Opponent {
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }
 
-    public final boolean opponentStarts() {
+    protected final boolean opponentStarts() {
         return mMyBid < mEnemyBid;
     }
 

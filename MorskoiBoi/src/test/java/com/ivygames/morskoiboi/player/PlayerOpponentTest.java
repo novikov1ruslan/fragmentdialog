@@ -1,6 +1,9 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.player;
 
 import com.ivygames.common.analytics.ExceptionHandler;
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.PlayerCallback;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -8,8 +11,6 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -355,13 +356,6 @@ public class PlayerOpponentTest {
         mPlayer.onLost(new Board());
 
         assertThat(mPlayer.getEnemyBoard().getEmptyCells().size(), is(100));
-    }
-
-    @Test
-    public void WhenOpponentLooses__it_is_not_enemy_turn() {
-        mPlayer.onLost(new Board());
-
-        assertThat(mPlayer.opponentStarts(), is(false));
     }
 
     @Test

@@ -134,20 +134,17 @@ public class AndroidOpponentTest {
 
         mAndroid.onEnemyBid(2);
 
-        assertThat(mAndroid.opponentStarts(), is(true));
         verify(mOpponent, times(1)).go();
     }
 
     @Test
-    public void when_opponent_bid_with_lower_bid__opponent_gets_my_bid() {
-        int myBid = 2;
-        mAndroid.startBidding(myBid);
+    public void WhenOpponentBidsWithLowerBid__OpponentGetsMyBid() {
+        mAndroid.startBidding(2);
         when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
 
         mAndroid.onEnemyBid(1);
 
-        assertThat(mAndroid.opponentStarts(), is(false));
-        verify(mOpponent, times(1)).onEnemyBid(myBid);
+        verify(mOpponent, times(1)).onEnemyBid(2);
     }
 
     @Test
