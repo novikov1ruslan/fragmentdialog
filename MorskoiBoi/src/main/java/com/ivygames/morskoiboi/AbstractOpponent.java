@@ -15,6 +15,8 @@ public abstract class AbstractOpponent implements Opponent {
     private static final int NOT_READY = -1;
 
     @NonNull
+    private final String mName;
+    @NonNull
     protected Board mMyBoard = new Board();
     @NonNull
     protected Board mEnemyBoard = new Board();
@@ -24,6 +26,10 @@ public abstract class AbstractOpponent implements Opponent {
 
     private boolean mOpponentReady;
 
+    public AbstractOpponent(@NonNull String name) {
+        mName = name;
+    }
+
     protected final void reset() {
         Ln.d(this + ": initializing boards and bids");
         mEnemyBoard = new Board();
@@ -31,6 +37,11 @@ public abstract class AbstractOpponent implements Opponent {
         mMyBid = NOT_READY;
         mEnemyBid = NOT_READY;
         mOpponentReady = false;
+    }
+
+    @Override
+    public String getName() {
+        return mName;
     }
 
     @Override
@@ -91,4 +102,8 @@ public abstract class AbstractOpponent implements Opponent {
         return mMyBid < mEnemyBid;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

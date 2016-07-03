@@ -23,8 +23,6 @@ public class PlayerOpponent extends AbstractOpponent {
     public static volatile Board debug_board;
 
     @NonNull
-    private final String mName;
-    @NonNull
     private final Placement mPlacement;
     @NonNull
     private final Rules mRules;
@@ -41,8 +39,8 @@ public class PlayerOpponent extends AbstractOpponent {
                           @NonNull Placement placement,
                           @NonNull Rules rules,
                           @NonNull ChatListener listener) {
+        super(name);
         mPlacement = placement;
-        mName = name;
         mRules = rules;
         mChatListener = listener;
         Ln.v("new player created");
@@ -202,11 +200,6 @@ public class PlayerOpponent extends AbstractOpponent {
         mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
     }
 
-    @Override
-    public String getName() {
-        return mName;
-    }
-
     public Board getEnemyBoard() {
         return mEnemyBoard;
     }
@@ -267,8 +260,4 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.d(this + ": opponent's protocol version: v" + ver);
     }
 
-    @Override
-    public String toString() {
-        return getName();
-    }
 }

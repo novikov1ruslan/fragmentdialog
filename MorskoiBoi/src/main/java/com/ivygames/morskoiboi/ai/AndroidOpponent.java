@@ -24,10 +24,6 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
-    @NonNull
-    private BotAlgorithm mBot;
-    @NonNull
-    private final String mName;
     private Cancellable mCancellable;
     @NonNull
     private final Placement mPlacement;
@@ -37,20 +33,22 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private final Rules mRules;
 //    private Opponent mOpponent;
 
+    @NonNull
+    private BotAlgorithm mBot;
+
     public AndroidOpponent(@NonNull String name,
                            @NonNull Board board,
                            @NonNull Placement placement,
                            @NonNull Rules rules,
                            @NonNull Opponent delegate) {
-        mName = name;
+        super(name);
         mMyBoard = board;
         mPlacement = placement;
         mRules = rules;
         mDelegate = delegate;
 
-        Ln.d(this + ": initializing boards and bids");
-        mMyBid = new Bidder().newBid();
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+        mMyBid = new Bidder().newBid();
         Ln.v("new android opponent created");
     }
 
@@ -65,22 +63,17 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     }
 
     @Override
+    public void cancel() {
+        if (mCancellable != null) {
+            mCancellable.cancel();
+        }
+    }
+
+    @Override
     public void setOpponent(@NonNull Opponent opponent) {
         Ln.d(this + ": my opponent is " + opponent);
         mDelegate.setOpponent(opponent);
         mDelegate.setOpponentVersion(Opponent.CURRENT_VERSION);
-    }
-
-    private void placeShips() {
-        mPlacement.populateBoardWithShips(mMyBoard, generateFullFleet());
-        if (BuildConfig.DEBUG) {
-            Ln.i(this + ": my board: " + mMyBoard);
-        }
-    }
-
-    @NonNull
-    private Collection<Ship> generateFullFleet() {
-        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
     }
 
     @Override
@@ -121,12 +114,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         }
     }
 
-    @NonNull
-    @Override
-    public String getName() {
-        return mName;
-    }
-
     @Override
     public void onEnemyBid(int bid) {
         super.onEnemyBid(bid);
@@ -163,16 +150,16 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         mDelegate.onNewMessage(text + "!!!");
     }
 
-    @Override
-    public void cancel() {
-        if (mCancellable != null) {
-            mCancellable.cancel();
+    private void placeShips() {
+        mPlacement.populateBoardWithShips(mMyBoard, generateFullFleet());
+        if (BuildConfig.DEBUG) {
+            Ln.i(this + ": my board: " + mMyBoard);
         }
     }
 
-    @Override
-    public String toString() {
-        return mName;
+    @NonNull
+    private Collection<Ship> generateFullFleet() {
+        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
     }
 
 }
