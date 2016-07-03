@@ -36,6 +36,8 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
+import java.util.Set;
+
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -439,9 +441,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         @Override
-        public void onInvitationRemoved(String s) {
+        public void onInvitationsUpdated(Set<String> invitationIds) {
 
         }
-
     }
 }

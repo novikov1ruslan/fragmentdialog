@@ -42,7 +42,7 @@ public class TurnTimerController {
 
     public void pause() {
         if (mTurnTimer == null) {
-            reportException("pause: not running");
+            Ln.v("pause: not running");
             return;
         }
 
@@ -55,7 +55,7 @@ public class TurnTimerController {
     public void stop() {
         mTimerExpiredCounter = 0;
         if (mTurnTimer == null) {
-            reportException("stop: not running");
+            Ln.v("stop: not running");
             return;
         }
 

@@ -1,7 +1,10 @@
 package com.ivygames.morskoiboi.invitations;
 
+import java.util.Collection;
+import java.util.Set;
+
 public interface InvitationReceivedListener {
     void onInvitationReceived(GameInvitation invitation);
 
-    void onInvitationRemoved(String invitationId);
+    void onInvitationsUpdated(Set<String> invitationIds);
 }

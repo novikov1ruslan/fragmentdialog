@@ -8,6 +8,8 @@ import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 
 import org.commons.logger.Ln;
 
+import java.util.Set;
+
 public class InvitationPresenter implements InvitationReceivedListener {
 
     @NonNull
@@ -36,7 +38,7 @@ public class InvitationPresenter implements InvitationReceivedListener {
     }
 
     @Override
-    public void onInvitationRemoved(String s) {
+    public void onInvitationsUpdated(Set<String> invitationIds) {
         updateInvitations();
     }
 }

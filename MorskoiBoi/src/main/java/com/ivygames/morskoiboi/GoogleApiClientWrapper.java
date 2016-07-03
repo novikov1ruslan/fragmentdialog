@@ -103,15 +103,18 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     public void unregisterInvitationListener() {
         Games.Invitations.unregisterInvitationListener(mGoogleApiClient);
+        Ln.v("invitation listener unregistered");
     }
 
     public void registerInvitationListener(@NonNull OnInvitationReceivedListener listener) {
+        Ln.v("registering invitation listener: " + listener);
         Games.Invitations.registerInvitationListener(mGoogleApiClient, listener);
     }
 
     @Override
     public void loadInvitations(InvitationLoadListener listener) {
         mLoadListener = listener;
+        Ln.v("loading invitations...");
         Games.Invitations.loadInvitations(mGoogleApiClient).setResultCallback(mResultCallback);
     }
 
@@ -207,10 +210,10 @@ public class GoogleApiClientWrapper implements ApiClient {
 
         @Override
         public void onResult(@NonNull Invitations.LoadInvitationsResult list) {
+            Collection<GameInvitation> invitationsCopy = new HashSet<>();
             if (list.getInvitations().getCount() > 0) {
                 InvitationBuffer invitations = list.getInvitations();
                 Ln.v("loaded " + invitations.getCount() + " invitations");
-                Collection<GameInvitation> invitationsCopy = new HashSet<>();
                 for (int i = 0; i < invitations.getCount(); i++) {
                     Invitation invitation = invitations.get(i);
                     invitationsCopy.add(
@@ -218,13 +221,11 @@ public class GoogleApiClientWrapper implements ApiClient {
                                     invitation.getInvitationId()));
                 }
                 list.getInvitations().release();
-                mLoadListener.onResult(invitationsCopy);
             } else {
                 Ln.v("no invitations");
             }
-
+            mLoadListener.onResult(invitationsCopy);
         }
     }
-
 
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
@@ -258,15 +259,14 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
          */
         @Override
         public void handleInvitationInboxResult(int result, Intent data) {
-            if (result != Activity.RESULT_OK) {
+            if (result == Activity.RESULT_OK) {
+                Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
+                mInternetGame.accept(invitation);
+            } else {
                 Ln.d("invitation cancelled - hiding waiting screen; reason=" + result);
                 hideWaitingScreen();
-                return;
             }
-
-            com.google.android.gms.games.multiplayer.Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
-            // showWaitingScreen();
-            mInternetGame.accept(invitation);
+            mInvitationManager.loadInvitations();
         }
 
         // Handle the result of the "Select players UI" we launched when the user

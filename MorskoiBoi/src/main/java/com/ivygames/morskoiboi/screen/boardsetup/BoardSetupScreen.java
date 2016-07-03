@@ -39,7 +39,6 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public final class BoardSetupScreen extends OnlineGameScreen implements BackPressListener {
     public static final String TAG = "BOARD_SETUP";
-    private static final String DIALOG = FragmentAlertDialog.TAG;
     private static final int INITIAL_CAPACITY = 10;
     private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 

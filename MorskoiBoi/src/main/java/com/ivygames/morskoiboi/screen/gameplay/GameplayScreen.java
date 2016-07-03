@@ -262,10 +262,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
         mGameplaySounds.release();
         mParent.stopService(mMatchStatusIntent);
-        Ln.d(this + " screen destroyed");
 
         stopDetectingShotTimeout();
         stopDetectingTurnTimeout();
+        Ln.d(this + " screen destroyed");
     }
 
     @Override

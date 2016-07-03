@@ -124,6 +124,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         Ln.d("displaying screen, registering invitation receiver");
         mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
         mInvitationPresenter.updateInvitations();
+        mInvitationManager.loadInvitations();
     }
 
     @Override

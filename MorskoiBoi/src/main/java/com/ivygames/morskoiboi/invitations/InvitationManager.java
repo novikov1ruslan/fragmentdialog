@@ -34,10 +34,12 @@ public class InvitationManager {
 
     public void registerInvitationReceiver(@NonNull InvitationReceivedListener receiver) {
         mInvitationReceivers.add(receiver);
+        Ln.d(receiver + " registered as invitation receiver");
     }
 
     public void unregisterInvitationReceiver(@NonNull InvitationReceivedListener receiver) {
         mInvitationReceivers.remove(receiver);
+        Ln.d(receiver + " unregistered as invitation receiver");
     }
 
     public void loadInvitations() {
@@ -45,7 +47,6 @@ public class InvitationManager {
             Ln.w("API client has to be connected");
             return;
         }
-        Ln.d("load invitations");
         mGoogleApiClient.registerInvitationListener(mInvitationListener);
 
         Ln.d("loading invitations...");
@@ -62,9 +63,9 @@ public class InvitationManager {
         }
     }
 
-    private void notifyRemoved(@NonNull String invitationId) {
+    private void notifyUpdated() {
         for (InvitationReceivedListener receiver : mInvitationReceivers) {
-            receiver.onInvitationRemoved(invitationId);
+            receiver.onInvitationsUpdated(new HashSet<>(mIncomingInvitationIds));
         }
     }
 
@@ -83,7 +84,7 @@ public class InvitationManager {
         public void onInvitationRemoved(String invitationId) {
             Ln.d("invitationId=" + invitationId + " withdrawn");
             mIncomingInvitationIds.remove(invitationId);
-            notifyRemoved(invitationId);
+            notifyUpdated();
         }
     }
 
@@ -96,12 +97,11 @@ public class InvitationManager {
                 Ln.v("loaded " + invitations.size() + " invitations");
                 for (GameInvitation invitation: invitations) {
                     mIncomingInvitationIds.add(invitation.id);
-                    notifyReceived(invitation);
                 }
             } else {
-                Ln.v("no invitations");
+                Ln.d("no invitations");
             }
-
+            notifyUpdated();
         }
     }
 }
