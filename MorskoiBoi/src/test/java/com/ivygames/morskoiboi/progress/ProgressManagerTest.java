@@ -25,6 +25,7 @@ public class ProgressManagerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ProgressManager progressManager = new ProgressManager(apiClient, settings);
+        progressManager.setDryRun(true);
     }
 
     @After

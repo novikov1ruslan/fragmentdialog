@@ -29,7 +29,6 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
     public ScreenTestRule() {
         super(BattleshipActivity.class);
-        GameConstants.IS_TEST_MODE = false;
         settings = mock(GameSettings.class);
         Dependencies.inject(settings);
     }

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.AbstractOpponent;
-import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
@@ -74,7 +74,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private void placeShips() {
         mPlacement.populateBoardWithShips(mMyBoard, generateFullFleet());
-        if (GameConstants.IS_TEST_MODE) {
+        if (BuildConfig.DEBUG) {
             Ln.i(this + ": my board: " + mMyBoard);
         }
     }

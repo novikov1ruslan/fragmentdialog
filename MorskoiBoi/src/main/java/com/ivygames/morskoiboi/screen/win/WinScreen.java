@@ -16,7 +16,6 @@ import com.ivygames.morskoiboi.ApiClient;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameConstants;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -87,15 +86,11 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.v("fleet: " + mShips);
 
         if (mGame.getType() == Type.VS_ANDROID) {
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in test mode - achievements not updated");
-            } else {
-                mAchievementsManager.processCombo(mStatistics.getCombo());
-                mAchievementsManager.processShellsLeft(mStatistics.getShells());
-                mAchievementsManager.processTimeSpent(mStatistics.getTimeSpent());
-                mAchievementsManager.processShipsLeft(mShips);
-                mAchievementsManager.processScores(mScores);
-            }
+            mAchievementsManager.processCombo(mStatistics.getCombo());
+            mAchievementsManager.processShellsLeft(mStatistics.getShells());
+            mAchievementsManager.processTimeSpent(mStatistics.getTimeSpent());
+            mAchievementsManager.processShipsLeft(mShips);
+            mAchievementsManager.processScores(mScores);
         }
         processScores();
     }
@@ -203,15 +198,11 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     public void onDestroy() {
         super.onDestroy();
         if (mGame.getType() == Type.VS_ANDROID) {
-            if (GameConstants.IS_TEST_MODE) {
-                Ln.i("game is in the test mode - scores are not submitted");
+            if (mApiClient.isConnected()) {
+                submitScore(mScores);
+                sendAnalyticsForPlayersScores(mScores);
             } else {
-                if (mApiClient.isConnected()) {
-                    submitScore(mScores);
-                    sendAnalyticsForPlayersScores(mScores);
-                } else {
-                    Ln.d("### client is not connected - could not submit scores!");
-                }
+                Ln.d("### client is not connected - could not submit scores!");
             }
         }
 

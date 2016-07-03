@@ -58,7 +58,7 @@ public class AchievementsManager {
         Ln.v("scores: " + scores);
         if (scores >= 15000) {
             if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
-                Ln.v(AchievementsManager.name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
+                Ln.v(name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
             } else {
                 increment(MILITARY_ACHIEVEMENTS, 1);
             }
@@ -71,7 +71,7 @@ public class AchievementsManager {
     private boolean unlockIfNotUnlocked(String achievementId) {
         boolean alreadyUnlocked = mSettings.isAchievementUnlocked(achievementId);
         if (alreadyUnlocked) {
-            Ln.d(AchievementsManager.name(achievementId) + " already unlocked - no need to unlock");
+            Ln.d(name(achievementId) + " already unlocked - no need to unlock");
             return false;
         } else {
             unlock(achievementId);
@@ -154,7 +154,7 @@ public class AchievementsManager {
     }
 
     private void unlock(String achievementId) {
-        Ln.d("unlocking achievement: " + AchievementsManager.name(achievementId));
+        Ln.d("unlocking achievement: " + name(achievementId));
         mSettings.unlockAchievement(achievementId);
         AnalyticsEvent.send("achievement", achievementId);
         if (mApiClient.isConnected()) {
@@ -163,14 +163,14 @@ public class AchievementsManager {
     }
 
     private void increment(String achievementId, int steps) {
-        Ln.d("incrementing achievement: " + AchievementsManager.name(achievementId) + " by " + steps);
+        Ln.d("incrementing achievement: " + name(achievementId) + " by " + steps);
         if (mApiClient.isConnected()) {
             mApiClient.increment(achievementId, steps);
         }
     }
 
     private void reveal(String achievementId) {
-        Ln.d("revealing achievement: " + AchievementsManager.name(achievementId));
+        Ln.d("revealing achievement: " + name(achievementId));
         AchievementsUtils.setRevealed(achievementId, mSettings);
         if (mApiClient.isConnected()) {
             mApiClient.reveal(achievementId);

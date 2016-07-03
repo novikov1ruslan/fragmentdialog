@@ -11,7 +11,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ivygames.morskoiboi.GameConstants;
+import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.screen.view.NotepadLinearLayout;
@@ -37,7 +37,7 @@ public class RanksLayout extends NotepadLinearLayout {
         mScoreView = (TextView) findViewById(R.id.total_score);
         mRanksListView = (ListView) findViewById(R.id.ranks);
 
-        if (GameConstants.IS_TEST_MODE) {
+        if (BuildConfig.DEBUG) {
             View debug_panel = findViewById(R.id.debug_panel);
             if (debug_panel != null) {
                 debug_panel.setVisibility(VISIBLE);

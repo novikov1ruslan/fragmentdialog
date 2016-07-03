@@ -45,6 +45,7 @@ public class GoogleApiClientWrapper implements ApiClient {
     private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
     private InvitationLoadListener mLoadListener;
     private ResultCallback<? super Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultImpl();
+    private boolean mDryRun;
 
     GoogleApiClientWrapper(@NonNull Context context) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
@@ -68,6 +69,10 @@ public class GoogleApiClientWrapper implements ApiClient {
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
 
         mGoogleApiClient = builder.build();
+    }
+
+    public void setDryRun(boolean dryRun) {
+        mDryRun = dryRun;
     }
 
     public void connect() {
@@ -127,10 +132,18 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     public void unlock(@NonNull String achievementId) {
+        if (mDryRun) {
+            Ln.v("dry run - not executing");
+            return;
+        }
         Games.Achievements.unlock(mGoogleApiClient, achievementId);
     }
 
     public void reveal(@NonNull String achievementId) {
+        if (mDryRun) {
+            Ln.v("dry run - not executing");
+            return;
+        }
         Games.Achievements.reveal(mGoogleApiClient, achievementId);
     }
 
@@ -139,6 +152,10 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     public void increment(@NonNull String achievementId, int steps) {
+        if (mDryRun) {
+            Ln.v("dry run - not executing");
+            return;
+        }
         Games.Achievements.increment(mGoogleApiClient, achievementId, steps);
     }
 
@@ -191,6 +208,10 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     public void submitScore(@NonNull String boardName, int totalScores) {
+        if (mDryRun) {
+            Ln.v("dry run - not executing");
+            return;
+        }
         Games.Leaderboards.submitScore(mGoogleApiClient, boardName, totalScores);
     }
 

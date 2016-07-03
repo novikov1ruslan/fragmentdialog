@@ -37,6 +37,8 @@ import java.util.Random;
 
 class ApplicationInitializer {
 
+    private static final String ANALYTICS_KEY = "UA-43473473-1";
+
     public static void initialize(final Application application) {
         ACRA.init(application);
         AndroidDevice device = new AndroidDevice(application);
@@ -47,41 +49,41 @@ class ApplicationInitializer {
 
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules();
-        Dependencies.inject(rules);
         Placement algorithm = new Placement(new Random(System.currentTimeMillis()), rules);
         PlacementFactory.setPlacementAlgorithm(algorithm);
         BotFactory.setAlgorithm(new RussianBot(null));
 
-        ApiClient apiClient = new GoogleApiClientWrapper(application);
+        GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
+        apiClient.setDryRun(BuildConfig.DEBUG);
+        ProgressManager progressManager = new ProgressManager(apiClient, settings);
+        progressManager.setDryRun(true);
+
+        Dependencies.inject(rules);
         Dependencies.inject(settings);
         Dependencies.inject(apiClient);
         Dependencies.inject(new InvitationManager(apiClient));
         Dependencies.inject(new AchievementsManager(apiClient, settings));
-        Dependencies.inject(new ProgressManager(apiClient, settings));
+        Dependencies.inject(progressManager);
         Dependencies.inject(device);
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
 
-        if (GameConstants.IS_TEST_MODE) {
-            ExceptionHandler.setDryRun(true);
-        }
+        ExceptionHandler.setDryRun(BuildConfig.DEBUG);
     }
 
     private static void initAnalytics(Application application) {
         // Get the GoogleAnalytics singleton. Note that the SDK uses
         // the application context to avoid leaking the current context.
-        if (GameConstants.IS_TEST_MODE) {
-//            Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
-            GoogleAnalytics.getInstance(application).setDryRun(true);
-        }
-        GlobalTracker.sTracker = GoogleAnalytics.getInstance(application).newTracker(GameConstants.ANALYTICS_KEY);
-        GlobalTracker.sTracker.enableAdvertisingIdCollection(true);
+        // Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
+        GoogleAnalytics.getInstance(application).setDryRun(BuildConfig.DEBUG);
+        GlobalTracker.tracker = GoogleAnalytics.getInstance(application).newTracker(ANALYTICS_KEY);
+        GlobalTracker.tracker.enableAdvertisingIdCollection(true);
         UiEvent.set(new UiEventImpl());
         Log.i("Battleship", "created");
 
         Thread.UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        ExceptionReporter exceptionReporter = new ExceptionReporter(GlobalTracker.sTracker, exceptionHandler, application);
+        ExceptionReporter exceptionReporter = new ExceptionReporter(GlobalTracker.tracker, exceptionHandler, application);
         // TODO: Make exceptionReporter the new default uncaught exception handler.
         Thread.setDefaultUncaughtExceptionHandler(exceptionReporter);
         exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());

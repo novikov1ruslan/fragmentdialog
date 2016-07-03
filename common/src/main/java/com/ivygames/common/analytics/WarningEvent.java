@@ -29,6 +29,6 @@ public final class WarningEvent {
     }
 
     public static void send(String message) {
-        GlobalTracker.sTracker.send(new WarningEvent(message).build());
+        GlobalTracker.tracker.send(new WarningEvent(message).build());
     }
 }

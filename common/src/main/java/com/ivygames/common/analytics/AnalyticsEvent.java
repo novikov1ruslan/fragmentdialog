@@ -29,14 +29,14 @@ public final class AnalyticsEvent {
     }
 
     public static void send(String action) {
-        GlobalTracker.sTracker.send(new AnalyticsEvent(action).build());
+        GlobalTracker.tracker.send(new AnalyticsEvent(action).build());
     }
 
     public static void send(String action, String label) {
-        GlobalTracker.sTracker.send(new AnalyticsEvent(action, label).build());
+        GlobalTracker.tracker.send(new AnalyticsEvent(action, label).build());
     }
 
     public static void send(String action, String label, int value) {
-        GlobalTracker.sTracker.send(new AnalyticsEvent(action, label, value).build());
+        GlobalTracker.tracker.send(new AnalyticsEvent(action, label, value).build());
     }
 }

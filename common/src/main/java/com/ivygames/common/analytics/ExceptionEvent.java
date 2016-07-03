@@ -9,19 +9,19 @@ public final class ExceptionEvent {
     private static final String GA_CAT_EXCEPTION = "exception";
 
     public static void send(String action, Exception e) {
-        GlobalTracker.sTracker.send(new ExceptionEvent(action, e).build());
+        GlobalTracker.tracker.send(new ExceptionEvent(action, e).build());
     }
 
     public static void send(String action, String label) {
-        GlobalTracker.sTracker.send(new ExceptionEvent(action, label).build());
+        GlobalTracker.tracker.send(new ExceptionEvent(action, label).build());
     }
 
     public static void send(String action, String label, Exception e) {
-        GlobalTracker.sTracker.send(new ExceptionEvent(action, label + e.getClass() + "; " + e.getMessage()).build());
+        GlobalTracker.tracker.send(new ExceptionEvent(action, label + e.getClass() + "; " + e.getMessage()).build());
     }
 
     public static void send(String action) {
-        GlobalTracker.sTracker.send(new ExceptionEvent(action).build());
+        GlobalTracker.tracker.send(new ExceptionEvent(action).build());
     }
 
     public ExceptionEvent(String action, Exception e) {

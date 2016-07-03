@@ -10,7 +10,7 @@ public class AnalyticsUtils {
         Rank newRank = Rank.getBestRankForScore(newScores);
         if (newRank != lastRank) {
             String label = lastRank + " promoted to " + newRank;
-            if (GameConstants.IS_TEST_MODE) {
+            if (BuildConfig.DEBUG) {
                 Ln.i("game is in test mode, not tracking promotion event: " + label);
             }
             else {

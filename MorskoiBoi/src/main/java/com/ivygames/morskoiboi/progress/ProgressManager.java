@@ -33,6 +33,8 @@ public class ProgressManager {
     @NonNull
     private final GameSettings mSettings;
 
+    private boolean mDryRun;
+
     private SnapshotOpenResultListener mCallback = new SnapshotOpenResultListener() {
 
         @Override
@@ -56,6 +58,10 @@ public class ProgressManager {
         mApiClient = apiClient;
         // TODO: setting do not belong to this class
         mSettings = settings;
+    }
+
+    public void setDryRun(boolean dryRun) {
+        mDryRun = dryRun;
     }
 
     public void loadProgress() {
@@ -103,7 +109,11 @@ public class ProgressManager {
 
             private boolean commitAndClose(Snapshot snapshot) {
                 // Change data but leave existing metadata
-                snapshot.getSnapshotContents().writeBytes(data);
+                if (mDryRun) {
+                    Ln.v("dry run - not writing progress data");
+                } else {
+                    snapshot.getSnapshotContents().writeBytes(data);
+                }
                 CommitSnapshotResult commit = mApiClient.commitAndClose(snapshot, SnapshotMetadataChange.EMPTY_CHANGE).await();
                 com.google.android.gms.common.api.Status status = commit.getStatus();
                 if (status.isSuccess()) {

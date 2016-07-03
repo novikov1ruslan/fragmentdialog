@@ -4,7 +4,7 @@ import com.google.android.gms.analytics.Tracker;
 
 public class GlobalTracker {
 
-    public static Tracker sTracker;
+    public static Tracker tracker;
 
     private GlobalTracker(){}
 }
