@@ -94,7 +94,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     @Override
     public void onShotResult(@NonNull PokeResult result) {
-        mBot.setLastResult(result);
         updateEnemyBoard(result, mPlacement);
         Ln.v(result);
 

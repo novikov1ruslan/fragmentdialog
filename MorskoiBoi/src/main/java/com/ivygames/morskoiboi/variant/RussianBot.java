@@ -1,9 +1,10 @@
 package com.ivygames.morskoiboi.variant;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.utils.GameUtils;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
@@ -20,29 +20,43 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 public class RussianBot implements BotAlgorithm {
 
     private final Random mRandom;
-    private final CopyOnWriteArrayList<Vector2> mHitDecks;
 
     public RussianBot(Random random) {
         mRandom = random;
-        mHitDecks = new CopyOnWriteArrayList<>();
     }
 
+    @NonNull
     @Override
-    public void setLastResult(PokeResult result) {
-        if (result.ship == null) {
-            if (result.cell.isHit()) {
-                mHitDecks.add(result.aim);
+    public Vector2 shoot(@NonNull Board board) {
+        // TODO: this method does not change the board. Add immutable board and pass it for correctness
+        List<Vector2> hitDecks = createDecks(board);
+        List<Vector2> possibleShots;
+        if (hitDecks.size() == 0) {
+            possibleShots = board.getEmptyCells();
+        } else if (hitDecks.size() == 1) { // there is newly wounded ship
+            Vector2 v = hitDecks.get(0);
+            possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
+        } else { // wounded ship with > 1 decks hit
+            possibleShots = getPossibleShotsLinear(board, hitDecks);
+        }
+
+        int possibleShotsSize = possibleShots.size();
+        try {
+            return possibleShots.get(mRandom.nextInt(possibleShotsSize));
+        } catch (IllegalArgumentException e) {
+            if (PlayerOpponent.debug_board != null) {
+                reportException(new IllegalArgumentException(PlayerOpponent.debug_board.toString(), e));
             }
-        } else {
-            mHitDecks.clear();
+            throw e;
         }
     }
 
-    private static boolean isEmptyCell(Board board, int x, int y) {
+    private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
         return Board.containsCell(x, y) && board.getCell(x, y).isEmpty();
     }
 
-    private static List<Vector2> getPossibleShotsAround(Board board, int x, int y) {
+    @NonNull
+    private static List<Vector2> getPossibleShotsAround(@NonNull Board board, int x, int y) {
         ArrayList<Vector2> possibleShots = new ArrayList<>();
         if (isEmptyCell(board, x - 1, y)) {
             possibleShots.add(Vector2.get(x - 1, y));
@@ -69,13 +83,14 @@ public class RussianBot implements BotAlgorithm {
         }
     }
 
-    private List<Vector2> getPossibleShotsLinear(Board board) {
+    @NonNull
+    private static List<Vector2> getPossibleShotsLinear(@NonNull Board board, @NonNull List<Vector2> hitDecks) {
         List<Vector2> possibleShots = new ArrayList<>();
-        int minX = mHitDecks.get(0).getX();
-        int minY = mHitDecks.get(0).getY();
-        int maxX = mHitDecks.get(0).getX();
-        int maxY = mHitDecks.get(0).getY();
-        for (Vector2 v : mHitDecks) {
+        int minX = hitDecks.get(0).getX();
+        int minY = hitDecks.get(0).getY();
+        int maxX = hitDecks.get(0).getX();
+        int maxY = hitDecks.get(0).getY();
+        for (Vector2 v : hitDecks) {
             int x = v.getX();
             if (x < minX) {
                 minX = x;
@@ -93,7 +108,7 @@ public class RussianBot implements BotAlgorithm {
             }
         }
 
-        if (GameUtils.coordinatesAlignedHorizontally(mHitDecks)) { // TODO: miny == maxy
+        if (GameUtils.coordinatesAlignedHorizontally(hitDecks)) { // TODO: miny == maxy
             addCellIfEmpty(board, --minX, minY, possibleShots);
             addCellIfEmpty(board, ++maxX, minY, possibleShots);
         } else {
@@ -104,28 +119,19 @@ public class RussianBot implements BotAlgorithm {
         return possibleShots;
     }
 
-    @Override
-    public Vector2 shoot(Board board) {
-        // TODO: this method does not change the board. Add immutabe board and pass it for correctness
-        List<Vector2> possibleShots;
-        if (mHitDecks.size() == 0) {
-            possibleShots = board.getEmptyCells();
-        } else if (mHitDecks.size() == 1) { // there is newly wounded ship
-            Vector2 v = mHitDecks.get(0);
-            possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
-        } else { // wounded ship with > 1 decks hit
-            possibleShots = getPossibleShotsLinear(board);
-        }
-
-        int possibleShotsSize = possibleShots.size();
-        try {
-            return possibleShots.get(mRandom.nextInt(possibleShotsSize));
-        } catch (IllegalArgumentException e) {
-            if (PlayerOpponent.debug_board != null) {
-                reportException(new IllegalArgumentException(PlayerOpponent.debug_board.toString(), e));
+    private static List<Vector2> createDecks(@NonNull Board board) {
+        List<Vector2> decks = new ArrayList<>();
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
+                Cell cell = board.getCell(i, j);
+                if (cell.isHit()) {
+                    if (board.getShipsAt(i, j).isEmpty()) {
+                        decks.add(Vector2.get(i, j));
+                    }
+                }
             }
-            throw e;
         }
+        return decks;
     }
 
 }
