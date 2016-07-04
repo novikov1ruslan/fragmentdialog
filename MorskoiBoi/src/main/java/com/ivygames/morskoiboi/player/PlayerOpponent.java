@@ -33,7 +33,8 @@ public class PlayerOpponent extends AbstractOpponent {
     private int mOpponentVersion;
 
     private Opponent mOpponent;
-    private PlayerCallback mCallback;
+    @NonNull
+    private PlayerCallback mCallback = new DummyCallback();
 
     public PlayerOpponent(@NonNull String name,
                           @NonNull Placement placement,
@@ -68,17 +69,13 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void onEnemyBid(int bid) {
-        if (mCallback != null) {
-            mCallback.opponentReady();
-        }
+        mCallback.opponentReady();
         super.onEnemyBid(bid);
         if (mPlayerReady && opponentStarts()) {
             Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
             mOpponent.go();
 
-            if (mCallback != null) {
-                mCallback.onOpponentTurn();
-            }
+            mCallback.onOpponentTurn();
         }
     }
 
@@ -102,16 +99,12 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void go() {
         Ln.v("player goes");
-        if (mCallback != null) {
-            mCallback.onPlayersTurn();
-            if (!isOpponentReady()) {
-                mCallback.opponentReady();
-            }
+        mCallback.onPlayersTurn();
+        if (!isOpponentReady()) {
+            mCallback.opponentReady();
         }
         super.go();
-        if (mCallback != null) {
-            mCallback.onPlayerGoes();
-        }
+        mCallback.onPlayerGoes();
     }
 
     @Override
@@ -119,33 +112,23 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.v("shot result: " + result);
         updateEnemyBoard(result, mPlacement);
 
-        if (mCallback != null) {
-            mCallback.onShotResult(result);
-        }
+        mCallback.onShotResult(result);
         if (shipSank(result.ship)) {
-            if (mCallback != null) {
-                mCallback.onKill(PlayerCallback.Side.OPPONENT);
-            }
+            mCallback.onKill(PlayerCallback.Side.OPPONENT);
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 mOpponent.onLost(mMyBoard);
 
                 reset2();
-                if (mCallback != null) {
-                    mCallback.onWin();
-                }
+                mCallback.onWin();
             }
         } else if (result.cell.isMiss()) {
             Ln.d(this + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
-            if (mCallback != null) {
-                mCallback.onMiss(PlayerCallback.Side.OPPONENT);
-                mCallback.onOpponentTurn();
-            }
+            mCallback.onMiss(PlayerCallback.Side.OPPONENT);
+            mCallback.onOpponentTurn();
         } else {
             Ln.v("it's a hit! - player continues");
-            if (mCallback != null) {
-                mCallback.onHit(PlayerCallback.Side.OPPONENT);
-            }
+            mCallback.onHit(PlayerCallback.Side.OPPONENT);
         }
     }
 
@@ -158,24 +141,16 @@ public class PlayerOpponent extends AbstractOpponent {
         PokeResult result = createResultForShootingAt(aim);
         Ln.v(this + ": hitting my board at " + aim + " yields result: " + result);
 
-        if (mCallback != null) {
-            mCallback.onShotAt(aim);
-        }
+        mCallback.onShotAt(aim);
         if (shipSank(result.ship)) {
             Ln.v(this + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
-            if (mCallback != null) {
-                mCallback.onKill(PlayerCallback.Side.PLAYER);
-            }
+            mCallback.onKill(PlayerCallback.Side.PLAYER);
         } else if (result.cell.isMiss()) {
-            if (mCallback != null) {
-                mCallback.onMiss(PlayerCallback.Side.PLAYER);
-            }
+            mCallback.onMiss(PlayerCallback.Side.PLAYER);
         } else {
             Ln.v("player's ship is hit: " + result);
-            if (mCallback != null) {
-                mCallback.onHit(PlayerCallback.Side.PLAYER);
-            }
+            mCallback.onHit(PlayerCallback.Side.PLAYER);
         }
 
         mOpponent.onShotResult(result);
@@ -186,9 +161,7 @@ public class PlayerOpponent extends AbstractOpponent {
                 // In the later version of the protocol opponent notifies about players defeat sending his board along.
                 if (!versionSupportsBoardReveal()) {
                     Ln.v("opponent version doesn't support board reveal = " + mOpponentVersion);
-                    if (mCallback != null) {
-                        mCallback.onLost(null);
-                    }
+                    mCallback.onLost(null);
                 }
                 Ln.d(this + ": I'm defeated, no turn to pass");
                 reset2();
@@ -227,9 +200,7 @@ public class PlayerOpponent extends AbstractOpponent {
         ChatMessage message = ChatMessage.newEnemyMessage(text);
         Ln.d(this + " received: " + message);
         mChatListener.showChatCrouton(message);
-        if (mCallback != null) {
-            mCallback.onMessage(text);
-        }
+        mCallback.onMessage(text);
     }
 
     @Override
@@ -239,9 +210,7 @@ public class PlayerOpponent extends AbstractOpponent {
             reportException("lost while not defeated");
         }
 
-        if (mCallback != null) {
-            mCallback.onLost(board);
-        }
+        mCallback.onLost(board);
     }
 
     @Override
