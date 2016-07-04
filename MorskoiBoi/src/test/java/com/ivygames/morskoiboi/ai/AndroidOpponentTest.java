@@ -52,9 +52,10 @@ public class AndroidOpponentTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mCancellableOpponent = new DelegateOpponent();
+        mCancellableOpponent.setOpponent(mOpponent);
 
-        mAndroid = new AndroidOpponent(ANDROID_NAME, mBoard, mPlacement, mRules, mCancellableOpponent);
-        mAndroid.setOpponent(mOpponent);
+        mAndroid = new AndroidOpponent(ANDROID_NAME, mBoard, mPlacement, mRules);
+        mAndroid.setOpponent(mCancellableOpponent);
         mAndroid.setCancellable(mCancellableOpponent);
     }
 

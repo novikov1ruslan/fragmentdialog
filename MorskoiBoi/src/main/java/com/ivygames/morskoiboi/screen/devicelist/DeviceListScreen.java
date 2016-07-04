@@ -177,6 +177,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         }
         PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules, parent());
         Session session = new Session(player, opponent);
+        Session.bindOpponents(player, opponent);
         setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection), session));
     }
 

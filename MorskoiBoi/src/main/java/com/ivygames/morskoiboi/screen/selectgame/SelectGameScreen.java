@@ -68,6 +68,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private final GameSettings mSettings;
 
     private InvitationPresenter mInvitationPresenter;
+    @NonNull
+    private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
     public SelectGameScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
         super(parent);
@@ -144,18 +146,20 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
-        Placement placement = PlacementFactory.getAlgorithm();
+        AndroidOpponent android = new AndroidOpponent(getString(R.string.android), new Board(), mPlacement, mRules);
         DelayedOpponent delegate = new DelayedOpponent();
-        AndroidOpponent opponent = new AndroidOpponent(getString(R.string.android), new Board(),
-                placement, mRules, delegate);
-        opponent.setCancellable(delegate);
+        android.setCancellable(delegate);
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = new PlayerOpponent(playerName, placement, mRules, parent());
-        Session session = new Session(player, opponent);
+        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules, parent());
+        delegate.setOpponent(player);
+        Session session = new Session(player, android);
+        player.setOpponent(android);
+        android.setOpponent(delegate);
+//        Session.bindOpponents(delegate, android);
         setScreen(ScreenCreator.newBoardSetupScreen(new AndroidGame(), session));
     }
 

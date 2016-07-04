@@ -198,6 +198,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
         PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules, parent());
         Session session = new Session(player, opponent);
+        Session.bindOpponents(player, opponent);
         setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection), session));
     }
 

@@ -20,18 +20,14 @@ import org.commons.logger.Ln;
 import java.util.Collection;
 import java.util.Random;
 
-import static com.ivygames.common.analytics.ExceptionHandler.reportException;
-
 public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private Cancellable mCancellable;
     @NonNull
     private final Placement mPlacement;
-    @NonNull
-    private final Opponent mDelegate;
+    private Opponent mOpponent;
     @NonNull
     private final Rules mRules;
-//    private Opponent mOpponent;
 
     @NonNull
     private BotAlgorithm mBot;
@@ -39,13 +35,11 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public AndroidOpponent(@NonNull String name,
                            @NonNull Board board,
                            @NonNull Placement placement,
-                           @NonNull Rules rules,
-                           @NonNull Opponent delegate) {
+                           @NonNull Rules rules) {
         super(name);
         mMyBoard = board;
         mPlacement = placement;
         mRules = rules;
-        mDelegate = delegate;
 
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
         mMyBid = new Bidder().newBid();
@@ -74,8 +68,8 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         Ln.d(this + ": my opponent is " + opponent);
-        mDelegate.setOpponent(opponent);
-        mDelegate.setOpponentVersion(Opponent.CURRENT_VERSION);
+        mOpponent = opponent;
+        mOpponent.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
 
     @Override
@@ -84,17 +78,17 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
             placeShips();
         }
         super.go();
-        mDelegate.onShotAt(mBot.shoot(mEnemyBoard));
+        mOpponent.onShotAt(mBot.shoot(mEnemyBoard));
     }
 
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
         PokeResult result = createResultForShootingAt(aim);
-        mDelegate.onShotResult(result);
+        mOpponent.onShotResult(result);
         boolean andGo = result.cell.isHit() && !mRules.isItDefeatedBoard(mMyBoard);
         if (andGo) {
-            Ln.d("Android is hit, passing turn to " + mDelegate);
-            mDelegate.go();
+            Ln.d("Android is hit, passing turn to " + mOpponent);
+            mOpponent.go();
         }
     }
 
@@ -105,12 +99,12 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         Ln.v(result);
 
         if (result.cell.isMiss()) {
-            Ln.d(this + ": I missed - passing the turn to " + mDelegate);
-            mDelegate.go();
+            Ln.d(this + ": I missed - passing the turn to " + mOpponent);
+            mOpponent.go();
         } else if (result.ship != null) {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
-                Ln.d(this + ": I won - notifying " + mDelegate);
-                mDelegate.onLost(Board.copy(mMyBoard));
+                Ln.d(this + ": I won - notifying " + mOpponent);
+                mOpponent.onLost(Board.copy(mMyBoard));
                 reset2();
             }
         }
@@ -120,11 +114,11 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     public void onEnemyBid(int bid) {
         super.onEnemyBid(bid);
 
-        Ln.d("bidding against " + mDelegate + " with result " + opponentStarts());
+        Ln.d("bidding against " + mOpponent + " with result " + opponentStarts());
         if (opponentStarts()) {
-            mDelegate.go();
+            mOpponent.go();
         } else {
-            mDelegate.onEnemyBid(mMyBid);
+            mOpponent.onEnemyBid(mMyBid);
         }
     }
 
@@ -145,7 +139,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onNewMessage(@NonNull String text) {
         // mirroring
-        mDelegate.onNewMessage(text + "!!!");
+        mOpponent.onNewMessage(text + "!!!");
     }
 
     private void placeShips() {

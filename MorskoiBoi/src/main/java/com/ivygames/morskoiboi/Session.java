@@ -14,7 +14,10 @@ public class Session {
     public Session(@NonNull PlayerOpponent player, @NonNull Opponent opponent) {
         this.player = player;
         this.opponent = opponent;
-        player.setOpponent(opponent);
-        opponent.setOpponent(player);
+    }
+
+    public static void bindOpponents(@NonNull Opponent opponent1, @NonNull Opponent opponent2) {
+        opponent1.setOpponent(opponent2);
+        opponent2.setOpponent(opponent1);
     }
 }
