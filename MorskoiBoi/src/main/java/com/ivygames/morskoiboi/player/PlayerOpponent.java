@@ -66,6 +66,22 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
+    @Override
+    public void onEnemyBid(int bid) {
+        if (mCallback != null) {
+            mCallback.opponentReady();
+        }
+        super.onEnemyBid(bid);
+        if (mPlayerReady && opponentStarts()) {
+            Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
+            mOpponent.go();
+
+            if (mCallback != null) {
+                mCallback.onOpponentTurn();
+            }
+        }
+    }
+
     public void setCallback(@NonNull PlayerCallback callback) {
         mCallback = callback;
         Ln.v("callback set, opponent ready = " + isOpponentReady());
@@ -204,24 +220,6 @@ public class PlayerOpponent extends AbstractOpponent {
         Ln.v("player's board set: " + board);
         mMyBoard = board;
         debug_board = board;
-    }
-
-    @Override
-    public void onEnemyBid(int bid) {
-        Ln.d("opponent's bid received: " + bid);
-        if (mCallback != null) {
-            mCallback.opponentReady();
-        }
-
-        super.onEnemyBid(bid);
-        if (mPlayerReady && opponentStarts()) {
-            Ln.d(this + ": I'm ready too, but it's opponent's turn - " + mOpponent + " begins");
-            mOpponent.go();
-
-            if (mCallback != null) {
-                mCallback.onOpponentTurn();
-            }
-        }
     }
 
     @Override

@@ -11,6 +11,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
+
 public abstract class AbstractOpponent implements Opponent {
     private static final int NOT_READY = -1;
 
@@ -67,6 +69,9 @@ public abstract class AbstractOpponent implements Opponent {
     @Override
     public void onEnemyBid(int bid) {
         mEnemyBid = bid;
+        if (mEnemyBid == mMyBid) {
+            reportException("stall");
+        }
         mOpponentReady = true;
         Ln.d(this + ": opponent is ready, bid = " + bid);
     }
