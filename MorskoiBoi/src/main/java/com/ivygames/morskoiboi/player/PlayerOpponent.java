@@ -96,6 +96,10 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     }
 
+    public void removeCallback() {
+        mCallback = new DummyCallback();
+    }
+
     @Override
     public void go() {
         Ln.v("player goes");
