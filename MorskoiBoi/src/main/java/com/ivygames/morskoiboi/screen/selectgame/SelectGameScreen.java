@@ -33,6 +33,7 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.InvitationPresenter;
@@ -146,15 +147,18 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
-        AndroidOpponent android = new AndroidOpponent(getString(R.string.android), new Board(), mPlacement, mRules);
         DelayedOpponent delegate = new DelayedOpponent();
-        android.setCancellable(delegate);
+//        AndroidOpponent android = new AndroidOpponent(getString(R.string.android), new Board(), mPlacement, mRules);
+//        android.setCancellable(delegate);
+        AiOpponent android = new AiOpponent(getString(R.string.android), mPlacement, mRules);
+        android.setBoard(new Board());
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules, parent());
+        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules);
+        player.setChatListener(parent());
         delegate.setOpponent(player);
         Session session = new Session(player, android);
         player.setOpponent(android);

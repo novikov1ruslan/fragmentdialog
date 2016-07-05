@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.PokeResult;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
@@ -50,7 +48,6 @@ public class RussianBotTest {
     private void missAt(Board board, int x, int y) {
         Cell cell = newMissCell();
         Vector2 aim = Vector2.get(x, y);
-        mBot.setLastResult(new PokeResult(aim, cell));
         board.setCell(cell, aim);
     }
 
@@ -139,11 +136,12 @@ public class RussianBotTest {
     @Test
     public void hit_and_kill() {
         Board board = new Board();
-        Cell cell = newHitCell();
         Vector2 aim = Vector2.get(5, 5);
-        mBot.setLastResult(new PokeResult(aim, cell, new Ship(1)));
-        board.setCell(cell, aim);
-        assertThat(mBot.shoot(board), is(Vector2.get(1, 5)));
+        board.setCell(newHitCell(), aim);
+
+        Vector2 shoot = mBot.shoot(board);
+
+        assertThat(shoot, is(Vector2.get(5, 4)));
     }
 
     private void assertHitAt(Board board, int x, int y) {
@@ -155,7 +153,6 @@ public class RussianBotTest {
     private void hitAt(Board board, int x, int y) {
         Cell cell = newHitCell();
         Vector2 aim = Vector2.get(x, y);
-        mBot.setLastResult(new PokeResult(aim, cell));
         board.setCell(cell, aim);
     }
 

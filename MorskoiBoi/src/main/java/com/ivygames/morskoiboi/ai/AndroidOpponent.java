@@ -30,7 +30,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     private final Rules mRules;
 
     @NonNull
-    private BotAlgorithm mBot;
+    private final BotAlgorithm mBot;
 
     public AndroidOpponent(@NonNull String name,
                            @NonNull Board board,
@@ -49,9 +49,10 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
 
     private void reset2() {
         super.reset();
-        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
-        mMyBid = new Bidder().newBid();
         placeShips();
+        if (mCancellable != null) {
+            mCancellable.cancel();
+        }
     }
 
     public void setCancellable (@NonNull Cancellable cancellable) {
@@ -129,9 +130,6 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
     @Override
     public void onLost(@NonNull Board board) {
         Ln.d("android lost - preparing for the next round");
-        if (mCancellable != null) {
-            mCancellable.cancel();
-        }
         reset2();
     }
 
