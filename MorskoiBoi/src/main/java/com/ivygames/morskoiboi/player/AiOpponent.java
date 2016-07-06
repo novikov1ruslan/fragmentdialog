@@ -8,8 +8,8 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
+import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Random;
 
 
-public class AiOpponent extends PlayerOpponent {
+public class AiOpponent extends PlayerOpponent implements Cancellable {
     @NonNull
     private final Placement mPlacement;
     @NonNull
@@ -29,6 +29,7 @@ public class AiOpponent extends PlayerOpponent {
 
     @NonNull
     private DelegatePlayerCallback mCallback;
+    private Cancellable mCancellable;
 
     public AiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
         super(name, placement, rules);
@@ -53,12 +54,22 @@ public class AiOpponent extends PlayerOpponent {
         mCallback.removeCallback();
     }
 
+    public void setCancellable(@NonNull Cancellable cancellable) {
+        mCancellable = cancellable;
+        Ln.v(getName() + ": cancellable set to: " + cancellable);
+    }
+
+    @Override
+    public void cancel() {
+        mCancellable.cancel();
+    }
+
     private class PlayerCallbackImpl extends DelegatePlayerCallback {
         @Override
         public void opponentReady() {
             super.opponentReady();
 
-            if (mMyBoard.getShips().isEmpty()) {
+            if (getBoard().getShips().isEmpty()) {
                 Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
                 placeShips();
                 startBidding(new Bidder().newBid());
@@ -69,14 +80,14 @@ public class AiOpponent extends PlayerOpponent {
         public void onPlayersTurn() {
             super.onPlayersTurn();
 
-            mOpponent.onShotAt(mBot.shoot(mEnemyBoard));
+            mOpponent.onShotAt(mBot.shoot(getEnemyBoard()));
         }
     }
 
     private void placeShips() {
-        mPlacement.populateBoardWithShips(mMyBoard, generateFullFleet());
+        mPlacement.populateBoardWithShips(getBoard(), generateFullFleet());
         if (BuildConfig.DEBUG) {
-            Ln.i(this + ": my board: " + mMyBoard);
+            Ln.i(getName() + ": my board: " + getBoard());
         }
     }
 

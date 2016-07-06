@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
@@ -75,7 +75,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
     @Test
     public void WhenScreenDestroyed_ForAndroidGame__AndroidOpponentIsCancelled() {
         PlayerOpponent player = mockPlayer();
-        AndroidOpponent android = mock(AndroidOpponent.class);
+        AiOpponent android = mock(AiOpponent.class);
         when(android.getName()).thenReturn(OPPONENT_NAME);
         session = new Session(player, android);
         setGameType(Game.Type.VS_ANDROID);

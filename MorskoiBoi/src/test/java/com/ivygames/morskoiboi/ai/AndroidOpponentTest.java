@@ -10,6 +10,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -35,7 +36,7 @@ import static org.mockito.Mockito.when;
 public class AndroidOpponentTest {
 
     private static final String ANDROID_NAME = "Android";
-    private AndroidOpponent mAndroid;
+    private AiOpponent mAndroid;
     @Mock
     private Opponent mOpponent;
     @Mock
@@ -54,7 +55,8 @@ public class AndroidOpponentTest {
         mCancellableOpponent = new DelegateOpponent();
         mCancellableOpponent.setOpponent(mOpponent);
 
-        mAndroid = new AndroidOpponent(ANDROID_NAME, mBoard, mPlacement, mRules);
+        mAndroid = new AiOpponent(ANDROID_NAME, mPlacement, mRules);
+        mAndroid.setBoard(mBoard);
         mAndroid.setOpponent(mCancellableOpponent);
         mAndroid.setCancellable(mCancellableOpponent);
     }

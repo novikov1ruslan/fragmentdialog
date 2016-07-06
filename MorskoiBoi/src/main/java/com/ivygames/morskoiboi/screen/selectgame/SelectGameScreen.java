@@ -149,12 +149,13 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         DelayedOpponent delegate = new DelayedOpponent();
         AiOpponent android = new AiOpponent(getString(R.string.android), mPlacement, mRules);
         android.setBoard(new Board());
+        android.setCancellable(delegate);
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules);
+        PlayerOpponent player = new AiOpponent(playerName, mPlacement, mRules);
         player.setChatListener(parent());
         delegate.setOpponent(player);
         Session session = new Session(player, android);

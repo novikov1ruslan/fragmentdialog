@@ -5,11 +5,11 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.AbstractOpponent;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
@@ -20,24 +20,8 @@ import org.commons.logger.Ln;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
-public class PlayerOpponent extends AbstractOpponent {
-
+public class PlayerOpponent implements Opponent {
     public static volatile Board debug_board;
-
-    @NonNull
-    private final Placement mPlacement;
-    @NonNull
-    private final Rules mRules;
-    @Nullable
-    private ChatListener mChatListener;
-
-    private boolean mPlayerReady;
-    private int mOpponentVersion;
-
-    protected Opponent mOpponent;
-    @NonNull
-    private PlayerCallback mCallback = new DummyCallback();
-
     private Handler debug_handler = new Handler(Looper.getMainLooper());
     private Runnable debug_thread_break_task = new Runnable() {
         @Override
@@ -46,25 +30,53 @@ public class PlayerOpponent extends AbstractOpponent {
         }
     };
 
+    private static final int NOT_READY = -1;
+
+    @NonNull
+    private final String mName;
+    @NonNull
+    private final Placement mPlacement;
+    @NonNull
+    private final Rules mRules;
+
+    @NonNull
+    private PlayerCallback mCallback = new DummyCallback();
+    @NonNull
+    private Board mMyBoard = new Board();
+    @NonNull
+    private Board mEnemyBoard = new Board();
+    private int mMyBid = NOT_READY;
+    private int mEnemyBid = NOT_READY;
+
+    @Nullable
+    private ChatListener mChatListener;
+    private boolean mPlayerReady;
+    private int mOpponentVersion;
+    protected Opponent mOpponent;
+    private boolean mOpponentReady;
+
     public PlayerOpponent(@NonNull String name,
                           @NonNull Placement placement,
                           @NonNull Rules rules) {
-        super(name);
+        mName = name;
         mPlacement = placement;
         mRules = rules;
         Ln.v("new player created");
     }
 
-    @Override
-    protected void reset() {
-        Ln.d(getName() + ": resetting my state");
-        super.reset();
+    private void reset() {
+        Ln.d(mName + ": resetting my state");
+        mEnemyBoard = new Board();
+        mMyBoard = new Board();
+        mMyBid = NOT_READY;
+        mEnemyBid = NOT_READY;
+        mOpponentReady = false;
         mPlayerReady = false;
         mOpponentVersion = 0;
     }
 
     public void setBoard(Board board) {
-        Ln.d(getName() + ": my board is: " + board);
+        Ln.d(mName + ": my board is: " + board);
         mMyBoard = board;
         if (!board.getShips().isEmpty()) {
             debug_board = board;
@@ -73,7 +85,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     public void setChatListener(@NonNull ChatListener listener) {
         mChatListener = listener;
-        Ln.v(getName() + ": my chat listener is: " + listener);
+        Ln.v(mName + ": my chat listener is: " + listener);
     }
 
     public void startBidding(int bid) {
@@ -82,11 +94,11 @@ public class PlayerOpponent extends AbstractOpponent {
         mMyBid = bid;
         mPlayerReady = true;
 
-        if (isOpponentReady() && opponentStarts()) {
-            Ln.d(getName() + ": opponent is ready and it is his turn");
+        if (mOpponentReady && opponentStarts()) {
+            Ln.d(mName + ": opponent is ready and it is his turn");
             mOpponent.go();
         } else {
-            Ln.d(getName() + ": opponent is not ready or has higher bid - sending him my bid... " + mMyBid);
+            Ln.d(mName + ": opponent is not ready or has higher bid - sending him my bid... " + mMyBid);
             mOpponent.onEnemyBid(mMyBid);
         }
     }
@@ -95,21 +107,30 @@ public class PlayerOpponent extends AbstractOpponent {
     public void onEnemyBid(int bid) {
         debug_handler.post(debug_thread_break_task);
 
-        super.onEnemyBid(bid);
+        setBid(bid);
         mCallback.opponentReady();
         if (mPlayerReady && opponentStarts()) {
-            Ln.d(getName() + ": I'm ready too, but it's opponent's turn, " + mOpponent + " begins");
+            Ln.d(mName + ": I'm ready too, but it's opponent's turn, " + mOpponent + " begins");
             mOpponent.go();
 
             mCallback.onOpponentTurn();
         }
     }
 
+    private void setBid(int bid) {
+        mEnemyBid = bid;
+        if (mEnemyBid == mMyBid) {
+            reportException("stall");
+        }
+        mOpponentReady = true;
+        Ln.d(this + ": opponent is ready, bid = " + bid);
+    }
+
     public void setCallback(@NonNull PlayerCallback callback) {
         mCallback = callback;
-        Ln.v(getName() + ": callback set, opponent ready = " + isOpponentReady());
+        Ln.v(mName + ": callback set, opponent ready = " + mOpponentReady);
 
-        if (isOpponentReady()) {
+        if (mOpponentReady) {
             mCallback.opponentReady();
 
             if (mPlayerReady) {
@@ -124,16 +145,19 @@ public class PlayerOpponent extends AbstractOpponent {
 
     public void removeCallback() {
         mCallback = new DummyCallback();
-        Ln.v(getName() + ": callback removed");
+        Ln.v(mName + ": callback removed");
     }
 
     @Override
     public void go() {
         debug_handler.post(debug_thread_break_task);
 
-        boolean opponentReady = isOpponentReady();
-        Ln.d(getName() + ": I go");
-        super.go();
+        boolean opponentReady = mOpponentReady;
+        Ln.d(mName + ": I go");
+        if (!mOpponentReady) {
+            Ln.v(mName + ": opponent is ready");
+            mOpponentReady = true;
+        }
 
         if (!opponentReady) {
             Ln.d("opponent was not ready");
@@ -146,26 +170,26 @@ public class PlayerOpponent extends AbstractOpponent {
     public void onShotResult(@NonNull PokeResult result) {
         debug_handler.post(debug_thread_break_task);
 
-        Ln.v(getName() + ": my shot result: " + result);
+        Ln.v(mName + ": my shot result: " + result);
         updateEnemyBoard(result, mPlacement);
 
         mCallback.onShotResult(result);
         if (shipSank(result.ship)) {
             mCallback.onKill(PlayerCallback.Side.OPPONENT);
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
-                Ln.d(getName() + ": actually opponent lost: " + mEnemyBoard);
+                Ln.d(mName + ": actually opponent lost: " + mEnemyBoard);
                 mOpponent.onLost(mMyBoard);
 
                 reset();
                 mCallback.onWin();
             }
         } else if (result.cell.isMiss()) {
-            Ln.d(getName() + ": I missed - passing the turn to " + mOpponent);
+            Ln.d(mName + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
             mCallback.onMiss(PlayerCallback.Side.OPPONENT);
             mCallback.onOpponentTurn();
         } else {
-            Ln.d(getName() + ": it's a hit! - I continue");
+            Ln.d(mName + ": it's a hit! - I continue");
             mCallback.onHit(PlayerCallback.Side.OPPONENT);
         }
     }
@@ -179,17 +203,17 @@ public class PlayerOpponent extends AbstractOpponent {
         debug_handler.post(debug_thread_break_task);
 
         PokeResult result = createResultForShootingAt(aim);
-        Ln.v(getName() + ": hitting my board at " + aim + " yields: " + result);
+        Ln.v(mName + ": hitting my board at " + aim + " yields: " + result);
 
         mCallback.onShotAt(aim); // TODO: either use this or onKill...
         if (shipSank(result.ship)) {
-            Ln.d(getName() + ": my ship is destroyed - " + result.ship);
+            Ln.d(mName + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
             mCallback.onKill(PlayerCallback.Side.PLAYER);
         } else if (result.cell.isMiss()) {
             mCallback.onMiss(PlayerCallback.Side.PLAYER);
         } else {
-            Ln.d(getName() + ": my ship is hit");
+            Ln.d(mName + ": my ship is hit");
             mCallback.onHit(PlayerCallback.Side.PLAYER);
         }
 
@@ -203,10 +227,10 @@ public class PlayerOpponent extends AbstractOpponent {
                     Ln.d("opponent version doesn't support board reveal = " + mOpponentVersion);
                     mCallback.onLost(null);
                 }
-                Ln.d(getName() + ": I'm defeated, no turn to pass");
+                Ln.d(mName + ": I'm defeated, no turn to pass");
                 reset();
             } else {
-                Ln.d(getName() + ": I'm hit - " + mOpponent + " continues");
+                Ln.d(mName + ": I'm hit - " + mOpponent + " continues");
                 mOpponent.go();
             }
         }
@@ -218,7 +242,7 @@ public class PlayerOpponent extends AbstractOpponent {
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        Ln.d(getName() + ": my opponent is " + opponent);
+        Ln.d(mName + ": my opponent is " + opponent);
         mOpponent = opponent;
         opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
@@ -232,7 +256,7 @@ public class PlayerOpponent extends AbstractOpponent {
     @Override
     public void onNewMessage(@NonNull String text) {
         ChatMessage message = ChatMessage.newEnemyMessage(text);
-        Ln.d(getName() + ": I received message: " + message);
+        Ln.d(mName + ": I received message: " + message);
         if (mChatListener != null) {
             mChatListener.showChatCrouton(message);
         }
@@ -256,7 +280,67 @@ public class PlayerOpponent extends AbstractOpponent {
         debug_handler.post(debug_thread_break_task);
 
         mOpponentVersion = ver;
-        Ln.v(getName() + ": opponent's protocol version: v" + ver);
+        Ln.v(mName + ": opponent's protocol version: v" + ver);
     }
 
+    public boolean isOpponentReady() {
+        return mOpponentReady;
+    }
+
+    /**
+     * marks the aimed cell
+     */
+    private PokeResult createResultForShootingAt(@NonNull Vector2 aim) {
+        // ship if found will be shot and returned
+        Ship ship = mMyBoard.getFirstShipAt(aim);
+
+        // this cell will be changed and returned in result later
+        Cell cell = mMyBoard.getCellAt(aim);
+
+        if (ship == null) {
+            cell.setMiss();
+        } else {
+            cell.setHit();
+            ship.shoot();
+
+            if (ship.isDead()) {
+                return new PokeResult(aim, cell, ship);
+            }
+        }
+
+        return new PokeResult(aim, cell);
+    }
+
+    private void updateEnemyBoard(@NonNull PokeResult result,
+                                  @NonNull Placement placement) {
+        Ship ship = result.ship;
+        if (ship == null) {
+            mEnemyBoard.setCell(result.cell, result.aim);
+        } else {
+            placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
+        }
+        Ln.v(this + ": opponent's board: " + mEnemyBoard);
+    }
+
+    private boolean opponentStarts() {
+        return mMyBid < mEnemyBid;
+    }
+
+    public Board getEnemyBoard() {
+        return mEnemyBoard;
+    }
+
+    public Board getBoard() {
+        return mMyBoard;
+    }
+
+    @Override
+    public String getName() {
+        return mName;
+    }
+
+    @Override
+    public String toString() {
+        return mName;
+    }
 }
