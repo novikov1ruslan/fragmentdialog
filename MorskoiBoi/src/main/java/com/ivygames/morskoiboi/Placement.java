@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -8,7 +9,10 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.utils.GameUtils;
 
+import org.commons.logger.Ln;
+
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -83,4 +87,85 @@ public class Placement {
         board.getShips().add(ship);
     }
 
+    public void putShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
+        for (Ship ship : ships) {
+            putShipAt(board, ship, ship.getX(), ship.getY());
+        }
+    }
+
+    public void rotateShipAt(@NonNull Board board, int x, int y) {
+        if (!Board.containsCell(x, y)) {
+            Ln.w("(" + x + "," + y + ") is outside the board");
+            return;
+        }
+
+        Ship ship = removeShipFrom(board, x, y);
+        if (ship == null) {
+            return;
+        }
+
+        ship.rotate();
+
+        if (board.shipFitsTheBoard(ship, x, y)) {
+            putShipAt(board, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
+        } else {
+            if (ship.isHorizontal()) {
+                putShipAt(board, ship, board.horizontalDimension() - ship.getSize(), y);
+            } else {
+                putShipAt(board, ship, x, board.horizontalDimension() - ship.getSize());
+            }
+        }
+    }
+
+    /**
+     * @return null if no ship at (x,y) was found
+     * @throws IllegalArgumentException if (x,y) is outside the board
+     */
+    @Nullable
+    public Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
+        if (!board.containsCell(x, y)) {
+            // throw new IllegalArgumentException("(" + x + "," + y +
+            // ") is outside the board");
+            Ln.w("(" + x + "," + y + ") is outside the board");
+            return null;
+        }
+
+        // find the ship to remove
+        Ship removedShip = board.getShipAt(x, y);
+
+        // if the ship found - recreate the board without this ship
+        if (removedShip != null) {
+            // missed and hit cells are not recreated by adding ships back, so
+            // we need to remember them
+            List<Vector2> missedList = new LinkedList<>();
+            List<Vector2> hitList = new LinkedList<>();
+            for (int i = 0; i < Board.DIMENSION; i++) {
+                for (int j = 0; j < Board.DIMENSION; j++) {
+                    Cell cell = board.getCell(i, j);
+                    Vector2 vector = Vector2.get(i, j);
+                    if (cell.isMiss()) {
+                        missedList.add(vector);
+                    } else if (cell.isHit()) {
+                        hitList.add(vector);
+                    }
+                }
+            }
+
+            // clear the board and add the rest of the ships
+            Collection<Ship> ships = board.getShips();
+            ships.remove(removedShip);
+            board.clearBoard();
+            putShips(board, ships);
+
+            for (Vector2 missPlace : missedList) {
+                board.getCell(missPlace.getX(), missPlace.getY()).setMiss();
+            }
+
+            for (Vector2 hitPlace : hitList) {
+                board.getCell(hitPlace.getX(), hitPlace.getY()).setHit();
+            }
+        }
+
+        return removedShip;
+    }
 }

@@ -9,10 +9,6 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 public class DummyCallback implements PlayerCallback {
-    @Override
-    public void onPlayerGoes() {
-
-    }
 
     @Override
     public void onShotResult(@NonNull PokeResult result) {

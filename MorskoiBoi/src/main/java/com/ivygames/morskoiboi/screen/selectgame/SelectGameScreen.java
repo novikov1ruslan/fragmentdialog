@@ -27,7 +27,6 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.SignInListener;
 import com.ivygames.morskoiboi.ai.AndroidGame;
-import com.ivygames.morskoiboi.ai.AndroidOpponent;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
@@ -148,8 +147,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
         DelayedOpponent delegate = new DelayedOpponent();
-//        AndroidOpponent android = new AndroidOpponent(getString(R.string.android), new Board(), mPlacement, mRules);
-//        android.setCancellable(delegate);
         AiOpponent android = new AiOpponent(getString(R.string.android), mPlacement, mRules);
         android.setBoard(new Board());
         String playerName = mLayout.getPlayerName();

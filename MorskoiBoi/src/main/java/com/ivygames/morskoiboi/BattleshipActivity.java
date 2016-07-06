@@ -445,4 +445,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         }
     }
+
+    @Override
+    public String toString() {
+        return BattleshipActivity.class.getSimpleName() + "#" + (hashCode() % 1000);
+    }
 }

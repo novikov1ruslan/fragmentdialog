@@ -21,22 +21,24 @@ import java.util.Random;
 
 public class AiOpponent extends PlayerOpponent {
     @NonNull
-    private DelegatePlayerCallback mCallback;
-    @NonNull
     private final Placement mPlacement;
     @NonNull
     private final Rules mRules;
     @NonNull
     private final BotAlgorithm mBot;
 
+    @NonNull
+    private DelegatePlayerCallback mCallback;
+
     public AiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
         super(name, placement, rules);
         mPlacement = placement;
         mRules = rules;
 
+        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+
         mCallback = new PlayerCallbackImpl();
         super.setCallback(mCallback);
-        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
         Ln.v("Android opponent created with bot: " + mBot);
     }
 
@@ -46,19 +48,28 @@ public class AiOpponent extends PlayerOpponent {
         Ln.v(getName() + ": external callback set to " + callback);
     }
 
+    @Override
+    public void removeCallback() {
+        mCallback.removeCallback();
+    }
+
     private class PlayerCallbackImpl extends DelegatePlayerCallback {
         @Override
         public void opponentReady() {
-            Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
-            placeShips();
-            startBidding(new Bidder().newBid());
             super.opponentReady();
+
+            if (mMyBoard.getShips().isEmpty()) {
+                Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
+                placeShips();
+                startBidding(new Bidder().newBid());
+            }
         }
 
         @Override
-        public void onPlayerGoes() {
-            Vector2 aim = mBot.shoot(mEnemyBoard);
-            mOpponent.onShotAt(aim);
+        public void onPlayersTurn() {
+            super.onPlayersTurn();
+
+            mOpponent.onShotAt(mBot.shoot(mEnemyBoard));
         }
     }
 

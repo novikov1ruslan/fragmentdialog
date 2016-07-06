@@ -427,16 +427,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private class UiPlayerCallback implements PlayerCallback {
 
         @Override
-        public void onPlayerGoes() {
-            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
-                Ln.d("player's turn - starting timer");
-                mTimerController.start(); // for all practical scenarios - start will only be called from here
-            } else {
-                Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
-            }
-        }
-
-        @Override
         public void onShotResult(@NonNull PokeResult result) {
             stopDetectingShotTimeout();
 
@@ -534,12 +524,24 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mGameIsOn = true;
             mStartTime = SystemClock.elapsedRealtime();
             mMyTurn = true;
+
+            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
+                Ln.d("player's turn - starting timer");
+                mTimerController.start(); // for all practical scenarios - start will only be called from here
+            } else {
+                Ln.d("player's turn, but screen is paused - DO NOT START TIMER");
+            }
         }
 
         @Override
         public void onMessage(@NonNull String text) {
             ChatMessage message = ChatMessage.newEnemyMessage(text);
             mChatAdapter.add(message);
+        }
+
+        @Override
+        public String toString() {
+            return UiPlayerCallback.class.getSimpleName() + "#" + (hashCode() % 1000);
         }
     }
 

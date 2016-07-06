@@ -3,108 +3,18 @@ package com.ivygames.morskoiboi.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
-
-import org.commons.logger.Ln;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Board {
 
     public static final int DIMENSION = 10;
 
-    private static final String CELLS = "cells";
-    private static final String SHIPS = "ships";
-    private Collection<Ship> mShips;
-    private Cell[][] mCells;
-
-    @NonNull
-    public static Board copy(@NonNull Board board) {
-        return Board.fromJson(Board.toJson(board));
-    }
-
-    @NonNull
-    public static Board fromJson(@NonNull String json) {
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            return Board.fromJson(jsonObject);
-        } catch (JSONException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    @NonNull
-    public static Board fromJson(@NonNull JSONObject jsonObject) {
-        Board board = new Board();
-
-        try {
-            Board.populateCellsFromString(board.mCells, jsonObject.getString(CELLS));
-            Board.populateShipsFromJson(board, jsonObject.getJSONArray(SHIPS));
-        } catch (JSONException e) {
-            Ln.e(e);
-            throw new IllegalArgumentException(e);
-        }
-
-        return board;
-    }
-
-    private static void populateCellsFromString(@NonNull Cell[][] cells, @NonNull String cellsString) {
-        int columns = cells.length;
-        for (int i = 0; i < columns; i++) {
-            int rows = cells[i].length;
-            for (int j = 0; j < rows; j++) {
-                cells[i][j] = Cell.parse(cellsString.charAt(i * columns + j));
-            }
-        }
-    }
-
-    private static void populateShipsFromJson(@NonNull Board board, @NonNull JSONArray shipsJson) throws JSONException {
-        for (int i = 0; i < shipsJson.length(); i++) {
-            JSONObject shipJson = shipsJson.getJSONObject(i);
-            Ship ship = Ship.fromJson(shipJson);
-            PlacementFactory.getAlgorithm().putShipAt(board, ship, ship.getX(), ship.getY());
-        }
-    }
-
-    private static String getStringFromCells(@NonNull Cell[][] cells) {
-        StringBuilder sb = new StringBuilder(200);
-
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                sb.append(cells[i][j].toChar());
-            }
-        }
-
-        return sb.toString();
-    }
-
-    @NonNull
-    public static JSONObject toJson(@NonNull Board board) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(CELLS, Board.getStringFromCells(board.mCells));
-
-            JSONArray shipsJson = new JSONArray();
-            for (Ship ship : board.mShips) {
-                shipsJson.put(ship.toJson());
-            }
-            jsonObject.put(SHIPS, shipsJson);
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        return jsonObject;
-    }
+    Collection<Ship> mShips;
+    Cell[][] mCells;
 
     public Board() {
         clearBoard();
@@ -171,99 +81,12 @@ public class Board {
         return getCell(vector.getX(), vector.getY());
     }
 
-    private static void putShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
-        for (Ship ship : ships) {
-            putShip(board, ship);
-        }
-    }
-
-    private static void putShip(@NonNull Board board, @NonNull Ship ship) {
-        PlacementFactory.getAlgorithm().putShipAt(board, ship, ship.getX(), ship.getY());
-    }
-
     /**
      * clears cells and ships from the board - like a new board
      */
     public void clearBoard() {
         mCells = createNewBoard();
         mShips = new ArrayList<>();
-    }
-
-    /**
-     * @return null if no ship at (x,y) was found
-     * @throws IllegalArgumentException if (x,y) is outside the board
-     */
-    @Nullable
-    public Ship removeShipFrom(int x, int y) { // TODO: bad, very bad method
-        if (!containsCell(x, y)) {
-            // throw new IllegalArgumentException("(" + x + "," + y +
-            // ") is outside the board");
-            Ln.w("(" + x + "," + y + ") is outside the board");
-            return null;
-        }
-
-        // find the ship to remove
-        Ship removedShip = getShipAt(x, y);
-
-        // if the ship found - recreate the board without this ship
-        if (removedShip != null) {
-            // missed and hit cells are not recreated by adding ships back, so
-            // we need to remember them
-            List<Vector2> missedList = new LinkedList<>();
-            List<Vector2> hitList = new LinkedList<>();
-            for (int i = 0; i < DIMENSION; i++) {
-                for (int j = 0; j < DIMENSION; j++) {
-                    Cell cell = mCells[i][j];
-                    Vector2 vector = Vector2.get(i, j);
-                    if (cell.isMiss()) {
-                        missedList.add(vector);
-                    } else if (cell.isHit()) {
-                        hitList.add(vector);
-                    }
-                }
-            }
-
-            // clear the board and add the rest of the ships
-            mShips.remove(removedShip);
-            Collection<Ship> ships = mShips;
-            clearBoard();
-            putShips(this, ships);
-
-            for (Vector2 missPlace : missedList) {
-                mCells[missPlace.getX()][missPlace.getY()].setMiss();
-            }
-
-            for (Vector2 hitPlace : hitList) {
-                mCells[hitPlace.getX()][hitPlace.getY()].setHit();
-            }
-        }
-
-        return removedShip;
-    }
-
-    public void rotateShipAt(int x, int y) {
-        if (!containsCell(x, y)) {
-            Ln.w("(" + x + "," + y + ") is outside the board");
-            return;
-        }
-
-        Ship ship = removeShipFrom(x, y);
-        if (ship == null) {
-            return;
-        }
-
-        ship.rotate();
-
-        Placement algorithm = PlacementFactory.getAlgorithm();
-        if (shipFitsTheBoard(ship, x, y)) {
-            algorithm.putShipAt(this, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
-        } else {
-            if (ship.isHorizontal()) {
-                algorithm.putShipAt(this, ship, horizontalDimension() - ship.getSize(), y);
-            } else {
-                algorithm.putShipAt(this, ship, x, horizontalDimension() - ship.getSize());
-            }
-        }
     }
 
     @NonNull
@@ -313,7 +136,7 @@ public class Board {
      */
     // TODO: what is the difference from getFirstShipAt?
     @Nullable
-    private Ship getShipAt(int x, int y) {
+    public Ship getShipAt(int x, int y) {
         for (Ship ship : mShips) {
             if (ship.isInShip(x, y)) {
                 return ship;
@@ -328,7 +151,7 @@ public class Board {
         Cell[][] cells = new Cell[DIMENSION][DIMENSION];
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                cells[i][j] = new Cell(); // NOPMD
+                cells[i][j] = new Cell();
             }
         }
 

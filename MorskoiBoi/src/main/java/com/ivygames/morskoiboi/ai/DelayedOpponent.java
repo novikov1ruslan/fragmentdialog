@@ -22,8 +22,6 @@ public class DelayedOpponent implements Opponent, Cancellable {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Nullable
-    private OnEnemyBidCommand mOnEnemyBidCommand;
-    @Nullable
     private GoCommand mGoCommand;
     @Nullable
     private OnShotResultCommand mOnShotResultCommand;
@@ -96,7 +94,6 @@ public class DelayedOpponent implements Opponent, Cancellable {
     public void cancel() {
         Ln.v("cancelling all commands");
         mHandler.removeCallbacks(mGoCommand);
-        mHandler.removeCallbacks(mOnEnemyBidCommand);
         mHandler.removeCallbacks(mOnShootAtCommand);
         mHandler.removeCallbacks(mOnShotResultCommand);
     }

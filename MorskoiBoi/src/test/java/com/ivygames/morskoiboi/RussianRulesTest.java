@@ -67,7 +67,7 @@ public class RussianRulesTest {
         Board board = new Board();
         placement.populateBoardWithShips(board, generateFullFleet());
         Ship ship = board.getShips().iterator().next();
-        board.removeShipFrom(ship.getX(), ship.getY());
+        placement.removeShipFrom(board, ship.getX(), ship.getY());
         assertThat(mRules.isBoardSet(board), is(false));
     }
 
@@ -77,7 +77,7 @@ public class RussianRulesTest {
         placement.populateBoardWithShips(board, generateFullFleet());
         Collection<Ship> shipsCopy = new ArrayList<>(board.getShips());
         for (Ship ship : shipsCopy) {
-            board.removeShipFrom(ship.getX(), ship.getY());
+            placement.removeShipFrom(board, ship.getX(), ship.getY());
             placement.putShipAt(board, ship, 0, 0);
         }
         assertThat(board.getShips().size(), is(10));

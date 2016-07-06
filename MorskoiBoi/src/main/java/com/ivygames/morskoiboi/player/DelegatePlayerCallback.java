@@ -20,9 +20,9 @@ public class DelegatePlayerCallback implements PlayerCallback {
         Ln.v("callback set to: " + callback);
     }
 
-    @Override
-    public void onPlayerGoes() {
-        mCallback.onPlayerGoes();
+    public void removeCallback() {
+        mCallback = new DummyCallback();
+        Ln.v(mCallback + " callback removed");
     }
 
     @Override
@@ -79,4 +79,5 @@ public class DelegatePlayerCallback implements PlayerCallback {
     public void onMessage(@NonNull String message) {
         mCallback.onMessage(message);
     }
+
 }

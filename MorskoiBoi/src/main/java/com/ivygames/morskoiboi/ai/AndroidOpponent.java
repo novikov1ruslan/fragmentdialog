@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Ship;
@@ -104,7 +105,7 @@ public class AndroidOpponent extends AbstractOpponent implements Cancellable {
         } else if (result.ship != null) {
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(this + ": I won - notifying " + mOpponent);
-                mOpponent.onLost(Board.copy(mMyBoard));
+                mOpponent.onLost(BoardSerialization.copy(mMyBoard));
                 reset2();
             }
         }

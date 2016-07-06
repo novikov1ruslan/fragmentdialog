@@ -62,7 +62,8 @@ public class PlayerOpponentTest {
 
         mPlacement = new Placement(new Random(), rules);
 
-        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules, listener);
+        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
+        mPlayer.setChatListener(listener);
         mPlayer.setOpponent(mEnemy);
         mPlayer.setCallback(callback);
     }
@@ -203,13 +204,6 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void WhenPlayerGoes__GoCallbackCalled() {
-        mPlayer.go();
-
-        verify(callback, times(1)).onPlayerGoes();
-    }
-
-    @Test
     public void WhenPlayerGoes__ItIsPlayersTurn() {
         reset(callback);
         mPlayer.go();
@@ -298,7 +292,8 @@ public class PlayerOpponentTest {
     public void WhenOpponentLoses_AndOpponentDoesNotSupportBoardReveal__CallbackIsCalled() {
         rules = mock(Rules.class);
         when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
-        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules, listener);
+        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
+        mPlayer.setChatListener(listener);
         mPlayer.setOpponent(mEnemy);
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
         mPlayer.setCallback(callback);

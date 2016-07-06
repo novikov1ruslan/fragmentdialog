@@ -19,7 +19,6 @@ import java.util.Random;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 import static org.hamcrest.Matchers.equalTo;
@@ -236,80 +235,6 @@ public class BoardTest {
 		assertReservedOnlyInProximityOnCleanBoard(board, ship);
 	}
 
-	@Test
-	public void testRemoveShipFrom2() {
-		Ship ship = new Ship(1, Orientation.VERTICAL);
-		putShipAt(ship, 5, 5);
-		mBoard.getCell(8, 8).setMiss();
-
-		assertNull(mBoard.removeShipFrom(4, 4));
-		assertEquals(1, mBoard.getShips().size());
-
-		assertNotNull(mBoard.removeShipFrom(5, 5));
-		assertEquals(0, mBoard.getShips().size());
-
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				Cell cell = mBoard.getCell(i, j);
-				if (i == 8 && j == 8) {
-					assertTrue(cell.isMiss());
-				} else {
-					assertTrue(cell.isEmpty());
-				}
-			}
-		}
-	}
-
-	@Test
-	public void testRemoveShipFrom() {
-		Ship ship = new Ship(1, Orientation.VERTICAL);
-		putShipAt(ship, 5, 5);
-		putShipAt(new Ship(1), 6, 6);
-
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (!((i == 5 && j == 5) || (i == 6 && j == 6))) {
-					assertNull(i + "," + j, mBoard.removeShipFrom(i, j));
-				}
-			}
-		}
-
-		assertEquals(2, mBoard.getShips().size());
-		assertFalse(91 == mBoard.getEmptyCells().size());
-		Ship ship2 = mBoard.removeShipFrom(5, 5);
-		assert ship2 != null;
-
-		assertEquals(ship.getSize(), ship2.getSize());
-		assertEquals(ship.isHorizontal(), ship2.isHorizontal());
-		assertEquals(ship.getX(), ship2.getX());
-		assertEquals(ship.getY(), ship2.getY());
-
-		assertEquals(91, mBoard.getEmptyCells().size());
-		assertEquals(1, mBoard.getShips().size());
-	}
-
-	@Test
-	public void testCanRotateShip() {
-		Ship ship = new Ship(2, Orientation.HORIZONTAL);
-		putShipAt(ship, 5, 5);
-		mBoard.rotateShipAt(5, 5);
-
-		assertFalse(ship.isHorizontal());
-		assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
-	}
-
-	@Test
-	public void testCannotRotateShip() {
-		Ship ship = new Ship(4, Orientation.HORIZONTAL);
-		putShipAt(ship, 5, 7);
-		mBoard.rotateShipAt(5, 7);
-
-		assertFalse(ship.isHorizontal());
-		assertEquals(5, ship.getX());
-		assertEquals(6, ship.getY());
-		assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
-	}
-
 	private static void assertReservedOnlyInProximityOnCleanBoard(Board board, Ship ship) {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -424,29 +349,29 @@ public class BoardTest {
 	
 	@Test
 	public void successful_Recreation_After_Serializing_To_Json_Empty_Board() {
-		String json = Board.toJson(mBoard).toString();
-		Board board = Board.fromJson(json);
+		String json = BoardSerialization.toJson(mBoard).toString();
+		Board board = BoardSerialization.fromJson(json);
 		assertBoardsEqual(mBoard, board);
 	}
 
 	@Test
 	public void ParsingEmptyBoard() {
-		Board board = Board.fromJson(EMPTY_BOARD);
+		Board board = BoardSerialization.fromJson(EMPTY_BOARD);
 		assertBoardIsEmpty(board);
 	}
 
 	@Test
 	public void ParsingBoardWithShip() {
-		Board board = Board.fromJson(BOARD_WITH_SHIP);
+		Board board = BoardSerialization.fromJson(BOARD_WITH_SHIP);
 		putShipAt(new Ship(1), 5, 5);
 		assertBoardsEqual(mBoard, board);
 	}
 
     @Test
     public void CopyOfABoard__IsIdenticalToOriginal() {
-        Board board = Board.fromJson(BOARD_WITH_SHIP);
+        Board board = BoardSerialization.fromJson(BOARD_WITH_SHIP);
 
-        Board copy = Board.copy(board);
+        Board copy = BoardSerialization.copy(board);
 
         assertThat(copy, equalTo(board));
     }
@@ -454,8 +379,8 @@ public class BoardTest {
 	@Test
 	public void successful_Recreation_After_Serializing_To_String_Board_With_Ship() {
 		putShipAt(new Ship(1), 5, 5);
-		String json = Board.toJson(mBoard).toString();
-		Board board = Board.fromJson(json);
+		String json = BoardSerialization.toJson(mBoard).toString();
+		Board board = BoardSerialization.fromJson(json);
 		assertBoardsEqual(mBoard, board);
 	}
 	
@@ -463,7 +388,7 @@ public class BoardTest {
 	public void should_throw_IllegalArgumentException_On_Illegal_String() {
 		String json = "just some garbage";
 		try {
-			Board.fromJson(json);
+			BoardSerialization.fromJson(json);
 			fail("should have thrown IllegalArgumentException");
 		}
 		catch (IllegalArgumentException iae) {

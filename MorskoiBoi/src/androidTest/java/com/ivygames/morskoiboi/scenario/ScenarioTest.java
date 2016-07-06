@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.scenario;
 
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
@@ -29,7 +30,7 @@ public class ScenarioTest extends OnlineScreen_ {
     public void WhenPlayerLooses__EnemyBoardShown() {
         // TODO:
         showScreen();
-        Board enemyBoard = Board.fromJson(BOARD_WITH_SHIP);
+        Board enemyBoard = BoardSerialization.fromJson(BOARD_WITH_SHIP);
         player.onLost(enemyBoard);
     }
 

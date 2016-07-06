@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.multiplayer;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -49,7 +50,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
                 mOpponent.onShotResult(PokeResult.fromJson(body));
                 break;
             case WIN:
-                mOpponent.onLost(Board.fromJson(body));
+                mOpponent.onLost(BoardSerialization.fromJson(body));
                 break;
             case VERSION:
                 mOpponent.setOpponentVersion(Integer.parseInt(body));
@@ -92,7 +93,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 
     @Override
     public void onLost(@NonNull Board board) {
-        sendRtm(WIN + Board.toJson(board).toString());
+        sendRtm(WIN + BoardSerialization.toJson(board).toString());
     }
 
     @Override

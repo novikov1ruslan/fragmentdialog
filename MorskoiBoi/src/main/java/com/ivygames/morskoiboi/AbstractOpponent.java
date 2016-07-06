@@ -32,7 +32,7 @@ public abstract class AbstractOpponent implements Opponent {
         mName = name;
     }
 
-    protected final void reset() {
+    protected void reset() {
         Ln.d(this + ": initializing boards and bids");
         mEnemyBoard = new Board();
         mMyBoard = new Board();
@@ -57,7 +57,7 @@ public abstract class AbstractOpponent implements Opponent {
     @Override
     public void go() {
         if (!mOpponentReady) {
-            Ln.d(this + ": opponent is ready");
+            Ln.v(getName() + ": opponent is ready");
             mOpponentReady = true;
         }
     }
