@@ -130,32 +130,24 @@ public class AndroidOpponentTest {
         verify(mOpponent, times(1)).onLost(any(Board.class));
     }
 
-//    @Test
-//    public void WhenOpponentBidsWithHigherBid__OpponentGoes() {
-//        mAndroid.startBidding(1);
-//        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
-//
-//        mAndroid.onEnemyBid(2);
-//
-//        verify(mOpponent, times(1)).go();
-//    }
-//
-//    @Test
-//    public void WhenOpponentBidsWithLowerBid__OpponentGetsMyBid() {
-//        mAndroid.startBidding(2);
-//        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
-//
-//        mAndroid.onEnemyBid(1);
-//
-//        verify(mOpponent, times(1)).onEnemyBid(2);
-//    }
+    @Test
+    public void WhenOpponentBidsWithHigherBid__OpponentGoes() {
+        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
+        mAndroid.startBidding(1);
+
+        mAndroid.onEnemyBid(2);
+
+        verify(mOpponent, times(1)).go();
+    }
 
     @Test
-    public void when_android_looses__its_cancellable_delegate_is_called() {
-        assertThat(mCancellableOpponent.cancelCalled, is(false));
-//        when(mPlacement.generateBoard()).thenReturn(mBoard);
-        mAndroid.onLost(mBoard);
-        assertThat(mCancellableOpponent.cancelCalled, is(true));
+    public void WhenOpponentBidsWithLowerBid__OpponentGetsMyBid() {
+        mAndroid.startBidding(2);
+        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
+
+        mAndroid.onEnemyBid(1);
+
+        verify(mOpponent, times(1)).onEnemyBid(2);
     }
 
     @Test

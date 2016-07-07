@@ -146,23 +146,42 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
-        DelayedOpponent delegate = new DelayedOpponent();
-        AiOpponent android = new AiOpponent(getString(R.string.android), mPlacement, mRules);
-        android.setBoard(new Board());
-        android.setCancellable(delegate);
-        String playerName = mLayout.getPlayerName();
-        if (TextUtils.isEmpty(playerName)) {
-            playerName = getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + playerName);
-        }
-        PlayerOpponent player = new AiOpponent(playerName, mPlacement, mRules);
-        player.setChatListener(parent());
-        delegate.setOpponent(player);
+        PlayerOpponent player = createPlayerOpponent();
+        DelayedOpponent delegate = createDelayedOpponent(player);
+        AiOpponent android = createAiOpponent(delegate);
+
         Session session = new Session(player, android);
         player.setOpponent(android);
         android.setOpponent(delegate);
 //        Session.bindOpponents(delegate, android);
         setScreen(ScreenCreator.newBoardSetupScreen(new AndroidGame(), session));
+    }
+
+    @NonNull
+    private AiOpponent createAiOpponent(DelayedOpponent delegate) {
+        AiOpponent android = new AiOpponent(getString(R.string.android), mPlacement, mRules);
+        android.setBoard(new Board());
+        android.setCancellable(delegate);
+        return android;
+    }
+
+    @NonNull
+    private DelayedOpponent createDelayedOpponent(PlayerOpponent player) {
+        DelayedOpponent delegate = new DelayedOpponent();
+        delegate.setOpponent(player);
+        return delegate;
+    }
+
+    @NonNull
+    private PlayerOpponent createPlayerOpponent() {
+        String playerName = mLayout.getPlayerName();
+        if (TextUtils.isEmpty(playerName)) {
+            playerName = getString(R.string.player);
+            Ln.i("player name is empty - replaced by " + playerName);
+        }
+        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules);
+        player.setChatListener(parent());
+        return player;
     }
 
     @Override

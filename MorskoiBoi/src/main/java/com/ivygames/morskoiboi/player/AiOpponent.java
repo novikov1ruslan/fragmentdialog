@@ -72,6 +72,9 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
             if (getBoard().getShips().isEmpty()) {
                 Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
                 placeShips();
+            }
+
+            if (!ready()) {
                 startBidding(new Bidder().newBid());
             }
         }

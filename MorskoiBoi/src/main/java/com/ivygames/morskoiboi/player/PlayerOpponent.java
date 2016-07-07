@@ -107,7 +107,7 @@ public class PlayerOpponent implements Opponent {
     public void onEnemyBid(int bid) {
         debug_handler.post(debug_thread_break_task);
 
-        setBid(bid);
+        setOpponentBid(bid);
         mCallback.opponentReady();
         if (mPlayerReady && opponentStarts()) {
             Ln.d(mName + ": I'm ready too, but it's opponent's turn, " + mOpponent + " begins");
@@ -117,7 +117,7 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    private void setBid(int bid) {
+    private void setOpponentBid(int bid) {
         mEnemyBid = bid;
         if (mEnemyBid == mMyBid) {
             reportException("stall");
@@ -332,6 +332,10 @@ public class PlayerOpponent implements Opponent {
 
     public Board getBoard() {
         return mMyBoard;
+    }
+
+    protected boolean ready() {
+        return mPlayerReady;
     }
 
     @Override

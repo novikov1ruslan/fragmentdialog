@@ -13,7 +13,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 import org.commons.logger.Ln;
 
 public class DelayedOpponent implements Opponent, Cancellable {
-    private static final int WHISTLE_SOUND_DELAY = 1300;
+    private static final int WHISTLE_SOUND_DELAY = 130;
     private static final boolean NO_NEED_TO_THINK = false;
 
     private Opponent mOpponent;
@@ -36,6 +36,7 @@ public class DelayedOpponent implements Opponent, Cancellable {
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
+        Ln.v("opponent set to " + opponent);
     }
 
     @Override
