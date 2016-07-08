@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Application;
+import android.util.Log;
 
 import org.acra.ReportField;
 import org.acra.annotation.ReportsCrashes;

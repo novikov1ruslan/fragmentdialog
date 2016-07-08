@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.example.novikov.common.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.ivygames.common.billing.PurchaseUtils;

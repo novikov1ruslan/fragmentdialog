@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.ivygames.common.AndroidDevice;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.invitations.GameInvitation;
 import com.ivygames.morskoiboi.invitations.InvitationLoadListener;

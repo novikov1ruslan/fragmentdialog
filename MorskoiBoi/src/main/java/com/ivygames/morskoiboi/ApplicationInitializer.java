@@ -4,14 +4,10 @@ import android.app.Application;
 import android.content.res.Resources;
 import android.util.Log;
 
-import com.google.android.gms.analytics.ExceptionParser;
-import com.google.android.gms.analytics.ExceptionReporter;
-import com.google.android.gms.analytics.GoogleAnalytics;
+import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.analytics.GlobalTracker;
-import com.ivygames.common.analytics.UiEvent;
-import com.ivygames.common.analytics.UiEventImpl;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
@@ -30,9 +26,6 @@ import org.commons.logger.Logger;
 import org.commons.logger.LoggerImpl;
 import org.commons.logger.WarningListener;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Random;
 
 class ApplicationInitializer {
@@ -43,7 +36,7 @@ class ApplicationInitializer {
         ACRA.init(application);
         AndroidDevice device = new AndroidDevice(application);
         initLogger(application, device.isDebug());
-        initAnalytics(application);
+        GlobalTracker.initAnalytics(application, ANALYTICS_KEY);
 
         GameSettings settings = new GameSettings(application);
 
@@ -70,23 +63,8 @@ class ApplicationInitializer {
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
 
         ExceptionHandler.setDryRun(BuildConfig.DEBUG);
-    }
-
-    private static void initAnalytics(Application application) {
-        // Get the GoogleAnalytics singleton. Note that the SDK uses
-        // the application context to avoid leaking the current context.
-        // Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
-        GoogleAnalytics.getInstance(application).setDryRun(BuildConfig.DEBUG);
-        GlobalTracker.tracker = GoogleAnalytics.getInstance(application).newTracker(ANALYTICS_KEY);
-        GlobalTracker.tracker.enableAdvertisingIdCollection(true);
-        UiEvent.set(new UiEventImpl());
         Log.i("Battleship", "created");
 
-        Thread.UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        ExceptionReporter exceptionReporter = new ExceptionReporter(GlobalTracker.tracker, exceptionHandler, application);
-        // TODO: Make exceptionReporter the new default uncaught exception handler.
-        Thread.setDefaultUncaughtExceptionHandler(exceptionReporter);
-        exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
     }
 
     private static void initLogger(Application application, boolean isDebug) {
@@ -107,22 +85,6 @@ class ApplicationInitializer {
         };
         Logger logger = new LoggerImpl(logConfig, warningListener);
         Ln.injectLogger(logger);
-    }
-
-    private static class AnalyticsExceptionParser implements ExceptionParser {
-
-        @Override
-        public String getDescription(String threadName, Throwable throwable) {
-            return "[" + threadName + "] " + getStackTrace(throwable) + " (" + AndroidDevice.getDeviceInfo() + ")";
-        }
-
-        private String getStackTrace(Throwable throwable) {
-            final Writer result = new StringWriter();
-            final PrintWriter printWriter = new PrintWriter(result);
-            throwable.printStackTrace(printWriter);
-
-            return result.toString();
-        }
     }
 
 }

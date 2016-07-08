@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.intent.Intents;
 import android.view.View;
 
+import com.ivygames.common.AndroidDevice;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;

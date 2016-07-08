@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.view.View;
 
+import com.ivygames.common.AndroidDevice;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
 import org.mockito.Mock;

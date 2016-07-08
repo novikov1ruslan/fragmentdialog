@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Common</string>
+    <string name="versionName">common</string>
 </resources>

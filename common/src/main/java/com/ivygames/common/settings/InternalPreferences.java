@@ -105,7 +105,7 @@ public class InternalPreferences implements SharedPreferences, SharedPreferences
 
     @Override
     public Editor putBoolean(String key, boolean value) {
-        Ln.d("(%s, %b)", key, value);
+        Ln.d("(" + key + "," + value + ")");
         mEditor.putBoolean(key, value);
         mEditor.commit();
         return mEditor;
@@ -113,7 +113,7 @@ public class InternalPreferences implements SharedPreferences, SharedPreferences
 
     @Override
     public Editor putFloat(String key, float value) {
-        Ln.d("(%s, %f)", key, value);
+        Ln.d("(" + key + "," + value + ")");
         mEditor.putFloat(key, value);
         mEditor.commit();
         return mEditor;
@@ -121,7 +121,7 @@ public class InternalPreferences implements SharedPreferences, SharedPreferences
 
     @Override
     public Editor putInt(String key, int value) {
-        Ln.d("putInt: (%s, %d)", key, value);
+        Ln.d("(" + key + "," + value + ")");
         mEditor.putInt(key, value);
         mEditor.commit();
         return mEditor;
@@ -129,7 +129,7 @@ public class InternalPreferences implements SharedPreferences, SharedPreferences
 
     @Override
     public Editor putLong(String key, long value) {
-        Ln.d("putLong: (%s, %d)", key, value);
+        Ln.d("(" + key + "," + value + ")");
         mEditor.putLong(key, value);
         mEditor.commit();
         return mEditor;
@@ -137,7 +137,7 @@ public class InternalPreferences implements SharedPreferences, SharedPreferences
 
     @Override
     public Editor putString(String key, String value) {
-        Ln.d("putString: (%s, %s)", key, value);
+        Ln.d("(" + key + "," + value + ")");
         mEditor.putString(key, value);
         mEditor.commit();
         return mEditor;
@@ -150,7 +150,7 @@ public class InternalPreferences implements SharedPreferences, SharedPreferences
 
     @Override
     public Editor remove(String key) {
-        Ln.v("remove: (%s)", key);
+        Ln.v(key);
         mEditor.remove(key);
         mEditor.commit();
         return mEditor;
