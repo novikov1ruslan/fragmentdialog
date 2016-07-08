@@ -13,8 +13,11 @@ class QueryInventoryFinishedImpl implements IabHelper.QueryInventoryFinishedList
 
     @NonNull
     private final HasNoAdsListener mHasNoAdsListener;
+    @NonNull
+    private final String mSku;
 
-    QueryInventoryFinishedImpl(@NonNull HasNoAdsListener listener) {
+    QueryInventoryFinishedImpl(@NonNull String sku, @NonNull HasNoAdsListener listener) {
+        mSku = sku;
         mHasNoAdsListener = listener;
     }
 
@@ -26,7 +29,7 @@ class QueryInventoryFinishedImpl implements IabHelper.QueryInventoryFinishedList
         }
         Ln.d("Query inventory was successful.");
 
-        Purchase noAdsPurchase = inventory.getPurchase(PurchaseManager.SKU_NO_ADS);
+        Purchase noAdsPurchase = inventory.getPurchase(mSku);
         if (noAdsPurchase != null) {
             mHasNoAdsListener.onHasNoAds();
         }

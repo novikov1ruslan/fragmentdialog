@@ -43,6 +43,18 @@ import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends Activity implements ConnectionCallbacks, ChatListener {
+    // TODO:
+     /*
+      * base64EncodedPublicKey should be YOUR APPLICATION'S PUBLIC KEY (that you got from the Google Play developer console). This is not your developer public
+ 	 * key, it's the *app-specific* public key.
+-	 *
++	 *
+ 	 * Instead of just storing the entire literal string here embedded in the program, construct the key at runtime from pieces or use bit manipulation (for
+ 	 * example, XOR with some other string) to hide the actual key. The key itself is not secret information, but we don't want to make it easy for an attacker
+ 	 * to replace the public key with one of their own and then fake messages from the server.
+ 	 */
+    private static final String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsZ8ufj+4+R1sqPrTudIeXZBD6NUtKo8fWLpbQHp9ib9jtIv3PVOzVuNKIsG7eXqn0U+vWX8WYtoPGmogYr4GDJqdzOQb2xq5ZEsAzXoE+Yeiqpp/ASUs1IU2Tw+cu30rKStgktnFeIfcFowPyHeSgSQlqBFUrL0A8oipc5oesao7OiGGCwpUf6OJuvyK0DmdhdYUMPRxTgp0v5+JnXhNEqgiU00W468vf4rfUGqQWUNN902fphf8oADJT5FdlculaQva5t+55RdpqtP8UAficOUXh1xyAn1KQ0APKOPU5x7wAe/z3bLdjE1Ik4g4KXyHLGfP5PMjkfqvgNeU2WsN4QIDAQAB";
+    private final String SKU_NO_ADS = "no_ads";
 
     public static final int RC_SELECT_PLAYERS = 10000;
     public static final int RC_INVITATION_INBOX = 10001;
@@ -60,7 +72,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
-    private final PurchaseManager mPurchaseManager = new PurchaseManager(this);
+    private final PurchaseManager mPurchaseManager = new PurchaseManager(this, RC_PURCHASE);
 
     private boolean mRecreating;
 
@@ -141,7 +153,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         } else {
             AdProviderFactory.init(this);
             if (device.isBillingAvailable()) {
-                mPurchaseManager.query(new PurchaseStatusListenerImpl());
+                mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl(), BASE64_ENCODED_PUBLIC_KEY);
             } else {
                 Ln.e("gpgs_not_available");
                 hideNoAdsButton();
@@ -329,7 +341,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
                 mResolvingConnectionFailure = false;
             }
         } else if (requestCode == RC_PURCHASE) {
-            mPurchaseManager.handleActivityResult(requestCode, resultCode, data);
+            mPurchaseManager.handleActivityResult(resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);
         }
@@ -391,7 +403,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     public void purchase() {
-        mPurchaseManager.purchase(BattleshipActivity.RC_PURCHASE, new PurchaseStatusListenerImpl());
+        mPurchaseManager.purchase(SKU_NO_ADS, new PurchaseStatusListenerImpl());
     }
 
     private class PurchaseStatusListenerImpl implements PurchaseStatusListener {

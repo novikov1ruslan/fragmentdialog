@@ -11,9 +11,13 @@ import org.commons.logger.Ln;
 class OnIabPurchaseFinishedImpl implements IabHelper.OnIabPurchaseFinishedListener {
     @NonNull
     private final PurchaseStatusListener mListener;
+    @NonNull
+    private final String mSku;
 
-    public OnIabPurchaseFinishedImpl(@NonNull PurchaseStatusListener listener) {
+    public OnIabPurchaseFinishedImpl(@NonNull PurchaseStatusListener listener,
+                                     @NonNull String sku) {
         mListener = listener;
+        mSku = sku;
     }
 
     @Override
@@ -26,7 +30,7 @@ class OnIabPurchaseFinishedImpl implements IabHelper.OnIabPurchaseFinishedListen
         }
         Ln.d("Purchase successful.");
 
-        if (purchase.getSku().equals(PurchaseManager.SKU_NO_ADS)) {
+        if (purchase.getSku().equals(mSku)) {
             mListener.onHasNoAds();
         }
     }

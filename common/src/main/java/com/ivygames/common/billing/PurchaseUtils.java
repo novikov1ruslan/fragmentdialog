@@ -10,7 +10,6 @@ import com.ivygames.billing.IabHelper;
 import com.ivygames.billing.IabResult;
 import com.ivygames.billing.Purchase;
 
-import org.acra.ACRA;
 import org.commons.logger.Ln;
 
 import java.util.List;
@@ -73,18 +72,20 @@ public class PurchaseUtils {
     }
 
     static void purchase(@NonNull Activity activity,
+                         @NonNull String sku,
                          int requestCode,
                          @NonNull PurchaseStatusListener listener,
                          @NonNull String payload,
                          @NonNull IabHelper helper) {
         try {
-            helper.launchPurchaseFlow(activity, PurchaseManager.SKU_NO_ADS, requestCode, new OnIabPurchaseFinishedImpl(listener), payload);
+            helper.launchPurchaseFlow(activity, sku, requestCode,
+                    new OnIabPurchaseFinishedImpl(listener, sku), payload);
         } catch (Exception e) {
             reportException(e);
         }
     }
 
-    static void query(@NonNull IabResult result,
+    static void query(@NonNull String sku, @NonNull IabResult result,
                       @NonNull HasNoAdsListener listener,
                       @NonNull IabHelper helper) {
         try {
@@ -95,7 +96,7 @@ public class PurchaseUtils {
 
             // IAB is fully set up. Now, let's get an inventory of stuff we own.
             Ln.d("Setup successful. Querying inventory.");
-            helper.queryInventoryAsync(new QueryInventoryFinishedImpl(listener));
+            helper.queryInventoryAsync(new QueryInventoryFinishedImpl(sku, listener));
         } catch (Exception e) {
             reportException(e);
         }

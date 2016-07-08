@@ -16,6 +16,7 @@ import java.io.Writer;
 
 public class GlobalTracker {
 
+    // TODO: remove static global tracker
     static Tracker tracker;
 
     private GlobalTracker(){}
