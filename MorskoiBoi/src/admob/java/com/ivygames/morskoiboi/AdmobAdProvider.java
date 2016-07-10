@@ -66,37 +66,6 @@ public class AdmobAdProvider implements AdProvider {
 
     }
 
-    @Override
-    public void setPerson(Person person) {
-        if (person == null) {
-            Ln.w("person is null");
-            return;
-        }
-
-        mPerson = person;
-//        if (person.hasBirthday()) {
-//            mBirthday = person.getBirthday();
-//            Ln.v("birthday=" + mBirthday);
-//        } else {
-//            Ln.v("player has not specified birthday");
-//        }
-//
-//        if (person.hasCurrentLocation()) {
-//            mCurrentLocation = person.getCurrentLocation();
-//            Ln.v("current location=" + mCurrentLocation);
-//        } else {
-//            Ln.v("player has not specified location");
-//        }
-//
-//        if (person.hasGender()) {
-//            mGender = person.getGender();
-//            String gender = AdmobAdProvider.genderToString(mGender);
-//            Ln.v("gender=" + gender);
-//        } else {
-//            Ln.v("player has not specified gender");
-//        }
-    }
-
     private static String genderToString(int gender) {
         switch (gender) {
             case Person.Gender.MALE:

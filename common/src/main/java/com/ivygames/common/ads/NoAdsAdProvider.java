@@ -1,8 +1,8 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.ads;
 
 import android.app.Activity;
 
-import com.google.android.gms.plus.model.people.Person;
+import com.ivygames.common.ads.AdProvider;
 
 public class NoAdsAdProvider implements AdProvider {
     @Override
@@ -12,11 +12,6 @@ public class NoAdsAdProvider implements AdProvider {
 
     @Override
     public void showInterstitialAfterPlay() {
-
-    }
-
-    @Override
-    public void setPerson(Person person) {
 
     }
 

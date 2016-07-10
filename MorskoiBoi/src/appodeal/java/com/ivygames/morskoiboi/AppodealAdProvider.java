@@ -62,11 +62,6 @@ public class AppodealAdProvider implements AdProvider {
     }
 
     @Override
-    public void setPerson(Person person) {
-
-    }
-
-    @Override
     public void resume(Activity activity) {
         Appodeal.onResume(activity, Appodeal.BANNER);
     }

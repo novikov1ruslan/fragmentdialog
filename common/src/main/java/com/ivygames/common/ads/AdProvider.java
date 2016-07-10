@@ -1,15 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.ads;
 
 import android.app.Activity;
-
-import com.google.android.gms.plus.model.people.Person;
 
 public interface AdProvider {
     void needToShowInterstitialAfterPlay();
 
     void showInterstitialAfterPlay();
-
-    void setPerson(Person person);
 
     void resume(Activity activity);
 
