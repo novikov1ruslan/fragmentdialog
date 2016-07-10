@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.googleapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,7 +18,6 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
 
 
 public interface ApiClient {
@@ -44,7 +43,7 @@ public interface ApiClient {
 
     void registerInvitationListener(@NonNull OnInvitationReceivedListener listener);
 
-    void loadInvitations(InvitationLoadListener callback);
+    void loadInvitations(@NonNull InvitationLoadListener callback);
 
     Intent getAchievementsIntent();
 

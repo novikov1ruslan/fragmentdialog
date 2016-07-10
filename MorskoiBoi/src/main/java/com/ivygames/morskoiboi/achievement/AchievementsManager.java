@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.ivygames.common.analytics.AnalyticsEvent;
-import com.ivygames.morskoiboi.ApiClient;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.model.Ship;
 

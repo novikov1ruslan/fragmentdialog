@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.ivygames.morskoiboi.ApiClient;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.rt.InternetGame;
 

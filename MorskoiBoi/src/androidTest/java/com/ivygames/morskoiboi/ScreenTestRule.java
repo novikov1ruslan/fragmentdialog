@@ -7,9 +7,10 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.invitations.GameInvitation;
-import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
+import com.ivygames.common.googleapi.GameInvitation;
+import com.ivygames.common.googleapi.InvitationLoadListener;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
@@ -83,7 +84,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         }
 
         @Override
-        public void loadInvitations(InvitationLoadListener listener) {
+        public void loadInvitations(@NonNull InvitationLoadListener listener) {
             loadListener = listener;
             listener.onResult(createGameInvitations(invitations));
         }

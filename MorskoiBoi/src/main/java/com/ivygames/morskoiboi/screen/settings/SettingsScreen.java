@@ -9,7 +9,7 @@ import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.morskoiboi.ApiClient;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;

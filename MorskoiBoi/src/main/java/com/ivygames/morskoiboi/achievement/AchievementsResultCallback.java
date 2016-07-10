@@ -8,7 +8,7 @@ import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.android.gms.games.achievement.Achievements;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
-import com.ivygames.morskoiboi.ApiClient;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
 
 import org.commons.logger.Ln;

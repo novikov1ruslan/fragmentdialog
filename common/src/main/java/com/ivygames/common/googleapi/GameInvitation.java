@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.invitations;
+package com.ivygames.common.googleapi;
 
 import android.support.annotation.NonNull;
 

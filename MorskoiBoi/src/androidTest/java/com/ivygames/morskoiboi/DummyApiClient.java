@@ -18,7 +18,8 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.morskoiboi.invitations.InvitationLoadListener;
+import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.googleapi.InvitationLoadListener;
 
 public class DummyApiClient implements ApiClient {
     @Override
@@ -67,7 +68,7 @@ public class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void loadInvitations(InvitationLoadListener listener) {
+    public void loadInvitations(@NonNull InvitationLoadListener listener) {
     }
 
     @Override

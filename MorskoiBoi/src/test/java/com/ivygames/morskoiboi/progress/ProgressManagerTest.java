@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.progress;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.morskoiboi.ApiClient;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 

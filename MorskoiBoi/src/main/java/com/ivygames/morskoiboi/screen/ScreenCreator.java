@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.ApiClient;
+import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;

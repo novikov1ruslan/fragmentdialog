@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.invitations;
 
-import java.util.Collection;
+import com.ivygames.common.googleapi.GameInvitation;
+
 import java.util.Set;
 
 public interface InvitationReceivedListener {
