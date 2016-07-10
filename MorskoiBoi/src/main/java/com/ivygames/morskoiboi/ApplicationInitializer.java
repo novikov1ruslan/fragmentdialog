@@ -9,6 +9,7 @@ import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.analytics.GlobalTracker;
 import com.ivygames.common.analytics.WarningEvent;
+import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;

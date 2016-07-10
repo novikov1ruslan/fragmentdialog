@@ -19,7 +19,7 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.AdProviderFactory;
-import com.ivygames.morskoiboi.BackPressListener;
+import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;

@@ -1,24 +1,27 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.gfx;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Animation {
 
-    private final List<Bitmap> mBitmaps;
+    @NonNull
+    private final List<Bitmap> mBitmaps = new ArrayList<>();
+    @NonNull
+    private final Rect mBounds = new Rect();
+
+    private final int mDuration;
+
     private int mFrameDuration;
     private long mStartTime;
-    private final Rect mBounds;
-    private final int mDuration;
 
     public Animation(int frameDuration) {
         mDuration = frameDuration;
-        mBitmaps = new ArrayList<>();
-        mBounds = new Rect();
     }
 
     public void start() {
@@ -30,12 +33,13 @@ public class Animation {
         return mStartTime + mFrameDuration * mBitmaps.size() > SystemClock.elapsedRealtime();
     }
 
-    public void adFrame(Bitmap bitmap) {
+    public void adFrame(@NonNull Bitmap bitmap) {
         mBounds.right = bitmap.getWidth();
         mBounds.bottom = bitmap.getHeight();
         mBitmaps.add(bitmap);
     }
 
+    @NonNull
     public Bitmap getCurrentFrame() {
         long offset = SystemClock.elapsedRealtime() - mStartTime;
         int index = (int) (offset / mFrameDuration);
@@ -56,6 +60,7 @@ public class Animation {
         return index;
     }
 
+    @NonNull
     public Rect getBounds() {
         return mBounds;
     }

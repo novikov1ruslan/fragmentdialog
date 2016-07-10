@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.googleapi;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,9 +28,6 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
-import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.googleapi.GameInvitation;
-import com.ivygames.common.googleapi.InvitationLoadListener;
 
 import org.commons.logger.Ln;
 
