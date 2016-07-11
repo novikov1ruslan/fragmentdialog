@@ -14,7 +14,7 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
-import com.ivygames.morskoiboi.multiplayer.RtmSender;
+import com.ivygames.common.multiplayer.RtmSender;
 
 import org.commons.logger.Ln;
 

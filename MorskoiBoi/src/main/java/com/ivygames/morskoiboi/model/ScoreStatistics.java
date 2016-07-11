@@ -3,10 +3,6 @@ package com.ivygames.morskoiboi.model;
 import org.commons.logger.Ln;
 
 public class ScoreStatistics {
-    public enum Type {
-        VS_ANDROID, BLUETOOTH, INTERNET
-    }
-
     private static final int INITIAL_SHELLS_NUMBER = 100; // 10 * 10
 
     private int mShells = INITIAL_SHELLS_NUMBER;

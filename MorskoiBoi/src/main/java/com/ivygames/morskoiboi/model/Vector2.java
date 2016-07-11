@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class Vector2 {
-
+    private static final Vector2[][] POOL = new Vector2[Board.DIMENSION][Board.DIMENSION];
     public static final Vector2 INVALID_VECTOR = new Vector2(-1, -1);
 
     private static final String X = "X";
@@ -45,8 +45,6 @@ public final class Vector2 {
         mX = x;
         mY = y;
     }
-
-    private static final Vector2[][] POOL = new Vector2[Board.DIMENSION][Board.DIMENSION];
 
     static {
         for (int i = 0; i < Board.DIMENSION; i++) {

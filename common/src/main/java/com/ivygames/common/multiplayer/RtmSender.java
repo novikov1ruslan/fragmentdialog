@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.multiplayer;
+package com.ivygames.common.multiplayer;
 
 import android.support.annotation.NonNull;
 

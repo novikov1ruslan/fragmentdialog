@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.multiplayer;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.multiplayer.RtmSender;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.Opponent;
