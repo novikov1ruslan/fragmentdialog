@@ -1,33 +1,33 @@
 package com.ivygames.morskoiboi.screen.win;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
+import com.ivygames.common.SignInListener;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
-import com.ivygames.common.music.SoundBar;
-import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.music.NullSoundBar;
+import com.ivygames.common.music.SoundBar;
+import com.ivygames.common.music.SoundBarFactory;
 import com.ivygames.common.ui.BackPressListener;
+import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.common.SignInListener;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.music.SoundBarFactory;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -77,12 +77,11 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mStatistics = statistics;
         mOpponentSurrendered = opponentSurrendered;
 
-        AudioManager audioManager = (AudioManager) mParent.getSystemService(Context.AUDIO_SERVICE);
-        mSoundBar = SoundBarFactory.create(mParent.getAssets(), "win.ogg", audioManager);
+        mSoundBar = createSoundBar(parent, "win.ogg");
         mSoundBar.play();
 
         mTime = statistics.getTimeSpent();
-        mScores = mRules.calcTotalScores(mShips, mGame.getType(), mStatistics, opponentSurrendered);
+        mScores = mRules.calcTotalScores(fleet, mGame.getType(), mStatistics, opponentSurrendered);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();
@@ -96,6 +95,14 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             mAchievementsManager.processScores(mScores);
         }
         processScores();
+    }
+
+    private SoundBar createSoundBar(@NonNull Context context, @NonNull String soundName) {
+        if (mSettings.isSoundOn()) {
+            return SoundBarFactory.create(context, soundName);
+        } else {
+            return new NullSoundBar();
+        }
     }
 
     @NonNull

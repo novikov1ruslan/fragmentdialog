@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.music;
+package com.ivygames.common.music;
 
 import android.content.Context;
 import android.media.MediaPlayer;

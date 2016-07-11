@@ -29,7 +29,7 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.common.invitations.InvitationReceivedListener;
 import com.ivygames.morskoiboi.model.ChatMessage;
-import com.ivygames.morskoiboi.music.MusicPlayer;
+import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;

@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.ui.Screen;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.music.MusicPlayer;
+import com.ivygames.common.music.MusicPlayer;
 
 import org.commons.logger.Ln;
 

@@ -1,24 +1,27 @@
-package com.ivygames.morskoiboi.music;
+package com.ivygames.common.music;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
-
-import com.ivygames.common.music.SoundBar;
+import android.support.annotation.NonNull;
 
 import org.commons.logger.Ln;
 
 class SoundBarImpl implements SoundBar {
 
+    @NonNull
     private final SoundPool mSoundPool;
     private int mSoundId;
     private boolean mReleased;
-    private final AssetFileDescriptor mAssetManager;
+
+    @NonNull
+    private final AssetFileDescriptor mAfd;
+    @NonNull
     private final AudioManager mAudioManager;
 
-    SoundBarImpl(AssetFileDescriptor afd, AudioManager audioManager) {
-        mAssetManager = afd;
+    SoundBarImpl(@NonNull AssetFileDescriptor afd, @NonNull AudioManager audioManager) {
+        mAfd = afd;
         mAudioManager = audioManager;
         mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
         mSoundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
@@ -39,7 +42,7 @@ class SoundBarImpl implements SoundBar {
 
     @Override
     public void play() {
-        mSoundId = mSoundPool.load(mAssetManager, 1);
+        mSoundId = mSoundPool.load(mAfd, 1);
     }
 
     @Override
