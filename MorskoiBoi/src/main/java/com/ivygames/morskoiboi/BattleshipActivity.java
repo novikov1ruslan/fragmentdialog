@@ -23,8 +23,9 @@ import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.common.googleapi.GameInvitation;
+import com.ivygames.common.ui.ScreenManager;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.invitations.InvitationManager;
 import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -33,6 +34,7 @@ import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
+import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.utils.UiUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -188,7 +190,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     private void hideNoAdsButton() {
-        mScreenManager.hideNoAdsButton();
+        if (mCurrentScreen instanceof MainScreen) {
+            ((MainScreen) mCurrentScreen).hideNoAdsButton();
+        }
     }
 
     private void hideAds() {

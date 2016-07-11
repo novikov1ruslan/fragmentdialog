@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ScreenTest;
-import com.ivygames.morskoiboi.SignInListener;
+import com.ivygames.common.SignInListener;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;

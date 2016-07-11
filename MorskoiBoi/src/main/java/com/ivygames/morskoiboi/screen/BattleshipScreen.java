@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.ui.Screen;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.music.MusicPlayer;
 
@@ -23,23 +24,11 @@ public abstract class BattleshipScreen extends Screen {
     @NonNull
     protected final FragmentManager mFm;
 
-    private boolean mResumed;
-
     public BattleshipScreen(BattleshipActivity parent) {
         super(parent);
         mFm = getFragmentManager();
         UiEvent.screenView(this.getClass().getSimpleName());
         Ln.v(this + " created");
-    }
-
-    public abstract View onCreateView(@NonNull ViewGroup container);
-
-    public void onStart() {
-        Ln.v(this + " started");
-    }
-
-    public void onDestroy() {
-        Ln.v(this + " screen destroyed");
     }
 
     protected final void setScreen(BattleshipScreen screen) {
@@ -48,24 +37,6 @@ public abstract class BattleshipScreen extends Screen {
 
     protected final String debugSuffix() {
         return "(" + (hashCode() % 1000) + ")";
-    }
-
-    public void onStop() {
-        Ln.v(this + " stopped");
-    }
-
-    public boolean isResumed() {
-        return mResumed;
-    }
-
-    public void onPause() {
-        mResumed = false;
-        Ln.v(this + " paused");
-    }
-
-    public void onResume() {
-        mResumed = true;
-        Ln.v(this + " resumed");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -79,11 +50,6 @@ public abstract class BattleshipScreen extends Screen {
             Ln.w("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
             reportException(this + " unprocessed result: " + resultCode);
         }
-    }
-
-    @Nullable
-    public View getTutView() {
-        return null;
     }
 
     @RawRes

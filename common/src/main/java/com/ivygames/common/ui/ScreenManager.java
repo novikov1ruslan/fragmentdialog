@@ -1,13 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common.ui;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.SignInListener;
 import com.ivygames.common.ui.BackPressListener;
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.main.MainScreen;
+import com.ivygames.common.ui.Screen;
 
 import static org.commons.logger.Ln.d;
 import static org.commons.logger.Ln.e;
@@ -19,7 +19,7 @@ public class ScreenManager {
     @NonNull
     private final ViewGroup mContainer;
 
-    private BattleshipScreen mCurrentScreen;
+    private Screen mCurrentScreen;
 
     @Nullable
     private View mTutView;
@@ -29,12 +29,6 @@ public class ScreenManager {
 
     public ScreenManager(@NonNull ViewGroup container) {
         mContainer = container;
-    }
-
-    public void hideNoAdsButton() {
-        if (mCurrentScreen instanceof MainScreen) {
-            ((MainScreen) mCurrentScreen).hideNoAdsButton();
-        }
     }
 
     public void onStart() {
@@ -115,7 +109,7 @@ public class ScreenManager {
         return false;
     }
 
-    public void setScreen(BattleshipScreen screen) {
+    public void setScreen(@NonNull Screen screen) {
         View oldView = null;
 
         if (mCurrentScreen != null) {

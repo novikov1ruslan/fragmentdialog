@@ -45,7 +45,7 @@ public class GoogleApiClientWrapper implements ApiClient {
     private ResultCallback<? super Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultImpl();
     private boolean mDryRun;
 
-    GoogleApiClientWrapper(@NonNull Context context) {
+    public GoogleApiClientWrapper(@NonNull Context context) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(@Nullable Bundle bundle) {
