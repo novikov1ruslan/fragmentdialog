@@ -25,7 +25,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetGameListener;

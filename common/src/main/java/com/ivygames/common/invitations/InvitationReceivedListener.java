@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.invitations;
+package com.ivygames.common.invitations;
 
 import com.ivygames.common.googleapi.GameInvitation;
 

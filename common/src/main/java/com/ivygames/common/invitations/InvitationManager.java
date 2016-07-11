@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.invitations;
+package com.ivygames.common.invitations;
 
 import android.support.annotation.NonNull;
 
@@ -7,6 +7,7 @@ import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.googleapi.GameInvitation;
 import com.ivygames.common.googleapi.InvitationLoadListener;
+import com.ivygames.common.invitations.InvitationReceivedListener;
 
 import org.commons.logger.Ln;
 

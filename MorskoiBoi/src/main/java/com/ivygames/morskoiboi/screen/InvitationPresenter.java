@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.screen;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.googleapi.GameInvitation;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
-import com.ivygames.morskoiboi.invitations.InvitationReceivedListener;
+import com.ivygames.common.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationReceivedListener;
 
 import org.commons.logger.Ln;
 

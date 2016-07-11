@@ -30,7 +30,7 @@ import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;

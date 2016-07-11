@@ -19,7 +19,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.common.SignInListener;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;

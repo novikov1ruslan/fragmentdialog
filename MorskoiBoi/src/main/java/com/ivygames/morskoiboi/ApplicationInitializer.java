@@ -13,7 +13,7 @@ import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.variant.FleetBitmaps;
 import com.ivygames.morskoiboi.variant.RussianBot;

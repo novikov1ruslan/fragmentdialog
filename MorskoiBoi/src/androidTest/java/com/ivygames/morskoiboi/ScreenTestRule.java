@@ -11,7 +11,7 @@ import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.common.googleapi.GameInvitation;
 import com.ivygames.common.googleapi.InvitationLoadListener;
-import com.ivygames.morskoiboi.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import java.util.Collection;
