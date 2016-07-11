@@ -27,7 +27,7 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.VibratorFacade;
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -97,7 +97,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final Opponent mEnemy;
     @NonNull
-    private final VibratorFacade mVibrator;
+    private final VibratorWrapper mVibrator;
     @NonNull
     private final Board mEnemyPublicBoard;
     @NonNull
@@ -133,7 +133,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
 
-        mVibrator = new VibratorFacade(mParent);
+        mVibrator = new VibratorWrapper(mParent);
 
         mMatchStatusIntent = new Intent(parent, InternetService.class);
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());

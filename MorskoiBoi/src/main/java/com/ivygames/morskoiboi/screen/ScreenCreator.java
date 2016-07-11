@@ -6,7 +6,7 @@ import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.VibratorFacade;
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -62,7 +62,7 @@ public class ScreenCreator {
 
     @NonNull
     public static SettingsScreen newSettingsScreen() {
-        VibratorFacade vibratorFacade = new VibratorFacade(activity);
+        VibratorWrapper vibratorFacade = new VibratorWrapper(activity);
         return new SettingsScreen(activity, apiClient, settings, vibratorFacade);
     }
 

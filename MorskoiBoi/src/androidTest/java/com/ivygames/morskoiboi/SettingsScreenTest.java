@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.SignInListener;
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
@@ -34,12 +35,12 @@ import static org.mockito.Mockito.when;
 
 public class SettingsScreenTest extends ScreenTest {
 
-    private VibratorFacade vibratorFacade;
+    private VibratorWrapper vibratorFacade;
 
     @Before
     public void setup() {
         super.setup();
-        vibratorFacade = mock(VibratorFacade.class);
+        vibratorFacade = mock(VibratorWrapper.class);
     }
 
     @Override

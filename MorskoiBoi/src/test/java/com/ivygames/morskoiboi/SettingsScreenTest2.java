@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.view.View;
 
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
@@ -28,7 +29,7 @@ public class SettingsScreenTest2 {
     @Mock
     private AndroidDevice device;
     @Mock
-    private VibratorFacade vibrator;
+    private VibratorWrapper vibrator;
 
 //    @Before
     public void setup() {

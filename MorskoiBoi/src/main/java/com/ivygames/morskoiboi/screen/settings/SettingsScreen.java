@@ -16,7 +16,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.common.SignInListener;
-import com.ivygames.morskoiboi.VibratorFacade;
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActions;
@@ -32,7 +32,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     private final GameSettings mSettings;
 
     @NonNull
-    private final VibratorFacade mVibrator;
+    private final VibratorWrapper mVibrator;
     private SettingsLayout mLayout;
 
     @NonNull
@@ -41,7 +41,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     public SettingsScreen(@NonNull BattleshipActivity parent,
                           @NonNull ApiClient apiClient,
                           @NonNull GameSettings settings,
-                          @NonNull VibratorFacade vibratorFacade) {
+                          @NonNull VibratorWrapper vibratorFacade) {
         super(parent);
         mApiClient = apiClient;
         mSettings = settings;

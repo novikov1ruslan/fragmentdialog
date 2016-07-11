@@ -1,18 +1,15 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.common;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
-public class VibratorFacade {
-
-    private static final int MIN_VERSION_SUPPORTING_HAS_VIBRATOR = 11;
+public class VibratorWrapper {
 
     @NonNull
     private final Vibrator mVibrator;
 
-    public VibratorFacade(@NonNull Context context) {
+    public VibratorWrapper(@NonNull Context context) {
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -23,9 +20,6 @@ public class VibratorFacade {
     }
 
     public boolean hasVibrator() {
-        if (Build.VERSION.SDK_INT >= MIN_VERSION_SUPPORTING_HAS_VIBRATOR) {
-            return mVibrator.hasVibrator();
-        }
-        return true;
+        return mVibrator.hasVibrator();
     }
 }
