@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.ivygames.common.achievements.AchievementsSettings;
 import com.ivygames.common.backup.BackupSharedPreferences;
 import com.ivygames.common.settings.EditableSharedPreferences;
 import com.ivygames.morskoiboi.model.Progress;
@@ -12,7 +13,7 @@ import com.ivygames.morskoiboi.progress.ProgressUtils;
 import org.commons.logger.Ln;
 import org.json.JSONException;
 
-public class GameSettings {
+public class GameSettings implements AchievementsSettings {
 
     private static final int STATE_UNLOCKED = 0;
     private static final int STATE_REVEALED = 1;
@@ -107,19 +108,23 @@ public class GameSettings {
         Ln.d("game shall be rated later: after " + newRatingBar + " games");
     }
 
-    public void unlockAchievement(String achievementId) {
+    @Override
+    public void unlockAchievement(@NonNull String achievementId) {
         setAchievementState(achievementId, STATE_UNLOCKED);
     }
 
-    public boolean isAchievementUnlocked(String achievementId) {
+    @Override
+    public boolean isAchievementUnlocked(@NonNull String achievementId) {
         return STATE_UNLOCKED == getAchievementState(achievementId);
     }
 
-    public void revealAchievement(String achievementId) {
+    @Override
+    public void revealAchievement(@NonNull String achievementId) {
         setAchievementState(achievementId, STATE_REVEALED);
     }
 
-    public boolean isAchievementRevealed(String achievementId) {
+    @Override
+    public boolean isAchievementRevealed(@NonNull String achievementId) {
         return STATE_REVEALED == getAchievementState(achievementId);
     }
 

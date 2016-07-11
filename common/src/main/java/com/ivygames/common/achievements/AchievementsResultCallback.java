@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.achievement;
+package com.ivygames.common.achievements;
 
 import android.support.annotation.NonNull;
 
@@ -8,19 +8,20 @@ import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.android.gms.games.achievement.Achievements;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
+import com.ivygames.common.achievements.AchievementsSettings;
+import com.ivygames.common.achievements.AchievementsUtils;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.morskoiboi.GameSettings;
 
 import org.commons.logger.Ln;
 
-final class AchievementsResultCallback implements ResultCallback<Achievements.LoadAchievementsResult> {
+public final class AchievementsResultCallback implements ResultCallback<Achievements.LoadAchievementsResult> {
 
     @NonNull
     private final ApiClient mApiClient;
     @NonNull
-    private final GameSettings mSettings;
+    private final AchievementsSettings mSettings;
 
-    AchievementsResultCallback(@NonNull ApiClient apiClient, @NonNull GameSettings settings) {
+    AchievementsResultCallback(@NonNull ApiClient apiClient, @NonNull AchievementsSettings settings) {
         mApiClient = apiClient;
         mSettings = settings;
     }

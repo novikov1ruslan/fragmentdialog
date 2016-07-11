@@ -2,9 +2,7 @@ package com.ivygames.morskoiboi.achievement;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
-import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.common.achievements.AchievementsManagerBase;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.model.Ship;
@@ -13,7 +11,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class AchievementsManager {
+public class AchievementsManager extends AchievementsManagerBase {
 
     // achievements
     static final String NAVAL_MERIT = "CgkI8s_j3LsfEAIQAQ";
@@ -36,46 +34,18 @@ public class AchievementsManager {
 
     public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
-    @NonNull
-    private final ApiClient mApiClient;
-    @NonNull
-    private final GameSettings mSettings;
-    @NonNull
-    private final AchievementsResultCallback mAchievementsLoadCallback;
-
     public AchievementsManager(@NonNull ApiClient apiClient, @NonNull GameSettings settings) {
-        mApiClient = apiClient;
-        mSettings = settings;
-        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, settings);
-    }
-
-    public void loadAchievements() {
-        PendingResult<LoadAchievementsResult> loadResult = mApiClient.load(true);
-        loadResult.setResultCallback(mAchievementsLoadCallback);
+        super(settings, apiClient);
     }
 
     public void processScores(int scores) {
         Ln.v("scores: " + scores);
         if (scores >= 15000) {
             if (mSettings.isAchievementUnlocked(MILITARY_ACHIEVEMENTS)) {
-                Ln.v(name(MILITARY_ACHIEVEMENTS) + " is already unlocked - do not increment");
+                Ln.v(MILITARY_ACHIEVEMENTS + " is already unlocked - do not increment");
             } else {
                 increment(MILITARY_ACHIEVEMENTS, 1);
             }
-        }
-    }
-
-    /**
-     * @return true if change has been made
-     */
-    private boolean unlockIfNotUnlocked(String achievementId) {
-        boolean alreadyUnlocked = mSettings.isAchievementUnlocked(achievementId);
-        if (alreadyUnlocked) {
-            Ln.d(name(achievementId) + " already unlocked - no need to unlock");
-            return false;
-        } else {
-            unlock(achievementId);
-            return true;
         }
     }
 
@@ -153,32 +123,31 @@ public class AchievementsManager {
         return left;
     }
 
-    private void unlock(String achievementId) {
-        Ln.d("unlocking achievement: " + name(achievementId));
-        mSettings.unlockAchievement(achievementId);
-        AnalyticsEvent.send("achievement", achievementId);
-        if (mApiClient.isConnected()) {
-            mApiClient.unlock(achievementId);
+    static String debugName(String id) {
+        if (AchievementsManager.NAVAL_MERIT.equals(id)) {
+            return "NAVAL_MERIT";
+        } else if (AchievementsManager.ORDER_OF_HONOUR.equals(id)) {
+            return "ORDER_OF_HONOUR";
+        } else if (AchievementsManager.BRAVERY_AND_COURAGE.equals(id)) {
+            return "BRAVERY_AND_COURAGE";
+        } else if (AchievementsManager.EXTRA_BRAVERY_AND_COURAGE.equals(id)) {
+            return "EXTRA_BRAVERY_AND_COURAGE";
+        } else if (AchievementsManager.FLYING_DUTCHMAN.equals(id)) {
+            return "FLYING_DUTCHMAN";
+        } else if (AchievementsManager.STEALTH.equals(id)) {
+            return "STEALTH";
+        } else if (AchievementsManager.LIFE_SAVING.equals(id)) {
+            return "LIFE_SAVING";
+        } else if (AchievementsManager.AIRCRAFTSMAN.equals(id)) {
+            return "AIRCRAFTSMAN";
+        } else if (AchievementsManager.CRUISER_COMMANDER.equals(id)) {
+            return "CRUISER_COMMANDER";
+        } else if (AchievementsManager.DESTROYER.equals(id)) {
+            return "DESTROYER";
+        } else if (AchievementsManager.MILITARY_ACHIEVEMENTS.equals(id)) {
+            return "MILITARY_ACHIEVEMENTS";
         }
-    }
 
-    private void increment(String achievementId, int steps) {
-        Ln.d("incrementing achievement: " + name(achievementId) + " by " + steps);
-        if (mApiClient.isConnected()) {
-            mApiClient.increment(achievementId, steps);
-        }
+        return "UNKNOWN(" + id + ")";
     }
-
-    private void reveal(String achievementId) {
-        Ln.d("revealing achievement: " + name(achievementId));
-        AchievementsUtils.setRevealed(achievementId, mSettings);
-        if (mApiClient.isConnected()) {
-            mApiClient.reveal(achievementId);
-        }
-    }
-
-    private static String name(String achievementId) {
-        return AchievementsUtils.debugName(achievementId);
-    }
-
 }
