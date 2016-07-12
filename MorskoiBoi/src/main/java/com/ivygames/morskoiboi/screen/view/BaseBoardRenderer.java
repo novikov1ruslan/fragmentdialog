@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.utils.UiUtils;
+import com.ivygames.morskoiboi.GraphicsUtils;
 
 public class BaseBoardRenderer {
     private Paint debug_paint = new Paint();
@@ -22,24 +22,24 @@ public class BaseBoardRenderer {
     private final Paint mConflictCellPaint;
 
     public BaseBoardRenderer(Resources res) {
-        mLinePaint = UiUtils.newStrokePaint(res, R.color.line);
+        mLinePaint = GraphicsUtils.newStrokePaint(res, R.color.line);
 
-        mHitOuterPaint = UiUtils.newStrokePaint(res, R.color.hit);
+        mHitOuterPaint = GraphicsUtils.newStrokePaint(res, R.color.hit);
         mHitOuterPaint.setAntiAlias(true);
-        mHitInnerPaint = UiUtils.newFillPaint(res, R.color.hit);
+        mHitInnerPaint = GraphicsUtils.newFillPaint(res, R.color.hit);
         mHitInnerPaint.setAntiAlias(true);
-        mHitBgPaint = UiUtils.newFillPaint(res, R.color.hit_background);
+        mHitBgPaint = GraphicsUtils.newFillPaint(res, R.color.hit_background);
 
-        mMissOuterPaint = UiUtils.newStrokePaint(res, R.color.miss);
+        mMissOuterPaint = GraphicsUtils.newStrokePaint(res, R.color.miss);
         mMissOuterPaint.setAntiAlias(true);
         mMissOuterPaint.setAlpha(63);
-        mMissInnerPaint = UiUtils.newFillPaint(res, R.color.miss);
+        mMissInnerPaint = GraphicsUtils.newFillPaint(res, R.color.miss);
         mMissInnerPaint.setAntiAlias(true);
         mMissInnerPaint.setAlpha(80);
-        mMissBgPaint = UiUtils.newFillPaint(res, R.color.miss_background);
+        mMissBgPaint = GraphicsUtils.newFillPaint(res, R.color.miss_background);
         mMissBgPaint.setAlpha(80);
 
-        mConflictCellPaint = UiUtils.newFillPaint(res, R.color.conflict_cell);
+        mConflictCellPaint = GraphicsUtils.newFillPaint(res, R.color.conflict_cell);
     }
 
     public void render(Canvas canvas, Aiming aiming, Paint paint) {

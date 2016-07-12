@@ -31,9 +31,9 @@ public class BoardG {
 
     @Override
     public String toString() {
-        return "BoardG{" +
+        return "[" +
                 "lines=" + Arrays.deepToString(lines) +
                 ", frame=" + frame +
-                '}';
+                "]";
     }
 }

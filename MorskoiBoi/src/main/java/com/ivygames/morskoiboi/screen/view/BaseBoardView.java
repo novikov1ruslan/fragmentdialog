@@ -15,7 +15,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.utils.UiUtils;
+import com.ivygames.morskoiboi.GraphicsUtils;
 
 import java.util.Collection;
 
@@ -37,11 +37,11 @@ public abstract class BaseBoardView extends View {
         super(context, attributeSet);
 
         Resources res = getResources();
-        mShipPaint = UiUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
-        mTurnBorderPaint = UiUtils.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
-        mAimingPaint = UiUtils.newFillPaint(res, R.color.aim);
+        mShipPaint = GraphicsUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
+        mTurnBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
+        mAimingPaint = GraphicsUtils.newFillPaint(res, R.color.aim);
 
-        mBorderPaint = UiUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
+        mBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
         mPresenter = presenter();
         mRenderer = renderer();

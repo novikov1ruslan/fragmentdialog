@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.utils.UiUtils;
+import com.ivygames.morskoiboi.GraphicsUtils;
 
 import java.util.Map;
 
@@ -49,7 +49,7 @@ class FleetViewRenderer {
     private Rect mGunboatBounds = new Rect();
 
     public FleetViewRenderer(Resources resources) {
-        mLinePaint = UiUtils.newStrokePaint(resources, R.color.line);
+        mLinePaint = GraphicsUtils.newStrokePaint(resources, R.color.line);
         float textSize = resources.getDimension(R.dimen.status_text_size);
         mTextPaint.setTextSize(textSize);
         mTextPaint.setTypeface(Typeface.DEFAULT_BOLD);

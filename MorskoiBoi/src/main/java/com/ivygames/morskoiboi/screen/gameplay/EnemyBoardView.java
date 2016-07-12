@@ -14,7 +14,7 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
-import com.ivygames.morskoiboi.utils.UiUtils;
+import com.ivygames.morskoiboi.GraphicsUtils;
 
 public class EnemyBoardView extends BaseBoardView {
 
@@ -24,7 +24,7 @@ public class EnemyBoardView extends BaseBoardView {
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        mAimingLockedPaint = UiUtils.newFillPaint(getResources(), R.color.aim_locked);
+        mAimingLockedPaint = GraphicsUtils.newFillPaint(getResources(), R.color.aim_locked);
     }
 
     @NonNull

@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.morskoiboi.R;
 
-public abstract class CommonGameplayLayout extends ViewGroup {
+abstract class CommonGameplayLayout extends ViewGroup {
     protected final Rect mAspectRect = new Rect();
     protected final Rect mEnemyBoardRect = new Rect();
     protected final Rect mMyBoardRect = new Rect();

@@ -37,9 +37,6 @@ public class Aiming {
 
     @Override
     public String toString() {
-        return "Aiming{" +
-                "vertical=" + vertical +
-                ", horizontal=" + horizontal +
-                '}';
+        return "[v=" + vertical + ", h=" + horizontal + "]";
     }
 }

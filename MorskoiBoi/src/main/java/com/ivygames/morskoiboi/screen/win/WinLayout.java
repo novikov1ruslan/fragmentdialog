@@ -1,14 +1,15 @@
 package com.ivygames.morskoiboi.screen.win;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.utils.UiUtils;
 
 import org.commons.logger.Ln;
 
@@ -24,6 +25,13 @@ public class WinLayout extends WinLayoutSmall {
 
     public WinLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    private static int getRelativeTop(@NonNull View myView) {
+        if (myView.getParent().getParent() == myView.getRootView())
+            return myView.getTop();
+        else
+            return myView.getTop() + getRelativeTop((View) myView.getParent());
     }
 
     @Override
@@ -70,7 +78,7 @@ public class WinLayout extends WinLayoutSmall {
         super.onLayout(changed, l, t, r, b);
 
 //        if (mYesButton.getBottom() > ((View) mYesButton.getParent()).getBottom()) {
-        int bottomMostView = UiUtils.getRelativeTop(mYesButton) + mYesButton.getMeasuredHeight();
+        int bottomMostView = getRelativeTop(mYesButton) + mYesButton.getMeasuredHeight();
         if (bottomMostView > getMeasuredHeight()) {
             ImageView carrier = (ImageView) findViewById(R.id.carrier);
             if (carrier != null) {

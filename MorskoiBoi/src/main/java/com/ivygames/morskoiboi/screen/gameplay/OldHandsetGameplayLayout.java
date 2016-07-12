@@ -3,8 +3,6 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.ivygames.morskoiboi.screen.view.CommonGameplayLayout;
-
 public abstract class OldHandsetGameplayLayout extends CommonGameplayLayout implements GameplayLayoutInterface {
 
     private static final float ASPECT_RATIO = 1.5f;

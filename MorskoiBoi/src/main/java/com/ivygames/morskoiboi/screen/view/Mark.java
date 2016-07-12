@@ -31,11 +31,11 @@ public class Mark {
 
     @Override
     public String toString() {
-        return "Mark{" +
-                "centerX=" + centerX +
-                ", centerY=" + centerY +
-                ", outerRadius=" + outerRadius +
-                ", innerRadius=" + innerRadius +
-                '}';
+        return "[" +
+                "X=" + centerX +
+                ", Y=" + centerY +
+                ", r2=" + outerRadius +
+                ", r1=" + innerRadius +
+                ']';
     }
 }

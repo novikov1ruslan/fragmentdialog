@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -35,7 +36,7 @@ import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
-import com.ivygames.morskoiboi.utils.UiUtils;
+import com.ivygames.morskoiboi.screen.view.InfoCroutonLayout;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -114,6 +115,18 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final InvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
 
+    private static InfoCroutonLayout inflateInfoCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
+        InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.info_crouton, root, false);
+        infoCroutonLayout.setMessage(message);
+        return infoCroutonLayout;
+    }
+
+    private static InfoCroutonLayout inflateChatCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
+        InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.chat_crouton, root, false);
+        infoCroutonLayout.setMessage(message);
+        return infoCroutonLayout;
+    }
+
     @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +189,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @Override
     public void showChatCrouton(ChatMessage message) {
         if (mScreenManager.isStarted()) {
-            View layout = UiUtils.inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
+            View layout = inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
             Crouton.make(this, layout).setConfiguration(CONFIGURATION_LONG).show();
         }
     }
@@ -454,7 +467,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private class InvitationReceivedListenerImpl implements InvitationReceivedListener {
         @Override
         public void onInvitationReceived(GameInvitation invitation) {
-            View view = UiUtils.inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, invitation.name), mLayout);
+            View view = inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, invitation.name), mLayout);
             Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
         }
 
