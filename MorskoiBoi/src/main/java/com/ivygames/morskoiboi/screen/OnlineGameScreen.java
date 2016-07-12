@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.screen;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.dialog.DialogUtils;
+import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;

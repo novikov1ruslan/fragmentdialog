@@ -1,10 +1,10 @@
-package com.ivygames.morskoiboi.screen;
+package com.ivygames.common.dialog;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 
-import com.ivygames.morskoiboi.R;
+import com.ivygames.common.R;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 

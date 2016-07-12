@@ -34,7 +34,7 @@ import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.common.invitations.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
-import com.ivygames.morskoiboi.screen.SimpleActionDialog;
+import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
