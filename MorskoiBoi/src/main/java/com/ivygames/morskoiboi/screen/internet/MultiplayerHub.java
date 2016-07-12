@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.multiplayer.MultiplayerHubListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.rt.InternetGame;
 
@@ -29,7 +30,7 @@ public class MultiplayerHub {
         mListener = listener;
     }
 
-    public void showWaitingRoom(Room room) {
+    public void showWaitingRoom(@NonNull Room room) {
         Intent intent = mApiClient.getWaitingRoomIntent(room, MIN_PLAYERS);
         mActivity.startActivityForResult(intent, BattleshipActivity.RC_WAITING_ROOM);
     }
@@ -44,7 +45,7 @@ public class MultiplayerHub {
         mActivity.startActivityForResult(intent, BattleshipActivity.RC_INVITATION_INBOX);
     }
 
-    public void handleResult(int requestCode, int resultCode, Intent data) {
+    public void handleResult(int requestCode, int resultCode, @NonNull Intent data) {
         Ln.v("result=" + resultCode);
         switch (requestCode) {
             case BattleshipActivity.RC_SELECT_PLAYERS:

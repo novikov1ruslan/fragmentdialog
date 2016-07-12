@@ -19,6 +19,7 @@ import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.common.invitations.InvitationPresenter;
+import com.ivygames.common.multiplayer.MultiplayerHubListener;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -263,7 +264,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
          * Handle the result of the invitation inbox UI, where the player can pick an invitation to accept. We react by accepting the selected invitation, if any.
          */
         @Override
-        public void handleInvitationInboxResult(int result, Intent data) {
+        public void handleInvitationInboxResult(int result, @NonNull Intent data) {
             if (result == Activity.RESULT_OK) {
                 Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
                 mInternetGame.accept(invitation);
@@ -278,7 +279,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         // clicked the
         // "Invite friends" button. We react by creating a room with those players.
         @Override
-        public void handleSelectPlayersResult(int result, Intent data) {
+        public void handleSelectPlayersResult(int result, @NonNull Intent data) {
             if (result != Activity.RESULT_OK) {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + result);
                 hideWaitingScreen();
