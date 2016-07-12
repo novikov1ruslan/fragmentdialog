@@ -24,6 +24,7 @@ dependencies {
     compile project(':BillingUtils')
     compile project(':BaseGameUtils')
     compile project(':RUtils')
+    compile project(':fragmentdialog')
 
     compile 'ch.acra:acra:4.6.2'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'

@@ -3,12 +3,12 @@ package com.ivygames.common.analytics;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.example.novikov.common.BuildConfig;
 import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.BuildConfig;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

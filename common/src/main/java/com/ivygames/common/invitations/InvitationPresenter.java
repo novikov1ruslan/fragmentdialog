@@ -1,9 +1,10 @@
-package com.ivygames.morskoiboi.screen;
+package com.ivygames.common.invitations;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.googleapi.GameInvitation;
 import com.ivygames.common.invitations.InvitationManager;
+import com.ivygames.common.invitations.InvitationObserver;
 import com.ivygames.common.invitations.InvitationReceivedListener;
 
 import org.commons.logger.Ln;

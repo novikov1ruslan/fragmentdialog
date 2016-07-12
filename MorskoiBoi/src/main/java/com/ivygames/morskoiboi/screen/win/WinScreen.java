@@ -46,8 +46,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private Session mSession;
     @NonNull
     private final Collection<Ship> mShips;
-    @NonNull
-    private final ScoreStatistics mStatistics;
 
     private final int mScores;
 
@@ -74,24 +72,24 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         super(parent, game, session.opponent.getName());
         mSession = session;
         mShips = fleet;
-        mStatistics = statistics;
         mOpponentSurrendered = opponentSurrendered;
 
         mSoundBar = createSoundBar(parent, "win.ogg");
         mSoundBar.play();
 
         mTime = statistics.getTimeSpent();
-        mScores = mRules.calcTotalScores(fleet, mGame.getType(), mStatistics, opponentSurrendered);
+        mScores = mRules.calcTotalScores(fleet, game.getType(), statistics, opponentSurrendered);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();
-        Ln.v("fleet: " + mShips);
+        Ln.v("fleet: " + fleet);
 
-        if (mGame.getType() == Type.VS_ANDROID) {
-            mAchievementsManager.processCombo(mStatistics.getCombo());
-            mAchievementsManager.processShellsLeft(mStatistics.getShells());
-            mAchievementsManager.processTimeSpent(mStatistics.getTimeSpent());
-            mAchievementsManager.processShipsLeft(mShips);
+        // TODO: remove achievements manager from here
+        if (game.getType() == Type.VS_ANDROID) {
+            mAchievementsManager.processCombo(statistics.getCombo());
+            mAchievementsManager.processShellsLeft(statistics.getShells());
+            mAchievementsManager.processTimeSpent(statistics.getTimeSpent());
+            mAchievementsManager.processShipsLeft(fleet);
             mAchievementsManager.processScores(mScores);
         }
         processScores();

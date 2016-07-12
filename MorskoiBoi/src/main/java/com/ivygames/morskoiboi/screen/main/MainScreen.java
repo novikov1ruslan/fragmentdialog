@@ -21,7 +21,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.common.SignInListener;
 import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.InvitationPresenter;
+import com.ivygames.common.invitations.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SignInDialog;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;

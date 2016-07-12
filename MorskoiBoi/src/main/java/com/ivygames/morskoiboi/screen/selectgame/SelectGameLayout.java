@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
-import com.ivygames.morskoiboi.screen.InvitationObserver;
+import com.ivygames.common.invitations.InvitationObserver;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 

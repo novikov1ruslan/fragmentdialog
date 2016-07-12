@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.novikov.common">
+    package="com.ivygames.common">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <application

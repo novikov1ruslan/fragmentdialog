@@ -32,7 +32,7 @@ import com.ivygames.morskoiboi.rt.InternetGameListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.InvitationPresenter;
+import com.ivygames.common.invitations.InvitationPresenter;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SimpleActionDialog;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
