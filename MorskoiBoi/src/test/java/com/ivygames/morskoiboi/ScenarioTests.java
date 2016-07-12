@@ -1,9 +1,6 @@
 package com.ivygames.morskoiboi;
 
-import android.text.TextUtils;
-
 import com.ivygames.common.analytics.ExceptionHandler;
-import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.AiOpponent;
@@ -11,7 +8,6 @@ import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
-import org.commons.logger.Ln;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

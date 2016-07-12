@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.win;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -8,9 +9,9 @@ import android.widget.TextView;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.NotepadLinearLayout;
-import com.ivygames.morskoiboi.utils.GameUtils;
 
 import java.util.Collection;
+import java.util.Locale;
 
 public class WinLayoutSmall extends NotepadLinearLayout {
 
@@ -25,6 +26,13 @@ public class WinLayoutSmall extends NotepadLinearLayout {
 
     public WinLayoutSmall(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @NonNull
+    private static String formatDuration(long millis) {
+        long seconds = millis / 1000;
+        long minutes = seconds / 60;
+        return String.format(Locale.US, "%d:%02d", minutes, seconds % 60);
     }
 
     @Override
@@ -60,7 +68,7 @@ public class WinLayoutSmall extends NotepadLinearLayout {
     }
 
     public void setDuration(long millis) {
-        mTimeView.setText(GameUtils.formatDuration(millis));
+        mTimeView.setText(formatDuration(millis));
     }
 
     public void setTotalScore(int score) {

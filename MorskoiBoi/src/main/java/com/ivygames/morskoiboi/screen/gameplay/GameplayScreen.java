@@ -15,11 +15,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.common.ui.BackPressListener;
+import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -27,7 +29,6 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.common.VibratorWrapper;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -44,8 +45,6 @@ import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
-import com.ivygames.common.dialog.SimpleActionDialog;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -581,7 +580,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void updateMyStatus() {
-        mLayout.updateMyWorkingShips(GameUtils.getWorkingShips(mPlayerPrivateBoard.getShips()));
+        mLayout.updateMyWorkingShips(GameplayUtils.getWorkingShips(mPlayerPrivateBoard.getShips()));
     }
 
     private void updateEnemyStatus() {
@@ -592,9 +591,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private Collection<Ship> getWorkingEnemyShips() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fleet = GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
+        Collection<Ship> fleet = mRules.generateFullFleet();
         for (Ship ship : killedShips) {
-            GameUtils.removeShipFromFleet(fleet, ship);
+            GameplayUtils.removeShipFromFleet(fleet, ship);
         }
         return fleet;
     }

@@ -7,7 +7,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.utils.GameUtils;
 
 import org.commons.logger.Ln;
 
@@ -43,7 +42,7 @@ public class Placement {
             int i = cell.getX();
             int j = cell.getY();
             if (board.shipFitsTheBoard(ship, i, j)) {
-                if (GameUtils.isPlaceEmpty(ship, board, i, j)) {
+                if (isPlaceEmpty(ship, board, i, j)) {
                     putShipAt(board, ship, i, j);
                     return true;
                 } else {
@@ -167,5 +166,21 @@ public class Placement {
         }
 
         return removedShip;
+    }
+
+    /**
+     * @return true if the {@code board} has empty space for the {@code ship} at coordinates ({@code i},{@code j}
+     */
+    private static boolean isPlaceEmpty(@NonNull Ship ship, @NonNull Board board, int i, int j) {
+        boolean isHorizontal = ship.isHorizontal();
+        for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
+            int x = isHorizontal ? k : i;
+            int y = isHorizontal ? j : k;
+            if (!board.getCell(x, y).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -1,13 +1,12 @@
 package com.ivygames.morskoiboi.utils;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,20 +93,19 @@ public final class UiUtils {
      * @param context The Android context.
      * @return boolean value indicating if the screen size is extra large.
      */
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public static boolean isExtraLargeScreen(Context context) {
         int screenSizeMask = context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         return screenSizeMask == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
-    public static int getRelativeLeft(View myView) {
+    public static int getRelativeLeft(@NonNull View myView) {
         if (myView.getParent() == myView.getRootView())
             return myView.getLeft();
         else
             return myView.getLeft() + getRelativeLeft((View) myView.getParent());
     }
 
-    public static int getRelativeTop(View myView) {
+    public static int getRelativeTop(@NonNull View myView) {
         if (myView.getParent().getParent() == myView.getRootView())
             return myView.getTop();
         else

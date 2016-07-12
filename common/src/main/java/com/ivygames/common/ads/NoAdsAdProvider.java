@@ -2,8 +2,6 @@ package com.ivygames.common.ads;
 
 import android.app.Activity;
 
-import com.ivygames.common.ads.AdProvider;
-
 public class NoAdsAdProvider implements AdProvider {
     @Override
     public void needToShowInterstitialAfterPlay() {

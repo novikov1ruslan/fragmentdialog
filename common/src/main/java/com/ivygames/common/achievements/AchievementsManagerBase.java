@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.games.achievement.Achievements;
-import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.common.googleapi.ApiClient;
 
 import org.commons.logger.Ln;
 

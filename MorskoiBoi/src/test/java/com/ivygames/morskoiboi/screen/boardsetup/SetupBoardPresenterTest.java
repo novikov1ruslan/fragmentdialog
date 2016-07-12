@@ -10,7 +10,6 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.Aiming;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -19,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Collection;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -59,13 +57,8 @@ public class SetupBoardPresenterTest {
     @Test
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
-        mPlacement.populateBoardWithShips(board, generateFullFleet());
+        mPlacement.populateBoardWithShips(board, rules.generateFullFleet());
         mPresenter.dropShip(board);
-    }
-
-    @NonNull
-    private Collection<Ship> generateFullFleet() {
-        return GameUtils.generateShipsForSizes(rules.getAllShipsSizes());
     }
 
     @Test

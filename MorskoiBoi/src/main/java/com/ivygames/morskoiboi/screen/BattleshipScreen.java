@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.Screen;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.common.music.MusicPlayer;
 
 import org.commons.logger.Ln;
 

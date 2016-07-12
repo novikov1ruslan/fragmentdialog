@@ -2,11 +2,11 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.common.VibratorWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;

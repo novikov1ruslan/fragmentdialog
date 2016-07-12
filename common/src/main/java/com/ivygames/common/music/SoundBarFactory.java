@@ -5,10 +5,6 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.music.NullSoundBar;
-import com.ivygames.common.music.SoundBar;
-import com.ivygames.common.music.SoundBarImpl;
-
 import org.commons.logger.Ln;
 
 import java.io.IOException;

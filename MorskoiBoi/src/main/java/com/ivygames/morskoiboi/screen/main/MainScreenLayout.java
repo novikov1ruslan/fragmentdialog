@@ -7,8 +7,8 @@ import android.view.ViewStub;
 
 import com.google.android.gms.plus.PlusOneButton;
 import com.ivygames.common.PlayUtils;
-import com.ivygames.morskoiboi.R;
 import com.ivygames.common.invitations.InvitationObserver;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 

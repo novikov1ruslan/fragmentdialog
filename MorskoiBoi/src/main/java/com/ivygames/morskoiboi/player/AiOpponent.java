@@ -9,13 +9,10 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.ai.Cancellable;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.commons.logger.Ln;
 
-import java.util.Collection;
 import java.util.Random;
 
 
@@ -88,14 +85,10 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        mPlacement.populateBoardWithShips(getBoard(), generateFullFleet());
+        mPlacement.populateBoardWithShips(getBoard(), mRules.generateFullFleet());
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());
         }
     }
 
-    @NonNull
-    private Collection<Ship> generateFullFleet() {
-        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
-    }
 }

@@ -7,9 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
-import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BuildConfig;
@@ -23,11 +24,9 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -86,12 +85,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
 
     @NonNull
     private Collection<Ship> generateFullHorizontalFleet() {
-        return Ship.setOrientationForShips(generateFullFleet(), Ship.Orientation.HORIZONTAL);
-    }
-
-    @NonNull
-    private Collection<Ship> generateFullFleet() {
-        return GameUtils.generateShipsForSizes(mRules.getAllShipsSizes());
+        return Ship.setOrientationForShips(mRules.generateFullFleet(), Ship.Orientation.HORIZONTAL);
     }
 
     @Override
@@ -137,7 +131,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void autoSetup() {
             UiEvent.send("auto");
             mBoard.clearBoard();
-            mPlacement.populateBoardWithShips(mBoard, generateFullFleet());
+            mPlacement.populateBoardWithShips(mBoard, mRules.generateFullFleet());
             mFleet.clear();
             mLayout.notifyDataChanged();
             mLayout.invalidate();

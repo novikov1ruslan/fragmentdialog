@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.SignInListener;
-import com.ivygames.common.ui.BackPressListener;
-import com.ivygames.common.ui.Screen;
 
 import static org.commons.logger.Ln.d;
 import static org.commons.logger.Ln.e;

@@ -7,7 +7,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
-import com.ivygames.morskoiboi.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +22,22 @@ public class RussianBot implements BotAlgorithm {
 
     public RussianBot(Random random) {
         mRandom = random;
+    }
+
+    /**
+     * @return true if coordinates {@code vector} are aligned horizontally
+     */
+    private static boolean coordinatesAlignedHorizontally(List<Vector2> coordinates) {
+
+        int y = coordinates.get(0).getY();
+
+        for (int i = 1; i < coordinates.size(); i++) {
+            if (y != coordinates.get(i).getY()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @NonNull
@@ -108,7 +123,7 @@ public class RussianBot implements BotAlgorithm {
             }
         }
 
-        if (GameUtils.coordinatesAlignedHorizontally(hitDecks)) { // TODO: miny == maxy
+        if (coordinatesAlignedHorizontally(hitDecks)) { // TODO: miny == maxy
             addCellIfEmpty(board, --minX, minY, possibleShots);
             addCellIfEmpty(board, ++maxX, minY, possibleShots);
         } else {

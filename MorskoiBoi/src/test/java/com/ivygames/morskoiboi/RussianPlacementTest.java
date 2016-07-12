@@ -1,11 +1,8 @@
 package com.ivygames.morskoiboi;
 
-import android.support.annotation.NonNull;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.utils.GameUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -46,7 +43,7 @@ public class RussianPlacementTest {
     @Test
     public void after_generating_full_board_it_has_russian_fleet() {
         Board board = new Board();
-        mAlgorithm.populateBoardWithShips(board, generateFullFleet());
+        mAlgorithm.populateBoardWithShips(board, rules.generateFullFleet());
         assertAllTheShipsAreRussianFleet(board.getShips());
     }
 
@@ -130,11 +127,6 @@ public class RussianPlacementTest {
 
     private void putShipAt(Board board, Ship ship, int x, int y) {
         mAlgorithm.putShipAt(board, ship, x, y);
-    }
-
-    @NonNull
-    private Collection<Ship> generateFullFleet() {
-        return GameUtils.generateShipsForSizes(rules.getAllShipsSizes());
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {

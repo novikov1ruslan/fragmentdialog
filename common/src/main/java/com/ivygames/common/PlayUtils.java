@@ -1,6 +1,5 @@
 package com.ivygames.common;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 

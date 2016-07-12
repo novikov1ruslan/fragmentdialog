@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.appodeal.ads.Appodeal;
 import com.appodeal.ads.InterstitialCallbacks;
-import com.google.android.gms.plus.model.people.Person;
 
 import org.commons.logger.Ln;
 

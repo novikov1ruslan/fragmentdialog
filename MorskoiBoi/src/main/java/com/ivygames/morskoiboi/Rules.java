@@ -28,4 +28,6 @@ public interface Rules {
     Cell setAdjacentCellForShip(@NonNull Ship ship, @NonNull Cell cell);
 
     int calcSurrenderPenalty(@NonNull Collection<Ship> ships);
+
+    Collection<Ship> generateFullFleet();
 }

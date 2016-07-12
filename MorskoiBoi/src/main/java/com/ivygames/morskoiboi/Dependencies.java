@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.common.invitations.InvitationManager;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 public class Dependencies {
