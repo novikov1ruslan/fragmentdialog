@@ -1,10 +1,12 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.timer.TimerListener;
+
 import org.commons.logger.Ln;
 
-class TimerUpdater {
+public class TimerUpdater {
 
     private volatile int mRemainedTime;
     @NonNull
@@ -14,7 +16,7 @@ class TimerUpdater {
     /**
      * @param timeout timeout in milliseconds
      */
-    TimerUpdater(int timeout, int resolution, @NonNull TimerListener listener) {
+    public TimerUpdater(int timeout, int resolution, @NonNull TimerListener listener) {
         mRemainedTime = timeout;
         mResolution = resolution;
         mListener = listener;

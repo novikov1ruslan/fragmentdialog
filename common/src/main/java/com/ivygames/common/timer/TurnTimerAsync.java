@@ -1,11 +1,15 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.common.timer;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.timer.TimerListener;
+import com.ivygames.common.timer.TimerUpdater;
+import com.ivygames.common.timer.TurnTimer;
+
 import org.commons.logger.Ln;
 
-class TurnTimerAsync extends AsyncTask<Void, Void, Void> implements TurnTimer {
+public class TurnTimerAsync extends AsyncTask<Void, Void, Void> implements TurnTimer {
     private static final int RESOLUTION = 1000;
 
     @NonNull

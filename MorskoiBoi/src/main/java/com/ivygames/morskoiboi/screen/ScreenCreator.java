@@ -14,9 +14,9 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
-import com.ivygames.morskoiboi.screen.gameplay.AsyncTurnTimerFactory;
+import com.ivygames.common.timer.AsyncTurnTimerFactory;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
-import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
+import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.screen.help.HelpScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
 import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
@@ -30,6 +30,7 @@ import com.ivygames.morskoiboi.screen.win.WinScreen;
 import java.util.Collection;
 
 public class ScreenCreator {
+    private static final int ALLOWED_SKIPPED_TURNS = 2;
 
     private static BattleshipActivity activity;
     private static ApiClient apiClient;
@@ -94,7 +95,7 @@ public class ScreenCreator {
     @NonNull
     public static GameplayScreen newGameplayScreen(@NonNull Game game, @NonNull Session session) {
         return new GameplayScreen(activity, game, session,
-                new TurnTimerController(game.getTurnTimeout(),
+                new TurnTimerController(game.getTurnTimeout(), ALLOWED_SKIPPED_TURNS,
                         new AsyncTurnTimerFactory()));
     }
 

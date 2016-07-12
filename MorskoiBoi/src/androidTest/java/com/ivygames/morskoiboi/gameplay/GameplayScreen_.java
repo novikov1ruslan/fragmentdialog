@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
-import com.ivygames.morskoiboi.screen.gameplay.TurnTimerController;
+import com.ivygames.common.timer.TurnTimerController;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;

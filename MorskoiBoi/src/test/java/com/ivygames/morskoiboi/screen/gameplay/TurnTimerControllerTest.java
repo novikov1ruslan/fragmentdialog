@@ -3,6 +3,12 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.analytics.ExceptionHandler;
+import com.ivygames.common.timer.TimerListener;
+import com.ivygames.common.timer.TurnListener;
+import com.ivygames.common.timer.TurnTimer;
+import com.ivygames.common.timer.TurnTimerAsync;
+import com.ivygames.common.timer.TurnTimerController;
+import com.ivygames.common.timer.TurnTimerFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +48,7 @@ public class TurnTimerControllerTest {
         ExceptionHandler.setDryRun(true);
 
         when(factory.newTimer(anyInt(), any(TimerListener.class))).thenReturn(timer);
-        controller = new TurnTimerController(DEFAULT_TIMEOUT, factory);
+        controller = new TurnTimerController(DEFAULT_TIMEOUT, 2, factory);
         controller.setListener(listener);
     }
 
@@ -113,7 +119,7 @@ public class TurnTimerControllerTest {
                 return new TurnTimerSync(timeLeft, timerListener, 1);
             }
         };
-        controller = new TurnTimerController(DEFAULT_TIMEOUT, factory);
+        controller = new TurnTimerController(DEFAULT_TIMEOUT, 2, factory);
         controller.setListener(listener);
         controller.start();
         verify(listener, times(1)).onTimerExpired();
@@ -127,7 +133,7 @@ public class TurnTimerControllerTest {
                 return new TurnTimerSync(timeLeft, timerListener, 2);
             }
         };
-        controller = new TurnTimerController(DEFAULT_TIMEOUT, factory);
+        controller = new TurnTimerController(DEFAULT_TIMEOUT, 2, factory);
         controller.setListener(listener);
         controller.start();
         verify(listener, times(2)).onTimerExpired();
@@ -141,7 +147,7 @@ public class TurnTimerControllerTest {
                 return new TurnTimerSync(timeLeft, timerListener, 3);
             }
         };
-        controller = new TurnTimerController(DEFAULT_TIMEOUT, factory);
+        controller = new TurnTimerController(DEFAULT_TIMEOUT, 2, factory);
         controller.setListener(listener);
         controller.start();
         verify(listener, times(1)).onPlayerIdle();

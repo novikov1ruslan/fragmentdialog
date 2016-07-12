@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.common.timer;
 
 public interface TurnTimer {
     void execute();

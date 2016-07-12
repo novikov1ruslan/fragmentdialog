@@ -1,32 +1,34 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
+
+import com.ivygames.common.timer.TimerListener;
+import com.ivygames.common.timer.TurnListener;
+import com.ivygames.common.timer.TurnTimer;
+import com.ivygames.common.timer.TurnTimerFactory;
 
 import org.commons.logger.Ln;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class TurnTimerController {
-
-    private static final int ALLOWED_SKIPPED_TURNS = 2;
-
     private TurnTimer mTurnTimer;
-
-    private final int TURN_TIMEOUT;
-    private TurnTimerFactory mTurnTimerFactory;
-
     private int mTimeLeft;
-
     private int mTimerExpiredCounter;
 
     @NonNull
-    private final TimerListenerImpl mTimerListener;
+    private final TimerListenerImpl mTimerListener = new TimerListenerImpl();
 
-    public TurnTimerController(int turnTimeout, @NonNull TurnTimerFactory turnTimerFactory) {
-        TURN_TIMEOUT = turnTimeout;
+    private final int mTurnTimeout;
+    private final int mTurnsBeforeIdle;
+    private final TurnTimerFactory mTurnTimerFactory;
+
+    public TurnTimerController(int turnTimeout, int turnsBeforeIdle, @NonNull TurnTimerFactory turnTimerFactory) {
+        mTurnTimeout = turnTimeout;
+        mTurnsBeforeIdle = turnsBeforeIdle;
         mTurnTimerFactory = turnTimerFactory;
-        mTimerListener = new TimerListenerImpl();
-        mTimeLeft = TURN_TIMEOUT;
+
+        mTimeLeft = mTurnTimeout;
     }
 
     public void start() {
@@ -60,7 +62,7 @@ public class TurnTimerController {
         }
 
         mTurnTimer.cancel(true);
-        mTimeLeft = TURN_TIMEOUT;
+        mTimeLeft = mTurnTimeout;
         Ln.v("timer stopped");
         processCancelRequest();
     }
@@ -80,9 +82,9 @@ public class TurnTimerController {
         @Override
         public void onTimerExpired() {
             mTurnTimer = null;
-            mTimeLeft = TURN_TIMEOUT;
+            mTimeLeft = mTurnTimeout;
             mTimerExpiredCounter++;
-            if (mTimerExpiredCounter > ALLOWED_SKIPPED_TURNS) {
+            if (mTimerExpiredCounter > mTurnsBeforeIdle) {
                 mTurnListener.onPlayerIdle();
             } else {
                 mTurnListener.onTimerExpired();
