@@ -8,6 +8,7 @@ import android.support.annotation.RawRes;
 
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.MusicPlayer;
+import com.ivygames.common.ui.ActivityScreen;
 import com.ivygames.common.ui.Screen;
 import com.ivygames.morskoiboi.BattleshipActivity;
 
@@ -15,8 +16,7 @@ import org.commons.logger.Ln;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
-// TODO: Screen is never used in isolation - combine BattleshipScreen with Screen
-public abstract class BattleshipScreen extends Screen {
+public abstract class BattleshipScreen extends ActivityScreen {
 
     @NonNull
     protected final FragmentManager mFm;

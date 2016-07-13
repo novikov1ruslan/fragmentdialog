@@ -80,6 +80,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
         parent.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mContainer = container;

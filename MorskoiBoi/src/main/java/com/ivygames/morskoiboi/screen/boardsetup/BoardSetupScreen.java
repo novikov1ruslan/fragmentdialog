@@ -88,6 +88,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         return Ship.setOrientationForShips(mRules.generateFullFleet(), Ship.Orientation.HORIZONTAL);
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
@@ -131,7 +132,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void autoSetup() {
             UiEvent.send("auto");
             mBoard.clearBoard();
-            mPlacement.populateBoardWithShips(mBoard, mRules.generateFullFleet());
+            Collection<Ship> ships = mRules.generateFullFleet();
+            mPlacement.populateBoardWithShips(mBoard, ships);
             mFleet.clear();
             mLayout.notifyDataChanged();
             mLayout.invalidate();

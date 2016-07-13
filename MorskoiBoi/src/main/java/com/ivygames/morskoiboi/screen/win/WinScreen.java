@@ -109,6 +109,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         return mLayout;
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (WinLayoutSmall) getLayoutInflater().inflate(R.layout.win, container, false);

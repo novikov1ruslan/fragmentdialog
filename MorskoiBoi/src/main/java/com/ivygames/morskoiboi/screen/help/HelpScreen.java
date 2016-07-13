@@ -20,6 +20,7 @@ public class HelpScreen extends BattleshipScreen implements BackPressListener {
         super(parent);
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = inflate(R.layout.help, container);

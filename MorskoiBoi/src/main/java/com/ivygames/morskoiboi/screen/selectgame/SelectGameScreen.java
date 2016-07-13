@@ -76,6 +76,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mSettings = settings;
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (SelectGameLayout) inflate(R.layout.select_game, container);

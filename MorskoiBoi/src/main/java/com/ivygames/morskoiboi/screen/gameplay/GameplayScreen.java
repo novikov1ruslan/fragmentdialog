@@ -154,6 +154,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         return mMatchStatusIntent;
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);

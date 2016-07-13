@@ -49,6 +49,7 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         mVibrator = vibratorFacade;
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (SettingsLayout) inflate(R.layout.settings, container);

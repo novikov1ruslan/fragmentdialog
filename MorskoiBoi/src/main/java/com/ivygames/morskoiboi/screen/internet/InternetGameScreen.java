@@ -73,6 +73,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mMultiplayerHub.setResultListener(mMultiplayerHubListener);
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);

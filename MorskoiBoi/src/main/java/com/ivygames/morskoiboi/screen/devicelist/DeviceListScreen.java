@@ -65,6 +65,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         return mLayout;
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mContainer = container;

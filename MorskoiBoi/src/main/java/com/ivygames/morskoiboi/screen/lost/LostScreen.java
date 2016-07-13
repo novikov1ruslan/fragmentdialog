@@ -58,6 +58,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         return mView;
     }
 
+    @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mView = getLayoutInflater().inflate(R.layout.lost, container, false);
