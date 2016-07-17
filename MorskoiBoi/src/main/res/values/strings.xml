@@ -64,6 +64,8 @@
     <!-- setup -->
     <string name="auto">Auto</string>
     <string name="done">Done</string>
+    <string name="only_horizontal_ships">Your board contains only horizontal ships.</string>
+    <string name="rearrange">Rearrange</string>
     <string name="ships_setup_validation">You must set your ships first</string>
     <string name="place_instruction">Move the ship to place it on the board</string>
     <string name="rotate_instruction">Tap on a ship to rotate</string>

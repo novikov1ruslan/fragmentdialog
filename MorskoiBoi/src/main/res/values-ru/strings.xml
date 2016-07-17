@@ -64,6 +64,8 @@
     <!-- setup -->
     <string name="auto">Автоматически</string>
     <string name="done">Готово</string>
+    <string name="only_horizontal_ships">Ваше поле содержит только горизонтальные корабли.</string>
+    <string name="rearrange">Перестроить</string>
     <string name="ships_setup_validation">Сначала необходимо расставить корабли</string>
     <string name="place_instruction">Перетяните корабли, чтобы расставить их на поле</string>
     <string name="rotate_instruction">Щелкните по кораблю на поле, чтобы он развернулся</string>

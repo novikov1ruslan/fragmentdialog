@@ -15,7 +15,7 @@ import org.commons.logger.Ln;
 import de.greenrobot.event.EventBus;
 
 public abstract class OnlineGameScreen extends BattleshipScreen {
-    private static final String DIALOG = FragmentAlertDialog.TAG;
+    protected static final String DIALOG = FragmentAlertDialog.TAG;
 
     @NonNull
     protected final Game mGame;

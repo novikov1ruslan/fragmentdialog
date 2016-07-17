@@ -12,8 +12,8 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.common.ui.BackPressListener;
+import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
@@ -96,7 +96,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
-        if (mGame.getType() == Game.Type.INTERNET || BuildConfig.DEBUG) {
+        if (mGame.getType() == Game.Type.INTERNET) {
             Ln.d("initializing timeout: " + BOARD_SETUP_TIMEOUT);
             mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
         }
@@ -133,6 +133,9 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             UiEvent.send("auto");
             mBoard.clearBoard();
             Collection<Ship> ships = mRules.generateFullFleet();
+            while (BoardSetupUtils.onlyHorizontalShips(ships)) {
+                ships = mRules.generateFullFleet();
+            }
             mPlacement.populateBoardWithShips(mBoard, ships);
             mFleet.clear();
             mLayout.notifyDataChanged();
@@ -148,9 +151,11 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void done() {
             UiEvent.send("done");
             if (mRules.isBoardSet(mBoard)) {
-                Ln.d("board set - showing gameplay screen");
-                mSession.player.setBoard(mBoard);
-                showGameplayScreen();
+                if (BoardSetupUtils.onlyHorizontalShips(mBoard.getShips())) {
+                    showOnlyHorizontalDialog();
+                } else {
+                    continueToGameplay();
+                }
             } else {
                 Ln.d("!: board is not set yet");
                 showSetupValidationError();
@@ -163,6 +168,12 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             parent().dismissTutorial();
         }
     };
+
+    private void continueToGameplay() {
+        Ln.d("board set - showing gameplay screen");
+        mSession.player.setBoard(mBoard);
+        showGameplayScreen();
+    }
 
     private void showGameplayScreen() {
         setScreen(ScreenCreator.newGameplayScreen(mGame, mSession));
@@ -198,6 +209,28 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     @NonNull
     public View getView() {
         return mLayout;
+    }
+
+    protected final void showOnlyHorizontalDialog() {
+        AnalyticsEvent.send("only_horizontal");
+
+        String message = getString(R.string.only_horizontal_ships) + " " +
+                getString(R.string.rotate_instruction);
+        String option1 = getString(R.string.rearrange_ships);
+        String option2 = getString(R.string.continue_str);
+
+        Runnable command1 = new Runnable() {
+            @Override
+            public void run() {
+            }
+        };
+        Runnable command2 = new Runnable() {
+            @Override
+            public void run() {
+                continueToGameplay();
+            }
+        };
+        DialogUtils.twoOptions(message, option1, command1, option2, command2).show(mFm, DIALOG);
     }
 
     @Override
