@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.ivygames.billing;
+package com.example.android.trivialdrivesample.util;
 
 import android.app.Activity;
 import android.app.PendingIntent;

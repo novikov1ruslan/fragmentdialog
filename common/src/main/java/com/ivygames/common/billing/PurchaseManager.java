@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import com.ivygames.billing.IabHelper;
-import com.ivygames.billing.IabResult;
+import com.example.android.trivialdrivesample.util.IabHelper;
+import com.example.android.trivialdrivesample.util.IabResult;
 
 import org.commons.logger.Ln;
 

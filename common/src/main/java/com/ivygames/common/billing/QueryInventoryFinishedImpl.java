@@ -2,10 +2,10 @@ package com.ivygames.common.billing;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.billing.IabHelper;
-import com.ivygames.billing.IabResult;
-import com.ivygames.billing.Inventory;
-import com.ivygames.billing.Purchase;
+import com.example.android.trivialdrivesample.util.IabHelper;
+import com.example.android.trivialdrivesample.util.IabResult;
+import com.example.android.trivialdrivesample.util.Inventory;
+import com.example.android.trivialdrivesample.util.Purchase;
 
 import org.commons.logger.Ln;
 

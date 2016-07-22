@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.ivygames.billing;
+package com.example.android.trivialdrivesample.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
