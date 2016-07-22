@@ -64,16 +64,7 @@ dependencies {
     compile project(':fragmentdialog')
     compile project(':BaseGameUtils')
     compile project(':RUtils')
-    compile 'com.google.android.gms:play-services-games:8.4.0'
-    compile 'com.google.android.gms:play-services-analytics:8.4.0'
-    compile 'com.google.android.gms:play-services-identity:8.4.0'
-    compile 'com.google.android.gms:play-services-plus:8.4.0'
-    compile 'com.google.android.gms:play-services-drive:8.4.0'
-    compile 'ch.acra:acra:4.6.2'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
-    compile 'com.google.guava:guava:19.0'
-//    compile 'com.facebook.android:facebook-android-sdk:4.10.0'
+    //    compile 'com.facebook.android:facebook-android-sdk:4.10.0'
 //    compile 'com.android.support:support-annotations:23.2.0'
 
     admobCompile 'com.google.android.gms:play-services-ads:8.4.0'
@@ -96,4 +87,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
+    compile 'com.google.android.gms:play-services-games:8.4.0'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
+    compile 'com.google.android.gms:play-services-identity:8.4.0'
+    compile 'com.google.android.gms:play-services-plus:8.4.0'
+    compile 'com.google.android.gms:play-services-drive:8.4.0'
+    compile 'ch.acra:acra:4.6.2'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
+    compile 'com.google.guava:guava:19.0'
+    compile 'com.google.android.gms:play-services-ads:9.2.0'
 }
