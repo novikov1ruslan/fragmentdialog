@@ -12,7 +12,6 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.common.ui.BackPressListener;
-import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -216,7 +215,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
 
         String message = getString(R.string.only_horizontal_ships) + " " +
                 getString(R.string.rotate_instruction);
-        String option1 = getString(R.string.rearrange_ships);
+        String option1 = getString(R.string.rearrange);
         String option2 = getString(R.string.continue_str);
 
         Runnable command1 = new Runnable() {
