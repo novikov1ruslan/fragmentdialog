@@ -71,10 +71,13 @@ dependencies {
 
     admobCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
 
-    appodealCompile project(':unity-ads-1.5.6')
+    appodealCompile project(':cheetah-mobile-3.4.7')
+    appodealCompile project(':unity-ads-1.5.8')
     appodealCompile fileTree(dir: 'libs', include: ['*.jar'])
     appodealCompile 'com.android.support:multidex:1.0.1'
     appodealCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
+    appodealCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
+
 
     compile "com.google.android.gms:play-services-games:${playServicesVersion}"
     compile "com.google.android.gms:play-services-analytics:${playServicesVersion}"
