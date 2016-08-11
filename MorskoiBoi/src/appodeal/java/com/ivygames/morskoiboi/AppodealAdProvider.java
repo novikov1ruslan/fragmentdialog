@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.appodeal.ads.Appodeal;
 import com.appodeal.ads.InterstitialCallbacks;
+import com.ivygames.common.ads.AdProvider;
 
 import org.commons.logger.Ln;
 
@@ -16,9 +17,9 @@ public class AppodealAdProvider implements AdProvider {
 
         Appodeal.disableLocationPermissionCheck();
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
-        Appodeal.initialize(activity, appKey, Appodeal.BANNER);
-        Appodeal.initialize(activity, appKey, Appodeal.INTERSTITIAL);
+        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.NON_SKIPPABLE_VIDEO);
         Appodeal.show(activity, Appodeal.BANNER_TOP);
+
         Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
             @Override
             public void onInterstitialLoaded(boolean loaded) {
@@ -54,7 +55,10 @@ public class AppodealAdProvider implements AdProvider {
             return;
         }
 
-        if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
+        if (Appodeal.isLoaded(Appodeal.NON_SKIPPABLE_VIDEO)) {
+            Appodeal.show(mActivity, Appodeal.INTERSTITIAL);
+            mInterstitialAfterPlayShown = true;
+        } else if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
             Appodeal.show(mActivity, Appodeal.INTERSTITIAL);
             mInterstitialAfterPlayShown = true;
         }
