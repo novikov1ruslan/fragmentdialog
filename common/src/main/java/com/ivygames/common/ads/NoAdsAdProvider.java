@@ -4,12 +4,12 @@ import android.app.Activity;
 
 public class NoAdsAdProvider implements AdProvider {
     @Override
-    public void needToShowInterstitialAfterPlay() {
+    public void needToShowAfterPlayAd() {
 
     }
 
     @Override
-    public void showInterstitialAfterPlay() {
+    public void showAfterPlayAd() {
 
     }
 

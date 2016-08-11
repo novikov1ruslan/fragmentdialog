@@ -1,67 +1,59 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
 import com.appodeal.ads.Appodeal;
-import com.appodeal.ads.InterstitialCallbacks;
 import com.ivygames.common.ads.AdProvider;
 
 import org.commons.logger.Ln;
 
 public class AppodealAdProvider implements AdProvider {
-    private Activity mActivity;
-    private boolean mInterstitialAfterPlayShown = true;
 
-    public AppodealAdProvider(final Activity activity) {
+    @NonNull
+    private final Activity mActivity;
+    private boolean mNeedToShowAfterPlayAd;
+
+    public AppodealAdProvider(@NonNull Activity activity) {
         mActivity = activity;
-
+        Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
+//        Appodeal.setLogging(BuildConfig.DEBUG);
         Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.NON_SKIPPABLE_VIDEO);
+//        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL);
+
+        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
+        Appodeal.setInterstitialCallbacks(new AppodealInterstitialCallback());
+        Appodeal.setBannerCallbacks(new AppodealBannerCallbacks());
+
         Appodeal.show(activity, Appodeal.BANNER_TOP);
-
-        Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
-            @Override
-            public void onInterstitialLoaded(boolean loaded) {
-            }
-
-            @Override
-            public void onInterstitialFailedToLoad() {
-            }
-
-            @Override
-            public void onInterstitialShown() {
-            }
-
-            @Override
-            public void onInterstitialClicked() {
-            }
-
-            @Override
-            public void onInterstitialClosed() {
-            }
-        });
     }
 
     @Override
-    public void needToShowInterstitialAfterPlay() {
-        mInterstitialAfterPlayShown = false;
+    public void needToShowAfterPlayAd() {
+        Ln.v("request to show after play ad");
+        mNeedToShowAfterPlayAd = true;
     }
 
     @Override
-    public void showInterstitialAfterPlay() {
-        if (mInterstitialAfterPlayShown) {
-            Ln.v("already shown - skipping ads");
-            return;
+    public void showAfterPlayAd() {
+        if (mNeedToShowAfterPlayAd) {
+            mNeedToShowAfterPlayAd = showAdType(Appodeal.NON_SKIPPABLE_VIDEO);
         }
+        if (mNeedToShowAfterPlayAd) {
+            mNeedToShowAfterPlayAd = showAdType(Appodeal.INTERSTITIAL);
+        }
+    }
 
-        if (Appodeal.isLoaded(Appodeal.NON_SKIPPABLE_VIDEO)) {
-            Appodeal.show(mActivity, Appodeal.INTERSTITIAL);
-            mInterstitialAfterPlayShown = true;
-        } else if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
-            Appodeal.show(mActivity, Appodeal.INTERSTITIAL);
-            mInterstitialAfterPlayShown = true;
+    private boolean showAdType(int addType) {
+        if (Appodeal.isLoaded(addType)) {
+            Ln.d("showing " + AppodealUtils.typeToName(addType));
+            Appodeal.show(mActivity, addType);
+            return false;
         }
+        Ln.d(AppodealUtils.typeToName(addType) + " ad not loaded");
+        return true;
     }
 
     @Override
@@ -71,11 +63,11 @@ public class AppodealAdProvider implements AdProvider {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void destroy() {
         Appodeal.hide(mActivity, Appodeal.BANNER);
     }
+
 }

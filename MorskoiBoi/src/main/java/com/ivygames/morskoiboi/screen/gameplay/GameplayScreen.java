@@ -126,7 +126,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mSession = session;
         mTimerController = timerController;
 
-        AdProviderFactory.getAdProvider().needToShowInterstitialAfterPlay();
+        // TODO: convert to dependency
+        AdProviderFactory.getAdProvider().needToShowAfterPlayAd();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) parent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mPlayer = session.player;

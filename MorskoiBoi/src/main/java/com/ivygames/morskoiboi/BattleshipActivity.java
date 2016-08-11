@@ -58,6 +58,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
  	 * to replace the public key with one of their own and then fake messages from the server.
  	 */
     private static final String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsZ8ufj+4+R1sqPrTudIeXZBD6NUtKo8fWLpbQHp9ib9jtIv3PVOzVuNKIsG7eXqn0U+vWX8WYtoPGmogYr4GDJqdzOQb2xq5ZEsAzXoE+Yeiqpp/ASUs1IU2Tw+cu30rKStgktnFeIfcFowPyHeSgSQlqBFUrL0A8oipc5oesao7OiGGCwpUf6OJuvyK0DmdhdYUMPRxTgp0v5+JnXhNEqgiU00W468vf4rfUGqQWUNN902fphf8oADJT5FdlculaQva5t+55RdpqtP8UAficOUXh1xyAn1KQ0APKOPU5x7wAe/z3bLdjE1Ik4g4KXyHLGfP5PMjkfqvgNeU2WsN4QIDAQAB";
+
+    private static final boolean _DEBUG_ALWAYS_SHOW_ADS = true;
+
     private final String SKU_NO_ADS = "no_ads";
 
     public static final int RC_SELECT_PLAYERS = 10000;
@@ -168,11 +171,13 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             hideAds();
         } else {
             AdProviderFactory.init(this);
-            if (device.isBillingAvailable()) {
-                mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl(), BASE64_ENCODED_PUBLIC_KEY);
-            } else {
-                Ln.e("gpgs_not_available");
-                hideNoAdsButton();
+            if (!_DEBUG_ALWAYS_SHOW_ADS) {
+                if (device.isBillingAvailable()) {
+                    mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl(), BASE64_ENCODED_PUBLIC_KEY);
+                } else {
+                    Ln.e("gpgs_not_available");
+                    hideNoAdsButton();
+                }
             }
         }
 
@@ -209,6 +214,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     private void hideAds() {
+        if (_DEBUG_ALWAYS_SHOW_ADS) return;
         AdProviderFactory.getAdProvider().destroy();
         AdProviderFactory.noAds();
         mBanner.setVisibility(View.GONE);

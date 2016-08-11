@@ -3,9 +3,9 @@ package com.ivygames.common.ads;
 import android.app.Activity;
 
 public interface AdProvider {
-    void needToShowInterstitialAfterPlay();
+    void needToShowAfterPlayAd();
 
-    void showInterstitialAfterPlay();
+    void showAfterPlayAd();
 
     void resume(Activity activity);
 

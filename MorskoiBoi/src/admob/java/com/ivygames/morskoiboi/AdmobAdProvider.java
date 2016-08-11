@@ -10,13 +10,15 @@ import com.google.android.gms.ads.AdRequest.Builder;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.plus.model.people.Person;
+import com.ivygames.common.BuildConfig;
+import com.ivygames.common.ads.AdProvider;
 
 import org.commons.logger.Ln;
 
 public class AdmobAdProvider implements AdProvider {
 
     private InterstitialAd mInterstitialAfterPlay;
-    private boolean mInterstitialAfterPlayShown = true;
+    private boolean mNeedToShowAfterPlayAd;
     private Person mPerson;
     private AdView mBanner;
 
@@ -31,22 +33,21 @@ public class AdmobAdProvider implements AdProvider {
     }
 
     @Override
-    public void needToShowInterstitialAfterPlay() {
-        mInterstitialAfterPlayShown = false;
+    public void needToShowAfterPlayAd() {
+        mNeedToShowAfterPlayAd = true;
     }
 
     @Override
-    public void showInterstitialAfterPlay() {
-        if (mInterstitialAfterPlayShown) {
-            Ln.v("already shown - skipping ads");
-            return;
-        }
-
-        if (mInterstitialAfterPlay.isLoaded()) {
-            mInterstitialAfterPlay.show();
-            mInterstitialAfterPlayShown = true;
+    public void showAfterPlayAd() {
+        if (mNeedToShowAfterPlayAd) {
+            if (mInterstitialAfterPlay.isLoaded()) {
+                mInterstitialAfterPlay.show();
+                mNeedToShowAfterPlayAd = false;
+            } else {
+                Ln.d("after play ad not loaded");
+            }
         } else {
-            Ln.d("ad could not be loaded");
+            Ln.d("no need to show after play ad");
         }
     }
 
@@ -63,7 +64,6 @@ public class AdmobAdProvider implements AdProvider {
                 mInterstitialAfterPlay.loadAd(adRequest);
             }
         });
-
     }
 
     private static String genderToString(int gender) {
@@ -90,7 +90,7 @@ public class AdmobAdProvider implements AdProvider {
 
     private static Builder createAdRequest(Person person) {
         Builder builder = new AdRequest.Builder();
-        if (GameConstants.IS_TEST_MODE) {
+        if (BuildConfig.DEBUG) {
             /*
              * This call will add the emulator as a test device. To add a physical device for testing, pass in your hashed device ID, which can be found in the
 			 * LogCat output when loading an ad on your device.
@@ -98,8 +98,6 @@ public class AdmobAdProvider implements AdProvider {
             builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
             builder.addTestDevice("43548AA33072E95B1BDCE839CC2F99F2"); // LG g2
             builder.addTestDevice("D2E2CCE4C6E2B8BBAF4005B97CF6EB8C"); // LG L70
-            builder.addTestDevice("36C3996B19607DE01F507955C4DF1A2A"); // Nexus 6
-            builder.addTestDevice("66785C8FFF22B62D4E8EA74ADD28FC11"); // Asus
         }
 
         // if (person != null && person.hasBirthday()) {

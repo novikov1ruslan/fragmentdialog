@@ -116,8 +116,10 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onResume() {
         super.onResume();
-        AdProviderFactory.getAdProvider().showInterstitialAfterPlay();
         parent().showTutorial(getTutView());
+
+        //TODO: convert to dependency
+        AdProviderFactory.getAdProvider().showAfterPlayAd();
     }
 
     @Override
