@@ -1,8 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.boardsetup;
 
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
@@ -26,7 +29,7 @@ public class BoardSetupScreen_ extends OnlineScreen_ {
 
     @NonNull
     protected final Matcher<View> placeInstructions() {
-        return withText(R.string.place_instruction);
+        return ViewMatchers.withText(R.string.place_instruction);
     }
 
     @NonNull

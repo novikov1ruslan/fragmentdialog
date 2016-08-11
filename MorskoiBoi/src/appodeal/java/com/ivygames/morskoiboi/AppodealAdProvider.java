@@ -19,9 +19,7 @@ public class AppodealAdProvider implements AdProvider {
         Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
-//        Appodeal.setLogging(BuildConfig.DEBUG);
         Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.NON_SKIPPABLE_VIDEO);
-//        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL);
 
         Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
         Appodeal.setInterstitialCallbacks(new AppodealInterstitialCallback());

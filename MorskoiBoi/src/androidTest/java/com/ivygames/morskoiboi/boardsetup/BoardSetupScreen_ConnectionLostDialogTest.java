@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.boardsetup;
 
 import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -7,28 +7,28 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 
-public class BoardSetupScreen_OpponentLeftDialogTest extends BoardSetupScreen_ {
+public class BoardSetupScreen_ConnectionLostDialogTest extends BoardSetupScreen_ {
 
     @Test
-    public void WhenEnemyLeaves__OpponentLeftDialogDisplayed() {
+    public void WhenConnectionLost__DialogDisplayed() {
         showScreen();
-        ((BoardSetupScreen) screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
-        checkDisplayed(opponentLeftDialog());
+        ((BoardSetupScreen) screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
+        checkDisplayed(connectionLostDialog());
     }
 
     @Test
     public void PressingBack__DismissesDialog_GameFinishes_SelectGameScreensShown() {
-        WhenEnemyLeaves__OpponentLeftDialogDisplayed();
+        WhenConnectionLost__DialogDisplayed();
         pressBack();
-        checkDoesNotExist(opponentLeftDialog());
+        checkDoesNotExist(connectionLostDialog());
         FinishGame_BackToSelectGame();
     }
 
     @Test
     public void PressingOk__DismissesDialog_GameFinishes_SelectGameScreensShown() {
-        WhenEnemyLeaves__OpponentLeftDialogDisplayed();
+        WhenConnectionLost__DialogDisplayed();
         clickOn(okButton());
-        checkDoesNotExist(opponentLeftDialog());
+        checkDoesNotExist(connectionLostDialog());
         FinishGame_BackToSelectGame();
     }
 

@@ -4,6 +4,7 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.intent.Intents;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
 import com.ivygames.common.AndroidDevice;
@@ -314,4 +315,13 @@ public abstract class ScreenTest {
         return withText(R.string.ok);
     }
 
+    @NonNull
+    protected final Matcher<View> positiveButton() {
+        return ViewMatchers.withId(R.id.positive_button);
+    }
+
+    @NonNull
+    protected final Matcher<View> negativeButton() {
+        return ViewMatchers.withId(R.id.negative_button);
+    }
 }
