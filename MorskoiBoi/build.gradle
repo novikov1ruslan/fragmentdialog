@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    def playServicesVersion = '9.2.1'
+    def playServicesVersion = '9.4.0'
 
     compile project(':common')
     compile project(':AppTheme')
@@ -67,7 +67,6 @@ dependencies {
     compile project(':BaseGameUtils')
     compile project(':RUtils')
     //    compile 'com.facebook.android:facebook-android-sdk:4.10.0'
-//    compile 'com.android.support:support-annotations:23.2.0'
 
     admobCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
 
