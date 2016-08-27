@@ -10,6 +10,8 @@ import org.commons.logger.Ln;
 
 public class AppodealAdProvider implements AdProvider {
 
+    private int mNextAdType = Appodeal.NON_SKIPPABLE_VIDEO;
+    private int mPrevAdType = Appodeal.INTERSTITIAL;
     @NonNull
     private final Activity mActivity;
     private boolean mNeedToShowAfterPlayAd;
@@ -36,22 +38,32 @@ public class AppodealAdProvider implements AdProvider {
 
     @Override
     public void showAfterPlayAd() {
-        if (mNeedToShowAfterPlayAd) {
-            mNeedToShowAfterPlayAd = showAdType(Appodeal.NON_SKIPPABLE_VIDEO);
+        if (!mNeedToShowAfterPlayAd) {
+            return;
         }
+
+        mNeedToShowAfterPlayAd = !showAdType(mNextAdType);
+        swapAfterPlayAdType();
         if (mNeedToShowAfterPlayAd) {
-            mNeedToShowAfterPlayAd = showAdType(Appodeal.INTERSTITIAL);
+            mNeedToShowAfterPlayAd = !showAdType(mNextAdType);
         }
+    }
+
+    private void swapAfterPlayAdType() {
+        int nextAdType = mNextAdType;
+        mNextAdType = mPrevAdType;
+        mPrevAdType = nextAdType;
+        Ln.v("next ad type: " + AppodealUtils.typeToName(mNextAdType));
     }
 
     private boolean showAdType(int addType) {
         if (Appodeal.isLoaded(addType)) {
             Ln.d("showing " + AppodealUtils.typeToName(addType));
             Appodeal.show(mActivity, addType);
-            return false;
+            return true;
         }
         Ln.d(AppodealUtils.typeToName(addType) + " ad not loaded");
-        return true;
+        return false;
     }
 
     @Override
