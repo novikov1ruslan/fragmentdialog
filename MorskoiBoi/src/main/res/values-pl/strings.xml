@@ -64,6 +64,8 @@
     <!-- setup -->
     <string name="auto">Auto</string>
     <string name="done">Zrobione</string>
+    <string name="only_horizontal_ships">Your board contains only horizontal ships.</string>
+    <string name="rearrange">Rearrange</string>
     <string name="ships_setup_validation">Najpierw musisz ustawić swoje okręty</string>
     <string name="place_instruction">Przemieść okręt by ustawić go na planszy</string>
     <string name="rotate_instruction">Stuknij okręt by go obrócić</string>
