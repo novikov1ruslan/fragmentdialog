@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.GraphicsUtils;
@@ -20,6 +21,15 @@ public class BaseBoardRenderer {
     private final Paint mMissBgPaint;
     private final Paint mMissInnerPaint;
     private final Paint mConflictCellPaint;
+
+    private final Paint mTurnBorderPaint;
+    private final Paint mBorderPaint;
+
+    protected final Paint mShipPaint;
+    protected final Paint mAimingPaint;
+
+    @NonNull
+    private final Paint mAimingLockedPaint;
 
     public BaseBoardRenderer(Resources res) {
         mLinePaint = GraphicsUtils.newStrokePaint(res, R.color.line);
@@ -40,9 +50,26 @@ public class BaseBoardRenderer {
         mMissBgPaint.setAlpha(80);
 
         mConflictCellPaint = GraphicsUtils.newFillPaint(res, R.color.conflict_cell);
+
+        mShipPaint = GraphicsUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
+        mTurnBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
+        mAimingPaint = GraphicsUtils.newFillPaint(res, R.color.aim);
+
+        mBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
+
+        mAimingLockedPaint = GraphicsUtils.newFillPaint(res, R.color.aim_locked);
     }
 
-    public void render(Canvas canvas, Aiming aiming, Paint paint) {
+    public void render(@NonNull Canvas canvas, @NonNull Aiming aiming) {
+        render(canvas, aiming, false);
+    }
+
+    public void render(@NonNull Canvas canvas, @NonNull Aiming aiming, boolean locked) {
+        Paint paint = locked ? mAimingLockedPaint : mAimingPaint;
+        render(canvas, aiming, paint);
+    }
+
+    private void render(@NonNull Canvas canvas, @NonNull Aiming aiming, @NonNull Paint paint) {
         canvas.drawRect(aiming.horizontal, paint);
         canvas.drawRect(aiming.vertical, paint);
     }
@@ -51,24 +78,25 @@ public class BaseBoardRenderer {
         canvas.drawCircle(x, y, 5, debug_paint);
     }
 
-    public void renderBoard(Canvas canvas, BoardG board, Paint turnPaint) {
+    public void renderBoard(@NonNull Canvas canvas, @NonNull BoardG board, boolean myTurn) {
         for (float[] line: board.lines) {
             canvas.drawLines(line, mLinePaint);
         }
 
-        canvas.drawRect(board.frame, turnPaint);
+        Paint borderPaint = myTurn ? mTurnBorderPaint : mBorderPaint;
+        canvas.drawRect(board.frame, borderPaint);
     }
 
-    public void drawShip(Canvas canvas, Rect ship, int left, int top, Paint paint) {
+    public void drawShip(Canvas canvas, Rect ship, int left, int top) {
         ship.left += left;
         ship.top += top;
         ship.right += left;
         ship.bottom += top;
-        canvas.drawRect(ship, paint);
+        canvas.drawRect(ship, mShipPaint);
     }
 
-    public void drawShip(Canvas canvas, Rect ship, Paint paint) {
-        drawShip(canvas, ship, 0, 0, paint);
+    public void drawShip(Canvas canvas, Rect rect) {
+        drawShip(canvas, rect, 0, 0);
     }
 
     public void drawHitMark(Canvas canvas, Mark mark) {

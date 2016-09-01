@@ -4,14 +4,17 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.gfx.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
+import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardRenderer;
 
 import org.commons.logger.Ln;
@@ -127,5 +130,4 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
             mLockBitmapSrc = null;
         }
     }
-
 }

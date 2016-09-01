@@ -1,9 +1,7 @@
 package com.ivygames.morskoiboi.screen.view;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -11,21 +9,14 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.GraphicsUtils;
 
 import java.util.Collection;
 
 public abstract class BaseBoardView extends View {
 
-    private final Paint mTurnBorderPaint;
-    private final Paint mBorderPaint;
-
-    protected final Paint mShipPaint;
-    protected final Paint mAimingPaint;
     private final DisplayMetrics mDisplayMetrics;
 
     protected BasePresenter mPresenter;
@@ -35,13 +26,6 @@ public abstract class BaseBoardView extends View {
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-
-        Resources res = getResources();
-        mShipPaint = GraphicsUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
-        mTurnBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
-        mAimingPaint = GraphicsUtils.newFillPaint(res, R.color.aim);
-
-        mBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
         mPresenter = presenter();
         mRenderer = renderer();
@@ -73,8 +57,7 @@ public abstract class BaseBoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Paint borderPaint = mPresenter.isTurn() ? mTurnBorderPaint : mBorderPaint;
-        mRenderer.renderBoard(canvas, mPresenter.getBoard(), borderPaint);
+        mRenderer.renderBoard(canvas, mPresenter.getBoard(), mPresenter.isTurn());
         drawCells(canvas);
         drawShips(canvas);
     }
@@ -95,7 +78,7 @@ public abstract class BaseBoardView extends View {
     private void drawShips(Canvas canvas) {
         Collection<Ship> ships = mBoard.getShips();
         for (Ship ship : ships) {
-            mRenderer.drawShip(canvas, mPresenter.getRectForShip(ship), mShipPaint);
+            mRenderer.drawShip(canvas, mPresenter.getRectForShip(ship));
         }
     }
 

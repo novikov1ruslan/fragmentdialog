@@ -98,19 +98,19 @@ public class SetupBoardView extends BaseBoardView {
             int displayTop = center.y - bitmap.getHeight() / 2;
             canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
-            mRenderer.drawShip(canvas, presenter().getRectForDockedShip(), mShipPaint);
+            mRenderer.drawShip(canvas, presenter().getRectForDockedShip());
         }
     }
 
     private void drawPickedShip(Canvas canvas) {
         Rect shipRect = presenter().getPickedShipRect();
         if (shipRect != null) {
-            canvas.drawRect(shipRect, mShipPaint);
+            mRenderer.drawShip(canvas, shipRect);
         }
 
         Aiming aiming = presenter().getAiming();
         if (aiming != null) {
-            mRenderer.render(canvas, aiming, mAimingPaint);
+            mRenderer.render(canvas, aiming);
         }
     }
 

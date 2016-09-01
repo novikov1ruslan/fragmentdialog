@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -14,17 +13,14 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
-import com.ivygames.morskoiboi.GraphicsUtils;
 
 public class EnemyBoardView extends BaseBoardView {
 
-    private final Paint mAimingLockedPaint;
     private PokeResult mLastShotResult;
     private Vector2 mAim;
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        mAimingLockedPaint = GraphicsUtils.newFillPaint(getResources(), R.color.aim_locked);
     }
 
     @NonNull
@@ -83,7 +79,7 @@ public class EnemyBoardView extends BaseBoardView {
 
             if (Board.containsCell(i, j)) {
                 Aiming aiming = presenter().getAiming(i, j, 1, 1);
-                mRenderer.render(canvas, aiming, getAimingPaint(mBoard.getCell(i, j).beenShot()));
+                renderer().render(canvas, aiming, isLocked(mBoard.getCell(i, j).beenShot()));
             }
         }
 
@@ -104,8 +100,8 @@ public class EnemyBoardView extends BaseBoardView {
         return true;
     }
 
-    private Paint getAimingPaint(boolean isShot) {
-        return isShot || presenter().isLocked() ? mAimingLockedPaint : mAimingPaint;
+    private boolean isLocked(boolean isShot) {
+        return isShot || presenter().isLocked();
     }
 
     public void setAim(@NonNull Vector2 aim) {
