@@ -15,7 +15,6 @@ public class BasePresenter {
     private final int mBoardSize;
     private final float mTurnBorderSize;
 
-    private boolean mShowTurn;
     private final Rect mTurnRect = new Rect();
     private int mMarkRadius;
 
@@ -146,18 +145,6 @@ public class BasePresenter {
 
     private float getMarkInnerRadius() {
         return (float) mMarkRadius - mCellSizePx / 6;
-    }
-
-    public final boolean isTurn() {
-        return mShowTurn;
-    }
-
-    public final void showTurn() {
-        mShowTurn = true;
-    }
-
-    public final void hideTurn() {
-        mShowTurn = false;
     }
 
     @NonNull

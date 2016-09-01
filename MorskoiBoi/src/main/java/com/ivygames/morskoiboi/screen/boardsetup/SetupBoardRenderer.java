@@ -17,7 +17,6 @@ class SetupBoardRenderer extends BaseBoardRenderer {
 
     public SetupBoardRenderer(Resources res) {
         super(res);
-        m2er = Bitmaps.getBitmap(res, R.drawable._2er);
     }
 
     @Override

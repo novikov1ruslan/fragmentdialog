@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -176,23 +175,23 @@ public class BasePresenterTest {
         assertThat(rect, equalTo(expected));
     }
 
-    @Test
-    public void initially_turn_is_hidden() {
-        assertThat(mPresenter.isTurn(), is(false));
-    }
-
-    @Test
-    public void calling_showTurn_shows_turn() {
-        mPresenter.showTurn();
-        assertThat(mPresenter.isTurn(), is(true));
-    }
-
-    @Test
-    public void calling_hideTurn_hides_turn() {
-        mPresenter.showTurn();
-        mPresenter.hideTurn();
-        assertThat(mPresenter.isTurn(), is(false));
-    }
+//    @Test
+//    public void initially_turn_is_hidden() {
+//        assertThat(mPresenter.isTurn(), is(false));
+//    }
+//
+//    @Test
+//    public void calling_showTurn_shows_turn() {
+//        mPresenter.showTurn();
+//        assertThat(mPresenter.isTurn(), is(true));
+//    }
+//
+//    @Test
+//    public void calling_hideTurn_hides_turn() {
+//        mPresenter.showTurn();
+//        mPresenter.hideTurn();
+//        assertThat(mPresenter.isTurn(), is(false));
+//    }
 
     @Test
     public void foo() {

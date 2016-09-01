@@ -24,6 +24,8 @@ public abstract class BaseBoardView extends View {
 
     protected Board mBoard;
 
+    private boolean mShowTurn;
+
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
@@ -57,7 +59,7 @@ public abstract class BaseBoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        mRenderer.drawBoard(canvas, mPresenter.getBoard(), mPresenter.isTurn());
+        mRenderer.drawBoard(canvas, mPresenter.getBoard(), mShowTurn);
         drawCells(canvas);
         drawShips(canvas);
     }
@@ -144,12 +146,12 @@ public abstract class BaseBoardView extends View {
     }
 
     public final void hideTurnBorder() {
-        mPresenter.hideTurn();
+        mShowTurn = false;
         invalidate();
     }
 
     public final void showTurnBorder() {
-        mPresenter.showTurn();
+        mShowTurn = true;
         invalidate();
     }
 
