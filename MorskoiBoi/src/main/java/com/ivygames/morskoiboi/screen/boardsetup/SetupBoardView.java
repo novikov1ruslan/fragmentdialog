@@ -198,15 +198,6 @@ public class SetupBoardView extends BaseBoardView {
                 getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        if (!changed) {
-            return;
-        }
-
-        mPresenter.measure(getMeasuredWidth(), getMeasuredHeight(), getHorizontalPadding(), getVerticalPadding());
-    }
-
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
         Ln.v(ships);
         presenter().setFleet(ships);
