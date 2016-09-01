@@ -57,7 +57,7 @@ public abstract class BaseBoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        mRenderer.renderBoard(canvas, mPresenter.getBoard(), mPresenter.isTurn());
+        mRenderer.drawBoard(canvas, mPresenter.getBoard(), mPresenter.isTurn());
         drawCells(canvas);
         drawShips(canvas);
     }

@@ -79,7 +79,7 @@ public class EnemyBoardView extends BaseBoardView {
 
             if (Board.containsCell(i, j)) {
                 Aiming aiming = presenter().getAiming(i, j, 1, 1);
-                renderer().render(canvas, aiming, isLocked(mBoard.getCell(i, j).beenShot()));
+                renderer().drawAiming(canvas, aiming, isLocked(mBoard.getCell(i, j).beenShot()));
             }
         }
 

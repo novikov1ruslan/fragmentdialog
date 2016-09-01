@@ -110,7 +110,7 @@ public class SetupBoardView extends BaseBoardView {
 
         Aiming aiming = presenter().getAiming();
         if (aiming != null) {
-            mRenderer.render(canvas, aiming);
+            mRenderer.drawAiming(canvas, aiming);
         }
     }
 
