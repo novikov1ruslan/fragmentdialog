@@ -27,8 +27,8 @@ class PickShipTask implements Runnable {
         return Math.sqrt(dX * dX + dY * dY) > slop;
     }
 
-//    @Override
-//    public String toString() {
-//        return "PressTask [i=" + mI + ", j=" + mJ + "]";
-//    }
+    @Override
+    public String toString() {
+        return "PressTask [x=" + mTouchX + ",yj=" + mTouchY + "]#" + (hashCode() % 1000);
+    }
 }

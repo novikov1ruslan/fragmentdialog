@@ -72,7 +72,7 @@ public class EnemyBoardView extends BaseBoardView {
             mRenderer.drawAim(canvas, mAim);
         }
 
-        if (startedDragging()) {
+        if (mTouchState.isDragging()) {
             int i = mPresenter.xToI(mTouchState.getX());
             int j = mPresenter.yToJ(mTouchState.getY());
 
@@ -89,10 +89,6 @@ public class EnemyBoardView extends BaseBoardView {
 //        if (GameConstants.IS_TEST_MODE) {
 //            getRenderer().render(canvas, mTouchState.getX(), mTouchState.getY());
 //        }
-    }
-
-    private boolean startedDragging() {
-        return mTouchState.getDragStatus() == TouchState.START_DRAGGING;
     }
 
     private Aiming getAiming(int width, int height) {

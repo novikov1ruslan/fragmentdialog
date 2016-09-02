@@ -7,7 +7,7 @@ import org.commons.logger.Ln;
 
 public class TouchState {
 
-    public static final int START_DRAGGING = 1;
+    private static final int START_DRAGGING = 1;
     private static final int STOP_DRAGGING = 0;
 
     private int mTouchX;
@@ -40,8 +40,8 @@ public class TouchState {
         return mTouchAction;
     }
 
-    public int getDragStatus() {
-        return mDragStatus;
+    public boolean isDragging() {
+        return mDragStatus == TouchState.START_DRAGGING;
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.TouchState;
+import com.ivygames.morskoiboi.screen.view.TouchStateTest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +20,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -125,23 +124,6 @@ public class EnemyBoardPresenterTest {
         verify(shotListener, never()).onAimingFinished(anyInt(), anyInt());
     }
 
-    // TODO: test for TouchState
-//    @Test
-//    public void testStartedDragging() {
-//        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
-//        assertThat(mPresenter.startedDragging(), is(false));
-//        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
-//        assertThat(mPresenter.startedDragging(), is(true));
-//        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP));
-//        assertThat(mPresenter.startedDragging(), is(false));
-//        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_MOVE));
-//        assertThat(mPresenter.startedDragging(), is(false));
-//        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN));
-//        assertThat(mPresenter.startedDragging(), is(true));
-//        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_MOVE));
-//        assertThat(mPresenter.startedDragging(), is(true));
-//    }
-
     @Test
     public void BoardIsCreatedLocked() {
         assertThat(mPresenter.isLocked(), is(true));
@@ -172,13 +154,7 @@ public class EnemyBoardPresenterTest {
 
     @NonNull
     private static TouchState getMotionEvent(float x, float y, int action) {
-        MotionEvent event = mock(MotionEvent.class);
-        when(event.getX()).thenReturn(x);
-        when(event.getY()).thenReturn(y);
-        when(event.getAction()).thenReturn(action);
-        TouchState touchState = new TouchState();
-        touchState.setEvent(event);
-        return touchState;
+        return TouchStateTest.newTouchState(x, y, action);
     }
 
 }

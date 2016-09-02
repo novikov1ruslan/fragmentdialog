@@ -179,24 +179,6 @@ public class BasePresenterTest {
         assertThat(rect, equalTo(expected));
     }
 
-//    @Test
-//    public void initially_turn_is_hidden() {
-//        assertThat(mPresenter.isTurn(), is(false));
-//    }
-//
-//    @Test
-//    public void calling_showTurn_shows_turn() {
-//        mPresenter.showTurn();
-//        assertThat(mPresenter.isTurn(), is(true));
-//    }
-//
-//    @Test
-//    public void calling_hideTurn_hides_turn() {
-//        mPresenter.showTurn();
-//        mPresenter.hideTurn();
-//        assertThat(mPresenter.isTurn(), is(false));
-//    }
-
     @Test
     public void foo() {
     }
