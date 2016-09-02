@@ -1,10 +1,7 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -13,15 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.view.Aiming;
-import com.ivygames.morskoiboi.screen.view.BaseBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 
 import org.commons.logger.Ln;
@@ -42,31 +36,25 @@ public class SetupBoardView extends BaseBoardView {
     @NonNull
     private final Rules mRules = Dependencies.getRules();
 
+    @NonNull
+    private final SetupBoardRenderer mRenderer;
+
+    @NonNull
+    private  SetupBoardPresenter mPresenter;
+
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        ViewConfiguration vc = ViewConfiguration.get(context);
-        mTouchSlop = vc.getScaledTouchSlop();
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         Ln.v("touch slop = " + mTouchSlop);
+
+        mRenderer = (SetupBoardRenderer) super.mRenderer;
     }
 
     @NonNull
     @Override
-    protected BaseBoardRenderer renderer() {
-        if (mRenderer == null) {
-            mRenderer = new BaseBoardRenderer(getResources());
-        }
-
-        return mRenderer;
-    }
-
-    @NonNull
-    @Override
-    protected SetupBoardPresenter presenter() {
-        if (mPresenter == null) {
-            mPresenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
-        }
-
-        return (SetupBoardPresenter) mPresenter;
+    protected SetupBoardRenderer renderer() {
+        mPresenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
+        return new SetupBoardRenderer(getResources(), mPresenter);
     }
 
     @Override
@@ -83,35 +71,20 @@ public class SetupBoardView extends BaseBoardView {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (mRules.isCellConflicting(cell)) {
-                    renderer().renderConflictingCell(canvas, presenter().getRectForCell(i, j));
+                    mRenderer.renderConflictingCell(canvas, i, j);
                 }
             }
         }
     }
 
     private void drawDockedShip(Canvas canvas) {
-        Ship dockedShip = presenter().getDockedShip();
-        if (dockedShip != null) {
-            Bitmap bitmap = Bitmaps.getBitmapForShipSize(getResources(), dockedShip.getSize());
-            Point center = presenter().getShipDisplayAreaCenter();
-            int displayLeft = center.x - bitmap.getWidth() / 2;
-            int displayTop = center.y - bitmap.getHeight() / 2;
-            canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
-
-            mRenderer.drawShip(canvas, presenter().getRectForDockedShip());
-        }
+        mRenderer.drawDockedShip(canvas);
     }
 
     private void drawPickedShip(Canvas canvas) {
-        Rect shipRect = presenter().getPickedShipRect();
-        if (shipRect != null) {
-            mRenderer.drawShip(canvas, shipRect);
-        }
+        mRenderer.drawPickedShip(canvas);
 
-        Aiming aiming = presenter().getAiming();
-        if (aiming != null) {
-            mRenderer.drawAiming(canvas, aiming);
-        }
+        mRenderer.drawAiming(canvas);
     }
 
     @Override
@@ -119,7 +92,7 @@ public class SetupBoardView extends BaseBoardView {
         int x = (int) event.getX();
         int y = (int) event.getY();
         int action = event.getAction();
-        presenter().touch(x, y);
+        mPresenter.touch(x, y);
         processMotionEvent(x, y, action);
         invalidate();
         return true;
@@ -133,18 +106,18 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (presenter().isInDockArea(x, y)) {
-                    presenter().pickDockedShip();
-                } else if (presenter().isOnBoard(x, y)) {
+                if (mPresenter.isInDockArea(x, y)) {
+                    mPresenter.pickDockedShip();
+                } else if (mPresenter.isOnBoard(x, y)) {
                     schedulePickingShip(x, y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    presenter().rotateShipAt(mBoard, x, y);
-                } else if (presenter().hasPickedShip()) {
-                    presenter().dropShip(mBoard);
+                    mPresenter.rotateShipAt(mBoard, x, y);
+                } else if (mPresenter.hasPickedShip()) {
+                    mPresenter.dropShip(mBoard);
                 }
                 break;
             default:
@@ -178,8 +151,8 @@ public class SetupBoardView extends BaseBoardView {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
-                presenter().pickShipFromBoard(mBoard, x, y);
-                presenter().touch(x, y);
+                mPresenter.pickShipFromBoard(mBoard, x, y);
+                mPresenter.touch(x, y);
                 invalidate();
                 return true;
             }
@@ -200,12 +173,12 @@ public class SetupBoardView extends BaseBoardView {
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
         Ln.v(ships);
-        presenter().setFleet(ships);
+        mPresenter.setFleet(ships);
         invalidate();
     }
 
     public void notifyDataChanged() {
-        presenter().notifyDataChanged();
+        mPresenter.notifyDataChanged();
     }
 
     @Override

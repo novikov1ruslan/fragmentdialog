@@ -26,7 +26,7 @@ public class BasePresenter {
     private final Rect hRect = new Rect();
     private final Rect vRect = new Rect();
     private final Mark mMark = new Mark();
-    private final Aiming mAiming = new Aiming();
+    private final AimingG mAiming = new AimingG();
     private BoardG mBoard;
 
     public BasePresenter(int boardSize, float turnBorderSize) {
@@ -148,12 +148,17 @@ public class BasePresenter {
     }
 
     @NonNull
-    public final Aiming getAiming(@NonNull Vector2 aim, int widthCells, int heightCells) {
-        return getAiming(aim.getX(), aim.getY(), widthCells, heightCells);
+    public final AimingG getAimingG(@NonNull Vector2 aim, int widthCells, int heightCells) {
+        return getAimingG(aim.getX(), aim.getY(), widthCells, heightCells);
     }
 
     @NonNull
-    public final Aiming getAiming(int i, int j, int widthCells, int heightCells) {
+    public final AimingG getAimingG(@NonNull Aiming aiming) {
+        return getAimingG(aiming.i, aiming.j, aiming.widthCells, aiming.heightCells);
+    }
+
+    @NonNull
+    private final AimingG getAimingG(int i, int j, int widthCells, int heightCells) {
         Validate.isTrue(widthCells > 0 && heightCells > 0);
 
         mAiming.vertical = getVerticalRect(i, widthCells);

@@ -9,7 +9,7 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.view.Aiming;
+import com.ivygames.morskoiboi.screen.view.AimingG;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -168,8 +168,8 @@ public class SetupBoardPresenterTest {
     public void when_ship_picked_up_and_aim_is_on_board__there_is_aiming() {
         pickDockedShip();
         mPresenter.touch(IN_BOARD_AREA);
-        Aiming aiming = mPresenter.getAiming();
-        assertThat(aiming, equalTo(new Aiming(new Rect(160, 165, 222, 475), new Rect(5, 196, 315, 227))));
+        AimingG aiming = mPresenter.getAiming();
+        assertThat(aiming, equalTo(new AimingG(new Rect(160, 165, 222, 475), new Rect(5, 196, 315, 227))));
     }
 
     @Test

@@ -19,7 +19,6 @@ public abstract class BaseBoardView extends View {
 
     private final DisplayMetrics mDisplayMetrics;
 
-    protected BasePresenter mPresenter;
     protected BaseBoardRenderer mRenderer;
 
     protected Board mBoard;
@@ -29,7 +28,6 @@ public abstract class BaseBoardView extends View {
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        mPresenter = presenter();
         mRenderer = renderer();
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -38,9 +36,6 @@ public abstract class BaseBoardView extends View {
 
     @NonNull
     protected abstract BaseBoardRenderer renderer();
-
-    @NonNull
-    protected abstract BasePresenter presenter();
 
     public final void setBoard(Board board) {
         mBoard = board;
@@ -59,7 +54,7 @@ public abstract class BaseBoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        mRenderer.drawBoard(canvas, mPresenter.getBoard(), mShowTurn);
+        mRenderer.drawBoard(canvas, mShowTurn);
         drawCells(canvas);
         drawShips(canvas);
     }
@@ -69,9 +64,9 @@ public abstract class BaseBoardView extends View {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (cell.isHit()) {
-                    mRenderer.drawHitMark(canvas, mPresenter.getMark(i, j));
+                    mRenderer.drawHitMark(canvas, i, j);
                 } else if (cell.isMiss()) {
-                    mRenderer.drawMissMark(canvas, mPresenter.getMark(i, j));
+                    mRenderer.drawMissMark(canvas, i, j);
                 }
             }
         }
@@ -80,7 +75,7 @@ public abstract class BaseBoardView extends View {
     private void drawShips(Canvas canvas) {
         Collection<Ship> ships = mBoard.getShips();
         for (Ship ship : ships) {
-            mRenderer.drawShip(canvas, mPresenter.getRectForShip(ship));
+            mRenderer.drawShip(canvas, ship);
         }
     }
 
@@ -92,7 +87,7 @@ public abstract class BaseBoardView extends View {
 
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
-        mPresenter.measure(w, h, getHorizontalPadding(), getVerticalPadding());
+        mRenderer.measure(w, h, getHorizontalPadding(), getVerticalPadding());
     }
 
     private DisplayMetrics getDisplayMetrics(WindowManager wm) {
@@ -157,6 +152,6 @@ public abstract class BaseBoardView extends View {
 
     @Override
     public String toString() {
-        return mPresenter.toString();
+        return mRenderer.toString();
     }
 }

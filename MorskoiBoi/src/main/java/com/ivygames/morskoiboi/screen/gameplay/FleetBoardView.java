@@ -11,12 +11,14 @@ import com.ivygames.morskoiboi.screen.view.BasePresenter;
 
 public class FleetBoardView extends BaseBoardView {
 
+    private BasePresenter mPresenter;
+
     public FleetBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
     }
 
     @NonNull
-    @Override
+//    @Override
     protected BasePresenter presenter() {
         if (mPresenter == null) {
             mPresenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
@@ -29,7 +31,8 @@ public class FleetBoardView extends BaseBoardView {
     @Override
     protected BaseBoardRenderer renderer() {
         if (mRenderer == null) {
-            mRenderer = new BaseBoardRenderer(getResources());
+            BasePresenter presenter = new BasePresenter(10, getResources().getDimension(R.dimen.ship_border));
+            mRenderer = new BaseBoardRenderer(getResources(), presenter);
         }
 
         return mRenderer;

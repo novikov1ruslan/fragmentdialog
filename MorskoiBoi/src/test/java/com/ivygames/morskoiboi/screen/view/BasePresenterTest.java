@@ -35,9 +35,9 @@ public class BasePresenterTest {
         int j = 5;
         int width = 1;
         int height = 1;
-        Aiming aiming = mPresenter.getAiming(i, j, width, height);
+        AimingG aiming = mPresenter.getAiming(i, j, width, height);
 
-        Aiming expected = new Aiming(new Rect(160, 105, 191, 415), new Rect(5, 260, 315, 291));
+        AimingG expected = new AimingG(new Rect(160, 105, 191, 415), new Rect(5, 260, 315, 291));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -47,9 +47,9 @@ public class BasePresenterTest {
         int j = 6;
         int width = 1;
         int height = 4;
-        Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
+        AimingG aiming = mPresenter.getAimingG(Vector2.get(i, j), width, height);
 
-        Aiming expected = new Aiming(new Rect(191, 105, 222, 415), new Rect(5, 291, 315, 415));
+        AimingG expected = new AimingG(new Rect(191, 105, 222, 415), new Rect(5, 291, 315, 415));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -59,9 +59,9 @@ public class BasePresenterTest {
         int j = 9;
         int width = 4;
         int height = 1;
-        Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
+        AimingG aiming = mPresenter.getAimingG(Vector2.get(i, j), width, height);
 
-        Aiming expected = new Aiming(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
+        AimingG expected = new AimingG(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
         assertThat(aiming, equalTo(expected));
     }
 
@@ -71,9 +71,9 @@ public class BasePresenterTest {
         int j = 9;
         int width = 1;
         int height = 4;
-        Aiming aiming = mPresenter.getAiming(Vector2.get(i, j), width, height);
+        AimingG aiming = mPresenter.getAimingG(Vector2.get(i, j), width, height);
 
-        Aiming expected = new Aiming(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
+        AimingG expected = new AimingG(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
         assertThat(aiming, equalTo(expected));
     }
 

@@ -18,33 +18,29 @@ public class EnemyBoardView extends BaseBoardView {
 
     private PokeResult mLastShotResult;
     private Vector2 mAim;
+    private EnemyBoardPresenter mPresenter;
+    @NonNull
+    private final EnemyBoardRenderer mRenderer;
+    @NonNull
+    private final Aiming mAiming = new Aiming();
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-    }
 
-    @NonNull
-    @Override
-    protected EnemyBoardPresenter presenter() {
-        if (mPresenter == null) {
-            mPresenter = new EnemyBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
-        }
-        return (EnemyBoardPresenter) mPresenter;
+        mRenderer = (EnemyBoardRenderer) super.mRenderer;
     }
 
     @NonNull
     @Override
     protected EnemyBoardRenderer renderer() {
-        if (mRenderer == null) {
-            mRenderer = new EnemyBoardRenderer(presenter(), getResources());
-        }
-        return (EnemyBoardRenderer) mRenderer;
+        mPresenter = new EnemyBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
+        return new EnemyBoardRenderer(getResources(), mPresenter);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        renderer().init(availableMemory());
+        mRenderer.init(availableMemory());
     }
 
     private long availableMemory() {
@@ -57,34 +53,35 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        renderer().release();
+        mRenderer.release();
     }
 
     public void setShotListener(@NonNull ShotListener shotListener) {
-        presenter().setShotListener(shotListener);
+        mPresenter.setShotListener(shotListener);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        renderer().drawNautical(canvas);
+        mRenderer.drawNautical(canvas);
         super.onDraw(canvas);
 
         if (mAim != null) {
-            renderer().drawAim(canvas, presenter().getAimRectDst(mAim));
+            mRenderer.drawAim(canvas, mAim);
         }
 
-        if (presenter().startedDragging()) {
-            int i = presenter().getTouchedI();
-            int j = presenter().getTouchedJ();
+        if (mPresenter.startedDragging()) {
+            int i = mPresenter.getTouchedI();
+            int j = mPresenter.getTouchedJ();
 
             if (Board.containsCell(i, j)) {
-                Aiming aiming = presenter().getAiming(i, j, 1, 1);
-                renderer().drawAiming(canvas, aiming, isLocked(mBoard.getCell(i, j).beenShot()));
+                mAiming.set(i, j, 1, 1);
+                boolean locked = isLocked(mBoard.getCell(i, j).beenShot());
+                mRenderer.drawAiming(canvas, mAiming, locked);
             }
         }
 
-        if (renderer().isAnimationRunning()) {
-            postInvalidateDelayed(renderer().animateExplosions(canvas, mLastShotResult.aim));
+        if (mRenderer.isAnimationRunning()) {
+            postInvalidateDelayed(mRenderer.animateExplosions(canvas, mLastShotResult.aim));
         }
 
 //        if (GameConstants.IS_TEST_MODE) {
@@ -94,14 +91,14 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        presenter().touch(event);
+        mPresenter.touch(event);
         invalidate();
 
         return true;
     }
 
     private boolean isLocked(boolean isShot) {
-        return isShot || presenter().isLocked();
+        return isShot || mPresenter.isLocked();
     }
 
     public void setAim(@NonNull Vector2 aim) {
@@ -115,19 +112,19 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public boolean isLocked() {
-        return presenter().isLocked();
+        return mPresenter.isLocked();
     }
 
     public void lock() {
-        presenter().lock();
+        mPresenter.lock();
     }
 
     public void unLock() {
-        presenter().unlock();
+        mPresenter.unlock();
     }
 
     public void setShotResult(@NonNull PokeResult result) {
         mLastShotResult = result;
-        renderer().startAnimation(result);
+        mRenderer.startAnimation(result);
     }
 }

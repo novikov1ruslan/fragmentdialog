@@ -10,7 +10,7 @@ import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.view.Aiming;
+import com.ivygames.morskoiboi.screen.view.AimingG;
 import com.ivygames.morskoiboi.screen.view.BasePresenter;
 
 import org.commons.logger.Ln;
@@ -127,7 +127,7 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @Nullable
-    public Aiming getAiming() {
+    public AimingG getAiming() {
         if (hasPickedShip() && Board.containsCell(mAim)) {
             return getAimingForPickedShip();
         }
@@ -136,15 +136,15 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @NonNull
-    private Aiming getAimingForPickedShip() {
+    private AimingG getAimingForPickedShip() {
         return getAimingForShip(mPickedShip);
     }
 
     @NonNull
-    private Aiming getAimingForShip(@NonNull Ship ship) {
+    private AimingG getAimingForShip(@NonNull Ship ship) {
         int width = ship.isHorizontal() ? ship.getSize() : 1;
         int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-        return getAiming(mAim, width, height);
+        return getAimingG(mAim, width, height);
     }
 
     public boolean hasPickedShip() {
