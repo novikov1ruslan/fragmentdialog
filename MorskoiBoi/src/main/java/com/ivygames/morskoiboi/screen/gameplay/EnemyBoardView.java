@@ -13,6 +13,7 @@ import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
+import com.ivygames.morskoiboi.screen.view.TouchState;
 
 public class EnemyBoardView extends BaseBoardView {
 
@@ -21,6 +22,8 @@ public class EnemyBoardView extends BaseBoardView {
     private EnemyBoardPresenter mPresenter;
     @NonNull
     private final EnemyBoardRenderer mRenderer;
+    @NonNull
+    private final TouchState mTouchState = new TouchState();
     @NonNull
     private final Aiming mAiming = new Aiming();
 
@@ -69,14 +72,13 @@ public class EnemyBoardView extends BaseBoardView {
             mRenderer.drawAim(canvas, mAim);
         }
 
-        if (mPresenter.startedDragging()) {
-            int i = mPresenter.getTouchedI();
-            int j = mPresenter.getTouchedJ();
+        if (startedDragging()) {
+            int i = mPresenter.xToI(mTouchState.getX());
+            int j = mPresenter.yToJ(mTouchState.getY());
 
             if (Board.containsCell(i, j)) {
-                mAiming.set(i, j, 1, 1);
-                boolean locked = isLocked(mBoard.getCell(i, j).beenShot());
-                mRenderer.drawAiming(canvas, mAiming, locked);
+                boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
+                mRenderer.drawAiming(canvas, getAiming(1, 1), locked);
             }
         }
 
@@ -89,16 +91,24 @@ public class EnemyBoardView extends BaseBoardView {
 //        }
     }
 
+    private boolean startedDragging() {
+        return mTouchState.getDragStatus() == TouchState.START_DRAGGING;
+    }
+
+    private Aiming getAiming(int width, int height) {
+        int i = mPresenter.xToI(mTouchState.getX());
+        int j = mPresenter.yToJ(mTouchState.getY());
+        mAiming.set(i, j, width, height);
+        return mAiming;
+    }
+
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mPresenter.touch(event);
+        mTouchState.setEvent(event);
+        mPresenter.touch(mTouchState);
         invalidate();
 
         return true;
-    }
-
-    private boolean isLocked(boolean isShot) {
-        return isShot || mPresenter.isLocked();
     }
 
     public void setAim(@NonNull Vector2 aim) {

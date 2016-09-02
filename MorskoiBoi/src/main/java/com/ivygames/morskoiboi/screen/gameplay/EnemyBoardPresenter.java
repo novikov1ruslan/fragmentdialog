@@ -21,10 +21,9 @@ final class EnemyBoardPresenter extends BasePresenter {
 
     private ShotListener mShotListener;
 
-    @NonNull
-    private final TouchState mTouchState = new TouchState();
-
     private boolean mLocked = true;
+
+    private TouchState mTouchState = new TouchState();
 
     public EnemyBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
@@ -75,14 +74,12 @@ final class EnemyBoardPresenter extends BasePresenter {
         return mLockDstRect;
     }
 
-    public int getTouchedJ() {
-        int y = mTouchState.getY() - mBoardRect.top;
-        return y / mCellSizePx;
+    public int yToJ(int y) {
+        return (y - mBoardRect.top) / mCellSizePx;
     }
 
-    public int getTouchedI() {
-        int x = mTouchState.getX() - mBoardRect.left;
-        return x / mCellSizePx;
+    public int xToI(int x) {
+        return (x - mBoardRect.left) / mCellSizePx;
     }
 
     @NonNull
@@ -90,24 +87,20 @@ final class EnemyBoardPresenter extends BasePresenter {
         return mBoardRect;
     }
 
-    public void touch(@NonNull MotionEvent event) {
-        mTouchState.setEvent(event);
-        int action = mTouchState.getAction();
+    public void touch(@NonNull TouchState event) {
+        mTouchState = event;
+        int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
-            Ln.v("DOWN: x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
+            Ln.v("DOWN: x=" + event.getX() + "; y=" + event.getY());
             if (!mLocked) {
                 mShotListener.onAimingStarted();
             }
         } else if (action == MotionEvent.ACTION_UP) {
-            Ln.v("UP: x=" + mTouchState.getX() + "; y=" + mTouchState.getY());
+            Ln.v("UP: x=" + event.getX() + "; y=" + event.getY());
             if (!mLocked) {
-                mShotListener.onAimingFinished(getTouchedI(), getTouchedJ());
+                mShotListener.onAimingFinished(xToI(event.getX()), yToJ(event.getY()));
             }
         }
-    }
-
-    public boolean startedDragging() {
-        return mTouchState.getDragStatus() == TouchState.START_DRAGGING;
     }
 
     public void unlock() {

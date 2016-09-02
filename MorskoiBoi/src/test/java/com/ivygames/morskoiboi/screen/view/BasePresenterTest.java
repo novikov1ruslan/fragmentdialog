@@ -35,10 +35,12 @@ public class BasePresenterTest {
         int j = 5;
         int width = 1;
         int height = 1;
-        AimingG aiming = mPresenter.getAiming(i, j, width, height);
+        Aiming aiming = new Aiming();
+        aiming.set(i, j, width, height);
+        AimingG aimingG = mPresenter.getAimingG(aiming);
 
         AimingG expected = new AimingG(new Rect(160, 105, 191, 415), new Rect(5, 260, 315, 291));
-        assertThat(aiming, equalTo(expected));
+        assertThat(aimingG, equalTo(expected));
     }
 
     @Test
@@ -92,7 +94,9 @@ public class BasePresenterTest {
     @Test(expected=IllegalArgumentException.class)
     public void getAimingThrowsException() {
         mPresenter = new BasePresenter(10, 2);
-        mPresenter.getAiming(0, 0, 0, 1);
+        Aiming aiming = new Aiming();
+        aiming.set(0, 0, 0, 1);
+        mPresenter.getAimingG(aiming);
     }
 
     @Test
