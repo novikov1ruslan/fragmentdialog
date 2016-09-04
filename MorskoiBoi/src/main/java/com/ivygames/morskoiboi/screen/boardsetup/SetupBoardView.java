@@ -108,8 +108,9 @@ public class SetupBoardView extends BaseBoardView {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                if (mPresenter.isInDockArea(x, y)) {
-                    mPresenter.pickDockedShip(x, y);
+                if (mRenderer.isInDockArea(x, y)) {
+                    mPresenter.pickDockedShip();
+                    mRenderer.updatePickedGeometry(x, y);
                 } else if (mPresenter.isOnBoard(x, y)) {
                     schedulePickingShip(x, y);
                 }

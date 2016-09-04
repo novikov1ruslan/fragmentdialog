@@ -70,7 +70,7 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         int displayTop = center.y - bitmap.getHeight() / 2;
         canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
-        drawShip(canvas, mPresenter.getRectForDockedShip());
+        drawShip(canvas, mPresenter.getRectForDockedShip(mPresenter.getDockedShip()));
     }
 
     public void drawPickedShip(@NonNull Canvas canvas) {
@@ -88,5 +88,9 @@ class SetupBoardRenderer extends BaseBoardRenderer {
 
     public void updatePickedGeometry(int x, int y) {
         mPresenter.updatePickedGeometry(x, y);
+    }
+
+    public boolean isInDockArea(int x, int y) {
+        return mPresenter.isInDockArea(x, y);
     }
 }

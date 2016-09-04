@@ -105,13 +105,14 @@ public class SetupBoardPresenterTest {
     public void after_touch_and_docked_ship_pickup__there_is_valid_picked_ship_rect() {
         mPresenter.touch(IN_DOCK_AREA);
         pickDockedShip();
+        mPresenter.updatePickedGeometry(IN_DOCK_AREA.x, IN_DOCK_AREA.y);
         assertThat(mPresenter.getPickedShipRect(), equalTo(VALID_PICKED_SHIP_RECT));
     }
 
     @Test
     public void when_there_is_at_least_1_ship__dock_has_ships() {
         setFleet(new Ship(2));
-        mPresenter.pickDockedShip(0, 0);
+        mPresenter.pickDockedShip();
         assertThat(mPresenter.hasPickedShip(), is(true));
     }
 
@@ -119,7 +120,7 @@ public class SetupBoardPresenterTest {
     public void when_there_are_no_ships__dock_has_no_ships() {
         PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
         mPresenter.setFleet(fleet);
-        mPresenter.pickDockedShip(0, 0);
+        mPresenter.pickDockedShip();
         assertThat(mPresenter.hasPickedShip(), is(false));
     }
 
@@ -136,7 +137,8 @@ public class SetupBoardPresenterTest {
     @Test
     public void testGetRectForDockedShip() {
         setFleet(new Ship(2));
-        Rect rect = mPresenter.getRectForDockedShip();
+        mPresenter.pickDockedShip();
+        Rect rect = mPresenter.getRectForDockedShip(mPresenter.getPickedShip());
         assertThat(rect, equalTo(new Rect(49, 45, 111, 76)));
     }
 
@@ -244,7 +246,7 @@ public class SetupBoardPresenterTest {
 
     private PriorityQueue<Ship> pickDockedShip(Ship ship) {
         PriorityQueue<Ship> fleet = setFleet(ship);
-        mPresenter.pickDockedShip(100, 100);
+        mPresenter.pickDockedShip();
         return fleet;
     }
 }

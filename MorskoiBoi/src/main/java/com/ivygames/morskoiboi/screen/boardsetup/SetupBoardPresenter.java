@@ -107,9 +107,9 @@ final class SetupBoardPresenter extends BasePresenter {
         return mDockedShip;
     }
 
-    public Rect getRectForDockedShip() {
-        Point p = getTopLeftPointInTopArea(mDockedShip.getSize());
-        return getRectForShip(mDockedShip, p);
+    public Rect getRectForDockedShip(@NonNull Ship ship) {
+        Point p = getTopLeftPointInTopArea(ship.getSize());
+        return getRectForShip(ship, p);
     }
 
     @NonNull
@@ -149,16 +149,14 @@ final class SetupBoardPresenter extends BasePresenter {
         return mPickedShip != null;
     }
 
-    public void pickDockedShip(int x, int y) {
+    public void pickDockedShip() {
         mPickedShip = mDockedShips.poll();
         if (mPickedShip == null) {
             Ln.v("no ships to pick");
         } else {
             mDockedShip = null;
             Ln.v(mPickedShip + " picked from stack, stack: " + mDockedShips);
-            updatePickedGeometry(x, y);
         }
-
     }
 
     public void touch(Point p) {
