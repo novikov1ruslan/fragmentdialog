@@ -40,6 +40,10 @@ public class Board {
         return emptyCells;
     }
 
+
+    /**
+     * @param aim coordinate on the board where the 1st ship's square is to be put
+     */
     public boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 aim) {
         return shipFitsTheBoard(ship, aim.getX(), aim.getY());
     }
@@ -47,7 +51,9 @@ public class Board {
     /**
      * does not check if cells are empty
      *
-     * @return true if the ship can be layed out on the board
+     * @param i horizontal coordinate on the board where the 1st ship's square is to be put
+     * @param j vertical coordinate on the board where the 1st ship's square is to be put
+     * @return true if the ship can fit out on the board
      */
     public boolean shipFitsTheBoard(@NonNull Ship ship, int i, int j) {
         boolean canPut = containsCell(i, j);
