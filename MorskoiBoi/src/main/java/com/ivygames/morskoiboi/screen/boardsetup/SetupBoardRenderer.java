@@ -19,8 +19,8 @@ class SetupBoardRenderer extends BaseBoardRenderer {
 
     private Resources mResources;
     private final SetupBoardPresenter mPresenter;
-    private Bitmap m2er;
-    private Rect mSrc = new Rect();
+//    private Bitmap m2er;
+//    private Rect mSrc = new Rect();
     @NonNull
     private final Paint mConflictCellPaint;
 
@@ -84,5 +84,9 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         if (aiming != null) {
             drawAiming(canvas, aiming);
         }
+    }
+
+    public void updatePickedGeometry(int x, int y) {
+        mPresenter.updatePickedGeometry(x, y);
     }
 }

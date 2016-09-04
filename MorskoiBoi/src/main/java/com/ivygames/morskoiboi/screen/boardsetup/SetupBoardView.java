@@ -92,7 +92,9 @@ public class SetupBoardView extends BaseBoardView {
         int x = (int) event.getX();
         int y = (int) event.getY();
         int action = event.getAction();
-        mPresenter.touch(x, y);
+        if (mPresenter.getPickedShip() != null) {
+            mRenderer.updatePickedGeometry(x, y);
+        }
         processMotionEvent(x, y, action);
         invalidate();
         return true;
@@ -107,7 +109,7 @@ public class SetupBoardView extends BaseBoardView {
                 break;
             case MotionEvent.ACTION_DOWN:
                 if (mPresenter.isInDockArea(x, y)) {
-                    mPresenter.pickDockedShip();
+                    mPresenter.pickDockedShip(x, y);
                 } else if (mPresenter.isOnBoard(x, y)) {
                     schedulePickingShip(x, y);
                 }
@@ -178,7 +180,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     public void notifyDataChanged() {
-        mPresenter.notifyDataChanged();
+        mPresenter.setDockedShip();
     }
 
     @Override

@@ -111,7 +111,7 @@ public class SetupBoardPresenterTest {
     @Test
     public void when_there_is_at_least_1_ship__dock_has_ships() {
         setFleet(new Ship(2));
-        mPresenter.pickDockedShip();
+        mPresenter.pickDockedShip(0, 0);
         assertThat(mPresenter.hasPickedShip(), is(true));
     }
 
@@ -119,7 +119,7 @@ public class SetupBoardPresenterTest {
     public void when_there_are_no_ships__dock_has_no_ships() {
         PriorityQueue<Ship> fleet = new PriorityQueue<>(10, new ShipComparator());
         mPresenter.setFleet(fleet);
-        mPresenter.pickDockedShip();
+        mPresenter.pickDockedShip(0, 0);
         assertThat(mPresenter.hasPickedShip(), is(false));
     }
 
@@ -225,7 +225,7 @@ public class SetupBoardPresenterTest {
         PriorityQueue<Ship> ships = setFleet(ship);
         Ship dockedShip1 = mPresenter.getDockedShip();
         ships.clear();
-        mPresenter.notifyDataChanged();
+        mPresenter.setDockedShip();
         Ship dockedShip2 = mPresenter.getDockedShip();
         assertThat(dockedShip1, not(dockedShip2));
     }
@@ -244,7 +244,7 @@ public class SetupBoardPresenterTest {
 
     private PriorityQueue<Ship> pickDockedShip(Ship ship) {
         PriorityQueue<Ship> fleet = setFleet(ship);
-        mPresenter.pickDockedShip();
+        mPresenter.pickDockedShip(100, 100);
         return fleet;
     }
 }

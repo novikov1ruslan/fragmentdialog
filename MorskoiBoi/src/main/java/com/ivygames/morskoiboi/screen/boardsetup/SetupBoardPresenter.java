@@ -44,8 +44,6 @@ final class SetupBoardPresenter extends BasePresenter {
 
     @NonNull
     private Vector2 mAim = Vector2.INVALID_VECTOR;
-    private int mX;
-    private int mY;
 
     public SetupBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
@@ -151,35 +149,30 @@ final class SetupBoardPresenter extends BasePresenter {
         return mPickedShip != null;
     }
 
-    public void pickDockedShip() {
+    public void pickDockedShip(int x, int y) {
         mPickedShip = mDockedShips.poll();
         if (mPickedShip == null) {
             Ln.v("no ships to pick");
         } else {
             mDockedShip = null;
             Ln.v(mPickedShip + " picked from stack, stack: " + mDockedShips);
+            updatePickedGeometry(x, y);
         }
 
-        if (hasPickedShip()) {
-            updatePickedGeometry();
-        }
     }
-
 
     public void touch(Point p) {
         touch(p.x, p.y);
     }
 
     public void touch(int x, int y) {
-        mX = x;
-        mY = y;
         if (hasPickedShip()) {
-            updatePickedGeometry();
+            updatePickedGeometry(x, y);
         }
     }
 
-    private void updatePickedGeometry() {
-        mPickedShipRect = centerPickedShipRectAround(mPickedShip, mX, mY);
+    public void updatePickedGeometry(int x, int y) {
+        mPickedShipRect = centerPickedShipRectAround(mPickedShip, x, y);
         mAim = getPickedShipCoordinate(mPickedShipRect);
     }
 
@@ -224,7 +217,7 @@ final class SetupBoardPresenter extends BasePresenter {
         mDockedShips.add(ship);
     }
 
-    private void setDockedShip() {
+    public void setDockedShip() {
         if (mDockedShips.isEmpty()) {
             mDockedShip = null;
         } else {
@@ -275,10 +268,7 @@ final class SetupBoardPresenter extends BasePresenter {
         setDockedShip();
     }
 
-    public void notifyDataChanged() {
-        setDockedShip();
-        if (hasPickedShip()) {
-            updatePickedGeometry();
-        }
+    public Ship getPickedShip() {
+        return mPickedShip;
     }
 }
