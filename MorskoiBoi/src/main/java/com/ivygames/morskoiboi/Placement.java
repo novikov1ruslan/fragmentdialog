@@ -72,7 +72,7 @@ public class Placement {
             for (int j = -1; j < 2; j++) {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
-                if (Board.containsCell(cellX, cellY)) {
+                if (Board.contains(cellX, cellY)) {
                     Cell cell = board.getCell(cellX, cellY);
                     if (ship.isInShip(cellX, cellY)) {
                         cell.addShip();
@@ -97,7 +97,7 @@ public class Placement {
     }
 
     public void rotateShipAt(@NonNull Board board, int x, int y) {
-        if (!Board.containsCell(x, y)) {
+        if (!Board.contains(x, y)) {
             Ln.w("(" + x + "," + y + ") is outside the board");
             return;
         }
@@ -126,7 +126,7 @@ public class Placement {
      */
     @Nullable
     public Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
-        if (!board.containsCell(x, y)) {
+        if (!board.contains(x, y)) {
             // throw new IllegalArgumentException("(" + x + "," + y +
             // ") is outside the board");
             Ln.w("(" + x + "," + y + ") is outside the board");

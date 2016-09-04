@@ -12,6 +12,7 @@ import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.AimingG;
 import com.ivygames.morskoiboi.screen.view.BaseBoardRenderer;
 
@@ -79,18 +80,26 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         }
     }
 
-    public void drawAiming(@NonNull Canvas canvas) {
-        AimingG aiming = mPresenter.getAiming();
+    public void drawAiming(@NonNull Canvas canvas, @NonNull Vector2 coordinate) {
+        AimingG aiming = mPresenter.getAiming(coordinate);
         if (aiming != null) {
             drawAiming(canvas, aiming);
         }
     }
 
-    public void updatePickedGeometry(int x, int y) {
-        mPresenter.updatePickedGeometry(x, y);
+    public Vector2 updatePickedGeometry(int x, int y) {
+        return mPresenter.updatePickedGeometry(x, y);
     }
 
     public boolean isInDockArea(int x, int y) {
         return mPresenter.isInDockArea(x, y);
+    }
+
+    public int getTouchJ(int y) {
+        return mPresenter.getTouchJ(y);
+    }
+
+    public int getTouchI(int x) {
+        return mPresenter.getTouchI(x);
     }
 }

@@ -16,7 +16,9 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
+import com.ivygames.morskoiboi.screen.view.TouchState;
 
 import org.commons.logger.Ln;
 
@@ -39,8 +41,11 @@ public class SetupBoardView extends BaseBoardView {
     @NonNull
     private final SetupBoardRenderer mRenderer;
 
-    @NonNull
     private  SetupBoardPresenter mPresenter;
+    @NonNull
+    private final TouchState mTouchState = new TouchState();
+    @NonNull
+    private Vector2 mPickedShipCoordinate = Vector2.INVALID_VECTOR;
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -84,48 +89,52 @@ public class SetupBoardView extends BaseBoardView {
     private void drawPickedShip(Canvas canvas) {
         mRenderer.drawPickedShip(canvas);
 
-        mRenderer.drawAiming(canvas);
+        if (Board.contains(mPickedShipCoordinate)) {
+            mRenderer.drawAiming(canvas, mPickedShipCoordinate);
+        }
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
+        mTouchState.setEvent(event);
         int x = (int) event.getX();
         int y = (int) event.getY();
         int action = event.getAction();
-        if (mPresenter.getPickedShip() != null) {
-            mRenderer.updatePickedGeometry(x, y);
-        }
         processMotionEvent(x, y, action);
         invalidate();
         return true;
     }
 
     private void processMotionEvent(int x, int y, int action) {
+        Vector2 coordinate = Vector2.get(mRenderer.getTouchI(x), mRenderer.getTouchJ(y));
         switch (action) {
             case MotionEvent.ACTION_MOVE:
                 if (movedBeyondSlope(x, y)) {
-                    pickShipFromBoard();
+                    pickSelectedShipFromBoard();
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
                 if (mRenderer.isInDockArea(x, y)) {
                     mPresenter.pickDockedShip();
-                    mRenderer.updatePickedGeometry(x, y);
-                } else if (mPresenter.isOnBoard(x, y)) {
+                } else if (Board.contains(coordinate) && mBoard.hasShipAt(coordinate)) {
                     schedulePickingShip(x, y);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    mPresenter.rotateShipAt(mBoard, x, y);
+                    mPresenter.rotateShipAt(mBoard, coordinate);
                 } else if (mPresenter.hasPickedShip()) {
-                    mPresenter.dropShip(mBoard);
+                    mPresenter.dropShip(mBoard, mPickedShipCoordinate);
                 }
                 break;
             default:
                 cancelLongPressTask();
                 break;
+        }
+
+        if (mPresenter.getPickedShip() != null) {
+            mPickedShipCoordinate = mRenderer.updatePickedGeometry(x, y);
         }
     }
 
@@ -139,7 +148,7 @@ public class SetupBoardView extends BaseBoardView {
         mHandler.postDelayed(mPickShipTask, LONG_PRESS_DELAY);
     }
 
-    private void pickShipFromBoard() {
+    private void pickSelectedShipFromBoard() {
         mHandler.removeCallbacks(mPickShipTask);
         mPickShipTask.run();
         mPickShipTask = null;
@@ -154,8 +163,8 @@ public class SetupBoardView extends BaseBoardView {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
-                mPresenter.pickShipFromBoard(mBoard, x, y);
-                mPresenter.touch(x, y);
+                mPresenter.pickShipFromBoard(mBoard, mRenderer.getTouchI(x), mRenderer.getTouchJ(y));
+                mPickedShipCoordinate = mRenderer.updatePickedGeometry(x, y);
                 invalidate();
                 return true;
             }

@@ -56,7 +56,7 @@ public class Board {
      * @return true if the ship can fit out on the board
      */
     public boolean shipFitsTheBoard(@NonNull Ship ship, int i, int j) {
-        boolean canPut = containsCell(i, j);
+        boolean canPut = contains(i, j);
 
         if (canPut) {
             if (ship.isHorizontal()) {
@@ -68,11 +68,11 @@ public class Board {
         return canPut;
     }
 
-    public static boolean containsCell(@NonNull Vector2 aim) {
-        return containsCell(aim.getX(), aim.getY());
+    public static boolean contains(@NonNull Vector2 aim) {
+        return contains(aim.getX(), aim.getY());
     }
 
-    public static boolean containsCell(int i, int j) {
+    public static boolean contains(int i, int j) {
         return i < DIMENSION && i >= 0 && j < DIMENSION && j >= 0;
     }
 
@@ -114,7 +114,11 @@ public class Board {
         return ships;
     }
 
-    private boolean hasShipAt(int i, int j) {
+    public boolean hasShipAt(@NonNull Vector2 coordinate) {
+        return hasShipAt(coordinate.getX(), coordinate.getY());
+    }
+
+    public boolean hasShipAt(int i, int j) {
         Cell cell = getCell(i, j);
         return cell.isReserved() || cell.isHit()/* || cell.isSunk() */;
     }

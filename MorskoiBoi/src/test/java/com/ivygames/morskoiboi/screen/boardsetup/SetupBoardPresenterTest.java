@@ -9,6 +9,7 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.view.AimingG;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -27,6 +28,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.isNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
@@ -58,7 +60,7 @@ public class SetupBoardPresenterTest {
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
         mPlacement.populateBoardWithShips(board, rules.generateFullFleet());
-        mPresenter.dropShip(board);
+        mPresenter.dropShip(board, 5, 5);
     }
 
     @Test
@@ -67,7 +69,7 @@ public class SetupBoardPresenterTest {
         mPresenter.touch(IN_DOCK_AREA);
 
         Board board = new Board();
-        mPresenter.dropShip(board);
+        mPresenter.dropShip(board, 9, 9);
         assertThat(fleet.size(), is(1));
         assertThat(board.getShips().size(), is(0));
     }
@@ -78,7 +80,8 @@ public class SetupBoardPresenterTest {
         PriorityQueue<Ship> fleet = pickDockedShip(ship);
         mPresenter.touch(IN_DOCK_AREA);
         Board board = new Board();
-        mPresenter.dropShip(board);
+        mPresenter.dropShip(board, 9, 9);
+
         assertThat(fleet.size(), is(1));
         assertThat(board.getShips().size(), is(0));
         assertThat(ship.isHorizontal(), is(true));
@@ -89,7 +92,7 @@ public class SetupBoardPresenterTest {
         PriorityQueue<Ship> fleet = pickDockedShip();
         mPresenter.touch(IN_BOARD_AREA);
         Board board = new Board();
-        mPresenter.dropShip(board);
+        mPresenter.dropShip(board, 5, 5);
         assertThat(fleet.size(), is(0));
         assertThat(board.getShips().size(), is(1));
     }
@@ -155,23 +158,11 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void when_ship_not_picked_up__there_is_no_aiming() {
-        assertThat(mPresenter.getAiming(), nullValue());
-    }
-
-    @Test
-    public void when_aim_in_not_on_board__there_is_no_aiming() {
-        pickDockedShip();
-        mPresenter.touch(IN_DOCK_AREA);
-        assertThat(mPresenter.getAiming(), nullValue());
-    }
-
-    @Test
     public void when_ship_picked_up_and_aim_is_on_board__there_is_aiming() {
         pickDockedShip();
         mPresenter.touch(IN_BOARD_AREA);
-        AimingG aiming = mPresenter.getAiming();
-        assertThat(aiming, equalTo(new AimingG(new Rect(160, 165, 222, 475), new Rect(5, 196, 315, 227))));
+        AimingG aiming = mPresenter.getAiming(Vector2.get(5, 5));
+        assertThat(aiming, not(isNull()));
     }
 
     @Test
@@ -190,9 +181,10 @@ public class SetupBoardPresenterTest {
         pickDockedShip();
         mPresenter.touch(IN_BOARD_AREA);
         Board board = new Board();
-        mPresenter.dropShip(board);
+        mPresenter.dropShip(board, 5, 5);
         assertThat(mPresenter.hasPickedShip(), is(false));
-        mPresenter.pickShipFromBoard(board, IN_BOARD_AREA);
+
+        mPresenter.pickShipFromBoard(board, 5, 5);
         assertThat(mPresenter.hasPickedShip(), is(true));
     }
 
@@ -200,10 +192,10 @@ public class SetupBoardPresenterTest {
     public void rotateShipAt() {
         Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
         pickDockedShip(ship);
-        mPresenter.touch(IN_BOARD_AREA);
         Board board = new Board();
-        mPresenter.dropShip(board);
-        mPresenter.rotateShipAt(board, IN_BOARD_AREA);
+        Vector2 coordinate = Vector2.get(5, 5);
+        mPresenter.dropShip(board, coordinate);
+        mPresenter.rotateShipAt(board, coordinate);
         assertThat(ship.isHorizontal(), is(false));
     }
 

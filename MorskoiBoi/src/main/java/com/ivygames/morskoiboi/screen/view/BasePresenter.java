@@ -158,7 +158,7 @@ public class BasePresenter {
     }
 
     @NonNull
-    private final AimingG getAimingG(int i, int j, int widthCells, int heightCells) {
+    protected final AimingG getAimingG(int i, int j, int widthCells, int heightCells) {
         Validate.isTrue(widthCells > 0 && heightCells > 0);
 
         mAiming.vertical = getVerticalRect(i, widthCells);

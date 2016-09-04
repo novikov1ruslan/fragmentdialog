@@ -372,7 +372,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             debug_aiming_started = false;
             mGameplaySounds.stopKantropSound();
 
-            if (!Board.containsCell(x, y)) {
+            if (!Board.contains(x, y)) {
                 Ln.d("pressing outside the board: " + x + "," + y);
                 return;
             }

@@ -76,7 +76,7 @@ public class EnemyBoardView extends BaseBoardView {
             int i = mPresenter.xToI(mTouchState.getX());
             int j = mPresenter.yToJ(mTouchState.getY());
 
-            if (Board.containsCell(i, j)) {
+            if (Board.contains(i, j)) {
                 boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
                 mRenderer.drawAiming(canvas, getAiming(1, 1), locked);
             }

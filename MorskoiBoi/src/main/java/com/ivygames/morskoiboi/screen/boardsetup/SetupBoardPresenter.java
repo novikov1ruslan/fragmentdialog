@@ -42,9 +42,6 @@ final class SetupBoardPresenter extends BasePresenter {
      */
     private Ship mPickedShip;
 
-    @NonNull
-    private Vector2 mAim = Vector2.INVALID_VECTOR;
-
     public SetupBoardPresenter(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
     }
@@ -125,24 +122,29 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @Nullable
-    public AimingG getAiming() {
-        if (hasPickedShip() && Board.containsCell(mAim)) {
-            return getAimingForPickedShip();
+    public AimingG getAiming(@NonNull Vector2 coordinate) {
+        return getAiming(coordinate.getX(), coordinate.getY());
+    }
+
+    @Nullable
+    public AimingG getAiming(int i, int j) {
+        if (hasPickedShip()) {
+            return getAimingForPickedShip(i, j);
         }
 
         return null;
     }
 
     @NonNull
-    private AimingG getAimingForPickedShip() {
-        return getAimingForShip(mPickedShip);
+    private AimingG getAimingForPickedShip(int i, int j) {
+        return getAimingForShip(mPickedShip, i, j);
     }
 
     @NonNull
-    private AimingG getAimingForShip(@NonNull Ship ship) {
+    private AimingG getAimingForShip(@NonNull Ship ship, int i, int j) {
         int width = ship.isHorizontal() ? ship.getSize() : 1;
         int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
-        return getAimingG(mAim, width, height);
+        return getAimingG(i, j, width, height);
     }
 
     public boolean hasPickedShip() {
@@ -169,9 +171,9 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
-    public void updatePickedGeometry(int x, int y) {
+    public Vector2 updatePickedGeometry(int x, int y) {
         mPickedShipRect = centerPickedShipRectAround(mPickedShip, x, y);
-        mAim = getPickedShipCoordinate(mPickedShipRect);
+        return getPickedShipCoordinate(mPickedShipRect);
     }
 
     private Rect centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
@@ -186,20 +188,32 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     private Vector2 getPickedShipCoordinate(Rect pickedShipRect) {
-        int shipInBoardCoordinatesX = pickedShipRect.left - mBoardRect.left + mHalfCellSize;
-        int shipInBoardCoordinatesY = pickedShipRect.top - mBoardRect.top + mHalfCellSize;
-        int i = shipInBoardCoordinatesX / mCellSizePx;
-        int j = shipInBoardCoordinatesY / mCellSizePx;
+        int shipInBoardCoordinatesX = pickedShipRect.left + mHalfCellSize;
+        int shipInBoardCoordinatesY = pickedShipRect.top + mHalfCellSize;
+        int i = getTouchI(shipInBoardCoordinatesX);
+        int j = getTouchJ(shipInBoardCoordinatesY);
         return Vector2.get(i, j);
     }
 
-    public void dropShip(@NonNull Board board) {
+    public int getTouchI(int x) {
+        return (x - mBoardRect.left) / mCellSizePx;
+    }
+
+    public int getTouchJ(int y) {
+        return (y - mBoardRect.top) / mCellSizePx;
+    }
+
+    public void dropShip(@NonNull Board board, @NonNull Vector2 coordinate) {
+        dropShip(board, coordinate.getX(), coordinate.getY());
+    }
+
+    public void dropShip(@NonNull Board board, int i, int j) {
         if (mPickedShip == null) {
             return;
         }
 
-        if (board.shipFitsTheBoard(mPickedShip, mAim)) {
-            mPlacement.putShipAt(board, mPickedShip, mAim.getX(), mAim.getY());
+        if (board.shipFitsTheBoard(mPickedShip, i, j)) {
+            mPlacement.putShipAt(board, mPickedShip, i, j);
         } else {
             returnShipToPool(mPickedShip);
         }
@@ -223,42 +237,30 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
-    public void pickShipFromBoard(Board board, Point p) {
-        pickShipFromBoard(board, p.x, p.y);
+    public void pickShipFromBoard(@NonNull Board board, @NonNull Vector2 coordinate) {
+        pickShipFromBoard(board, coordinate.getX(), coordinate.getY());
     }
 
-    public void pickShipFromBoard(@NonNull Board board, int x, int y) {
-        final int i = getTouchI(x);
-        final int j = getTouchJ(y);
+    public void pickShipFromBoard(@NonNull Board board, int i, int j) {
         mPickedShip = mPlacement.removeShipFrom(board, i, j);
     }
 
-    public void rotateShipAt(Board board, Point p) {
-        rotateShipAt(board, p.x, p.y);
+    public void rotateShipAt(@NonNull Board board, @NonNull Vector2 aim) {
+        rotateShipAt(board, aim.getX(), aim.getY());
     }
 
-    public void rotateShipAt(@NonNull Board board, int x, int y) {
-        int i = getTouchI(x);
-        int j = getTouchJ(y);
+    public void rotateShipAt(@NonNull Board board, int i, int j) {
         mPlacement.rotateShipAt(board, i, j);
     }
 
-    public boolean isOnBoard(Point p) {
+    public boolean isOnBoard(@NonNull Point p) {
         return isOnBoard(p.x, p.y);
     }
 
-    public boolean isOnBoard(int x, int y) {
+    private boolean isOnBoard(int x, int y) {
         int i = getTouchI(x);
         int j = getTouchJ(y);
-        return Board.containsCell(i, j);
-    }
-
-    private int getTouchJ(int y) {
-        return (y - mBoardRect.top) / mCellSizePx;
-    }
-
-    private int getTouchI(int x) {
-        return (x - mBoardRect.left) / mCellSizePx;
+        return Board.contains(i, j);
     }
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
