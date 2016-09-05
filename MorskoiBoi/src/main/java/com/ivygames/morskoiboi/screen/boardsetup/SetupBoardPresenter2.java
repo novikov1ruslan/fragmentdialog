@@ -7,6 +7,7 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
@@ -71,11 +72,38 @@ public class SetupBoardPresenter2 {
         setDockedShip();
     }
 
-    public void rotateShipAt(Board board, Point p) {
-        rotateShipAt(board, p.x, p.y);
+    public void rotateShipAt(@NonNull Board board, @NonNull Vector2 aim) {
+        rotateShipAt(board, aim.getX(), aim.getY());
     }
 
     public void rotateShipAt(@NonNull Board board, int i, int j) {
         mPlacement.rotateShipAt(board, i, j);
+    }
+
+    public void dropShip(@NonNull Board board, @NonNull Vector2 coordinate) {
+        dropShip(board, coordinate.getX(), coordinate.getY());
+    }
+
+    public void dropShip(@NonNull Board board, int i, int j) {
+        if (mPickedShip == null) {
+            return;
+        }
+
+        if (board.shipFitsTheBoard(mPickedShip, i, j)) {
+            mPlacement.putShipAt(board, mPickedShip, i, j);
+        } else {
+            returnShipToPool(mPickedShip);
+        }
+
+        setDockedShip();
+        mPickedShip = null;
+    }
+
+    public void pickShipFromBoard(@NonNull Board board, @NonNull Vector2 coordinate) {
+        pickShipFromBoard(board, coordinate.getX(), coordinate.getY());
+    }
+
+    public void pickShipFromBoard(@NonNull Board board, int i, int j) {
+        mPickedShip = mPlacement.removeShipFrom(board, i, j);
     }
 }

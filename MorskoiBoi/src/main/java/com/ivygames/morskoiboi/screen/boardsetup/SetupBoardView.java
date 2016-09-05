@@ -83,7 +83,9 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void drawDockedShip(Canvas canvas) {
-        mRenderer.drawDockedShip(canvas);
+        if (mPresenter.getDockedShip() != null) {
+            mRenderer.drawDockedShip(canvas, mPresenter.getDockedShip());
+        }
     }
 
     private void drawPickedShip(Canvas canvas) {

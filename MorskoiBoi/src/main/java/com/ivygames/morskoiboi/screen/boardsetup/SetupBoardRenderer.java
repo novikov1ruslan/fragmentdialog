@@ -57,21 +57,14 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         canvas.drawRect(invalidRect, mConflictCellPaint);
     }
 
-    public void drawDockedShip(@NonNull Canvas canvas) {
-        Ship dockedShip = mPresenter.getDockedShip();
-        if (dockedShip != null) {
-            drawDockedShip(canvas, dockedShip);
-        }
-    }
-
-    private void drawDockedShip(@NonNull Canvas canvas, @NonNull Ship dockedShip) {
+    public void drawDockedShip(@NonNull Canvas canvas, @NonNull Ship dockedShip) {
         Bitmap bitmap = Bitmaps.getBitmapForShipSize(mResources, dockedShip.getSize());
         Point center = mPresenter.getShipDisplayAreaCenter();
         int displayLeft = center.x - bitmap.getWidth() / 2;
         int displayTop = center.y - bitmap.getHeight() / 2;
         canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
-        drawShip(canvas, mPresenter.getRectForDockedShip(mPresenter.getDockedShip()));
+        drawShip(canvas, mPresenter.getRectForDockedShip(dockedShip));
     }
 
     public void drawPickedShip(@NonNull Canvas canvas) {
