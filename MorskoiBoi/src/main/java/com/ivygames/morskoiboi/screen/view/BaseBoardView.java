@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
 
 import java.util.Collection;
 

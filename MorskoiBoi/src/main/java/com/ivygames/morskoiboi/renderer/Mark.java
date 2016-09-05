@@ -1,6 +1,6 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.renderer;
 
-public class Mark {
+class Mark {
     public int centerX;
     public int centerY;
     public float outerRadius;

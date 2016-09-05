@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -6,11 +6,12 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.screen.view.Aiming;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
-public class BasePresenter {
+public class BaseGeometryProcessor {
 
     private final int mBoardSize;
     private final float mTurnBorderSize;
@@ -29,7 +30,10 @@ public class BasePresenter {
     private final AimingG mAiming = new AimingG();
     private BoardG mBoard;
 
-    public BasePresenter(int boardSize, float turnBorderSize) {
+    @NonNull
+    private final Rect mShipRect = new Rect();
+
+    public BaseGeometryProcessor(int boardSize, float turnBorderSize) {
         mBoardSize = boardSize;
         mTurnBorderSize = turnBorderSize;
     }
@@ -37,7 +41,7 @@ public class BasePresenter {
     /**
      * Called during {@link android.view.View#onLayout(boolean, int, int, int, int)}
      */
-    public void measure(int w, int h, int hPadding, int vPadding) {
+    protected void measure(int w, int h, int hPadding, int vPadding) {
 
         int smallestWidth = calcSmallestWidth(w, h, hPadding, vPadding);
         mCellSizePx = smallestWidth / mBoardSize;
@@ -70,6 +74,7 @@ public class BasePresenter {
         return paddedWidth < paddedHeight ? paddedWidth : paddedHeight;
     }
 
+    @NonNull
     private Rect calculateBoardRect(int w, int h, int boardSize) {
         mBoardRect.left = (w - boardSize) / 2;
         mBoardRect.top = (h - boardSize) / 2;
@@ -90,6 +95,7 @@ public class BasePresenter {
         mTurnRect.bottom = (int) (boardRect.bottom + halfBorderSize);
     }
 
+    @NonNull
     private float[] getVertical(int i) {
         float startX = mBoardRect.left + i * mCellSizePx;
         float startY = mBoardRect.top;
@@ -104,6 +110,7 @@ public class BasePresenter {
         return line;
     }
 
+    @NonNull
     private float[] getHorizontal(int i) {
         float startX = mBoardRect.left;
         float startY = mBoardRect.top + i * mCellSizePx;
@@ -118,7 +125,8 @@ public class BasePresenter {
         return line;
     }
 
-    public Mark getMark(int x, int y) {
+    @NonNull
+    final Mark getMark(int x, int y) {
         isTrue(mCellSizePx > 0, "call measure first");
 
         int left = getLeft(x);
@@ -148,18 +156,18 @@ public class BasePresenter {
     }
 
     @NonNull
-    public final AimingG getAimingG(@NonNull Vector2 aim, int widthCells, int heightCells) {
+    final AimingG getAimingG(@NonNull Vector2 aim, int widthCells, int heightCells) {
         return getAimingG(aim.getX(), aim.getY(), widthCells, heightCells);
     }
 
     @NonNull
-    public final AimingG getAimingG(@NonNull Aiming aiming) {
+    final AimingG getAimingG(@NonNull Aiming aiming) {
         return getAimingG(aiming.i, aiming.j, aiming.widthCells, aiming.heightCells);
     }
 
     // TODO: add Board, truncate Board
     @NonNull
-    protected final AimingG getAimingG(int i, int j, int widthCells, int heightCells) {
+    final AimingG getAimingG(int i, int j, int widthCells, int heightCells) {
         Validate.isTrue(widthCells > 0 && heightCells > 0);
 
         mAiming.vertical = getVerticalRect(i, widthCells);
@@ -203,20 +211,22 @@ public class BasePresenter {
         return hRect;
     }
 
-    public BoardG getBoard() {
+    @NonNull
+    final BoardG getBoardG() {
         return mBoard;
     }
 
-    private final Rect mShipRect = new Rect();
-
-    public Rect getRectForShip(@NonNull Ship ship) {
+    @NonNull
+    final Rect getRectForShip(@NonNull Ship ship) {
         return getRectForShip(ship, getLeft(ship.getX()), getTop(ship.getY()));
     }
 
-    public Rect getRectForShip(@NonNull Ship ship, @NonNull Point point) {
+    @NonNull
+    final Rect getRectForShip(@NonNull Ship ship, @NonNull Point point) {
         return getRectForShip(ship, point.x, point.y);
     }
 
+    @NonNull
     private Rect getRectForShip(@NonNull Ship ship, int left, int top) {
         isTrue(mCellSizePx > 0, "call measure first");
 
@@ -252,5 +262,13 @@ public class BasePresenter {
         if (!expression) {
             throw new IllegalStateException(message);
         }
+    }
+
+    final int yToJ(int y) {
+        return (y - mBoardRect.top) / mCellSizePx;
+    }
+
+    final int xToI(int x) {
+        return (x - mBoardRect.left) / mCellSizePx;
     }
 }

@@ -1,10 +1,11 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Point;
 import android.graphics.Rect;
 
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.screen.view.Aiming;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,16 +16,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-public class BasePresenterTest {
+public class BaseGeometryProcessorTest {
 
-    private BasePresenter mPresenter;
+    private BaseGeometryProcessor mPresenter;
     private static final int V_OFFSET = 20;
     private static final int H_PADDING = 6;
     private static final int V_PADDING = 8;
 
     @Before
     public void setup() {
-        mPresenter = new BasePresenter(10, 2);
+        mPresenter = new BaseGeometryProcessor(10, 2);
         mPresenter.measure(320, 480, H_PADDING, V_PADDING);
         mPresenter.setBoardVerticalOffset(V_OFFSET);
     }
@@ -81,19 +82,19 @@ public class BasePresenterTest {
 
     @Test(expected=IllegalStateException.class)
     public void getMarkThrowsException() {
-        mPresenter = new BasePresenter(10, 2);
+        mPresenter = new BaseGeometryProcessor(10, 2);
         mPresenter.getMark(0, 0);
     }
 
     @Test(expected=IllegalStateException.class)
     public void getRectForShipThrowsException() {
-        mPresenter = new BasePresenter(10, 2);
+        mPresenter = new BaseGeometryProcessor(10, 2);
         mPresenter.getRectForShip(new Ship(1));
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void getAimingThrowsException() {
-        mPresenter = new BasePresenter(10, 2);
+        mPresenter = new BaseGeometryProcessor(10, 2);
         Aiming aiming = new Aiming();
         aiming.set(0, 0, 0, 1);
         mPresenter.getAimingG(aiming);
@@ -127,29 +128,29 @@ public class BasePresenterTest {
 
     @Test
     public void getBoard() {
-        BoardG board = mPresenter.getBoard();
+        BoardG board = mPresenter.getBoardG();
         float[][] lines={{5.0f, 105.0f, 5.0f, 415.0f},
-        {36.0f, 105.0f, 36.0f, 415.0f},
-        {67.0f, 105.0f, 67.0f, 415.0f},
-        {98.0f, 105.0f, 98.0f, 415.0f},
-        {129.0f, 105.0f, 129.0f, 415.0f},
-        {160.0f, 105.0f, 160.0f, 415.0f},
-        {191.0f, 105.0f, 191.0f, 415.0f},
-        {222.0f, 105.0f, 222.0f, 415.0f},
-        {253.0f, 105.0f, 253.0f, 415.0f},
-        {284.0f, 105.0f, 284.0f, 415.0f},
-        {5.0f, 105.0f, 315.0f, 105.0f},
-        {5.0f, 136.0f, 315.0f, 136.0f},
-        {5.0f, 167.0f, 315.0f, 167.0f},
-        {5.0f, 198.0f, 315.0f, 198.0f},
-        {5.0f, 229.0f, 315.0f, 229.0f},
-        {5.0f, 260.0f, 315.0f, 260.0f},
-        {5.0f, 291.0f, 315.0f, 291.0f},
-        {5.0f, 322.0f, 315.0f, 322.0f},
-        {5.0f, 353.0f, 315.0f, 353.0f},
-        {5.0f, 384.0f, 315.0f, 384.0f},
-        {5.0f, 415.0f, 315.0f, 415.0f},
-        {0.0f, 0.0f, 0.0f, 0.0f}};
+                {36.0f, 105.0f, 36.0f, 415.0f},
+                {67.0f, 105.0f, 67.0f, 415.0f},
+                {98.0f, 105.0f, 98.0f, 415.0f},
+                {129.0f, 105.0f, 129.0f, 415.0f},
+                {160.0f, 105.0f, 160.0f, 415.0f},
+                {191.0f, 105.0f, 191.0f, 415.0f},
+                {222.0f, 105.0f, 222.0f, 415.0f},
+                {253.0f, 105.0f, 253.0f, 415.0f},
+                {284.0f, 105.0f, 284.0f, 415.0f},
+                {5.0f, 105.0f, 315.0f, 105.0f},
+                {5.0f, 136.0f, 315.0f, 136.0f},
+                {5.0f, 167.0f, 315.0f, 167.0f},
+                {5.0f, 198.0f, 315.0f, 198.0f},
+                {5.0f, 229.0f, 315.0f, 229.0f},
+                {5.0f, 260.0f, 315.0f, 260.0f},
+                {5.0f, 291.0f, 315.0f, 291.0f},
+                {5.0f, 322.0f, 315.0f, 322.0f},
+                {5.0f, 353.0f, 315.0f, 353.0f},
+                {5.0f, 384.0f, 315.0f, 384.0f},
+                {5.0f, 415.0f, 315.0f, 415.0f},
+                {0.0f, 0.0f, 0.0f, 0.0f}};
 
         BoardG expected = new BoardG();
         System.arraycopy( lines, 0, expected.lines, 0, lines.length );
@@ -177,9 +178,5 @@ public class BasePresenterTest {
         Rect rect = mPresenter.getRectForShip(new Ship(4), new Point(100, 100));
         Rect expected = new Rect(100, 100, 224, 131);
         assertThat(rect, equalTo(expected));
-    }
-
-    @Test
-    public void foo() {
     }
 }

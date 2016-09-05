@@ -1,8 +1,8 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Rect;
 
-public class AimingG {
+class AimingG {
     public Rect vertical;
     public Rect horizontal;
 

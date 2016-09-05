@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Rect;
 
@@ -6,7 +6,7 @@ import com.ivygames.morskoiboi.model.Board;
 
 import java.util.Arrays;
 
-public class BoardG {
+class BoardG {
     public final float[][] lines = new float[(Board.DIMENSION + 1) * 2][4];
 
     public Rect frame;

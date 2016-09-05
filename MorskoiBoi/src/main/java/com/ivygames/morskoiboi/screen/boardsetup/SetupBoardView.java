@@ -17,6 +17,8 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.renderer.SetupBoardGeometryProcessor;
+import com.ivygames.morskoiboi.renderer.SetupBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 import com.ivygames.morskoiboi.screen.view.TouchState;
 
@@ -40,8 +42,8 @@ public class SetupBoardView extends BaseBoardView {
 
     @NonNull
     private final SetupBoardRenderer mRenderer;
-
-    private SetupBoardPresenter2 mPresenter;
+    @NonNull
+    private final SetupBoardPresenter mPresenter;
     @NonNull
     private final TouchState mTouchState = new TouchState();
     @NonNull
@@ -52,21 +54,20 @@ public class SetupBoardView extends BaseBoardView {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         Ln.v("touch slop = " + mTouchSlop);
 
-        mPresenter = new SetupBoardPresenter2();
+        mPresenter = new SetupBoardPresenter();
         mRenderer = (SetupBoardRenderer) super.mRenderer;
     }
 
     @NonNull
     @Override
     protected SetupBoardRenderer renderer() {
-        SetupBoardPresenter presenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
-//        mPresenter = presenter;
-        return new SetupBoardRenderer(getResources(), presenter);
+        SetupBoardGeometryProcessor processor =
+                new SetupBoardGeometryProcessor(10, getResources().getDimension(R.dimen.ship_border));
+        return new SetupBoardRenderer(getResources(), processor);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Ln.v("drawing");
         super.onDraw(canvas);
         drawConflictingCells(canvas);
         drawDockedShip(canvas);
@@ -115,7 +116,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void processMotionEvent(int x, int y, int action) {
-        Vector2 coordinate = Vector2.get(mRenderer.getTouchI(x), mRenderer.getTouchJ(y));
+        Vector2 coordinate = Vector2.get(mRenderer.xToI(x), mRenderer.yToJ(y));
         switch (action) {
             case MotionEvent.ACTION_MOVE:
                 if (movedBeyondSlope(x, y)) {
@@ -135,6 +136,7 @@ public class SetupBoardView extends BaseBoardView {
                     cancelLongPressTask();
                     mPresenter.rotateShipAt(mBoard, coordinate);
                 } else if (mPresenter.hasPickedShip()) {
+                    Ln.v("dropping picked ship to: " + mPickedShipCoordinate);
                     mPresenter.dropShip(mBoard, mPickedShipCoordinate);
                 }
                 break;
@@ -173,8 +175,8 @@ public class SetupBoardView extends BaseBoardView {
         return new PickShipTask(x, y, new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                int i = mRenderer.getTouchI(x);
-                int j = mRenderer.getTouchJ(y);
+                int i = mRenderer.xToI(x);
+                int j = mRenderer.yToJ(y);
                 Ln.v(mPickShipTask + ": picking ship from: [" + i + ", " + j + "]");
                 Ship pickedShip = mPresenter.pickShipFromBoard(mBoard, i, j);
                 mPickedShipCoordinate = mRenderer.updatePickedGeometry(pickedShip, mTouchState.getX(), mTouchState.getY());

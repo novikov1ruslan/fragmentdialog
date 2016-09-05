@@ -11,6 +11,8 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
+import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 import com.ivygames.morskoiboi.screen.view.TouchState;
@@ -19,7 +21,8 @@ public class EnemyBoardView extends BaseBoardView {
 
     private PokeResult mLastShotResult;
     private Vector2 mAim;
-    private EnemyBoardPresenter mPresenter;
+    @NonNull
+    private final EnemyBoardPresenter mPresenter;
     @NonNull
     private final EnemyBoardRenderer mRenderer;
     @NonNull
@@ -30,14 +33,15 @@ public class EnemyBoardView extends BaseBoardView {
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
+        mPresenter = new EnemyBoardPresenter();
         mRenderer = (EnemyBoardRenderer) super.mRenderer;
     }
 
     @NonNull
     @Override
     protected EnemyBoardRenderer renderer() {
-        mPresenter = new EnemyBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
-        return new EnemyBoardRenderer(getResources(), mPresenter);
+        EnemyBoardGeometryProcessor processor = new EnemyBoardGeometryProcessor(10, getResources().getDimension(R.dimen.ship_border));
+        return new EnemyBoardRenderer(getResources(), processor);
     }
 
     @Override
@@ -73,8 +77,8 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (mTouchState.isDragging()) {
-            int i = mPresenter.xToI(mTouchState.getX());
-            int j = mPresenter.yToJ(mTouchState.getY());
+            int i = mRenderer.xToI(mTouchState.getX());
+            int j = mRenderer.yToJ(mTouchState.getY());
 
             if (Board.contains(i, j)) {
                 boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
@@ -86,14 +90,12 @@ public class EnemyBoardView extends BaseBoardView {
             postInvalidateDelayed(mRenderer.animateExplosions(canvas, mLastShotResult.aim));
         }
 
-//        if (GameConstants.IS_TEST_MODE) {
 //            getRenderer().render(canvas, mTouchState.getX(), mTouchState.getY());
-//        }
     }
 
     private Aiming getAiming(int width, int height) {
-        int i = mPresenter.xToI(mTouchState.getX());
-        int j = mPresenter.yToJ(mTouchState.getY());
+        int i = mRenderer.xToI(mTouchState.getX());
+        int j = mRenderer.yToJ(mTouchState.getY());
         mAiming.set(i, j, width, height);
         return mAiming;
     }
@@ -101,7 +103,9 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        mPresenter.touch(mTouchState);
+        int i = mRenderer.xToI(mTouchState.getX());
+        int j = mRenderer.yToJ(mTouchState.getY());
+        mPresenter.touch(mTouchState, i, j);
         invalidate();
 
         return true;

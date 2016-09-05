@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Dependencies;
@@ -30,24 +28,15 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
-    private static final int V_OFFSET = 20;
-    private static final int H_PADDING = 6;
-    private static final int V_PADDING = 8;
-    private static final Rect VALID_PICKED_SHIP_RECT = new Rect(69, 85, 131, 116);
-
     private SetupBoardPresenter mPresenter;
 
-    private static final Point IN_DOCK_AREA = new Point(100, 100);
-    private static final Point IN_BOARD_AREA = new Point(200, 200);
     private Placement mPlacement;
     private RussianRules rules;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mPresenter = new SetupBoardPresenter(10, 2);
-        mPresenter.measure(320, 480, H_PADDING, V_PADDING);
-        mPresenter.setBoardVerticalOffset(V_OFFSET);
+        mPresenter = new SetupBoardPresenter();
         rules = new RussianRules();
         Dependencies.inject(rules);
         mPlacement = new Placement(new Random(), rules);
@@ -64,7 +53,6 @@ public class SetupBoardPresenterTest {
     @Test
     public void trying_to_drop_ship_that_does_not_fit__returns_it_to_the_dock() {
         PriorityQueue<Ship> fleet = pickDockedShip();
-//        mPresenter.touch(IN_DOCK_AREA);
 
         Board board = new Board();
         mPresenter.dropShip(board, 9, 9);
@@ -76,7 +64,6 @@ public class SetupBoardPresenterTest {
     public void trying_to_drop_vertical_ship_that_does_not_fit__returns_it_to_the_dock_horizontally() {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         PriorityQueue<Ship> fleet = pickDockedShip(ship);
-//        mPresenter.touch(IN_DOCK_AREA);
         Board board = new Board();
         mPresenter.dropShip(board, 9, 9);
 
@@ -88,29 +75,10 @@ public class SetupBoardPresenterTest {
     @Test
     public void dropping_ship_on_board__moves_it_from_dock_to_board() {
         PriorityQueue<Ship> fleet = pickDockedShip();
-//        mPresenter.touch(IN_BOARD_AREA);
         Board board = new Board();
         mPresenter.dropShip(board, 5, 5);
         assertThat(fleet.size(), is(0));
         assertThat(board.getShips().size(), is(1));
-    }
-
-    @Test
-    public void after_docked_ship_pickup_and_touch__there_is_valid_picked_ship_rect() {
-        pickDockedShip();
-//        mPresenter.touch(IN_DOCK_AREA);
-        Ship ship = mPresenter.getPickedShip();
-        assertThat(mPresenter.getPickedShipRect(ship, IN_DOCK_AREA), equalTo(VALID_PICKED_SHIP_RECT));
-    }
-
-    @Test
-    public void after_touch_and_docked_ship_pickup__there_is_valid_picked_ship_rect() {
-//        mPresenter.touch(IN_DOCK_AREA);
-        pickDockedShip();
-        Ship pickedShip = mPresenter.getPickedShip();
-        mPresenter.updatePickedGeometry(pickedShip, IN_DOCK_AREA);
-
-        assertThat(mPresenter.getPickedShipRect(pickedShip, IN_DOCK_AREA), equalTo(VALID_PICKED_SHIP_RECT));
     }
 
     @Test
@@ -129,44 +97,6 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void coordinate_is_in_dock_area() {
-        assertThat(mPresenter.isInDockArea(IN_DOCK_AREA), is(true));
-    }
-
-    @Test
-    public void coordinate_is_not_in_dock_area() {
-        assertThat(mPresenter.isInDockArea(IN_BOARD_AREA), is(false));
-    }
-
-    @Test
-    public void testGetRectForDockedShip() {
-        setFleet(new Ship(2));
-        mPresenter.pickDockedShip();
-        Rect rect = mPresenter.getRectForDockedShip(mPresenter.getPickedShip());
-        assertThat(rect, equalTo(new Rect(49, 45, 111, 76)));
-    }
-
-    @Test
-    public void testGetShipDisplayAreaCenter() {
-        Point center = mPresenter.getShipDisplayAreaCenter();
-        assertThat(center, equalTo(new Point(240, 60)));
-    }
-
-    @Test
-    public void testGetRectForCell() {
-        Rect rectForCell = mPresenter.getRectForCell(5, 5);
-        assertThat(rectForCell, equalTo(new Rect(162, 322, 192, 352)));
-    }
-
-//    @Test
-//    public void when_ship_picked_up_and_aim_is_on_board__there_is_aiming() {
-//        pickDockedShip();
-////        mPresenter.touch(IN_BOARD_AREA);
-//        AimingG aiming = mPresenter.getAiming(Vector2.get(5, 5));
-//        assertThat(aiming, not(isNull()));
-//    }
-
-    @Test
     public void when_no_ship_is_docked__there_is_no_docked_ship() {
         assertThat(mPresenter.getDockedShip(), nullValue());
     }
@@ -180,7 +110,6 @@ public class SetupBoardPresenterTest {
     @Test
     public void pickShipFromBoard() {
         pickDockedShip();
-//        mPresenter.touch(IN_BOARD_AREA);
         Board board = new Board();
         mPresenter.dropShip(board, 5, 5);
         assertThat(mPresenter.hasPickedShip(), is(false));
@@ -201,11 +130,6 @@ public class SetupBoardPresenterTest {
     }
 
     @Test
-    public void isOnBoard() {
-        assertThat(mPresenter.isOnBoard(IN_DOCK_AREA), is(false));
-        assertThat(mPresenter.isOnBoard(IN_BOARD_AREA), is(true));
-    }
-
     public void WhenDataChangedExternally__DockedShipDoesNotChange() {
         Ship ship = new Ship(3);
         PriorityQueue<Ship> ships = setFleet(ship);

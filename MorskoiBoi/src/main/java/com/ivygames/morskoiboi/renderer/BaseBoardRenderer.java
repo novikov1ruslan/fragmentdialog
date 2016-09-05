@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.renderer;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.screen.view.Aiming;
 
 public class BaseBoardRenderer {
     @NonNull
@@ -38,9 +39,9 @@ public class BaseBoardRenderer {
     @NonNull
     private final Paint mAimingLockedPaint;
     @NonNull
-    private final BasePresenter mPresenter;
+    private final BaseGeometryProcessor mProcessor;
 
-    public BaseBoardRenderer(@NonNull Resources res, @NonNull BasePresenter presenter) {
+    public BaseBoardRenderer(@NonNull Resources res, @NonNull BaseGeometryProcessor processor) {
         mLinePaint = GraphicsUtils.newStrokePaint(res, R.color.line);
 
         mHitOuterPaint = GraphicsUtils.newStrokePaint(res, R.color.hit);
@@ -66,14 +67,14 @@ public class BaseBoardRenderer {
 
         mAimingLockedPaint = GraphicsUtils.newFillPaint(res, R.color.aim_locked);
 
-        mPresenter = presenter;
+        mProcessor = processor;
     }
 
-    public void drawAiming(Canvas canvas, @NonNull Aiming aiming, boolean locked) {
-        drawAiming(canvas, mPresenter.getAimingG(aiming), locked);
+    public void drawAiming(@NonNull Canvas canvas, @NonNull Aiming aiming, boolean locked) {
+        drawAiming(canvas, mProcessor.getAimingG(aiming), locked);
     }
 
-    protected void drawAiming(@NonNull Canvas canvas, @NonNull AimingG aiming) {
+    protected final void drawAiming(@NonNull Canvas canvas, @NonNull AimingG aiming) {
         drawAiming(canvas, aiming, false);
     }
 
@@ -87,12 +88,12 @@ public class BaseBoardRenderer {
         canvas.drawRect(aiming.vertical, paint);
     }
 
-    public void drawDebug(Canvas canvas, int x, int y) {
+    public void drawDebug(@NonNull Canvas canvas, int x, int y) {
         canvas.drawCircle(x, y, 5, debug_paint);
     }
 
     public void drawBoard(@NonNull Canvas canvas, boolean myTurn) {
-        drawBoard(canvas,  mPresenter.getBoard(), myTurn);
+        drawBoard(canvas,  mProcessor.getBoardG(), myTurn);
     }
 
     public void drawBoard(@NonNull Canvas canvas, @NonNull BoardG board, boolean myTurn) {
@@ -113,7 +114,7 @@ public class BaseBoardRenderer {
     }
 
     public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-        drawRect(canvas, mPresenter.getRectForShip(ship));
+        drawRect(canvas, mProcessor.getRectForShip(ship));
     }
 
     public void drawRect(@NonNull Canvas canvas, @NonNull Rect rect) {
@@ -121,11 +122,11 @@ public class BaseBoardRenderer {
     }
 
     public void drawHitMark(@NonNull Canvas canvas, int i, int j) {
-        drawHitMark(canvas, mPresenter.getMark(i, j));
+        drawHitMark(canvas, mProcessor.getMark(i, j));
     }
 
     public void drawMissMark(@NonNull Canvas canvas, int i, int j) {
-        drawMissMark(canvas, mPresenter.getMark(i, j));
+        drawMissMark(canvas, mProcessor.getMark(i, j));
     }
 
     public void drawHitMark(@NonNull Canvas canvas, @NonNull Mark mark) {
@@ -143,11 +144,19 @@ public class BaseBoardRenderer {
     }
 
     public void measure(int w, int h, int horizontalPadding, int verticalPadding) {
-        mPresenter.measure(w, h, horizontalPadding, verticalPadding);
+        mProcessor.measure(w, h, horizontalPadding, verticalPadding);
+    }
+
+    public int xToI(int x) {
+        return mProcessor.xToI(x);
+    }
+
+    public int yToJ(int y) {
+        return mProcessor.yToJ(y);
     }
 
     @Override
     public String toString() {
-        return mPresenter.toString();
+        return mProcessor.toString();
     }
 }

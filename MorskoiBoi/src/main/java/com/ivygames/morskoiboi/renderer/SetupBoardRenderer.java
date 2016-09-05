@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.boardsetup;
+package com.ivygames.morskoiboi.renderer;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -13,23 +13,21 @@ import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.view.AimingG;
-import com.ivygames.morskoiboi.screen.view.BaseBoardRenderer;
 
-class SetupBoardRenderer extends BaseBoardRenderer {
+public class SetupBoardRenderer extends BaseBoardRenderer {
 
     private Resources mResources;
-    private final SetupBoardPresenter mPresenter;
+    private final SetupBoardGeometryProcessor mPresenter;
 //    private Bitmap m2er;
 //    private Rect mSrc = new Rect();
     @NonNull
     private final Paint mConflictCellPaint;
 
-    public SetupBoardRenderer(@NonNull Resources res, @NonNull SetupBoardPresenter presenter) {
-        super(res, presenter);
+    public SetupBoardRenderer(@NonNull Resources res, @NonNull SetupBoardGeometryProcessor processor) {
+        super(res, processor);
         mResources = res;
 
-        mPresenter = presenter;
+        mPresenter = processor;
         mConflictCellPaint = GraphicsUtils.newFillPaint(res, R.color.conflict_cell);
     }
 
@@ -76,6 +74,7 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         drawAiming(canvas, aiming);
     }
 
+    @NonNull
     public Vector2 updatePickedGeometry(@NonNull Ship ship, int x, int y) {
         return mPresenter.updatePickedGeometry(ship, x, y);
     }
@@ -84,11 +83,4 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         return mPresenter.isInDockArea(x, y);
     }
 
-    public int getTouchJ(int y) {
-        return mPresenter.getTouchJ(y);
-    }
-
-    public int getTouchI(int x) {
-        return mPresenter.getTouchI(x);
-    }
 }

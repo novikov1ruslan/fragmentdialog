@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.morskoiboi.renderer;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,15 +12,15 @@ import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.PokeResult;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.view.BaseBoardRenderer;
 
 import org.commons.logger.Ln;
 
 import java.util.Random;
 
-class EnemyBoardRenderer extends BaseBoardRenderer {
+public class EnemyBoardRenderer extends BaseBoardRenderer {
     private static final int TEXTURE_SIZE = 512;
     private static final float CELL_RATIO = 2f;
+
     @NonNull
     private final Animation mSplashAnimation = new Animation(1000);
     @NonNull
@@ -34,13 +34,13 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
 
     private Animation mCurrentAnimation;
     @NonNull
-    private final EnemyBoardPresenter mPresenter;
+    private final EnemyBoardGeometryProcessor mProcessor;
     @NonNull
     private final Resources mResources;
 
-    EnemyBoardRenderer(@NonNull Resources resources, @NonNull EnemyBoardPresenter presenter) {
-        super(resources, presenter);
-        mPresenter = presenter;
+    public EnemyBoardRenderer(@NonNull Resources resources, @NonNull EnemyBoardGeometryProcessor processor) {
+        super(resources, processor);
+        mProcessor = processor;
         mResources = resources;
 
         fillSplashAnimation(resources);
@@ -83,7 +83,7 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
 
     public long animateExplosions(@NonNull Canvas canvas, @NonNull Vector2 aim) {
         canvas.drawBitmap(mCurrentAnimation.getCurrentFrame(), mCurrentAnimation.getBounds(),
-                mPresenter.getAnimationDestination(aim, CELL_RATIO), null);
+                mProcessor.getAnimationDestination(aim, CELL_RATIO), null);
         return mCurrentAnimation.getFrameDuration();
     }
 
@@ -94,12 +94,12 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
 
     public void drawNautical(@NonNull Canvas canvas) {
         if (mNauticalBitmap != null) {
-            canvas.drawBitmap(mNauticalBitmap, mSrcRect, mPresenter.getBoardRect(), null);
+            canvas.drawBitmap(mNauticalBitmap, mSrcRect, mProcessor.getBoardRect(), null);
         }
     }
 
     public void drawAim(@NonNull Canvas canvas, @NonNull Vector2 aim) {
-        drawAim(canvas, mPresenter.getAimRectDst(aim));
+        drawAim(canvas, mProcessor.getAimRectDst(aim));
     }
 
     public void drawAim(@NonNull Canvas canvas, @NonNull Rect rectDst) {
@@ -131,4 +131,5 @@ class EnemyBoardRenderer extends BaseBoardRenderer {
             mLockBitmapSrc = null;
         }
     }
+
 }
