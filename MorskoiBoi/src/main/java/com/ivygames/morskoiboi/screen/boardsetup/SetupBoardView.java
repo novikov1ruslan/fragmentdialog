@@ -52,18 +52,21 @@ public class SetupBoardView extends BaseBoardView {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         Ln.v("touch slop = " + mTouchSlop);
 
+//        mPresenter = new SetupBoardPresenter2();
         mRenderer = (SetupBoardRenderer) super.mRenderer;
     }
 
     @NonNull
     @Override
     protected SetupBoardRenderer renderer() {
-        mPresenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
-        return new SetupBoardRenderer(getResources(), mPresenter);
+        SetupBoardPresenter presenter = new SetupBoardPresenter(10, getResources().getDimension(R.dimen.ship_border));
+        mPresenter = presenter;
+        return new SetupBoardRenderer(getResources(), presenter);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Ln.v("drawing");
         super.onDraw(canvas);
         drawConflictingCells(canvas);
         drawDockedShip(canvas);
@@ -89,10 +92,14 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void drawPickedShip(Canvas canvas) {
-        mRenderer.drawPickedShip(canvas);
-
-        if (Board.contains(mPickedShipCoordinate)) {
-            mRenderer.drawAiming(canvas, mPickedShipCoordinate);
+        Ship pickedShip = mPresenter.getPickedShip();
+        if (pickedShip != null) {
+            int x = mTouchState.getX();
+            int y = mTouchState.getY();
+            mRenderer.drawPickedShip(canvas, pickedShip, x, y);
+            if (Board.contains(mPickedShipCoordinate)) {
+                mRenderer.drawAiming(canvas, pickedShip, mPickedShipCoordinate);
+            }
         }
     }
 
@@ -136,7 +143,7 @@ public class SetupBoardView extends BaseBoardView {
         }
 
         if (mPresenter.getPickedShip() != null) {
-            mPickedShipCoordinate = mRenderer.updatePickedGeometry(x, y);
+            mPickedShipCoordinate = mRenderer.updatePickedGeometry(mPresenter.getPickedShip(), x, y);
         }
     }
 
@@ -153,6 +160,7 @@ public class SetupBoardView extends BaseBoardView {
     private void pickSelectedShipFromBoard() {
         mHandler.removeCallbacks(mPickShipTask);
         mPickShipTask.run();
+        Ln.v("long press task canceled: " + mPickShipTask);
         mPickShipTask = null;
     }
 
@@ -165,9 +173,15 @@ public class SetupBoardView extends BaseBoardView {
             @Override
             public boolean onLongClick(View v) {
                 mPickShipTask = null;
-                mPresenter.pickShipFromBoard(mBoard, mRenderer.getTouchI(x), mRenderer.getTouchJ(y));
-                mPickedShipCoordinate = mRenderer.updatePickedGeometry(x, y);
-                invalidate();
+                int i = mRenderer.getTouchI(x);
+                int j = mRenderer.getTouchJ(y);
+                mPresenter.pickShipFromBoard(mBoard, i, j);
+                Ship pickedShip = mPresenter.getPickedShip();
+                if (pickedShip != null) {
+                    mPickedShipCoordinate = mRenderer.updatePickedGeometry(pickedShip, mTouchState.getX(), mTouchState.getY());
+                    invalidate();
+                }
+                Ln.v("long press task executed: " + mPickShipTask);
                 return true;
             }
         });

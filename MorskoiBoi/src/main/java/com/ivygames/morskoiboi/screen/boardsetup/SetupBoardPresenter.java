@@ -116,34 +116,16 @@ final class SetupBoardPresenter extends BasePresenter {
         return new Point(left, top);
     }
 
-    @Nullable
-    public Rect getPickedShipRect() {
-        return hasPickedShip() ? mPickedShipRect : null;
-    }
-
-    @Nullable
-    public AimingG getAiming(@NonNull Vector2 coordinate) {
-        return getAiming(coordinate.getX(), coordinate.getY());
-    }
-
-    @Nullable
-    public AimingG getAiming(int i, int j) {
-        if (hasPickedShip()) {
-            return getAimingForPickedShip(i, j);
-        }
-
-        return null;
+    @NonNull
+    public Rect getPickedShipRect(@NonNull Ship ship, int x, int y) {
+        updatePickedGeometry(ship, x, y);
+        return mPickedShipRect;
     }
 
     @NonNull
-    private AimingG getAimingForPickedShip(int i, int j) {
-        return getAimingForShip(mPickedShip, i, j);
-    }
-
-    @NonNull
-    private AimingG getAimingForShip(@NonNull Ship ship, int i, int j) {
+    public AimingG getAimingForShip(@NonNull Ship ship, int i, int j) {
         int width = ship.isHorizontal() ? ship.getSize() : 1;
-        int height = mPickedShip.isHorizontal() ? 1 : mPickedShip.getSize();
+        int height = ship.isHorizontal() ? 1 : ship.getSize();
         return getAimingG(i, j, width, height);
     }
 
@@ -161,18 +143,8 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
-    public void touch(Point p) {
-        touch(p.x, p.y);
-    }
-
-    public void touch(int x, int y) {
-        if (hasPickedShip()) {
-            updatePickedGeometry(x, y);
-        }
-    }
-
-    public Vector2 updatePickedGeometry(int x, int y) {
-        mPickedShipRect = centerPickedShipRectAround(mPickedShip, x, y);
+    public Vector2 updatePickedGeometry(@NonNull Ship ship, int x, int y) {
+        mPickedShipRect = centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate(mPickedShipRect);
     }
 
@@ -268,6 +240,7 @@ final class SetupBoardPresenter extends BasePresenter {
         setDockedShip();
     }
 
+    @Nullable
     public Ship getPickedShip() {
         return mPickedShip;
     }

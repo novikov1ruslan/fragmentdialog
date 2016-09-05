@@ -157,6 +157,7 @@ public class BasePresenter {
         return getAimingG(aiming.i, aiming.j, aiming.widthCells, aiming.heightCells);
     }
 
+    // TODO: add Board, truncate Board
     @NonNull
     protected final AimingG getAimingG(int i, int j, int widthCells, int heightCells) {
         Validate.isTrue(widthCells > 0 && heightCells > 0);

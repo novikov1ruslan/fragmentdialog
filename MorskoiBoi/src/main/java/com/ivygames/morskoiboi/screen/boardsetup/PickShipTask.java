@@ -3,6 +3,8 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import org.commons.logger.Ln;
+
 class PickShipTask implements Runnable {
 
     private final int mTouchX;
@@ -24,7 +26,9 @@ class PickShipTask implements Runnable {
     public boolean hasMovedBeyondSlope(int x, int y, int slop) {
         int dX = mTouchX - x;
         int dY = mTouchY - y;
-        return Math.sqrt(dX * dX + dY * dY) > slop;
+        double d = Math.sqrt(dX * dX + dY * dY);
+        Ln.v(d + " " + slop);
+        return d > slop;
     }
 
     @Override

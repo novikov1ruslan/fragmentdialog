@@ -67,21 +67,17 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         drawShip(canvas, mPresenter.getRectForDockedShip(dockedShip));
     }
 
-    public void drawPickedShip(@NonNull Canvas canvas) {
-        if (mPresenter.hasPickedShip()) {
-            drawShip(canvas, mPresenter.getPickedShipRect());
-        }
+    public void drawPickedShip(@NonNull Canvas canvas, @NonNull Ship ship, int x, int y) {
+        drawShip(canvas, mPresenter.getPickedShipRect(ship, x, y));
     }
 
-    public void drawAiming(@NonNull Canvas canvas, @NonNull Vector2 coordinate) {
-        AimingG aiming = mPresenter.getAiming(coordinate);
-        if (aiming != null) {
-            drawAiming(canvas, aiming);
-        }
+    public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 coordinate) {
+        AimingG aiming = mPresenter.getAimingForShip(ship, coordinate.getX(), coordinate.getY());
+        drawAiming(canvas, aiming);
     }
 
-    public Vector2 updatePickedGeometry(int x, int y) {
-        return mPresenter.updatePickedGeometry(x, y);
+    public Vector2 updatePickedGeometry(@NonNull Ship ship, int x, int y) {
+        return mPresenter.updatePickedGeometry(ship, x, y);
     }
 
     public boolean isInDockArea(int x, int y) {
