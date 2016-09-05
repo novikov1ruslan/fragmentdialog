@@ -102,7 +102,7 @@ public class Board {
     @NonNull
     public Collection<Ship> getShipsAt(int i, int j) {
         HashSet<Ship> ships = new HashSet<>();
-        if (hasShipAt(i, j)) {
+        if (canHaveShipAt(i, j)) {
             for (Ship ship : mShips) {
                 if (ship.isInShip(i, j)) {
                     ships.add(ship);
@@ -113,13 +113,21 @@ public class Board {
         return ships;
     }
 
+    private boolean canHaveShipAt(@NonNull Vector2 coordinate) {
+        return canHaveShipAt(coordinate.getX(), coordinate.getY());
+    }
+
+    private boolean canHaveShipAt(int i, int j) {
+        Cell cell = getCell(i, j);
+        return cell.isReserved() || cell.isHit();
+    }
+
     public boolean hasShipAt(@NonNull Vector2 coordinate) {
         return hasShipAt(coordinate.getX(), coordinate.getY());
     }
 
     public boolean hasShipAt(int i, int j) {
-        Cell cell = getCell(i, j);
-        return cell.isReserved() || cell.isHit()/* || cell.isSunk() */;
+        return getFirstShipAt(i, j) != null;
     }
 
     @Nullable
@@ -129,7 +137,7 @@ public class Board {
 
     @Nullable
     public Ship getFirstShipAt(int i, int j) {
-        if (hasShipAt(i, j)) {
+        if (canHaveShipAt(i, j)) {
             for (Ship ship : mShips) {
                 if (ship.isInShip(i, j)) {
                     return ship;

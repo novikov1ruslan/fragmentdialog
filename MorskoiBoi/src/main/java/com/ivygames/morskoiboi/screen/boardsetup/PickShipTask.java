@@ -33,6 +33,6 @@ class PickShipTask implements Runnable {
 
     @Override
     public String toString() {
-        return "PressTask [x=" + mTouchX + ",yj=" + mTouchY + "]#" + (hashCode() % 1000);
+        return "PressTask [x=" + mTouchX + ", y=" + mTouchY + "]#" + (hashCode() % 1000);
     }
 }
