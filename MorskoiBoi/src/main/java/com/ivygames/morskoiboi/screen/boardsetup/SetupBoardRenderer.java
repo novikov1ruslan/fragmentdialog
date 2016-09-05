@@ -64,11 +64,11 @@ class SetupBoardRenderer extends BaseBoardRenderer {
         int displayTop = center.y - bitmap.getHeight() / 2;
         canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
-        drawShip(canvas, mPresenter.getRectForDockedShip(dockedShip));
+        drawRect(canvas, mPresenter.getRectForDockedShip(dockedShip));
     }
 
     public void drawPickedShip(@NonNull Canvas canvas, @NonNull Ship ship, int x, int y) {
-        drawShip(canvas, mPresenter.getPickedShipRect(ship, x, y));
+        drawRect(canvas, mPresenter.getPickedShipRect(ship, x, y));
     }
 
     public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 coordinate) {

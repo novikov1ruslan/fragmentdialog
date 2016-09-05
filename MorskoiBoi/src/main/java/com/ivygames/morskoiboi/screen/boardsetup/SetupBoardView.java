@@ -41,7 +41,7 @@ public class SetupBoardView extends BaseBoardView {
     @NonNull
     private final SetupBoardRenderer mRenderer;
 
-    private  SetupBoardPresenter mPresenter;
+    private SetupBoardPresenter mPresenter;
     @NonNull
     private final TouchState mTouchState = new TouchState();
     @NonNull
@@ -97,9 +97,9 @@ public class SetupBoardView extends BaseBoardView {
             int x = mTouchState.getX();
             int y = mTouchState.getY();
             mRenderer.drawPickedShip(canvas, pickedShip, x, y);
-            if (Board.contains(mPickedShipCoordinate)) {
-                mRenderer.drawAiming(canvas, pickedShip, mPickedShipCoordinate);
-            }
+//            if (Board.contains(mPickedShipCoordinate)) {
+            mRenderer.drawAiming(canvas, pickedShip, mPickedShipCoordinate);
+//            }
         }
     }
 
@@ -126,6 +126,7 @@ public class SetupBoardView extends BaseBoardView {
                 if (mRenderer.isInDockArea(x, y)) {
                     mPresenter.pickDockedShip();
                 } else if (Board.contains(coordinate) && mBoard.hasShipAt(coordinate)) {
+                    Ln.v("board has ship at: " + coordinate);
                     schedulePickingShip(x, y);
                 }
                 break;
@@ -175,13 +176,10 @@ public class SetupBoardView extends BaseBoardView {
                 mPickShipTask = null;
                 int i = mRenderer.getTouchI(x);
                 int j = mRenderer.getTouchJ(y);
-                mPresenter.pickShipFromBoard(mBoard, i, j);
-                Ship pickedShip = mPresenter.getPickedShip();
-                if (pickedShip != null) {
-                    mPickedShipCoordinate = mRenderer.updatePickedGeometry(pickedShip, mTouchState.getX(), mTouchState.getY());
-                    invalidate();
-                }
-                Ln.v("long press task executed: " + mPickShipTask);
+                Ln.v(this + ": picking ship from: [" + i + ", " + j + "]");
+                Ship pickedShip = mPresenter.pickShipFromBoard(mBoard, i, j);
+                mPickedShipCoordinate = mRenderer.updatePickedGeometry(pickedShip, mTouchState.getX(), mTouchState.getY());
+                invalidate();
                 return true;
             }
         });

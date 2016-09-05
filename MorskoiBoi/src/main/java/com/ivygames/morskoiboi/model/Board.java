@@ -40,7 +40,6 @@ public class Board {
         return emptyCells;
     }
 
-
     /**
      * @param aim coordinate on the board where the 1st ship's square is to be put
      */
@@ -129,27 +128,12 @@ public class Board {
     }
 
     @Nullable
-    private Ship getFirstShipAt(int i, int j) {
+    public Ship getFirstShipAt(int i, int j) {
         if (hasShipAt(i, j)) {
             for (Ship ship : mShips) {
                 if (ship.isInShip(i, j)) {
                     return ship;
                 }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return the first ship that contains the coordinate or null if no such ship found
-     */
-    // TODO: what is the difference from getFirstShipAt?
-    @Nullable
-    public Ship getShipAt(int x, int y) {
-        for (Ship ship : mShips) {
-            if (ship.isInShip(x, y)) {
-                return ship;
             }
         }
 

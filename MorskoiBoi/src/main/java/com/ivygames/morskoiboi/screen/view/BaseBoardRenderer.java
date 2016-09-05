@@ -104,7 +104,7 @@ public class BaseBoardRenderer {
         canvas.drawRect(board.frame, borderPaint);
     }
 
-    public void drawShip(@NonNull Canvas canvas, @NonNull Rect rect, int left, int top) {
+    public void drawRect(@NonNull Canvas canvas, @NonNull Rect rect, int left, int top) {
         rect.left += left;
         rect.top += top;
         rect.right += left;
@@ -113,11 +113,11 @@ public class BaseBoardRenderer {
     }
 
     public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-        drawShip(canvas, mPresenter.getRectForShip(ship));
+        drawRect(canvas, mPresenter.getRectForShip(ship));
     }
 
-    public void drawShip(@NonNull Canvas canvas, @NonNull Rect rect) {
-        drawShip(canvas, rect, 0, 0);
+    public void drawRect(@NonNull Canvas canvas, @NonNull Rect rect) {
+        drawRect(canvas, rect, 0, 0);
     }
 
     public void drawHitMark(@NonNull Canvas canvas, int i, int j) {

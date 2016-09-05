@@ -134,7 +134,7 @@ public class Placement {
         }
 
         // find the ship to remove
-        Ship removedShip = board.getShipAt(x, y);
+        Ship removedShip = board.getFirstShipAt(x, y);
 
         // if the ship found - recreate the board without this ship
         if (removedShip != null) {

@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
@@ -117,6 +118,11 @@ final class SetupBoardPresenter extends BasePresenter {
     }
 
     @NonNull
+    public Rect getPickedShipRect(@NonNull Ship ship, @NonNull Point p) {
+        return getPickedShipRect(ship, p.x, p.y);
+    }
+
+    @NonNull
     public Rect getPickedShipRect(@NonNull Ship ship, int x, int y) {
         updatePickedGeometry(ship, x, y);
         return mPickedShipRect;
@@ -143,6 +149,12 @@ final class SetupBoardPresenter extends BasePresenter {
         }
     }
 
+    @NonNull
+    public Vector2 updatePickedGeometry(@NonNull Ship ship, @NonNull Point p) {
+        return updatePickedGeometry(ship, p.x, p.y);
+    }
+
+    @NonNull
     public Vector2 updatePickedGeometry(@NonNull Ship ship, int x, int y) {
         mPickedShipRect = centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate(mPickedShipRect);
@@ -213,8 +225,9 @@ final class SetupBoardPresenter extends BasePresenter {
         pickShipFromBoard(board, coordinate.getX(), coordinate.getY());
     }
 
-    public void pickShipFromBoard(@NonNull Board board, int i, int j) {
+    public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
         mPickedShip = mPlacement.removeShipFrom(board, i, j);
+        return mPickedShip;
     }
 
     public void rotateShipAt(@NonNull Board board, @NonNull Vector2 aim) {
