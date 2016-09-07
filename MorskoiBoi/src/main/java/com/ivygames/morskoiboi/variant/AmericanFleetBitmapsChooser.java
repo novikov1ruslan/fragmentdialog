@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
 
-public class AmericanFleetBitmapsChooser implements FleetBitmaps {
+public abstract class AmericanFleetBitmapsChooser implements FleetBitmaps {
     @Override
-    public Bitmap getBitmapForShipSize(@NonNull Resources resources, int size) {
+    public Bitmap getSideBitmapForShipSize(@NonNull Resources resources, int size) {
         switch (size) {
             case 5:
                 return Bitmaps.getBitmap(resources, R.drawable.aircraft_carrier);
@@ -22,4 +22,5 @@ public class AmericanFleetBitmapsChooser implements FleetBitmaps {
                 return Bitmaps.getBitmap(resources, R.drawable.gunboat);
         }
     }
+
 }

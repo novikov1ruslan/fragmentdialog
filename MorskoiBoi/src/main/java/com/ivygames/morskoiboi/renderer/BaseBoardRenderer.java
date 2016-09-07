@@ -96,7 +96,7 @@ public class BaseBoardRenderer {
         drawBoard(canvas,  mProcessor.getBoardG(), myTurn);
     }
 
-    public void drawBoard(@NonNull Canvas canvas, @NonNull BoardG board, boolean myTurn) {
+    private void drawBoard(@NonNull Canvas canvas, @NonNull BoardG board, boolean myTurn) {
         for (float[] line: board.lines) {
             canvas.drawLines(line, mLinePaint);
         }
@@ -105,19 +105,26 @@ public class BaseBoardRenderer {
         canvas.drawRect(board.frame, borderPaint);
     }
 
-    public void drawRect(@NonNull Canvas canvas, @NonNull Rect rect, int left, int top) {
+    private void drawRect(@NonNull Canvas canvas, @NonNull Rect rect, int left, int top) {
         rect.left += left;
         rect.top += top;
         rect.right += left;
         rect.bottom += top;
-        canvas.drawRect(rect, mShipPaint);
+        canvas.drawRect(rect, getShipPaint());
     }
 
-    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-        drawRect(canvas, mProcessor.getRectForShip(ship));
+    @NonNull
+    protected Paint getShipPaint() {
+        return mShipPaint;
     }
 
-    public void drawRect(@NonNull Canvas canvas, @NonNull Rect rect) {
+    public Rect drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
+        Rect rectForShip = mProcessor.getRectForShip(ship);
+        drawRect(canvas, rectForShip);
+        return rectForShip;
+    }
+
+    protected final void drawRect(@NonNull Canvas canvas, @NonNull Rect rect) {
         drawRect(canvas, rect, 0, 0);
     }
 
@@ -129,11 +136,11 @@ public class BaseBoardRenderer {
         drawMissMark(canvas, mProcessor.getMark(i, j));
     }
 
-    public void drawHitMark(@NonNull Canvas canvas, @NonNull Mark mark) {
+    private void drawHitMark(@NonNull Canvas canvas, @NonNull Mark mark) {
         drawMark(canvas, mark, false);
     }
 
-    public void drawMissMark(@NonNull Canvas canvas, @NonNull Mark mark) {
+    private void drawMissMark(@NonNull Canvas canvas, @NonNull Mark mark) {
         drawMark(canvas, mark, true);
     }
 

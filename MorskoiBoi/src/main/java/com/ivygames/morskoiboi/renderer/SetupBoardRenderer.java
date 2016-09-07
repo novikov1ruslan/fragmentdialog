@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.renderer;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -14,14 +15,22 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SetupBoardRenderer extends BaseBoardRenderer {
 
     private Resources mResources;
     private final SetupBoardGeometryProcessor mPresenter;
-//    private Bitmap m2er;
-//    private Rect mSrc = new Rect();
+    private Rect mSrc = new Rect();
     @NonNull
     private final Paint mConflictCellPaint;
+    @NonNull
+    private final Paint mShipBorderPaint;
+    @NonNull
+    private final Map<Integer, Bitmap> mVerticalBitmaps = new HashMap<>();
+    @NonNull
+    private final Matrix mRotationMatrix = new Matrix();
 
     public SetupBoardRenderer(@NonNull Resources res, @NonNull SetupBoardGeometryProcessor processor) {
         super(res, processor);
@@ -29,26 +38,46 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
 
         mPresenter = processor;
         mConflictCellPaint = GraphicsUtils.newFillPaint(res, R.color.conflict_cell);
+        mShipBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.ship_border);
+        mRotationMatrix.postRotate(90);
     }
 
-//    @Override
-//    public void drawShip(Canvas canvas, Rect ship) {
-////        super.drawShip(canvas, ship);
-//        mSrc.right = m2er.getWidth();
-//        mSrc.bottom = m2er.getHeight();
-//
-//        canvas.save();
-//        int h = ship.height();
-//        int w = ship.width();
-//        int cells = 3;
-//        if ((w / h) == cells || (h / w) == cells) {
-////                if ((w / h) == cells) {
-////                    canvas.rotate(90f);
-////                }
-//            canvas.drawBitmap(m2er, mSrc, ship, null);
-//        }
-//        canvas.restore();
-//    }
+    @Override
+    public Rect drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
+        Rect rect = super.drawShip(canvas, ship);
+        Bitmap bitmap = getTopBitmapForShipSize(ship);
+        mSrc.right = bitmap.getWidth();
+        mSrc.bottom = bitmap.getHeight();
+        canvas.drawBitmap(bitmap, mSrc, rect, null);
+        return rect;
+    }
+
+    private Bitmap getTopBitmapForShipSize(@NonNull Ship ship) {
+        Bitmap horizontalBitmap = Bitmaps.getTopBitmapForShipSize(mResources, ship.getSize());
+        if (ship.isHorizontal()) {
+            return horizontalBitmap;
+        } else {
+            Bitmap verticalBitmap = mVerticalBitmaps.get(ship.getSize());
+            if (verticalBitmap == null) {
+                verticalBitmap = rotate(horizontalBitmap);
+                mVerticalBitmaps.put(ship.getSize(), verticalBitmap);
+            }
+
+            return verticalBitmap;
+        }
+    }
+
+    private Bitmap rotate(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, mRotationMatrix, true);
+    }
+
+    @NonNull
+    @Override
+    protected Paint getShipPaint() {
+        return mShipBorderPaint;
+    }
 
     public void renderConflictingCell(@NonNull Canvas canvas, int i, int j) {
         Rect invalidRect = mPresenter.getRectForCell(i, j);
@@ -56,7 +85,7 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     }
 
     public void drawDockedShip(@NonNull Canvas canvas, @NonNull Ship dockedShip) {
-        Bitmap bitmap = Bitmaps.getBitmapForShipSize(mResources, dockedShip.getSize());
+        Bitmap bitmap = Bitmaps.getSideBitmapForShipSize(mResources, dockedShip.getSize());
         Point center = mPresenter.getShipDisplayAreaCenter();
         int displayLeft = center.x - bitmap.getWidth() / 2;
         int displayTop = center.y - bitmap.getHeight() / 2;

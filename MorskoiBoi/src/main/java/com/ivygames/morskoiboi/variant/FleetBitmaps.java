@@ -5,5 +5,6 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 public interface FleetBitmaps {
-    Bitmap getBitmapForShipSize(@NonNull Resources resources, int size);
+    Bitmap getSideBitmapForShipSize(@NonNull Resources resources, int size);
+    Bitmap getTopBitmapForShipSize(@NonNull Resources resources, int size);
 }

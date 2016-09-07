@@ -62,6 +62,11 @@ public class Bitmaps {
         put(res, R.drawable.explosion_17);
         put(res, R.drawable.explosion_18);
 
+        put(res, R.drawable._1_square_ship);
+        put(res, R.drawable._2_square_ship);
+        put(res, R.drawable._3_square_ship);
+        put(res, R.drawable._4_square_ship);
+
         Ln.d("memory used by bitmaps: " + (sMemoryUsed / 1024) + "k");
     }
 
@@ -87,8 +92,12 @@ public class Bitmaps {
         return bitmap;
     }
 
-    public static Bitmap getBitmapForShipSize(Resources resources, int size) {
-        return fleetBitmapsChooser.getBitmapForShipSize(resources, size);
+    public static Bitmap getSideBitmapForShipSize(Resources resources, int size) {
+        return fleetBitmapsChooser.getSideBitmapForShipSize(resources, size);
+    }
+
+    public static Bitmap getTopBitmapForShipSize(Resources resources, int size) {
+        return fleetBitmapsChooser.getTopBitmapForShipSize(resources, size);
     }
 
     public int getBitmapSize(Resources res, int resId) {
