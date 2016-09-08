@@ -4,7 +4,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -140,16 +139,6 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
         int i = xToI(shipInBoardCoordinatesX);
         int j = yToJ(shipInBoardCoordinatesY);
         return Vector2.get(i, j);
-    }
-
-    final boolean isOnBoard(@NonNull Point p) {
-        return isOnBoard(p.x, p.y);
-    }
-
-    private boolean isOnBoard(int x, int y) {
-        int i = xToI(x);
-        int j = yToJ(y);
-        return Board.contains(i, j);
     }
 
     public int getCellSize() {

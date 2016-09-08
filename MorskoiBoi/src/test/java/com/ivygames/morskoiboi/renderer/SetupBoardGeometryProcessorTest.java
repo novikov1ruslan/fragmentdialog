@@ -78,10 +78,4 @@ public class SetupBoardGeometryProcessorTest {
         assertThat(rectForCell, equalTo(new Rect(162, 322, 192, 352)));
     }
 
-    @Test
-    public void isOnBoard() {
-        assertThat(mPresenter.isOnBoard(IN_DOCK_AREA), is(false));
-        assertThat(mPresenter.isOnBoard(IN_BOARD_AREA), is(true));
-    }
-
 }
