@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.google.android.gms.ads.AdListener;
@@ -17,12 +18,16 @@ import org.commons.logger.Ln;
 
 public class AdmobAdProvider implements AdProvider {
 
+    @NonNull
+    private final Builder mAdRequestBuilder;
     private InterstitialAd mInterstitialAfterPlay;
     private boolean mNeedToShowAfterPlayAd;
     private Person mPerson;
     private AdView mBanner;
 
     public AdmobAdProvider(Activity activity) {
+        mAdRequestBuilder = createAdRequestBuilder(null);
+
         initInterstitialAfterPlay(activity, activity.getString(R.string.admob_interstitial_after_play_id));
         mBanner = (AdView) activity.findViewById(R.id.banner);
         if (isSmallScreen(activity)) {
@@ -30,6 +35,22 @@ public class AdmobAdProvider implements AdProvider {
         } else {
             mBanner.setVisibility(View.VISIBLE);
         }
+    }
+
+    @NonNull
+    private static Builder createAdRequestBuilder(Person person) {
+        Builder builder = new AdRequest.Builder();
+        if (BuildConfig.DEBUG) {
+            /*
+             * This call will add the emulator as a test device. To add a physical device for testing, pass in your hashed device ID, which can be found in the
+			 * LogCat output when loading an ad on your device.
+			 */
+            builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+            builder.addTestDevice("43548AA33072E95B1BDCE839CC2F99F2"); // LG g2
+            builder.addTestDevice("D2E2CCE4C6E2B8BBAF4005B97CF6EB8C"); // LG L70
+        }
+
+        return builder;
     }
 
     @Override
@@ -51,7 +72,7 @@ public class AdmobAdProvider implements AdProvider {
         }
     }
 
-    private void initInterstitialAfterPlay(Context context, String adUnitId) {
+    private void initInterstitialAfterPlay(@NonNull Context context, @NonNull String adUnitId) {
         mInterstitialAfterPlay = new InterstitialAd(context);
         mInterstitialAfterPlay.setAdUnitId(adUnitId);
         Ln.v("interstitial after play initialized for [" + adUnitId + "]");
@@ -66,6 +87,7 @@ public class AdmobAdProvider implements AdProvider {
         });
     }
 
+    @NonNull
     private static String genderToString(int gender) {
         switch (gender) {
             case Person.Gender.MALE:
@@ -84,44 +106,17 @@ public class AdmobAdProvider implements AdProvider {
      *
      * @return An AdRequest to use when loading an ad.
      */
+    @NonNull
     private AdRequest createAdRequest() {
-        return AdmobAdProvider.createAdRequest(mPerson).build();
+        return mAdRequestBuilder.build();
     }
 
-    private static Builder createAdRequest(Person person) {
-        Builder builder = new AdRequest.Builder();
-        if (BuildConfig.DEBUG) {
-            /*
-             * This call will add the emulator as a test device. To add a physical device for testing, pass in your hashed device ID, which can be found in the
-			 * LogCat output when loading an ad on your device.
-			 */
-            builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-            builder.addTestDevice("43548AA33072E95B1BDCE839CC2F99F2"); // LG g2
-            builder.addTestDevice("D2E2CCE4C6E2B8BBAF4005B97CF6EB8C"); // LG L70
-        }
-
-        // if (person != null && person.hasBirthday()) {
-        // String birthday2 = person.getBirthday();
-        // Date birthday = null;
-        // builder.setBirthday(birthday);
-        // }
-
-        // AdRequest request = new AdRequest.Builder()
-        // .setLocation(location)
-        // .setGender(AdRequest.GENDER_FEMALE)
-        // .setBirthday(new GregorianCalendar(1985, 1, 1).getTime())
-        // // .tagForChildDirectedTreatment(true)
-        // .build();
-
-        return builder;
-    }
-
-    private boolean isSmallScreen(Context context) {
+    private boolean isSmallScreen(@NonNull Context context) {
         return context.getResources().getBoolean(R.bool.is_small_screen);
     }
 
     @Override
-    public void resume(Activity activity) {
+    public void resume(@NonNull Activity activity) {
         mBanner.loadAd(createAdRequest());
         mBanner.resume();
     }

@@ -9,6 +9,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 16
 
+        multiDexEnabled true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,7 +42,7 @@ android {
 
         }
         appodeal {
-            multiDexEnabled true
+
         }
     }
 
@@ -68,21 +70,22 @@ dependencies {
     compile project(':RUtils')
     //    compile 'com.facebook.android:facebook-android-sdk:4.10.0'
 
+    compile 'com.android.support:multidex:1.0.1'
     admobCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
 
     appodealCompile project(':cheetah-mobile-3.4.7')
     appodealCompile project(':unity-ads-1.5.8')
     appodealCompile fileTree(dir: 'libs', include: ['*.jar'])
-    appodealCompile 'com.android.support:multidex:1.0.1'
     appodealCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
     appodealCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
-
 
     compile "com.google.android.gms:play-services-games:${playServicesVersion}"
     compile "com.google.android.gms:play-services-analytics:${playServicesVersion}"
     compile "com.google.android.gms:play-services-identity:${playServicesVersion}"
     compile "com.google.android.gms:play-services-plus:${playServicesVersion}"
     compile "com.google.android.gms:play-services-drive:${playServicesVersion}"
+
+//    compile "com.google.firebase:firebase-core:${playServicesVersion}"
 
     compile 'ch.acra:acra:4.6.2'
     compile 'de.greenrobot:eventbus:2.4.0'
@@ -103,4 +106,6 @@ dependencies {
     androidTestCompile "com.crittercism.dexmaker:dexmaker:1.4"
     androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:1.4"
     androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:1.4"
+
+//    apply plugin: 'com.google.gms.google-services'
 }
