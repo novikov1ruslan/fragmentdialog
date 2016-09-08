@@ -99,7 +99,7 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     final Rect getPickedShipRect(@NonNull Ship ship, int x, int y) {
-        getPickedShipCoordinate(ship, x, y);
+        mPickedShipRect = centerPickedShipRectAround(ship, x, y);
         return mPickedShipRect;
     }
 
@@ -152,4 +152,7 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
         return Board.contains(i, j);
     }
 
+    public int getCellSize() {
+        return mCellSizePx;
+    }
 }

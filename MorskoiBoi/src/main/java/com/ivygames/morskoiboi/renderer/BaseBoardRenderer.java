@@ -15,7 +15,7 @@ public class BaseBoardRenderer {
     @NonNull
     private Paint debug_paint = new Paint();
     @NonNull
-    private final Paint mLinePaint;
+    protected final Paint mLinePaint;
     @NonNull
     private final Paint mHitOuterPaint;
     @NonNull
