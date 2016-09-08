@@ -31,6 +31,8 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     private final Map<Integer, Bitmap> mVerticalBitmaps = new HashMap<>();
     @NonNull
     private final Matrix mRotationMatrix = new Matrix();
+    @NonNull
+    private final Rect mDest = new Rect();
 
     public SetupBoardRenderer(@NonNull Resources res, @NonNull SetupBoardGeometryProcessor processor) {
         super(res, processor);
@@ -45,10 +47,13 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     @Override
     public Rect drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
         Rect rect = super.drawShip(canvas, ship);
+
+        mDest.set(rect.left + 1, rect.top + 1, rect.right - 1, rect.bottom - 1);
         Bitmap bitmap = getTopBitmapForShipSize(ship);
         mSrc.right = bitmap.getWidth();
         mSrc.bottom = bitmap.getHeight();
-        canvas.drawBitmap(bitmap, mSrc, rect, null);
+        canvas.drawBitmap(bitmap, mSrc, mDest, null);
+
         return rect;
     }
 
