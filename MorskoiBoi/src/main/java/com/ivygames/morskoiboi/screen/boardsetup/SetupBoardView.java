@@ -146,7 +146,7 @@ public class SetupBoardView extends BaseBoardView {
         }
 
         if (mPresenter.getPickedShip() != null) {
-            mPickedShipCoordinate = mRenderer.updatePickedGeometry(mPresenter.getPickedShip(), x, y);
+            mPickedShipCoordinate = mRenderer.getPickedShipCoordinate(mPresenter.getPickedShip(), x, y);
         }
     }
 
@@ -179,7 +179,7 @@ public class SetupBoardView extends BaseBoardView {
                 int j = mRenderer.yToJ(y);
                 Ln.v(mPickShipTask + ": picking ship from: [" + i + ", " + j + "]");
                 Ship pickedShip = mPresenter.pickShipFromBoard(mBoard, i, j);
-                mPickedShipCoordinate = mRenderer.updatePickedGeometry(pickedShip, mTouchState.getX(), mTouchState.getY());
+                mPickedShipCoordinate = mRenderer.getPickedShipCoordinate(pickedShip, mTouchState.getX(), mTouchState.getY());
                 invalidate();
                 mPickShipTask = null;
                 return true;

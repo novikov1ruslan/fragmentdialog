@@ -99,7 +99,7 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     final Rect getPickedShipRect(@NonNull Ship ship, int x, int y) {
-        updatePickedGeometry(ship, x, y);
+        getPickedShipCoordinate(ship, x, y);
         return mPickedShipRect;
     }
 
@@ -111,12 +111,12 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    final Vector2 updatePickedGeometry(@NonNull Ship ship, @NonNull Point p) {
-        return updatePickedGeometry(ship, p.x, p.y);
+    final Vector2 getPickedShipCoordinate(@NonNull Ship ship, @NonNull Point p) {
+        return getPickedShipCoordinate(ship, p.x, p.y);
     }
 
     @NonNull
-    final Vector2 updatePickedGeometry(@NonNull Ship ship, int x, int y) {
+    final Vector2 getPickedShipCoordinate(@NonNull Ship ship, int x, int y) {
         mPickedShipRect = centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate(mPickedShipRect);
     }

@@ -44,7 +44,7 @@ public class SetupBoardGeometryProcessorTest {
     @Test
     public void after_touch_and_docked_ship_pickup__there_is_valid_picked_ship_rect() {
         Ship pickedShip = new Ship(2);
-        mPresenter.updatePickedGeometry(pickedShip, IN_DOCK_AREA);
+        mPresenter.getPickedShipCoordinate(pickedShip, IN_DOCK_AREA);
 
         assertThat(mPresenter.getPickedShipRect(pickedShip, IN_DOCK_AREA), equalTo(VALID_PICKED_SHIP_RECT));
     }

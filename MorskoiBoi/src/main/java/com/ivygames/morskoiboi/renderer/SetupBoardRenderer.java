@@ -20,9 +20,12 @@ import java.util.Map;
 
 public class SetupBoardRenderer extends BaseBoardRenderer {
 
-    private Resources mResources;
+    @NonNull
+    private final Resources mResources;
+    @NonNull
     private final SetupBoardGeometryProcessor mPresenter;
-    private Rect mSrc = new Rect();
+    @NonNull
+    private final Rect mSrc = new Rect();
     @NonNull
     private final Paint mConflictCellPaint;
     @NonNull
@@ -109,8 +112,8 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     }
 
     @NonNull
-    public Vector2 updatePickedGeometry(@NonNull Ship ship, int x, int y) {
-        return mPresenter.updatePickedGeometry(ship, x, y);
+    public Vector2 getPickedShipCoordinate(@NonNull Ship ship, int x, int y) {
+        return mPresenter.getPickedShipCoordinate(ship, x, y);
     }
 
     public boolean isInDockArea(int x, int y) {
