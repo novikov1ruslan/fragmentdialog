@@ -53,13 +53,13 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         mRotationMatrix.postRotate(90);
     }
 
-    @Override
-    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-        Rect rectForShip = mProcessor.getRectForShip(ship);
-        canvas.drawRect(rectForShip, mShipBorderPaint);
-
-        drawShipInRect(canvas, ship, rectForShip);
-    }
+//    @Override
+//    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
+//        Rect rectForShip = mProcessor.getRectForShip(ship);
+//        canvas.drawRect(rectForShip, mShipBorderPaint);
+//
+//        drawShipInRect(canvas, ship, rectForShip);
+//    }
 
     private void drawShipInRect(@NonNull Canvas canvas, @NonNull Ship ship, Rect rect) {
         mDest.set(rect.left + 1, rect.top + 1, rect.right - 1, rect.bottom - 1);
@@ -112,9 +112,9 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
 
     public void drawPickedShip(@NonNull Canvas canvas, @NonNull Ship ship, int x, int y) {
         Rect pickedShipRect = mProcessor.getPickedShipRect(ship, x, y);
-        canvas.drawRect(pickedShipRect, mShipBorderPaint);
+        canvas.drawRect(pickedShipRect, mDockedShipPaint);
 
-        drawShipInRect(canvas, ship, pickedShipRect);
+//        drawShipInRect(canvas, ship, pickedShipRect);
     }
 
     public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 coordinate) {
