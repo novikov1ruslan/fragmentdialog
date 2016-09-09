@@ -29,13 +29,17 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     @NonNull
     private final Paint mConflictCellPaint;
     @NonNull
-    private final Paint mShipBorderPaint;
-    @NonNull
     private final Map<Integer, Bitmap> mVerticalBitmaps = new HashMap<>();
     @NonNull
     private final Matrix mRotationMatrix = new Matrix();
     @NonNull
     private final Rect mDest = new Rect();
+    @NonNull
+    private final Paint mLinePaint;
+    @NonNull
+    private final Paint mDockedShipPaint;
+    @NonNull
+    private final Paint mShipBorderPaint;
 
     public SetupBoardRenderer(@NonNull Resources res, @NonNull SetupBoardGeometryProcessor processor) {
         super(res, processor);
@@ -44,16 +48,17 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         mProcessor = processor;
         mConflictCellPaint = GraphicsUtils.newFillPaint(res, R.color.conflict_cell);
         mShipBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.ship_border);
+        mDockedShipPaint = GraphicsUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
+        mLinePaint = GraphicsUtils.newStrokePaint(res, R.color.line);
         mRotationMatrix.postRotate(90);
     }
 
     @Override
-    public Rect drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-        Rect rect = super.drawShip(canvas, ship);
+    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
+        Rect rectForShip = mProcessor.getRectForShip(ship);
+        canvas.drawRect(rectForShip, mShipBorderPaint);
 
-        drawShipInRect(canvas, ship, rect);
-
-        return rect;
+        drawShipInRect(canvas, ship, rectForShip);
     }
 
     private void drawShipInRect(@NonNull Canvas canvas, @NonNull Ship ship, Rect rect) {
@@ -85,12 +90,6 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         return Bitmap.createBitmap(bitmap, 0, 0, width, height, mRotationMatrix, true);
     }
 
-    @NonNull
-    @Override
-    protected Paint getShipPaint() {
-        return mShipBorderPaint;
-    }
-
     public void renderConflictingCell(@NonNull Canvas canvas, int i, int j) {
         Rect invalidRect = mProcessor.getRectForCell(i, j);
         canvas.drawRect(invalidRect, mConflictCellPaint);
@@ -108,12 +107,13 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
             int x = rectForDockedShip.left + i * mProcessor.getCellSize();
             canvas.drawLine(x, rectForDockedShip.top, x, rectForDockedShip.bottom, mLinePaint);
         }
-        drawRect(canvas, rectForDockedShip);
+        canvas.drawRect(rectForDockedShip, mDockedShipPaint);
     }
 
     public void drawPickedShip(@NonNull Canvas canvas, @NonNull Ship ship, int x, int y) {
         Rect pickedShipRect = mProcessor.getPickedShipRect(ship, x, y);
-        drawRect(canvas, pickedShipRect);
+        canvas.drawRect(pickedShipRect, mShipBorderPaint);
+
         drawShipInRect(canvas, ship, pickedShipRect);
     }
 

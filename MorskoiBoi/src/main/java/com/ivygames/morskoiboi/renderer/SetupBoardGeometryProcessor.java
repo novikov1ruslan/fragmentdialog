@@ -141,7 +141,7 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
         return Vector2.get(i, j);
     }
 
-    public int getCellSize() {
+    final int getCellSize() {
         return mCellSizePx;
     }
 }

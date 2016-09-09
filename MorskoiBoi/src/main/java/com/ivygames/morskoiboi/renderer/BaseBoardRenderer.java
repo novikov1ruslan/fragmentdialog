@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.GraphicsUtils;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.Aiming;
 
@@ -15,7 +15,7 @@ public class BaseBoardRenderer {
     @NonNull
     private Paint debug_paint = new Paint();
     @NonNull
-    protected final Paint mLinePaint;
+    private final Paint mLinePaint;
     @NonNull
     private final Paint mHitOuterPaint;
     @NonNull
@@ -105,27 +105,13 @@ public class BaseBoardRenderer {
         canvas.drawRect(board.frame, borderPaint);
     }
 
-    private void drawRect(@NonNull Canvas canvas, @NonNull Rect rect, int left, int top) {
-        rect.left += left;
-        rect.top += top;
-        rect.right += left;
-        rect.bottom += top;
-        canvas.drawRect(rect, getShipPaint());
-    }
-
     @NonNull
     protected Paint getShipPaint() {
         return mShipPaint;
     }
 
-    public Rect drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-        Rect rectForShip = mProcessor.getRectForShip(ship);
-        drawRect(canvas, rectForShip);
-        return rectForShip;
-    }
-
-    protected final void drawRect(@NonNull Canvas canvas, @NonNull Rect rect) {
-        drawRect(canvas, rect, 0, 0);
+    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
+        canvas.drawRect(mProcessor.getRectForShip(ship), mShipPaint);
     }
 
     public void drawHitMark(@NonNull Canvas canvas, int i, int j) {
