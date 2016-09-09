@@ -10,8 +10,8 @@ import org.commons.logger.Ln;
 
 public class AppodealAdProvider implements AdProvider {
 
-    private int mNextAdType = Appodeal.NON_SKIPPABLE_VIDEO;
-    private int mPrevAdType = Appodeal.INTERSTITIAL;
+    private int mNextAdIndex;
+    private int[] mAdtypes = {Appodeal.INTERSTITIAL, Appodeal.SKIPPABLE_VIDEO, Appodeal.INTERSTITIAL};
     @NonNull
     private final Activity mActivity;
     private boolean mNeedToShowAfterPlayAd;
@@ -20,10 +20,13 @@ public class AppodealAdProvider implements AdProvider {
         mActivity = activity;
         Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
+        Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
-        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.NON_SKIPPABLE_VIDEO);
+        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.SKIPPABLE_VIDEO);
+//        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL);
 
-        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
+//        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
+        Appodeal.setSkippableVideoCallbacks(new AppodealSkippableVideoCallback());
         Appodeal.setInterstitialCallbacks(new AppodealInterstitialCallback());
         Appodeal.setBannerCallbacks(new AppodealBannerCallbacks());
 
@@ -42,21 +45,27 @@ public class AppodealAdProvider implements AdProvider {
             return;
         }
 
-        mNeedToShowAfterPlayAd = !showAdType(mNextAdType);
-        swapAfterPlayAdType();
+        mNeedToShowAfterPlayAd = !showAdType(mAdtypes[mNextAdIndex]);
         if (mNeedToShowAfterPlayAd) {
-            mNeedToShowAfterPlayAd = !showAdType(mNextAdType);
+            showFirstAvailableAd();
+        }
+
+        if (mNextAdIndex >= mAdtypes.length) {
+            mNextAdIndex = 0;
         }
     }
 
-    private void swapAfterPlayAdType() {
-        int nextAdType = mNextAdType;
-        mNextAdType = mPrevAdType;
-        mPrevAdType = nextAdType;
-        Ln.v("next ad type: " + AppodealUtils.typeToName(mNextAdType));
+    private void showFirstAvailableAd() {
+        mNextAdIndex = 0;
+        while (mNeedToShowAfterPlayAd && mNextAdIndex < mAdtypes.length) {
+            mNeedToShowAfterPlayAd = !showAdType(mAdtypes[mNextAdIndex]);
+            mNextAdIndex++;
+        }
     }
 
     private boolean showAdType(int addType) {
+        Ln.v("trying to show ad type: " + AppodealUtils.typeToName(addType));
+
         if (Appodeal.isLoaded(addType)) {
             Ln.d("showing " + AppodealUtils.typeToName(addType));
             Appodeal.show(mActivity, addType);
@@ -67,7 +76,7 @@ public class AppodealAdProvider implements AdProvider {
     }
 
     @Override
-    public void resume(Activity activity) {
+    public void resume(@NonNull Activity activity) {
         Appodeal.onResume(activity, Appodeal.BANNER);
     }
 

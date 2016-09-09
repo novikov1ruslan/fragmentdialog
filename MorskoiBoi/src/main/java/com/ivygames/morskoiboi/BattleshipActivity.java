@@ -134,6 +134,9 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (_DEBUG_ALWAYS_SHOW_ADS && !BuildConfig.DEBUG) {
+            throw new IllegalStateException("ads off in release build");
+        }
         mRecreating = savedInstanceState != null;
         if (mRecreating) {
             Ln.i("app is recreating, restart it");

@@ -26,7 +26,7 @@ public class PlayerOpponent implements Opponent {
     private Runnable debug_thread_break_task = new Runnable() {
         @Override
         public void run() {
-            Ln.i("---------------------- main thread ----------------------");
+            Ln.v("---------------------- main thread ----------------------");
         }
     };
 
