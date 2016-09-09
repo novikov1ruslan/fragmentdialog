@@ -11,7 +11,8 @@ import org.commons.logger.Ln;
 public class AppodealAdProvider implements AdProvider {
 
     private int mNextAdIndex;
-    private int[] mAdTypes = {Appodeal.INTERSTITIAL, Appodeal.SKIPPABLE_VIDEO, Appodeal.INTERSTITIAL};
+    private int[] mAdTypes = {Appodeal.INTERSTITIAL, Appodeal.INTERSTITIAL, Appodeal.INTERSTITIAL,
+            Appodeal.SKIPPABLE_VIDEO};
     @NonNull
     private final Activity mActivity;
     private boolean mNeedToShowAfterPlayAd;
@@ -48,6 +49,8 @@ public class AppodealAdProvider implements AdProvider {
         mNeedToShowAfterPlayAd = !showAdType(mAdTypes[mNextAdIndex]);
         if (mNeedToShowAfterPlayAd) {
             showFirstAvailableAd();
+        } else {
+            mNextAdIndex++;
         }
 
         if (mNextAdIndex >= mAdTypes.length) {
