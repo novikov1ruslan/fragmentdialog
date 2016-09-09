@@ -11,7 +11,7 @@ import org.commons.logger.Ln;
 public class AppodealAdProvider implements AdProvider {
 
     private int mNextAdIndex;
-    private int[] mAdtypes = {Appodeal.INTERSTITIAL, Appodeal.SKIPPABLE_VIDEO, Appodeal.INTERSTITIAL};
+    private int[] mAdTypes = {Appodeal.INTERSTITIAL, Appodeal.SKIPPABLE_VIDEO, Appodeal.INTERSTITIAL};
     @NonNull
     private final Activity mActivity;
     private boolean mNeedToShowAfterPlayAd;
@@ -20,11 +20,11 @@ public class AppodealAdProvider implements AdProvider {
         mActivity = activity;
         Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
+        Appodeal.disableNetwork(activity, "cheetah");
         Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
         Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.SKIPPABLE_VIDEO);
 //        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL);
-
 //        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
         Appodeal.setSkippableVideoCallbacks(new AppodealSkippableVideoCallback());
         Appodeal.setInterstitialCallbacks(new AppodealInterstitialCallback());
@@ -45,20 +45,20 @@ public class AppodealAdProvider implements AdProvider {
             return;
         }
 
-        mNeedToShowAfterPlayAd = !showAdType(mAdtypes[mNextAdIndex]);
+        mNeedToShowAfterPlayAd = !showAdType(mAdTypes[mNextAdIndex]);
         if (mNeedToShowAfterPlayAd) {
             showFirstAvailableAd();
         }
 
-        if (mNextAdIndex >= mAdtypes.length) {
+        if (mNextAdIndex >= mAdTypes.length) {
             mNextAdIndex = 0;
         }
     }
 
     private void showFirstAvailableAd() {
         mNextAdIndex = 0;
-        while (mNeedToShowAfterPlayAd && mNextAdIndex < mAdtypes.length) {
-            mNeedToShowAfterPlayAd = !showAdType(mAdtypes[mNextAdIndex]);
+        while (mNeedToShowAfterPlayAd && mNextAdIndex < mAdTypes.length) {
+            mNeedToShowAfterPlayAd = !showAdType(mAdTypes[mNextAdIndex]);
             mNextAdIndex++;
         }
     }

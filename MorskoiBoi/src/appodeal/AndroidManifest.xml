@@ -3,8 +3,10 @@
 
 
     <!-- for Appodeal-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Optional -->
     <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
 
@@ -15,8 +17,7 @@
         android:name="android.hardware.location.network"
         android:required="false" />
 
-    <application>
-
+    <application xmlns:tools="http://schemas.android.com/tools">
         <meta-data
             android:name="com.appodeal.framework"
             android:value="android" />
@@ -194,6 +195,29 @@
         <activity
             android:name="com.appodeal.ads.VideoPlayerActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+        <!--suppress AndroidDomInspection -->
+        <activity
+            android:name="com.tapjoy.TJAdUnitActivity"
+            tools:ignore="UnusedAttribute"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <!--suppress AndroidDomInspection -->
+        <activity
+            android:name="com.tapjoy.mraid.view.ActionHandler"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <!--suppress AndroidDomInspection -->
+        <activity
+            android:name="com.tapjoy.mraid.view.Browser"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <!--suppress AndroidDomInspection -->
+        <activity
+            android:name="com.tapjoy.TJContentActivity"
+            tools:ignore="UnusedAttribute"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
     </application>
 </manifest>
