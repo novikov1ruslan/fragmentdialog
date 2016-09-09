@@ -21,7 +21,8 @@ public class AppodealAdProvider implements AdProvider {
         mActivity = activity;
         Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
-        Appodeal.disableNetwork(activity, "cheetah");
+        Appodeal.disableWriteExternalStoragePermissionCheck();
+//        Appodeal.disableNetwork(activity, "cheetah");
         Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
         Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.SKIPPABLE_VIDEO);
@@ -46,11 +47,12 @@ public class AppodealAdProvider implements AdProvider {
             return;
         }
 
-        mNeedToShowAfterPlayAd = !showAdType(mAdTypes[mNextAdIndex]);
-        if (mNeedToShowAfterPlayAd) {
-            showFirstAvailableAd();
+        int adType = mAdTypes[mNextAdIndex];
+        if (Appodeal.isLoaded(adType)) {
+            showAdType(adType);
         } else {
-            mNextAdIndex++;
+            Ln.d(AppodealUtils.typeToName(adType) + " ad not loaded");
+            mNextAdIndex = showFirstAvailableAd();
         }
 
         if (mNextAdIndex >= mAdTypes.length) {
@@ -58,24 +60,22 @@ public class AppodealAdProvider implements AdProvider {
         }
     }
 
-    private void showFirstAvailableAd() {
-        mNextAdIndex = 0;
-        while (mNeedToShowAfterPlayAd && mNextAdIndex < mAdTypes.length) {
-            mNeedToShowAfterPlayAd = !showAdType(mAdTypes[mNextAdIndex]);
-            mNextAdIndex++;
+    private int showFirstAvailableAd() {
+        for (int i = 0; i < mAdTypes.length; i++) {
+            if (Appodeal.isLoaded(mAdTypes[i])) {
+                showAdType(mAdTypes[i]);
+                return i;
+            }
         }
+
+        return mAdTypes.length;
     }
 
-    private boolean showAdType(int addType) {
-        Ln.v("trying to show ad type: " + AppodealUtils.typeToName(addType));
-
-        if (Appodeal.isLoaded(addType)) {
-            Ln.d("showing " + AppodealUtils.typeToName(addType));
-            Appodeal.show(mActivity, addType);
-            return true;
-        }
-        Ln.d(AppodealUtils.typeToName(addType) + " ad not loaded");
-        return false;
+    private void showAdType(int addType) {
+        Ln.d("showing " + AppodealUtils.typeToName(addType));
+        Appodeal.show(mActivity, addType);
+        mNeedToShowAfterPlayAd = false;
+        mNextAdIndex++;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AppodealAdProvider implements AdProvider {
 
     @Override
     public void destroy() {
-        Appodeal.hide(mActivity, Appodeal.BANNER);
+//        Appodeal.hide(mActivity, Appodeal.BANNER);
     }
 
 }
