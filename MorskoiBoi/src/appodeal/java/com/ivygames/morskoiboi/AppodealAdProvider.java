@@ -16,6 +16,7 @@ public class AppodealAdProvider implements AdProvider {
     @NonNull
     private final Activity mActivity;
     private boolean mNeedToShowAfterPlayAd;
+    private boolean mNoAds;
 
     public AppodealAdProvider(@NonNull Activity activity) {
         mActivity = activity;
@@ -37,26 +38,34 @@ public class AppodealAdProvider implements AdProvider {
 
     @Override
     public void needToShowAfterPlayAd() {
-        Ln.v("request to show after play ad");
-        mNeedToShowAfterPlayAd = true;
+        if (mNoAds) {
+            Ln.v("no ads");
+        } else {
+            Ln.v("request to show after play ad");
+            mNeedToShowAfterPlayAd = true;
+        }
     }
 
     @Override
     public void showAfterPlayAd() {
-        if (!mNeedToShowAfterPlayAd) {
-            return;
-        }
-
-        int adType = mAdTypes[mNextAdIndex];
-        if (Appodeal.isLoaded(adType)) {
-            showAdType(adType);
+        if (mNoAds) {
+            Ln.v("no ads");
         } else {
-            Ln.d(AppodealUtils.typeToName(adType) + " ad not loaded");
-            mNextAdIndex = showFirstAvailableAd();
-        }
+            if (!mNeedToShowAfterPlayAd) {
+                return;
+            }
 
-        if (mNextAdIndex >= mAdTypes.length) {
-            mNextAdIndex = 0;
+            int adType = mAdTypes[mNextAdIndex];
+            if (Appodeal.isLoaded(adType)) {
+                showAdType(adType);
+            } else {
+                Ln.d(AppodealUtils.typeToName(adType) + " ad not loaded");
+                mNextAdIndex = showFirstAvailableAd();
+            }
+
+            if (mNextAdIndex >= mAdTypes.length) {
+                mNextAdIndex = 0;
+            }
         }
     }
 
@@ -79,17 +88,27 @@ public class AppodealAdProvider implements AdProvider {
     }
 
     @Override
-    public void resume(@NonNull Activity activity) {
-        Appodeal.onResume(activity, Appodeal.BANNER);
+    public void resume() {
+        if (mNoAds) {
+            Ln.v("no ads");
+        } else {
+            Appodeal.onResume(mActivity, Appodeal.BANNER);
+        }
     }
 
     @Override
     public void pause() {
+        if (mNoAds) {
+            Ln.v("no ads");
+        }
     }
 
     @Override
     public void destroy() {
-//        Appodeal.hide(mActivity, Appodeal.BANNER);
+        if (mNoAds) {
+            Ln.v("no ads");
+        }
+        mNoAds = true;
+//        Appodeal.hide(mActivity, Appodeal.BANNER_TOP);
     }
-
 }

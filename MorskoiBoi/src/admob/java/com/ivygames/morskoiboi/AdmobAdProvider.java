@@ -24,6 +24,7 @@ public class AdmobAdProvider implements AdProvider {
     private boolean mNeedToShowAfterPlayAd;
     private Person mPerson;
     private AdView mBanner;
+    private boolean mNoAds;
 
     public AdmobAdProvider(Activity activity) {
         mAdRequestBuilder = createAdRequestBuilder(null);
@@ -55,20 +56,28 @@ public class AdmobAdProvider implements AdProvider {
 
     @Override
     public void needToShowAfterPlayAd() {
-        mNeedToShowAfterPlayAd = true;
+        if (mNoAds) {
+            Ln.v("no ads");
+        } else {
+            mNeedToShowAfterPlayAd = true;
+        }
     }
 
     @Override
     public void showAfterPlayAd() {
-        if (mNeedToShowAfterPlayAd) {
-            if (mInterstitialAfterPlay.isLoaded()) {
-                mInterstitialAfterPlay.show();
-                mNeedToShowAfterPlayAd = false;
-            } else {
-                Ln.d("after play ad not loaded");
-            }
+        if (mNoAds) {
+            Ln.v("no ads");
         } else {
-            Ln.d("no need to show after play ad");
+            if (mNeedToShowAfterPlayAd) {
+                if (mInterstitialAfterPlay.isLoaded()) {
+                    mInterstitialAfterPlay.show();
+                    mNeedToShowAfterPlayAd = false;
+                } else {
+                    Ln.d("after play ad not loaded");
+                }
+            } else {
+                Ln.d("no need to show after play ad");
+            }
         }
     }
 
@@ -116,22 +125,34 @@ public class AdmobAdProvider implements AdProvider {
     }
 
     @Override
-    public void resume(@NonNull Activity activity) {
-        mBanner.loadAd(createAdRequest());
-        mBanner.resume();
+    public void resume() {
+        if (mNoAds) {
+            Ln.v("no ads");
+        } else {
+            mBanner.loadAd(createAdRequest());
+            mBanner.resume();
+        }
     }
 
     @Override
     public void pause() {
-        Ln.v("pausing banner ad serving");
-        mBanner.pause();
+        if (mNoAds) {
+            Ln.v("no ads");
+        } else {
+            Ln.v("pausing banner ad serving");
+            mBanner.pause();
+        }
     }
 
     @Override
     public void destroy() {
-        if (mBanner != null) {
-            mBanner.destroy();
+        if (mNoAds) {
+            Ln.v("no ads");
+        } else {
+            mNoAds = true;
+            if (mBanner != null) {
+                mBanner.destroy();
+            }
         }
     }
-
 }

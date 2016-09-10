@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.SignInListener;
+import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationManager;
 import com.ivygames.common.invitations.InvitationPresenter;
 import com.ivygames.common.ui.BackPressListener;
-import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -66,6 +66,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final GameSettings mSettings;
+    @NonNull
+    protected final AdProvider mAdProvider = Dependencies.getAdProvider();
 
     private InvitationPresenter mInvitationPresenter;
     @NonNull
@@ -117,9 +119,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onResume() {
         super.onResume();
         parent().showTutorial(getTutView());
-
-        //TODO: convert to dependency
-        AdProviderFactory.getAdProvider().showAfterPlayAd();
+        mAdProvider.showAfterPlayAd();
     }
 
     @Override

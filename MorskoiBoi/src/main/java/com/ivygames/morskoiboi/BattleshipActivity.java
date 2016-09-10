@@ -21,6 +21,8 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.GpgsUtils;
+import com.ivygames.common.ads.AdProvider;
+import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.common.googleapi.ApiClient;
@@ -117,6 +119,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private ViewGroup mLayout;
     @NonNull
     private final InvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
+    @NonNull
+    private AdProvider mAdProvider = new NoAdsAdProvider();
 
     private static InfoCroutonLayout inflateInfoCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
         InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.info_crouton, root, false);
@@ -170,19 +174,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             mGoogleApiClient.connect();
         }
 
-        if (mSettings.noAds()) {
-            hideAds();
-        } else {
-            AdProviderFactory.init(this);
-            if (!_DEBUG_ALWAYS_SHOW_ADS) {
-                if (device.isBillingAvailable()) {
-                    mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl(), BASE64_ENCODED_PUBLIC_KEY);
-                } else {
-                    Ln.e("gpgs_not_available");
-                    hideNoAdsButton();
-                }
-            }
-        }
+        setupAds(device);
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
@@ -192,6 +184,53 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         ScreenCreator.setSettings(mSettings);
 
         setScreen(ScreenCreator.newMainScreen());
+    }
+
+    private void setupAds(@NonNull AndroidDevice device) {
+        if (!_DEBUG_ALWAYS_SHOW_ADS) {
+            if (mSettings.noAds()) {
+                hideAdsUi();
+            } else {
+                mAdProvider = AdProviderFactory.create(this);
+                if (device.isBillingAvailable()) {
+                    mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl(), BASE64_ENCODED_PUBLIC_KEY);
+                } else {
+                    Ln.e("gpgs_not_available");
+                    hideNoAdsButton();
+                }
+            }
+        }
+        Dependencies.inject(mAdProvider);
+    }
+
+    public void purchase() {
+        mPurchaseManager.purchase(SKU_NO_ADS, new PurchaseStatusListenerImpl());
+    }
+
+    private class PurchaseStatusListenerImpl implements PurchaseStatusListener {
+        @Override
+        public void onPurchaseFailed() {
+            FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
+        }
+
+        @Override
+        public void onHasNoAds() {
+            Ln.d("no ads purchased successfully");
+            mSettings.setNoAds();
+            hideAdsUi();
+            mAdProvider.destroy();
+        }
+    }
+
+    private void hideAdsUi() {
+        mBanner.setVisibility(View.GONE);
+        hideNoAdsButton();
+    }
+
+    private void hideNoAdsButton() {
+        if (mCurrentScreen instanceof MainScreen) {
+            ((MainScreen) mCurrentScreen).hideNoAdsButton();
+        }
     }
 
     @Override
@@ -208,20 +247,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     public void stopMusic() {
         mMusicPlayer.stop();
-    }
-
-    private void hideNoAdsButton() {
-        if (mCurrentScreen instanceof MainScreen) {
-            ((MainScreen) mCurrentScreen).hideNoAdsButton();
-        }
-    }
-
-    private void hideAds() {
-        if (_DEBUG_ALWAYS_SHOW_ADS) return;
-        AdProviderFactory.getAdProvider().destroy();
-        AdProviderFactory.noAds();
-        mBanner.setVisibility(View.GONE);
-        hideNoAdsButton();
     }
 
     @Override
@@ -264,7 +289,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         // Set the hardware buttons to control the music
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        AdProviderFactory.getAdProvider().resume(this);
+        mAdProvider.resume();
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
 //        AppEventsLogger.activateApp(this); // #FB
@@ -279,7 +304,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
         Ln.v("pausing");
         setVolumeControlStream(mVolumeControlStream);
-        AdProviderFactory.getAdProvider().pause();
+        mAdProvider.pause();
 
         mScreenManager.onPause();
 
@@ -322,7 +347,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         // screens will cancel all their croutons, but activity has its own
         Crouton.cancelAllCroutons();
-        AdProviderFactory.getAdProvider().destroy();
+        mAdProvider.destroy();
 
         mPurchaseManager.destroy();
 
@@ -427,24 +452,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mScreenManager.setScreen(screen);
         mMusicPlayer.play(screen.getMusic());
-    }
-
-    public void purchase() {
-        mPurchaseManager.purchase(SKU_NO_ADS, new PurchaseStatusListenerImpl());
-    }
-
-    private class PurchaseStatusListenerImpl implements PurchaseStatusListener {
-        @Override
-        public void onPurchaseFailed() {
-            FragmentAlertDialog.showNote(getFragmentManager(), FragmentAlertDialog.TAG, R.string.purchase_error);
-        }
-
-        @Override
-        public void onHasNoAds() {
-            Ln.d("Purchase is premium upgrade. Congratulating user.");
-            mSettings.setNoAds();
-            hideAds();
-        }
     }
 
     private class OnConnectionFailedListenerImpl implements OnConnectionFailedListener {

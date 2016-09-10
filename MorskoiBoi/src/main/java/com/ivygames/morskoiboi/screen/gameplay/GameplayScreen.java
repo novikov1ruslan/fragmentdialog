@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.VibratorWrapper;
+import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
@@ -112,6 +113,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final TurnTimerController mTimerController;
     @NonNull
     private final Intent mMatchStatusIntent;
+    @NonNull
+    private final AdProvider mAdProvider = Dependencies.getAdProvider();
 
     private boolean mMyTurn;
     private long mUnlockedTime;
@@ -126,8 +129,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mSession = session;
         mTimerController = timerController;
 
-        // TODO: convert to dependency
-        AdProviderFactory.getAdProvider().needToShowAfterPlayAd();
+        mAdProvider.needToShowAfterPlayAd();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) parent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mPlayer = session.player;

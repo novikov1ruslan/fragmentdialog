@@ -8,7 +8,7 @@ public interface AdProvider {
 
     void showAfterPlayAd();
 
-    void resume(@NonNull Activity activity);
+    void resume();
 
     void pause();
 
