@@ -79,9 +79,11 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     private static final int SERVICE_RESOLVE = 9002;
 
+    @NonNull
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
-    private final PurchaseManager mPurchaseManager = new PurchaseManager(this, RC_PURCHASE);
+    @NonNull
+    private final PurchaseManager mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
 
     private boolean mRecreating;
 
@@ -193,7 +195,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             } else {
                 mAdProvider = AdProviderFactory.create(this);
                 if (device.isBillingAvailable()) {
-                    mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl(), BASE64_ENCODED_PUBLIC_KEY);
+                    mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl());
                 } else {
                     Ln.e("gpgs_not_available");
                     hideNoAdsButton();

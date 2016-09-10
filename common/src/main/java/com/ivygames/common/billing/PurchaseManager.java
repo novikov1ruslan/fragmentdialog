@@ -6,30 +6,40 @@ import android.support.annotation.NonNull;
 
 import com.example.android.trivialdrivesample.util.IabHelper;
 import com.example.android.trivialdrivesample.util.IabResult;
+import com.ivygames.common.BuildConfig;
 
 import org.commons.logger.Ln;
 
 public class PurchaseManager {
-    private IabHelper mHelper;
 
     @NonNull
     private final Activity mActivity;
     private final int mRequestCode;
+    private IabHelper mHelper;
+    private IabResult mResult;
+    private Query mOngoingQuery;
 
-    public PurchaseManager(@NonNull Activity activity, int requestCode) {
-        mActivity = activity;
-        mRequestCode = requestCode;
+    private static class Query {
+        @NonNull
+        final String sku;
+        @NonNull
+        final HasNoAdsListener listener;
+
+        private Query(@NonNull String sku, @NonNull HasNoAdsListener listener) {
+            this.sku = sku;
+            this.listener = listener;
+        }
     }
 
-    public void query(final @NonNull String sku, final @NonNull HasNoAdsListener listener, @NonNull String key) {
-        destroy();
-
+    public PurchaseManager(@NonNull Activity activity, int requestCode, @NonNull String key) {
+        mActivity = activity;
+        mRequestCode = requestCode;
         // Create the helper, passing it our context and the public key to verify signatures with
         Ln.d("Creating IAB helper.");
         mHelper = new IabHelper(mActivity, key);
 
         // enable debug logging (for a production application, you should set this to false).
-        mHelper.enableDebugLogging(true);
+        mHelper.enableDebugLogging(BuildConfig.DEBUG);
 
         // Start setup. This is asynchronous and the specified listener
         // will be called once setup completes.
@@ -43,9 +53,33 @@ public class PurchaseManager {
                     return;
                 }
 
-                PurchaseUtils.query(sku, result, listener, mHelper);
+                if (!result.isSuccess()) {
+                    Ln.w("Problem setting up in-app billing: " + result);
+                    return;
+                }
+
+                mResult = result;
+                if (mOngoingQuery != null) {
+                    Ln.d("ongoing query, executing.");
+                    PurchaseUtils.query(mHelper, mOngoingQuery.sku, mOngoingQuery.listener);
+                }
             }
         });
+    }
+
+    public void query(@NonNull String sku, @NonNull HasNoAdsListener listener) {
+        if (mHelper == null) {
+            alreadyDestroyedWarning();
+            return;
+        }
+
+        if (mResult == null) {
+            Ln.d("not yet initialized, queueing: " + sku);
+            mOngoingQuery = new Query(sku, listener);
+            return;
+        }
+
+        PurchaseUtils.query(mHelper, sku, listener);
     }
 
     public void destroy() {
@@ -64,9 +98,9 @@ public class PurchaseManager {
             alreadyDestroyedWarning();
             return;
         }
-        Ln.v("response code = " + resultCode);
 
-        PurchaseUtils.handleActivityResult(mRequestCode, resultCode, data, mHelper);
+        Ln.v("response code = " + resultCode);
+        PurchaseUtils.handleActivityResult(mHelper, mRequestCode, resultCode, data);
     }
 
     public void purchase(@NonNull String sku, final @NonNull PurchaseStatusListener listener) {
@@ -86,7 +120,7 @@ public class PurchaseManager {
             return;
         }
 
-        PurchaseUtils.purchase(mActivity, sku, mRequestCode, listener, payload, mHelper);
+        PurchaseUtils.purchase(mHelper, mActivity, sku, mRequestCode, listener, payload);
     }
 
     private static void alreadyDestroyedWarning() {

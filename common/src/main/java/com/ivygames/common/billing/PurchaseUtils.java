@@ -7,7 +7,6 @@ import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
 import com.example.android.trivialdrivesample.util.IabHelper;
-import com.example.android.trivialdrivesample.util.IabResult;
 import com.example.android.trivialdrivesample.util.Purchase;
 
 import org.commons.logger.Ln;
@@ -58,8 +57,8 @@ public class PurchaseUtils {
         }
     }
 
-    static void handleActivityResult(int requestCode, int resultCode, Intent data,
-                                     @NonNull IabHelper helper) {
+    static void handleActivityResult(@NonNull IabHelper helper,
+                                     int requestCode, int resultCode, Intent data) {
         try {
             // Pass on the activity result to the helper for handling
             boolean handled = helper.handleActivityResult(requestCode, resultCode, data);
@@ -71,12 +70,12 @@ public class PurchaseUtils {
         }
     }
 
-    static void purchase(@NonNull Activity activity,
+    static void purchase(@NonNull IabHelper helper,
+                         @NonNull Activity activity,
                          @NonNull String sku,
                          int requestCode,
                          @NonNull PurchaseStatusListener listener,
-                         @NonNull String payload,
-                         @NonNull IabHelper helper) {
+                         @NonNull String payload) {
         try {
             helper.launchPurchaseFlow(activity, sku, requestCode,
                     new OnIabPurchaseFinishedImpl(listener, sku), payload);
@@ -85,15 +84,10 @@ public class PurchaseUtils {
         }
     }
 
-    static void query(@NonNull String sku, @NonNull IabResult result,
-                      @NonNull HasNoAdsListener listener,
-                      @NonNull IabHelper helper) {
+    static void query(@NonNull IabHelper helper,
+                      @NonNull String sku,
+                      @NonNull HasNoAdsListener listener) {
         try {
-            if (!result.isSuccess()) {
-                Ln.w("Problem setting up in-app billing: " + result);
-                return;
-            }
-
             // IAB is fully set up. Now, let's get an inventory of stuff we own.
             Ln.d("Setup successful. Querying inventory.");
             helper.queryInventoryAsync(new QueryInventoryFinishedImpl(sku, listener));
