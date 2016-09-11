@@ -18,13 +18,16 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     def playServicesVersion = '9.2.1'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile project(':BaseGameUtils')
-    compile project(':RUtils')
     compile project(':fragmentdialog')
 
     compile 'com.github.novikov1ruslan:BillingUtils:-SNAPSHOT'
@@ -36,4 +39,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:23.2.0"
 
     testCompile 'junit:junit:4.12'
+
+    compile 'com.github.novikov1ruslan:Logger:-SNAPSHOT'
 }

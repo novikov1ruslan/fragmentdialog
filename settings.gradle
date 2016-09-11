@@ -1,6 +1,5 @@
 include ':AppTheme', ':unity-ads-1.5.8', ':cheetah-mobile-3.4.7'
 include ':common'
 include ':BaseGameUtils'
-include ':RUtils'
 include ':fragmentdialog'
 include ':MorskoiBoi'

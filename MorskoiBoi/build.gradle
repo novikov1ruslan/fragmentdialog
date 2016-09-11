@@ -67,7 +67,6 @@ dependencies {
     compile project(':AppTheme')
     compile project(':fragmentdialog')
     compile project(':BaseGameUtils')
-    compile project(':RUtils')
     //    compile 'com.facebook.android:facebook-android-sdk:4.10.0'
 
     compile 'com.android.support:multidex:1.0.1'
@@ -108,4 +107,8 @@ dependencies {
     androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:1.4"
 
 //    apply plugin: 'com.google.gms.google-services'
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
 }
