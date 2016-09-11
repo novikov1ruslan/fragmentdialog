@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.appodeal.ads.Appodeal;
+import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ads.AdProvider;
 
 import org.commons.logger.Ln;
@@ -19,11 +20,14 @@ public class AppodealAdProvider implements AdProvider {
     };
     @NonNull
     private final Activity mActivity;
+    @NonNull
+    private final AndroidDevice mDevice;
     private boolean mNeedToShowAfterPlayAd;
     private boolean mNoAds;
 
-    public AppodealAdProvider(@NonNull Activity activity) {
+    public AppodealAdProvider(@NonNull Activity activity, @NonNull AndroidDevice device) {
         mActivity = activity;
+        mDevice = device;
         Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
         Appodeal.disableWriteExternalStoragePermissionCheck();
@@ -84,8 +88,9 @@ public class AppodealAdProvider implements AdProvider {
 
     private int showFirstAvailableAd() {
         for (int i = 0; i < mAdTypes.length; i++) {
-            if (Appodeal.isLoaded(mAdTypes[i])) {
-                showAdType(mAdTypes[i]);
+            int adType = mAdTypes[i];
+            if (Appodeal.isLoaded(adType)) {
+                showAdType(adType);
                 return i;
             }
         }
@@ -93,9 +98,13 @@ public class AppodealAdProvider implements AdProvider {
         return mAdTypes.length;
     }
 
-    private void showAdType(int addType) {
-        Ln.d("showing " + AppodealUtils.typeToName(addType));
-        Appodeal.show(mActivity, addType);
+    private void showAdType(int adType) {
+        if (adType == Appodeal.SKIPPABLE_VIDEO && !mDevice.isWifiConnected()) {
+            Ln.d("video ad skipped");
+            return;
+        }
+        Ln.d("showing " + AppodealUtils.typeToName(adType));
+        Appodeal.show(mActivity, adType);
         mNeedToShowAfterPlayAd = false;
         mNextAdIndex++;
     }

@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,11 @@ public class AndroidDevice {
             }
         }
         return false;
+    }
+
+    public boolean isWifiConnected() {
+        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
     }
 
     public boolean canResolveIntent(@NonNull Intent intent) {

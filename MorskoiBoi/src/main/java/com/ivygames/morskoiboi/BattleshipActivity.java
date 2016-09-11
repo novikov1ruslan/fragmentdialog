@@ -120,6 +120,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private final InvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
     @NonNull
     private AdProvider mAdProvider = new NoAdsAdProvider();
+    @NonNull
+    private final AndroidDevice mDevice = Dependencies.getDevice();
 
     private static InfoCroutonLayout inflateInfoCroutonLayout(LayoutInflater inflater, CharSequence message, ViewGroup root) {
         InfoCroutonLayout infoCroutonLayout = (InfoCroutonLayout) inflater.inflate(R.layout.info_crouton, root, false);
@@ -192,7 +194,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
                 hideAdsUi();
             }
         } else {
-            mAdProvider = AdProviderFactory.create(this);
+            mAdProvider = AdProviderFactory.create(this, mDevice);
             if (!_DEBUG_ALWAYS_SHOW_ADS) {
                 if (device.isBillingAvailable()) {
                     mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl());
