@@ -36,7 +36,7 @@ public class PurchaseManager {
         mRequestCode = requestCode;
         // Create the helper, passing it our context and the public key to verify signatures with
         Ln.d("Creating IAB helper.");
-        mHelper = new IabHelper(mActivity, key);
+        mHelper = new IabHelper(activity, key);
 
         // enable debug logging (for a production application, you should set this to false).
         mHelper.enableDebugLogging(BuildConfig.DEBUG);

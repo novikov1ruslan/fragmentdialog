@@ -5,9 +5,13 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Ship;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -18,9 +22,10 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
     @Test
     public void WhenBoardIsSet_AndAllShipsAreHorizontal_AndDonePressed__DialogDisplayed() {
         showScreen();
+        generateHorizontalFleet();
         when(rules.isBoardSet(any(Board.class))).thenReturn(true);
 
-        done();
+        clickOn(done());
 
         checkDisplayed(onlyHorizontalDialog());
     }
@@ -55,8 +60,22 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
     }
 
     @NonNull
-    protected Matcher<View> onlyHorizontalDialog() {
-        return withText(getString(R.string.only_horizontal_ships));
+    private Matcher<View> onlyHorizontalDialog() {
+        String message = getString(R.string.only_horizontal_ships) + " " +
+                getString(R.string.rotate_instruction);
+        return withText(message);
+    }
+
+    private void generateHorizontalFleet() {
+        Collection<Ship> fleet = new ArrayList<>();
+        fleet.add(new Ship(4, Ship.Orientation.HORIZONTAL));
+        when(rules.generateFullFleet()).thenReturn(fleet);
+    }
+
+    private void generateNonHorizontalFleet() {
+        Collection<Ship> fleet = new ArrayList<>();
+        fleet.add(new Ship(4, Ship.Orientation.VERTICAL));
+        when(rules.generateFullFleet()).thenReturn(fleet);
     }
 
     private Matcher<View> rearrange() {

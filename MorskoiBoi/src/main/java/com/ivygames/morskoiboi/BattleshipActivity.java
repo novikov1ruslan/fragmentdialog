@@ -82,8 +82,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
-    @NonNull
-    private final PurchaseManager mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
+    private PurchaseManager mPurchaseManager;
 
     private boolean mRecreating;
 
@@ -176,6 +175,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             mGoogleApiClient.connect();
         }
 
+        mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
         setupAds(device);
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
