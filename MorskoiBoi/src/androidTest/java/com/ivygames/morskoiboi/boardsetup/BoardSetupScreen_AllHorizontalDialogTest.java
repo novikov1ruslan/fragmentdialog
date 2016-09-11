@@ -72,12 +72,6 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
         when(rules.generateFullFleet()).thenReturn(fleet);
     }
 
-    private void generateNonHorizontalFleet() {
-        Collection<Ship> fleet = new ArrayList<>();
-        fleet.add(new Ship(4, Ship.Orientation.VERTICAL));
-        when(rules.generateFullFleet()).thenReturn(fleet);
-    }
-
     private Matcher<View> rearrange() {
         return positiveButton();
     }

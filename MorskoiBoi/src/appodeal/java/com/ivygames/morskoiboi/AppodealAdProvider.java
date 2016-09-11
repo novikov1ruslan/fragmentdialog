@@ -11,8 +11,12 @@ import org.commons.logger.Ln;
 public class AppodealAdProvider implements AdProvider {
 
     private int mNextAdIndex;
-    private int[] mAdTypes = {Appodeal.INTERSTITIAL, Appodeal.INTERSTITIAL, Appodeal.INTERSTITIAL,
-            Appodeal.SKIPPABLE_VIDEO};
+    private int[] mAdTypes = {
+            Appodeal.INTERSTITIAL,
+            Appodeal.INTERSTITIAL,
+            Appodeal.INTERSTITIAL,
+            Appodeal.SKIPPABLE_VIDEO
+    };
     @NonNull
     private final Activity mActivity;
     private boolean mNeedToShowAfterPlayAd;
@@ -26,7 +30,8 @@ public class AppodealAdProvider implements AdProvider {
 //        Appodeal.disableNetwork(activity, "cheetah");
         Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
         String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
-        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL | Appodeal.SKIPPABLE_VIDEO);
+        int fullScreenAds = getFullScreenAds();
+        Appodeal.initialize(activity, appKey, Appodeal.BANNER | fullScreenAds);
 //        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL);
 //        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
         Appodeal.setSkippableVideoCallbacks(new AppodealSkippableVideoCallback());
@@ -34,6 +39,14 @@ public class AppodealAdProvider implements AdProvider {
         Appodeal.setBannerCallbacks(new AppodealBannerCallbacks());
 
         Appodeal.show(activity, Appodeal.BANNER_TOP);
+    }
+
+    private int getFullScreenAds() {
+        int adTypes = 0;
+        for (int adType : mAdTypes) {
+            adTypes |= adType;
+        }
+        return adTypes;
     }
 
     @Override
