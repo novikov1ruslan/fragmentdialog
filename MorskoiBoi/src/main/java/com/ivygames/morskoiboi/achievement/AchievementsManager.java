@@ -124,28 +124,29 @@ public class AchievementsManager extends AchievementsManagerBase {
     }
 
     static String debugName(String id) {
-        if (AchievementsManager.NAVAL_MERIT.equals(id)) {
-            return "NAVAL_MERIT";
-        } else if (AchievementsManager.ORDER_OF_HONOUR.equals(id)) {
-            return "ORDER_OF_HONOUR";
-        } else if (AchievementsManager.BRAVERY_AND_COURAGE.equals(id)) {
-            return "BRAVERY_AND_COURAGE";
-        } else if (AchievementsManager.EXTRA_BRAVERY_AND_COURAGE.equals(id)) {
-            return "EXTRA_BRAVERY_AND_COURAGE";
-        } else if (AchievementsManager.FLYING_DUTCHMAN.equals(id)) {
-            return "FLYING_DUTCHMAN";
-        } else if (AchievementsManager.STEALTH.equals(id)) {
-            return "STEALTH";
-        } else if (AchievementsManager.LIFE_SAVING.equals(id)) {
-            return "LIFE_SAVING";
-        } else if (AchievementsManager.AIRCRAFTSMAN.equals(id)) {
-            return "AIRCRAFTSMAN";
-        } else if (AchievementsManager.CRUISER_COMMANDER.equals(id)) {
-            return "CRUISER_COMMANDER";
-        } else if (AchievementsManager.DESTROYER.equals(id)) {
-            return "DESTROYER";
-        } else if (AchievementsManager.MILITARY_ACHIEVEMENTS.equals(id)) {
-            return "MILITARY_ACHIEVEMENTS";
+        switch (id) {
+            case NAVAL_MERIT:
+                return "NAVAL_MERIT";
+            case ORDER_OF_HONOUR:
+                return "ORDER_OF_HONOUR";
+            case BRAVERY_AND_COURAGE:
+                return "BRAVERY_AND_COURAGE";
+            case EXTRA_BRAVERY_AND_COURAGE:
+                return "EXTRA_BRAVERY_AND_COURAGE";
+            case FLYING_DUTCHMAN:
+                return "FLYING_DUTCHMAN";
+            case STEALTH:
+                return "STEALTH";
+            case LIFE_SAVING:
+                return "LIFE_SAVING";
+            case AIRCRAFTSMAN:
+                return "AIRCRAFTSMAN";
+            case CRUISER_COMMANDER:
+                return "CRUISER_COMMANDER";
+            case DESTROYER:
+                return "DESTROYER";
+            case MILITARY_ACHIEVEMENTS:
+                return "MILITARY_ACHIEVEMENTS";
         }
 
         return "UNKNOWN(" + id + ")";
