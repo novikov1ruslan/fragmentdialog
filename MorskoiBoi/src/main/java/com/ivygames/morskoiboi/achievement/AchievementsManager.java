@@ -51,12 +51,10 @@ public class AchievementsManager extends AchievementsManagerBase {
 
     public void processCombo(int combo) {
         Ln.v("combo=" + combo);
-        if (combo >= 1) {
-            if (unlockIfNotUnlocked(NAVAL_MERIT)) {
-                reveal(ORDER_OF_HONOUR);
-            } else if (combo >= 2) {
-                unlockIfNotUnlocked(ORDER_OF_HONOUR);
-            }
+        if (unlockIfNotUnlocked(NAVAL_MERIT)) {
+            reveal(ORDER_OF_HONOUR);
+        } else if (combo >= 2) {
+            unlockIfNotUnlocked(ORDER_OF_HONOUR);
         }
     }
 
