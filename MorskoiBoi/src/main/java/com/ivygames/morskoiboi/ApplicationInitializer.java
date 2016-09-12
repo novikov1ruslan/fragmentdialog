@@ -34,6 +34,7 @@ class ApplicationInitializer {
     private static final String ANALYTICS_KEY = "UA-43473473-1";
 
     public static void initialize(final Application application) {
+        Log.v("Battleship", "initializing application...");
         ACRA.init(application);
         AndroidDevice device = new AndroidDevice(application);
         initLogger(application, device.isDebug());
@@ -64,8 +65,7 @@ class ApplicationInitializer {
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
 
         ExceptionHandler.setDryRun(BuildConfig.DEBUG);
-        Log.i("Battleship", "created");
-
+        Ln.v("... application initialization complete");
     }
 
     private static void initLogger(Application application, boolean isDebug) {

@@ -83,7 +83,7 @@ public class AchievementsManager extends AchievementsManagerBase {
     public void processShipsLeft(Collection<Ship> ships) {
         Ln.v("ships=" + ships);
 
-        int shipsLeft = AchievementsManager.countAliveShips(ships);
+        int shipsLeft = countAliveShips(ships);
         if (shipsLeft >= 3) {
             if (unlockIfNotUnlocked(STEALTH)) {
                 reveal(LIFE_SAVING);
@@ -121,32 +121,32 @@ public class AchievementsManager extends AchievementsManagerBase {
         return left;
     }
 
-    static String debugName(String id) {
-        switch (id) {
-            case NAVAL_MERIT:
-                return "NAVAL_MERIT";
-            case ORDER_OF_HONOUR:
-                return "ORDER_OF_HONOUR";
-            case BRAVERY_AND_COURAGE:
-                return "BRAVERY_AND_COURAGE";
-            case EXTRA_BRAVERY_AND_COURAGE:
-                return "EXTRA_BRAVERY_AND_COURAGE";
-            case FLYING_DUTCHMAN:
-                return "FLYING_DUTCHMAN";
-            case STEALTH:
-                return "STEALTH";
-            case LIFE_SAVING:
-                return "LIFE_SAVING";
-            case AIRCRAFTSMAN:
-                return "AIRCRAFTSMAN";
-            case CRUISER_COMMANDER:
-                return "CRUISER_COMMANDER";
-            case DESTROYER:
-                return "DESTROYER";
-            case MILITARY_ACHIEVEMENTS:
-                return "MILITARY_ACHIEVEMENTS";
-        }
-
-        return "UNKNOWN(" + id + ")";
-    }
+//    static String debugName(String id) {
+//        switch (id) {
+//            case NAVAL_MERIT:
+//                return "NAVAL_MERIT";
+//            case ORDER_OF_HONOUR:
+//                return "ORDER_OF_HONOUR";
+//            case BRAVERY_AND_COURAGE:
+//                return "BRAVERY_AND_COURAGE";
+//            case EXTRA_BRAVERY_AND_COURAGE:
+//                return "EXTRA_BRAVERY_AND_COURAGE";
+//            case FLYING_DUTCHMAN:
+//                return "FLYING_DUTCHMAN";
+//            case STEALTH:
+//                return "STEALTH";
+//            case LIFE_SAVING:
+//                return "LIFE_SAVING";
+//            case AIRCRAFTSMAN:
+//                return "AIRCRAFTSMAN";
+//            case CRUISER_COMMANDER:
+//                return "CRUISER_COMMANDER";
+//            case DESTROYER:
+//                return "DESTROYER";
+//            case MILITARY_ACHIEVEMENTS:
+//                return "MILITARY_ACHIEVEMENTS";
+//        }
+//
+//        return "UNKNOWN(" + id + ")";
+//    }
 }

@@ -189,6 +189,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     private void setupAds(@NonNull AndroidDevice device) {
+        Ln.v("setting up ads...");
         if (mSettings.noAds()) {
             if (!_DEBUG_ALWAYS_SHOW_ADS) {
                 hideAdsUi();
@@ -205,6 +206,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             }
         }
         Dependencies.inject(mAdProvider);
+        Ln.v("...ads setup complete");
     }
 
     public void purchase() {
