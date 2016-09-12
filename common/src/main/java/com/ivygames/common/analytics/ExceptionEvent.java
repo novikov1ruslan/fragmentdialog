@@ -1,51 +1,38 @@
 package com.ivygames.common.analytics;
 
-import com.google.android.gms.analytics.HitBuilders.EventBuilder;
-
-import java.util.Map;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public final class ExceptionEvent {
-    private final EventBuilder builder;
-    private static final String GA_CAT_EXCEPTION = "exception";
+    @Nullable
+    private static ExceptionEventImpl sImpl;
+
+    public static void setImpl(@NonNull ExceptionEventImpl impl) {
+        sImpl = impl;
+    }
 
     public static void send(String action, Exception e) {
-        GlobalTracker.tracker.send(new ExceptionEvent(action, e).build());
+        if (sImpl != null) {
+            sImpl.send(action, e);
+        }
     }
 
     public static void send(String action, String label) {
-        GlobalTracker.tracker.send(new ExceptionEvent(action, label).build());
+        if (sImpl != null) {
+            sImpl.send(action, label);
+        }
     }
 
     public static void send(String action, String label, Exception e) {
-        GlobalTracker.tracker.send(new ExceptionEvent(action, label + e.getClass() + "; " + e.getMessage()).build());
+        if (sImpl != null) {
+            sImpl.send(action, label, e);
+        }
     }
 
     public static void send(String action) {
-        GlobalTracker.tracker.send(new ExceptionEvent(action).build());
-    }
-
-    public ExceptionEvent(String action, Exception e) {
-        builder = new EventBuilder(GA_CAT_EXCEPTION, action).setLabel("" + e);
-    }
-
-    public ExceptionEvent(String action) {
-        builder = new EventBuilder(GA_CAT_EXCEPTION, action);
-    }
-
-    public ExceptionEvent(String action, String label) {
-        builder = new EventBuilder(GA_CAT_EXCEPTION, action).setLabel(label);
-    }
-
-    public ExceptionEvent(String action, String label, int value) {
-        builder = new EventBuilder(GA_CAT_EXCEPTION, action).setLabel(label).setValue(value);
-    }
-
-    public ExceptionEvent(String action, int value) {
-        builder = new EventBuilder(GA_CAT_EXCEPTION, action).setValue(value);
-    }
-
-    public Map<String, String> build() {
-        return builder.build();
+        if (sImpl != null) {
+            sImpl.send(action);
+        }
     }
 
 }

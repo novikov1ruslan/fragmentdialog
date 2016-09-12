@@ -16,9 +16,6 @@ import java.io.Writer;
 
 public class GlobalTracker {
 
-    // TODO: remove static global tracker
-    static Tracker tracker;
-
     private GlobalTracker(){}
 
     public static void initAnalytics(@NonNull Application application, @NonNull String analyticsKey) {
@@ -26,9 +23,12 @@ public class GlobalTracker {
         // the application context to avoid leaking the current context.
         // Logger interface is deprecated. Use adb shell setprop log.tag.GAv4 DEBUG to enable debug logging for Google Analytics.
         GoogleAnalytics.getInstance(application).setDryRun(BuildConfig.DEBUG);
-        tracker = GoogleAnalytics.getInstance(application).newTracker(analyticsKey);
+        Tracker tracker = GoogleAnalytics.getInstance(application).newTracker(analyticsKey);
         tracker.enableAdvertisingIdCollection(true);
         UiEvent.set(new UiEventImpl(tracker));
+        AnalyticsEvent.setImpl(new AnalyticsEventImpl(tracker));
+        WarningEvent.setImpl(new WarningEventImpl(tracker));
+        ExceptionEvent.setImpl(new ExceptionEventImpl(tracker));
 
         Thread.UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         ExceptionReporter exceptionReporter = new ExceptionReporter(tracker, exceptionHandler, application);
