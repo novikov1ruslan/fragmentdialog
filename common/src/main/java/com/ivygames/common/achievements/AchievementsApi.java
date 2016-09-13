@@ -19,7 +19,7 @@ public class AchievementsApi {
 
     public AchievementsApi(@NonNull AchievementsSettings settings,
                            @NonNull ApiClient apiClient) {
-        mSettings = settings;
+        mSettings = new AchievementsSettingsWrapper(settings);
         mApiClient = apiClient;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, settings);
     }
@@ -60,7 +60,7 @@ public class AchievementsApi {
 
     public final void reveal(@NonNull String achievementId) {
         Ln.d("revealing achievement: " + achievementId);
-        AchievementsUtils.setRevealed(achievementId, mSettings);
+        mSettings.revealAchievement(achievementId);
         if (mApiClient.isConnected()) {
             mApiClient.reveal(achievementId);
         }

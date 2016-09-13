@@ -21,7 +21,7 @@ public final class AchievementsResultCallback implements ResultCallback<Achievem
 
     AchievementsResultCallback(@NonNull ApiClient apiClient, @NonNull AchievementsSettings settings) {
         mApiClient = apiClient;
-        mSettings = settings;
+        mSettings = new AchievementsSettingsWrapper(settings);
     }
 
     @Override
@@ -39,22 +39,22 @@ public final class AchievementsResultCallback implements ResultCallback<Achievem
         }
     }
 
-    private void processAchievement(Achievement achievement) {
+    private void processAchievement(@NonNull Achievement achievement) {
         Ln.v("processing achievement: " + achievement.getName());
         String achievementId = achievement.getAchievementId();
         if (achievement.getState() == Achievement.STATE_UNLOCKED) {
-            AchievementsUtils.setUnlocked(achievementId, mSettings);
+            mSettings.unlockAchievement(achievementId);
         } else if (achievement.getState() == Achievement.STATE_REVEALED) {
-            if (AchievementsUtils.isUnlocked(achievementId, mSettings)) {
+            if (mSettings.isAchievementUnlocked(achievementId)) {
                 Ln.d("[" + achievement.getName() + "] was unlocked but not posted - posting to the cloud");
                 mApiClient.unlock(achievementId);
             } else {
-                AchievementsUtils.setRevealed(achievementId, mSettings);
+                mSettings.revealAchievement(achievementId);
             }
-        } else if (AchievementsUtils.isUnlocked(achievementId, mSettings)) {
+        } else if (mSettings.isAchievementUnlocked(achievementId)) {
             Ln.d("[" + achievement.getName() + "] was unlocked but not posted - posting to the cloud");
             mApiClient.unlock(achievementId);
-        } else if (AchievementsUtils.isRevealed(achievementId, mSettings)) {
+        } else if (mSettings.isAchievementRevealed(achievementId)) {
             Ln.d("[" + achievement.getName() + "] was revealed but not posted - posting to the cloud");
             mApiClient.reveal(achievementId);
         }
