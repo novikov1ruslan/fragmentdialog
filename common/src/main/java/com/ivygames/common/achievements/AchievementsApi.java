@@ -9,7 +9,7 @@ import com.ivygames.common.googleapi.ApiClient;
 
 import org.commons.logger.Ln;
 
-public class AchievementsManagerBase {
+public class AchievementsApi {
     @NonNull
     protected final AchievementsSettings mSettings;
     @NonNull
@@ -17,7 +17,8 @@ public class AchievementsManagerBase {
     @NonNull
     protected final AchievementsResultCallback mAchievementsLoadCallback;
 
-    public AchievementsManagerBase(@NonNull AchievementsSettings settings, @NonNull ApiClient apiClient) {
+    public AchievementsApi(@NonNull AchievementsSettings settings,
+                           @NonNull ApiClient apiClient) {
         mSettings = settings;
         mApiClient = apiClient;
         mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, settings);
@@ -26,9 +27,8 @@ public class AchievementsManagerBase {
     /**
      * @return true if change has been made
      */
-    protected boolean unlockIfNotUnlocked(String achievementId) {
-        boolean alreadyUnlocked = mSettings.isAchievementUnlocked(achievementId);
-        if (alreadyUnlocked) {
+    public boolean unlockIfNotUnlocked(@NonNull String achievementId) {
+        if (mSettings.isAchievementUnlocked(achievementId)) {
             Ln.d(achievementId + " already unlocked - no need to unlock");
             return false;
         } else {
@@ -37,7 +37,7 @@ public class AchievementsManagerBase {
         }
     }
 
-    private void unlock(String achievementId) {
+    private void unlock(@NonNull String achievementId) {
         Ln.d("unlocking achievement: " + achievementId);
         mSettings.unlockAchievement(achievementId);
         AnalyticsEvent.send("achievement", achievementId);
@@ -51,14 +51,14 @@ public class AchievementsManagerBase {
         loadResult.setResultCallback(mAchievementsLoadCallback);
     }
 
-    protected final void increment(String achievementId, int steps) {
+    public final void increment(@NonNull String achievementId, int steps) {
         Ln.d("incrementing achievement: " + achievementId + " by " + steps);
         if (mApiClient.isConnected()) {
             mApiClient.increment(achievementId, steps);
         }
     }
 
-    protected final void reveal(String achievementId) {
+    public final void reveal(@NonNull String achievementId) {
         Ln.d("revealing achievement: " + achievementId);
         AchievementsUtils.setRevealed(achievementId, mSettings);
         if (mApiClient.isConnected()) {

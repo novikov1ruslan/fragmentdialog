@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.achievement;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.achievements.AchievementsManagerBase;
+import com.ivygames.common.achievements.AchievementsApi;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.model.Ship;
@@ -11,7 +11,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class AchievementsManager extends AchievementsManagerBase {
+public class AchievementsManager {
 
     // achievements
     static final String NAVAL_MERIT = "CgkI8s_j3LsfEAIQAQ";
@@ -34,8 +34,14 @@ public class AchievementsManager extends AchievementsManagerBase {
 
     public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
+    @NonNull
+    private final AchievementsApi mApi;
+    @NonNull
+    private final GameSettings mSettings;
+
     public AchievementsManager(@NonNull ApiClient apiClient, @NonNull GameSettings settings) {
-        super(settings, apiClient);
+        mSettings = settings;
+        mApi = new AchievementsApi(settings, apiClient);
     }
 
     public void processScores(int scores) {
@@ -149,4 +155,20 @@ public class AchievementsManager extends AchievementsManagerBase {
 //
 //        return "UNKNOWN(" + id + ")";
 //    }
+
+    private void increment(String achievement, int count) {
+        mApi.increment(achievement, count);
+    }
+
+    private boolean unlockIfNotUnlocked(String achievement) {
+        return mApi.unlockIfNotUnlocked(achievement);
+    }
+
+    private void reveal(String achievement) {
+        mApi.reveal(achievement);
+    }
+
+    public void loadAchievements() {
+        mApi.loadAchievements();
+    }
 }
