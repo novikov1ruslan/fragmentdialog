@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import org.commons.logger.Ln;
 
@@ -16,7 +17,7 @@ public class EditableSharedPreferences implements SharedPreferences, SharedPrefe
     private final Editor editor;
 
     @SuppressLint("CommitPrefEdits")
-    public EditableSharedPreferences(Context context) {
+    public EditableSharedPreferences(@NonNull Context context) {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         editor = sp.edit();
     }

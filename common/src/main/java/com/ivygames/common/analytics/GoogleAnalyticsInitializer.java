@@ -14,9 +14,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class GlobalTracker {
+public class GoogleAnalyticsInitializer {
 
-    private GlobalTracker(){}
+    private GoogleAnalyticsInitializer(){}
 
     public static void initAnalytics(@NonNull Application application, @NonNull String analyticsKey) {
         // Get the GoogleAnalytics singleton. Note that the SDK uses
@@ -44,7 +44,7 @@ public class GlobalTracker {
             return "[" + threadName + "] " + getStackTrace(throwable) + " (" + AndroidDevice.getDeviceInfo() + ")";
         }
 
-        private String getStackTrace(Throwable throwable) {
+        private String getStackTrace(@NonNull Throwable throwable) {
             final Writer result = new StringWriter();
             final PrintWriter printWriter = new PrintWriter(result);
             throwable.printStackTrace(printWriter);

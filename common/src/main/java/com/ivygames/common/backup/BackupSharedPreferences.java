@@ -11,7 +11,7 @@ public class BackupSharedPreferences extends EditableSharedPreferences {
     @NonNull
     private final BackupManager mBackupManager;
 
-    public BackupSharedPreferences(Context context) {
+    public BackupSharedPreferences(@NonNull Context context) {
         super(context);
         mBackupManager = new BackupManager(context);
     }

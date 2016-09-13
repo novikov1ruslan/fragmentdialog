@@ -7,7 +7,7 @@ import android.util.Log;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
-import com.ivygames.common.analytics.GlobalTracker;
+import com.ivygames.common.analytics.GoogleAnalyticsInitializer;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.invitations.InvitationManager;
@@ -38,7 +38,7 @@ class ApplicationInitializer {
         ACRA.init(application);
         AndroidDevice device = new AndroidDevice(application);
         initLogger(application, device.isDebug());
-        GlobalTracker.initAnalytics(application, ANALYTICS_KEY);
+        GoogleAnalyticsInitializer.initAnalytics(application, ANALYTICS_KEY);
 
         GameSettings settings = new GameSettings(application);
 
