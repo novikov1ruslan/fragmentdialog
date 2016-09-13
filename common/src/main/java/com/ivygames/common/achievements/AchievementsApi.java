@@ -47,8 +47,7 @@ public class AchievementsApi {
     }
 
     public void loadAchievements() {
-        PendingResult<Achievements.LoadAchievementsResult> loadResult = mApiClient.load(true);
-        loadResult.setResultCallback(mAchievementsLoadCallback);
+        mApiClient.loadAchievements(mAchievementsLoadCallback);
     }
 
     public final void increment(@NonNull String achievementId, int steps) {

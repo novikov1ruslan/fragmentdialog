@@ -28,6 +28,7 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
+import com.ivygames.common.achievements.AchievementsResultCallback;
 
 import org.commons.logger.Ln;
 
@@ -145,8 +146,8 @@ public class GoogleApiClientWrapper implements ApiClient {
         Games.Achievements.reveal(mGoogleApiClient, achievementId);
     }
 
-    public PendingResult<Achievements.LoadAchievementsResult> load(boolean b) {
-        return Games.Achievements.load(mGoogleApiClient, b);
+    public void loadAchievements(@NonNull AchievementsResultCallback resultCallback) {
+        Games.Achievements.load(mGoogleApiClient, true).setResultCallback(resultCallback);
     }
 
     public void increment(@NonNull String achievementId, int steps) {

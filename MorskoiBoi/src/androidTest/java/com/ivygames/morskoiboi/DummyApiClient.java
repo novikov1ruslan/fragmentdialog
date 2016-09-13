@@ -9,7 +9,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Player;
-import com.google.android.gms.games.achievement.Achievements;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
@@ -18,6 +17,7 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
+import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.googleapi.InvitationLoadListener;
 
@@ -92,8 +92,7 @@ public class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public PendingResult<Achievements.LoadAchievementsResult> load(boolean b) {
-        return null;
+    public void loadAchievements(@NonNull AchievementsResultCallback resultCallback) {
     }
 
     @Override
