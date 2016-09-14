@@ -21,7 +21,7 @@ import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.googleapi.InvitationLoadListener;
 
-public class DummyApiClient implements ApiClient {
+class DummyApiClient implements ApiClient {
     @Override
     public void connect() {
 
@@ -82,12 +82,12 @@ public class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void unlock(@NonNull String achievementId) {
+    public void unlockAchievement(@NonNull String achievementId) {
 
     }
 
     @Override
-    public void reveal(@NonNull String achievementId) {
+    public void revealAchievement(@NonNull String achievementId) {
 
     }
 

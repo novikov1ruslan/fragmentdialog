@@ -14,7 +14,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
-import com.google.android.gms.games.achievement.Achievements;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
@@ -130,7 +129,7 @@ public class GoogleApiClientWrapper implements ApiClient {
         return Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, boardName);
     }
 
-    public void unlock(@NonNull String achievementId) {
+    public void unlockAchievement(@NonNull String achievementId) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
             return;
@@ -138,7 +137,7 @@ public class GoogleApiClientWrapper implements ApiClient {
         Games.Achievements.unlock(mGoogleApiClient, achievementId);
     }
 
-    public void reveal(@NonNull String achievementId) {
+    public void revealAchievement(@NonNull String achievementId) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
             return;

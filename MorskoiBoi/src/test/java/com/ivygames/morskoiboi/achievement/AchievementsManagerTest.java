@@ -352,11 +352,11 @@ public class AchievementsManagerTest {
     }
 
     private void verifyNotRevealed(String achievementId) {
-        verify(apiClient, never()).reveal(achievementId);
+        verify(apiClient, never()).revealAchievement(achievementId);
     }
 
     private void verifyRevealed(String achievement) {
-        verify(apiClient, times(1)).reveal(achievement);
+        verify(apiClient, times(1)).revealAchievement(achievement);
     }
 
     private void setMilitaryAchievementsUnlocked(boolean value) {
@@ -369,11 +369,11 @@ public class AchievementsManagerTest {
 
     private void verifyUnlocked(String braveryAndCourage) {
         verify(settings, times(1)).unlockAchievement(braveryAndCourage);
-        verify(apiClient, times(1)).unlock(braveryAndCourage);
+        verify(apiClient, times(1)).unlockAchievement(braveryAndCourage);
     }
 
     private void verifyNotUnlocked(String achievement) {
         verify(settings, never()).unlockAchievement(achievement);
-        verify(apiClient, never()).unlock(achievement);
+        verify(apiClient, never()).unlockAchievement(achievement);
     }
 }

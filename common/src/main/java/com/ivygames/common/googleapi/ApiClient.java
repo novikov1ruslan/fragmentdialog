@@ -49,9 +49,9 @@ public interface ApiClient {
 
     Intent getLeaderboardIntent(@NonNull String boardName);
 
-    void unlock(@NonNull String achievementId);
+    void unlockAchievement(@NonNull String achievementId);
 
-    void reveal(@NonNull String achievementId);
+    void revealAchievement(@NonNull String achievementId);
 
     void loadAchievements(@NonNull AchievementsResultCallback resultCallback);
 

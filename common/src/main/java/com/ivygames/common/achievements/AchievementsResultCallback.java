@@ -6,22 +6,19 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
-import com.google.android.gms.games.achievement.Achievements;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
-import com.ivygames.common.googleapi.ApiClient;
 
 import org.commons.logger.Ln;
 
-public final class AchievementsResultCallback implements ResultCallback<Achievements.LoadAchievementsResult> {
+import java.util.ArrayList;
+import java.util.List;
 
+public final class AchievementsResultCallback implements ResultCallback<LoadAchievementsResult> {
     @NonNull
-    private final ApiClient mApiClient;
-    @NonNull
-    private final AchievementsSettings mSettings;
+    private final AchievementsLoadListener mListener;
 
-    AchievementsResultCallback(@NonNull ApiClient apiClient, @NonNull AchievementsSettings settings) {
-        mApiClient = apiClient;
-        mSettings = new AchievementsSettingsWrapper(settings);
+    AchievementsResultCallback(@NonNull AchievementsLoadListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -29,35 +26,26 @@ public final class AchievementsResultCallback implements ResultCallback<Achievem
         int statusCode = result.getStatus().getStatusCode();
         if (achievementsLoaded(statusCode)) {
             AchievementBuffer buffer = result.getAchievements();
-            Ln.d(buffer.getCount() + " achievements loaded");
-            for (int i = 0; i < buffer.getCount(); i++) {
-                processAchievement(buffer.get(i));
+            int count = buffer.getCount();
+            Ln.d(count + " achievements loaded");
+            if (count < 1) {
+                return;
+            }
+
+            List<GameAchievement> achievements = new ArrayList<>(count);
+            for (int i = 0; i < count; i++) {
+                achievements.add(toGameAchievement(buffer.get(i)));
             }
             buffer.release();
+            mListener.onAchievementsLoaded(achievements);
         } else {
-            Ln.w("achievements loading failed");
+            Ln.w("achievements loading failed: " + statusCode);
         }
     }
 
-    private void processAchievement(@NonNull Achievement achievement) {
-        Ln.v("processing achievement: " + achievement.getName());
-        String achievementId = achievement.getAchievementId();
-        if (achievement.getState() == Achievement.STATE_UNLOCKED) {
-            mSettings.unlockAchievement(achievementId);
-        } else if (achievement.getState() == Achievement.STATE_REVEALED) {
-            if (mSettings.isAchievementUnlocked(achievementId)) {
-                Ln.d("[" + achievement.getName() + "] was unlocked but not posted - posting to the cloud");
-                mApiClient.unlock(achievementId);
-            } else {
-                mSettings.revealAchievement(achievementId);
-            }
-        } else if (mSettings.isAchievementUnlocked(achievementId)) {
-            Ln.d("[" + achievement.getName() + "] was unlocked but not posted - posting to the cloud");
-            mApiClient.unlock(achievementId);
-        } else if (mSettings.isAchievementRevealed(achievementId)) {
-            Ln.d("[" + achievement.getName() + "] was revealed but not posted - posting to the cloud");
-            mApiClient.reveal(achievementId);
-        }
+    private GameAchievement toGameAchievement(@NonNull Achievement achievement) {
+        return new GameAchievement(achievement.getAchievementId(), achievement.getName(),
+                achievement.getState());
     }
 
     private boolean achievementsLoaded(int statusCode) {

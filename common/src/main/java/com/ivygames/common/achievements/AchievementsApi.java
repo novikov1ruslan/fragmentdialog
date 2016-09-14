@@ -2,8 +2,6 @@ package com.ivygames.common.achievements;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.games.achievement.Achievements;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.googleapi.ApiClient;
 
@@ -15,13 +13,14 @@ public class AchievementsApi {
     @NonNull
     protected final ApiClient mApiClient;
     @NonNull
-    protected final AchievementsResultCallback mAchievementsLoadCallback;
+    private final AchievementsResultCallback mAchievementsLoadCallback;
 
     public AchievementsApi(@NonNull AchievementsSettings settings,
                            @NonNull ApiClient apiClient) {
         mSettings = new AchievementsSettingsWrapper(settings);
         mApiClient = apiClient;
-        mAchievementsLoadCallback = new AchievementsResultCallback(apiClient, settings);
+        AchievementsLoadListener listener = new AchievementsLoadListener(apiClient, mSettings);
+        mAchievementsLoadCallback = new AchievementsResultCallback(listener);
     }
 
     /**
@@ -42,7 +41,7 @@ public class AchievementsApi {
         mSettings.unlockAchievement(achievementId);
         AnalyticsEvent.send("achievement", achievementId);
         if (mApiClient.isConnected()) {
-            mApiClient.unlock(achievementId);
+            mApiClient.unlockAchievement(achievementId);
         }
     }
 
@@ -61,7 +60,7 @@ public class AchievementsApi {
         Ln.d("revealing achievement: " + achievementId);
         mSettings.revealAchievement(achievementId);
         if (mApiClient.isConnected()) {
-            mApiClient.reveal(achievementId);
+            mApiClient.revealAchievement(achievementId);
         }
     }
 }
