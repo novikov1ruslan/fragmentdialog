@@ -1,12 +1,12 @@
 package com.ivygames.morskoiboi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.ivygames.common.achievements.AchievementsSettings;
 import com.ivygames.common.backup.BackupSharedPreferences;
-import com.ivygames.common.settings.EditableSharedPreferences;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.progress.ProgressUtils;
 
@@ -39,72 +39,75 @@ public class GameSettings implements AchievementsSettings {
     private static final int MAX_RATING_BAR = 50;
 
     @NonNull
-    private final EditableSharedPreferences internal;
+    private final SharedPreferences mPreferences;
+    @NonNull
+    private final SharedPreferences.Editor mEditor;
 
     public GameSettings(@NonNull Context context) {
-        internal = new BackupSharedPreferences(context);
+        mPreferences = new BackupSharedPreferences(context);
+        mEditor = mPreferences.edit();
     }
 
     public void enableAutoSignIn() {
-        internal.putBoolean(SHOULD_AUTO_SIGN_IN, true);
+        mEditor.putBoolean(SHOULD_AUTO_SIGN_IN, true);
     }
 
     public boolean shouldAutoSignIn() {
-        return internal.getBoolean(SHOULD_AUTO_SIGN_IN, false);
+        return mPreferences.getBoolean(SHOULD_AUTO_SIGN_IN, false);
     }
 
     public int getProgressPenalty() {
-        return internal.getInt(PROGRESS_PENALTY, 0);
+        return mPreferences.getInt(PROGRESS_PENALTY, 0);
     }
 
     public void setProgressPenalty(int penalty) {
-        internal.putInt(PROGRESS_PENALTY, penalty);
+        mEditor.putInt(PROGRESS_PENALTY, penalty);
     }
 
     public boolean isSoundOn() {
-        return internal.getBoolean(SOUND, true);
+        return mPreferences.getBoolean(SOUND, true);
     }
 
     public void setSound(boolean on) {
-        internal.putBoolean(SOUND, on);
+        mEditor.putBoolean(SOUND, on);
     }
 
     public boolean isVibrationOn() {
-        return internal.getBoolean(VIBRATION, true);
+        return mPreferences.getBoolean(VIBRATION, true);
     }
 
     public void setVibration(boolean on) {
-        internal.putBoolean(VIBRATION, on);
+        mEditor.putBoolean(VIBRATION, on);
     }
 
     public void incrementGamesPlayedCounter() {
-        int played = internal.getInt(GAMES_PLAYED, 0);
+        int played = mPreferences.getInt(GAMES_PLAYED, 0);
         Ln.d("incrementing played games counter: " + played);
-        internal.putInt(GAMES_PLAYED, ++played);
+        mEditor.putInt(GAMES_PLAYED, ++played);
     }
 
     public boolean shouldProposeRating() {
-        int played = internal.getInt(GAMES_PLAYED, 0);
-        int ratingBar = internal.getInt(RATING_BAR, MINIMAL_RATING_BAR);
+        int played = mPreferences.getInt(GAMES_PLAYED, 0);
+        int ratingBar = mPreferences.getInt(RATING_BAR, MINIMAL_RATING_BAR);
         return played >= ratingBar;
     }
 
     public void setRated() {
         Ln.d("game has been rated ON");
-        internal.putInt(RATING_BAR, Integer.MAX_VALUE);
+        mEditor.putInt(RATING_BAR, Integer.MAX_VALUE);
     }
 
     public void rateLater() {
         // reset games player counter
-        internal.putInt(GAMES_PLAYED, 0);
+        mEditor.putInt(GAMES_PLAYED, 0);
 
         // raise the bother bar
-        int ratingBar = internal.getInt(RATING_BAR, MINIMAL_RATING_BAR);
+        int ratingBar = mPreferences.getInt(RATING_BAR, MINIMAL_RATING_BAR);
         int newRatingBar = ratingBar + RATING_STEP;
         if (newRatingBar > MAX_RATING_BAR) {
             newRatingBar = MAX_RATING_BAR;
         }
-        internal.putInt(RATING_BAR, newRatingBar);
+        mEditor.putInt(RATING_BAR, newRatingBar);
         Ln.d("game shall be rated later: after " + newRatingBar + " games");
     }
 
@@ -129,28 +132,28 @@ public class GameSettings implements AchievementsSettings {
     }
 
     private void setAchievementState(String achievementId, int state) {
-        internal.putInt(ACHIEVEMENT + achievementId, state);
+        mEditor.putInt(ACHIEVEMENT + achievementId, state);
     }
 
     private int getAchievementState(String achievementId) {
-        return internal.getInt(ACHIEVEMENT + achievementId, STATE_HIDDEN);
+        return mPreferences.getInt(ACHIEVEMENT + achievementId, STATE_HIDDEN);
     }
 
     public String getPlayerName() {
-        return internal.getString(PLAYER_NAME, "");
+        return mPreferences.getString(PLAYER_NAME, "");
     }
 
     public void setPlayerName(String name) {
-        internal.putString(PLAYER_NAME, name);
+        mEditor.putString(PLAYER_NAME, name);
     }
 
     public void setProgress(Progress progress) {
-        internal.putString(PROGRESS, ProgressUtils.toJson(progress).toString());
+        mEditor.putString(PROGRESS, ProgressUtils.toJson(progress).toString());
     }
 
     @NonNull
     public Progress getProgress() {
-        String json = internal.getString(PROGRESS, "");
+        String json = mPreferences.getString(PROGRESS, "");
         Progress progress;
         if (TextUtils.isEmpty(json)) {
             progress = new Progress(0);
@@ -166,43 +169,43 @@ public class GameSettings implements AchievementsSettings {
     }
 
     public boolean noAds() {
-        return internal.getBoolean(NO_ADS, false);
+        return mPreferences.getBoolean(NO_ADS, false);
     }
 
     public void setNoAds() {
-        internal.putBoolean(NO_ADS, true);
+        mEditor.putBoolean(NO_ADS, true);
     }
 
     public boolean showProgressHelp() {
-        return internal.getBoolean(SHOW_PROGRESS_HELP, true);
+        return mPreferences.getBoolean(SHOW_PROGRESS_HELP, true);
     }
 
     public boolean showSetupHelp() {
-        return internal.getBoolean(SHOW_SETUP_HELP, true);
+        return mPreferences.getBoolean(SHOW_SETUP_HELP, true);
     }
 
     public void hideProgressHelp() {
-        internal.putBoolean(SHOW_PROGRESS_HELP, false);
+        mEditor.putBoolean(SHOW_PROGRESS_HELP, false);
     }
 
     public void hideBoardSetupHelp() {
-        internal.putBoolean(SHOW_SETUP_HELP, false);
+        mEditor.putBoolean(SHOW_SETUP_HELP, false);
     }
 
     public void newRankAchieved(boolean achieved) {
-        internal.putBoolean(NEW_RANK_ACHIEVED, achieved);
+        mEditor.putBoolean(NEW_RANK_ACHIEVED, achieved);
     }
 
     public boolean isNewRankAchieved() {
-        return internal.getBoolean(NEW_RANK_ACHIEVED, false);
+        return mPreferences.getBoolean(NEW_RANK_ACHIEVED, false);
     }
 
     public boolean hasProgressMigrated() {
-        return internal.getBoolean(PROGRESS_MIGRATED, false);
+        return mPreferences.getBoolean(PROGRESS_MIGRATED, false);
     }
 
     public void setProgressMigrated() {
-        internal.putBoolean(PROGRESS_MIGRATED, true);
+        mEditor.putBoolean(PROGRESS_MIGRATED, true);
     }
 
     @NonNull
