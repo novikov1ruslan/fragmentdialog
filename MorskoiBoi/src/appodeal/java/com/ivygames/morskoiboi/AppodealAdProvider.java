@@ -131,6 +131,7 @@ public class AppodealAdProvider implements AdProvider {
             Ln.v("no ads");
         }
         mNoAds = true;
+        // TODO: if not hidden can stuck ot top when purchased
 //        Appodeal.hide(mActivity, Appodeal.BANNER_TOP);
     }
 }

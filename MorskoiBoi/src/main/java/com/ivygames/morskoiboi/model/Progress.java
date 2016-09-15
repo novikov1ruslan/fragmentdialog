@@ -3,17 +3,17 @@ package com.ivygames.morskoiboi.model;
 public class Progress {
 
     public Progress(int progress) {
-        mProgress = progress;
+        this.progress = progress;
     }
 
-    private final int mProgress;
+    public final int progress;
 
     public int getScores() {
-        return mProgress;
+        return progress;
     }
 
     @Override
     public String toString() {
-        return "[progress=" + mProgress + "]";
+        return "[progress=" + progress + "]";
     }
 }
