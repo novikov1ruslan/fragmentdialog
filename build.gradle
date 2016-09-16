@@ -20,7 +20,7 @@ android {
 dependencies {
     compile project(':AppTheme')
     compile 'com.github.novikov1ruslan:Logger:-SNAPSHOT'
-    compile 'com.android.support:support-annotations:23.2.0'
+    compile 'com.android.support:support-annotations:23.3.0'
 }
 
 repositories {
