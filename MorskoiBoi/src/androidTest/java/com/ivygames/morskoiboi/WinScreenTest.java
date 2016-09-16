@@ -44,7 +44,7 @@ public class WinScreenTest extends WinScreen_ {
         setScores(100);
         setPenalty(0);
         showScreen();
-        expectUpdateProgressBeCalled(times(1));
+        expectSynchronizeBeCalled(times(1));
         verify(settings(), times(1)).incrementProgress(100);
         verify(settings(), times(1)).setProgressPenalty(0);
     }
@@ -54,7 +54,7 @@ public class WinScreenTest extends WinScreen_ {
         setScores(100);
         setPenalty(200);
         showScreen();
-        expectUpdateProgressBeCalled(never());
+        expectSynchronizeBeCalled(never());
         verify(settings(), never()).incrementProgress(anyInt());
         verify(settings(), times(1)).setProgressPenalty(100);
     }

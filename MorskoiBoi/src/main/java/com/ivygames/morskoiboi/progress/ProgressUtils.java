@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.progress;
 
-import com.google.android.gms.games.snapshot.Snapshot;
-import com.google.android.gms.games.snapshot.Snapshots;
+import android.support.annotation.NonNull;
+
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.morskoiboi.model.Progress;
 
@@ -9,12 +9,11 @@ import org.commons.logger.Ln;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 public class ProgressUtils {
     private static final String RANK = "rank";
 
-    public static JSONObject toJson(Progress progress) {
+    @NonNull
+    public static JSONObject toJson(@NonNull Progress progress) {
         JSONObject json = new JSONObject();
         try {
             json.put(RANK, progress.getScores());
@@ -25,23 +24,27 @@ public class ProgressUtils {
         return json;
     }
 
-    public static Progress fromJson(byte[] json) throws JSONException {
+    @NonNull
+    public static Progress fromJson(@NonNull byte[] json) throws JSONException {
         return fromJson(new JSONObject(new String(json)));
     }
 
-    public static Progress fromJson(String json) throws JSONException {
+    @NonNull
+    public static Progress fromJson(@NonNull String json) throws JSONException {
         return fromJson(new JSONObject(json));
     }
 
-    public static Progress fromJson(JSONObject json) throws JSONException {
+    @NonNull
+    public static Progress fromJson(@NonNull JSONObject json) throws JSONException {
         return new Progress(json.getInt(RANK));
     }
 
-    public static byte[] getBytes(Progress progress) {
+    @NonNull
+    public static byte[] getBytes(@NonNull Progress progress) {
         return toJson(progress).toString().getBytes();
     }
 
-    private static Progress parseProgress(byte[] loadedData) {
+    public static Progress parseProgress(@NonNull byte[] loadedData) {
         try {
             return fromJson(loadedData);
         } catch (JSONException je) {
@@ -65,25 +68,4 @@ public class ProgressUtils {
         }
     }
 
-    public static Progress getProgressFromSnapshot(Snapshot snapshot) throws IOException {
-        byte[] data = snapshot.getSnapshotContents().readFully();
-        if (data == null || data.length == 0) {
-            return new Progress(0);
-        }
-
-        return parseProgress(data);
-    }
-
-    public static Snapshot getResolveSnapshot(Snapshots.OpenSnapshotResult result) throws IOException {
-        Snapshot baseSnapshot = result.getSnapshot();
-        Snapshot conflictingSnapshot = result.getConflictingSnapshot();
-        int baseScores = getScoresFromSnapshot(baseSnapshot);
-        int conflictingScores = getScoresFromSnapshot(conflictingSnapshot);
-
-        return baseScores > conflictingScores ? baseSnapshot : conflictingSnapshot;
-    }
-
-    private static int getScoresFromSnapshot(Snapshot snapshot) throws IOException {
-        return getProgressFromSnapshot(snapshot).getScores();
-    }
 }

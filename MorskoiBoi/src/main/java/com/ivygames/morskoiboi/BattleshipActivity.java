@@ -426,7 +426,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
 
         mAchievementsManager.loadAchievements();
-        mProgressManager.loadProgress();
+        mProgressManager.synchronize();
 
         mScreenManager.onSignInSucceeded();
 

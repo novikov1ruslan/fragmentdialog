@@ -51,7 +51,6 @@ class ApplicationInitializer {
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
         apiClient.setDryRun(BuildConfig.DEBUG);
         ProgressManager progressManager = new ProgressManager(apiClient, settings);
-        progressManager.setDryRun(true);
 
         Dependencies.inject(rules);
         Dependencies.inject(settings);

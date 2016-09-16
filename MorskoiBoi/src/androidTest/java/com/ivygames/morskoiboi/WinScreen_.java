@@ -60,8 +60,8 @@ public class WinScreen_ extends OnlineScreen_ {
         verify(achievementsManager, times).processScores(anyInt());
     }
 
-    protected void expectUpdateProgressBeCalled(VerificationMode times) {
-        verify(progressManager, times).updateProgress(any(Progress.class));
+    protected void expectSynchronizeBeCalled(VerificationMode times) {
+        verify(progressManager, times).synchronize();
     }
 
     @NonNull

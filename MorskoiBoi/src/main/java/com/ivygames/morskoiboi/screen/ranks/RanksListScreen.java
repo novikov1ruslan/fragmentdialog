@@ -31,7 +31,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
         Ln.i("setting debug progress to: " + progress);
         Progress newProgress = new Progress(progress);
         settings.setProgress(newProgress);
-        Dependencies.getProgressManager().updateProgress(newProgress);
+        Dependencies.getProgressManager().synchronize();
     }
 
     @NonNull

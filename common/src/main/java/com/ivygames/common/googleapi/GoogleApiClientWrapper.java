@@ -161,9 +161,10 @@ public class GoogleApiClientWrapper implements ApiClient {
         return Games.Snapshots.open(mGoogleApiClient, snapshotName, createIfMissing);
     }
 
-    public void openAsynchronously(@NonNull String snapshotName, @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback) {
-        final boolean CREATE_IF_MISSING = false;
-        open(snapshotName, CREATE_IF_MISSING).setResultCallback(callback);
+    public void openAsynchronously(@NonNull String snapshotName,
+                                   @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback) {
+        final boolean createIfMissing = true;
+        open(snapshotName, createIfMissing).setResultCallback(callback);
     }
 
     public PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot) {

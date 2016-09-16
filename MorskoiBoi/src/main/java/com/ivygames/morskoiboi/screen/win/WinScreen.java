@@ -199,7 +199,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             if (newRankAchieved) {
                 mSettings.newRankAchieved(true);
             }
-            mProgressManager.updateProgress(newProgress);
+            mProgressManager.synchronize();
             mSettings.setProgressPenalty(0);
         } else {
             mSettings.setProgressPenalty(-progressIncrement);

@@ -64,8 +64,12 @@ public interface ApiClient {
 
     PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot);
 
+    /**
+     * Calling this method with a snapshot that has already been committed or that was not opened will throw an exception
+     * @throws Exception
+     */
     PendingResult<Snapshots.CommitSnapshotResult> commitAndClose(@NonNull Snapshot snapshot,
-                                                                 @NonNull SnapshotMetadataChange change);
+                                                                 @NonNull SnapshotMetadataChange change) throws Exception;
 
     void leave(@NonNull RoomUpdateListener updateListener, @NonNull String roomId);
 
