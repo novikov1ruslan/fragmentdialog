@@ -39,9 +39,9 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetService;
@@ -434,13 +434,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onShotResult(@NonNull ShotResult result) {
             stopDetectingShotTimeout();
 
-            Ln.v(result);
             mStatistics.updateWithNewShot(result.ship, result.cell);
 
             mLayout.removeAim();
             mLayout.setShotResult(result);
-
-            mLayout.invalidateEnemyBoard();
 
             updateEnemyStatus();
         }
@@ -462,10 +459,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onKill(@NonNull Side side) {
             if (side == Side.OPPONENT) {
-                Ln.v("enemy ship is sunk!! - shake enemy board");
+                Ln.d("enemy ship is sunk!! - shake enemy board");
                 mLayout.shakeEnemyBoard();
             } else if (side == Side.PLAYER) {
-                Ln.v("my ship is sunk!! - shake my board");
+                Ln.d("my ship is sunk!! - shake my board");
                 mLayout.shakePlayerBoard();
             }
             mGameplaySounds.playKillSound();

@@ -54,8 +54,6 @@ public interface GameplayLayoutInterface {
 
     void setShotResult(@NonNull ShotResult result);
 
-    void invalidateEnemyBoard();
-
     void shakeEnemyBoard();
 
     void win();

@@ -167,11 +167,6 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     }
 
     @Override
-    public void invalidateEnemyBoard() {
-        mEnemyBoardView.invalidate();
-    }
-
-    @Override
     public void invalidatePlayerBoard() {
         mMyBoardView.invalidate();
     }
@@ -256,6 +251,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     @Override
     public void setShotResult(@NonNull ShotResult result) {
         mEnemyBoardView.setShotResult(result);
+        mEnemyBoardView.invalidate();
     }
 
     @Override

@@ -167,11 +167,6 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     }
 
     @Override
-    public void invalidateEnemyBoard() {
-        mEnemyBoardView.invalidate();
-    }
-
-    @Override
     public void invalidatePlayerBoard() {
         mMyBoardView.invalidate();
     }
@@ -256,6 +251,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     @Override
     public void setShotResult(@NonNull ShotResult result) {
         mEnemyBoardView.setShotResult(result);
+        mEnemyBoardView.invalidate();
     }
 
     @Override
