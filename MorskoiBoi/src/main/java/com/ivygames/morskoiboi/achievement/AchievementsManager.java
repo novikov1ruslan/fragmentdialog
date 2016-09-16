@@ -77,10 +77,10 @@ public class AchievementsManager {
 
     public void processTimeSpent(long time) {
         Ln.v("time=" + time);
-        if (time <= 60000) {
+        if (time <= 80000) {
             if (unlockIfNotUnlocked(FLYING_DUTCHMAN)) {
                 // TODO: reveal next
-            } else if (time < 50000) {
+            } else if (time < 60000) {
                 // TODO: unlock next
             }
         }

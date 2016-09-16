@@ -189,28 +189,28 @@ public class AchievementsManagerTest {
 //    }
 
     @Test
-    public void IfFlyingDutchmanNotUnlocked__60SecondsUnlockIt() {
+    public void IfFlyingDutchmanNotUnlocked__80xSecondsUnlockIt() {
         setAchievementUnlocked(FLYING_DUTCHMAN, false);
 
-        am.processTimeSpent(60000);
+        am.processTimeSpent(80000);
 
         verifyUnlocked(FLYING_DUTCHMAN);
     }
 
     @Test
-    public void IfFlyingDutchmanNotUnlocked__61xSecondsDoNotUnlockIt() {
+    public void IfFlyingDutchmanNotUnlocked__81xSecondsDoNotUnlockIt() {
         setAchievementUnlocked(FLYING_DUTCHMAN, false);
 
-        am.processTimeSpent(61000);
+        am.processTimeSpent(81000);
 
         verifyNotUnlocked(FLYING_DUTCHMAN);
     }
 
     @Test
-    public void IfFlyingDutchmanIsUnlocked__60SecondsDoNotUnlockIt() {
+    public void IfFlyingDutchmanIsUnlocked__80xSecondsDoNotUnlockIt() {
         setAchievementUnlocked(FLYING_DUTCHMAN, true);
 
-        am.processTimeSpent(60000);
+        am.processTimeSpent(80000);
 
         verifyNotUnlocked(FLYING_DUTCHMAN);
     }
