@@ -121,16 +121,6 @@ public class AndroidOpponentTest {
     }
 
     @Test
-    public void when_result_of_a_shot_is_defeat__opponent_lost() {
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
-        when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
-
-        mAndroid.onShotResult(result);
-
-        verify(mOpponent, times(1)).onLost(any(Board.class));
-    }
-
-    @Test
     public void WhenOpponentBidsWithHigherBid__OpponentGoes() {
         when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.startBidding(1);

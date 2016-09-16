@@ -23,9 +23,4 @@ final class OnShotResultCommand extends Command {
         mOpponent.onShotResult(mResult);
     }
 
-    @Override
-    public String toString() {
-        return OnShotResultCommand.class.getSimpleName() + "#" + hashCode();
-    }
-
 }

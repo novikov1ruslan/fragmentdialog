@@ -30,7 +30,7 @@ public class TurnTimerAsync extends AsyncTask<Void, Void, Void> implements TurnT
             try {
                 Thread.sleep(RESOLUTION);
             } catch (InterruptedException ie) {
-                Ln.v("interrupted");
+                Ln.v("turn timer interrupted");
                 workerThread().interrupt();
                 return null;
             }

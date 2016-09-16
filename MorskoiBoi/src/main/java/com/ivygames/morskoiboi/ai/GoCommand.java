@@ -19,8 +19,4 @@ class GoCommand extends Command {
         mOpponent.go();
     }
 
-    @Override
-    public String toString() {
-        return GoCommand.class.getSimpleName() + "#" + hashCode();
-    }
 }

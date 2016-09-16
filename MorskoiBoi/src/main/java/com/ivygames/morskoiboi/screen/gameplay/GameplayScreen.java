@@ -562,22 +562,22 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void stopDetectingShotTimeout() {
         mUiThreadHandler.removeCallbacks(mShotHangDetectionTask);
-        Ln.v("not detecting shot timeout");
+        Ln.v("stopped detecting shot timeout.");
     }
 
     private void startDetectingShotTimeout() {
         mUiThreadHandler.postDelayed(mShotHangDetectionTask, SHOT_HANG_DETECTION_TIMEOUT);
-        Ln.v("detecting shot timeout");
+        Ln.v("detecting shot timeout...");
     }
 
     private void stopDetectingTurnTimeout() {
         mUiThreadHandler.removeCallbacks(mTurnHangDetectionTask);
-        Ln.v("not detecting turn timeout");
+        Ln.v("stopped detecting turn timeout.");
     }
 
     private void startDetectingTurnTimeout() {
         mUiThreadHandler.postDelayed(mTurnHangDetectionTask, TURN_HANG_DETECTION_TIMEOUT);
-        Ln.v("detecting turn timeout");
+        Ln.v("detecting turn timeout...");
     }
 
     private void updateMyStatus() {

@@ -178,7 +178,15 @@ public class PlayerOpponent implements Opponent {
             mCallback.onKill(PlayerCallback.Side.OPPONENT);
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(mName + ": actually opponent lost");
-                mOpponent.onLost(mMyBoard);
+
+                // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
+                // In the later version of the protocol opponent notifies about players defeat sending his board along.
+                if (versionSupportsBoardReveal()) {
+                    mOpponent.onLost(mMyBoard);
+                } else {
+                    Ln.d("opponent version doesn't support board reveal = " + mOpponentVersion);
+                    mCallback.onLost(null);
+                }
 
                 reset();
                 mCallback.onWin();
@@ -196,6 +204,10 @@ public class PlayerOpponent implements Opponent {
 
     private boolean shipSank(@Nullable Ship ship) {
         return ship != null;
+    }
+
+    private boolean versionSupportsBoardReveal() {
+        return mOpponentVersion >= PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
     }
 
     @Override
@@ -221,12 +233,6 @@ public class PlayerOpponent implements Opponent {
 
         if (result.cell.isHit()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
-                // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
-                // In the later version of the protocol opponent notifies about players defeat sending his board along.
-                if (!versionSupportsBoardReveal()) {
-                    Ln.d("opponent version doesn't support board reveal = " + mOpponentVersion);
-                    mCallback.onLost(null);
-                }
                 Ln.d(mName + ": I'm defeated, no turn to pass");
                 reset();
             } else {
@@ -234,10 +240,6 @@ public class PlayerOpponent implements Opponent {
                 mOpponent.go();
             }
         }
-    }
-
-    private boolean versionSupportsBoardReveal() {
-        return mOpponentVersion >= PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
     }
 
     @Override

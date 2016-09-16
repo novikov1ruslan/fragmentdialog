@@ -57,15 +57,18 @@ public class PlayerOpponentTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
         ExceptionHandler.setDryRun(true);
 
         mPlacement = new Placement(new Random(), rules);
+        mPlayer = newPlayer(rules);
+    }
 
-        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
-        mPlayer.setChatListener(listener);
-        mPlayer.setOpponent(mEnemy);
-        mPlayer.setCallback(callback);
+    private PlayerOpponent newPlayer(Rules rules) {
+        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
+        player.setChatListener(listener);
+        player.setOpponent(mEnemy);
+        player.setCallback(callback);
+        return player;
     }
 
     @Test
@@ -289,14 +292,11 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void WhenOpponentLoses_AndOpponentDoesNotSupportBoardReveal__CallbackIsCalled() {
+    public void WhenPlayerLoses__CallbackNotCalled() {
         rules = mock(Rules.class);
         when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
-        mPlayer = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
-        mPlayer.setChatListener(listener);
-        mPlayer.setOpponent(mEnemy);
+        mPlayer = newPlayer(rules);
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
-        mPlayer.setCallback(callback);
 
         Board board = new Board();
         mPlacement.putShipAt(board, new Ship(1, Ship.Orientation.VERTICAL), 5, 5);
@@ -305,7 +305,33 @@ public class PlayerOpponentTest {
         Vector2 aim = Vector2.get(5, 5);
         mPlayer.onShotAt(aim);
 
-        verify(callback, times(1)).onLost(null);
+        verify(callback, never()).onLost(any(Board.class));
+    }
+
+    @Test
+    public void when_result_of_a_shot_is_defeat__opponent_lost() {
+        rules = mock(Rules.class);
+        when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
+        mPlayer = newPlayer(rules);
+        mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
+
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        mPlayer.onShotResult(result);
+
+        verify(mEnemy, times(1)).onLost(any(Board.class));
+    }
+
+    @Test
+    public void WhenEnemyLoses_AndEnemyDoesNotSupportBoardReveal__CallbackNotCalled() {
+        rules = mock(Rules.class);
+        when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
+        mPlayer = newPlayer(rules);
+        mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        mPlayer.onShotResult(result);
+
+        verify(mEnemy, never()).onLost(any(Board.class));
     }
 
     @Test

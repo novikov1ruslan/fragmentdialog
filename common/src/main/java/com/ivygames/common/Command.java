@@ -26,4 +26,12 @@ public abstract class Command implements Runnable {
         mNextCommand = nextCommand;
     }
 
+    @Override
+    public String toString() {
+        return uniqueName();
+    }
+
+    protected final String uniqueName() {
+        return getClass().getSimpleName() + "#" + (hashCode() % 1000);
+    }
 }
