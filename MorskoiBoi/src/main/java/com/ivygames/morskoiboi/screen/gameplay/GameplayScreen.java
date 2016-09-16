@@ -369,12 +369,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onAimingFinished(int x, int y) {
-            Ln.d("aiming finished");
+            Ln.v("aiming finished");
             debug_aiming_started = false;
             mGameplaySounds.stopKantropSound();
 
             if (!Board.contains(x, y)) {
-                Ln.d("pressing outside the board: " + x + "," + y);
+                Ln.v("pressing outside the board: " + x + "," + y);
                 return;
             }
 
@@ -388,7 +388,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mTimerController.stop();
 
             Vector2 aim = Vector2.get(x, y);
-            Ln.d("shooting at: " + aim + cell + ", timer cancelled, locking board");
+            Ln.d("shooting at: " + aim + cell);
             mLayout.lock();
             updateUnlockedTime();
 
@@ -461,7 +461,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             if (side == Side.OPPONENT) {
                 Ln.d("enemy ship is sunk!! - shake enemy board");
                 mLayout.shakeEnemyBoard();
-            } else if (side == Side.PLAYER) {
+            } else {
                 Ln.d("my ship is sunk!! - shake my board");
                 mLayout.shakePlayerBoard();
             }
@@ -519,7 +519,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public void onPlayersTurn() {
-            Ln.d("player's turn");
             mParent.startService(getServiceIntent(getString(R.string.your_turn)));
             mLayout.playerTurn();
             mGameIsOn = true;
@@ -709,10 +708,10 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onCanceled() {
             if (mGameplaySounds.isAlarmPlaying()) {
-                Ln.v("timer canceled - stopping alarm");
+                Ln.d("timer canceled - stopping alarm");
                 mGameplaySounds.stopAlarmSound();
             } else {
-                Ln.v("timer canceled");
+                Ln.d("timer canceled");
             }
         }
 

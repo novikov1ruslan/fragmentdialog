@@ -37,7 +37,7 @@ public class TurnTimerController {
             return;
         }
 
-        Ln.d("starting timer");
+        Ln.v("starting timer");
         mTurnTimer = mTurnTimerFactory.newTimer(mTimeLeft, mTimerListener);
         mTurnTimer.execute();
     }

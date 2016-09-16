@@ -12,8 +12,8 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
@@ -170,14 +170,14 @@ public class PlayerOpponent implements Opponent {
     public void onShotResult(@NonNull ShotResult result) {
         debug_handler.post(debug_thread_break_task);
 
-        Ln.v(mName + ": my shot result: " + result);
+        Ln.v(mName + ": -> my shot result: " + result);
         updateEnemyBoard(result, mPlacement);
 
         mCallback.onShotResult(result);
         if (shipSank(result.ship)) {
             mCallback.onKill(PlayerCallback.Side.OPPONENT);
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
-                Ln.d(mName + ": actually opponent lost: " + mEnemyBoard);
+                Ln.d(mName + ": actually opponent lost");
                 mOpponent.onLost(mMyBoard);
 
                 reset();
@@ -203,9 +203,9 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         ShotResult result = createResultForShootingAt(aim);
-        Ln.v(mName + ": hitting my board at " + aim + " yields: " + result);
+        Ln.v(mName + ": <- hitting my board at " + aim + " yields: " + result);
 
-        mCallback.onShotAt(aim); // TODO: either use this or onKill...
+        mCallback.onShotAt(aim);
         if (shipSank(result.ship)) {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
