@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -52,7 +52,7 @@ public interface GameplayLayoutInterface {
 
     void removeAim();
 
-    void setShotResult(@NonNull PokeResult result);
+    void setShotResult(@NonNull ShotResult result);
 
     void invalidateEnemyBoard();
 

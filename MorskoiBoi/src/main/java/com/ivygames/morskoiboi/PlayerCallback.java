@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 public interface PlayerCallback {
@@ -14,7 +14,7 @@ public interface PlayerCallback {
         OPPONENT
     }
 
-    void onShotResult(@NonNull PokeResult result);
+    void onShotResult(@NonNull ShotResult result);
 
     void onWin();
 

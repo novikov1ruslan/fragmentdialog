@@ -7,7 +7,7 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.AiOpponent;
@@ -87,7 +87,7 @@ public class AndroidOpponentTest {
     @Test
     public void after_android_is_shot_at__opponent_receives_shot_result() {
         Vector2 aim = Vector2.get(5, 5);
-        ArgumentCaptor<PokeResult> argument = ArgumentCaptor.forClass(PokeResult.class);
+        ArgumentCaptor<ShotResult> argument = ArgumentCaptor.forClass(ShotResult.class);
         mAndroid.onShotAt(aim);
         verify(mOpponent, times(1)).onShotResult(argument.capture());
         assertThat(argument.getValue().aim, equalTo(aim));
@@ -115,14 +115,14 @@ public class AndroidOpponentTest {
 
     @Test
     public void when_result_of_a_shot_is_miss__opponent_goes() {
-        PokeResult result = new PokeResult(Vector2.get(5, 5), Cell.newMiss());
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newMiss());
         mAndroid.onShotResult(result);
         verify(mOpponent, times(1)).go();
     }
 
     @Test
     public void when_result_of_a_shot_is_defeat__opponent_lost() {
-        PokeResult result = new PokeResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
         when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
 
         mAndroid.onShotResult(result);

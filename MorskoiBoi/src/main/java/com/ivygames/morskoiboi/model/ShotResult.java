@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PokeResult {
+public class ShotResult {
 
     private static final String CELL = "CELL";
     private static final String SHIP = "SHIP";
@@ -15,7 +15,7 @@ public class PokeResult {
     public final Ship ship;
     public final Vector2 aim;
 
-    public static PokeResult fromJson(String json) {
+    public static ShotResult fromJson(String json) {
         Cell cell;
         Ship ship = null;
         Vector2 aim = null;
@@ -35,7 +35,7 @@ public class PokeResult {
             throw new RuntimeException(e);
         }
 
-        return new PokeResult(aim, cell, ship);
+        return new ShotResult(aim, cell, ship);
     }
 
     // TODO: unit test
@@ -57,13 +57,13 @@ public class PokeResult {
     }
 
     // TODO: ship can have different coordinates than aim - this is a bug
-    public PokeResult(Vector2 aim, Cell cell, @Nullable Ship ship) {
+    public ShotResult(Vector2 aim, Cell cell, @Nullable Ship ship) {
         this.cell = cell;
         this.ship = ship;
         this.aim = aim;
     }
 
-    public PokeResult(Vector2 aim, Cell cell) {
+    public ShotResult(Vector2 aim, Cell cell) {
         this.cell = cell;
         this.ship = null;
         this.aim = aim;

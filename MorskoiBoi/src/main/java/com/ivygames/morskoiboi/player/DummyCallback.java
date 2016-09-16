@@ -5,13 +5,13 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 public class DummyCallback implements PlayerCallback {
 
     @Override
-    public void onShotResult(@NonNull PokeResult result) {
+    public void onShotResult(@NonNull ShotResult result) {
 
     }
 

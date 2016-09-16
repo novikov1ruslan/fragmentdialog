@@ -12,7 +12,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -167,7 +167,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     @Override
-    public void onShotResult(@NonNull PokeResult result) {
+    public void onShotResult(@NonNull ShotResult result) {
         debug_handler.post(debug_thread_break_task);
 
         Ln.v(mName + ": my shot result: " + result);
@@ -202,7 +202,7 @@ public class PlayerOpponent implements Opponent {
     public void onShotAt(@NonNull Vector2 aim) {
         debug_handler.post(debug_thread_break_task);
 
-        PokeResult result = createResultForShootingAt(aim);
+        ShotResult result = createResultForShootingAt(aim);
         Ln.v(mName + ": hitting my board at " + aim + " yields: " + result);
 
         mCallback.onShotAt(aim); // TODO: either use this or onKill...
@@ -290,7 +290,7 @@ public class PlayerOpponent implements Opponent {
     /**
      * marks the aimed cell
      */
-    private PokeResult createResultForShootingAt(@NonNull Vector2 aim) {
+    private ShotResult createResultForShootingAt(@NonNull Vector2 aim) {
         // ship if found will be shot and returned
         Ship ship = mMyBoard.getFirstShipAt(aim);
 
@@ -304,14 +304,14 @@ public class PlayerOpponent implements Opponent {
             ship.shoot();
 
             if (ship.isDead()) {
-                return new PokeResult(aim, cell, ship);
+                return new ShotResult(aim, cell, ship);
             }
         }
 
-        return new PokeResult(aim, cell);
+        return new ShotResult(aim, cell);
     }
 
-    private void updateEnemyBoard(@NonNull PokeResult result,
+    private void updateEnemyBoard(@NonNull ShotResult result,
                                   @NonNull Placement placement) {
         Ship ship = result.ship;
         if (ship == null) {

@@ -9,7 +9,7 @@ public interface Opponent {
 
     /**
      * This opponent is being shot at given coordinate. <br>
-     * This call will trigger this opponent to call {@link #onShotResult(PokeResult)} on its opponent. <br>
+     * This call will trigger this opponent to call {@link #onShotResult(ShotResult)} on its opponent. <br>
      * If the result of the shot is {@link Cell#isHit()}, {@link #go()} method is called afterwards.
      */
     void onShotAt(@NonNull Vector2 aim);
@@ -17,7 +17,7 @@ public interface Opponent {
     /**
      * This opponent received result of his/her shot (Called on me)
      */
-    void onShotResult(@NonNull PokeResult pokeResult);
+    void onShotResult(@NonNull ShotResult shotResult);
 
     /**
      * Called to indicate the turn is passed to this opponent.

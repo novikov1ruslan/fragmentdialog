@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.common.gfx.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
@@ -87,7 +87,7 @@ public class EnemyBoardRenderer extends BaseBoardRenderer {
         return mCurrentAnimation.getFrameDuration();
     }
 
-    public void startAnimation(@NonNull PokeResult result) {
+    public void startAnimation(@NonNull ShotResult result) {
         mCurrentAnimation = result.cell.isMiss() ? mSplashAnimation : mExplosionAnimation;
         mCurrentAnimation.start();
     }

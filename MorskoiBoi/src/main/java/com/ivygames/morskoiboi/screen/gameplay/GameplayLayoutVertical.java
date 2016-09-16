@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -254,7 +254,7 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     }
 
     @Override
-    public void setShotResult(@NonNull PokeResult result) {
+    public void setShotResult(@NonNull ShotResult result) {
         mEnemyBoardView.setShotResult(result);
     }
 

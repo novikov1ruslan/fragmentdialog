@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 class DummyOpponent implements Opponent {
@@ -14,7 +14,7 @@ class DummyOpponent implements Opponent {
     }
 
     @Override
-    public void onShotResult(@NonNull PokeResult pokeResult) {
+    public void onShotResult(@NonNull ShotResult shotResult) {
 
     }
 

@@ -6,7 +6,7 @@ import com.ivygames.common.multiplayer.RtmSender;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
@@ -48,7 +48,7 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
                 mOpponent.onShotAt(Vector2.fromJson(body));
                 break;
             case SHOOT_RESULT:
-                mOpponent.onShotResult(PokeResult.fromJson(body));
+                mOpponent.onShotResult(ShotResult.fromJson(body));
                 break;
             case WIN:
                 mOpponent.onLost(BoardSerialization.fromJson(body));
@@ -67,8 +67,8 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     }
 
     @Override
-    public void onShotResult(@NonNull PokeResult pokeResult) {
-        sendRtm(SHOOT_RESULT + pokeResult.toJson().toString());
+    public void onShotResult(@NonNull ShotResult shotResult) {
+        sendRtm(SHOOT_RESULT + shotResult.toJson().toString());
     }
 
     @Override

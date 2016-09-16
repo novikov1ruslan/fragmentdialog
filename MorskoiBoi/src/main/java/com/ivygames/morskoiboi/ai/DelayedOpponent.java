@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
@@ -48,7 +48,7 @@ public class DelayedOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onShotResult(@NonNull PokeResult result) {
+    public void onShotResult(@NonNull ShotResult result) {
         mOnShotResultCommand = new OnShotResultCommand(mOpponent, result);
         Ln.v("scheduling " + mOnShotResultCommand + " in " + WHISTLE_SOUND_DELAY);
         mHandler.postDelayed(mOnShotResultCommand, WHISTLE_SOUND_DELAY);

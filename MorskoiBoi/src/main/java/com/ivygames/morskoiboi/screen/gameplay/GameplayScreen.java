@@ -24,7 +24,6 @@ import com.ivygames.common.game.Bidder;
 import com.ivygames.common.timer.TurnListener;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.common.ui.BackPressListener;
-import com.ivygames.morskoiboi.AdProviderFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -40,7 +39,7 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -432,7 +431,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private class UiPlayerCallback implements PlayerCallback {
 
         @Override
-        public void onShotResult(@NonNull PokeResult result) {
+        public void onShotResult(@NonNull ShotResult result) {
             stopDetectingShotTimeout();
 
             Ln.v(result);

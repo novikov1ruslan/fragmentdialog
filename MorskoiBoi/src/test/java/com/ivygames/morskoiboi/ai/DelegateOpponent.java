@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 public class DelegateOpponent implements Opponent, Cancellable {
@@ -23,8 +23,8 @@ public class DelegateOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onShotResult(@NonNull PokeResult pokeResult) {
-        mOpponent.onShotResult(pokeResult);
+    public void onShotResult(@NonNull ShotResult shotResult) {
+        mOpponent.onShotResult(shotResult);
     }
 
     @Override

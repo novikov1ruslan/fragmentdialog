@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
@@ -19,7 +19,7 @@ import com.ivygames.morskoiboi.screen.view.TouchState;
 
 public class EnemyBoardView extends BaseBoardView {
 
-    private PokeResult mLastShotResult;
+    private ShotResult mLastShotResult;
     private Vector2 mAim;
     @NonNull
     private final EnemyBoardPresenter mPresenter;
@@ -133,7 +133,7 @@ public class EnemyBoardView extends BaseBoardView {
         mPresenter.unlock();
     }
 
-    public void setShotResult(@NonNull PokeResult result) {
+    public void setShotResult(@NonNull ShotResult result) {
         mLastShotResult = result;
         mRenderer.startAnimation(result);
     }

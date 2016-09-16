@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
@@ -26,7 +26,7 @@ public class DelegatePlayerCallback implements PlayerCallback {
     }
 
     @Override
-    public void onShotResult(@NonNull PokeResult result) {
+    public void onShotResult(@NonNull ShotResult result) {
         mCallback.onShotResult(result);
     }
 

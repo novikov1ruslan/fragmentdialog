@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.PokeResult;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianRules;
@@ -91,7 +91,7 @@ public class PlayerOpponentTest {
     public void after_shot_result_is_miss__enemy_board_shows_miss() {
         Vector2 aim = Vector2.get(5, 5);
         Cell cell = Cell.newMiss();
-        PokeResult result = new PokeResult(aim, cell);
+        ShotResult result = new ShotResult(aim, cell);
         mPlayer.onShotResult(result);
         assertThat(enemyCellAt(aim), equalTo(cell));
     }
@@ -100,7 +100,7 @@ public class PlayerOpponentTest {
     public void after_shot_result_is_hit__enemy_board_shows_hit() {
         Vector2 aim = Vector2.get(5, 5);
         Cell cell = Cell.newHit();
-        PokeResult result = new PokeResult(aim, cell);
+        ShotResult result = new ShotResult(aim, cell);
         mPlayer.onShotResult(result);
         assertThat(enemyCellAt(aim), equalTo(cell));
     }
@@ -111,7 +111,7 @@ public class PlayerOpponentTest {
         Cell cell = Cell.newHit();
         Ship ship = new Ship(2);
         ship.setCoordinates(5, 5);
-        PokeResult result = new PokeResult(aim, cell, ship);
+        ShotResult result = new ShotResult(aim, cell, ship);
         mPlayer.onShotResult(result);
         Ship actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
         assertThat(actual, equalTo(ship));
@@ -133,7 +133,7 @@ public class PlayerOpponentTest {
 //        Board board = new Board();
 //        mPlayer.setBoard(board);
 //        mPlacement.putShipAt(board, new Ship(2), 5, 5);
-//        PokeResult result = mPlayer.createResultForShootingAt(aim);
+//        ShotResult result = mPlayer.createResultForShootingAt(aim);
 //        mPlayer.onShotAtForResult(result);
 //        assertThat(result.cell.isHit(), is(true));
 //        assertThat(result.ship, is(nullValue()));
@@ -145,7 +145,7 @@ public class PlayerOpponentTest {
 //        Board board = new Board();
 //        mPlayer.setBoard(board);
 //        mPlacement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
-//        PokeResult result = mPlayer.createResultForShootingAt(aim);
+//        ShotResult result = mPlayer.createResultForShootingAt(aim);
 //        mPlayer.onShotAtForResult(result);
 //        result = mPlayer.createResultForShootingAt(Vector2.get(5, 6));
 //
@@ -213,7 +213,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerGetsShotResult__CallbackCalled() {
-        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit());
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit());
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onShotResult(result);
@@ -221,7 +221,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerKillsShip__CallbackCalled() {
-        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit(), new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit(), new Ship(1));
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onKill(PlayerCallback.Side.OPPONENT);
@@ -229,7 +229,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerHitsShip__CallbackCalled() {
-        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newHit());
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit());
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onHit(PlayerCallback.Side.OPPONENT);
@@ -237,7 +237,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerMissesShip__CallbackCalled() {
-        PokeResult result = new PokeResult(Vector2.get(1, 1), Cell.newMiss());
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newMiss());
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onMiss(PlayerCallback.Side.OPPONENT);
