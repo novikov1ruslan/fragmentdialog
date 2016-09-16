@@ -86,7 +86,7 @@ dependencies {
 
 //    compile "com.google.firebase:firebase-core:${playServicesVersion}"
 
-    compile 'ch.acra:acra:4.6.2'
+    compile 'ch.acra:acra:4.9.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
     compile 'com.google.guava:guava:19.0'
@@ -100,7 +100,7 @@ dependencies {
     androidTestCompile "com.android.support.test:runner:0.5"
     androidTestCompile "com.android.support.test:rules:0.5"
     androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.2"
-    androidTestCompile "com.android.support:support-annotations:23.2.0"
+    androidTestCompile "com.android.support:support-annotations:23.3.0"
     androidTestCompile 'org.mockito:mockito-core:1.9.5'
     androidTestCompile "com.crittercism.dexmaker:dexmaker:1.4"
     androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:1.4"
