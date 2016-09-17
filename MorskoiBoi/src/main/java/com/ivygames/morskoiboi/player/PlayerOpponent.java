@@ -171,7 +171,7 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         Ln.v(mName + ": -> my shot result: " + result);
-        updateEnemyBoard(result, mPlacement);
+        updateEnemyBoard(result);
 
         mCallback.onShotResult(result);
         if (shipSank(result.ship)) {
@@ -184,7 +184,7 @@ public class PlayerOpponent implements Opponent {
                 if (versionSupportsBoardReveal()) {
                     mOpponent.onLost(mMyBoard);
                 } else {
-                    Ln.d("opponent version doesn't support board reveal = " + mOpponentVersion);
+                    Ln.d(this + ": opponent version doesn't support board reveal = " + mOpponentVersion);
                     mCallback.onLost(null);
                 }
 
@@ -313,13 +313,12 @@ public class PlayerOpponent implements Opponent {
         return new ShotResult(aim, cell);
     }
 
-    private void updateEnemyBoard(@NonNull ShotResult result,
-                                  @NonNull Placement placement) {
+    private void updateEnemyBoard(@NonNull ShotResult result) {
         Ship ship = result.ship;
         if (ship == null) {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
-            placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
+            mPlacement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }
@@ -336,7 +335,7 @@ public class PlayerOpponent implements Opponent {
         return mMyBoard;
     }
 
-    protected boolean ready() {
+    protected final boolean ready() {
         return mPlayerReady;
     }
 

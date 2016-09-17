@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.player;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
@@ -8,8 +10,8 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -26,12 +28,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class PlayerOpponentTest {
@@ -46,7 +46,7 @@ public class PlayerOpponentTest {
     @Mock
     private PlayerCallback callback;
 
-    private Rules rules = new RussianRules();
+    private Rules russianRules = new RussianRules();
     private ChatListener listener = new ChatListener() {
         @Override
         public void showChatCrouton(ChatMessage message) {
@@ -59,12 +59,14 @@ public class PlayerOpponentTest {
         MockitoAnnotations.initMocks(this);
         ExceptionHandler.setDryRun(true);
 
-        mPlacement = new Placement(new Random(), rules);
-        mPlayer = newPlayer(rules);
+        mPlacement = new Placement(new Random(), russianRules);
+        mPlayer = newPlayer(russianRules);
     }
 
+    @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, mPlacement, rules);
+        Placement placement = new Placement(new Random(), new RussianRules());
+        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
         player.setCallback(callback);
@@ -72,22 +74,22 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void AfterPlayerLoses__EnemyIsNotReady() {
-        mPlayer.onLost(new Board());
-
+    public void Initially__EnemyIsNotReady() {
         assertThat(mPlayer.isOpponentReady(), is(false));
-    }
-
-    @Test
-    public void when_enemy_bids_on_non_ready_player__enemy_does_not_go() {
-        mPlayer.onEnemyBid(2);
-        verify(mEnemy, never()).go();
     }
 
     @Test
     public void if_player_can_go__enemy_is_ready() {
         mPlayer.go();
+
         assertThat(mPlayer.isOpponentReady(), is(true));
+    }
+
+    @Test
+    public void when_enemy_bids_on_non_ready_player__enemy_does_not_go() {
+        mPlayer.onEnemyBid(2);
+
+        verify(mEnemy, never()).go();
     }
 
     @Test
@@ -293,26 +295,39 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerLoses__CallbackNotCalled() {
-        rules = mock(Rules.class);
-        when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
-        mPlayer = newPlayer(rules);
+        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
         Board board = new Board();
-        mPlacement.putShipAt(board, new Ship(1, Ship.Orientation.VERTICAL), 5, 5);
+        mPlacement.putShipAt(board, new Ship(1), 5, 5);
         mPlayer.setBoard(board);
 
-        Vector2 aim = Vector2.get(5, 5);
-        mPlayer.onShotAt(aim);
+        mPlayer.onShotAt(Vector2.get(5, 5));
 
         verify(callback, never()).onLost(any(Board.class));
     }
 
     @Test
-    public void when_result_of_a_shot_is_defeat__opponent_lost() {
-        rules = mock(Rules.class);
-        when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
-        mPlayer = newPlayer(rules);
+    public void AfterPlayerLoses__EnemyIsNotReady() {
+        if_player_can_go__enemy_is_ready();
+
+        WhenPlayerLoses__CallbackNotCalled();
+
+        assertThat(mPlayer.isOpponentReady(), is(false));
+    }
+
+    @Test
+    public void AfterPlayerWins__EnemyIsNotReady() {
+        if_player_can_go__enemy_is_ready();
+
+        WhenPlayerWins__OpponentLost();
+
+        assertThat(mPlayer.isOpponentReady(), is(false));
+    }
+
+    @Test
+    public void WhenPlayerWins__OpponentLost() {
+        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
 
         ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
@@ -323,9 +338,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenEnemyLoses_AndEnemyDoesNotSupportBoardReveal__CallbackNotCalled() {
-        rules = mock(Rules.class);
-        when(rules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
-        mPlayer = newPlayer(rules);
+        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
         ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
@@ -387,6 +400,18 @@ public class PlayerOpponentTest {
         verify(callback, times(1)).onMessage(message);
     }
 
+    @Test
+    public void WhenPlayerWinsOverAiOpponent__OpponentLost() {
+        PlayerOpponent player = newPlayer(PlayerUtils.defeatedBoardRules());
+        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules());
+        player.setOpponent(aiOpponent);
+        aiOpponent.setOpponent(player);
+
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        player.onShotResult(result);
+
+        assertThat(aiOpponent.lostCalled(), is(true));
+    }
 
     // TODO: when callback is set - sticky
 
@@ -394,4 +419,22 @@ public class PlayerOpponentTest {
         return mPlayer.getEnemyBoard().getCellAt(aim);
     }
 
+    private static class MyAiOpponent extends AiOpponent {
+
+        private boolean lostCalled;
+
+        public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
+            super(name, placement, rules);
+        }
+
+        @Override
+        public void onLost(@NonNull Board board) {
+            super.onLost(board);
+            lostCalled = true;
+        }
+
+        public boolean lostCalled() {
+            return lostCalled;
+        }
+    }
 }
