@@ -402,12 +402,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onAimingStarted() {
             Ln.v("aiming started");
-            // FIXME
             if (debug_aiming_started) {
                 Ln.e("aiming started");
+            } else {
+                debug_aiming_started = true;
+                mGameplaySounds.playKantrop();
             }
-            debug_aiming_started = true;
-            mGameplaySounds.playKantrop();
         }
 
     }
