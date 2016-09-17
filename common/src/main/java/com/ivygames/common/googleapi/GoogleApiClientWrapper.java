@@ -41,8 +41,6 @@ public class GoogleApiClientWrapper implements ApiClient {
     private final GoogleApiClient mGoogleApiClient;
     private GoogleApiClient.ConnectionCallbacks mConnectedListener;
     private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
-    private InvitationLoadListener mLoadListener;
-    private ResultCallback<? super Invitations.LoadInvitationsResult> mResultCallback = new LoadInvitationsResultImpl();
     private boolean mDryRun;
 
     public GoogleApiClientWrapper(@NonNull Context context) {
@@ -116,9 +114,9 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     @Override
     public void loadInvitations(@NonNull InvitationLoadListener listener) {
-        mLoadListener = listener;
         Ln.v("loading invitations...");
-        Games.Invitations.loadInvitations(mGoogleApiClient).setResultCallback(mResultCallback);
+        Games.Invitations.loadInvitations(mGoogleApiClient).
+                setResultCallback(new LoadInvitationsResultImpl(listener));
     }
 
     public Intent getAchievementsIntent() {
@@ -226,7 +224,13 @@ public class GoogleApiClientWrapper implements ApiClient {
         mConnectionFailedListener = listener;
     }
 
-    private class LoadInvitationsResultImpl implements ResultCallback<Invitations.LoadInvitationsResult> {
+    private static class LoadInvitationsResultImpl implements ResultCallback<Invitations.LoadInvitationsResult> {
+        @NonNull
+        private final InvitationLoadListener mLoadListener;
+
+        LoadInvitationsResultImpl(@NonNull InvitationLoadListener listener) {
+            mLoadListener = listener;
+        }
 
         @Override
         public void onResult(@NonNull Invitations.LoadInvitationsResult list) {

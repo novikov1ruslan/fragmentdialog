@@ -116,7 +116,7 @@ public class PurchaseManager {
         String payload = "";
 
         if (mHelper.isAsyncInProgress()) {
-            Ln.e("no_ads in progress");
+            Ln.w("no_ads in progress");
             return;
         }
 

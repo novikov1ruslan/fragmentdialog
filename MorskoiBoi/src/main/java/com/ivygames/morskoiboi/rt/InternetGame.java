@@ -340,7 +340,6 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         mIsSending = false;
         if (statusCode == GamesStatusCodes.STATUS_OK) {
             if (tokenId != mLastSentToken) {
-                Ln.e("last sent token is wrong");
                 reportException("last sent token is wrong");
             }
 
