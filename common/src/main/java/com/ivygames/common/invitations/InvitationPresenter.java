@@ -20,7 +20,7 @@ public class InvitationPresenter implements InvitationListener {
     }
 
     public void updateInvitations() {
-        if (mInvitationManager.getInvitations().isEmpty()) {
+        if (mInvitationManager.getInvitationIds().isEmpty()) {
             Ln.v("there are no pending invitations");
             mObserver.hideInvitation();
         } else {

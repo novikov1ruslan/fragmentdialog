@@ -57,8 +57,6 @@ public interface ApiClient {
 
     void increment(@NonNull String achievementId, int steps);
 
-    PendingResult<Snapshots.OpenSnapshotResult> open(@NonNull String snapshotName, boolean createIfMissing);
-
     void openAsynchronously(@NonNull String snapshotName,
                             @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback);
 

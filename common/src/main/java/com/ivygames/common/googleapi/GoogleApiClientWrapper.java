@@ -156,14 +156,10 @@ public class GoogleApiClientWrapper implements ApiClient {
         Games.Achievements.increment(mGoogleApiClient, achievementId, steps);
     }
 
-    public PendingResult<Snapshots.OpenSnapshotResult> open(@NonNull String snapshotName, boolean createIfMissing) {
-        return Games.Snapshots.open(mGoogleApiClient, snapshotName, createIfMissing);
-    }
-
     public void openAsynchronously(@NonNull String snapshotName,
                                    @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback) {
         final boolean createIfMissing = true;
-        open(snapshotName, createIfMissing).setResultCallback(callback);
+        Games.Snapshots.open(mGoogleApiClient, snapshotName, createIfMissing).setResultCallback(callback);
     }
 
     public PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot) {

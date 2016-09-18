@@ -101,11 +101,6 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public PendingResult<Snapshots.OpenSnapshotResult> open(@NonNull String snapshotName, boolean createIfMissing) {
-        return null;
-    }
-
-    @Override
     public void openAsynchronously(@NonNull String snapshotName, @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback) {
 
     }

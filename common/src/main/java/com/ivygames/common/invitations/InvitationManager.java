@@ -20,7 +20,7 @@ public class InvitationManager {
     @NonNull
     private final Set<String> mIncomingInvitationIds = new HashSet<>();
     @NonNull
-    private final List<InvitationListener> mInvitationReceivers = new ArrayList<>();
+    private final List<InvitationListener> mInvitationListeners = new ArrayList<>();
 
     @NonNull
     private final ApiClient mApiClient;
@@ -30,12 +30,12 @@ public class InvitationManager {
     }
 
     public void addInvitationListener(@NonNull InvitationListener receiver) {
-        mInvitationReceivers.add(receiver);
+        mInvitationListeners.add(receiver);
         Ln.d(receiver + " registered as invitation receiver");
     }
 
     public void removeInvitationReceiver(@NonNull InvitationListener receiver) {
-        mInvitationReceivers.remove(receiver);
+        mInvitationListeners.remove(receiver);
         Ln.d(receiver + " unregistered as invitation receiver");
     }
 
@@ -52,19 +52,19 @@ public class InvitationManager {
     }
 
     @NonNull
-    public Set<String> getInvitations() {
+    public Set<String> getInvitationIds() {
         return new HashSet<>(mIncomingInvitationIds);
     }
 
     private void notifyReceived(@NonNull GameInvitation invitation) {
-        for (InvitationListener receiver : mInvitationReceivers) {
-            receiver.onInvitationReceived(invitation);
+        for (InvitationListener listener : mInvitationListeners) {
+            listener.onInvitationReceived(invitation);
         }
     }
 
     private void notifyUpdated() {
-        for (InvitationListener receiver : mInvitationReceivers) {
-            receiver.onInvitationsUpdated(new HashSet<>(mIncomingInvitationIds));
+        for (InvitationListener listener : mInvitationListeners) {
+            listener.onInvitationsUpdated(new HashSet<>(mIncomingInvitationIds));
         }
     }
 
