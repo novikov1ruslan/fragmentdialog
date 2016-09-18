@@ -48,7 +48,7 @@ public class InvitationManager {
         mApiClient.registerInvitationListener(new OnInvitationReceivedListenerImpl());
 
         Ln.d("loading invitations...");
-        mApiClient.loadInvitations(new LoadInvitationsResultResultCallback());
+        mApiClient.loadInvitations(new InvitationLoadListenerImpl());
     }
 
     @NonNull
@@ -88,10 +88,10 @@ public class InvitationManager {
         }
     }
 
-    private class LoadInvitationsResultResultCallback implements InvitationLoadListener {
+    private class InvitationLoadListenerImpl implements InvitationLoadListener {
 
         @Override
-        public void onResult(@NonNull Collection<GameInvitation> invitations) {
+        public void onLoaded(@NonNull Collection<GameInvitation> invitations) {
             mIncomingInvitationIds.clear();
             if (invitations.size() > 0) {
                 Ln.v("loaded " + invitations.size() + " invitations");

@@ -130,6 +130,11 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
+    public Intent getInvitationInboxIntent() {
+        return Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
+    }
+
+    @Override
     public Intent getAchievementsIntent() {
         return Games.Achievements.getAchievementsIntent(mGoogleApiClient);
     }
@@ -215,11 +220,6 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public Intent getInvitationInboxIntent() {
-        return Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
-    }
-
-    @Override
     public Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b) {
         return Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, minOpponents, maxOpponents, b);
     }
@@ -277,7 +277,7 @@ public class GoogleApiClientWrapper implements ApiClient {
             } else {
                 Ln.v("no invitations");
             }
-            mLoadListener.onResult(invitationsCopy);
+            mLoadListener.onLoaded(invitationsCopy);
         }
     }
 

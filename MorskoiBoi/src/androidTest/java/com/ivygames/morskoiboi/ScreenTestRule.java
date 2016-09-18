@@ -86,7 +86,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         @Override
         public void loadInvitations(@NonNull InvitationLoadListener listener) {
             loadListener = listener;
-            listener.onResult(createGameInvitations(invitations));
+            listener.onLoaded(createGameInvitations(invitations));
         }
 
         @Override
@@ -100,7 +100,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
         public void setInvitations(Set<String> invitations) {
             this.invitations = invitations;
-            loadListener.onResult(createGameInvitations(invitations));
+            loadListener.onLoaded(createGameInvitations(invitations));
         }
 
     }

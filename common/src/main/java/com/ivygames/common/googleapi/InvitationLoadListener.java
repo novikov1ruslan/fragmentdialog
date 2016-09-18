@@ -7,5 +7,5 @@ import com.ivygames.common.invitations.GameInvitation;
 import java.util.Collection;
 
 public interface InvitationLoadListener {
-    void onResult(@NonNull Collection<GameInvitation> invitations);
+    void onLoaded(@NonNull Collection<GameInvitation> invitations);
 }
