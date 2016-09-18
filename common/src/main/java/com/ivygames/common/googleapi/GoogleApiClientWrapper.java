@@ -72,30 +72,37 @@ public class GoogleApiClientWrapper implements ApiClient {
         mDryRun = dryRun;
     }
 
+    @Override
     public void connect() {
         mGoogleApiClient.connect();
     }
 
+    @Override
     public boolean isConnected() {
         return mGoogleApiClient.isConnected();
     }
 
+    @Override
     public void disconnect() {
         mGoogleApiClient.disconnect();
     }
 
+    @Override
     public void unregisterConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callbacks) {
         mGoogleApiClient.unregisterConnectionCallbacks(callbacks);
     }
 
+    @Override
     public void unregisterConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
         mGoogleApiClient.unregisterConnectionFailedListener(listener);
     }
 
+    @Override
     public String getDisplayName() {
         return Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
     }
 
+    @Override
     public boolean resolveConnectionFailure(@NonNull Activity activity,
                                             @NonNull ConnectionResult connectionResult,
                                             int rcSignIn,
@@ -103,11 +110,13 @@ public class GoogleApiClientWrapper implements ApiClient {
         return BaseGameUtils.resolveConnectionFailure(activity, mGoogleApiClient, connectionResult, rcSignIn, string);
     }
 
+    @Override
     public void unregisterInvitationListener() {
         Games.Invitations.unregisterInvitationListener(mGoogleApiClient);
         Ln.v("invitation listener unregistered");
     }
 
+    @Override
     public void registerInvitationListener(@NonNull OnInvitationReceivedListener listener) {
         Ln.v("registering invitation listener: " + listener);
         Games.Invitations.registerInvitationListener(mGoogleApiClient, listener);
@@ -120,68 +129,84 @@ public class GoogleApiClientWrapper implements ApiClient {
                 setResultCallback(new LoadInvitationsResultImpl(listener));
     }
 
+    @Override
     public Intent getAchievementsIntent() {
         return Games.Achievements.getAchievementsIntent(mGoogleApiClient);
     }
 
+    @Override
     public Intent getLeaderboardIntent(@NonNull String boardName) {
         return Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, boardName);
     }
 
+    @Override
     public void unlockAchievement(@NonNull String achievementId) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
             return;
         }
+
         Games.Achievements.unlock(mGoogleApiClient, achievementId);
     }
 
+    @Override
     public void revealAchievement(@NonNull String achievementId) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
             return;
         }
+
         Games.Achievements.reveal(mGoogleApiClient, achievementId);
     }
 
+    @Override
     public void loadAchievements(@NonNull AchievementsResultCallback resultCallback) {
         Games.Achievements.load(mGoogleApiClient, true).setResultCallback(resultCallback);
     }
 
+    @Override
     public void increment(@NonNull String achievementId, int steps) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
             return;
         }
+
         Games.Achievements.increment(mGoogleApiClient, achievementId, steps);
     }
 
+    @Override
     public void openAsynchronously(@NonNull String snapshotName,
                                    @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback) {
         final boolean createIfMissing = true;
         Games.Snapshots.open(mGoogleApiClient, snapshotName, createIfMissing).setResultCallback(callback);
     }
 
+    @Override
     public PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot) {
         return Games.Snapshots.resolveConflict(mGoogleApiClient, conflictId, snapshot);
     }
 
+    @Override
     public PendingResult<Snapshots.CommitSnapshotResult> commitAndClose(@NonNull Snapshot snapshot, @NonNull SnapshotMetadataChange change) {
         return Games.Snapshots.commitAndClose(mGoogleApiClient, snapshot, change);
     }
 
+    @Override
     public void leave(@NonNull RoomUpdateListener updateListener, @NonNull String roomId) {
         Games.RealTimeMultiplayer.leave(mGoogleApiClient, updateListener, roomId);
     }
 
+    @Override
     public void join(@NonNull RoomConfig roomConfig) {
         Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfig);
     }
 
+    @Override
     public void create(@NonNull RoomConfig build) {
         Games.RealTimeMultiplayer.create(mGoogleApiClient, build);
     }
 
+    @Override
     public int sendReliableMessage(@NonNull RealTimeMultiplayer.ReliableMessageSentCallback callback,
                                    @NonNull byte[] messageData,
                                    @NonNull String roomId,
@@ -189,18 +214,22 @@ public class GoogleApiClientWrapper implements ApiClient {
         return Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, callback, messageData, roomId, recipientId);
     }
 
+    @Override
     public Intent getInvitationInboxIntent() {
         return Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
     }
 
+    @Override
     public Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b) {
         return Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, minOpponents, maxOpponents, b);
     }
 
+    @Override
     public Intent getWaitingRoomIntent(@NonNull Room room, int minPlayers) {
         return Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, minPlayers);
     }
 
+    @Override
     public void submitScore(@NonNull String boardName, int totalScores) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
@@ -209,14 +238,17 @@ public class GoogleApiClientWrapper implements ApiClient {
         Games.Leaderboards.submitScore(mGoogleApiClient, boardName, totalScores);
     }
 
+    @Override
     public Player getCurrentPlayer() {
         return Games.Players.getCurrentPlayer(mGoogleApiClient);
     }
 
+    @Override
     public void setConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callback) {
         mConnectedListener = callback;
     }
 
+    @Override
     public void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
         mConnectionFailedListener = listener;
     }
