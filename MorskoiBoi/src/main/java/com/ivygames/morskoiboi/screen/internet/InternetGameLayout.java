@@ -5,14 +5,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ivygames.common.invitations.InvitationObserver;
+import com.ivygames.common.invitations.InvitationScreen;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 
 import org.commons.logger.Ln;
 
-public class InternetGameLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationObserver {
+public class InternetGameLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationScreen {
 
     private InternetGameLayoutListener mListener;
     private TextView mPlayerNameView;

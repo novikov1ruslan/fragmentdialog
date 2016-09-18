@@ -67,7 +67,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final GameSettings mSettings;
     @NonNull
-    protected final AdProvider mAdProvider = Dependencies.getAdProvider();
+    private final AdProvider mAdProvider = Dependencies.getAdProvider();
 
     private InvitationPresenter mInvitationPresenter;
     @NonNull
@@ -128,7 +128,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         Ln.d("displaying screen, registering invitation receiver");
         mInvitationManager.addInvitationListener(mInvitationPresenter);
         mInvitationPresenter.updateInvitations();
-        mInvitationManager.loadInvitations();
     }
 
     @Override

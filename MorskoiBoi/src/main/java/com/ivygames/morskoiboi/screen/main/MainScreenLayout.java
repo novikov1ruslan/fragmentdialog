@@ -7,14 +7,14 @@ import android.view.ViewStub;
 
 import com.google.android.gms.plus.PlusOneButton;
 import com.ivygames.common.PlayUtils;
-import com.ivygames.common.invitations.InvitationObserver;
+import com.ivygames.common.invitations.InvitationScreen;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 
 import org.commons.logger.Ln;
 
-public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationObserver {
+public class MainScreenLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationScreen {
 
     public interface MainScreenActions {
         void play();
