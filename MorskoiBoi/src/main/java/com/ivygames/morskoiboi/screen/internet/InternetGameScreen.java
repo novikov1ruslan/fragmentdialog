@@ -94,14 +94,14 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public void onStart() {
         super.onStart();
-        mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
+        mInvitationManager.addInvitationListener(mInvitationPresenter);
         mInvitationPresenter.updateInvitations();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.unregisterInvitationReceiver(mInvitationPresenter);
+        mInvitationManager.removeInvitationReceiver(mInvitationPresenter);
     }
 
     @Override

@@ -2,20 +2,19 @@ package com.ivygames.common.invitations;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.googleapi.GameInvitation;
-
 import org.commons.logger.Ln;
 
 import java.util.Set;
 
-public class InvitationPresenter implements InvitationReceivedListener {
+public class InvitationPresenter implements InvitationListener {
 
     @NonNull
     private final InvitationObserver mObserver;
     @NonNull
     private final InvitationManager mInvitationManager;
 
-    public InvitationPresenter(@NonNull InvitationObserver observer, @NonNull InvitationManager invitationManager) {
+    public InvitationPresenter(@NonNull InvitationObserver observer,
+                               @NonNull InvitationManager invitationManager) {
         mObserver = observer;
         mInvitationManager = invitationManager;
     }
@@ -31,12 +30,12 @@ public class InvitationPresenter implements InvitationReceivedListener {
     }
 
     @Override
-    public void onInvitationReceived(GameInvitation invitation) {
+    public void onInvitationReceived(@NonNull GameInvitation invitation) {
         updateInvitations();
     }
 
     @Override
-    public void onInvitationsUpdated(Set<String> invitationIds) {
+    public void onInvitationsUpdated(@NonNull Set<String> invitationIds) {
         updateInvitations();
     }
 }

@@ -87,7 +87,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStart() {
         super.onStart();
-        mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
+        mInvitationManager.addInvitationListener(mInvitationPresenter);
         mInvitationPresenter.updateInvitations();
     }
 
@@ -106,7 +106,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.unregisterInvitationReceiver(mInvitationPresenter);
+        mInvitationManager.removeInvitationReceiver(mInvitationPresenter);
     }
 
     @Override

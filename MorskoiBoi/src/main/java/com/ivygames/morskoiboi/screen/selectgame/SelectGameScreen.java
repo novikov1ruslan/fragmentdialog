@@ -126,7 +126,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onStart() {
         super.onStart();
         Ln.d("displaying screen, registering invitation receiver");
-        mInvitationManager.registerInvitationReceiver(mInvitationPresenter);
+        mInvitationManager.addInvitationListener(mInvitationPresenter);
         mInvitationPresenter.updateInvitations();
         mInvitationManager.loadInvitations();
     }
@@ -143,7 +143,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.unregisterInvitationReceiver(mInvitationPresenter);
+        mInvitationManager.removeInvitationReceiver(mInvitationPresenter);
     }
 
     @Override

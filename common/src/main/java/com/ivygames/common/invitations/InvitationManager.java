@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.googleapi.GameInvitation;
 import com.ivygames.common.googleapi.InvitationLoadListener;
 
 import org.commons.logger.Ln;
@@ -21,52 +20,50 @@ public class InvitationManager {
     @NonNull
     private final Set<String> mIncomingInvitationIds = new HashSet<>();
     @NonNull
-    private final OnInvitationReceivedListener mInvitationListener = new OnInvitationReceivedListenerImpl();
-    @NonNull
-    private final InvitationLoadListener mResultCallback = new LoadInvitationsResultResultCallback();
-    @NonNull
-    private final List<InvitationReceivedListener> mInvitationReceivers = new ArrayList<>();
+    private final List<InvitationListener> mInvitationReceivers = new ArrayList<>();
 
     @NonNull
-    private final ApiClient mGoogleApiClient;
+    private final ApiClient mApiClient;
 
     public InvitationManager(@NonNull ApiClient client) {
-        mGoogleApiClient = client;
+        mApiClient = client;
     }
 
-    public void registerInvitationReceiver(@NonNull InvitationReceivedListener receiver) {
+    public void addInvitationListener(@NonNull InvitationListener receiver) {
         mInvitationReceivers.add(receiver);
         Ln.d(receiver + " registered as invitation receiver");
     }
 
-    public void unregisterInvitationReceiver(@NonNull InvitationReceivedListener receiver) {
+    public void removeInvitationReceiver(@NonNull InvitationListener receiver) {
         mInvitationReceivers.remove(receiver);
         Ln.d(receiver + " unregistered as invitation receiver");
     }
 
     public void loadInvitations() {
-        if (!mGoogleApiClient.isConnected()) {
+        if (!mApiClient.isConnected()) {
             Ln.w("API client has to be connected");
             return;
         }
-        mGoogleApiClient.registerInvitationListener(mInvitationListener);
+
+        mApiClient.registerInvitationListener(new OnInvitationReceivedListenerImpl());
 
         Ln.d("loading invitations...");
-        mGoogleApiClient.loadInvitations(mResultCallback);
+        mApiClient.loadInvitations(new LoadInvitationsResultResultCallback());
     }
 
+    @NonNull
     public Set<String> getInvitations() {
         return new HashSet<>(mIncomingInvitationIds);
     }
 
     private void notifyReceived(@NonNull GameInvitation invitation) {
-        for (InvitationReceivedListener receiver : mInvitationReceivers) {
+        for (InvitationListener receiver : mInvitationReceivers) {
             receiver.onInvitationReceived(invitation);
         }
     }
 
     private void notifyUpdated() {
-        for (InvitationReceivedListener receiver : mInvitationReceivers) {
+        for (InvitationListener receiver : mInvitationReceivers) {
             receiver.onInvitationsUpdated(new HashSet<>(mIncomingInvitationIds));
         }
     }
@@ -77,6 +74,7 @@ public class InvitationManager {
         public void onInvitationReceived(Invitation invitation) {
             String displayName = invitation.getInviter().getDisplayName();
             Ln.d("received invitation from: " + displayName);
+
             String invitationId = invitation.getInvitationId();
             mIncomingInvitationIds.add(invitationId);
             notifyReceived(new GameInvitation(displayName, invitationId));

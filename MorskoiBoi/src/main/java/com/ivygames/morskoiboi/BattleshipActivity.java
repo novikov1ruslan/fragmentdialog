@@ -26,9 +26,9 @@ import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.googleapi.GameInvitation;
+import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationManager;
-import com.ivygames.common.invitations.InvitationReceivedListener;
+import com.ivygames.common.invitations.InvitationListener;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ScreenManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
@@ -117,7 +117,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     private final OnConnectionFailedListener mConnectionFailedListener = new OnConnectionFailedListenerImpl();
     private ViewGroup mLayout;
     @NonNull
-    private final InvitationReceivedListener mInvitationReceivedListener = new InvitationReceivedListenerImpl();
+    private final InvitationListener mInvitationListener = new InvitationListenerImpl();
     @NonNull
     private AdProvider mAdProvider = new NoAdsAdProvider();
     @NonNull
@@ -273,7 +273,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mScreenManager.onStart();
 
-        mInvitationManager.registerInvitationReceiver(mInvitationReceivedListener);
+        mInvitationManager.addInvitationListener(mInvitationListener);
         if (mGoogleApiClient.isConnected()) {
             Ln.d("API is connected - register invitation listener");
             mInvitationManager.loadInvitations();
@@ -328,7 +328,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         stopKeepingScreenOn();
 
         mScreenManager.onStop();
-        mInvitationManager.unregisterInvitationReceiver(mInvitationReceivedListener);
+        mInvitationManager.removeInvitationReceiver(mInvitationListener);
         Ln.d("game fully obscured - stop keeping screen On");
     }
 
@@ -486,15 +486,15 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         }
     }
 
-    private class InvitationReceivedListenerImpl implements InvitationReceivedListener {
+    private class InvitationListenerImpl implements InvitationListener {
         @Override
-        public void onInvitationReceived(GameInvitation invitation) {
+        public void onInvitationReceived(@NonNull GameInvitation invitation) {
             View view = inflateInfoCroutonLayout(getLayoutInflater(), getString(R.string.received_invitation, invitation.name), mLayout);
             Crouton.make(BattleshipActivity.this, view).setConfiguration(CONFIGURATION_LONG).show();
         }
 
         @Override
-        public void onInvitationsUpdated(Set<String> invitationIds) {
+        public void onInvitationsUpdated(@NonNull Set<String> invitationIds) {
 
         }
     }

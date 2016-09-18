@@ -28,6 +28,7 @@ import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.common.achievements.AchievementsResultCallback;
+import com.ivygames.common.invitations.GameInvitation;
 
 import org.commons.logger.Ln;
 
