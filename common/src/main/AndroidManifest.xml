@@ -2,9 +2,5 @@
     package="com.ivygames.common">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <application
-        android:allowBackup="true">
-
-    </application>
 
 </manifest>
