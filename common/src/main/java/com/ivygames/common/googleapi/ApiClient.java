@@ -18,6 +18,7 @@ import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.common.achievements.AchievementsResultCallback;
+import com.ivygames.common.invitations.InvitationLoadListener;
 
 
 public interface ApiClient {

@@ -19,7 +19,7 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.googleapi.InvitationLoadListener;
+import com.ivygames.common.invitations.InvitationLoadListener;
 
 class DummyApiClient implements ApiClient {
     @Override

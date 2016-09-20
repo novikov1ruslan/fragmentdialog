@@ -1,4 +1,4 @@
-package com.ivygames.common.googleapi;
+package com.ivygames.common.invitations;
 
 import android.support.annotation.NonNull;
 

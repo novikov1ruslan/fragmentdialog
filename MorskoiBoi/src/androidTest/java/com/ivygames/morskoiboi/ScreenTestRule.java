@@ -9,7 +9,7 @@ import com.google.android.gms.games.multiplayer.Participant;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.GameInvitation;
-import com.ivygames.common.googleapi.InvitationLoadListener;
+import com.ivygames.common.invitations.InvitationLoadListener;
 import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
