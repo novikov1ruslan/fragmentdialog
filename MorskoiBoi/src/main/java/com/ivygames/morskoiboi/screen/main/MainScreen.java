@@ -15,8 +15,8 @@ import com.ivygames.common.Sharing;
 import com.ivygames.common.SignInListener;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.invitations.InvitationManager;
-import com.ivygames.common.invitations.InvitationPresenter;
+import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.ScreenInvitationListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -45,12 +45,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private final GameSettings mSettings;
 
     @NonNull
-    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
+    private final Multiplayer mMultiplayer = Dependencies.getMultiplayer();
 
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
 
-    private InvitationPresenter mInvitationPresenter;
+    private ScreenInvitationListener mScreenInvitationListener;
 
     public MainScreen(@NonNull BattleshipActivity parent,
                       @NonNull ApiClient apiClient,
@@ -73,7 +73,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             showRateDialog();
         }
 
-        mInvitationPresenter = new InvitationPresenter(mLayout, mInvitationManager);
+        mScreenInvitationListener = new ScreenInvitationListener(mMultiplayer, mLayout);
 
         return mLayout;
     }
@@ -87,8 +87,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStart() {
         super.onStart();
-        mInvitationManager.addInvitationListener(mInvitationPresenter);
-        mInvitationPresenter.updateInvitations();
+        mMultiplayer.addInvitationListener(mScreenInvitationListener);
     }
 
     @Override
@@ -106,7 +105,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.removeInvitationReceiver(mInvitationPresenter);
+        mMultiplayer.removeInvitationReceiver(mScreenInvitationListener);
     }
 
     @Override

@@ -1,25 +1,22 @@
 package com.ivygames.morskoiboi.screen.internet;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.invitations.InvitationManager;
-import com.ivygames.common.invitations.InvitationPresenter;
-import com.ivygames.common.multiplayer.MultiplayerHubListener;
+import com.ivygames.common.invitations.InvitationListener;
+import com.ivygames.common.multiplayer.ScreenInvitationListener;
+import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerListener;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -40,8 +37,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-import java.util.ArrayList;
-
 public class InternetGameScreen extends BattleshipScreen implements BackPressListener {
     private static final String TAG = "INTERNET_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
@@ -54,23 +49,21 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
-    @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
     @NonNull
-    private final MultiplayerHub mMultiplayerHub;
+    private final Multiplayer mMultiplayer;
 
-    private InvitationPresenter mInvitationPresenter;
     private Session mSession;
+    private InvitationListener mInvitationListener;
 
-    public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull MultiplayerHub hub) {
+    public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull Multiplayer multiplayer) {
         super(parent);
-        mMultiplayerHub = hub;
-        mMultiplayerHub.setResultListener(mMultiplayerHubListener);
+        mMultiplayer = multiplayer;
+        mMultiplayer.setListener(mMultiplayerListener);
     }
 
     @NonNull
@@ -80,7 +73,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mLayout.setPlayerName(mSettings.getPlayerName());
         mLayout.setScreenActions(mInternetGameLayoutListener);
 
-        mInvitationPresenter = new InvitationPresenter(mLayout, mInvitationManager);
+        mInvitationListener = new ScreenInvitationListener(mMultiplayer, mLayout);
         Ln.d(this + " screen created");
         return mLayout;
     }
@@ -94,14 +87,13 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public void onStart() {
         super.onStart();
-        mInvitationManager.addInvitationListener(mInvitationPresenter);
-        mInvitationPresenter.updateInvitations();
+        mMultiplayer.addInvitationListener(mInvitationListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.removeInvitationReceiver(mInvitationPresenter);
+        mMultiplayer.removeInvitationReceiver(mInvitationListener);
     }
 
     @Override
@@ -113,7 +105,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     private void createGame() {
         mInternetGame = new InternetGame(mApiClient, mInternetGameListener);
         InternetOpponent opponent = new InternetOpponent(mInternetGame, getString(R.string.player));
-        mInternetGame.setRealTimeMessageReceivedListener(opponent);
+        mMultiplayer.setRealTimeMessageReceivedListener(opponent);
         PlayerOpponent player = new PlayerOpponent(fetchPlayerName(), mPlacement, mRules);
         player.setChatListener(parent());
         mSession = new Session(player, opponent);
@@ -140,7 +132,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             return;
         }
 
-        mMultiplayerHub.handleResult(requestCode, resultCode, data);
+        mMultiplayer.handleResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -163,7 +155,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         @Override
         public void onWaitingForOpponent(Room room) {
             // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
-            mMultiplayerHub.showWaitingRoom(room);
+            mMultiplayer.showWaitingRoom(room, BattleshipActivity.RC_WAITING_ROOM);
         }
 
         @Override
@@ -202,7 +194,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayerHub.invitePlayers();
+            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, mInternetGame);
         }
 
         @Override
@@ -218,7 +210,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayerHub.showInvitations();
+            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, mInternetGame);
         }
 
         @Override
@@ -233,66 +225,31 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mInternetGame.quickGame();
+            mMultiplayer.quickGame(mInternetGame);
         }
     };
 
     @NonNull
-    private final MultiplayerHubListener mMultiplayerHubListener = new MultiplayerHubListener() {
+    private final MultiplayerListener mMultiplayerListener = new MultiplayerListener() {
 
         @Override
-        public void handleWaitingRoomResult(int resultCode) {
+        public void playerLeft() {
+            mInternetGame.finish();
+        }
+
+        @Override
+        public void gameStarted() {
+            setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame, mSession));
+        }
+
+        @Override
+        public void invitationCanceled() {
             hideWaitingScreen();
-            if (resultCode == Activity.RESULT_OK) {
-                Ln.d("starting game");
-                // TODO: call createGame() here
-                setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame, mSession));
-            } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-                Ln.d("user explicitly chose to leave the room");
-                // if the activity result is RESULT_LEFT_ROOM, it's the caller's responsibility to actually leave the room
-                mInternetGame.finish();
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-            /*
-             * Dialog was cancelled (user pressed back key, for instance). In our game, this means leaving the room too. In more elaborate games,this could mean
-			 * something else (like minimizing the waiting room UI but continue in the handshake process).
-			 */
-                Ln.d("user closed the waiting room - leaving");
-                mInternetGame.finish();
-            }
         }
 
-        /**
-         * Handle the result of the invitation inbox UI, where the player can pick an invitation to accept. We react by accepting the selected invitation, if any.
-         */
         @Override
-        public void handleInvitationInboxResult(int result, @NonNull Intent data) {
-            if (result == Activity.RESULT_OK) {
-                Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
-                mInternetGame.accept(invitation);
-            } else {
-                Ln.d("invitation cancelled - hiding waiting screen; reason=" + result);
-                hideWaitingScreen();
-            }
-            mInvitationManager.loadInvitations();
-        }
-
-        // Handle the result of the "Select players UI" we launched when the user
-        // clicked the
-        // "Invite friends" button. We react by creating a room with those players.
-        @Override
-        public void handleSelectPlayersResult(int result, @NonNull Intent data) {
-            if (result != Activity.RESULT_OK) {
-                Ln.d("select players UI cancelled - hiding waiting screen; reason=" + result);
-                hideWaitingScreen();
-                return;
-            }
-
-            final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
-            Ln.d("opponent selected: " + invitees + ", creating room...");
-            int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
-            int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-
-            mInternetGame.create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers);
+        public void opponentInvitationCanceled() {
+            hideWaitingScreen();
         }
     };
 
@@ -321,4 +278,5 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     public String toString() {
         return TAG + debugSuffix();
     }
+
 }

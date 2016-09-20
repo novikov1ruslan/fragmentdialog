@@ -1,24 +1,18 @@
 package com.ivygames.morskoiboi.rt;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer.ReliableMessageSentCallback;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
-import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
-import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.multiplayer.RoomListener;
 import com.ivygames.common.multiplayer.RtmSender;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.GameEvent;
 
 import org.commons.logger.Ln;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -30,10 +24,7 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 /**
  * Opponent leaves: onDisconnectedFromRoom->onPeerLeft Network disconnected: onP2PDisconnected->onDisconnectedFromRoom->onPeersDisconnected
  */
-public class InternetGame extends Game implements RoomStatusUpdateListener, RoomUpdateListener, ReliableMessageSentCallback, RtmSender {
-
-    public static final int MIN_OPPONENTS = 1;
-    public static final int MAX_OPPONENTS = 1;
+public class InternetGame extends Game implements RoomListener, ReliableMessageSentCallback, RtmSender {
 
     private static final int TURN_TIMEOUT = 40 * 1000;
 
@@ -42,7 +33,6 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
     private Room mRoom;
     private String mRecipientId;
     private InternetGameListener mGameListener;
-    private RealTimeMessageReceivedListener mRtListener;
 
     private boolean mConnectionLostSent;
     @NonNull
@@ -60,11 +50,6 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         mGameListener = listener;
         EventBus.getDefault().removeAllStickyEvents();
         Ln.v("new internet game created");
-    }
-
-    public void setRealTimeMessageReceivedListener(@NonNull RealTimeMessageReceivedListener rtListener) {
-        mRtListener = rtListener;
-        Ln.v("rt listener set to " + rtListener);
     }
 
     @Override
@@ -288,50 +273,6 @@ public class InternetGame extends Game implements RoomStatusUpdateListener, Room
         Ln.d("leaving room: " + mRoom.getRoomId());
         mApiClient.leave(this, mRoom.getRoomId());
         mRoom = null;
-    }
-
-    public void accept(Invitation invitation) {
-        String invId = invitation.getInvitationId();
-        Ln.d("accepting invitation: " + invId);
-        RoomConfig.Builder builder = getRoomConfigBuilder();
-        builder.setInvitationIdToAccept(invId);
-        mApiClient.join(builder.build());
-    }
-
-    public void create(ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers) {
-        RoomConfig.Builder builder = getRoomConfigBuilder();
-        builder.addPlayersToInvite(invitees);
-
-        Bundle autoMatchCriteria = createAutomatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers);
-        if (autoMatchCriteria != null) {
-            Ln.d("automatch criteria: " + autoMatchCriteria);
-            builder.setAutoMatchCriteria(autoMatchCriteria);
-        }
-
-        mApiClient.create(builder.build());
-    }
-
-    private Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
-        Bundle autoMatchCriteria = null;
-        if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
-            // TODO: call this method anyway - do not return null
-            autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
-        }
-        return autoMatchCriteria;
-    }
-
-    public void quickGame() {
-        // quick-start a game with 1 randomly selected opponent
-        RoomConfig.Builder builder = getRoomConfigBuilder();
-        builder.setAutoMatchCriteria(createAutomatchCriteria(MIN_OPPONENTS, MAX_OPPONENTS));
-        mApiClient.create(builder.build());
-    }
-
-    private RoomConfig.Builder getRoomConfigBuilder() {
-        RoomConfig.Builder builder = RoomConfig.builder(this);
-        builder.setMessageReceivedListener(mRtListener);
-        builder.setRoomStatusUpdateListener(this);
-        return builder;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import com.ivygames.common.multiplayer.RoomListener;
+
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -7,6 +9,8 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,7 +42,7 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
         clickOn(invite());
 
         checkDisplayed(waitDialog());
-        verify(multiplayerHub, times(1)).invitePlayers();
+        verify(multiplayer, times(1)).invitePlayers(anyInt(), any(RoomListener.class));
     }
 
     @Test
@@ -48,7 +52,7 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
         clickOn(viewInvitations());
 
         checkDisplayed(waitDialog());
-        verify(multiplayerHub, times(1)).showInvitations();
+        verify(multiplayer, times(1)).showInvitations(anyInt(), any(RoomListener.class));
     }
 
     @Test

@@ -10,7 +10,7 @@ import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.googleapi.InvitationLoadListener;
-import com.ivygames.common.invitations.InvitationManager;
+import com.ivygames.common.multiplayer.Multiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
@@ -41,14 +41,13 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         apiClient = mock(ApiClient.class);
         when(apiClient.isConnected()).thenReturn(true);
         Dependencies.inject(apiClient);
-        Dependencies.inject(mock(InvitationManager.class));
+        Dependencies.inject(mock(Multiplayer.class));
         Dependencies.inject(mock(AchievementsManager.class));
         Dependencies.inject(mock(ProgressManager.class));
 
         device = mock(AndroidDevice.class);
         when(device.isTablet()).thenReturn(isTablet());
         Dependencies.inject(device);
-        Dependencies.inject(new InvitationManager(invitationApiClient));
     }
 
     private boolean isTablet() {
@@ -106,7 +105,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     }
 
     @NonNull
-    public static Collection<GameInvitation> createGameInvitations(Set<String> invitations) {
+    private static Collection<GameInvitation> createGameInvitations(Set<String> invitations) {
         Collection<GameInvitation> invitationsCopy = new HashSet<>();
         for (String id : invitations) {
             invitationsCopy.add(new GameInvitation("Sagi " + id, id));
@@ -115,7 +114,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
     }
 
     @NonNull
-    public static Invitation createInvitation(String displayName, String invitationId) {
+    private static Invitation createInvitation(String displayName, String invitationId) {
         Invitation invitation = mock(Invitation.class);
         Participant inviter = mock(Participant.class);
         when(invitation.getInviter()).thenReturn(inviter);

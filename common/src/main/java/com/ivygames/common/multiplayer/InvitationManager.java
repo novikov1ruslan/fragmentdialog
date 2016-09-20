@@ -1,4 +1,4 @@
-package com.ivygames.common.invitations;
+package com.ivygames.common.multiplayer;
 
 import android.support.annotation.NonNull;
 
@@ -6,6 +6,8 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.googleapi.InvitationLoadListener;
+import com.ivygames.common.invitations.GameInvitation;
+import com.ivygames.common.invitations.InvitationListener;
 
 import org.commons.logger.Ln;
 
@@ -15,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class InvitationManager {
+class InvitationManager {
 
     @NonNull
     private final Set<String> mIncomingInvitationIds = new HashSet<>();
@@ -29,14 +31,15 @@ public class InvitationManager {
         mApiClient = client;
     }
 
-    public void addInvitationListener(@NonNull InvitationListener receiver) {
-        mInvitationListeners.add(receiver);
-        Ln.d(receiver + " registered as invitation receiver");
+    public void addInvitationListener(@NonNull InvitationListener listener) {
+        mInvitationListeners.add(listener);
+        Ln.v(listener + " registered as invitation listener");
+        listener.onInvitationsUpdated(getInvitationIds());
     }
 
-    public void removeInvitationReceiver(@NonNull InvitationListener receiver) {
-        mInvitationListeners.remove(receiver);
-        Ln.d(receiver + " unregistered as invitation receiver");
+    public void removeInvitationReceiver(@NonNull InvitationListener listener) {
+        mInvitationListeners.remove(listener);
+        Ln.v(listener + " unregistered as invitation listener");
     }
 
     public void loadInvitations() {

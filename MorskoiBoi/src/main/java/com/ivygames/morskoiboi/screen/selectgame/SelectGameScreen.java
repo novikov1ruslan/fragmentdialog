@@ -17,8 +17,8 @@ import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.invitations.InvitationManager;
-import com.ivygames.common.invitations.InvitationPresenter;
+import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.ScreenInvitationListener;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -38,7 +38,6 @@ import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.SignInDialog;
-import com.ivygames.morskoiboi.screen.internet.MultiplayerHub;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout.SelectGameActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
@@ -59,7 +58,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final InvitationManager mInvitationManager = Dependencies.getInvitationManager();
+    private final Multiplayer mMultiplayer = Dependencies.getMultiplayer();
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
     @NonNull
@@ -69,7 +68,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final AdProvider mAdProvider = Dependencies.getAdProvider();
 
-    private InvitationPresenter mInvitationPresenter;
+    private ScreenInvitationListener mScreenInvitationListener;
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
@@ -94,7 +93,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mLayout.setRank(rank);
         mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 
-        mInvitationPresenter = new InvitationPresenter(mLayout, mInvitationManager);
+        mScreenInvitationListener = new ScreenInvitationListener(mMultiplayer, mLayout);
 
         Ln.d(this + " screen created, rank = " + rank);
         return mLayout;
@@ -126,8 +125,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void onStart() {
         super.onStart();
         Ln.d("displaying screen, registering invitation receiver");
-        mInvitationManager.addInvitationListener(mInvitationPresenter);
-        mInvitationPresenter.updateInvitations();
+        mMultiplayer.addInvitationListener(mScreenInvitationListener);
     }
 
     @Override
@@ -142,7 +140,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStop() {
         super.onStop();
-        mInvitationManager.removeInvitationReceiver(mInvitationPresenter);
+        mMultiplayer.removeInvitationReceiver(mScreenInvitationListener);
     }
 
     @Override
@@ -244,7 +242,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        MultiplayerHub hub = new MultiplayerHub(mParent, mApiClient);
+        Multiplayer hub = new Multiplayer(mParent, mApiClient);
         setScreen(ScreenCreator.newInternetGameScreen(hub));
     }
 
