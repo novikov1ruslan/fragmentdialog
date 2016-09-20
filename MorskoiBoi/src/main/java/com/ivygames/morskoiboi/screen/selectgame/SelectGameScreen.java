@@ -17,7 +17,7 @@ import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.common.multiplayer.ScreenInvitationListener;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -58,7 +58,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final Multiplayer mMultiplayer = Dependencies.getMultiplayer();
+    private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
     @NonNull
@@ -242,7 +242,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        Multiplayer hub = new Multiplayer(mParent, mApiClient);
+        MultiplayerManager hub = new MultiplayerManager(mParent, mApiClient);
         setScreen(ScreenCreator.newInternetGameScreen(hub));
     }
 

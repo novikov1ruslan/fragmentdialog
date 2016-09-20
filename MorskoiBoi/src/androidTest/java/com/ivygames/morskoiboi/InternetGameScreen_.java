@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -15,12 +15,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.mock;
 
 public class InternetGameScreen_ extends ScreenTest {
-    protected Multiplayer multiplayer;
+    protected MultiplayerManager multiplayer;
 
     @Before
     public void setup() {
         super.setup();
-        multiplayer = mock(Multiplayer.class);
+        multiplayer = mock(MultiplayerManager.class);
     }
 
     @Override

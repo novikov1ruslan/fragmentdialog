@@ -15,7 +15,7 @@ import com.ivygames.common.Sharing;
 import com.ivygames.common.SignInListener;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.common.multiplayer.ScreenInvitationListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -45,7 +45,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private final GameSettings mSettings;
 
     @NonNull
-    private final Multiplayer mMultiplayer = Dependencies.getMultiplayer();
+    private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
 
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();

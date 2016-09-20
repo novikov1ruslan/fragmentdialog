@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -19,7 +20,7 @@ import org.commons.logger.Ln;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class Multiplayer {
+public class MultiplayerManager {
     private static final int MIN_PLAYERS = 2;
 
     private static final int MIN_OPPONENTS = 1;
@@ -39,7 +40,7 @@ public class Multiplayer {
 
     private RealTimeMessageReceivedListener mRtListener;
 
-    public Multiplayer(@NonNull Activity activity, @NonNull ApiClient apiClient) {
+    public MultiplayerManager(@NonNull Activity activity, @NonNull ApiClient apiClient) {
         mActivity = activity;
         mApiClient = apiClient;
         mInvitationManager = new InvitationManager(apiClient);
@@ -83,8 +84,8 @@ public class Multiplayer {
             if (resultCode == Activity.RESULT_OK) {
                 ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
                 Ln.d("opponent selected: " + invitees + ", creating room...");
-                int minAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
-                int maxAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+                int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+                int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
                 create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener);
             } else {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + resultCode);
@@ -95,7 +96,7 @@ public class Multiplayer {
             // Handle the result of the invitation inbox UI, where the player can pick an invitation to accept.
             // We react by accepting the selected invitation, if any.
             if (resultCode == Activity.RESULT_OK) {
-                Invitation invitation = data.getExtras().getParcelable(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_INVITATION);
+                Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
                 accept(invitation, mRoomListener);
                 mInvitationManager.loadInvitations();
             } else {
@@ -186,6 +187,6 @@ public class Multiplayer {
 
     @Override
     public String toString() {
-        return Multiplayer.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return MultiplayerManager.class.getSimpleName() + "#" + (hashCode() % 1000);
     }
 }

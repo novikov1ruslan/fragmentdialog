@@ -15,7 +15,7 @@ import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
 import com.ivygames.common.multiplayer.ScreenInvitationListener;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.common.multiplayer.MultiplayerListener;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -55,12 +55,12 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
     @NonNull
-    private final Multiplayer mMultiplayer;
+    private final MultiplayerManager mMultiplayer;
 
     private Session mSession;
     private InvitationListener mInvitationListener;
 
-    public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull Multiplayer multiplayer) {
+    public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull MultiplayerManager multiplayer) {
         super(parent);
         mMultiplayer = multiplayer;
         mMultiplayer.setListener(mMultiplayerListener);

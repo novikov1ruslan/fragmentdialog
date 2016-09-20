@@ -10,7 +10,6 @@ import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.analytics.GoogleAnalyticsInitializer;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
-import com.ivygames.common.multiplayer.Multiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;

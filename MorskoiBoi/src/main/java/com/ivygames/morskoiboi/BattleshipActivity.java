@@ -28,7 +28,7 @@ import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationListener;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ScreenManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
@@ -97,7 +97,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
 
-    private Multiplayer mMultiplayer;
+    private MultiplayerManager mMultiplayer;
 
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();
@@ -177,7 +177,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
         setupAds(device);
 
-        mMultiplayer = new Multiplayer(this, mApiClient);
+        mMultiplayer = new MultiplayerManager(this, mApiClient);
         Dependencies.inject(mMultiplayer);
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());

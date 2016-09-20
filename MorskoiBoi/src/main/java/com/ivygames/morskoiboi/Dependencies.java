@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
@@ -14,7 +14,7 @@ import org.commons.logger.Ln;
 public class Dependencies {
 
     private static ApiClient sApiClient;
-    private static Multiplayer sMultiplayer;
+    private static MultiplayerManager sMultiplayer;
     private static AchievementsManager sAchievementsManager;
     private static ProgressManager sProgressManager;
     private static AndroidDevice sAndroidDevice;
@@ -32,12 +32,12 @@ public class Dependencies {
     }
 
 
-    static void inject(@NonNull Multiplayer invitationManager) {
+    static void inject(@NonNull MultiplayerManager invitationManager) {
         sMultiplayer = invitationManager;
         Ln.d(sMultiplayer);
     }
 
-    public static Multiplayer getMultiplayer() {
+    public static MultiplayerManager getMultiplayer() {
         return sMultiplayer;
     }
 

@@ -19,7 +19,7 @@ import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.screen.help.HelpScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
-import com.ivygames.common.multiplayer.Multiplayer;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
@@ -88,7 +88,7 @@ public class ScreenCreator {
     }
 
     @NonNull
-    public static InternetGameScreen newInternetGameScreen(@NonNull Multiplayer hub) {
+    public static InternetGameScreen newInternetGameScreen(@NonNull MultiplayerManager hub) {
         return new InternetGameScreen(activity, hub);
     }
 
