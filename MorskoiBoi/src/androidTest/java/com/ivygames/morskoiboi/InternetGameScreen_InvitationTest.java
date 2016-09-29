@@ -19,21 +19,21 @@ public class InternetGameScreen_InvitationTest extends InternetGameScreen_ {
         invitations.destroy();
     }
 
-    @Test
+    //@Test
     public void WhenThereIsInvitation__EnvelopeIsShown() {
         invitations.setInvitations(INVITATIONS);
         showScreen();
         checkHasInvitation(true);
     }
 
-    @Test
+    //@Test
     public void WhenThereAreNoInvitations__EnvelopeIsHidden() {
         invitations.setInvitations(NO_INVITATIONS);
         showScreen();
         checkHasInvitation(false);
     }
 
-    @Test
+    //@Test
     public void WhenInvitationArrives__EnvelopeIsShown() {
         invitations.setInvitations(NO_INVITATIONS);
         showScreen();

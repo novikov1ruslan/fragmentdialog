@@ -10,6 +10,7 @@ import com.ivygames.morskoiboi.screen.gameplay.ChatDialogLayout;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
+import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -33,7 +34,10 @@ public class GameplayScreen_ChatDialogTest extends GameplayScreen_ {
     @Test
     public void WhenBackPressed__DialogDismissed() {
         WhenChatButtonClicked__ChatDialogDisplayed();
+        closeSoftKeyboard();
+
         pressBack();
+
         checkDoesNotExist(chatDialog());
     }
 
