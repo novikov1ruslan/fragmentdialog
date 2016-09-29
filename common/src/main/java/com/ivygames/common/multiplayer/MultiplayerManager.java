@@ -26,8 +26,7 @@ public class MultiplayerManager {
     private static final int MIN_OPPONENTS = 1;
     private static final int MAX_OPPONENTS = 1;
 
-    @NonNull
-    private final Activity mActivity;
+    private Activity mActivity;
     @NonNull
     private final ApiClient mApiClient;
     @NonNull
@@ -40,10 +39,13 @@ public class MultiplayerManager {
 
     private RealTimeMessageReceivedListener mRtListener;
 
-    public MultiplayerManager(@NonNull Activity activity, @NonNull ApiClient apiClient) {
-        mActivity = activity;
+    public MultiplayerManager(@NonNull ApiClient apiClient) {
         mApiClient = apiClient;
         mInvitationManager = new InvitationManager(apiClient);
+    }
+
+    public void setActivity(@NonNull Activity activity) {
+        mActivity = activity;
     }
 
     public void setListener(@NonNull MultiplayerListener listener) {

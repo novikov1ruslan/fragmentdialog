@@ -55,14 +55,13 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
     @NonNull
-    private final MultiplayerManager mMultiplayer;
+    private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
 
     private Session mSession;
     private InvitationListener mInvitationListener;
 
-    public InternetGameScreen(@NonNull BattleshipActivity parent, @NonNull MultiplayerManager multiplayer) {
+    public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mMultiplayer = multiplayer;
         mMultiplayer.setListener(mMultiplayerListener);
     }
 

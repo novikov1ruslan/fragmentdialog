@@ -88,8 +88,8 @@ public class ScreenCreator {
     }
 
     @NonNull
-    public static InternetGameScreen newInternetGameScreen(@NonNull MultiplayerManager hub) {
-        return new InternetGameScreen(activity, hub);
+    public static InternetGameScreen newInternetGameScreen() {
+        return new InternetGameScreen(activity);
     }
 
     @NonNull

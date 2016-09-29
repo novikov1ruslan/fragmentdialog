@@ -97,7 +97,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
 
-    private MultiplayerManager mMultiplayer;
+    private MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
 
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();
@@ -177,8 +177,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
         setupAds(device);
 
-        mMultiplayer = new MultiplayerManager(this, mApiClient);
-        Dependencies.inject(mMultiplayer);
+        mMultiplayer.setActivity(this);
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");

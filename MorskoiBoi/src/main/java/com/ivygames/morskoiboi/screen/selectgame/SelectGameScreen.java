@@ -242,8 +242,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     private void showInternetGameScreen() {
-        MultiplayerManager hub = new MultiplayerManager(mParent, mApiClient);
-        setScreen(ScreenCreator.newInternetGameScreen(hub));
+        setScreen(ScreenCreator.newInternetGameScreen());
     }
 
     private void showInternetDialog() {

@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.app.Application;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ivygames.common.AndroidDevice;
@@ -10,6 +11,7 @@ import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.analytics.GoogleAnalyticsInitializer;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
@@ -32,29 +34,31 @@ class ApplicationInitializer {
 
     private static final String ANALYTICS_KEY = "UA-43473473-1";
 
-    public static void initialize(final Application application) {
+    public static void initialize(@NonNull Application application) {
         Log.v("Battleship", "initializing application...");
         ACRA.init(application);
-        AndroidDevice device = new AndroidDevice(application);
-        initLogger(application, device.isDebug());
+        initLogger(application);
+
         GoogleAnalyticsInitializer.initAnalytics(application, ANALYTICS_KEY);
 
         GameSettings settings = new GameSettings(application);
-
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules();
         Placement algorithm = new Placement(new Random(System.currentTimeMillis()), rules);
         PlacementFactory.setPlacementAlgorithm(algorithm);
         BotFactory.setAlgorithm(new RussianBot(null));
+        AndroidDevice device = new AndroidDevice(application);
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
-        apiClient.setDryRun(BuildConfig.DEBUG);
         ProgressManager progressManager = new ProgressManager(apiClient, settings);
+        AchievementsManager achievementsManager = new AchievementsManager(apiClient, settings);
+        MultiplayerManager multiplayerManager = new MultiplayerManager(apiClient);
 
+        Dependencies.inject(apiClient);
+        Dependencies.inject(multiplayerManager);
         Dependencies.inject(rules);
         Dependencies.inject(settings);
-        Dependencies.inject(apiClient);
-        Dependencies.inject(new AchievementsManager(apiClient, settings));
+        Dependencies.inject(achievementsManager);
         Dependencies.inject(progressManager);
         Dependencies.inject(device);
 
@@ -65,8 +69,8 @@ class ApplicationInitializer {
         Ln.v("... application initialization complete");
     }
 
-    private static void initLogger(Application application, boolean isDebug) {
-        int minimumLogLevel = isDebug ? Log.VERBOSE : Log.INFO;
+    private static void initLogger(Application application) {
+        int minimumLogLevel = BuildConfig.DEBUG ? Log.VERBOSE : Log.INFO;
         String path = application.getFilesDir().getPath();
         // filesPath = Environment.getExternalStorageDirectory().getPath();
         Config logConfig = new Config(minimumLogLevel, path, "battleship");

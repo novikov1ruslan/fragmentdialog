@@ -27,6 +27,7 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
+import com.ivygames.common.BuildConfig;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationLoadListener;
@@ -43,7 +44,7 @@ public class GoogleApiClientWrapper implements ApiClient {
     private final GoogleApiClient mGoogleApiClient;
     private GoogleApiClient.ConnectionCallbacks mConnectedListener;
     private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
-    private boolean mDryRun;
+    private final boolean mDryRun = BuildConfig.DEBUG;
 
     public GoogleApiClientWrapper(@NonNull Context context) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
@@ -67,10 +68,6 @@ public class GoogleApiClientWrapper implements ApiClient {
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
 
         mGoogleApiClient = builder.build();
-    }
-
-    public void setDryRun(boolean dryRun) {
-        mDryRun = dryRun;
     }
 
     @Override
