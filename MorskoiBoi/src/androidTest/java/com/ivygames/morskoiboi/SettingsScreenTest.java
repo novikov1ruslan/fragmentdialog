@@ -78,7 +78,9 @@ public class SettingsScreenTest extends ScreenTest {
     public void when_sign_out_button_is_pressed__disconnect_and_hide_sign_out() {
         setSignedIn(true);
         setScreen(newScreen());
+
         onView(withId(R.id.sign_out_btn)).perform(click());
+
         verify(apiClient(), times(1)).disconnect();
         assertThat(signOutBar().getVisibility(), is(View.GONE));
     }
@@ -147,22 +149,26 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Test
     public void when_device_can_resolve_report_a_problem_intent__RP_button_present() {
-        when(device().canResolveIntent(any(Intent.class))).thenReturn(true);
+        setCanResolveIntent(true);
+
         setScreen(newScreen());
+
         assertThat(reportProblem().getVisibility(), is(View.VISIBLE));
     }
 
     @Test
     public void when_device_CANNOT_resolve_report_a_problem_intent__RP_button_NOT_present() {
-        when(device().canResolveIntent(any(Intent.class))).thenReturn(false);
+        setCanResolveIntent(false);
         setScreen(newScreen());
         assertThat(reportProblem().getVisibility(), is(not(View.VISIBLE)));
     }
 
     @Test
     public void when_report_problem_button_pressed__email_intent_fired() {
-        when(device().canResolveIntent(any(Intent.class))).thenReturn(true);
+        setCanResolveIntent(true);
+
         setScreen(newScreen());
+
         Matcher<Intent> expectedIntent = anyOf(hasAction(Intent.ACTION_SENDTO), hasAction(Intent.ACTION_CHOOSER));
         clickForIntent(withId(R.id.report_problem), expectedIntent);
     }

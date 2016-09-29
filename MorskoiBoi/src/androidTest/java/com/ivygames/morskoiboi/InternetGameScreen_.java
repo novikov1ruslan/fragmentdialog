@@ -15,17 +15,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.mock;
 
 public class InternetGameScreen_ extends ScreenTest {
-    protected MultiplayerManager multiplayer;
-
-    @Before
-    public void setup() {
-        super.setup();
-        multiplayer = mock(MultiplayerManager.class);
-    }
-
     @Override
     public BattleshipScreen newScreen() {
-        return new InternetGameScreen(activity, multiplayer);
+        return new InternetGameScreen(activity);
     }
 
     @NonNull

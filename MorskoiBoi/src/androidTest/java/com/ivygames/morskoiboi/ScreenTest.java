@@ -52,6 +52,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 public abstract class ScreenTest {
@@ -78,8 +79,6 @@ public abstract class ScreenTest {
     private TaskResource pause;
     private TaskResource resume;
     private TaskResource destroy;
-    private TaskResource sendInvitation;
-    private TaskResource setInvitation;
     private ApiClient apiClient;
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
@@ -105,14 +104,6 @@ public abstract class ScreenTest {
             unregisterIdlingResources(setScreenResource);
         }
 
-        if (sendInvitation != null) {
-            unregisterIdlingResources(sendInvitation);
-        }
-
-        if (setInvitation != null) {
-            unregisterIdlingResources(setInvitation);
-        }
-
         if (signInSucceeded != null) {
             unregisterIdlingResources(signInSucceeded);
         }
@@ -130,8 +121,12 @@ public abstract class ScreenTest {
         }
     }
 
-    protected void setBillingAvailable(boolean isAvailable) {
+    protected final void setBillingAvailable(boolean isAvailable) {
         when(androidDevice.isBillingAvailable()).thenReturn(isAvailable);
+    }
+
+    protected final void setCanResolveIntent(boolean can) {
+        when(androidDevice.canResolveIntent(any(Intent.class))).thenReturn(can);
     }
 
     protected void setSignedIn(boolean signedIn) {
@@ -155,26 +150,6 @@ public abstract class ScreenTest {
             }
         });
         registerIdlingResources(setScreenResource);
-    }
-
-    protected final void sendInvitation(final String displayName, final String invitationId) {
-        sendInvitation = new TaskResource(new Runnable() {
-            @Override
-            public void run() {
-                rule.getInvitationApiClient().sendInvitation(displayName, invitationId);
-            }
-        });
-        registerIdlingResources(sendInvitation);
-    }
-
-    protected final void setInvitations(@NonNull final Set<String> invitations) {
-        setInvitation = new TaskResource(new Runnable() {
-            @Override
-            public void run() {
-                rule.getInvitationApiClient().setInvitations(invitations);
-            }
-        });
-        registerIdlingResources(setInvitation);
     }
 
     protected void signInSucceeded(final SignInListener listener) {
