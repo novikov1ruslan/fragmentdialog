@@ -1,6 +1,7 @@
 package com.ivygames.common.googleapi;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -28,6 +30,7 @@ import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.common.BuildConfig;
+import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationLoadListener;
@@ -42,32 +45,48 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     @NonNull
     private final GoogleApiClient mGoogleApiClient;
-    private GoogleApiClient.ConnectionCallbacks mConnectedListener;
-    private GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener;
+    @Nullable
+    private ApiConnectionListener mConnectedListener;
     private final boolean mDryRun = BuildConfig.DEBUG;
+    private Activity mActivity;
 
-    public GoogleApiClientWrapper(@NonNull Context context) {
+    // Are we currently resolving a connection failure?
+    private boolean mResolvingConnectionFailure;
+    private int mSignInRequestCode;
+    private int mServiceResolveRequestCode;
+    private String mErrorMessage;
+
+    public GoogleApiClientWrapper(@NonNull Context context, int signInRequestCode,
+                                  @NonNull String errorMessage, int serviceResolveRequestCode) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(@Nullable Bundle bundle) {
-                mConnectedListener.onConnected(bundle);
+                mResolvingConnectionFailure = false;
+
+                if (mConnectedListener != null) {
+                    mConnectedListener.onConnected();
+                } else {
+                    Ln.w("connection listener is null");
+                }
             }
 
             @Override
-            public void onConnectionSuspended(int i) {
-                mConnectedListener.onConnectionSuspended(i);
+            public void onConnectionSuspended(int cause) {
+                Ln.d("connection suspended - trying to reconnect: " + GpgsUtils.connectionCauseToString(cause));
+                // GoogleApiClient will automatically attempt to restore the connection.
+                // Applications should disable UI components that require the service,
+                // and wait for a call to onConnected(Bundle) to re-enable them.
             }
-        }, new GoogleApiClient.OnConnectionFailedListener() {
-            @Override
-            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                mConnectionFailedListener.onConnectionFailed(connectionResult);
-            }
-        });
+        }, new OnConnectionFailedListenerImpl());
         builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
         builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
 
         mGoogleApiClient = builder.build();
+
+        mSignInRequestCode = signInRequestCode;
+        mServiceResolveRequestCode = serviceResolveRequestCode;
+        mErrorMessage = errorMessage;
     }
 
     @Override
@@ -86,32 +105,8 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public void unregisterConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callbacks) {
-        mGoogleApiClient.unregisterConnectionCallbacks(callbacks);
-    }
-
-    @Override
-    public void unregisterConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
-        mGoogleApiClient.unregisterConnectionFailedListener(listener);
-    }
-
-    @Override
     public String getDisplayName() {
         return Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
-    }
-
-    @Override
-    public boolean resolveConnectionFailure(@NonNull Activity activity,
-                                            @NonNull ConnectionResult connectionResult,
-                                            int rcSignIn,
-                                            @NonNull String string) {
-        return BaseGameUtils.resolveConnectionFailure(activity, mGoogleApiClient, connectionResult, rcSignIn, string);
-    }
-
-    @Override
-    public void unregisterInvitationListener() {
-        Games.Invitations.unregisterInvitationListener(mGoogleApiClient);
-        Ln.v("invitation listener unregistered");
     }
 
     @Override
@@ -242,13 +237,23 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public void setConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callback) {
+    public void setConnectionListener(@NonNull ApiConnectionListener callback) {
         mConnectedListener = callback;
     }
 
     @Override
-    public void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
-        mConnectionFailedListener = listener;
+    public void setActivity(@NonNull Activity activity) {
+        mActivity = activity;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode) {
+        if (requestCode == mSignInRequestCode) {
+            if (resultCode != Activity.RESULT_OK) {
+                Ln.w("connection issue could not be resolved");
+                mResolvingConnectionFailure = false;
+            }
+        }
     }
 
     private static class LoadInvitationsResultImpl implements ResultCallback<Invitations.LoadInvitationsResult> {
@@ -279,4 +284,31 @@ public class GoogleApiClientWrapper implements ApiClient {
         }
     }
 
+    private class OnConnectionFailedListenerImpl implements GoogleApiClient.OnConnectionFailedListener {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult result) {
+            Ln.d("connection failed - result: " + result);
+
+            switch (result.getErrorCode()) {
+                case ConnectionResult.SERVICE_MISSING:
+                case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+                case ConnectionResult.SERVICE_DISABLED:
+                    Ln.w("connection failed: " + result.getErrorCode());
+                    Dialog errorDialog = GoogleApiAvailability.getInstance().getErrorDialog(mActivity,
+                            result.getErrorCode(), mServiceResolveRequestCode);
+                    errorDialog.show();
+                    return;
+            }
+
+            if (mResolvingConnectionFailure) {
+                Ln.w("ignoring connection failure; already resolving.");
+                return;
+            }
+
+            Ln.d("resolving connection failure");
+            mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(mActivity, mGoogleApiClient,
+                    result, mSignInRequestCode, mErrorMessage);
+            Ln.d("has resolution = " + mResolvingConnectionFailure);
+        }
+    }
 }

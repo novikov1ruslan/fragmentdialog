@@ -49,7 +49,9 @@ class ApplicationInitializer {
         BotFactory.setAlgorithm(new RussianBot(null));
         AndroidDevice device = new AndroidDevice(application);
 
-        GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application);
+        GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application,
+                BattleshipActivity.RC_SIGN_IN, application.getString(R.string.error),
+                BattleshipActivity.SERVICE_RESOLVE);
         ProgressManager progressManager = new ProgressManager(apiClient, settings);
         AchievementsManager achievementsManager = new AchievementsManager(apiClient, settings);
         MultiplayerManager multiplayerManager = new MultiplayerManager(apiClient);

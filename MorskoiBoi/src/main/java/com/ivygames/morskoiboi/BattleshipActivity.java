@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
@@ -15,18 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.AndroidUtils;
-import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.billing.PurchaseManager;
 import com.ivygames.common.billing.PurchaseStatusListener;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.googleapi.ApiConnectionListener;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationListener;
 import com.ivygames.common.multiplayer.MultiplayerManager;
@@ -49,7 +44,7 @@ import java.util.Set;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
-public class BattleshipActivity extends Activity implements ConnectionCallbacks, ChatListener {
+public class BattleshipActivity extends Activity implements ApiConnectionListener, ChatListener {
     private static final boolean _DEBUG_ALWAYS_SHOW_ADS = false;
     // TODO:
      /*
@@ -70,13 +65,13 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     public static final int RC_ENSURE_DISCOVERABLE = 3;
 
     // Request code used to invoke sign in user interactions.
-    private static final int RC_SIGN_IN = 9001;
+    public static final int RC_SIGN_IN = 9001;
+    public static final int SERVICE_RESOLVE = 9002;
+
     public static final int RC_UNUSED = 0;
     public static final int PLUS_ONE_REQUEST_CODE = 20001;
     public static final int RC_ENABLE_BT = 2;
     public static final int RC_PURCHASE = 10003;
-
-    private static final int SERVICE_RESOLVE = 9002;
 
     @NonNull
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
@@ -103,9 +98,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();
 
-    // Are we currently resolving a connection failure?
-    private boolean mResolvingConnectionFailure;
-
     private MusicPlayer mMusicPlayer;
     private View mBanner;
 
@@ -113,8 +105,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
     private BattleshipScreen mCurrentScreen;
 
-    @NonNull
-    private final OnConnectionFailedListener mConnectionFailedListener = new OnConnectionFailedListenerImpl();
     private ViewGroup mLayout;
     @NonNull
     private final InvitationListener mInvitationListener = new InvitationListenerImpl();
@@ -168,8 +158,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mScreenManager = new ScreenManager((ViewGroup) mLayout.findViewById(R.id.container));
         mBanner = mLayout.findViewById(R.id.banner);
 
-        mApiClient.setConnectionCallbacks(this);
-        mApiClient.setOnConnectionFailedListener(mConnectionFailedListener);
+        mApiClient.setConnectionListener(this);
+        mApiClient.setActivity(this);
         if (mSettings.shouldAutoSignIn()) {
             Ln.d("should auto-signin - connecting...");
             mApiClient.connect();
@@ -358,9 +348,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
         mAdProvider.destroy();
 
         mPurchaseManager.destroy();
-
-        mApiClient.unregisterConnectionCallbacks(this);
-        mApiClient.unregisterConnectionFailedListener(mConnectionFailedListener);
         mApiClient.disconnect();
 
         mMusicPlayer.release();
@@ -392,13 +379,12 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
             return;
         }
 
+        mApiClient.onActivityResult(requestCode, resultCode);
+
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Ln.d("connection issue is resolved - reconnecting");
                 mApiClient.connect();
-            } else {
-                Ln.w("connection issue could not be resolved");
-                mResolvingConnectionFailure = false;
             }
         } else if (requestCode == RC_PURCHASE) {
             mPurchaseManager.handleActivityResult(resultCode, data);
@@ -408,17 +394,8 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     }
 
     @Override
-    public void onConnectionSuspended(int cause) {
-        Ln.d("connection suspended - trying to reconnect: " + GpgsUtils.connectionCauseToString(cause));
-        // GoogleApiClient will automatically attempt to restore the connection.
-        // Applications should disable UI components that require the service,
-        // and wait for a call to onConnected(Bundle) to re-enable them.
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
+    public void onConnected() {
         Ln.d("signed in");
-        mResolvingConnectionFailure = false;
         mSettings.enableAutoSignIn();
 
         if (TextUtils.isEmpty(mSettings.getPlayerName())) {
@@ -460,32 +437,6 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
 
         mScreenManager.setScreen(screen);
         mMusicPlayer.play(screen.getMusic());
-    }
-
-    private class OnConnectionFailedListenerImpl implements OnConnectionFailedListener {
-        @Override
-        public void onConnectionFailed(@NonNull ConnectionResult result) {
-            Ln.d("connection failed - result: " + result);
-
-            switch (result.getErrorCode()) {
-                case ConnectionResult.SERVICE_MISSING:
-                case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-                case ConnectionResult.SERVICE_DISABLED:
-                    Ln.w("connection failed: " + result.getErrorCode());
-                    Dialog errorDialog = GoogleApiAvailability.getInstance().getErrorDialog(BattleshipActivity.this, result.getErrorCode(), SERVICE_RESOLVE);
-                    errorDialog.show();
-                    return;
-            }
-
-            if (mResolvingConnectionFailure) {
-                Ln.d("ignoring connection failure; already resolving.");
-                return;
-            }
-
-            Ln.d("resolving connection failure");
-            mResolvingConnectionFailure = mApiClient.resolveConnectionFailure(BattleshipActivity.this, result, RC_SIGN_IN, getString(R.string.error));
-            Ln.d("has resolution = " + mResolvingConnectionFailure);
-        }
     }
 
     private class InvitationListenerImpl implements InvitationListener {

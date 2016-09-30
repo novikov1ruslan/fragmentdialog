@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Player;
@@ -19,9 +17,11 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.googleapi.ApiConnectionListener;
 import com.ivygames.common.invitations.InvitationLoadListener;
 
 class DummyApiClient implements ApiClient {
+
     @Override
     public void connect() {
 
@@ -38,28 +38,8 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void unregisterConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callbacks) {
-
-    }
-
-    @Override
-    public void unregisterConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
-
-    }
-
-    @Override
     public String getDisplayName() {
         return null;
-    }
-
-    @Override
-    public boolean resolveConnectionFailure(@NonNull Activity activity, @NonNull ConnectionResult connectionResult, int rcSignIn, @NonNull String string) {
-        return false;
-    }
-
-    @Override
-    public void unregisterInvitationListener() {
-
     }
 
     @Override
@@ -161,12 +141,17 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void setConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callback) {
+    public void setConnectionListener(@NonNull ApiConnectionListener callback) {
 
     }
 
     @Override
-    public void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener) {
+    public void setActivity(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode) {
 
     }
 }

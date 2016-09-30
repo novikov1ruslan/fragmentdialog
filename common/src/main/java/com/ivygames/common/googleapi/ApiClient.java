@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Player;
@@ -29,18 +27,7 @@ public interface ApiClient {
 
     void disconnect();
 
-    void unregisterConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callbacks);
-
-    void unregisterConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener);
-
     String getDisplayName();
-
-    boolean resolveConnectionFailure(@NonNull Activity activity,
-                                     @NonNull ConnectionResult connectionResult,
-                                     int rcSignIn,
-                                     @NonNull String string);
-
-    void unregisterInvitationListener();
 
     void registerInvitationListener(@NonNull OnInvitationReceivedListener listener);
 
@@ -91,7 +78,9 @@ public interface ApiClient {
 
     Player getCurrentPlayer();
 
-    void setConnectionCallbacks(@NonNull GoogleApiClient.ConnectionCallbacks callback);
+    void setConnectionListener(@NonNull ApiConnectionListener callback);
 
-    void setOnConnectionFailedListener(@NonNull GoogleApiClient.OnConnectionFailedListener listener);
+    void setActivity(@NonNull Activity activity);
+
+    void onActivityResult(int requestCode, int resultCode);
 }
