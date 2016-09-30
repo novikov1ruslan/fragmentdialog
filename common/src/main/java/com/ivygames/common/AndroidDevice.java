@@ -3,13 +3,10 @@ package com.ivygames.common;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,33 +54,12 @@ public class AndroidDevice {
     }
 
     public boolean isTablet() {
-        Resources res = mContext.getResources();
-        return res.getBoolean(R.bool.is_tablet);
-    }
-
-    public static void printIntent(@NonNull Intent intent) {
-        Ln.v("intent=" + intent);
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            AndroidDevice.printExtras(extras);
-        }
-    }
-
-    private static void printExtras(@NonNull Bundle extras) {
-        for (String key : extras.keySet()) {
-            Object value = extras.get(key);
-            if (value == null) {
-                Ln.v(key + "= null");
-            } else {
-                Ln.v(key + "=" + value.toString() + "[" + value.getClass().getName() + "]");
-            }
-        }
+        return mContext.getResources().getBoolean(R.bool.is_tablet);
     }
 
     @NonNull
     public String getVersionName() {
-        Resources res = mContext.getResources();
-        return res.getString(R.string.versionName);
+        return mContext.getResources().getString(R.string.versionName);
     }
 
     @NonNull
@@ -92,16 +68,6 @@ public class AndroidDevice {
                 + "; DEVICE=" + Build.DEVICE + "; DISPLAY=" + Build.DISPLAY + "; HARDWARE=" + Build.HARDWARE + "; HOST=" + Build.HOST + "; ID=" + Build.ID
                 + "; MANUFACTURER=" + Build.MANUFACTURER + "; MODEL=" + Build.MODEL + "; PRODUCT=" + Build.PRODUCT + "; USER=" + Build.USER + "; SDK="
                 + Build.VERSION.SDK_INT;
-    }
-
-    public boolean isDebug() {
-        int flags;
-        try {
-            flags = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), 0).flags;
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return (flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 
     public boolean isVibrationOn() {

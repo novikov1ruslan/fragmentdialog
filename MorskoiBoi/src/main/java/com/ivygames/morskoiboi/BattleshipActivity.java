@@ -20,6 +20,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.AndroidUtils;
 import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.ads.NoAdsAdProvider;
@@ -259,7 +260,7 @@ public class BattleshipActivity extends Activity implements ConnectionCallbacks,
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        AndroidDevice.printIntent(intent);
+        AndroidUtils.printIntent(intent);
     }
 
     @Override
