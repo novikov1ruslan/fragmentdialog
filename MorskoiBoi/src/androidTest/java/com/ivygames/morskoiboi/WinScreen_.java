@@ -74,10 +74,6 @@ public class WinScreen_ extends OnlineScreen_ {
         return withId(R.id.total_scores);
     }
 
-    protected void expectSubmitScoreBeCalled(VerificationMode never) {
-        verify(apiClient(), never).submitScore(anyString(), anyInt());
-    }
-
     @NonNull
     protected Matcher<View> signInBar() {
         return withId(R.id.sign_in_bar);

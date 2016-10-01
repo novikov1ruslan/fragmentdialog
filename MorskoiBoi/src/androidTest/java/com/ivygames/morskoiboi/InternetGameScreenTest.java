@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.app.Activity;
+
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -65,6 +67,15 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
         pressBack();
 
         checkDisplayed(waitDialog());
+    }
+
+    @Test
+    public void WhenWaitDialogIsDisplayed__CancellingTheInvitationRemovesDialog() {
+        WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
+
+        activity.onActivityResult(BattleshipActivity.RC_WAITING_ROOM, Activity.RESULT_CANCELED, null);
+
+        checkNotDisplayed(waitDialog());
     }
 
 }

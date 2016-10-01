@@ -13,8 +13,6 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     @Test
@@ -29,7 +27,7 @@ public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     public void WhenSignInButtonPressedForAchievementsDialog__ConnectedAndInternetGameScreenDisplayed() {
         WhenInternetButtonPressedButNotConnected__SignInDialogOpens();
         ScreenTest.clickOn(signInButton());
-        verify(apiClient(), times(1)).connect();
+        verifyConnected();
         signInSucceeded((SignInListener) screen());
         checkDisplayed(ScreenTest.INTERNET_GAME_LAYOUT);
     }
@@ -38,7 +36,7 @@ public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     public void WhenCancelPressedForAchievementsDialog__NotConnectedAndDialogDismissed() {
         WhenInternetButtonPressedButNotConnected__SignInDialogOpens();
         ScreenTest.clickOn(cancelButton());
-        verify(apiClient(), never()).connect();
+        verifyConnected(never());
         checkDoesNotExist(signInDialog());
     }
 

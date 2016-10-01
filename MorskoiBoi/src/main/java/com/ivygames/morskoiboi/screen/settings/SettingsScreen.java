@@ -27,9 +27,9 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     private static final String TAG = "SETTINGS";
 
     @NonNull
-    private final ApiClient mApiClient;
+    private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final GameSettings mSettings;
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     @NonNull
     private final VibratorWrapper mVibrator;
@@ -39,12 +39,8 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     private final AndroidDevice mDevice;
 
     public SettingsScreen(@NonNull BattleshipActivity parent,
-                          @NonNull ApiClient apiClient,
-                          @NonNull GameSettings settings,
                           @NonNull VibratorWrapper vibratorFacade) {
         super(parent);
-        mApiClient = apiClient;
-        mSettings = settings;
         mDevice = Dependencies.getDevice();
         mVibrator = vibratorFacade;
     }

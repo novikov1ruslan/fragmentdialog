@@ -105,7 +105,7 @@ public class WinScreenTest extends WinScreen_ {
     public void AfterSignInClicked__SignInOptionHidden() {
         WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed();
         clickOn(withId(R.id.sign_in_button));
-        verify(apiClient(), times(1)).connect();
+        verifyConnected();
         signInSucceeded((SignInListener) screen());
         checkNotDisplayed(signInBar());
     }

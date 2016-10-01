@@ -17,7 +17,7 @@ public class MainScreen_ extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new MainScreen(activity, apiClient(), settings());
+        return new MainScreen(activity);
     }
 
     @NonNull

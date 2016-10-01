@@ -26,7 +26,6 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -45,7 +44,7 @@ public class SettingsScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new SettingsScreen(activity, apiClient(), settings(), vibratorFacade);
+        return new SettingsScreen(activity, vibratorFacade);
     }
 
     @Test
@@ -69,7 +68,7 @@ public class SettingsScreenTest extends ScreenTest {
         setSignedIn(false);
         setScreen(newScreen());
         onView(withId(R.id.sign_in_button)).perform(click());
-        verify(apiClient(), times(1)).connect();
+        verifyConnected();
         signInSucceeded((SignInListener) screen());
         assertThat(signOutBar().getVisibility(), is(View.VISIBLE));
     }
@@ -81,7 +80,7 @@ public class SettingsScreenTest extends ScreenTest {
 
         onView(withId(R.id.sign_out_btn)).perform(click());
 
-        verify(apiClient(), times(1)).disconnect();
+        verifyDisconnected();
         assertThat(signOutBar().getVisibility(), is(View.GONE));
     }
 

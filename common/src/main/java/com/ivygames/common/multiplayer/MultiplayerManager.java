@@ -93,7 +93,6 @@ public class MultiplayerManager {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + resultCode);
                 mListener.opponentInvitationCanceled();
             }
-
         } else if (requestCode == mInvitationInboxRc) {
             // Handle the result of the invitation inbox UI, where the player can pick an invitation to accept.
             // We react by accepting the selected invitation, if any.

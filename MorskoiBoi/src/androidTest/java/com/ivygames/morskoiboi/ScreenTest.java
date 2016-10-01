@@ -31,6 +31,7 @@ import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.mockito.verification.VerificationMode;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,6 +54,10 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public abstract class ScreenTest {
@@ -214,10 +219,6 @@ public abstract class ScreenTest {
         return activity.findViewById(id);
     }
 
-    protected final ApiClient apiClient() {
-        return apiClient;
-    }
-
     protected final AndroidDevice device() {
         return androidDevice;
     }
@@ -298,5 +299,29 @@ public abstract class ScreenTest {
     @NonNull
     protected final Matcher<View> negativeButton() {
         return ViewMatchers.withId(R.id.negative_button);
+    }
+
+    protected final void verifyConnected() {
+        verifyConnected(times(1));
+    }
+
+    protected final void verifyConnected(VerificationMode mode) {
+        verify(apiClient, mode).connect();
+    }
+
+    protected final void verifyDisconnected() {
+        verify(apiClient, times(1)).disconnect();
+    }
+
+    protected final void expectSubmitScoreBeCalled(VerificationMode mode) {
+        verify(apiClient, mode).submitScore(anyString(), anyInt());
+    }
+
+    protected final void setAchievementsIntentType(String expectedType) {
+        when(apiClient.getAchievementsIntent()).thenReturn(new Intent().setType(expectedType));
+    }
+
+    protected final void setLeaderboardIntent(Intent intent) {
+        when(apiClient.getLeaderboardIntent(anyString())).thenReturn(intent);
     }
 }

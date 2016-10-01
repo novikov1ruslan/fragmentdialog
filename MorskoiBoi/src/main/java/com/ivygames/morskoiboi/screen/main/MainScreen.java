@@ -39,10 +39,10 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private MainScreenLayout mLayout;
 
     @NonNull
-    private final ApiClient mApiClient;
+    private final ApiClient mApiClient = Dependencies.getApiClient();
 
     @NonNull
-    private final GameSettings mSettings;
+    private final GameSettings mSettings = Dependencies.getSettings();
 
     @NonNull
     private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
@@ -52,12 +52,8 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
 
     private ScreenInvitationListener mScreenInvitationListener;
 
-    public MainScreen(@NonNull BattleshipActivity parent,
-                      @NonNull ApiClient apiClient,
-                      @NonNull GameSettings settings) {
+    public MainScreen(BattleshipActivity parent) {
         super(parent);
-        mApiClient = apiClient;
-        mSettings = settings;
     }
 
     @NonNull

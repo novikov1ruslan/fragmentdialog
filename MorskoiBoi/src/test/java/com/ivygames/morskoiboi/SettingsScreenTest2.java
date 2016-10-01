@@ -42,7 +42,7 @@ public class SettingsScreenTest2 {
         ShadowsAdapter shadowsAdapter = Robolectric.getShadowsAdapter();
         ActivityController<TestActivity> activityController = new ActivityController<>(shadowsAdapter, activity);
         activityController.create();
-        activity.setScreen(new SettingsScreen(activity, apiClient, settings, vibrator));
+        activity.setScreen(new SettingsScreen(activity, vibrator));
     }
 
 //    @Test

@@ -15,7 +15,6 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,14 +42,14 @@ public class MainScreen_AchievementsTest extends MainScreen_ {
     public void WhenSignInButtonPressedForAchievementsDialog__Connected() {
         WhenAchievementsButtonPressedWhenNonConnected__SignInDialogDisplayed();
         ScreenTest.clickOn(signInButton());
-        verify(apiClient(), times(1)).connect();
+        verifyConnected();
     }
 
     @Test
     public void WhenCancelPressedForAchievementsDialog__NotConnectedAndDialogDismissed() {
         WhenAchievementsButtonPressedWhenNonConnected__SignInDialogDisplayed();
         ScreenTest.clickOn(cancelButton());
-        verify(apiClient(), never()).connect();
+        verifyConnected(never());
         checkDoesNotExist(achievementsDialog());
     }
 
@@ -64,7 +63,7 @@ public class MainScreen_AchievementsTest extends MainScreen_ {
     @Test
     public void WhenAchievementsButtonPressedWhenConnected__AchievementsIntentIsFired() {
         String expectedType = "expected type";
-        when(apiClient().getAchievementsIntent()).thenReturn(new Intent().setType(expectedType));
+        setAchievementsIntentType(expectedType);
         setSignedIn(true);
         showScreen();
         ScreenTest.clickForIntent(achievementsButton(), hasType(expectedType));

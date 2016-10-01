@@ -28,7 +28,7 @@ public class MainScreenTest extends MainScreen_ {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new MainScreen(activity, apiClient(), settings());
+        return new MainScreen(activity);
     }
 
     public void TestNoAds() {

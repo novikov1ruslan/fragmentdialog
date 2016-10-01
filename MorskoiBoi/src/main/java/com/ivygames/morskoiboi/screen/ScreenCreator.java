@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.timer.AsyncTurnTimerFactory;
+import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;
@@ -14,12 +16,9 @@ import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;
-import com.ivygames.common.timer.AsyncTurnTimerFactory;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
-import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.screen.help.HelpScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
-import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 import com.ivygames.morskoiboi.screen.main.MainScreen;
 import com.ivygames.morskoiboi.screen.ranks.RanksListScreen;
@@ -53,7 +52,7 @@ public class ScreenCreator {
 
     @NonNull
     public static MainScreen newMainScreen() {
-        return new MainScreen(activity, apiClient, settings);
+        return new MainScreen(activity);
     }
 
     @NonNull
@@ -64,7 +63,7 @@ public class ScreenCreator {
     @NonNull
     public static SettingsScreen newSettingsScreen() {
         VibratorWrapper vibratorFacade = new VibratorWrapper(activity);
-        return new SettingsScreen(activity, apiClient, settings, vibratorFacade);
+        return new SettingsScreen(activity, vibratorFacade);
     }
 
     @NonNull

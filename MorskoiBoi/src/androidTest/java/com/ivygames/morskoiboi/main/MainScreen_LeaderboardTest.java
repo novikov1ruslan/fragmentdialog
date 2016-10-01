@@ -47,14 +47,14 @@ public class MainScreen_LeaderboardTest extends MainScreen_ {
     public void WhenSignInPressedForLeaderBoardDialog__Connected() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
         ScreenTest.clickOn(signInButton());
-        verify(apiClient(), times(1)).connect();
+        verifyConnected();
     }
 
     @Test
     public void WhenCancelPressedForSignInDialog__NotConnectedAndDialogDismissed() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
         ScreenTest.clickOn(cancelButton());
-        verify(apiClient(), never()).connect();
+        verifyConnected(never());
         checkDoesNotExist(leaderBoardDialog());
     }
 
@@ -70,7 +70,7 @@ public class MainScreen_LeaderboardTest extends MainScreen_ {
         Intent intent = new Intent();
         String expectedType = "expected type";
         intent.setType(expectedType);
-        when(apiClient().getLeaderboardIntent(anyString())).thenReturn(intent);
+        setLeaderboardIntent(intent);
         setSignedIn(true);
         showScreen();
         ScreenTest.clickForIntent(leaderboardButton(), hasType(expectedType));
