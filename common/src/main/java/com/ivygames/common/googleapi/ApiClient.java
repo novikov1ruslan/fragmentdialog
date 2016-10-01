@@ -70,8 +70,6 @@ public interface ApiClient {
 
     Intent getInvitationInboxIntent();
 
-    Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b);
-
     Intent getWaitingRoomIntent(@NonNull Room room, int minPlayers);
 
     void submitScore(@NonNull String boardName, int totalScores);
@@ -83,4 +81,6 @@ public interface ApiClient {
     void setActivity(@NonNull Activity activity);
 
     void onActivityResult(int requestCode, int resultCode);
+
+    void startSelectOpponentActivity(int requestCode, int minOpponents, int maxOpponents);
 }

@@ -73,9 +73,9 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     public void WhenWaitDialogIsDisplayed__CancellingTheInvitationRemovesDialog() {
         WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
 
-        activity.onActivityResult(BattleshipActivity.RC_WAITING_ROOM, Activity.RESULT_CANCELED, null);
+        activity.onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
 
-        checkNotDisplayed(waitDialog());
+        checkDoesNotExist(waitDialog());
     }
 
 }

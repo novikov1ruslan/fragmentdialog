@@ -121,11 +121,6 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b) {
-        return null;
-    }
-
-    @Override
     public Intent getWaitingRoomIntent(@NonNull Room room, int minPlayers) {
         return null;
     }
@@ -152,6 +147,11 @@ class DummyApiClient implements ApiClient {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode) {
+
+    }
+
+    @Override
+    public void startSelectOpponentActivity(int requestCode, int minOpponents, int maxOpponents) {
 
     }
 }

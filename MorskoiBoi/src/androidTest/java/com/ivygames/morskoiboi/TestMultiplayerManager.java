@@ -18,11 +18,6 @@ public class TestMultiplayerManager extends MultiplayerManager {
     }
 
     @Override
-    public void invitePlayers(int requestCode, @NonNull RoomListener roomListener) {
-//        super.invitePlayers(requestCode, roomListener);
-    }
-
-    @Override
     public void showWaitingRoom(@NonNull Room room, int requestCode) {
 //        super.showWaitingRoom(room, requestCode);
     }

@@ -213,7 +213,12 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b) {
+    public void startSelectOpponentActivity(int requestCode, int minOpponents, int maxOpponents) {
+        Intent intent = getSelectOpponentsIntent(minOpponents, maxOpponents, false);
+        mActivity.startActivityForResult(intent, requestCode);
+    }
+
+    private Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b) {
         return Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, minOpponents, maxOpponents, b);
     }
 

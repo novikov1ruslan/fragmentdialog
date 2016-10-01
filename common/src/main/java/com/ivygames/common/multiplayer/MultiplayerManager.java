@@ -66,8 +66,7 @@ public class MultiplayerManager {
     public void invitePlayers(int requestCode, @NonNull RoomListener roomListener) {
         mSelectPlayersRc = requestCode;
         mRoomListener = roomListener;
-        Intent intent = mApiClient.getSelectOpponentsIntent(MIN_OPPONENTS, MAX_OPPONENTS, false);
-        mActivity.startActivityForResult(intent, requestCode);
+        mApiClient.startSelectOpponentActivity(requestCode, MIN_OPPONENTS, MAX_OPPONENTS);
     }
 
     public void showInvitations(int requestCode, @NonNull RoomListener roomListener) {
