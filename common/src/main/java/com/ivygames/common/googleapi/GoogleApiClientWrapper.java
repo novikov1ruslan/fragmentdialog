@@ -20,6 +20,7 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationBuffer;
 import com.google.android.gms.games.multiplayer.Invitations;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -34,9 +35,11 @@ import com.ivygames.common.GpgsUtils;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationLoadListener;
+import com.ivygames.common.multiplayer.RoomListener;
 
 import org.commons.logger.Ln;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -180,13 +183,68 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public void joinRoom(@NonNull RoomConfig roomConfig) {
-        Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfig);
+    public void joinRoom(@NonNull Invitation invitation,
+                         @NonNull RoomListener roomListener,
+                         @NonNull RealTimeMessageReceivedListener rtListener) {
+        String invId = invitation.getInvitationId();
+        Ln.d("accepting invitation: " + invId);
+        RoomConfig.Builder builder = getRoomConfigBuilder(roomListener, rtListener);
+        builder.setInvitationIdToAccept(invId);
+
+        Games.RealTimeMultiplayer.join(mGoogleApiClient, builder.build());
     }
 
     @Override
-    public void createRoom(@NonNull RoomConfig build) {
-        Games.RealTimeMultiplayer.create(mGoogleApiClient, build);
+    public void createRoom(@NonNull ArrayList<String> invitees,
+                           int minAutoMatchPlayers,
+                           int maxAutoMatchPlayers,
+                           @NonNull RoomListener roomListener,
+                           @NonNull RealTimeMessageReceivedListener rtListener) {
+        RoomConfig.Builder builder = getBuilder(minAutoMatchPlayers, maxAutoMatchPlayers, roomListener, rtListener);
+        builder.addPlayersToInvite(invitees);
+
+        Games.RealTimeMultiplayer.create(mGoogleApiClient, builder.build());
+    }
+
+    @Override
+    public void createRoom(int minAutoMatchPlayers,
+                           int maxAutoMatchPlayers,
+                           @NonNull RoomListener roomListener,
+                           @NonNull RealTimeMessageReceivedListener rtListener) {
+        RoomConfig.Builder builder = getBuilder(minAutoMatchPlayers, maxAutoMatchPlayers, roomListener, rtListener);
+
+        Games.RealTimeMultiplayer.create(mGoogleApiClient, builder.build());
+    }
+
+    private RoomConfig.Builder getBuilder(int minAutoMatchPlayers,
+                                          int maxAutoMatchPlayers,
+                                          @NonNull RoomListener roomListener,
+                                          @NonNull RealTimeMessageReceivedListener rtListener) {
+        RoomConfig.Builder builder = getRoomConfigBuilder(roomListener, rtListener);
+
+        Bundle autoMatchCriteria = createAutomatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers);
+        if (autoMatchCriteria != null) {
+            Ln.d("automatch criteria: " + autoMatchCriteria);
+            builder.setAutoMatchCriteria(autoMatchCriteria);
+        }
+        return builder;
+    }
+
+    private static Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
+        Bundle autoMatchCriteria = null;
+        if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
+            // TODO: call this method anyway - do not return null
+            autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+        }
+        return autoMatchCriteria;
+    }
+
+    private RoomConfig.Builder getRoomConfigBuilder(@NonNull RoomListener roomListener,
+                                                    @NonNull RealTimeMessageReceivedListener rtListener) {
+        RoomConfig.Builder builder = RoomConfig.builder(roomListener);
+        builder.setMessageReceivedListener(rtListener);
+        builder.setRoomStatusUpdateListener(roomListener);
+        return builder;
     }
 
     @Override

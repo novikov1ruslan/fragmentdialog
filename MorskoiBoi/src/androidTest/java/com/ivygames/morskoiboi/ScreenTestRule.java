@@ -29,6 +29,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         apiClient = mock(ApiClient.class);
         when(apiClient.isConnected()).thenReturn(true);
         Dependencies.inject(apiClient);
+        Dependencies.inject(new MultiplayerManager(apiClient));
         Dependencies.inject(mock(AchievementsManager.class));
         Dependencies.inject(mock(ProgressManager.class));
 

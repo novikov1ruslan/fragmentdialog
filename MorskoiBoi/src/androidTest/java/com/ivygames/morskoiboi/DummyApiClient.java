@@ -6,10 +6,11 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
@@ -18,6 +19,9 @@ import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.googleapi.ApiConnectionListener;
 import com.ivygames.common.invitations.InvitationLoadListener;
+import com.ivygames.common.multiplayer.RoomListener;
+
+import java.util.ArrayList;
 
 class DummyApiClient implements ApiClient {
 
@@ -90,12 +94,17 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void joinRoom(@NonNull RoomConfig roomConfig) {
+    public void joinRoom(@NonNull Invitation invitation, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
 
     }
 
     @Override
-    public void createRoom(@NonNull RoomConfig build) {
+    public void createRoom(@NonNull ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
+
+    }
+
+    @Override
+    public void createRoom(int minAutoMatchPlayers, int maxAutoMatchPlayers, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
 
     }
 

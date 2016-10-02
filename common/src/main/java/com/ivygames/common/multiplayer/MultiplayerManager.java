@@ -2,7 +2,6 @@ package com.ivygames.common.multiplayer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.games.Games;
@@ -11,7 +10,6 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
 
@@ -47,26 +45,34 @@ public class MultiplayerManager {
         mListener = listener;
     }
 
-    public void setRealTimeMessageReceivedListener(@NonNull RealTimeMessageReceivedListener rtListener) {
-        mRtListener = rtListener;
-        Ln.v("rt listener set to " + rtListener);
-    }
-
-    public void showWaitingRoom(@NonNull Room room, int requestCode) {
+    public void showWaitingRoom(@NonNull Room room, int requestCode,
+                                @NonNull RealTimeMessageReceivedListener rtListener) {
         mWaitingRoomRc = requestCode;
+        mRtListener = rtListener;
         mApiClient.showWaitingRoom(requestCode, room, MIN_PLAYERS);
     }
 
-    public void invitePlayers(int requestCode, @NonNull RoomListener roomListener) {
+    public void invitePlayers(int requestCode, @NonNull RoomListener roomListener,
+                              @NonNull RealTimeMessageReceivedListener rtListener) {
         mSelectPlayersRc = requestCode;
         mRoomListener = roomListener;
+        mRtListener = rtListener;
         mApiClient.selectOpponents(requestCode, MIN_OPPONENTS, MAX_OPPONENTS);
     }
 
-    public void showInvitations(int requestCode, @NonNull RoomListener roomListener) {
+    public void showInvitations(int requestCode, @NonNull RoomListener roomListener,
+                                @NonNull RealTimeMessageReceivedListener rtListener) {
         mInvitationInboxRc = requestCode;
         mRoomListener = roomListener;
+        mRtListener = rtListener;
         mApiClient.showInvitationInbox(requestCode);
+    }
+
+    public void quickGame(@NonNull RoomListener roomListener,
+                          @NonNull RealTimeMessageReceivedListener rtListener) {
+        // quick-start a game with 1 randomly selected opponent
+        mRtListener = rtListener;
+        mApiClient.createRoom(MIN_OPPONENTS, MAX_OPPONENTS, roomListener, rtListener);
     }
 
     public void handleResult(int requestCode, int resultCode, @NonNull Intent data) {
@@ -80,7 +86,8 @@ public class MultiplayerManager {
                 Ln.d("opponent selected: " + invitees + ", creating room...");
                 int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
                 int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-                createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener);
+
+                mApiClient.createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener, mRtListener);
             } else {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + resultCode);
                 mListener.opponentInvitationCanceled();
@@ -90,7 +97,7 @@ public class MultiplayerManager {
             // We react by accepting the selected invitation, if any.
             if (resultCode == Activity.RESULT_OK) {
                 Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
-                accept(invitation, mRoomListener);
+                mApiClient.joinRoom(invitation, mRoomListener, mRtListener);
                 mInvitationManager.loadInvitations();
             } else {
                 Ln.d("invitation cancelled - hiding waiting screen; reason=" + resultCode);
@@ -116,51 +123,6 @@ public class MultiplayerManager {
         }
     }
 
-    public void quickGame(@NonNull RoomListener roomListener) {
-        // quick-start a game with 1 randomly selected opponent
-        RoomConfig.Builder builder = getRoomConfigBuilder(roomListener);
-        builder.setAutoMatchCriteria(createAutomatchCriteria(MIN_OPPONENTS, MAX_OPPONENTS));
-        mApiClient.createRoom(builder.build());
-    }
-
-    private void createRoom(ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers,
-                            @NonNull RoomListener roomListener) {
-        RoomConfig.Builder builder = getRoomConfigBuilder(roomListener);
-        builder.addPlayersToInvite(invitees);
-
-        Bundle autoMatchCriteria = createAutomatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers);
-        if (autoMatchCriteria != null) {
-            Ln.d("automatch criteria: " + autoMatchCriteria);
-            builder.setAutoMatchCriteria(autoMatchCriteria);
-        }
-
-        mApiClient.createRoom(builder.build());
-    }
-
-    private static Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
-        Bundle autoMatchCriteria = null;
-        if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
-            // TODO: call this method anyway - do not return null
-            autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
-        }
-        return autoMatchCriteria;
-    }
-
-    private void accept(@NonNull Invitation invitation, @NonNull RoomListener roomListener) {
-        String invId = invitation.getInvitationId();
-        Ln.d("accepting invitation: " + invId);
-        RoomConfig.Builder builder = getRoomConfigBuilder(roomListener);
-        builder.setInvitationIdToAccept(invId);
-        mApiClient.joinRoom(builder.build());
-    }
-
-    private RoomConfig.Builder getRoomConfigBuilder(@NonNull RoomListener roomListener) {
-        RoomConfig.Builder builder = RoomConfig.builder(roomListener);
-        builder.setMessageReceivedListener(mRtListener);
-        builder.setRoomStatusUpdateListener(roomListener);
-        return builder;
-    }
-
     public void addInvitationListener(@NonNull InvitationListener listener) {
         mInvitationManager.addInvitationListener(listener);
     }
@@ -174,7 +136,7 @@ public class MultiplayerManager {
     }
 
     @NonNull
-    public Set<String> getInvitationIds() {
+    Set<String> getInvitationIds() {
         return mInvitationManager.getInvitationIds();
     }
 

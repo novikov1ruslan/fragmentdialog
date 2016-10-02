@@ -59,6 +59,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     private Session mSession;
     private InvitationListener mInvitationListener;
+    private InternetOpponent mOpponent;
 
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
@@ -103,12 +104,11 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     private void createGame() {
         mInternetGame = new InternetGame(mApiClient, mInternetGameListener);
-        InternetOpponent opponent = new InternetOpponent(mInternetGame, getString(R.string.player));
-        mMultiplayer.setRealTimeMessageReceivedListener(opponent);
+        mOpponent = new InternetOpponent(mInternetGame, getString(R.string.player));
         PlayerOpponent player = new PlayerOpponent(fetchPlayerName(), mPlacement, mRules);
         player.setChatListener(parent());
-        mSession = new Session(player, opponent);
-        Session.bindOpponents(player, opponent);
+        mSession = new Session(player, mOpponent);
+        Session.bindOpponents(player, mOpponent);
     }
 
     @NonNull
@@ -154,7 +154,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         @Override
         public void onWaitingForOpponent(@NonNull Room room) {
             // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
-            mMultiplayer.showWaitingRoom(room, BattleshipActivity.RC_WAITING_ROOM);
+            mMultiplayer.showWaitingRoom(room, BattleshipActivity.RC_WAITING_ROOM, mOpponent);
         }
 
         @Override
@@ -193,7 +193,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, mInternetGame);
+            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, mInternetGame, mOpponent);
         }
 
         @Override
@@ -209,7 +209,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, mInternetGame);
+            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, mInternetGame, mOpponent);
         }
 
         @Override
@@ -224,7 +224,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             createGame();
 
             showWaitingScreen();
-            mMultiplayer.quickGame(mInternetGame);
+            mMultiplayer.quickGame(mInternetGame, mOpponent);
         }
     };
 

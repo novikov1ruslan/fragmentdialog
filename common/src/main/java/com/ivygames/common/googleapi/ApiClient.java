@@ -6,16 +6,20 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.invitations.InvitationLoadListener;
+import com.ivygames.common.multiplayer.RoomListener;
+
+import java.util.ArrayList;
 
 
 public interface ApiClient {
@@ -47,6 +51,7 @@ public interface ApiClient {
 
     /**
      * Calling this method with a snapshot that has already been committed or that was not opened will throw an exception
+     *
      * @throws Exception
      */
     PendingResult<Snapshots.CommitSnapshotResult> commitAndClose(@NonNull Snapshot snapshot,
@@ -54,9 +59,21 @@ public interface ApiClient {
 
     void leaveRoom(@NonNull RoomUpdateListener updateListener, @NonNull String roomId);
 
-    void joinRoom(@NonNull RoomConfig roomConfig);
+    void joinRoom(@NonNull Invitation invitation,
+                  @NonNull RoomListener roomListener,
+                  @NonNull RealTimeMessageReceivedListener rtListener);
 
-    void createRoom(@NonNull RoomConfig build);
+    void createRoom(@NonNull ArrayList<String> invitees,
+                    int minAutoMatchPlayers,
+                    int maxAutoMatchPlayers,
+                    @NonNull RoomListener roomListener,
+                    @NonNull RealTimeMessageReceivedListener rtListener);
+
+    void createRoom(int minAutoMatchPlayers,
+                    int maxAutoMatchPlayers,
+                    @NonNull RoomListener roomListener,
+                    @NonNull RealTimeMessageReceivedListener rtListener);
+
 
     int sendReliableMessage(@NonNull RealTimeMultiplayer.ReliableMessageSentCallback callback,
                             @NonNull byte[] messageData,
