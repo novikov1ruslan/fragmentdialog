@@ -130,7 +130,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         boolean signedIn = mApiClient.isConnected();
         UiEvent.send("achievements", signedIn ? 1 : 0);
         if (signedIn) {
-            showAchievementsScreen();
+            mApiClient.showAchievements(BattleshipActivity.RC_UNUSED);
         } else {
             Ln.d("user is not signed in - ask to sign in");
             showAchievementsDialog();
@@ -143,20 +143,16 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         parent().purchase();
     }
 
-    private void showAchievementsScreen() {
-        startActivityForResult(mApiClient.getAchievementsIntent(), BattleshipActivity.RC_UNUSED);
-    }
-
     @Override
     public void onSignInSucceeded() {
         mLayout.showPlusOneButton(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
 
         if (mAchievementsRequested) {
             mAchievementsRequested = false;
-            showAchievementsScreen();
+            mApiClient.showAchievements(BattleshipActivity.RC_UNUSED);
         } else if (mLeaderboardRequested) {
             mLeaderboardRequested = false;
-            showLeaderboardsScreen();
+            mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
         }
     }
 
@@ -183,15 +179,11 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         boolean signedIn = mApiClient.isConnected();
         UiEvent.send("showHiScores", signedIn ? 1 : 0);
         if (signedIn) {
-            showLeaderboardsScreen();
+            mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
         } else {
             Ln.d("user is not signed in - ask to sign in");
             showLeaderboardsDialog();
         }
-    }
-
-    private void showLeaderboardsScreen() {
-        startActivityForResult(mApiClient.getLeaderboardIntent(getString(R.string.leaderboard_normal)), BattleshipActivity.RC_UNUSED);
     }
 
     @Override

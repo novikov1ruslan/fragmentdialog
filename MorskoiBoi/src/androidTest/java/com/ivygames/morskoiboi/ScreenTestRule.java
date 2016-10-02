@@ -4,6 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
@@ -28,7 +29,6 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         apiClient = mock(ApiClient.class);
         when(apiClient.isConnected()).thenReturn(true);
         Dependencies.inject(apiClient);
-        Dependencies.inject(new TestMultiplayerManager(apiClient));
         Dependencies.inject(mock(AchievementsManager.class));
         Dependencies.inject(mock(ProgressManager.class));
 

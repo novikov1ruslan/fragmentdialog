@@ -271,7 +271,7 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
         }
 
         Ln.d("leaving room: " + mRoom.getRoomId());
-        mApiClient.leave(this, mRoom.getRoomId());
+        mApiClient.leaveRoom(this, mRoom.getRoomId());
         mRoom = null;
     }
 

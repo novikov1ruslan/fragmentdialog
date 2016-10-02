@@ -168,8 +168,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
         setupAds(device);
 
-        mMultiplayer.setActivity(this);
-
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
 

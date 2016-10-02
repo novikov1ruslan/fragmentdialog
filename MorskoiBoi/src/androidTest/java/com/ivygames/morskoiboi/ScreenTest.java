@@ -313,15 +313,16 @@ public abstract class ScreenTest {
         verify(apiClient, times(1)).disconnect();
     }
 
+    protected final void verifyAchievementsShown() {
+        verify(apiClient, times(1)).showAchievements(anyInt());
+    }
+
+    protected final void verifyLeaderboardsShown() {
+        verify(apiClient, times(1)).showLeaderboards(anyString(), anyInt());
+    }
+
     protected final void expectSubmitScoreBeCalled(VerificationMode mode) {
         verify(apiClient, mode).submitScore(anyString(), anyInt());
     }
 
-    protected final void setAchievementsIntentType(String expectedType) {
-        when(apiClient.getAchievementsIntent()).thenReturn(new Intent().setType(expectedType));
-    }
-
-    protected final void setLeaderboardIntent(Intent intent) {
-        when(apiClient.getLeaderboardIntent(anyString())).thenReturn(intent);
-    }
 }

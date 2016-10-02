@@ -123,21 +123,6 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public Intent getInvitationInboxIntent() {
-        return Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
-    }
-
-    @Override
-    public Intent getAchievementsIntent() {
-        return Games.Achievements.getAchievementsIntent(mGoogleApiClient);
-    }
-
-    @Override
-    public Intent getLeaderboardIntent(@NonNull String boardName) {
-        return Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, boardName);
-    }
-
-    @Override
     public void unlockAchievement(@NonNull String achievementId) {
         if (mDryRun) {
             Ln.v("dry run - not executing");
@@ -190,17 +175,17 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public void leave(@NonNull RoomUpdateListener updateListener, @NonNull String roomId) {
+    public void leaveRoom(@NonNull RoomUpdateListener updateListener, @NonNull String roomId) {
         Games.RealTimeMultiplayer.leave(mGoogleApiClient, updateListener, roomId);
     }
 
     @Override
-    public void join(@NonNull RoomConfig roomConfig) {
+    public void joinRoom(@NonNull RoomConfig roomConfig) {
         Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfig);
     }
 
     @Override
-    public void create(@NonNull RoomConfig build) {
+    public void createRoom(@NonNull RoomConfig build) {
         Games.RealTimeMultiplayer.create(mGoogleApiClient, build);
     }
 
@@ -213,18 +198,32 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public void startSelectOpponentActivity(int requestCode, int minOpponents, int maxOpponents) {
-        Intent intent = getSelectOpponentsIntent(minOpponents, maxOpponents, false);
+    public void selectOpponents(int requestCode, int minOpponents, int maxOpponents) {
+        Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, minOpponents, maxOpponents, false);
         mActivity.startActivityForResult(intent, requestCode);
     }
 
-    private Intent getSelectOpponentsIntent(int minOpponents, int maxOpponents, boolean b) {
-        return Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, minOpponents, maxOpponents, b);
+    @Override
+    public void showInvitationInbox(int requestCode) {
+        Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
+        mActivity.startActivityForResult(intent, requestCode);
     }
 
     @Override
-    public Intent getWaitingRoomIntent(@NonNull Room room, int minPlayers) {
-        return Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, minPlayers);
+    public void showAchievements(int requestCode) {
+        Intent intent = Games.Achievements.getAchievementsIntent(mGoogleApiClient);
+        mActivity.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void showWaitingRoom(int requestCode, @NonNull Room room, int minPlayers) {
+        Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, minPlayers);
+        mActivity.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void showLeaderboards(@NonNull String boardName, int requestCode) {
+        mActivity.startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, boardName), requestCode);
     }
 
     @Override

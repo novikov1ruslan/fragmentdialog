@@ -7,6 +7,7 @@ import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationLoadListener;
+import com.ivygames.common.multiplayer.MultiplayerManager;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
 
 import java.util.Collection;
@@ -26,7 +27,7 @@ public class InvitationProxy {
     private InvitationApiClient invitationApiClient = new InvitationApiClient();
 
     public void init() {
-        Dependencies.inject(new TestMultiplayerManager(invitationApiClient));
+        Dependencies.inject(new MultiplayerManager(invitationApiClient));
     }
 
     public void destroy() {

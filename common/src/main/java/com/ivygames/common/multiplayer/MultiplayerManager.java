@@ -26,7 +26,6 @@ public class MultiplayerManager {
     private static final int MIN_OPPONENTS = 1;
     private static final int MAX_OPPONENTS = 1;
 
-    private Activity mActivity;
     @NonNull
     private final ApiClient mApiClient;
     @NonNull
@@ -44,10 +43,6 @@ public class MultiplayerManager {
         mInvitationManager = new InvitationManager(apiClient);
     }
 
-    public void setActivity(@NonNull Activity activity) {
-        mActivity = activity;
-    }
-
     public void setListener(@NonNull MultiplayerListener listener) {
         mListener = listener;
     }
@@ -59,21 +54,19 @@ public class MultiplayerManager {
 
     public void showWaitingRoom(@NonNull Room room, int requestCode) {
         mWaitingRoomRc = requestCode;
-        Intent intent = mApiClient.getWaitingRoomIntent(room, MIN_PLAYERS);
-        mActivity.startActivityForResult(intent, requestCode);
+        mApiClient.showWaitingRoom(requestCode, room, MIN_PLAYERS);
     }
 
     public void invitePlayers(int requestCode, @NonNull RoomListener roomListener) {
         mSelectPlayersRc = requestCode;
         mRoomListener = roomListener;
-        mApiClient.startSelectOpponentActivity(requestCode, MIN_OPPONENTS, MAX_OPPONENTS);
+        mApiClient.selectOpponents(requestCode, MIN_OPPONENTS, MAX_OPPONENTS);
     }
 
     public void showInvitations(int requestCode, @NonNull RoomListener roomListener) {
         mInvitationInboxRc = requestCode;
         mRoomListener = roomListener;
-        Intent intent = mApiClient.getInvitationInboxIntent();
-        mActivity.startActivityForResult(intent, requestCode);
+        mApiClient.showInvitationInbox(requestCode);
     }
 
     public void handleResult(int requestCode, int resultCode, @NonNull Intent data) {
@@ -87,7 +80,7 @@ public class MultiplayerManager {
                 Ln.d("opponent selected: " + invitees + ", creating room...");
                 int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
                 int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-                create(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener);
+                createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener);
             } else {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + resultCode);
                 mListener.opponentInvitationCanceled();
@@ -127,11 +120,11 @@ public class MultiplayerManager {
         // quick-start a game with 1 randomly selected opponent
         RoomConfig.Builder builder = getRoomConfigBuilder(roomListener);
         builder.setAutoMatchCriteria(createAutomatchCriteria(MIN_OPPONENTS, MAX_OPPONENTS));
-        mApiClient.create(builder.build());
+        mApiClient.createRoom(builder.build());
     }
 
-    private void create(ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers,
-                        @NonNull RoomListener roomListener) {
+    private void createRoom(ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers,
+                            @NonNull RoomListener roomListener) {
         RoomConfig.Builder builder = getRoomConfigBuilder(roomListener);
         builder.addPlayersToInvite(invitees);
 
@@ -141,7 +134,7 @@ public class MultiplayerManager {
             builder.setAutoMatchCriteria(autoMatchCriteria);
         }
 
-        mApiClient.create(builder.build());
+        mApiClient.createRoom(builder.build());
     }
 
     private static Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
@@ -158,7 +151,7 @@ public class MultiplayerManager {
         Ln.d("accepting invitation: " + invId);
         RoomConfig.Builder builder = getRoomConfigBuilder(roomListener);
         builder.setInvitationIdToAccept(invId);
-        mApiClient.join(builder.build());
+        mApiClient.joinRoom(builder.build());
     }
 
     private RoomConfig.Builder getRoomConfigBuilder(@NonNull RoomListener roomListener) {

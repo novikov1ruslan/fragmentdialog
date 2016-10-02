@@ -1,7 +1,6 @@
 package com.ivygames.common.googleapi;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -33,10 +32,6 @@ public interface ApiClient {
 
     void loadInvitations(@NonNull InvitationLoadListener callback);
 
-    Intent getAchievementsIntent();
-
-    Intent getLeaderboardIntent(@NonNull String boardName);
-
     void unlockAchievement(@NonNull String achievementId);
 
     void revealAchievement(@NonNull String achievementId);
@@ -57,20 +52,16 @@ public interface ApiClient {
     PendingResult<Snapshots.CommitSnapshotResult> commitAndClose(@NonNull Snapshot snapshot,
                                                                  @NonNull SnapshotMetadataChange change) throws Exception;
 
-    void leave(@NonNull RoomUpdateListener updateListener, @NonNull String roomId);
+    void leaveRoom(@NonNull RoomUpdateListener updateListener, @NonNull String roomId);
 
-    void join(@NonNull RoomConfig roomConfig);
+    void joinRoom(@NonNull RoomConfig roomConfig);
 
-    void create(@NonNull RoomConfig build);
+    void createRoom(@NonNull RoomConfig build);
 
     int sendReliableMessage(@NonNull RealTimeMultiplayer.ReliableMessageSentCallback callback,
                             @NonNull byte[] messageData,
                             @NonNull String roomId,
                             @NonNull String recipientId);
-
-    Intent getInvitationInboxIntent();
-
-    Intent getWaitingRoomIntent(@NonNull Room room, int minPlayers);
 
     void submitScore(@NonNull String boardName, int totalScores);
 
@@ -82,5 +73,14 @@ public interface ApiClient {
 
     void onActivityResult(int requestCode, int resultCode);
 
-    void startSelectOpponentActivity(int requestCode, int minOpponents, int maxOpponents);
+    void selectOpponents(int requestCode, int minOpponents, int maxOpponents);
+
+    void showInvitationInbox(int requestCode);
+
+    void showAchievements(int requestCode);
+
+    void showWaitingRoom(int requestCode, @NonNull Room room, int minPlayers);
+
+    void showLeaderboards(@NonNull String boardName, int requestCode);
+
 }

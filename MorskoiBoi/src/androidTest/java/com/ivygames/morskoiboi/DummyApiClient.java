@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -52,16 +51,6 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public Intent getAchievementsIntent() {
-        return null;
-    }
-
-    @Override
-    public Intent getLeaderboardIntent(@NonNull String boardName) {
-        return null;
-    }
-
-    @Override
     public void unlockAchievement(@NonNull String achievementId) {
 
     }
@@ -96,33 +85,23 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void leave(@NonNull RoomUpdateListener updateListener, @NonNull String roomId) {
+    public void leaveRoom(@NonNull RoomUpdateListener updateListener, @NonNull String roomId) {
 
     }
 
     @Override
-    public void join(@NonNull RoomConfig roomConfig) {
+    public void joinRoom(@NonNull RoomConfig roomConfig) {
 
     }
 
     @Override
-    public void create(@NonNull RoomConfig build) {
+    public void createRoom(@NonNull RoomConfig build) {
 
     }
 
     @Override
     public int sendReliableMessage(@NonNull RealTimeMultiplayer.ReliableMessageSentCallback callback, @NonNull byte[] messageData, @NonNull String roomId, @NonNull String recipientId) {
         return 0;
-    }
-
-    @Override
-    public Intent getInvitationInboxIntent() {
-        return null;
-    }
-
-    @Override
-    public Intent getWaitingRoomIntent(@NonNull Room room, int minPlayers) {
-        return null;
     }
 
     @Override
@@ -151,7 +130,27 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void startSelectOpponentActivity(int requestCode, int minOpponents, int maxOpponents) {
+    public void selectOpponents(int requestCode, int minOpponents, int maxOpponents) {
+
+    }
+
+    @Override
+    public void showInvitationInbox(int requestCode) {
+
+    }
+
+    @Override
+    public void showAchievements(int requestCode) {
+
+    }
+
+    @Override
+    public void showWaitingRoom(int requestCode, @NonNull Room room, int minPlayers) {
+
+    }
+
+    @Override
+    public void showLeaderboards(@NonNull String boardName, int requestCode) {
 
     }
 }

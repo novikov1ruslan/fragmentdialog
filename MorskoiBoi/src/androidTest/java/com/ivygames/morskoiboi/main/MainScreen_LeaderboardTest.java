@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.main;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
@@ -15,14 +14,9 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class MainScreen_LeaderboardTest extends MainScreen_ {
     @NonNull
@@ -67,13 +61,12 @@ public class MainScreen_LeaderboardTest extends MainScreen_ {
 
     @Test
     public void when_leader_board_button_is_pressed_when_signed_in__leader_board_intent_is_fired() {
-        Intent intent = new Intent();
-        String expectedType = "expected type";
-        intent.setType(expectedType);
-        setLeaderboardIntent(intent);
         setSignedIn(true);
         showScreen();
-        ScreenTest.clickForIntent(leaderboardButton(), hasType(expectedType));
+
+        clickOn(leaderboardButton());
+
+        verifyLeaderboardsShown();
     }
 
 }

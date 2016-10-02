@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.main;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
@@ -12,11 +11,8 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class MainScreen_AchievementsTest extends MainScreen_ {
 
@@ -62,11 +58,12 @@ public class MainScreen_AchievementsTest extends MainScreen_ {
 
     @Test
     public void WhenAchievementsButtonPressedWhenConnected__AchievementsIntentIsFired() {
-        String expectedType = "expected type";
-        setAchievementsIntentType(expectedType);
         setSignedIn(true);
         showScreen();
-        ScreenTest.clickForIntent(achievementsButton(), hasType(expectedType));
+
+        clickOn(achievementsButton());
+
+        verifyAchievementsShown();
     }
 
 }
