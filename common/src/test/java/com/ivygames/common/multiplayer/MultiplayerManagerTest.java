@@ -70,11 +70,11 @@ public class MultiplayerManagerTest {
 
         verify(apiClient, never()).createRoom(any(ArrayList.class), anyInt(), anyInt(),
                 any(RoomListener.class), any(RealTimeMessageReceivedListener.class));
-        verify(multiplayerListener, times(1)).userCanceledInvitation();
+        verify(multiplayerListener, times(1)).invitationCanceled();
     }
 
     @Test
-    public void WhenInvitationInboxOpen() {
+    public void WhenInvitationFromInboxAccepted_PlayerJoinsTheRoom() {
         RoomListener roomListener = mock(RoomListener.class);
         RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
         mm.showInvitations(1, roomListener, rtListener);
@@ -85,6 +85,22 @@ public class MultiplayerManagerTest {
         mm.handleResult(1, Activity.RESULT_OK, intent);
 
         verify(apiClient, times(1)).joinRoom(invitation, roomListener, rtListener);
+    }
+
+    @Test
+    public void WhenInvitationFromInboxNotAccepted_PlayerFailsToJoinTheRoom() {
+        RoomListener roomListener = mock(RoomListener.class);
+        RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
+        mm.showInvitations(1, roomListener, rtListener);
+        Intent intent = new Intent();
+        Invitation invitation = mock(Invitation.class);
+        intent.putExtra(Multiplayer.EXTRA_INVITATION, invitation);
+
+        mm.handleResult(1, Activity.RESULT_CANCELED, intent);
+
+        verify(apiClient, never()).joinRoom(any(Invitation.class),
+                any(RoomListener.class), any(RealTimeMessageReceivedListener.class));
+        verify(multiplayerListener, times(1)).invitationCanceled();
     }
 
 }

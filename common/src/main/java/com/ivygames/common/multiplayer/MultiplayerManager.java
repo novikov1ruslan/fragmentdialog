@@ -90,7 +90,7 @@ public class MultiplayerManager {
                 mApiClient.createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener, mRtListener);
             } else {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + resultCode);
-                mListener.userCanceledInvitation();
+                mListener.invitationCanceled();
             }
         } else if (requestCode == mInvitationInboxRc) {
             // Handle the result of the invitation inbox UI, where the player can pick an invitation to accept.
