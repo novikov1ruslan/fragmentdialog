@@ -264,10 +264,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         mScreenManager.onStart();
 
         mMultiplayer.addInvitationListener(mInvitationListener);
-        if (mApiClient.isConnected()) {
-            Ln.d("API is connected - register invitation listener");
-            mMultiplayer.loadInvitations();
-        }
     }
 
     @Override
@@ -289,6 +285,11 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
 
         mMusicPlayer.play(mCurrentScreen.getMusic());
 //        AppEventsLogger.activateApp(this); // #FB
+
+        if (mApiClient.isConnected()) {
+            Ln.d("API is connected - register invitation listener");
+            mMultiplayer.loadInvitations();
+        }
     }
 
     @Override

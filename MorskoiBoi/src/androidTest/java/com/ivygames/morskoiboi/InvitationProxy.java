@@ -60,7 +60,7 @@ public class InvitationProxy {
         registerIdlingResources(setInvitation);
     }
 
-    private static class InvitationApiClient extends DummyApiClient {
+    public static class InvitationApiClient extends DummyApiClient {
 
         private OnInvitationReceivedListener listener;
         private Set<String> invitations = new HashSet<>();

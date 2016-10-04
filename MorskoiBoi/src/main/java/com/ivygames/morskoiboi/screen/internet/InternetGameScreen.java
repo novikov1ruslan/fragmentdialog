@@ -247,7 +247,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         }
 
         @Override
-        public void opponentInvitationCanceled() {
+        public void userCanceledInvitation() {
             hideWaitingScreen();
         }
     };

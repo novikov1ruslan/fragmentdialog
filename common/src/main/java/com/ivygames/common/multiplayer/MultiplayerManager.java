@@ -90,7 +90,7 @@ public class MultiplayerManager {
                 mApiClient.createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers, mRoomListener, mRtListener);
             } else {
                 Ln.d("select players UI cancelled - hiding waiting screen; reason=" + resultCode);
-                mListener.opponentInvitationCanceled();
+                mListener.userCanceledInvitation();
             }
         } else if (requestCode == mInvitationInboxRc) {
             // Handle the result of the invitation inbox UI, where the player can pick an invitation to accept.
@@ -98,11 +98,9 @@ public class MultiplayerManager {
             if (resultCode == Activity.RESULT_OK) {
                 Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
                 mApiClient.joinRoom(invitation, mRoomListener, mRtListener);
-                mInvitationManager.loadInvitations();
             } else {
                 Ln.d("invitation cancelled - hiding waiting screen; reason=" + resultCode);
                 mListener.invitationCanceled();
-                mInvitationManager.loadInvitations();
             }
         } else if (requestCode == mWaitingRoomRc) {
             if (resultCode == Activity.RESULT_OK) {

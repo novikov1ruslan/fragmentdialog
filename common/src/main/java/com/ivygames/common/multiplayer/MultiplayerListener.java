@@ -1,7 +1,7 @@
 package com.ivygames.common.multiplayer;
 
 public interface MultiplayerListener {
-    void opponentInvitationCanceled();
+    void userCanceledInvitation();
 
     void invitationCanceled();
 
