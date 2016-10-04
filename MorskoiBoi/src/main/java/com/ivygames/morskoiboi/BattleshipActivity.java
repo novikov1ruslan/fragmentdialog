@@ -319,7 +319,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         stopKeepingScreenOn();
 
         mScreenManager.onStop();
-        mMultiplayer.removeInvitationReceiver(mInvitationListener);
+        mMultiplayer.removeInvitationListener(mInvitationListener);
         Ln.d("game fully obscured - stop keeping screen On");
     }
 

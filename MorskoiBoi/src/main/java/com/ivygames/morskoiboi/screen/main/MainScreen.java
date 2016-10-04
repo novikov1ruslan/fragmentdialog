@@ -101,7 +101,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public void onStop() {
         super.onStop();
-        mMultiplayer.removeInvitationReceiver(mScreenInvitationListener);
+        mMultiplayer.removeInvitationListener(mScreenInvitationListener);
     }
 
     @Override

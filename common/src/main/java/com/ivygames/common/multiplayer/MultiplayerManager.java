@@ -45,10 +45,8 @@ public class MultiplayerManager {
         mListener = listener;
     }
 
-    public void showWaitingRoom(@NonNull Room room, int requestCode,
-                                @NonNull RealTimeMessageReceivedListener rtListener) {
+    public void showWaitingRoom(int requestCode, @NonNull Room room) {
         mWaitingRoomRc = requestCode;
-        mRtListener = rtListener;
         mApiClient.showWaitingRoom(requestCode, room, MIN_PLAYERS);
     }
 
@@ -129,7 +127,7 @@ public class MultiplayerManager {
         mInvitationManager.loadInvitations();
     }
 
-    public void removeInvitationReceiver(@NonNull InvitationListener listener) {
+    public void removeInvitationListener(@NonNull InvitationListener listener) {
         mInvitationManager.removeInvitationReceiver(listener);
     }
 

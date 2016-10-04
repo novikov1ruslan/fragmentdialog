@@ -140,7 +140,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onStop() {
         super.onStop();
-        mMultiplayer.removeInvitationReceiver(mScreenInvitationListener);
+        mMultiplayer.removeInvitationListener(mScreenInvitationListener);
     }
 
     @Override

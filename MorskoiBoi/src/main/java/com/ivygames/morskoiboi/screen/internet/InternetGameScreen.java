@@ -93,7 +93,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public void onStop() {
         super.onStop();
-        mMultiplayer.removeInvitationReceiver(mInvitationListener);
+        mMultiplayer.removeInvitationListener(mInvitationListener);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         @Override
         public void onWaitingForOpponent(@NonNull Room room) {
             // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
-            mMultiplayer.showWaitingRoom(room, BattleshipActivity.RC_WAITING_ROOM, mOpponent);
+            mMultiplayer.showWaitingRoom(BattleshipActivity.RC_WAITING_ROOM, room);
         }
 
         @Override
