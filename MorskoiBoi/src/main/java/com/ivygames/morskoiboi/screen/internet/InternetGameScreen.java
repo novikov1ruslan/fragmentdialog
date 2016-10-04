@@ -28,7 +28,7 @@ import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
-import com.ivygames.morskoiboi.rt.InternetGameListener;
+import com.ivygames.morskoiboi.rt.WaitingRoomListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -103,7 +103,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     }
 
     private void createGame() {
-        mInternetGame = new InternetGame(mApiClient, mInternetGameListener);
+        mInternetGame = new InternetGame(mApiClient, mWaitingRoomListener);
         mOpponent = new InternetOpponent(mInternetGame, getString(R.string.player));
         PlayerOpponent player = new PlayerOpponent(fetchPlayerName(), mPlacement, mRules);
         player.setChatListener(parent());
@@ -150,10 +150,9 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     }
 
     @NonNull
-    private final InternetGameListener mInternetGameListener = new InternetGameListener() {
+    private final WaitingRoomListener mWaitingRoomListener = new WaitingRoomListener() {
         @Override
         public void onWaitingForOpponent(@NonNull Room room) {
-            // Show the waiting room UI to track the progress of other players as they enter the room and get connected.
             mMultiplayer.showWaitingRoom(BattleshipActivity.RC_WAITING_ROOM, room);
         }
 
@@ -234,6 +233,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         @Override
         public void playerLeft() {
             mInternetGame.finish();
+            hideWaitingScreen();
         }
 
         @Override

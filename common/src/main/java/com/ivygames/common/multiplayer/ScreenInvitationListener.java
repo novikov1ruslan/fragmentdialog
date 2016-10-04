@@ -34,7 +34,7 @@ public class ScreenInvitationListener implements InvitationListener {
 
     private void updateInvitations() {
         if (mMultiplayer.getInvitationIds().isEmpty()) {
-            Ln.v("there are no pending invitations");
+            Ln.d("there are no pending invitations");
             mScreen.hideInvitation();
         } else {
             Ln.d("there is a pending invitation");

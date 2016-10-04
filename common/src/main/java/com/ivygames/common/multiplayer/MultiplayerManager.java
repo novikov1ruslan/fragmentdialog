@@ -45,6 +45,9 @@ public class MultiplayerManager {
         mListener = listener;
     }
 
+    /**
+     * Show the waiting room UI to track the progress of other players as they enter the room and get connected.
+     */
     public void showWaitingRoom(int requestCode, @NonNull Room room) {
         mWaitingRoomRc = requestCode;
         mApiClient.showWaitingRoom(requestCode, room, MIN_PLAYERS);
@@ -97,15 +100,15 @@ public class MultiplayerManager {
                 Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
                 mApiClient.joinRoom(invitation, mRoomListener, mRtListener);
             } else {
-                Ln.d("invitation cancelled - hiding waiting screen; reason=" + resultCode);
+                Ln.v("invitation cancelled; reason=" + resultCode);
                 mListener.invitationCanceled();
             }
         } else if (requestCode == mWaitingRoomRc) {
             if (resultCode == Activity.RESULT_OK) {
-                Ln.d("starting game");
+                Ln.v("starting game");
                 mListener.gameStarted();
             } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-                Ln.d("user explicitly chose to leave the room");
+                Ln.v("user explicitly chose to leave the room");
                 // if the activity result is RESULT_LEFT_ROOM, i
                 // t's the caller's responsibility to actually leave the room
                 mListener.playerLeft();
@@ -113,7 +116,7 @@ public class MultiplayerManager {
                 // Dialog was cancelled (user pressed back key, for instance).
                 // In our game, this means leaving the room too. In more elaborate games,this could mean
                 // something else (like minimizing the waiting room UI but continue in the handshake process).
-                Ln.d("user closed the waiting room - leaving");
+                Ln.v("user closed the waiting room - leaving");
                 mListener.playerLeft();
             }
         }

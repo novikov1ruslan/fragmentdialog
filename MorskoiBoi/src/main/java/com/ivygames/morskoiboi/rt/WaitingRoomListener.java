@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.games.multiplayer.realtime.Room;
 
-public interface InternetGameListener {
+public interface WaitingRoomListener {
 
     void onWaitingForOpponent(@NonNull Room room);
 

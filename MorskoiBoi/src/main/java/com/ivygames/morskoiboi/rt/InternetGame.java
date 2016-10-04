@@ -32,7 +32,8 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
     private final ApiClient mApiClient;
     private Room mRoom;
     private String mRecipientId;
-    private InternetGameListener mGameListener;
+    @NonNull
+    private final WaitingRoomListener mWaitingRoomListener;
 
     private boolean mConnectionLostSent;
     @NonNull
@@ -44,10 +45,10 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
 
     private boolean mIsRoomConnected;
 
-    public InternetGame(@NonNull ApiClient apiClient, @NonNull InternetGameListener listener) {
+    public InternetGame(@NonNull ApiClient apiClient, @NonNull WaitingRoomListener listener) {
         super();
         mApiClient = apiClient;
-        mGameListener = listener;
+        mWaitingRoomListener = listener;
         EventBus.getDefault().removeAllStickyEvents();
         Ln.v("new internet game created");
     }
@@ -62,7 +63,6 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
         Ln.d("finishing internet game - leaving the room");
         leaveRoom();
         mIsRoomConnected = false;
-        mGameListener = null;
         return true;
     }
 
@@ -98,10 +98,10 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
         if (statusCode == GamesStatusCodes.STATUS_OK) {
             Ln.d("player created RT multiplayer room, waiting for it to become ready...");
             setRoom(room);
-            mGameListener.onWaitingForOpponent(room);
+            mWaitingRoomListener.onWaitingForOpponent(room);
         } else {
             Ln.w("room creation error");
-            mGameListener.onError(statusCode);
+            mWaitingRoomListener.onError(statusCode);
         }
     }
 
@@ -118,10 +118,10 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
         if (statusCode == GamesStatusCodes.STATUS_OK) {
             Ln.d("player joined the multiplayer room, waiting for it to become ready...");
             setRoom(room);
-            mGameListener.onWaitingForOpponent(room);
+            mWaitingRoomListener.onWaitingForOpponent(room);
         } else {
             Ln.w("failed to join room, status: " + statusCode);
-            mGameListener.onError(statusCode);
+            mWaitingRoomListener.onError(statusCode);
         }
     }
 
@@ -144,7 +144,7 @@ public class InternetGame extends Game implements RoomListener, ReliableMessageS
             }
         } else {
             Ln.w("room connection error: " + statusCode);
-            mGameListener.onError(statusCode);
+            mWaitingRoomListener.onError(statusCode);
         }
     }
 
