@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;
@@ -20,7 +20,7 @@ public class GameplayScreen_OpponentSurrenderedDialogTest extends GameplayScreen
     public void WhenOpponentLeftAndOpponentReady__OpponentSurrenderedDialogDisplayed() {
         showScreen();
         when(player.isOpponentReady()).thenReturn(true);
-        ((GameplayScreen)screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        ((GameplayScreen)screen()).onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
         checkDisplayed(opponentSurrenderedDialog());
     }
 

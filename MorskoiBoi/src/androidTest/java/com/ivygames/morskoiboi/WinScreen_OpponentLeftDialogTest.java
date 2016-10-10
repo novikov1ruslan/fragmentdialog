@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
 
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class WinScreen_OpponentLeftDialogTest extends WinScreen_ {
     @Test
     public void WhenEnemyLeaves__OpponentLeftDialogDisplayed() {
         showScreen();
-        ((WinScreen) screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        ((WinScreen) screen()).onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
         checkDisplayed(opponentLeftDialog());
     }
 

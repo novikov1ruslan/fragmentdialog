@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
 
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class WinScreen_ConnectionLostDialogTest extends WinScreen_ {
     @Test
     public void WhenConnectionLost__DialogDisplayed() {
         showScreen();
-        ((WinScreen) screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
+        ((WinScreen) screen()).onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
         checkDisplayed(connectionLostDialog());
     }
 

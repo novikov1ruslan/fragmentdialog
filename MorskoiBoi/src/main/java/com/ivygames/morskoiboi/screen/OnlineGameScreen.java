@@ -2,19 +2,20 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.common.dialog.SimpleActionDialog;
+import com.ivygames.common.multiplayer.ConnectionLostListener;
+import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.GameEvent;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-import de.greenrobot.event.EventBus;
-
-public abstract class OnlineGameScreen extends BattleshipScreen {
+public abstract class OnlineGameScreen extends BattleshipScreen implements ConnectionLostListener {
     protected static final String DIALOG = FragmentAlertDialog.TAG;
 
     @NonNull
@@ -23,32 +24,32 @@ public abstract class OnlineGameScreen extends BattleshipScreen {
     private final Runnable mBackToSelectGameCommand;
     @NonNull
     private final String mOpponentName;
+    @NonNull
+    private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
 
     public OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull String opponentName) {
         super(parent);
         mGame = game;
         mOpponentName = opponentName;
 
-        mBackToSelectGameCommand = new BackToSelectGameCommand(parent, game);
-        Ln.v(this + " screen created - register event listener");
-        EventBus.getDefault().register(this);
+        mBackToSelectGameCommand = new BackToSelectGameCommand(parent);
+        mMultiplayer.registerConnectionLostListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Ln.v(this + " screen destroyed - unregister event listener");
-        EventBus.getDefault().unregister(this);
+        Ln.v(this + " unregister event listener");
+        mMultiplayer.unregisterConnectionLostListener(this);
     }
 
-    public void onEventMainThread(GameEvent event) {
-        EventBus.getDefault().removeAllStickyEvents();
-        Ln.d(this + " screen received event: " + event);
-        if (event == GameEvent.OPPONENT_LEFT) {
+    @Override
+    public void onConnectionLost(@NonNull MultiplayerEvent event) {
+        if (event == MultiplayerEvent.OPPONENT_LEFT) {
             Ln.d("opponent left the game - notifying player");
             showOpponentLeftDialog();
-        } else if (event == GameEvent.CONNECTION_LOST) {
-            Ln.i("connection lost - notifying player");
+        } else if (event == MultiplayerEvent.CONNECTION_LOST) {
+            Ln.d("connection lost - notifying player");
             showConnectionLostDialog();
         }
     }

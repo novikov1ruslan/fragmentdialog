@@ -6,7 +6,7 @@ import android.view.View;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
@@ -89,7 +89,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
     @Test
     public void WhenOpponentLeft__TimerStops() {
         showScreen();
-        ((GameplayScreen)screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        ((GameplayScreen)screen()).onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
         verify(timeController, times(1)).stop();
         // TODO: test service stops
     }
@@ -97,7 +97,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
     @Test
     public void WhenConnectionLost__TimerStops() {
         showScreen();
-        ((GameplayScreen)screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
+        ((GameplayScreen)screen()).onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
         verify(timeController, times(1)).stop();
         // TODO: test service stops
     }

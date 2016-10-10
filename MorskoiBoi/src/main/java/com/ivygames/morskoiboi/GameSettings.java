@@ -219,4 +219,9 @@ public class GameSettings implements AchievementsSettings {
 
         return newProgress;
     }
+
+    @Override
+    public String toString() {
+        return GameSettings.class.getSimpleName() + "#" + (hashCode() % 1000);
+    }
 }

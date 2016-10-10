@@ -45,6 +45,7 @@ import java.util.HashSet;
 
 
 public class GoogleApiClientWrapper implements ApiClient {
+    private static final boolean LOG_ENABLED = false;
 
     @NonNull
     private final GoogleApiClient mGoogleApiClient;
@@ -114,13 +115,17 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     @Override
     public void registerInvitationListener(@NonNull OnInvitationReceivedListener listener) {
-        Ln.v("registering invitation listener: " + listener);
+        if (LOG_ENABLED) {
+            Ln.v("registering invitation listener: " + listener);
+        }
         Games.Invitations.registerInvitationListener(mGoogleApiClient, listener);
     }
 
     @Override
     public void loadInvitations(@NonNull InvitationLoadListener listener) {
-        Ln.v("loading invitations...");
+        if (LOG_ENABLED) {
+            Ln.v("loading invitations...");
+        }
         Games.Invitations.loadInvitations(mGoogleApiClient).
                 setResultCallback(new LoadInvitationsResultImpl(listener));
     }
@@ -187,7 +192,9 @@ public class GoogleApiClientWrapper implements ApiClient {
                          @NonNull RoomListener roomListener,
                          @NonNull RealTimeMessageReceivedListener rtListener) {
         String invId = invitation.getInvitationId();
-        Ln.d("accepting invitation: " + invId);
+        if (LOG_ENABLED) {
+            Ln.v("accepting invitation: " + invId);
+        }
         RoomConfig.Builder builder = getRoomConfigBuilder(roomListener, rtListener);
         builder.setInvitationIdToAccept(invId);
 
@@ -224,7 +231,7 @@ public class GoogleApiClientWrapper implements ApiClient {
 
         Bundle autoMatchCriteria = createAutomatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers);
         if (autoMatchCriteria != null) {
-            Ln.d("automatch criteria: " + autoMatchCriteria);
+            Ln.v("automatch criteria: " + autoMatchCriteria);
             builder.setAutoMatchCriteria(autoMatchCriteria);
         }
         return builder;
@@ -261,6 +268,16 @@ public class GoogleApiClientWrapper implements ApiClient {
         mActivity.startActivityForResult(intent, requestCode);
     }
 
+    public void dismissInvitation(@NonNull String invitationId) {
+        Games.RealTimeMultiplayer.dismissInvitation(mGoogleApiClient, invitationId);
+    }
+
+    @Override
+    public void showWaitingRoom(int requestCode, @NonNull Room room, int minPlayers) {
+        Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, minPlayers);
+        mActivity.startActivityForResult(intent, requestCode);
+    }
+
     @Override
     public void showInvitationInbox(int requestCode) {
         Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
@@ -273,11 +290,6 @@ public class GoogleApiClientWrapper implements ApiClient {
         mActivity.startActivityForResult(intent, requestCode);
     }
 
-    @Override
-    public void showWaitingRoom(int requestCode, @NonNull Room room, int minPlayers) {
-        Intent intent = Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, minPlayers);
-        mActivity.startActivityForResult(intent, requestCode);
-    }
 
     @Override
     public void showLeaderboards(@NonNull String boardName, int requestCode) {
@@ -331,7 +343,9 @@ public class GoogleApiClientWrapper implements ApiClient {
             Collection<GameInvitation> invitationsCopy = new HashSet<>();
             if (list.getInvitations().getCount() > 0) {
                 InvitationBuffer invitations = list.getInvitations();
-                Ln.v("loaded " + invitations.getCount() + " invitations");
+                if (LOG_ENABLED) {
+                    Ln.v("loaded " + invitations.getCount() + " invitations");
+                }
                 for (int i = 0; i < invitations.getCount(); i++) {
                     Invitation invitation = invitations.get(i);
                     invitationsCopy.add(
@@ -339,8 +353,6 @@ public class GoogleApiClientWrapper implements ApiClient {
                                     invitation.getInvitationId()));
                 }
                 list.getInvitations().release();
-            } else {
-                Ln.v("no invitations");
             }
             mLoadListener.onLoaded(invitationsCopy);
         }
@@ -349,7 +361,7 @@ public class GoogleApiClientWrapper implements ApiClient {
     private class OnConnectionFailedListenerImpl implements GoogleApiClient.OnConnectionFailedListener {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult result) {
-            Ln.d("connection failed - result: " + result);
+            Ln.v("connection failed - result: " + result);
 
             switch (result.getErrorCode()) {
                 case ConnectionResult.SERVICE_MISSING:
@@ -367,10 +379,15 @@ public class GoogleApiClientWrapper implements ApiClient {
                 return;
             }
 
-            Ln.d("resolving connection failure");
+            Ln.v("resolving connection failure");
             mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(mActivity, mGoogleApiClient,
                     result, mSignInRequestCode, mErrorMessage);
-            Ln.d("has resolution = " + mResolvingConnectionFailure);
+            Ln.v("has resolution = " + mResolvingConnectionFailure);
         }
+    }
+
+    @Override
+    public String toString() {
+        return GoogleApiClientWrapper.class.getSimpleName() + "#" + (hashCode() % 1000);
     }
 }

@@ -64,7 +64,7 @@ public class ScreenManager {
 
     public void dismissTutorial() {
         if (mTutView == null) {
-            d("no tutorial view to remove");
+            v("no tutorial view to remove");
             return;
         }
 

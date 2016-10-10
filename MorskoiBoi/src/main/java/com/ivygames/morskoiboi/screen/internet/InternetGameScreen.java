@@ -8,27 +8,26 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
-import com.ivygames.common.multiplayer.ScreenInvitationListener;
-import com.ivygames.common.multiplayer.MultiplayerManager;
-import com.ivygames.common.multiplayer.MultiplayerListener;
+import com.ivygames.common.multiplayer.GameCreationListener;
+import com.ivygames.common.multiplayer.InvitationToShowListener;
+import com.ivygames.common.multiplayer.MultiplayerSession;
+import com.ivygames.common.multiplayer.QueuedRtmSender;
+import com.ivygames.common.multiplayer.RealTimeMultiplayer;
+import com.ivygames.common.multiplayer.RoomConnectionErrorListener;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
-import com.ivygames.morskoiboi.rt.WaitingRoomListener;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
 import com.ivygames.morskoiboi.screen.BackToSelectGameCommand;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -39,6 +38,7 @@ import org.commons.logger.Ln;
 
 public class InternetGameScreen extends BattleshipScreen implements BackPressListener {
     private static final String TAG = "INTERNET_GAME";
+
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private InternetGame mInternetGame;
@@ -51,19 +51,67 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
-    private final Rules mRules = Dependencies.getRules();
-    @NonNull
-    private final Placement mPlacement = PlacementFactory.getAlgorithm();
-    @NonNull
-    private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
+    private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
 
     private Session mSession;
     private InvitationListener mInvitationListener;
-    private InternetOpponent mOpponent;
 
     public InternetGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mMultiplayer.setListener(mMultiplayerListener);
+        mMultiplayer.setGameCreationListener(new GameCreationListener() {
+
+            @Override
+            public void gameStarted() {
+                setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame, mSession));
+            }
+
+            @Override
+            public void gameAborted() {
+                hideWaitingScreen();
+            }
+        });
+
+        createMultiplayerSession();
+    }
+
+    @NonNull
+    private BackToSelectGameCommand newBackToSelectGameCommand() {
+        return new BackToSelectGameCommand(parent());
+    }
+
+    private MultiplayerSession createMultiplayerSession() {
+        MultiplayerSession session = new MultiplayerSession(new RoomConnectionErrorListenerImpl());
+        mInternetGame = new InternetGame(mMultiplayer);
+
+        QueuedRtmSender rtmSender = new QueuedRtmSender(mApiClient);
+        session.setRtmSender(rtmSender);
+
+        InternetOpponent opponent = new InternetOpponent(rtmSender, getString(R.string.player));
+        session.setRtmListener(opponent);
+
+        PlayerOpponent player = newPlayer();
+        mSession = new Session(player, opponent);
+        Session.bindOpponents(player, opponent);
+
+        return session;
+    }
+
+    @NonNull
+    private PlayerOpponent newPlayer() {
+        PlayerOpponent player = new PlayerOpponent(getPlayerName(), PlacementFactory.getAlgorithm(),
+                Dependencies.getRules());
+        player.setChatListener(parent());
+        return player;
+    }
+
+    @NonNull
+    private String getPlayerName() {
+        String playerName = mSettings.getPlayerName();
+        if (TextUtils.isEmpty(playerName)) {
+            playerName = getString(R.string.player);
+            Ln.i("player name is empty - replaced by " + playerName);
+        }
+        return playerName;
     }
 
     @NonNull
@@ -73,7 +121,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mLayout.setPlayerName(mSettings.getPlayerName());
         mLayout.setScreenActions(mInternetGameLayoutListener);
 
-        mInvitationListener = new ScreenInvitationListener(mMultiplayer, mLayout);
+        mInvitationListener = new InvitationToShowListener(mMultiplayer, mLayout);
         Ln.d(this + " screen created");
         return mLayout;
     }
@@ -102,32 +150,14 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         mKeyLock = false;
     }
 
-    private void createGame() {
-        mInternetGame = new InternetGame(mApiClient, mWaitingRoomListener);
-        mOpponent = new InternetOpponent(mInternetGame, getString(R.string.player));
-        PlayerOpponent player = new PlayerOpponent(fetchPlayerName(), mPlacement, mRules);
-        player.setChatListener(parent());
-        mSession = new Session(player, mOpponent);
-        Session.bindOpponents(player, mOpponent);
-    }
-
-    @NonNull
-    private String fetchPlayerName() {
-        String playerName = mSettings.getPlayerName();
-        if (TextUtils.isEmpty(playerName)) {
-            playerName = getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + playerName);
-        }
-        return playerName;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required - returning to select game screen");
             hideWaitingScreen();
-            new BackToSelectGameCommand(parent(), mInternetGame).run();
             mApiClient.disconnect();
+            // TODO: missing UI test
+            SimpleActionDialog.create(R.string.error, newBackToSelectGameCommand()).show(mFm, DIALOG);
             return;
         }
 
@@ -146,36 +176,8 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             return;
         }
 
-        new BackToSelectGameCommand(parent(), mInternetGame).run();
+        newBackToSelectGameCommand().run();
     }
-
-    @NonNull
-    private final WaitingRoomListener mWaitingRoomListener = new WaitingRoomListener() {
-        @Override
-        public void onWaitingForOpponent(@NonNull Room room) {
-            mMultiplayer.showWaitingRoom(BattleshipActivity.RC_WAITING_ROOM, room);
-        }
-
-        @Override
-        public void onError(int statusCode) {
-            hideWaitingScreen();
-            Ln.w("error status code: " + GamesStatusCodes.getStatusString(statusCode));
-
-            if (statusCode == GamesStatusCodes.STATUS_REAL_TIME_INACTIVE_ROOM) {
-                FragmentAlertDialog.showNote(mFm, DIALOG, R.string.match_canceled);
-            } else if (statusCode == GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_FAILED) {
-                FragmentAlertDialog.showNote(mFm, DIALOG, R.string.network_error);
-            } else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
-                mApiClient.disconnect();
-                SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
-            } else {
-                // STATUS_REAL_TIME_CONNECTION_FAILED
-                // STATUS_INTERNAL_ERROR
-                ExceptionEvent.send("internet_game", GamesStatusCodes.getStatusString(statusCode));
-                SimpleActionDialog.create(R.string.error, new BackToSelectGameCommand(parent(), mInternetGame)).show(mFm, DIALOG);
-            }
-        }
-    };
 
     @NonNull
     private final InternetGameLayoutListener mInternetGameLayoutListener = new InternetGameLayoutListener() {
@@ -189,10 +191,9 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
             mKeyLock = true;
             UiEvent.send("invitePlayer");
-            createGame();
 
             showWaitingScreen();
-            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, mInternetGame, mOpponent);
+            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, createMultiplayerSession());
         }
 
         @Override
@@ -205,10 +206,9 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             mKeyLock = true;
             UiEvent.send("viewInvitations");
             Ln.d("requesting invitations screen...");
-            createGame();
 
             showWaitingScreen();
-            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, mInternetGame, mOpponent);
+            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, createMultiplayerSession());
         }
 
         @Override
@@ -220,32 +220,10 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
             mKeyLock = true;
             UiEvent.send("quickGame");
-            createGame();
 
             showWaitingScreen();
-            mMultiplayer.quickGame(mInternetGame, mOpponent);
+            mMultiplayer.quickGame(createMultiplayerSession());
         }
-    };
-
-    @NonNull
-    private final MultiplayerListener mMultiplayerListener = new MultiplayerListener() {
-
-        @Override
-        public void playerLeft() {
-            mInternetGame.finish();
-            hideWaitingScreen();
-        }
-
-        @Override
-        public void gameStarted() {
-            setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame, mSession));
-        }
-
-        @Override
-        public void invitationCanceled() {
-            hideWaitingScreen();
-        }
-
     };
 
     private void showWaitingScreen() {
@@ -274,4 +252,28 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         return TAG + debugSuffix();
     }
 
+    private class RoomConnectionErrorListenerImpl implements RoomConnectionErrorListener {
+
+        @Override
+        public void onError(int statusCode) {
+            ExceptionEvent.send("room_connection_error_" + statusCode);
+
+            hideWaitingScreen();
+            Ln.w("error: " + GamesStatusCodes.getStatusString(statusCode));
+
+            if (statusCode == GamesStatusCodes.STATUS_REAL_TIME_INACTIVE_ROOM) {
+                FragmentAlertDialog.showNote(mFm, DIALOG, R.string.match_canceled);
+            } else if (statusCode == GamesStatusCodes.STATUS_NETWORK_ERROR_OPERATION_FAILED) {
+                FragmentAlertDialog.showNote(mFm, DIALOG, R.string.network_error);
+            } else if (statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
+                mApiClient.disconnect();
+                SimpleActionDialog.create(R.string.error, newBackToSelectGameCommand()).show(mFm, DIALOG);
+            } else {
+                // STATUS_REAL_TIME_CONNECTION_FAILED
+                // STATUS_INTERNAL_ERROR
+                ExceptionEvent.send("internet_game", GamesStatusCodes.getStatusString(statusCode));
+                SimpleActionDialog.create(R.string.error, newBackToSelectGameCommand()).show(mFm, DIALOG);
+            }
+        }
+    }
 }

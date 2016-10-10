@@ -45,7 +45,7 @@ public class BaseGeometryProcessor {
 
         int smallestWidth = calcSmallestWidth(w, h, hPadding, vPadding);
         mCellSizePx = smallestWidth / mBoardSize;
-        Ln.d("cell size= " + mCellSizePx + "; w=" + w + "; h=" + h);
+        Ln.v("cell size= " + mCellSizePx + "; w=" + w + "; h=" + h);
         int boardSizePx = mCellSizePx * mBoardSize;
 
         mBoardRect = calculateBoardRect(w, h, boardSizePx);

@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class LostScreen_OpponentLeftDialogTest extends LostScreen_ {
     @Test
     public void WhenEnemyLeaves__OpponentLeftDialogDisplayed() {
         showScreen();
-        ((LostScreen) screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        ((LostScreen) screen()).onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
         checkDisplayed(opponentLeftDialog());
     }
 

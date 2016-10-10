@@ -9,7 +9,6 @@ import com.ivygames.common.multiplayer.RtmSender;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.multiplayer.AbstractOnlineOpponent;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 public class InternetOpponent extends AbstractOnlineOpponent implements RealTimeMessageReceivedListener {
@@ -17,9 +16,9 @@ public class InternetOpponent extends AbstractOnlineOpponent implements RealTime
     @NonNull
     private final RtmSender mRtmSender;
 
-    public InternetOpponent(@NonNull RtmSender rtmSender, @NonNull String defaultName) {
-        super(defaultName);
-        mRtmSender = Validate.notNull(rtmSender);
+    public InternetOpponent(@NonNull RtmSender rtmSender, @NonNull String name) {
+        super(name);
+        mRtmSender = rtmSender;
         Ln.v("new internet opponent created");
     }
 
@@ -33,22 +32,18 @@ public class InternetOpponent extends AbstractOnlineOpponent implements RealTime
     }
 
     @Override
-    public void sendRtm(@NonNull String message) {
+    public void send(@NonNull String message) {
         mRtmSender.sendRtm(message);
     }
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
-        sendOpponentName();
-    }
-
-    private void sendOpponentName() {
         String name = mOpponent.getName();
         if (TextUtils.isEmpty(name)) {
             name = "Player"; // TODO: think about better solution
         }
-        sendRtm(NAME + name);
+        send(NAME + name);
     }
 
 }

@@ -9,7 +9,6 @@ import android.support.annotation.RawRes;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ActivityScreen;
-import com.ivygames.common.ui.Screen;
 import com.ivygames.morskoiboi.BattleshipActivity;
 
 import org.commons.logger.Ln;
@@ -25,7 +24,6 @@ public abstract class BattleshipScreen extends ActivityScreen {
         super(parent);
         mFm = getFragmentManager();
         UiEvent.screenView(this.getClass().getSimpleName());
-        Ln.v(this + " created");
     }
 
     protected final void setScreen(BattleshipScreen screen) {

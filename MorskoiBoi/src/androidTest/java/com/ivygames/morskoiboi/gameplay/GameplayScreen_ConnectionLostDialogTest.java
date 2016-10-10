@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.gameplay;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class GameplayScreen_ConnectionLostDialogTest extends GameplayScreen_ {
     public void WhenConnectionLostAndGameHasFinished__DialogNotDisplayed() {
         showScreen();
         when(game.hasFinished()).thenReturn(true);
-        ((GameplayScreen) screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
+        ((GameplayScreen) screen()).onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
         checkDoesNotExist(connectionLostDialog());
     }
 
@@ -23,7 +23,7 @@ public class GameplayScreen_ConnectionLostDialogTest extends GameplayScreen_ {
         // TODO: check this strange condition
         showScreen();
         when(game.hasFinished()).thenReturn(false);
-        ((GameplayScreen) screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
+        ((GameplayScreen) screen()).onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
         checkDisplayed(connectionLostDialog());
     }
 

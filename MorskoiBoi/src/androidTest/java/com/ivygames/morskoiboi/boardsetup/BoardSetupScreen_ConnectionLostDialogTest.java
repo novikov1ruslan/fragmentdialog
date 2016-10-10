@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.boardsetup;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class BoardSetupScreen_ConnectionLostDialogTest extends BoardSetupScreen_
     @Test
     public void WhenConnectionLost__DialogDisplayed() {
         showScreen();
-        ((BoardSetupScreen) screen()).onEventMainThread(GameEvent.CONNECTION_LOST);
+        ((BoardSetupScreen) screen()).onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
         checkDisplayed(connectionLostDialog());
     }
 

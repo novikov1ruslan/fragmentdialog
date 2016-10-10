@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.multiplayer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.multiplayer.RtmSender;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.Opponent;
@@ -11,7 +10,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
+public abstract class AbstractOnlineOpponent implements Opponent {
     protected Opponent mOpponent;
 
     @NonNull
@@ -29,6 +28,8 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
     protected AbstractOnlineOpponent(@NonNull String defaultName) {
         mName = defaultName;
     }
+
+    public abstract void send(@NonNull String message);
 
     protected final void onRealTimeMessageReceived(String message) {
         char opCode = message.charAt(0);
@@ -68,23 +69,22 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 
     @Override
     public void onShotResult(@NonNull ShotResult shotResult) {
-        sendRtm(SHOOT_RESULT + shotResult.toJson().toString());
+        send(SHOOT_RESULT + shotResult.toJson().toString());
     }
 
     @Override
     public void onShotAt(@NonNull Vector2 aim) {
-        sendRtm(SHOOT + aim.toJson().toString());
+        send(SHOOT + aim.toJson().toString());
     }
 
     @Override
     public void go() {
-        sendRtm(String.valueOf(GO));
+        send(String.valueOf(GO));
     }
 
     @Override
     public void onEnemyBid(int bid) {
-        // player is ready
-        sendRtm(String.valueOf(BID) + bid);
+        send(String.valueOf(BID) + bid);
     }
 
     @Override
@@ -94,17 +94,17 @@ public abstract class AbstractOnlineOpponent implements Opponent, RtmSender {
 
     @Override
     public void onLost(@NonNull Board board) {
-        sendRtm(WIN + BoardSerialization.toJson(board).toString());
+        send(WIN + BoardSerialization.toJson(board).toString());
     }
 
     @Override
     public void setOpponentVersion(int ver) {
-        sendRtm(VERSION + String.valueOf(ver));
+        send(VERSION + String.valueOf(ver));
     }
 
     @Override
     public void onNewMessage(@NonNull String text) {
-        sendRtm(MESSAGE + text);
+        send(MESSAGE + text);
     }
 
     @Override

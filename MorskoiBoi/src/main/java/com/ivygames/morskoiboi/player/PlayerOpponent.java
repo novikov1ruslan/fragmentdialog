@@ -76,7 +76,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     public void setBoard(Board board) {
-        Ln.d(mName + ": my board is: " + board);
+        Ln.v(mName + ": my board is: " + board);
         mMyBoard = board;
         if (!board.getShips().isEmpty()) {
             debug_board = board;
@@ -95,10 +95,10 @@ public class PlayerOpponent implements Opponent {
         mPlayerReady = true;
 
         if (mOpponentReady && opponentStarts()) {
-            Ln.d(mName + ": opponent is ready and it is his turn");
+            Ln.d(mName + ": my bid: " + bid + ", opponent is ready and it is his turn");
             mOpponent.go();
         } else {
-            Ln.d(mName + ": opponent is not ready or has higher bid - sending him my bid... " + mMyBid);
+            Ln.d(mName + ": opponent is not ready or has higher bid - sending him my bid... " + bid);
             mOpponent.onEnemyBid(mMyBid);
         }
     }
@@ -131,13 +131,13 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": callback set, opponent ready = " + mOpponentReady);
 
         if (mOpponentReady) {
-            mCallback.opponentReady();
+            callback.opponentReady();
 
             if (mPlayerReady) {
                 if (opponentStarts()) {
-                    mCallback.onOpponentTurn();
+                    callback.onOpponentTurn();
                 } else {
-                    mCallback.onPlayersTurn();
+                    callback.onPlayersTurn();
                 }
             }
         }
@@ -281,7 +281,7 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         mOpponentVersion = ver;
-        Ln.v(mName + ": opponent's protocol version: v" + ver);
+        Ln.d(mName + ": opponent's protocol version: v" + ver);
     }
 
     public boolean isOpponentReady() {

@@ -19,7 +19,7 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
     }
 
     @Override
-    public void sendRtm(@NonNull String message) {
+    public void send(@NonNull String message) {
         Ln.v("sending: [" + message + "]");
         message = message + '|';
         mSender.write(message);
@@ -29,7 +29,7 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
     public void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
         String message = NAME + mOpponent.getName();
-        sendRtm(message);
+        send(message);
     }
 
     @Override

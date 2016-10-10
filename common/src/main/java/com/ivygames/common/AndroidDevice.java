@@ -9,14 +9,11 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.ivygames.common.billing.PurchaseUtils;
-
-import org.commons.logger.Ln;
 
 import java.util.List;
 
@@ -92,5 +89,10 @@ public class AndroidDevice {
 
     public boolean bluetoothEnabled() {
         return BluetoothAdapter.getDefaultAdapter().isEnabled();
+    }
+
+    @Override
+    public String toString() {
+        return AndroidDevice.class.getSimpleName() + "#" + (hashCode() % 1000);
     }
 }

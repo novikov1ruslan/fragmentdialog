@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.multiplayer.MultiplayerManager;
+import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
@@ -14,7 +14,7 @@ import org.commons.logger.Ln;
 public class Dependencies {
 
     private static ApiClient sApiClient;
-    private static MultiplayerManager sMultiplayer;
+    private static RealTimeMultiplayer sMultiplayer;
     private static AchievementsManager sAchievementsManager;
     private static ProgressManager sProgressManager;
     private static AndroidDevice sAndroidDevice;
@@ -24,7 +24,7 @@ public class Dependencies {
 
     static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
-        Ln.d(sApiClient);
+        Ln.i(sApiClient);
     }
 
     public static ApiClient getApiClient() {
@@ -32,18 +32,18 @@ public class Dependencies {
     }
 
 
-    static void inject(@NonNull MultiplayerManager invitationManager) {
-        sMultiplayer = invitationManager;
-        Ln.d(sMultiplayer);
+    static void inject(@NonNull RealTimeMultiplayer multiplayer) {
+        sMultiplayer = multiplayer;
+        Ln.i(sMultiplayer);
     }
 
-    public static MultiplayerManager getMultiplayer() {
+    public static RealTimeMultiplayer getMultiplayer() {
         return sMultiplayer;
     }
 
     static void inject(@NonNull AchievementsManager achievementsManager) {
         sAchievementsManager = achievementsManager;
-        Ln.d(sAchievementsManager);
+        Ln.i(sAchievementsManager);
     }
 
     public static AchievementsManager getAchievementsManager() {
@@ -52,7 +52,7 @@ public class Dependencies {
 
     static void inject(@NonNull ProgressManager progressManager) {
         sProgressManager = progressManager;
-        Ln.d(sProgressManager);
+        Ln.i(sProgressManager);
     }
 
     public static ProgressManager getProgressManager() {
@@ -61,7 +61,7 @@ public class Dependencies {
 
     public static void inject(@NonNull AndroidDevice androidDevice) {
         sAndroidDevice = androidDevice;
-        Ln.d(sAndroidDevice);
+        Ln.i(sAndroidDevice);
     }
 
     public static AndroidDevice getDevice() {
@@ -70,7 +70,7 @@ public class Dependencies {
 
     public static void inject(@NonNull GameSettings settings) {
         sGameSettings = settings;
-        Ln.d(sGameSettings);
+        Ln.i(sGameSettings);
     }
 
     public static GameSettings getSettings() {
@@ -79,7 +79,7 @@ public class Dependencies {
 
     public static void inject(@NonNull Rules rules) {
         sRules = rules;
-        Ln.d(sRules);
+        Ln.i(sRules);
     }
 
     public static Rules getRules() {
@@ -88,7 +88,7 @@ public class Dependencies {
 
     public static void inject(@NonNull AdProvider adProvider) {
         sAdProvider = adProvider;
-        Ln.d(sAdProvider);
+        Ln.i(sAdProvider);
     }
 
     public static AdProvider getAdProvider() {

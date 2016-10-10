@@ -171,4 +171,9 @@ public class AchievementsManager {
     public void loadAchievements() {
         mApi.loadAchievements();
     }
+
+    @Override
+    public String toString() {
+        return AchievementsManager.class.getSimpleName() + "#" + (hashCode() % 1000);
+    }
 }

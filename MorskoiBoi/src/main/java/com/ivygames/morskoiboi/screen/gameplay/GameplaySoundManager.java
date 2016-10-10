@@ -61,7 +61,7 @@ public class GameplaySoundManager {
         } catch (IOException ioe) {
             Ln.w(ioe);
         }
-        Ln.d("sounds loaded");
+        Ln.v("sounds loaded");
     }
 
 //    public void autoPause() {

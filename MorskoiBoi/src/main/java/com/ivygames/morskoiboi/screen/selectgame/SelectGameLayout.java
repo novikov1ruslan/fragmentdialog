@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ivygames.common.invitations.InvitationScreen;
+import com.ivygames.common.invitations.InvitationShowListener;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
@@ -14,7 +14,7 @@ import com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout;
 
 import org.commons.logger.Ln;
 
-public class SelectGameLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationScreen {
+public class SelectGameLayout extends NotepadRelativeLayout implements View.OnClickListener, InvitationShowListener {
     public interface SelectGameActions {
 
         void vsAndroid();

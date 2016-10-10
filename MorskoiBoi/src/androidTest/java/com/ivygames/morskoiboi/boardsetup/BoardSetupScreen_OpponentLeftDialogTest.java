@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.boardsetup;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class BoardSetupScreen_OpponentLeftDialogTest extends BoardSetupScreen_ {
     @Test
     public void WhenEnemyLeaves__OpponentLeftDialogDisplayed() {
         showScreen();
-        ((BoardSetupScreen) screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        ((BoardSetupScreen) screen()).onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
         checkDisplayed(opponentLeftDialog());
     }
 

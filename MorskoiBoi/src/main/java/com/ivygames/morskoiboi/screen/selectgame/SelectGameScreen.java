@@ -17,8 +17,8 @@ import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.multiplayer.MultiplayerManager;
-import com.ivygames.common.multiplayer.ScreenInvitationListener;
+import com.ivygames.common.multiplayer.InvitationToShowListener;
+import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -58,7 +58,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
-    private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
+    private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
     @NonNull
@@ -68,7 +68,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final AdProvider mAdProvider = Dependencies.getAdProvider();
 
-    private ScreenInvitationListener mScreenInvitationListener;
+    private InvitationToShowListener mScreenInvitationListener;
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
 
@@ -93,7 +93,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         mLayout.setRank(rank);
         mTutView = mLayout.setTutView(inflate(R.layout.select_game_tut));
 
-        mScreenInvitationListener = new ScreenInvitationListener(mMultiplayer, mLayout);
+        mScreenInvitationListener = new InvitationToShowListener(mMultiplayer, mLayout);
 
         Ln.d(this + " screen created, rank = " + rank);
         return mLayout;
@@ -133,7 +133,9 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         super.onPause();
         Ln.d(this + " screen partially hidden - persisting player name");
         parent().dismissTutorial();
-        mSettings.hideProgressHelp();
+        if (mSettings.showProgressHelp()) {
+            mSettings.hideProgressHelp();
+        }
         mSettings.setPlayerName(mLayout.getPlayerName());
     }
 

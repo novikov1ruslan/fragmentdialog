@@ -117,4 +117,9 @@ public class ProgressManager {
 
         return ProgressUtils.parseProgress(data);
     }
+
+    @Override
+    public String toString() {
+        return ProgressManager.class.getSimpleName() + "#" + (hashCode() % 1000);
+    }
 }

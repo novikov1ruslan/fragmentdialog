@@ -1,8 +1,10 @@
 package com.ivygames.morskoiboi.model;
 
+import com.ivygames.common.Finishable;
+
 import org.commons.logger.Ln;
 
-public abstract class Game {
+public abstract class Game implements Finishable {
     public enum Type {
         VS_ANDROID, BLUETOOTH, INTERNET
     }
@@ -14,6 +16,7 @@ public abstract class Game {
 
     public abstract Type getType();
 
+    @Override
     public boolean finish() {
         if (mFinished) {
             Ln.w(getType() + " already finished");
@@ -23,6 +26,7 @@ public abstract class Game {
         return false;
     }
 
+    @Override
     public boolean hasFinished() {
         return mFinished;
     }

@@ -5,10 +5,8 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.internet.InternetGameScreen;
-import com.ivygames.common.multiplayer.MultiplayerManager;
 
 import org.hamcrest.Matcher;
-import org.junit.Before;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;

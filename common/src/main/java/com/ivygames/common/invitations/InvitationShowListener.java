@@ -1,6 +1,6 @@
 package com.ivygames.common.invitations;
 
-public interface InvitationScreen {
+public interface InvitationShowListener {
     void hideInvitation();
 
     void showInvitation();

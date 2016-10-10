@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 
 import org.commons.logger.Ln;
 
@@ -74,7 +74,7 @@ public final class ConnectThread extends Thread {
                 Ln.d("cancelled while connected");
             } else {
                 Ln.d("connection lost: " + ioe.getMessage());
-                EventBus.getDefault().postSticky(GameEvent.CONNECTION_LOST);
+                EventBus.getDefault().postSticky(MultiplayerEvent.CONNECTION_LOST);
             }
         } finally {
             BluetoothUtils.close(mSocket);

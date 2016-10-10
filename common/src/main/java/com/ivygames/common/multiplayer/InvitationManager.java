@@ -50,7 +50,7 @@ class InvitationManager {
 
         mApiClient.registerInvitationListener(new OnInvitationReceivedListenerImpl());
 
-        Ln.d("loading invitations...");
+        Ln.v("loading invitations...");
         mApiClient.loadInvitations(new InvitationLoadListenerImpl());
     }
 
@@ -89,6 +89,7 @@ class InvitationManager {
             mIncomingInvitationIds.remove(invitationId);
             notifyUpdated();
         }
+
     }
 
     private class InvitationLoadListenerImpl implements InvitationLoadListener {

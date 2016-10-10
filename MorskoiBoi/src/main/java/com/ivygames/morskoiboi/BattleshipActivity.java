@@ -24,7 +24,7 @@ import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.googleapi.ApiConnectionListener;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationListener;
-import com.ivygames.common.multiplayer.MultiplayerManager;
+import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ScreenManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
@@ -93,7 +93,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
 
-    private MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
+    private RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
 
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();
@@ -142,10 +142,10 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         AndroidDevice device = Dependencies.getDevice();
 
         if (device.isTablet()) {
-            Ln.d("device is tablet");
+            Ln.v("device is tablet");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
-            Ln.d("device is handset");
+            Ln.v("device is handset");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -258,7 +258,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
             Ln.v("recreating");
             return;
         }
-        Ln.d("UI partially visible - keep screen On");
         keepScreenOn();
 
         mScreenManager.onStart();
@@ -274,7 +273,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
             return;
         }
 
-        Ln.v("resuming");
         mScreenManager.onResume();
 
         mVolumeControlStream = getVolumeControlStream();
@@ -287,7 +285,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
 //        AppEventsLogger.activateApp(this); // #FB
 
         if (mApiClient.isConnected()) {
-            Ln.d("API is connected - register invitation listener");
+            Ln.v("connected: load invitations");
             mMultiplayer.loadInvitations();
         }
     }
@@ -299,7 +297,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
             Ln.v("recreating");
             return;
         }
-        Ln.v("pausing");
+
         setVolumeControlStream(mVolumeControlStream);
         mAdProvider.pause();
 

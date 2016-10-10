@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.gameplay;
 
-import com.ivygames.morskoiboi.model.GameEvent;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class GameplayScreen_OpponentLeftDialogTest extends GameplayScreen_ {
     public void WhenOpponentLeftAndOpponentNotReady__OpponentLeftDialogDisplayed() {
         showScreen();
         when(player.isOpponentReady()).thenReturn(false);
-        ((GameplayScreen)screen()).onEventMainThread(GameEvent.OPPONENT_LEFT);
+        ((GameplayScreen)screen()).onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
         checkDisplayed(opponentLeftDialog());
     }
 

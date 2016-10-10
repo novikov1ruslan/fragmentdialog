@@ -138,4 +138,9 @@ public class RussianRules extends AbstractRules {
         }
         return cell;
     }
+
+    @Override
+    public String toString() {
+        return RussianRules.class.getSimpleName() + "#" + (hashCode() % 1000);
+    }
 }

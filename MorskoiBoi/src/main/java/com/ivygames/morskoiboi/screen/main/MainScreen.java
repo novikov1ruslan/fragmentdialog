@@ -15,8 +15,8 @@ import com.ivygames.common.Sharing;
 import com.ivygames.common.SignInListener;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
-import com.ivygames.common.multiplayer.MultiplayerManager;
-import com.ivygames.common.multiplayer.ScreenInvitationListener;
+import com.ivygames.common.multiplayer.InvitationToShowListener;
+import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -45,12 +45,12 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     private final GameSettings mSettings = Dependencies.getSettings();
 
     @NonNull
-    private final MultiplayerManager mMultiplayer = Dependencies.getMultiplayer();
+    private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
 
     @NonNull
     private final AndroidDevice mDevice = Dependencies.getDevice();
 
-    private ScreenInvitationListener mScreenInvitationListener;
+    private InvitationToShowListener mScreenInvitationListener;
 
     public MainScreen(BattleshipActivity parent) {
         super(parent);
@@ -69,7 +69,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             showRateDialog();
         }
 
-        mScreenInvitationListener = new ScreenInvitationListener(mMultiplayer, mLayout);
+        mScreenInvitationListener = new InvitationToShowListener(mMultiplayer, mLayout);
 
         return mLayout;
     }

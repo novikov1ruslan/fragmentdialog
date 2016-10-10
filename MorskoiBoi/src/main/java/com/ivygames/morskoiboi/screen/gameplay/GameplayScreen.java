@@ -21,6 +21,7 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.game.Bidder;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.common.timer.TurnListener;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.common.ui.BackPressListener;
@@ -37,7 +38,6 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Game.Type;
-import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
@@ -55,7 +55,6 @@ import org.commons.logger.Ln;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
@@ -142,7 +141,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
         mChatAdapter = new ChatAdapter(getLayoutInflater());
         mTimerController.setListener(mTurnTimerListener);
-        Ln.d("game data prepared");
     }
 
     @NonNull
@@ -277,8 +275,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     @Override
-    public void onEventMainThread(GameEvent event) {
-        if (event == GameEvent.OPPONENT_LEFT) {
+    public void onConnectionLost(@NonNull MultiplayerEvent event) {
+        if (event == MultiplayerEvent.OPPONENT_LEFT) {
             mTimerController.stop();
             mParent.stopService(mMatchStatusIntent);
             if (mPlayer.isOpponentReady()) {
@@ -286,17 +284,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 AnalyticsEvent.send("opponent_surrendered");
                 showOpponentSurrenderedDialog(mPlayerPrivateBoard.getShips());
             } else {
-                super.onEventMainThread(event);
+                super.onConnectionLost(event);
             }
-        } else if (event == GameEvent.CONNECTION_LOST) {
-            EventBus.getDefault().removeAllStickyEvents();
+        } else if (event == MultiplayerEvent.CONNECTION_LOST) {
             mTimerController.stop();
             mParent.stopService(mMatchStatusIntent);
-            if (mGame.hasFinished()) {
-                Ln.d(event + " received, but the game has already finished - skipping this event");
-            } else {
-                super.onEventMainThread(event);
-            }
+            super.onConnectionLost(event);
         }
 
         stopDetectingShotTimeout();

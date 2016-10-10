@@ -11,7 +11,7 @@ import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.analytics.GoogleAnalyticsInitializer;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
-import com.ivygames.common.multiplayer.MultiplayerManager;
+import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
@@ -54,7 +54,8 @@ class ApplicationInitializer {
                 BattleshipActivity.SERVICE_RESOLVE);
         ProgressManager progressManager = new ProgressManager(apiClient, settings);
         AchievementsManager achievementsManager = new AchievementsManager(apiClient, settings);
-        MultiplayerManager multiplayerManager = new MultiplayerManager(apiClient);
+        MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
+                BattleshipActivity.RC_WAITING_ROOM);
 
         Dependencies.inject(apiClient);
         Dependencies.inject(multiplayerManager);

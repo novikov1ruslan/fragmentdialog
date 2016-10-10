@@ -22,7 +22,6 @@ import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.GameEvent;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -97,7 +96,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
         if (mGame.getType() == Game.Type.INTERNET) {
-            Ln.d("initializing timeout: " + BOARD_SETUP_TIMEOUT);
+            Ln.d("initial timeout: " + BOARD_SETUP_TIMEOUT);
             mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
         }
 
