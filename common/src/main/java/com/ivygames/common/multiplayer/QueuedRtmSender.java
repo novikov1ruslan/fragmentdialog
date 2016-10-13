@@ -121,7 +121,7 @@ public class QueuedRtmSender implements RtmSender {
             Ln.d("sender stopped - not sending");
         } else {
             mLastSentToken = mApiClient.sendReliableMessage(mSendCallback, messageData, roomId, recipientId);
-            Ln.v(mLastSentToken + " sent: [" + message + "], to " + recipientId + ", " + messageData.length + " bytes, messages left = " + mMessages.size());
+            Ln.v(mLastSentToken + " sending: [" + message + "], to " + recipientId + ", " + messageData.length + " bytes, messages left = " + mMessages.size());
         }
     }
 

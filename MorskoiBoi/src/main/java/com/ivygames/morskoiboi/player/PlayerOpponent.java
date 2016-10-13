@@ -33,13 +33,6 @@ public class PlayerOpponent implements Opponent {
     private static final int NOT_READY = -1;
 
     @NonNull
-    private final String mName;
-    @NonNull
-    private final Placement mPlacement;
-    @NonNull
-    private final Rules mRules;
-
-    @NonNull
     private PlayerCallback mCallback = new DummyCallback();
     @NonNull
     private Board mMyBoard = new Board();
@@ -54,6 +47,13 @@ public class PlayerOpponent implements Opponent {
     private int mOpponentVersion;
     protected Opponent mOpponent;
     private boolean mOpponentReady;
+
+    @NonNull
+    private final String mName;
+    @NonNull
+    private final Placement mPlacement;
+    @NonNull
+    private final Rules mRules;
 
     public PlayerOpponent(@NonNull String name,
                           @NonNull Placement placement,
@@ -72,7 +72,7 @@ public class PlayerOpponent implements Opponent {
         mEnemyBid = NOT_READY;
         mOpponentReady = false;
         mPlayerReady = false;
-        mOpponentVersion = 0;
+//        mOpponentVersion = 0;
     }
 
     public void setBoard(Board board) {
@@ -185,7 +185,7 @@ public class PlayerOpponent implements Opponent {
                     mOpponent.onLost(mMyBoard);
                 } else {
                     Ln.d(this + ": opponent version doesn't support board reveal = " + mOpponentVersion);
-                    mCallback.onLost(null);
+//                    mCallback.onLost(null); // FIXME: lost screen shown when I won
                 }
 
                 reset();
@@ -234,7 +234,11 @@ public class PlayerOpponent implements Opponent {
         if (result.cell.isHit()) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
                 Ln.d(mName + ": I'm defeated, no turn to pass");
-                reset();
+                if (!versionSupportsBoardReveal()) {
+                    Ln.d(this + ": opponent version doesn't support board reveal = " + mOpponentVersion);
+                    reset();
+                    mCallback.onWin();
+                }
             } else {
                 Ln.d(mName + ": I'm hit - " + mOpponent + " continues");
                 mOpponent.go();
@@ -273,6 +277,7 @@ public class PlayerOpponent implements Opponent {
             reportException("lost while not defeated");
         }
 
+        reset();
         mCallback.onLost(board);
     }
 
