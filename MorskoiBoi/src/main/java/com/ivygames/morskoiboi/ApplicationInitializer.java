@@ -14,7 +14,6 @@ import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.player.PlayerFactoryImpl;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.variant.FleetBitmaps;
@@ -45,8 +44,7 @@ class ApplicationInitializer {
         GameSettings settings = new GameSettings(application);
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules();
-        Placement algorithm = new Placement(new Random(System.currentTimeMillis()), rules);
-        PlacementFactory.setPlacementAlgorithm(algorithm);
+        Placement placement = new Placement(new Random(System.currentTimeMillis()), rules);
         BotFactory.setAlgorithm(new RussianBot(null));
         AndroidDevice device = new AndroidDevice(application);
 
@@ -59,6 +57,7 @@ class ApplicationInitializer {
                 BattleshipActivity.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactoryImpl();
 
+        Dependencies.inject(placement);
         Dependencies.inject(apiClient);
         Dependencies.inject(multiplayerManager);
         Dependencies.inject(rules);

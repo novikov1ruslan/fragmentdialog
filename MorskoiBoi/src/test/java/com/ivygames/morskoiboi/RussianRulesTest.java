@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
@@ -44,8 +43,8 @@ public class RussianRulesTest {
         initMocks(this);
         RussianRules rules = new RussianRules();
         Dependencies.inject(rules);
-        PlacementFactory.setPlacementAlgorithm(new Placement(new Random(1), rules));
-        placement = PlacementFactory.getAlgorithm();
+        Dependencies.inject(new Placement(new Random(1), rules));
+        placement = Dependencies.getPlacement();
         mRules = Dependencies.getRules();
     }
 

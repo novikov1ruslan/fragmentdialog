@@ -19,7 +19,6 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
@@ -53,7 +52,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     @NonNull
     private final Rules mRules = Dependencies.getRules();
     @NonNull
-    private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    private final Placement mPlacement = Dependencies.getPlacement();
 
     private BoardSetupLayout mLayout;
     private View mTutView;

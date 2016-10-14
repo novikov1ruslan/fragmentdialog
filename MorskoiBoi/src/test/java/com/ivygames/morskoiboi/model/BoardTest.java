@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.model;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -43,9 +42,8 @@ public class BoardTest {
 		when(random.nextInt(anyInt())).thenReturn(0);
 		Rules rules = new RussianRules();
 		Dependencies.inject(rules);
-		Placement placement = new Placement(random, rules);
-		PlacementFactory.setPlacementAlgorithm(placement);
-		mPlacement = PlacementFactory.getAlgorithm();
+		Dependencies.inject(new Placement(random, rules));
+		mPlacement = Dependencies.getPlacement();
 	}
 
 	@Test

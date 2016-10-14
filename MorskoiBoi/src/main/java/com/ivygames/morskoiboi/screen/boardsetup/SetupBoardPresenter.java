@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -16,7 +16,7 @@ import java.util.PriorityQueue;
 public class SetupBoardPresenter {
 
     @NonNull
-    private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    private final Placement mPlacement = Dependencies.getPlacement();
     /**
      * ship displayed at the top of the screen (selection area)
      */

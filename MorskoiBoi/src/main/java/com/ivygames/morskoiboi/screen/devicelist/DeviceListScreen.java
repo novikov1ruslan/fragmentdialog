@@ -20,7 +20,6 @@ import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
@@ -53,7 +52,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     @NonNull
     private final Rules mRules = Dependencies.getRules();
     @NonNull
-    private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    private final Placement mPlacement = Dependencies.getPlacement();
     @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 

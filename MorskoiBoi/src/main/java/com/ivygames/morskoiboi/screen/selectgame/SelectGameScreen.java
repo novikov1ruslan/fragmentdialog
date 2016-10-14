@@ -31,7 +31,6 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.player.AiOpponent;
@@ -71,7 +70,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private InvitationToShowListener mScreenInvitationListener;
     @NonNull
-    private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    private final Placement mPlacement = Dependencies.getPlacement();
     @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 

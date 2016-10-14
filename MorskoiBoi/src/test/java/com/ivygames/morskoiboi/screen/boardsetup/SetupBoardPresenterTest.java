@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.ai.PlacementFactory;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -40,7 +39,7 @@ public class SetupBoardPresenterTest {
         rules = new RussianRules();
         Dependencies.inject(rules);
         mPlacement = new Placement(new Random(), rules);
-        PlacementFactory.setPlacementAlgorithm(mPlacement);
+        Dependencies.inject(mPlacement);
     }
 
     @Test
