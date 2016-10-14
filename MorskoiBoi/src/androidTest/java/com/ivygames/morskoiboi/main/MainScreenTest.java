@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.main;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
@@ -61,7 +62,7 @@ public class MainScreenTest extends MainScreen_ {
 
     @Test
     public void when_play_button_is_pressed__select_game_screen_opens() {
-        onView(withId(R.id.play)).perform(click());
+        clickOn(playButton());
         onView(SELECT_GAME_LAYOUT).check(matches(isDisplayed()));
     }
 

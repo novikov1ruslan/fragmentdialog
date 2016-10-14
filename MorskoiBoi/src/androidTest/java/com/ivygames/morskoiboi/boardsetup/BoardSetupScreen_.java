@@ -42,14 +42,6 @@ public class BoardSetupScreen_ extends OnlineScreen_ {
         return withText(R.string.ships_setup_validation);
     }
 
-    protected final Matcher<View> autoSetup() {
-        return withId(R.id.auto_setup);
-    }
-
-    protected final Matcher<View> done() {
-        return withId(R.id.done);
-    }
-
     protected final Matcher<View> boardView() {
         return withId(R.id.board_view);
     }

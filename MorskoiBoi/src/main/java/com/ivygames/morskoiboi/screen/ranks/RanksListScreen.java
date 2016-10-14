@@ -20,11 +20,10 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     private RanksLayout mLayout;
 
     @NonNull
-    private final GameSettings mSettings;
+    private final GameSettings mSettings = Dependencies.getSettings();
 
-    public RanksListScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
+    public RanksListScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mSettings = settings;
     }
 
     private static void debug_setProgress(int progress, GameSettings settings) {

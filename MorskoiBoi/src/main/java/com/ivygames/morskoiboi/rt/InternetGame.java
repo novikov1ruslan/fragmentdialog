@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.rt;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.multiplayer.RealTimeMultiplayer;
+import com.ivygames.common.multiplayer.MultiplayerRoom;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.commons.logger.Ln;
@@ -11,10 +11,10 @@ public class InternetGame extends Game {
     private static final int TURN_TIMEOUT = 40 * 1000;
 
     @NonNull
-    private final RealTimeMultiplayer mMultiplayer;
+    private final MultiplayerRoom mRoom;
 
-    public InternetGame(@NonNull RealTimeMultiplayer multiplayer) {
-        mMultiplayer = multiplayer;
+    public InternetGame(@NonNull MultiplayerRoom room) {
+        mRoom = room;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class InternetGame extends Game {
         }
 
         Ln.d("finishing internet game - leaving the room");
-        mMultiplayer.leaveCurrentRoom();
+        mRoom.leave();
         return true;
     }
 

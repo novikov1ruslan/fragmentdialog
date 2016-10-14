@@ -27,7 +27,7 @@ public class RanksScreenTest extends ScreenTest {
 
     @Override
     public BattleshipScreen newScreen() {
-        return new RanksListScreen(activity, settings());
+        return new RanksListScreen(activity);
     }
 
     @Test

@@ -61,9 +61,9 @@ public class MultiplayerManagerTest {
     @Test
     public void WhenResultOkOnInvitingPlayers__RoomIsCreated() {
         MultiplayerRoom roomListener = mock(MultiplayerRoom.class);
-        mm.setRoomListener(roomListener);
         RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
-        mm.invitePlayers(1, rtListener);
+        mm.invitePlayers(1, roomListener);
+        mm.setRtmListener(rtListener);
         Intent intent = new Intent();
         ArrayList<String> list = new ArrayList<>(Collections.singletonList("1"));
         intent.putStringArrayListExtra(Games.EXTRA_PLAYER_IDS, list);
@@ -77,8 +77,8 @@ public class MultiplayerManagerTest {
 
     @Test
     public void WhenInvitingPlayersResultIsNotOk__RoomIsNotCreated() {
-        RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
-        mm.invitePlayers(1, rtListener);
+        MultiplayerRoom roomListener = mock(MultiplayerRoom.class);
+        mm.invitePlayers(1, roomListener);
         Intent intent = mock(Intent.class);
 
         mm.handleResult(1, Activity.RESULT_CANCELED, intent);
@@ -91,9 +91,9 @@ public class MultiplayerManagerTest {
     @Test
     public void WhenInvitationFromInboxAccepted__PlayerJoinsTheRoom() {
         MultiplayerRoom roomListener = mock(MultiplayerRoom.class);
-        mm.setRoomListener(roomListener);
         RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
-        mm.showInvitations(1, rtListener);
+        mm.showInvitations(1, roomListener);
+        mm.setRtmListener(rtListener);
         Intent intent = new Intent();
         Invitation invitation = mock(Invitation.class);
         intent.putExtra(Multiplayer.EXTRA_INVITATION, invitation);
@@ -105,8 +105,8 @@ public class MultiplayerManagerTest {
 
     @Test
     public void WhenInvitationFromInboxNotAccepted__PlayerFailsToJoinTheRoom() {
-        RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
-        mm.showInvitations(1, rtListener);
+        MultiplayerRoom roomListener = mock(MultiplayerRoom.class);
+        mm.showInvitations(1, roomListener);
         Intent intent = new Intent();
         Invitation invitation = mock(Invitation.class);
         intent.putExtra(Multiplayer.EXTRA_INVITATION, invitation);
@@ -120,6 +120,8 @@ public class MultiplayerManagerTest {
 
     @Test
     public void WhenWaitingForOpponentSucceeds__GameStarts() {
+        MultiplayerRoom roomListener = mock(MultiplayerRoom.class);
+        mm.showInvitations(1, roomListener);
         Intent intent = mock(Intent.class);
 
         mm.handleResult(WAITING_ROOM_RC, Activity.RESULT_OK, intent);
@@ -133,7 +135,7 @@ public class MultiplayerManagerTest {
 
         mm.handleResult(WAITING_ROOM_RC, GamesActivityResultCodes.RESULT_LEFT_ROOM, intent);
 
-        verify(multiplayerListener, times(1)).gameTerminated();
+        verify(multiplayerListener, times(1)).gameAborted();
     }
 
     @Test
@@ -142,15 +144,16 @@ public class MultiplayerManagerTest {
 
         mm.handleResult(WAITING_ROOM_RC, Activity.RESULT_CANCELED, intent);
 
-        verify(multiplayerListener, times(1)).gameTerminated();
+        verify(multiplayerListener, times(1)).gameAborted();
     }
 
     @Test
     public void WhenQuickGameSelected__RoomIsCreated() {
         MultiplayerRoom roomListener = mock(MultiplayerRoom.class);
-        mm.setRoomListener(roomListener);
         RealTimeMessageReceivedListener rtListener = mock(RealTimeMessageReceivedListener.class);
-        mm.quickGame(rtListener);
+        mm.setRtmListener(rtListener);
+
+        mm.quickGame(roomListener);
 
         verify(apiClient, times(1)).createRoom(1, 1, roomListener, rtListener);
     }

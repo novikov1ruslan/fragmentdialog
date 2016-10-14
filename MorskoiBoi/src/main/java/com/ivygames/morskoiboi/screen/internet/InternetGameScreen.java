@@ -14,7 +14,7 @@ import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
 import com.ivygames.common.multiplayer.GameCreationListener;
 import com.ivygames.common.multiplayer.InvitationToShowListener;
-import com.ivygames.common.multiplayer.MultiplayerSession;
+import com.ivygames.common.multiplayer.MultiplayerRoom;
 import com.ivygames.common.multiplayer.QueuedRtmSender;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.multiplayer.RoomConnectionErrorListener;
@@ -73,7 +73,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             }
         });
 
-        createMultiplayerSession();
+        mMultiplayer.setRoomConnectionErrorListener(new RoomConnectionErrorListenerImpl());
     }
 
     @NonNull
@@ -81,21 +81,20 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         return new BackToSelectGameCommand(parent());
     }
 
-    private MultiplayerSession createMultiplayerSession() {
-        MultiplayerSession session = new MultiplayerSession(new RoomConnectionErrorListenerImpl());
-        mInternetGame = new InternetGame(mMultiplayer);
-
+    private MultiplayerRoom createMultiplayerRoom() {
         QueuedRtmSender rtmSender = new QueuedRtmSender(mApiClient);
-        session.setRtmSender(rtmSender);
+        MultiplayerRoom room = new MultiplayerRoom(mApiClient, rtmSender);
+
+        mInternetGame = new InternetGame(room);
 
         InternetOpponent opponent = new InternetOpponent(rtmSender, getString(R.string.player));
-        session.setRtmListener(opponent);
+        mMultiplayer.setRtmListener(opponent);
 
         PlayerOpponent player = newPlayer();
         mSession = new Session(player, opponent);
         Session.bindOpponents(player, opponent);
 
-        return session;
+        return room;
     }
 
     @NonNull
@@ -185,7 +184,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             UiEvent.send("invitePlayer");
 
             showWaitingScreen();
-            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, createMultiplayerSession());
+            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, createMultiplayerRoom());
         }
 
         @Override
@@ -200,7 +199,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             Ln.d("requesting invitations screen...");
 
             showWaitingScreen();
-            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, createMultiplayerSession());
+            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, createMultiplayerRoom());
         }
 
         @Override
@@ -214,7 +213,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             UiEvent.send("quickGame");
 
             showWaitingScreen();
-            mMultiplayer.quickGame(createMultiplayerSession());
+            mMultiplayer.quickGame(createMultiplayerRoom());
         }
     };
 

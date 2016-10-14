@@ -49,6 +49,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
@@ -325,4 +326,21 @@ public abstract class ScreenTest {
         verify(apiClient, mode).submitScore(anyString(), anyInt());
     }
 
+    @NonNull
+    protected final Matcher<View> playButton() {
+        return withId(R.id.play);
+    }
+
+    @NonNull
+    protected final Matcher<View> vsAndroid() {
+        return withId(R.id.vs_android);
+    }
+
+    protected final Matcher<View> autoSetup() {
+        return withId(R.id.auto_setup);
+    }
+
+    protected final Matcher<View> done() {
+        return withId(R.id.done);
+    }
 }

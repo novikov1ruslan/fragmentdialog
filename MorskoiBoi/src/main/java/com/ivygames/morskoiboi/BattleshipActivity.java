@@ -172,8 +172,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         Ln.i("game fully created");
 
         ScreenCreator.setActivity(this);
-        ScreenCreator.setApiClient(mApiClient);
-        ScreenCreator.setSettings(mSettings);
 
         setScreen(ScreenCreator.newMainScreen());
     }

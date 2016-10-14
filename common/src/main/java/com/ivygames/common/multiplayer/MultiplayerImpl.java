@@ -8,6 +8,7 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
@@ -36,24 +37,25 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
 
     @NonNull
     private final Collection<ConnectionLostListener> mConnectionLostListeners = new ArrayList<>();
-    private MultiplayerSession mSession;
-    private Room mRoom;
+    private MultiplayerRoom mRoom;
 
-    @NonNull
-    private final MultiplayerRoom mRoomListener = new MultiplayerRoom(new RoomConnectionErrorListener() {
-        @Override
-        public void onError(int statusCode) {
-            mSession.onRoomConnectionError(statusCode);
-            endSession();
-        }
-    });
+    private RoomConnectionErrorListener mRoomConnectionErrorListener;
+    private RealTimeMessageReceivedListener mRtmListener;
 
     public MultiplayerImpl(@NonNull ApiClient apiClient, int requestCode) {
         mApiClient = apiClient;
         mWaitingRoomRc = requestCode;
         mInvitationManager = new InvitationManager(apiClient);
+    }
 
-        setRoomListener(mRoomListener);
+    @Override
+    public void setRtmListener(@NonNull RealTimeMessageReceivedListener listener) {
+        mRtmListener = listener;
+    }
+
+    @Override
+    public void setRoomConnectionErrorListener(@NonNull RoomConnectionErrorListener listener) {
+        mRoomConnectionErrorListener = listener;
     }
 
     @Override
@@ -62,27 +64,32 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
     }
 
     @Override
-    public void invitePlayers(int requestCode, @NonNull MultiplayerSession session) {
-        mSelectPlayersRc = requestCode;
-        mSession = session;
+    public void invitePlayers(int requestCode, @NonNull MultiplayerRoom room) {
         Ln.d("inviting players, request=" + requestCode);
+
+        mSelectPlayersRc = requestCode;
+        mRoom = room;
+        setRoomListeners(room);
         mApiClient.selectOpponents(requestCode, MIN_OPPONENTS, MAX_OPPONENTS);
     }
 
     @Override
-    public void showInvitations(int requestCode, @NonNull MultiplayerSession session) {
-        mInvitationInboxRc = requestCode;
-        mSession = session;
+    public void showInvitations(int requestCode, @NonNull MultiplayerRoom room) {
         Ln.v("showing invitations, request=" + requestCode);
+
+        mInvitationInboxRc = requestCode;
+        mRoom = room;
+        setRoomListeners(room);
         mApiClient.showInvitationInbox(requestCode);
     }
 
     @Override
-    public void quickGame(@NonNull MultiplayerSession session) {
-        mSession = session;
-        // quick-start a game with 1 randomly selected opponent
+    public void quickGame(@NonNull MultiplayerRoom room) {
         Ln.v("quick game");
-        mApiClient.createRoom(MIN_OPPONENTS, MAX_OPPONENTS, mRoomListener, session.rtmListener);
+
+        mRoom = room;
+        setRoomListeners(room);
+        mApiClient.createRoom(MIN_OPPONENTS, MAX_OPPONENTS, room, mRtmListener);
     }
 
     @Override
@@ -99,7 +106,7 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
                 int maxAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
 
                 mApiClient.createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers,
-                        mRoomListener, mSession.rtmListener);
+                        mRoom, mRtmListener);
             } else {
                 Ln.d("select players cancelled");
                 endSession();
@@ -110,7 +117,7 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
             // We react by accepting the selected invitation, if any.
             if (resultCode == Activity.RESULT_OK) {
                 Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
-                mApiClient.joinRoom(invitation, mRoomListener, mSession.rtmListener);
+                mApiClient.joinRoom(invitation, mRoom, mRtmListener);
             } else {
                 Ln.d("invitation cancelled");
                 endSession();
@@ -118,7 +125,7 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
             }
         } else if (requestCode == mWaitingRoomRc) {
             if (resultCode == Activity.RESULT_OK) {
-                if (mSession == null) {
+                if (mRoom == null) {
                     Ln.d("game began, but then session ended");
                     mGameCreationListener.gameAborted();
                 } else {
@@ -177,18 +184,25 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
         return removed;
     }
 
-    private void setRoomListener(@NonNull MultiplayerRoom room) {
-        room.setRoomCreationListener(new RoomCreationListener() {
+    private void setRoomListeners(@NonNull MultiplayerRoom room) {
+        room.setConnectionErrorListener(new RoomConnectionErrorListener() {
+            @Override
+            public void onError(int statusCode) {
+                mRoomConnectionErrorListener.onError(statusCode);
+                endSession();
+            }
+        });
+
+        room.setCreationListener(new RoomCreationListener() {
 
             @Override
             public void onRoomCreated(@NonNull Room room) {
-                mRoom = room;
                 Ln.d("waiting for opponent...");
                 mApiClient.showWaitingRoom(mWaitingRoomRc, room, MIN_PLAYERS);
             }
         });
 
-        room.setRoomConnectionListener(new RoomConnectionListener() {
+        room.setConnectionListener(new RoomConnectionListener() {
             @Override
             public void onConnectionLost(@NonNull MultiplayerEvent event) {
                 endSession();
@@ -196,45 +210,20 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
                     listener.onConnectionLost(event);
                 }
             }
-
-            @Override
-            public void onRoomConnected(@NonNull String roomId, @NonNull String recipientId) {
-                // TODO: create data object Room
-                mSession.rtmSender.setRoom(roomId, recipientId);
-            }
-
-            @Override
-            public void onP2PConnected(@NonNull String participantId) {
-                mSession.rtmSender.sendNextMessage();
-            }
         });
         Ln.v("room listener set to: " + room);
     }
 
-    @Override
-    public void leaveCurrentRoom() {
-        if (mRoom == null) {
-            Ln.w("should not request leaving room without actually setting it");
-            return;
-        }
-        mRoomListener.leave();
-
-        Ln.d("leaving room: " + mRoom.getRoomId());
-        mApiClient.leaveRoom(mRoomListener, mRoom.getRoomId());
-    }
-
     private void endSession() {
-        if (mSession == null) {
+        if (mRoom == null) {
             Ln.v("session already ended");
             return;
         }
 
-        mSession.rtmSender.stop();
 //        if (mInvitees != null) {
 //            mInvitees.get(0);
 //        }
-        leaveCurrentRoom();
-        mSession = null;
+        mRoom.leave();
         mRoom = null;
         mSelectPlayersRc = 0;
         mInvitationInboxRc = 0;

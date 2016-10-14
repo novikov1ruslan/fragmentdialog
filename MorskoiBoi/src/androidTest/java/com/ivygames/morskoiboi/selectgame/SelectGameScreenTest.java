@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.view.View;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -76,7 +79,7 @@ public class SelectGameScreenTest extends SelectGameScreen_ {
     @Test
     public void when_vs_android_is_pressed__board_setup_screen_opens() {
         setScreen(newScreen());
-        onView(withId(R.id.vs_android)).perform(click());
+        clickOn(vsAndroid());
         checkDisplayed(BOARD_SETUP_LAYOUT);
     }
 

@@ -3,11 +3,9 @@ package com.ivygames.morskoiboi.screen;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.VibratorWrapper;
-import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.timer.AsyncTurnTimerFactory;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.BattleshipActivity;
-import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
@@ -32,22 +30,12 @@ public class ScreenCreator {
     private static final int ALLOWED_SKIPPED_TURNS = 2;
 
     private static BattleshipActivity activity;
-    private static ApiClient apiClient;
-    private static GameSettings settings;
 
     private ScreenCreator() {
     }
 
     public static void setActivity(@NonNull BattleshipActivity activity) {
         ScreenCreator.activity = activity;
-    }
-
-    public static void setApiClient(@NonNull ApiClient apiClient) {
-        ScreenCreator.apiClient = apiClient;
-    }
-
-    public static void setSettings(@NonNull GameSettings settings) {
-        ScreenCreator.settings = settings;
     }
 
     @NonNull
@@ -68,7 +56,7 @@ public class ScreenCreator {
 
     @NonNull
     public static SelectGameScreen newSelectGameScreen() {
-        return new SelectGameScreen(activity, settings);
+        return new SelectGameScreen(activity);
     }
 
     @NonNull
@@ -114,6 +102,6 @@ public class ScreenCreator {
 
     @NonNull
     public static RanksListScreen newRanksListScreen() {
-        return new RanksListScreen(activity, settings);
+        return new RanksListScreen(activity);
     }
 }
