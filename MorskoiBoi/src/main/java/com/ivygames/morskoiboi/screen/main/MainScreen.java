@@ -30,7 +30,7 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
 
-public class MainScreen extends BattleshipScreen implements MainScreenActions, SignInListener {
+public class MainScreen extends BattleshipScreen implements SignInListener {
     private static final String TAG = "MAIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
@@ -60,7 +60,7 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (MainScreenLayout) inflate(R.layout.main, container);
-        mLayout.setScreenActionsListener(this);
+        mLayout.setScreenActionsListener(mMainScreenActions);
 
         Ln.d(this + " screen created");
 
@@ -114,34 +114,74 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
         }
     }
 
-    @Override
-    public void play() {
-        setScreen(ScreenCreator.newSelectGameScreen());
-    }
+    private MainScreenActions mMainScreenActions = new MainScreenActions() {
 
-    @Override
-    public void share() {
-        UiEvent.send("share");
-        startActivity(Sharing.createShareIntent(mParent.getPackageName(), getString(R.string.share_greeting)));
-    }
-
-    @Override
-    public void showAchievements() {
-        boolean signedIn = mApiClient.isConnected();
-        UiEvent.send("achievements", signedIn ? 1 : 0);
-        if (signedIn) {
-            mApiClient.showAchievements(BattleshipActivity.RC_UNUSED);
-        } else {
-            Ln.d("user is not signed in - ask to sign in");
-            showAchievementsDialog();
+        @Override
+        public void play() {
+            setScreen(ScreenCreator.newSelectGameScreen());
         }
-    }
 
-    @Override
-    public void noAds() {
-        UiEvent.send("no_ads");
-        parent().purchase();
-    }
+        @Override
+        public void share() {
+            UiEvent.send("share");
+            startActivity(Sharing.createShareIntent(mParent.getPackageName(), getString(R.string.share_greeting)));
+        }
+
+        @Override
+        public void showAchievements() {
+            boolean signedIn = mApiClient.isConnected();
+            UiEvent.send("achievements", signedIn ? 1 : 0);
+            if (signedIn) {
+                mApiClient.showAchievements(BattleshipActivity.RC_UNUSED);
+            } else {
+                Ln.d("user is not signed in - ask to sign in");
+                showAchievementsDialog();
+            }
+        }
+
+        @Override
+        public void noAds() {
+            UiEvent.send("no_ads");
+            parent().purchase();
+        }
+
+
+        private void showAchievementsDialog() {
+            new SignInDialog.Builder().setMessage(R.string.achievements_request)
+                    .setPositiveButton(R.string.sign_in, new OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            UiEvent.send("sign_in", "achievements");
+                            mAchievementsRequested = true;
+                            mApiClient.connect();
+                        }
+                    }).create().show(mFm, DIALOG);
+        }
+
+        @Override
+        public void showHelp() {
+            setScreen(ScreenCreator.newHelpScreen());
+        }
+
+        @Override
+        public void showLeaderboards() {
+            boolean signedIn = mApiClient.isConnected();
+            UiEvent.send("showHiScores", signedIn ? 1 : 0);
+            if (signedIn) {
+                mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
+            } else {
+                Ln.d("user is not signed in - ask to sign in");
+                showLeaderboardsDialog();
+            }
+        }
+
+        @Override
+        public void showSettings() {
+            setScreen(ScreenCreator.newSettingsScreen());
+        }
+
+    };
 
     @Override
     public void onSignInSucceeded() {
@@ -154,41 +194,6 @@ public class MainScreen extends BattleshipScreen implements MainScreenActions, S
             mLeaderboardRequested = false;
             mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
         }
-    }
-
-    private void showAchievementsDialog() {
-        new SignInDialog.Builder().setMessage(R.string.achievements_request)
-                .setPositiveButton(R.string.sign_in, new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        UiEvent.send("sign_in", "achievements");
-                        mAchievementsRequested = true;
-                        mApiClient.connect();
-                    }
-                }).create().show(mFm, DIALOG);
-    }
-
-    @Override
-    public void showHelp() {
-        setScreen(ScreenCreator.newHelpScreen());
-    }
-
-    @Override
-    public void showLeaderboards() {
-        boolean signedIn = mApiClient.isConnected();
-        UiEvent.send("showHiScores", signedIn ? 1 : 0);
-        if (signedIn) {
-            mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
-        } else {
-            Ln.d("user is not signed in - ask to sign in");
-            showLeaderboardsDialog();
-        }
-    }
-
-    @Override
-    public void showSettings() {
-        setScreen(ScreenCreator.newSettingsScreen());
     }
 
     private void showLeaderboardsDialog() {
