@@ -43,7 +43,7 @@ class ApplicationInitializer {
 
         GameSettings settings = new GameSettings(application);
         Resources resources = application.getResources();
-        RussianRules rules = new RussianRules();
+        RussianRules rules = new RussianRules(new Random(System.currentTimeMillis()));
         Placement placement = new Placement(new Random(System.currentTimeMillis()), rules);
         BotFactory.setAlgorithm(new RussianBot(null));
         AndroidDevice device = new AndroidDevice(application);

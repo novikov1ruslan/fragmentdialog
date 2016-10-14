@@ -41,7 +41,7 @@ public class RussianRulesTest {
     @Before
     public void setUp() {
         initMocks(this);
-        RussianRules rules = new RussianRules();
+        RussianRules rules = new RussianRules(new Random());
         Dependencies.inject(rules);
         Dependencies.inject(new Placement(new Random(1), rules));
         placement = Dependencies.getPlacement();

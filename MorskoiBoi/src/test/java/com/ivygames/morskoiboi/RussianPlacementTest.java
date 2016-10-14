@@ -35,7 +35,7 @@ public class RussianPlacementTest {
     @Before
 	public void setup() {
         mBoard = new Board();
-        rules = new RussianRules();
+        rules = new RussianRules(new Random());
         Dependencies.inject(rules);
         mAlgorithm = new Placement(new Random(1), rules);
 	}

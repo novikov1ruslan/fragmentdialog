@@ -7,12 +7,10 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.AiOpponent;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
-import com.ivygames.morskoiboi.player.PlayerUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -65,7 +63,7 @@ public class AndroidOpponentTest {
 
     @NonNull
     private Placement placement() {
-        return new Placement(new Random(), new RussianRules());
+        return new Placement(new Random(), new RussianRules(new Random()));
     }
 
 //    @Test

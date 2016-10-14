@@ -11,6 +11,7 @@ import com.ivygames.morskoiboi.model.Ship;
 import org.commons.logger.Ln;
 
 import java.util.Collection;
+import java.util.Random;
 
 public class RussianRules extends AbstractRules {
 
@@ -34,6 +35,10 @@ public class RussianRules extends AbstractRules {
     private static final float MAX_TIME_BONUS_MULTIPLIER = 2f;
     private static final float MIN_TIME_BONUS_MULTIPLIER = 1f;
     private static final int MAX_SCORE_FOR_SURRENDERED_GAME = 5000;
+
+    public RussianRules(@NonNull Random random) {
+        super(random);
+    }
 
     @Override
     public boolean isCellConflicting(Cell cell) {

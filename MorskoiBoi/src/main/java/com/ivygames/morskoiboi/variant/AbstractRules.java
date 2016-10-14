@@ -14,12 +14,16 @@ import java.util.Random;
 
 public abstract class AbstractRules implements Rules {
 
-    private static volatile long sRandomCounter;
+    @NonNull
+    private final Random mRandom;
+
+    protected AbstractRules(@NonNull Random random) {
+        mRandom = random;
+    }
 
     @NonNull
-    private static Collection<Ship> generateShipsForSizes(@NonNull int[] allShipsSizes) {
-        Random random = new Random(System.currentTimeMillis() + ++sRandomCounter);
-
+    private static Collection<Ship> generateShipsForSizes(@NonNull int[] allShipsSizes,
+                                                          @NonNull Random random) {
         List<Ship> fleet = new ArrayList<>();
         for (int length : allShipsSizes) {
             fleet.add(new Ship(length, calcRandomOrientation(random)));
@@ -28,20 +32,20 @@ public abstract class AbstractRules implements Rules {
         return fleet;
     }
 
-    private static Ship.Orientation calcRandomOrientation(Random random) {
+    private static Ship.Orientation calcRandomOrientation(@NonNull Random random) {
         return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
     }
 
     @Override
-    public boolean isBoardSet(Board board) {
+    public boolean isBoardSet(@NonNull Board board) {
         return allShipsAreOnBoard(board) && !isThereConflictingCell(board);
     }
 
-    private boolean allShipsAreOnBoard(Board board) {
+    private boolean allShipsAreOnBoard(@NonNull Board board) {
         return board.getShips().size() == getAllShipsSizes().length;
     }
 
-    private boolean isThereConflictingCell(Board board) {
+    private boolean isThereConflictingCell(@NonNull Board board) {
         for (int i = 0; i < board.horizontalDimension(); i++) {
             for (int j = 0; j < board.verticalDimension(); j++) {
                 if (isCellConflicting(board.getCell(i, j))) {
@@ -57,7 +61,7 @@ public abstract class AbstractRules implements Rules {
      * @return true if board has 10 ships and all of them are destroyed
      */
     @Override
-    public boolean isItDefeatedBoard(Board board) {
+    public boolean isItDefeatedBoard(@NonNull Board board) {
         return allShipsAreOnBoard(board) && Board.allAvailableShipsAreDestroyed(board);
     }
 
@@ -86,6 +90,6 @@ public abstract class AbstractRules implements Rules {
 
     @Override
     public Collection<Ship> generateFullFleet() {
-        return generateShipsForSizes(getAllShipsSizes());
+        return generateShipsForSizes(getAllShipsSizes(), mRandom);
     }
 }

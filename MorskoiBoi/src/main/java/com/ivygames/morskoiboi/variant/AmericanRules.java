@@ -8,10 +8,15 @@ import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
 
 import java.util.Collection;
+import java.util.Random;
 
 public abstract class AmericanRules extends AbstractRules {
 
     private static final int[] TOTAL_SHIPS = {5, 4, 3, 3, 2};
+
+    public AmericanRules(@NonNull Random random) {
+        super(random);
+    }
 
     @Override
     public boolean isCellConflicting(Cell cell) {

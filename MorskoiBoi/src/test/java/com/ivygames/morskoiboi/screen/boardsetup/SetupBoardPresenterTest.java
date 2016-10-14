@@ -36,7 +36,7 @@ public class SetupBoardPresenterTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mPresenter = new SetupBoardPresenter();
-        rules = new RussianRules();
+        rules = new RussianRules(new Random());
         Dependencies.inject(rules);
         mPlacement = new Placement(new Random(), rules);
         Dependencies.inject(mPlacement);

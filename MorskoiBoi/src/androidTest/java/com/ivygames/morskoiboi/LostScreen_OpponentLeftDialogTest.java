@@ -27,7 +27,9 @@ public class LostScreen_OpponentLeftDialogTest extends LostScreen_ {
     @Test
     public void PressingOk__DismissesDialog_GameFinishes_SelectGameScreensShown() {
         WhenEnemyLeaves__OpponentLeftDialogDisplayed();
+
         clickOn(okButton());
+
         checkDoesNotExist(opponentLeftDialog());
         FinishGame_BackToSelectGame();
     }

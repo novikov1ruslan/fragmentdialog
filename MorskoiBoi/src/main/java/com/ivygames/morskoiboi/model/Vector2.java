@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,6 +13,7 @@ public final class Vector2 {
     private static final String Y = "Y";
 
     // TODO: unit test
+    @NonNull
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
@@ -23,7 +26,8 @@ public final class Vector2 {
         return json;
     }
 
-    public static Vector2 fromJson(String json) {
+    @NonNull
+    public static Vector2 fromJson(@NonNull String json) {
         try {
             return Vector2.fromJson(new JSONObject(json));
         } catch (JSONException e) {
@@ -31,7 +35,8 @@ public final class Vector2 {
         }
     }
 
-    public static Vector2 fromJson(JSONObject json) {
+    @NonNull
+    public static Vector2 fromJson(@NonNull JSONObject json) {
         try {
             int x = json.getInt(X);
             int y = json.getInt(Y);

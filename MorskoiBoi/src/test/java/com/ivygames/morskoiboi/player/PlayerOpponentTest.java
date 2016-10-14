@@ -46,7 +46,7 @@ public class PlayerOpponentTest {
     @Mock
     private PlayerCallback callback;
 
-    private Rules russianRules = new RussianRules();
+    private Rules russianRules = new RussianRules(new Random());
     private ChatListener listener = new ChatListener() {
         @Override
         public void showChatCrouton(ChatMessage message) {
@@ -65,7 +65,7 @@ public class PlayerOpponentTest {
 
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        Placement placement = new Placement(new Random(), new RussianRules());
+        Placement placement = new Placement(new Random(), new RussianRules(new Random()));
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
@@ -403,7 +403,7 @@ public class PlayerOpponentTest {
     @Test
     public void WhenPlayerWinsOverAiOpponent__OpponentLost() {
         PlayerOpponent player = newPlayer(PlayerUtils.defeatedBoardRules());
-        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules());
+        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules(new Random()));
         player.setOpponent(aiOpponent);
         aiOpponent.setOpponent(player);
 
