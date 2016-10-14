@@ -136,7 +136,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         if (mSettings.showProgressHelp()) {
             mSettings.hideProgressHelp();
         }
-        mSettings.setPlayerName(mLayout.getPlayerName());
+        setPlayerName();
     }
 
     @Override
@@ -148,6 +148,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
+        setPlayerName();
         PlayerOpponent player = createPlayerOpponent();
         DelayedOpponent delegate = createDelayedOpponent(player);
         AiOpponent android = createAiOpponent(delegate);
@@ -157,6 +158,13 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         android.setOpponent(delegate);
 //        Session.bindOpponents(delegate, android);
         setScreen(ScreenCreator.newBoardSetupScreen(new AndroidGame(), session));
+    }
+
+    private void setPlayerName() {
+        String playerName = mLayout.getPlayerName();
+        if (!playerName.equals(mSettings.getPlayerName())) {
+            mSettings.setPlayerName(playerName);
+        }
     }
 
     @NonNull

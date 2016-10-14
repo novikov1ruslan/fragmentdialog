@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.screen.internet;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -98,20 +97,10 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     @NonNull
     private PlayerOpponent newPlayer() {
-        PlayerOpponent player = new PlayerOpponent(getPlayerName(), PlacementFactory.getAlgorithm(),
-                Dependencies.getRules());
+        PlayerOpponent player = new PlayerOpponent(mSettings.getPlayerName(),
+                PlacementFactory.getAlgorithm(), Dependencies.getRules());
         player.setChatListener(parent());
         return player;
-    }
-
-    @NonNull
-    private String getPlayerName() {
-        String playerName = mSettings.getPlayerName();
-        if (TextUtils.isEmpty(playerName)) {
-            playerName = getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + playerName);
-        }
-        return playerName;
     }
 
     @NonNull

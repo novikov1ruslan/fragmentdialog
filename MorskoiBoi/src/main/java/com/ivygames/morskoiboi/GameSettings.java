@@ -41,9 +41,12 @@ public class GameSettings implements AchievementsSettings {
     @NonNull
     private final SharedPreferences mPreferences;
     @NonNull
+    private final Context mContext;
+    @NonNull
     private final SharedPreferences.Editor mEditor;
 
     public GameSettings(@NonNull Context context) {
+        mContext = context;
         mPreferences = new BackupSharedPreferences(context);
         mEditor = mPreferences.edit();
     }
@@ -140,7 +143,12 @@ public class GameSettings implements AchievementsSettings {
     }
 
     public String getPlayerName() {
-        return mPreferences.getString(PLAYER_NAME, "");
+        String playerName = mPreferences.getString(PLAYER_NAME, "");
+        if (TextUtils.isEmpty(playerName)) {
+            playerName = mContext.getString(R.string.player);
+            Ln.i("player name is empty - replaced by " + playerName);
+        }
+        return playerName;
     }
 
     public void setPlayerName(String name) {

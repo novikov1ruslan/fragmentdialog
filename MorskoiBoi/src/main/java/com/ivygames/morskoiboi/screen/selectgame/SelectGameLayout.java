@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.selectgame;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -66,6 +67,7 @@ public class SelectGameLayout extends NotepadRelativeLayout implements View.OnCl
         mPlayerRank.setOnClickListener(this);
     }
 
+    @NonNull
     public String getPlayerName() {
         return mPlayerName.getText().toString();
     }
