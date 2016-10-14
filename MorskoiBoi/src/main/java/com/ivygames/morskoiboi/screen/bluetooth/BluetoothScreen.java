@@ -17,6 +17,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
@@ -56,6 +57,8 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    @NonNull
+    private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -197,7 +200,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
             Ln.i("player name is empty - replaced by " + playerName);
         }
 
-        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mPlacement, mRules);
         player.setChatListener(parent());
         Session session = new Session(player, opponent);
         Session.bindOpponents(player, opponent);

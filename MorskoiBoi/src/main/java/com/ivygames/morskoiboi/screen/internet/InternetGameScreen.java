@@ -22,6 +22,7 @@ import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.PlacementFactory;
@@ -51,6 +52,8 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
+    @NonNull
+    private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
     private Session mSession;
     private InvitationListener mInvitationListener;
@@ -97,7 +100,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     @NonNull
     private PlayerOpponent newPlayer() {
-        PlayerOpponent player = new PlayerOpponent(mSettings.getPlayerName(),
+        PlayerOpponent player = mPlayerFactory.createPlayer(mSettings.getPlayerName(),
                 PlacementFactory.getAlgorithm(), Dependencies.getRules());
         player.setChatListener(parent());
         return player;

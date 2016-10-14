@@ -21,6 +21,7 @@ public class Dependencies {
     private static GameSettings sGameSettings;
     private static Rules sRules;
     private static AdProvider sAdProvider;
+    private static PlayerFactory sPlayerFactory;
 
     static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
@@ -93,5 +94,13 @@ public class Dependencies {
 
     public static AdProvider getAdProvider() {
         return sAdProvider;
+    }
+
+    public static void inject(@NonNull PlayerFactory playerFactory) {
+        sPlayerFactory = playerFactory;
+        Ln.i(sPlayerFactory);
+    }
+    public static PlayerFactory getPlayerFactory() {
+        return sPlayerFactory;
     }
 }

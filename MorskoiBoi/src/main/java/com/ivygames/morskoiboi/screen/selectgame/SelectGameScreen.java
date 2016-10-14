@@ -24,6 +24,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
@@ -64,17 +65,18 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private final Rules mRules = Dependencies.getRules();
     @NonNull
-    private final GameSettings mSettings;
+    private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final AdProvider mAdProvider = Dependencies.getAdProvider();
 
     private InvitationToShowListener mScreenInvitationListener;
     @NonNull
     private final Placement mPlacement = PlacementFactory.getAlgorithm();
+    @NonNull
+    private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
-    public SelectGameScreen(@NonNull BattleshipActivity parent, @NonNull GameSettings settings) {
+    public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mSettings = settings;
     }
 
     @NonNull
@@ -189,7 +191,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = new PlayerOpponent(playerName, mPlacement, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mPlacement, mRules);
         player.setChatListener(parent());
         return player;
     }
