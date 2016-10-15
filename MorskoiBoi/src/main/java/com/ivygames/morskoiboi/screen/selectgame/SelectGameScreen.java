@@ -20,6 +20,7 @@ import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.InvitationToShowListener;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.ui.BackPressListener;
+import com.ivygames.morskoiboi.AiPlayerFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -33,6 +34,7 @@ import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -73,6 +75,9 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private final Placement mPlacement = Dependencies.getPlacement();
     @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
+
+    @NonNull
+    private final AiPlayerFactory mOpponentFactory = Dependencies.getAiPlayerFactory();
 
     public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
@@ -152,7 +157,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         setPlayerName();
         PlayerOpponent player = createPlayerOpponent();
         DelayedOpponent delegate = createDelayedOpponent(player);
-        AiOpponent android = createAiOpponent(delegate);
+        Opponent android = createAiOpponent(delegate);
 
         Session session = new Session(player, android);
         player.setOpponent(android);
@@ -170,7 +175,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @NonNull
     private AiOpponent createAiOpponent(DelayedOpponent delegate) {
-        AiOpponent android = new AiOpponent(getString(R.string.android), mPlacement, mRules);
+        AiOpponent android = mOpponentFactory.createPlayer(getString(R.string.android), mPlacement, mRules);
         android.setBoard(new Board());
         android.setCancellable(delegate);
         return android;

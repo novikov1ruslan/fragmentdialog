@@ -14,6 +14,7 @@ import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.BotFactory;
+import com.ivygames.morskoiboi.player.AiPlayerFactoryImpl;
 import com.ivygames.morskoiboi.player.PlayerFactoryImpl;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.variant.FleetBitmaps;
@@ -56,6 +57,7 @@ class ApplicationInitializer {
         MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
                 BattleshipActivity.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactoryImpl();
+        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl();
 
         Dependencies.inject(placement);
         Dependencies.inject(apiClient);
@@ -66,6 +68,7 @@ class ApplicationInitializer {
         Dependencies.inject(progressManager);
         Dependencies.inject(device);
         Dependencies.inject(playerFactory);
+        Dependencies.inject(aiPlayerFactory);
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
