@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.lost;
 
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
@@ -7,6 +7,8 @@ import com.ivygames.morskoiboi.screen.lost.LostScreen;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

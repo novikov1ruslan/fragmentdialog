@@ -5,8 +5,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.view.InvitationButton;
 
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static org.hamcrest.Matchers.is;

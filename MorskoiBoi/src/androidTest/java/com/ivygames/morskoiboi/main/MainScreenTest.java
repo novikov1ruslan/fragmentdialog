@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.main;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
@@ -20,6 +19,8 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasTyp
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.playButton;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;

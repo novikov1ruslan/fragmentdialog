@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.lost;
 
 import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
@@ -6,6 +6,8 @@ import com.ivygames.morskoiboi.screen.lost.LostScreen;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 
 public class LostScreen_ConnectionLostDialogTest extends LostScreen_ {
 

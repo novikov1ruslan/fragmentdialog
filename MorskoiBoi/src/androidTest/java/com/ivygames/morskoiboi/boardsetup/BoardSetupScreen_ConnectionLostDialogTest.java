@@ -6,6 +6,8 @@ import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 
 public class BoardSetupScreen_ConnectionLostDialogTest extends BoardSetupScreen_ {
 

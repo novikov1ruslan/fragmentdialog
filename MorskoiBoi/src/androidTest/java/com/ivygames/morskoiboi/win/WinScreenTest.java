@@ -1,6 +1,9 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.win;
+
+import android.support.test.espresso.matcher.ViewMatchers;
 
 import com.ivygames.common.SignInListener;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
@@ -8,8 +11,9 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -104,7 +108,7 @@ public class WinScreenTest extends WinScreen_ {
     @Test
     public void AfterSignInClicked__SignInOptionHidden() {
         WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed();
-        clickOn(withId(R.id.sign_in_button));
+        clickOn(ViewMatchers.withId(R.id.sign_in_button));
         verifyConnected();
         signInSucceeded((SignInListener) screen());
         checkNotDisplayed(signInBar());

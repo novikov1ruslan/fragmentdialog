@@ -24,7 +24,6 @@ import com.ivygames.morskoiboi.screen.main.MainScreenLayout;
 import com.ivygames.morskoiboi.screen.ranks.RanksLayout;
 import com.ivygames.morskoiboi.screen.selectgame.SelectGameLayout;
 import com.ivygames.morskoiboi.screen.settings.SettingsLayout;
-import com.ivygames.morskoiboi.screen.win.WinLayout;
 
 import org.apache.commons.collections4.set.UnmodifiableSet;
 import org.hamcrest.Matcher;
@@ -49,7 +48,6 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
@@ -72,8 +70,7 @@ public abstract class ScreenTest {
     protected static final Matcher<View> RANKS_LAYOUT = instanceOf(RanksLayout.class);
     protected static final Matcher<View> BOARD_SETUP_LAYOUT = instanceOf(BoardSetupLayout.class);
     protected static final Matcher<View> INTERNET_GAME_LAYOUT = instanceOf(InternetGameLayout.class);
-    protected static final Matcher<View> WIN_LAYOUT = instanceOf(WinLayout.class);
-//    protected static final Matcher<View> LOST_LAYOUT = instanceOf(LostLayout.class);
+    //    protected static final Matcher<View> LOST_LAYOUT = instanceOf(LostLayout.class);
     protected static final Matcher<View> GAMEPLAY_LAYOUT = instanceOf(GameplayLayoutInterface.class);
 
     @Rule
@@ -232,10 +229,6 @@ public abstract class ScreenTest {
         return new DrawableMatcher(resourceId);
     }
 
-    protected final void checkDisplayed(Matcher<View> view) {
-        onView(view).check(matches(isDisplayed()));
-    }
-
     protected final void checkNotDisplayed(Matcher<View> view) {
         onView(view).check(matches(not(isDisplayed())));
     }
@@ -254,10 +247,6 @@ public abstract class ScreenTest {
 
     protected final String getString(int id) {
         return activity.getString(id);
-    }
-
-    protected static void clickOn(Matcher<View> viewMatcher) {
-        onView(viewMatcher).perform(click());
     }
 
     protected final Matcher<Intent> fromIntent(Intent intent) {
@@ -326,21 +315,7 @@ public abstract class ScreenTest {
         verify(apiClient, mode).submitScore(anyString(), anyInt());
     }
 
-    @NonNull
-    protected final Matcher<View> playButton() {
-        return withId(R.id.play);
-    }
-
-    @NonNull
-    protected final Matcher<View> vsAndroid() {
-        return withId(R.id.vs_android);
-    }
-
-    protected final Matcher<View> autoSetup() {
-        return withId(R.id.auto_setup);
-    }
-
-    protected final Matcher<View> done() {
-        return withId(R.id.done);
+    public void onActivityResult(int request, int result, Intent data) {
+        activity.onActivityResult(request, result, data);
     }
 }

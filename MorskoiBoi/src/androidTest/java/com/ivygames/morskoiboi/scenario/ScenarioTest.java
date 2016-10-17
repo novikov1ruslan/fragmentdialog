@@ -1,11 +1,11 @@
 package com.ivygames.morskoiboi.scenario;
 
+import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
-import com.ivygames.common.timer.TurnTimerController;
 
 import org.junit.Before;
 import org.mockito.Mockito;

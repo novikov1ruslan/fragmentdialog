@@ -1,7 +1,10 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.scenario;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.PlayerCallback;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 

@@ -13,6 +13,7 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

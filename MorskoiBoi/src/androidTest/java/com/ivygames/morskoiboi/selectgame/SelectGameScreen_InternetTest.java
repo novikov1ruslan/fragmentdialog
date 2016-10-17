@@ -12,6 +12,8 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Mockito.never;
 
 public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
@@ -19,14 +21,14 @@ public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     public void WhenInternetButtonPressedButNotConnected__SignInDialogOpens() {
         setSignedIn(false);
         showScreen();
-        ScreenTest.clickOn(internet());
+        clickOn(internet());
         checkDisplayed(signInDialog());
     }
 
     @Test
     public void WhenSignInButtonPressedForAchievementsDialog__ConnectedAndInternetGameScreenDisplayed() {
         WhenInternetButtonPressedButNotConnected__SignInDialogOpens();
-        ScreenTest.clickOn(signInButton());
+        clickOn(signInButton());
         verifyConnected();
         signInSucceeded((SignInListener) screen());
         checkDisplayed(ScreenTest.INTERNET_GAME_LAYOUT);
@@ -35,7 +37,7 @@ public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     @Test
     public void WhenCancelPressedForAchievementsDialog__NotConnectedAndDialogDismissed() {
         WhenInternetButtonPressedButNotConnected__SignInDialogOpens();
-        ScreenTest.clickOn(cancelButton());
+        clickOn(cancelButton());
         verifyConnected(never());
         checkDoesNotExist(signInDialog());
     }
@@ -51,7 +53,7 @@ public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     public void WhenInternetPressedWhileConnected__InternetGameScreenOpens() {
         setSignedIn(true);
         showScreen();
-        ScreenTest.clickOn(internet());
+        clickOn(internet());
         checkDisplayed(ScreenTest.INTERNET_GAME_LAYOUT);
     }
 

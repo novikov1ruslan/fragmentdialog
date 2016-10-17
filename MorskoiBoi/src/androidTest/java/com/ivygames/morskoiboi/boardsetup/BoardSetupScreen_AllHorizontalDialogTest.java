@@ -15,6 +15,9 @@ import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.done;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 

@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.scenario;
 
 import android.support.test.espresso.IdlingResource;
 import android.util.Log;

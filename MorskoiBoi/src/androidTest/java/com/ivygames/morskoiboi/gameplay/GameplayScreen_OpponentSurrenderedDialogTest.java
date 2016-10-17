@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.gameplay;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.R;
 import com.ivygames.common.multiplayer.MultiplayerEvent;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;
@@ -12,6 +12,9 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.WIN_LAYOUT;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Mockito.when;
 
 public class GameplayScreen_OpponentSurrenderedDialogTest extends GameplayScreen_ {

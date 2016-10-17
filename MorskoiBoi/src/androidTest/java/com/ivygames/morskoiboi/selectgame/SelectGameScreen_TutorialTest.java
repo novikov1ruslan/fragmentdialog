@@ -13,6 +13,8 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,14 +38,14 @@ public class SelectGameScreen_TutorialTest extends SelectGameScreen_ {
     @Test
     public void PressingHelp__ShowsTutorial() {
         showScreen();
-        ScreenTest.clickOn(help());
+        clickOn(help());
         checkDisplayed(tutorial());
     }
 
     @Test
     public void WhenTutorialShown_PressingBack__DismissesTutorial() {
         showScreen();
-        ScreenTest.clickOn(help());
+        clickOn(help());
         pressBack();
         checkDoesNotExist(tutorial());
         checkDisplayed(ScreenTest.SELECT_GAME_LAYOUT);
@@ -52,8 +54,8 @@ public class SelectGameScreen_TutorialTest extends SelectGameScreen_ {
     @Test
     public void WhenTutorialShown_PressingGotIt__DismissesTutorial() {
         showScreen();
-        ScreenTest.clickOn(help());
-        ScreenTest.clickOn(gotIt());
+        clickOn(help());
+        clickOn(gotIt());
         checkDoesNotExist(tutorial());
         checkDisplayed(ScreenTest.SELECT_GAME_LAYOUT);
     }
@@ -61,7 +63,7 @@ public class SelectGameScreen_TutorialTest extends SelectGameScreen_ {
     @Test
     public void WhenScreenIsPaused__TutorialDismissed() {
         showScreen();
-        ScreenTest.clickOn(help());
+        clickOn(help());
         pause();
         checkDoesNotExist(tutorial());
     }
@@ -69,8 +71,8 @@ public class SelectGameScreen_TutorialTest extends SelectGameScreen_ {
     @Test
     public void IfTutorialDismissed__ItIsNotShownAgain() {
         setScreen(newScreen());
-        ScreenTest.clickOn(help());
-        ScreenTest.clickOn(gotIt());
+        clickOn(help());
+        clickOn(gotIt());
         verify(settings(), times(1)).hideProgressHelp();
     }
 

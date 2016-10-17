@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 
 
 public class HelpScreenTest extends ScreenTest {

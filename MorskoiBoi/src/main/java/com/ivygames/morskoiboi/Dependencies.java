@@ -25,7 +25,7 @@ public class Dependencies {
     private static AiPlayerFactory sAiPlayerFactory;
     private static Placement sPlacement;
 
-    static void inject(@NonNull ApiClient apiClient) {
+    public static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
         Ln.i(sApiClient);
     }
@@ -35,7 +35,7 @@ public class Dependencies {
     }
 
 
-    static void inject(@NonNull RealTimeMultiplayer multiplayer) {
+    public static void inject(@NonNull RealTimeMultiplayer multiplayer) {
         sMultiplayer = multiplayer;
         Ln.i(sMultiplayer);
     }
@@ -44,7 +44,7 @@ public class Dependencies {
         return sMultiplayer;
     }
 
-    static void inject(@NonNull AchievementsManager achievementsManager) {
+    public static void inject(@NonNull AchievementsManager achievementsManager) {
         sAchievementsManager = achievementsManager;
         Ln.i(sAchievementsManager);
     }
@@ -53,7 +53,7 @@ public class Dependencies {
         return sAchievementsManager;
     }
 
-    static void inject(@NonNull ProgressManager progressManager) {
+    public static void inject(@NonNull ProgressManager progressManager) {
         sProgressManager = progressManager;
         Ln.i(sProgressManager);
     }

@@ -1,14 +1,19 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.internet;
 
 import android.app.Activity;
+import android.support.test.espresso.matcher.ViewMatchers;
+
+import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.R;
 
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Mockito.when;
 
 public class InternetGameScreenTest extends InternetGameScreen_ {
@@ -28,7 +33,7 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
 
         showScreen();
 
-        onView(withId(R.id.player_name)).check(matches(withText("Sagi")));
+        onView(ViewMatchers.withId(R.id.player_name)).check(matches(withText("Sagi")));
     }
 
     @Test
@@ -73,7 +78,8 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     public void WhenWaitDialogIsDisplayed__CancellingTheInvitationRemovesDialog() {
         WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
 
-        activity.onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
+        onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
+
 
         checkDoesNotExist(waitDialog());
     }
@@ -82,8 +88,8 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     public void WhenWaitDialogIsDisplayed__CancellingWaitingRoomRemovesDialog() {
         WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
 
-        activity.onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
-        activity.onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_OK, null);
+        onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
+        onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_OK, null);
 
         checkDoesNotExist(waitDialog());
     }

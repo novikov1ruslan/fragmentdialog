@@ -1,10 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.win;
 
 import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.WIN_LAYOUT;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 
 public class WinScreen_WantToLeaveDialogTest extends WinScreen_ {
 

@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
-import com.ivygames.common.timer.TurnTimerController;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;

@@ -5,6 +5,8 @@ import com.ivygames.morskoiboi.model.Game;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 
 public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreen_ {
     @Test

@@ -1,9 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.bluetooth;
 
 import android.support.annotation.NonNull;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
-import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
+import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenTest;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 
 import org.hamcrest.Matcher;
@@ -11,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
@@ -57,7 +59,7 @@ public class BluetoothScreenTest extends ScreenTest {
 
     @NonNull
     private Matcher<View> joinGameButton() {
-        return withId(R.id.join_game_btn);
+        return ViewMatchers.withId(R.id.join_game_btn);
     }
 
 }

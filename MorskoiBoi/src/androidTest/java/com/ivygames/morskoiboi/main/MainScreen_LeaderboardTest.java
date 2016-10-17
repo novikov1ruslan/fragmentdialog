@@ -5,7 +5,6 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.ScreenTest;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -16,6 +15,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Mockito.never;
 
 public class MainScreen_LeaderboardTest extends MainScreen_ {
@@ -40,14 +40,14 @@ public class MainScreen_LeaderboardTest extends MainScreen_ {
     @Test
     public void WhenSignInPressedForLeaderBoardDialog__Connected() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
-        ScreenTest.clickOn(signInButton());
+        clickOn(signInButton());
         verifyConnected();
     }
 
     @Test
     public void WhenCancelPressedForSignInDialog__NotConnectedAndDialogDismissed() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
-        ScreenTest.clickOn(cancelButton());
+        clickOn(cancelButton());
         verifyConnected(never());
         checkDoesNotExist(leaderBoardDialog());
     }

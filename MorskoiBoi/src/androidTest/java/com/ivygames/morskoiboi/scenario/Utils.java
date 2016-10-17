@@ -1,5 +1,7 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.scenario;
 
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
