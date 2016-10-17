@@ -6,7 +6,6 @@ import android.support.annotation.VisibleForTesting;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.ai.Cancellable;
@@ -25,26 +24,15 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     @NonNull
     private final BotAlgorithm mBot;
 
-    @NonNull
-    private DelegatePlayerCallback mCallback;
-    private Cancellable mCancellable;
-
     public AiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
         super(name, placement, rules);
         mPlacement = placement;
         mRules = rules;
 
-        mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
+        mBot = new RussianBot(new Random(System.currentTimeMillis())); // TODO: generalize FIXME
 
-        mCallback = new PlayerCallbackImpl();
-        super.registerCallback(mCallback);
+        registerCallback(new PlayerCallbackImpl());
         Ln.v("Android opponent created with bot: " + mBot);
-    }
-
-    @Override
-    public void registerCallback(@NonNull PlayerCallback callback) {
-        mCallback.setCallback(callback);
-        Ln.v(getName() + ": external callback set to " + callback);
     }
 
     @Override
@@ -55,11 +43,9 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         }
     }
 
-    private class PlayerCallbackImpl extends DelegatePlayerCallback {
+    private class PlayerCallbackImpl extends DummyCallback {
         @Override
         public void opponentReady() {
-            super.opponentReady();
-
             if (getBoard().getShips().isEmpty()) {
                 Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
                 placeShips();
@@ -72,8 +58,6 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
 
         @Override
         public void onPlayersTurn() {
-            super.onPlayersTurn();
-
             mOpponent.onShotAt(mBot.shoot(getEnemyBoard()));
         }
     }

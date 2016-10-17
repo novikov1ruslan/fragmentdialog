@@ -20,7 +20,6 @@ import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.InvitationToShowListener;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.ui.BackPressListener;
-import com.ivygames.morskoiboi.AiPlayerFactory;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
@@ -75,7 +74,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
     @NonNull
-    private final AiPlayerFactory mOpponentFactory = Dependencies.getAiPlayerFactory();
+    private final PlayerFactory mOpponentFactory = Dependencies.getAiPlayerFactory();
 
     public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
