@@ -10,12 +10,9 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.ScreenTest;
 import com.ivygames.morskoiboi.ScreenTestRule;
-import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.DummyCallback;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.After;
@@ -36,7 +33,7 @@ import static com.ivygames.morskoiboi.ScreenUtils.done;
 import static com.ivygames.morskoiboi.ScreenUtils.playButton;
 import static com.ivygames.morskoiboi.ScreenUtils.vsAndroid;
 
-public class WinLostScenarioTest extends ScreenTest {
+public class WinLostScenarioTest {
     @Rule
     public ScreenTestRule rule = new ScreenTestRule();
 
@@ -88,20 +85,30 @@ public class WinLostScenarioTest extends ScreenTest {
         Dependencies.inject(playerFactory);
         Dependencies.inject(aiPlayerFactory);
 
-        clickOn(playButton());
-        clickOn(vsAndroid());
-        clickOn(autoSetup());
-        clickOn(done());
+        goToGameplay();
 
         registerIdlingResources(playResource);
-//        instrumentation.waitForIdleSync();
 
         checkDisplayed(WIN_LAYOUT);
     }
 
-    @Override
-    protected BattleshipScreen newScreen() {
-        return null;
+//    @Test
+//    public void WhenGameIsLost__LostScreenIsDisplayed() {
+//        Dependencies.inject(new MyPlayerFactory());
+//        Dependencies.inject(new MyAiPlayerFactory());
+//
+//        goToGameplay();
+//
+//        registerIdlingResources(playResource);
+//
+//        checkDisplayed(WIN_LAYOUT);
+//    }
+
+    private void goToGameplay() {
+        clickOn(playButton());
+        clickOn(vsAndroid());
+        clickOn(autoSetup());
+        clickOn(done());
     }
 
     private class MyPlayerFactory implements PlayerFactory {
@@ -122,27 +129,10 @@ public class WinLostScenarioTest extends ScreenTest {
     private static class MyAiPlayerFactory implements AiPlayerFactory {
 
         @Override
-        public AiOpponent createPlayer(@NonNull String name,
+        public PlayerOpponent createPlayer(@NonNull String name,
                                        @NonNull Placement placement,
                                        @NonNull Rules rules) {
             return new BidAiOpponent("looser", placement, rules, 1);
-        }
-    }
-
-    private static class BidAiOpponent extends AiOpponent {
-
-        private final int mBid;
-
-        public BidAiOpponent(@NonNull String name,
-                             @NonNull Placement placement,
-                             @NonNull Rules rules, int bid) {
-            super(name, placement, rules);
-            mBid = bid;
-        }
-
-        @Override
-        public void startBidding(int bid) {
-            super.startBidding(mBid);
         }
     }
 

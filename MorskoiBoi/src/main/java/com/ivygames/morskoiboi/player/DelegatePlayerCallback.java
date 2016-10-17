@@ -20,11 +20,6 @@ public class DelegatePlayerCallback implements PlayerCallback {
         Ln.v("callback set to: " + callback);
     }
 
-    public void removeCallback() {
-        mCallback = new DummyCallback();
-        Ln.v(mCallback + " callback removed");
-    }
-
     @Override
     public void onShotResult(@NonNull ShotResult result) {
         mCallback.onShotResult(result);

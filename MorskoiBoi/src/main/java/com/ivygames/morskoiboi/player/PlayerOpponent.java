@@ -18,8 +18,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
@@ -36,7 +36,7 @@ public class PlayerOpponent implements Opponent {
     private static final int NOT_READY = -1;
 
     @NonNull
-    private final Collection<PlayerCallback> mCallbacks = new ArrayList<>();
+    private final Set<PlayerCallback> mCallbacks = new HashSet<>();
     @NonNull
     private Board mMyBoard = new Board();
     @NonNull
@@ -131,7 +131,7 @@ public class PlayerOpponent implements Opponent {
 
     public void registerCallback(@NonNull PlayerCallback callback) {
         mCallbacks.add(callback);
-        Ln.v(mName + ": callback set, opponent ready = " + mOpponentReady);
+        Ln.v(mName + ": callback added, opponent ready = " + mOpponentReady);
 
         if (mOpponentReady) {
             callback.opponentReady();
@@ -146,9 +146,9 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    public void clearCallbacks() {
-        mCallbacks.clear();
-        Ln.v(mName + ": callback removed");
+    public void unregisterCallback(@NonNull PlayerCallback callback) {
+        mCallbacks.remove(callback);
+        Ln.v(mName + ": callback removed: " + callback);
     }
 
     @Override

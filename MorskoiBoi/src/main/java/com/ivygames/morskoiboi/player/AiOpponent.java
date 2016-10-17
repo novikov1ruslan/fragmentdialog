@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.player;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
@@ -47,18 +48,11 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     @Override
-    public void clearCallbacks() {
-        mCallback.removeCallback();
-    }
-
-    public void setCancellable(@NonNull Cancellable cancellable) {
-        mCancellable = cancellable;
-        Ln.v(getName() + ": cancellable set to: " + cancellable);
-    }
-
-    @Override
     public void cancel() {
-        mCancellable.cancel();
+        if (mOpponent instanceof Cancellable) {
+            Ln.v(mOpponent + " is cancellable, cancelling");
+            ((Cancellable) mOpponent).cancel();
+        }
     }
 
     private class PlayerCallbackImpl extends DelegatePlayerCallback {
@@ -84,7 +78,8 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         }
     }
 
-    private void placeShips() {
+    @VisibleForTesting
+    protected final void placeShips() {
         mPlacement.populateBoardWithShips(getBoard(), mRules.generateFullFleet());
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());

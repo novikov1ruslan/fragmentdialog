@@ -32,6 +32,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
         mGame = game;
         mOpponentName = opponentName;
 
+        // FIXME: if registered here it can happen that event will arrive to more than 1 screen
         mBackToSelectGameCommand = new BackToSelectGameCommand(parent);
         mMultiplayer.registerConnectionLostListener(this);
     }

@@ -58,7 +58,6 @@ public class AndroidOpponentTest {
         mAndroid = new AiOpponent(ANDROID_NAME, mPlacement, mRules);
         mAndroid.setBoard(mBoard);
         mAndroid.setOpponent(mCancellableOpponent);
-        mAndroid.setCancellable(mCancellableOpponent);
     }
 
     @NonNull

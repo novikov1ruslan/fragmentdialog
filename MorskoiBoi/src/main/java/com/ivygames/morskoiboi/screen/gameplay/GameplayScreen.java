@@ -120,6 +120,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private boolean mGameIsOn;
     private GameplayLayoutInterface mLayout;
     private boolean mBackPressEnabled = true;
+    private UiPlayerCallback mUiPlayerCallback;
 
     public GameplayScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session,
                           @NonNull TurnTimerController timerController) {
@@ -186,7 +187,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showOpponentSettingBoardNote();
         }
 
-        mPlayer.registerCallback(new UiPlayerCallback());
+        mUiPlayerCallback = new UiPlayerCallback();
+        mPlayer.registerCallback(mUiPlayerCallback);
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
 
@@ -253,7 +255,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayer.clearCallbacks();
+
+        // Player can receive messages related to the new game round (bid).
+        // Player can receive more messages after this screen is destroyed.
+        // So UI of this screen should not be affected.
+        mPlayer.unregisterCallback(mUiPlayerCallback);
+
         Fragment fragment = mFm.findFragmentByTag(DIALOG);
         if (fragment != null && !mParent.isFinishing()) {
             Ln.v("removing dialog: " + fragment);
@@ -276,19 +283,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     @Override
     public void onConnectionLost(@NonNull MultiplayerEvent event) {
-        if (event == MultiplayerEvent.OPPONENT_LEFT) {
-            mTimerController.stop();
-            mParent.stopService(mMatchStatusIntent);
-            if (mPlayer.isOpponentReady()) {
-                Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
-                AnalyticsEvent.send("opponent_surrendered");
-                showOpponentSurrenderedDialog(mPlayerPrivateBoard.getShips());
-            } else {
-                super.onConnectionLost(event);
-            }
-        } else if (event == MultiplayerEvent.CONNECTION_LOST) {
-            mTimerController.stop();
-            mParent.stopService(mMatchStatusIntent);
+        mTimerController.stop();
+        mParent.stopService(mMatchStatusIntent);
+        if (event == MultiplayerEvent.OPPONENT_LEFT && mPlayer.isOpponentReady()) {
+            Ln.d("opponent surrendered - notifying player, (shortly game will finish)");
+            AnalyticsEvent.send("opponent_surrendered");
+            showOpponentSurrenderedDialog(mPlayerPrivateBoard.getShips());
+        } else {
             super.onConnectionLost(event);
         }
 

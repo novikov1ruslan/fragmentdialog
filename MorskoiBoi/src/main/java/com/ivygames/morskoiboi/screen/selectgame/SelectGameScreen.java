@@ -33,9 +33,7 @@ import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -157,7 +155,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         setPlayerName();
         PlayerOpponent player = createPlayerOpponent();
         DelayedOpponent delegate = createDelayedOpponent(player);
-        Opponent android = createAiOpponent(delegate);
+        Opponent android = createAiOpponent();
 
         Session session = new Session(player, android);
         player.setOpponent(android);
@@ -174,11 +172,8 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @NonNull
-    private AiOpponent createAiOpponent(DelayedOpponent delegate) {
-        AiOpponent android = mOpponentFactory.createPlayer(getString(R.string.android), mPlacement, mRules);
-        android.setBoard(new Board());
-        android.setCancellable(delegate);
-        return android;
+    private Opponent createAiOpponent() {
+        return mOpponentFactory.createPlayer(getString(R.string.android), mPlacement, mRules);
     }
 
     @NonNull
