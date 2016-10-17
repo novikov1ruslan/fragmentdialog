@@ -186,7 +186,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showOpponentSettingBoardNote();
         }
 
-        mPlayer.setCallback(new UiPlayerCallback());
+        mPlayer.registerCallback(new UiPlayerCallback());
 
         mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
 
@@ -253,7 +253,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayer.removeCallback();
+        mPlayer.clearCallbacks();
         Fragment fragment = mFm.findFragmentByTag(DIALOG);
         if (fragment != null && !mParent.isFinishing()) {
             Ln.v("removing dialog: " + fragment);

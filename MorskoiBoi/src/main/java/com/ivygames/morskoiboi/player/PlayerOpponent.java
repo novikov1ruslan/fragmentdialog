@@ -18,6 +18,9 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent implements Opponent {
@@ -33,7 +36,7 @@ public class PlayerOpponent implements Opponent {
     private static final int NOT_READY = -1;
 
     @NonNull
-    private PlayerCallback mCallback = new DummyCallback();
+    private final Collection<PlayerCallback> mCallbacks = new ArrayList<>();
     @NonNull
     private Board mMyBoard = new Board();
     @NonNull
@@ -108,12 +111,12 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         setOpponentBid(bid);
-        mCallback.opponentReady();
+        notifyOpponentReady();
         if (mPlayerReady && opponentStarts()) {
             Ln.d(mName + ": I'm ready too, but it's opponent's turn, " + mOpponent + " begins");
             mOpponent.go();
 
-            mCallback.onOpponentTurn();
+            notifyOpponentTurn();
         }
     }
 
@@ -126,8 +129,8 @@ public class PlayerOpponent implements Opponent {
         Ln.d(this + ": opponent is ready, bid = " + bid);
     }
 
-    public void setCallback(@NonNull PlayerCallback callback) {
-        mCallback = callback;
+    public void registerCallback(@NonNull PlayerCallback callback) {
+        mCallbacks.add(callback);
         Ln.v(mName + ": callback set, opponent ready = " + mOpponentReady);
 
         if (mOpponentReady) {
@@ -143,8 +146,8 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    public void removeCallback() {
-        mCallback = new DummyCallback();
+    public void clearCallbacks() {
+        mCallbacks.clear();
         Ln.v(mName + ": callback removed");
     }
 
@@ -161,9 +164,9 @@ public class PlayerOpponent implements Opponent {
 
         if (!opponentReady) {
             Ln.d("opponent was not ready");
-            mCallback.opponentReady();
+            notifyOpponentReady();
         }
-        mCallback.onPlayersTurn();
+        notifyPlayersTurn();
     }
 
     @Override
@@ -173,9 +176,9 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": -> my shot result: " + result);
         updateEnemyBoard(result);
 
-        mCallback.onShotResult(result);
+        notifyOnShotResult(result);
         if (shipSank(result.ship)) {
-            mCallback.onKill(PlayerCallback.Side.OPPONENT);
+            notifyOnKill(PlayerCallback.Side.OPPONENT);
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(mName + ": actually opponent lost");
 
@@ -189,16 +192,16 @@ public class PlayerOpponent implements Opponent {
                 }
 
                 reset();
-                mCallback.onWin();
+                notifyOnWin();
             }
         } else if (result.cell.isMiss()) {
             Ln.d(mName + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
-            mCallback.onMiss(PlayerCallback.Side.OPPONENT);
-            mCallback.onOpponentTurn();
+            notifyOnMiss(PlayerCallback.Side.OPPONENT);
+            notifyOpponentTurn();
         } else {
             Ln.d(mName + ": it's a hit! - I continue");
-            mCallback.onHit(PlayerCallback.Side.OPPONENT);
+            notifyOnHit(PlayerCallback.Side.OPPONENT);
         }
     }
 
@@ -217,16 +220,16 @@ public class PlayerOpponent implements Opponent {
         ShotResult result = createResultForShootingAt(aim);
         Ln.v(mName + ": <- hitting my board at " + aim + " yields: " + result);
 
-        mCallback.onShotAt(aim);
+        notifyOnShotAt(aim);
         if (shipSank(result.ship)) {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
-            mCallback.onKill(PlayerCallback.Side.PLAYER);
+            notifyOnKill(PlayerCallback.Side.PLAYER);
         } else if (result.cell.isMiss()) {
-            mCallback.onMiss(PlayerCallback.Side.PLAYER);
+            notifyOnMiss(PlayerCallback.Side.PLAYER);
         } else {
             Ln.d(mName + ": my ship is hit");
-            mCallback.onHit(PlayerCallback.Side.PLAYER);
+            notifyOnHit(PlayerCallback.Side.PLAYER);
         }
 
         mOpponent.onShotResult(result);
@@ -237,7 +240,7 @@ public class PlayerOpponent implements Opponent {
                 if (!versionSupportsBoardReveal()) {
                     Ln.d(this + ": opponent version doesn't support board reveal = " + mOpponentVersion);
                     reset();
-                    mCallback.onWin();
+                    notifyOnWin();
                 }
             } else {
                 Ln.d(mName + ": I'm hit - " + mOpponent + " continues");
@@ -266,7 +269,7 @@ public class PlayerOpponent implements Opponent {
         if (mChatListener != null) {
             mChatListener.showChatCrouton(message);
         }
-        mCallback.onMessage(text);
+        notifyOnMessage(text);
     }
 
     @Override
@@ -278,7 +281,7 @@ public class PlayerOpponent implements Opponent {
         }
 
         reset();
-        mCallback.onLost(board);
+        notifyOnLost(board);
     }
 
     @Override
@@ -346,6 +349,72 @@ public class PlayerOpponent implements Opponent {
     @Override
     public String getName() {
         return mName;
+    }
+
+    private void notifyOpponentTurn() {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onOpponentTurn();
+        }
+    }
+
+    private void notifyOnHit(PlayerCallback.Side player) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onHit(player);
+        }
+    }
+
+    private void notifyOnMiss(PlayerCallback.Side player) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onMiss(player);
+        }
+    }
+
+    private void notifyOnKill(PlayerCallback.Side player) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onKill(player);
+        }
+    }
+
+    private void notifyOnLost(@NonNull Board board) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onLost(board);
+        }
+    }
+
+    private void notifyOnMessage(@NonNull String text) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onMessage(text);
+        }
+    }
+
+    private void notifyOnWin() {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onWin();
+        }
+    }
+
+    private void notifyOnShotAt(@NonNull Vector2 aim) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onShotAt(aim);
+        }
+    }
+
+    private void notifyPlayersTurn() {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onPlayersTurn();
+        }
+    }
+
+    private void notifyOnShotResult(@NonNull ShotResult result) {
+        for (PlayerCallback callback : mCallbacks) {
+           callback.onShotResult(result);
+        }
+    }
+
+    private void notifyOpponentReady() {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.opponentReady();
+        }
     }
 
     @Override

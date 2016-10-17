@@ -69,7 +69,7 @@ public class PlayerOpponentTest {
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
-        player.setCallback(callback);
+        player.registerCallback(callback);
         return player;
     }
 

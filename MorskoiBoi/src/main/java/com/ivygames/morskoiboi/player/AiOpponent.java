@@ -36,18 +36,18 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         mBot = new RussianBot(new Random(System.currentTimeMillis()));//BotFactory.getAlgorithm(); // TODO: generalize FIXME
 
         mCallback = new PlayerCallbackImpl();
-        super.setCallback(mCallback);
+        super.registerCallback(mCallback);
         Ln.v("Android opponent created with bot: " + mBot);
     }
 
     @Override
-    public void setCallback(@NonNull PlayerCallback callback) {
+    public void registerCallback(@NonNull PlayerCallback callback) {
         mCallback.setCallback(callback);
         Ln.v(getName() + ": external callback set to " + callback);
     }
 
     @Override
-    public void removeCallback() {
+    public void clearCallbacks() {
         mCallback.removeCallback();
     }
 

@@ -8,11 +8,10 @@ import android.support.test.espresso.IdlingResource;
 public class TaskResource implements IdlingResource {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private volatile boolean isTransitionRunning;
-    private volatile ResourceCallback resourceCallback;
+    private volatile boolean isRunning;
 
     public TaskResource(Runnable runnable) {
-        runTransition(runnable);
+        run(runnable);
     }
 
     @Override
@@ -22,25 +21,20 @@ public class TaskResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        boolean idle = !isTransitionRunning;
-        if (idle && resourceCallback != null) {
-            resourceCallback.onTransitionToIdle();
-        }
-        return idle;
+        return !isRunning;
     }
 
     @Override
     public void registerIdleTransitionCallback(final ResourceCallback callback) {
-        resourceCallback = callback;
     }
 
-    private void runTransition(Runnable runnable) {
-        isTransitionRunning = true;
+    private void run(Runnable runnable) {
+        isRunning = true;
         handler.post(runnable);
         handler.post(new Runnable() {
             @Override
             public void run() {
-                isTransitionRunning = false;
+                isRunning = false;
             }
         });
     }
