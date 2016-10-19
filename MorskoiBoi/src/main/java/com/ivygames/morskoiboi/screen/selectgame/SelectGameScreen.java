@@ -153,12 +153,11 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         UiEvent.send("vsAndroid");
         setPlayerName();
         PlayerOpponent player = createPlayerOpponent();
-        DelayedOpponent delegate = createDelayedOpponent(player);
         Opponent android = createAiOpponent();
 
         Session session = new Session(player, android);
         player.setOpponent(android);
-        android.setOpponent(delegate);
+        android.setOpponent(new DelayedOpponent(player));
 //        Session.bindOpponents(delegate, android);
         setScreen(ScreenCreator.newBoardSetupScreen(new AndroidGame(), session));
     }
@@ -173,13 +172,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @NonNull
     private Opponent createAiOpponent() {
         return mOpponentFactory.createPlayer(getString(R.string.android), mPlacement, mRules);
-    }
-
-    @NonNull
-    private DelayedOpponent createDelayedOpponent(PlayerOpponent player) {
-        DelayedOpponent delegate = new DelayedOpponent();
-        delegate.setOpponent(player);
-        return delegate;
     }
 
     @NonNull

@@ -46,6 +46,6 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
     public void PressingOkOnWantToLeaveDialog__GameFinishes_SelectGameScreenDisplayed() {
         WhenBackPressedForBluetoothGame__WantToLeaveDialogDisplayed();
         clickOn(okButton());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 }

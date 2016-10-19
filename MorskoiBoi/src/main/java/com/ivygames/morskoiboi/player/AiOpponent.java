@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.player;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
@@ -9,11 +8,8 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.ai.Cancellable;
-import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.commons.logger.Ln;
-
-import java.util.Random;
 
 
 public class AiOpponent extends PlayerOpponent implements Cancellable {
@@ -23,22 +19,25 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     private final Rules mRules;
     @NonNull
     private final BotAlgorithm mBot;
+    @NonNull
+    private final Bidder mBidder;
 
-    public AiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
+    public AiOpponent(@NonNull String name, @NonNull Placement placement,
+                      @NonNull Rules rules, @NonNull BotAlgorithm bot, @NonNull Bidder bidder) {
         super(name, placement, rules);
         mPlacement = placement;
         mRules = rules;
-
-        mBot = new RussianBot(new Random(System.currentTimeMillis())); // TODO: generalize FIXME
+        mBot = bot;
+        mBidder = bidder;
 
         registerCallback(new PlayerCallbackImpl());
-        Ln.v("Android opponent created with bot: " + mBot);
+        Ln.v("Android opponent created with bot: " + bot);
     }
 
     @Override
     public void cancel() {
         if (mOpponent instanceof Cancellable) {
-            Ln.v(mOpponent + " is cancellable, cancelling");
+            Ln.v(this + ": cancelling " + mOpponent);
             ((Cancellable) mOpponent).cancel();
         }
     }
@@ -52,7 +51,8 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
             }
 
             if (!ready()) {
-                startBidding(new Bidder().newBid());
+                Ln.d(AiOpponent.this + ": opponent is ready, but I'm not, start bidding");
+                startBidding(mBidder.newBid());
             }
         }
 
@@ -62,8 +62,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         }
     }
 
-    @VisibleForTesting
-    protected final void placeShips() {
+    private void placeShips() {
         mPlacement.populateBoardWithShips(getBoard(), mRules.generateFullFleet());
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());

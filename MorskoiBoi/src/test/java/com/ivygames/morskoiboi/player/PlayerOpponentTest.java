@@ -3,6 +3,8 @@ package com.ivygames.morskoiboi.player;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.analytics.ExceptionHandler;
+import com.ivygames.common.game.Bidder;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
@@ -61,6 +63,7 @@ public class PlayerOpponentTest {
 
         mPlacement = new Placement(new Random(), russianRules);
         mPlayer = newPlayer(russianRules);
+        Dependencies.inject(new RussianBotFactory());
     }
 
     @NonNull
@@ -424,7 +427,7 @@ public class PlayerOpponentTest {
         private boolean lostCalled;
 
         public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            super(name, placement, rules);
+            super(name, placement, rules, Dependencies.getBotFactory().createBot(), new Bidder());
         }
 
         @Override

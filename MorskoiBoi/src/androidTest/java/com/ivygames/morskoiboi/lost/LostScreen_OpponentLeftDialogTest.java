@@ -23,7 +23,7 @@ public class LostScreen_OpponentLeftDialogTest extends LostScreen_ {
         WhenEnemyLeaves__OpponentLeftDialogDisplayed();
         pressBack();
         checkDoesNotExist(opponentLeftDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -33,7 +33,7 @@ public class LostScreen_OpponentLeftDialogTest extends LostScreen_ {
         clickOn(okButton());
 
         checkDoesNotExist(opponentLeftDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
 }

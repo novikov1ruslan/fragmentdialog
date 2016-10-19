@@ -12,6 +12,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static org.mockito.Matchers.anyInt;
@@ -153,7 +154,7 @@ public class WinScreenTest extends WinScreen_ {
         surrendered = false;
         showScreen();
         clickOn(noButton());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -162,7 +163,7 @@ public class WinScreenTest extends WinScreen_ {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test

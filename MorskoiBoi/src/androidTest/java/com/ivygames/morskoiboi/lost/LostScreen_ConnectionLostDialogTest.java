@@ -23,7 +23,7 @@ public class LostScreen_ConnectionLostDialogTest extends LostScreen_ {
         WhenConnectionLost__DialogDisplayed();
         pressBack();
         checkDoesNotExist(connectionLostDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -31,7 +31,7 @@ public class LostScreen_ConnectionLostDialogTest extends LostScreen_ {
         WhenConnectionLost__DialogDisplayed();
         clickOn(okButton());
         checkDoesNotExist(connectionLostDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
 }

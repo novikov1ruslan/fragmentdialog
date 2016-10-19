@@ -44,7 +44,7 @@ public class GameplayScreen_AbandonGameDialog extends GameplayScreen_ {
         WhenBackPressedForAndroidGame__DialogDisplayed();
         clickOn(okButton());
         checkDoesNotExist(abandonGameDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     private Matcher<View> abandonGameDialog() {

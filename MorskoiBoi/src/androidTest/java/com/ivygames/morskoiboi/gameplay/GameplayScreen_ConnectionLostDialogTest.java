@@ -24,7 +24,7 @@ public class GameplayScreen_ConnectionLostDialogTest extends GameplayScreen_ {
         WhenConnectionLost__DialogDisplayed();
         pressBack();
         checkDoesNotExist(connectionLostDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -32,7 +32,7 @@ public class GameplayScreen_ConnectionLostDialogTest extends GameplayScreen_ {
         WhenConnectionLost__DialogDisplayed();
         clickOn(okButton());
         checkDoesNotExist(connectionLostDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
 }

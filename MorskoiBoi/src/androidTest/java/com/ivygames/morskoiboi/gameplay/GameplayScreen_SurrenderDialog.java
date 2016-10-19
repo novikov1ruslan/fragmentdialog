@@ -67,7 +67,7 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
         clickOn(okButton());
         checkDoesNotExist(surrenderDialog());
         verify(settings(), times(1)).setProgressPenalty(PENALTY);
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     private Matcher<View> surrenderDialog() {

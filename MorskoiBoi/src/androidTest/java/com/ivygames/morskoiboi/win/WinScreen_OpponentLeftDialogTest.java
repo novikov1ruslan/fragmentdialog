@@ -23,7 +23,7 @@ public class WinScreen_OpponentLeftDialogTest extends WinScreen_ {
         WhenEnemyLeaves__OpponentLeftDialogDisplayed();
         pressBack();
         checkDoesNotExist(opponentLeftDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -31,7 +31,7 @@ public class WinScreen_OpponentLeftDialogTest extends WinScreen_ {
         WhenEnemyLeaves__OpponentLeftDialogDisplayed();
         clickOn(okButton());
         checkDoesNotExist(opponentLeftDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
 }

@@ -19,13 +19,14 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
     public ScreenTestRule() {
         super(BattleshipActivity.class);
-        settings = mock(GameSettings.class);
-        Dependencies.inject(settings);
     }
 
     @Override
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();
+
+        settings = mock(GameSettings.class);
+        Dependencies.inject(settings);
         apiClient = mock(ApiClient.class);
         when(apiClient.isConnected()).thenReturn(true);
         Dependencies.inject(apiClient);

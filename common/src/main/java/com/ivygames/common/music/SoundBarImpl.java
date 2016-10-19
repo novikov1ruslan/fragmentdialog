@@ -29,7 +29,7 @@ class SoundBarImpl implements SoundBar {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                 if (mReleased) {
-                    Ln.d("loaded when already released");
+                    Ln.w("loaded when already released, not playing");
                 }
                 else {
                     float volume = getVolume();
@@ -37,7 +37,7 @@ class SoundBarImpl implements SoundBar {
                 }
             }
         });
-        Ln.d("created music for " + afd);
+        Ln.v("created music for " + afd);
     }
 
     @Override

@@ -3,22 +3,22 @@ package com.ivygames.morskoiboi.scenario;
 import android.support.test.espresso.IdlingResource;
 import android.util.Log;
 
-class WinIdlingResource implements IdlingResource {
-    private ResourceCallback mCallback;
-    private volatile boolean mWin;
+class WinLostIdlingResource implements IdlingResource {
+    private volatile ResourceCallback mCallback;
+    private volatile boolean mIdle;
 
     @Override
     public String getName() {
-        return IdlingResource.class.getName();
+        return WinLostIdlingResource.class.getName();
     }
 
     @Override
     public boolean isIdleNow() {
-        if (mWin) {
+        if (mIdle) {
             mCallback.onTransitionToIdle();
         }
-        Log.v("TEST", "idle=" + mWin);
-        return mWin;
+        Log.i("TEST", "idle=" + mIdle);
+        return mIdle;
     }
 
     @Override
@@ -26,10 +26,9 @@ class WinIdlingResource implements IdlingResource {
         mCallback = callback;
     }
 
-    public void win() {
-        mWin = true;
-        if (mCallback != null) {
-            mCallback.onTransitionToIdle();
-        }
+    public void setIdle() {
+        Log.i("TEST", "idle!");
+        mIdle = true;
+        mCallback.onTransitionToIdle();
     }
 }

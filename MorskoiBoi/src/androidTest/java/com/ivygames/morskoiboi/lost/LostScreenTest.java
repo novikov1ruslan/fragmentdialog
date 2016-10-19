@@ -1,25 +1,17 @@
 package com.ivygames.morskoiboi.lost;
 
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.screen.BattleshipScreen;
-import com.ivygames.morskoiboi.screen.lost.LostScreen;
 
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
-import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 public class LostScreenTest extends LostScreen_ {
-
-    @Override
-    public BattleshipScreen newScreen() {
-        return new LostScreen(activity, game, session);
-    }
 
     @Test
     public void WhenScreenDisplayed__GamesCounterIncremented() {
@@ -32,7 +24,7 @@ public class LostScreenTest extends LostScreen_ {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -40,7 +32,7 @@ public class LostScreenTest extends LostScreen_ {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         clickOn(noButton());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test

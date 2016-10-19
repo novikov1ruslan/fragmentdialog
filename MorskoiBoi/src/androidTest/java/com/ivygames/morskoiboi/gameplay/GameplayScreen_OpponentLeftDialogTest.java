@@ -25,7 +25,7 @@ public class GameplayScreen_OpponentLeftDialogTest extends GameplayScreen_ {
         WhenOpponentLeftAndOpponentNotReady__OpponentLeftDialogDisplayed();
         pressBack();
         checkDoesNotExist(opponentLeftDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -33,6 +33,6 @@ public class GameplayScreen_OpponentLeftDialogTest extends GameplayScreen_ {
         WhenOpponentLeftAndOpponentNotReady__OpponentLeftDialogDisplayed();
         clickOn(okButton());
         checkDoesNotExist(opponentLeftDialog());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 }

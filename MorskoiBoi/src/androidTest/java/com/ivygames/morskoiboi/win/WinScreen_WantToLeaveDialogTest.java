@@ -49,7 +49,7 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreen_ {
     public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
         WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed();
         clickOn(okButton());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
 }

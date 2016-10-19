@@ -1,10 +1,11 @@
 package com.ivygames.morskoiboi.boardsetup;
 
+import com.ivygames.morskoiboi.ScreenUtils;
+
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
-import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

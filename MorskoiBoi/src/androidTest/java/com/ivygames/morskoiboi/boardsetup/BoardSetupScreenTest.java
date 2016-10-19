@@ -61,7 +61,7 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
         setGameType(Game.Type.VS_ANDROID);
         showScreen();
         pressBack();
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     private void generateNonHorizontalFleet() {

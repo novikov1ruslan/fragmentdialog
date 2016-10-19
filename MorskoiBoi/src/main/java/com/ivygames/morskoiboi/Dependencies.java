@@ -7,6 +7,7 @@ import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.player.BotFactory;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import org.commons.logger.Ln;
@@ -24,6 +25,7 @@ public class Dependencies {
     private static PlayerFactory sPlayerFactory;
     private static AiPlayerFactory sAiPlayerFactory;
     private static Placement sPlacement;
+    private static BotFactory sBotFactory;
 
     public static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
@@ -125,4 +127,17 @@ public class Dependencies {
     public static Placement getPlacement() {
         return sPlacement;
     }
+
+    public static void inject(@NonNull BotFactory botFactory) {
+        sBotFactory = botFactory;
+        Ln.i(sBotFactory);
+    }
+
+    @NonNull
+    public static BotFactory getBotFactory() {
+        return sBotFactory;
+    }
+
+
+
 }

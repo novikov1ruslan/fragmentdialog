@@ -20,9 +20,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
-import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static com.ivygames.morskoiboi.ScreenUtils.vsAndroid;
+import static com.ivygames.morskoiboi.ScreenUtils.*;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;

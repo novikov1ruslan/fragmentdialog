@@ -63,7 +63,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private static final int START_DELAY = 3000;
-    private static final int WON_GAME_DELAY = 3000; // milliseconds
+    private static final long WON_GAME_DELAY = 3000; // milliseconds
+    private static final long LOST_GAME_DELAY = 5000; // milliseconds
 
     private static final int VIBRATION_ON_KILL = 500;
 
@@ -72,8 +73,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final int ALARM_TIME_SECONDS = 10;
 
-    //    private static final long LOST_GAME_WO_REVEAL_DELAY = 3000; // milliseconds
-    private static final long LOST_GAME_WITH_REVEAL_DELAY = 5000; // milliseconds
 
     @NonNull
     private final Handler mUiThreadHandler = new Handler(Looper.getMainLooper());
@@ -161,7 +160,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
         mLayout.setShipsSizes(mRules.getAllShipsSizes());
         if (mGame.getType() != Type.INTERNET) {
-            Ln.d("not internet game - hide chat button");
+            Ln.v("not internet game - hide chat button");
             mLayout.hideChatButton();
         }
 
@@ -495,7 +494,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             disableBackPress();
             mLayout.lost();
-            showLostScreenDelayed(LOST_GAME_WITH_REVEAL_DELAY);
+            showLostScreenDelayed(LOST_GAME_DELAY);
         }
 
         @Override
@@ -544,7 +543,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void disableBackPress() {
-        Ln.d("disabling backpress");
+        Ln.v("disabling backpress");
         mBackPressEnabled = false;
     }
 

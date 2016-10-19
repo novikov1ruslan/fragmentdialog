@@ -57,6 +57,7 @@ public class PlayerOpponent implements Opponent {
     private final Placement mPlacement;
     @NonNull
     private final Rules mRules;
+    private boolean mGameStarted;
 
     protected PlayerOpponent(@NonNull String name,
                    @NonNull Placement placement,
@@ -68,13 +69,13 @@ public class PlayerOpponent implements Opponent {
     }
 
     private void reset() {
-        Ln.d(mName + ": resetting my state");
         mEnemyBoard = new Board();
         mMyBoard = new Board();
         mMyBid = NOT_READY;
         mEnemyBid = NOT_READY;
         mOpponentReady = false;
         mPlayerReady = false;
+        mGameStarted = false;
 //        mOpponentVersion = 0;
     }
 
@@ -99,10 +100,18 @@ public class PlayerOpponent implements Opponent {
 
         if (mOpponentReady && opponentStarts()) {
             Ln.d(mName + ": my bid: " + bid + ", opponent is ready and it is his turn");
-            mOpponent.go();
+            passFirstTurn();
         } else {
-            Ln.d(mName + ": opponent is not ready or has higher bid - sending him my bid... " + bid);
-            mOpponent.onEnemyBid(mMyBid);
+            Ln.d(mName + ": opponent " + (mOpponentReady ? "is not ready" : "has higher bid")
+                    + " - sending him my bid: " + bid);
+            mOpponent.onEnemyBid(bid);
+        }
+    }
+
+    private void passFirstTurn() {
+        if (!mGameStarted) {
+            mGameStarted = true;
+            mOpponent.go();
         }
     }
 
@@ -112,9 +121,10 @@ public class PlayerOpponent implements Opponent {
 
         setOpponentBid(bid);
         notifyOpponentReady();
+
         if (mPlayerReady && opponentStarts()) {
-            Ln.d(mName + ": I'm ready too, but it's opponent's turn, " + mOpponent + " begins");
-            mOpponent.go();
+            Ln.d(mName + ": I'm ready , but it's opponent's turn, " + mOpponent + " begins");
+            passFirstTurn();
 
             notifyOpponentTurn();
         }
@@ -131,9 +141,10 @@ public class PlayerOpponent implements Opponent {
 
     public void registerCallback(@NonNull PlayerCallback callback) {
         mCallbacks.add(callback);
-        Ln.v(mName + ": callback added, opponent ready = " + mOpponentReady);
+        Ln.v(mName + ": [" + callback + "] callback added");
 
         if (mOpponentReady) {
+            Ln.d(mName + ": opponent ready, notifying");
             callback.opponentReady();
 
             if (mPlayerReady) {
@@ -155,17 +166,14 @@ public class PlayerOpponent implements Opponent {
     public void go() {
         debug_handler.post(debug_thread_break_task);
 
-        boolean opponentReady = mOpponentReady;
         Ln.d(mName + ": I go");
         if (!mOpponentReady) {
-            Ln.v(mName + ": opponent is ready");
+            Ln.v(mName + ": opponent was not ready, but ready now");
             mOpponentReady = true;
-        }
 
-        if (!opponentReady) {
-            Ln.d("opponent was not ready");
             notifyOpponentReady();
         }
+
         notifyPlayersTurn();
     }
 
@@ -188,9 +196,9 @@ public class PlayerOpponent implements Opponent {
                     mOpponent.onLost(mMyBoard);
                 } else {
                     Ln.d(this + ": opponent version doesn't support board reveal = " + mOpponentVersion);
-//                    mCallback.onLost(null); // FIXME: lost screen shown when I won
                 }
 
+                Ln.d(mName + ": resetting my state before win");
                 reset();
                 notifyOnWin();
             }
@@ -200,7 +208,7 @@ public class PlayerOpponent implements Opponent {
             notifyOnMiss(PlayerCallback.Side.OPPONENT);
             notifyOpponentTurn();
         } else {
-            Ln.d(mName + ": it's a hit! - I continue");
+            Ln.d(mName + ": it's a hit!");
             notifyOnHit(PlayerCallback.Side.OPPONENT);
         }
     }
@@ -238,7 +246,8 @@ public class PlayerOpponent implements Opponent {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
                 Ln.d(mName + ": I'm defeated, no turn to pass");
                 if (!versionSupportsBoardReveal()) {
-                    Ln.d(this + ": opponent version doesn't support board reveal = " + mOpponentVersion);
+                    Ln.d(mName + ": opponent version doesn't support board reveal = " + mOpponentVersion);
+                    Ln.d(mName + ": resetting my state before win");
                     reset();
                     notifyOnWin();
                 }
@@ -251,8 +260,8 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        Ln.d(mName + ": my opponent is " + opponent);
-        mOpponent = opponent;
+        mOpponent = new HandlerDelegateOpponent(opponent);
+        Ln.d(mName + ": my opponent is " + mOpponent);
         opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
 
@@ -280,6 +289,7 @@ public class PlayerOpponent implements Opponent {
             reportException("lost while not defeated");
         }
 
+        Ln.d(mName + ": resetting my state before lost");
         reset();
         notifyOnLost(board);
     }

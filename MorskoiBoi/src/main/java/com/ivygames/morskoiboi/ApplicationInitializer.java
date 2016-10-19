@@ -13,12 +13,12 @@ import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.ai.BotFactory;
 import com.ivygames.morskoiboi.player.AiPlayerFactoryImpl;
+import com.ivygames.morskoiboi.player.BotFactory;
 import com.ivygames.morskoiboi.player.PlayerFactoryImpl;
+import com.ivygames.morskoiboi.player.RussianBotFactory;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.variant.FleetBitmaps;
-import com.ivygames.morskoiboi.variant.RussianBot;
 import com.ivygames.morskoiboi.variant.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -46,7 +46,6 @@ class ApplicationInitializer {
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules(new Random(System.currentTimeMillis()));
         Placement placement = new Placement(new Random(System.currentTimeMillis()), rules);
-        BotFactory.setAlgorithm(new RussianBot(null));
         AndroidDevice device = new AndroidDevice(application);
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application,
@@ -57,7 +56,8 @@ class ApplicationInitializer {
         MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
                 BattleshipActivity.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactoryImpl();
-        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl();
+        BotFactory botFactory = new RussianBotFactory();
+        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(botFactory);
 
         Dependencies.inject(placement);
         Dependencies.inject(apiClient);
@@ -69,6 +69,7 @@ class ApplicationInitializer {
         Dependencies.inject(device);
         Dependencies.inject(playerFactory);
         Dependencies.inject(aiPlayerFactory);
+        Dependencies.inject(botFactory);
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);

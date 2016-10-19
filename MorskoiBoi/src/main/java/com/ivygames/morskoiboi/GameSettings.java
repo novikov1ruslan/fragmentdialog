@@ -85,7 +85,6 @@ public class GameSettings implements AchievementsSettings {
 
     public void incrementGamesPlayedCounter() {
         int played = mPreferences.getInt(GAMES_PLAYED, 0);
-        Ln.d("incrementing played games counter: " + played);
         mEditor.putInt(GAMES_PLAYED, ++played);
     }
 

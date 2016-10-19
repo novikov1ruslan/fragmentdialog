@@ -15,7 +15,6 @@ import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutInterface;
 import com.ivygames.morskoiboi.screen.help.HelpLayout;
@@ -68,9 +67,7 @@ public abstract class ScreenTest {
     protected static final Matcher<View> BLUETOOTH_LAYOUT = instanceOf(BluetoothLayout.class);
     protected static final Matcher<View> DEVICE_LIST_LAYOUT = instanceOf(DeviceListLayout.class);
     protected static final Matcher<View> RANKS_LAYOUT = instanceOf(RanksLayout.class);
-    protected static final Matcher<View> BOARD_SETUP_LAYOUT = instanceOf(BoardSetupLayout.class);
     protected static final Matcher<View> INTERNET_GAME_LAYOUT = instanceOf(InternetGameLayout.class);
-    //    protected static final Matcher<View> LOST_LAYOUT = instanceOf(LostLayout.class);
     protected static final Matcher<View> GAMEPLAY_LAYOUT = instanceOf(GameplayLayoutInterface.class);
 
     @Rule

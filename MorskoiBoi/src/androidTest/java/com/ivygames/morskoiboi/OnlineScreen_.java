@@ -68,7 +68,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
         when(game.getType()).thenReturn(type);
     }
     // TODO: inline
-    protected final void FinishGame_BackToSelectGame() {
+    protected final void backToSelectGame() {
 //        verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);
     }

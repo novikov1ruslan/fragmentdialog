@@ -16,7 +16,8 @@ public class DelayedOpponent implements Opponent, Cancellable {
     private static final int WHISTLE_SOUND_DELAY = 1300;
     private static final boolean NO_NEED_TO_THINK = false;
 
-    private Opponent mOpponent;
+    @NonNull
+    private final Opponent mOpponent;
 
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -28,6 +29,10 @@ public class DelayedOpponent implements Opponent, Cancellable {
     @Nullable
     private OnShootAtCommand mOnShootAtCommand;
 
+    public DelayedOpponent(@NonNull Opponent opponent) {
+        mOpponent = opponent;
+    }
+
     private static long getThinkingTime(boolean needThinking) {
         int extraTime = needThinking ? 1000 : 0;
         return (long) (1000 + (int) (Math.random() * (500 + extraTime)));
@@ -35,8 +40,7 @@ public class DelayedOpponent implements Opponent, Cancellable {
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        mOpponent = opponent;
-        Ln.v("opponent set to " + opponent);
+        throw new RuntimeException("not implemented");
     }
 
     @Override
@@ -93,14 +97,24 @@ public class DelayedOpponent implements Opponent, Cancellable {
 
     @Override
     public void cancel() {
-        Ln.v("cancelling all commands");
-        mHandler.removeCallbacks(mGoCommand);
-        mHandler.removeCallbacks(mOnShootAtCommand);
-        mHandler.removeCallbacks(mOnShotResultCommand);
+        int canceled = 0;
+        if (mGoCommand != null && !mGoCommand.executed()) {
+            mHandler.removeCallbacks(mGoCommand);
+            canceled++;
+        }
+        if (mOnShootAtCommand != null && !mOnShootAtCommand.executed()) {
+            mHandler.removeCallbacks(mOnShootAtCommand);
+            canceled++;
+        }
+        if (mOnShotResultCommand != null && !mOnShotResultCommand.executed()) {
+            mHandler.removeCallbacks(mOnShotResultCommand);
+            canceled++;
+        }
+        Ln.d("canceled " + canceled + " commands");
     }
 
     @Override
     public String toString() {
-        return mOpponent.toString() + "(D)";
+        return "(D:" + mOpponent + ")";
     }
 }

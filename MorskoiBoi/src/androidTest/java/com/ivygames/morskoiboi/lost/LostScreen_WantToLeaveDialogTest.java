@@ -1,18 +1,11 @@
 package com.ivygames.morskoiboi.lost;
 
-import android.support.annotation.NonNull;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.view.View;
-
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
-import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.*;
 
 public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
 
@@ -36,7 +29,7 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
     public void PressingOkOnWantToLeaveDialog__SelectGameScreenDisplayed() {
         WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown();
         clickOn(okButton());
-        FinishGame_BackToSelectGame();
+        backToSelectGame();
     }
 
     @Test
@@ -53,11 +46,6 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
         pressBack();
         checkDoesNotExist(wantToLeaveDialog());
         checkDisplayed(lostScreen());
-    }
-
-    @NonNull
-    protected Matcher<View> lostScreen() {
-        return ViewMatchers.withText(R.string.lost);
     }
 
 }
