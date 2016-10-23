@@ -90,7 +90,7 @@ public class EnemyBoardView extends BaseBoardView {
             postInvalidateDelayed(mRenderer.animateExplosions(canvas, mLastShotResult.aim));
         }
 
-//            getRenderer().render(canvas, mTouchState.getX(), mTouchState.getY());
+        mRenderer.drawDebug(canvas, mTouchState.getX(), mTouchState.getY());
     }
 
     private Aiming getAiming(int width, int height) {

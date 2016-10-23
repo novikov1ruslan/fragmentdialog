@@ -6,12 +6,12 @@ import static android.R.attr.y;
 
 class MyProcessor extends BaseGeometryProcessor {
 
-    private final int mBoardSize;
+//    private final int mBoardSize;
     private final float mTurnBorderSize;
 
     public MyProcessor(int boardSize, float turnBorderSize) {
         super(boardSize, turnBorderSize);
-        mBoardSize = boardSize;
+//        mBoardSize = boardSize;
         mTurnBorderSize = turnBorderSize;
     }
 
@@ -21,12 +21,12 @@ class MyProcessor extends BaseGeometryProcessor {
     }
 
     public int getX(int i) {
-        int cellSize = mBoardRect.width() / mBoardSize;
-        return (int) (i * cellSize + mTurnBorderSize);
+//        int cellSize = mBoardRect.width() / mBoardSize;
+        return (int) (i * mCellSizePx /*+ mTurnBorderSize*/) + (mCellSizePx /2);
     }
 
     public int getY(int j) {
-        int cellSize = mBoardRect.width() / mBoardSize;
-        return (int) (j * cellSize + mTurnBorderSize);
+//        int cellSize = mBoardRect.width() / mBoardSize;
+        return (int) (j * mCellSizePx /*+ mTurnBorderSize*/) + (mCellSizePx / 2);
     }
 }

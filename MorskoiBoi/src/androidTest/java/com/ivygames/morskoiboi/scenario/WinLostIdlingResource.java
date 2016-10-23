@@ -5,19 +5,19 @@ import android.util.Log;
 
 class WinLostIdlingResource implements IdlingResource {
     private volatile ResourceCallback mCallback;
-    private volatile boolean mIdle;
+    private volatile boolean mIdle = true;
 
     @Override
     public String getName() {
-        return WinLostIdlingResource.class.getName();
+        return WinLostIdlingResource.class.getName() + hashCode();
     }
 
     @Override
     public boolean isIdleNow() {
-        if (mIdle) {
-            mCallback.onTransitionToIdle();
-        }
-        Log.i("TEST", "idle=" + mIdle);
+//        if (mIdle) {
+//            mCallback.onTransitionToIdle();
+//        }
+        log("idle=" + mIdle);
         return mIdle;
     }
 
@@ -26,9 +26,15 @@ class WinLostIdlingResource implements IdlingResource {
         mCallback = callback;
     }
 
-    public void setIdle() {
-        Log.i("TEST", "idle!");
-        mIdle = true;
-        mCallback.onTransitionToIdle();
+    public void setIdle(boolean idle) {
+        log("setting idle=" + idle);
+        mIdle = idle;
+        if (mIdle && mCallback != null) {
+            mCallback.onTransitionToIdle();
+        }
+    }
+
+    private void log(String msg) {
+        Log.i("TEST", msg);
     }
 }

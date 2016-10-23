@@ -4,9 +4,14 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.CoordinatesProvider;
+import android.support.test.espresso.action.GeneralClickAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
+import android.util.Log;
 import android.view.View;
 
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout;
@@ -98,5 +103,31 @@ public class ScreenUtils {
                         .build();
             }
         };
+    }
+
+    public static void waitFor(Matcher<View> viewMatcher, long millis) {
+        onView(isRoot()).perform(waitId(viewMatcher, millis));
+    }
+
+    public static ViewAction clickXY(final int x, final int y){
+        Log.i("TEST", "clicking on (" + x + "," + y + ")");
+
+        return new GeneralClickAction(
+                Tap.SINGLE,
+                new CoordinatesProvider() {
+                    @Override
+                    public float[] calculateCoordinates(View view) {
+
+                        final int[] screenPos = new int[2];
+                        view.getLocationOnScreen(screenPos);
+
+                        final float screenX = screenPos[0] + x;
+                        final float screenY = screenPos[1] + y;
+                        float[] coordinates = {screenX, screenY};
+
+                        return coordinates;
+                    }
+                },
+                Press.FINGER);
     }
 }

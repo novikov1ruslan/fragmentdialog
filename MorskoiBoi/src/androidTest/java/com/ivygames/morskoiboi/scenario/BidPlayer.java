@@ -28,7 +28,7 @@ class BidPlayer extends PlayerOpponent {
     @Override
     public void go() {
         super.go();
-        mOpponent.onShotAt(getNextShot());
+//        mOpponent.onShotAt(getNextShot());
     }
 
     @Override

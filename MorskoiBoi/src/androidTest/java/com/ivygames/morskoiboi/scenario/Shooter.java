@@ -1,18 +1,12 @@
 package com.ivygames.morskoiboi.scenario;
 
 import android.support.annotation.NonNull;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.CoordinatesProvider;
-import android.support.test.espresso.action.GeneralClickAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Tap;
-import android.support.test.espresso.action.ViewActions;
-import android.util.Log;
 import android.view.View;
 
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.List;
@@ -42,33 +36,11 @@ class Shooter {
         mCurShot++;
         int x = processor.getX(vector2.getX());
         int y = processor.getY(vector2.getY());
-            onView(withId(R.id.enemy_board)).perform(clickXY(x, y));
-//        onView(withId(R.id.enemy_board)).perform(ViewActions.click());
+        onView(withId(R.id.enemy_board)).perform(ScreenUtils.clickXY(x, y));
     }
 
     public boolean hasShots() {
         return mCurShot < mShots.size();
     }
 
-    public static ViewAction clickXY(final int x, final int y){
-        Log.v("TEST", "clicking on (" + x + "," + y + ")");
-
-        return new GeneralClickAction(
-                Tap.SINGLE,
-                new CoordinatesProvider() {
-                    @Override
-                    public float[] calculateCoordinates(View view) {
-
-                        final int[] screenPos = new int[2];
-                        view.getLocationOnScreen(screenPos);
-
-                        final float screenX = screenPos[0] + x;
-                        final float screenY = screenPos[1] + y;
-                        float[] coordinates = {screenX, screenY};
-
-                        return coordinates;
-                    }
-                },
-                Press.FINGER);
-    }
 }

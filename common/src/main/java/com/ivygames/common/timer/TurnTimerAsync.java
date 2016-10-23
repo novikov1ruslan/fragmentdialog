@@ -1,17 +1,18 @@
 package com.ivygames.common.timer;
 
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
-
-import com.ivygames.common.timer.TimerListener;
-import com.ivygames.common.timer.TimerUpdater;
-import com.ivygames.common.timer.TurnTimer;
 
 import org.commons.logger.Ln;
 
-public class TurnTimerAsync extends AsyncTask<Void, Void, Void> implements TurnTimer {
+public class TurnTimerAsync implements TurnTimer {
     private static final int RESOLUTION = 1000;
 
+    @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    @NonNull
+    private final UpdateTask mUpdateTask = new UpdateTask();
     @NonNull
     private final TimerUpdater mDelegate;
 
@@ -23,25 +24,20 @@ public class TurnTimerAsync extends AsyncTask<Void, Void, Void> implements TurnT
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
-        workerThread().setName("turn_timer");
+    public void execute() {
         Ln.v("timer started for " + mDelegate.getRemainedTime() + "ms");
-        while (!workerThread().isInterrupted() && !isCancelled()) {
-            try {
-                Thread.sleep(RESOLUTION);
-            } catch (InterruptedException ie) {
-                Ln.v("turn timer interrupted");
-                workerThread().interrupt();
-                return null;
-            }
-            publishProgress();
-        }
-        return null;
+        update();
+    }
+
+    private void update() {
+        mHandler.postDelayed(mUpdateTask, RESOLUTION);
     }
 
     @Override
-    public void execute() {
-        super.execute();
+    public boolean cancel(boolean b) {
+        Ln.v("cancelling timer");
+        mHandler.removeCallbacks(mUpdateTask);
+        return true;
     }
 
     @Override
@@ -49,16 +45,14 @@ public class TurnTimerAsync extends AsyncTask<Void, Void, Void> implements TurnT
         return mDelegate.getRemainedTime();
     }
 
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        mDelegate.tick();
-        if (mDelegate.getRemainedTime() <= 0) {
-            cancel(true);
+    private class UpdateTask implements Runnable {
+        @Override
+        public void run() {
+            mDelegate.tick();
+            if (mDelegate.getRemainedTime() > 0) {
+                Ln.v("time left: " + mDelegate.getRemainedTime() + "ms");
+                update();
+            }
         }
-    }
-
-    @NonNull
-    private static Thread workerThread() {
-        return Thread.currentThread();
     }
 }

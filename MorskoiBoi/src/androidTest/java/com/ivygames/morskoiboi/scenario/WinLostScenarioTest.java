@@ -21,7 +21,6 @@ import com.ivygames.morskoiboi.player.DummyCallback;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
-import org.commons.logger.Ln;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,19 +28,16 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.Espresso.unregisterIdlingResources;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static com.ivygames.morskoiboi.ScreenUtils.WIN_LAYOUT;
 import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
-import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
 import static com.ivygames.morskoiboi.ScreenUtils.lostScreen;
 import static com.ivygames.morskoiboi.ScreenUtils.playButton;
 import static com.ivygames.morskoiboi.ScreenUtils.vsAndroid;
-import static com.ivygames.morskoiboi.ScreenUtils.waitId;
+import static com.ivygames.morskoiboi.ScreenUtils.waitFor;
 
 public class WinLostScenarioTest {
     private static final long WON_GAME_DELAY = 3000; // milliseconds
@@ -65,6 +61,9 @@ public class WinLostScenarioTest {
 
         IdlingPolicies.setMasterPolicyTimeout(20, TimeUnit.MINUTES);
         IdlingPolicies.setIdlingResourceTimeout(20, TimeUnit.MINUTES);
+
+        playResource = new WinLostIdlingResource();
+        registerIdlingResources(playResource);
     }
 
     @After
@@ -86,18 +85,23 @@ public class WinLostScenarioTest {
                 rule.getActivity().findViewById(R.id.enemy_board),
                 (int) rule.getActivity().getResources().getDimension(R.dimen.ship_border));
 
-        playResource = new WinLostIdlingResource();
-        registerIdlingResources(playResource);
+        log("ready to shoot");
+        while (shooter.hasShots()) {
+            playResource.setIdle(false);
+            espressoWait();
+            shooter.shoot();
+        }
 
-//        while (shooter.hasShots()) {
-//            shooter.shoot();
-//        }
+        playResource.setIdle(false);
+        espressoWait();
+        waitFor(WIN_LAYOUT, WON_GAME_DELAY + 1000);
+    }
 
-//        registerIdlingResources(playResource);
-
-//        Thread.sleep(WON_GAME_DELAY + 300);
-
-        checkDisplayed(WIN_LAYOUT);
+    private void espressoWait() throws InterruptedException {
+        while (!playResource.isIdleNow()) {
+            Thread.sleep(1000);
+            log("sleeping");
+        }
     }
 
     @Test
@@ -106,15 +110,10 @@ public class WinLostScenarioTest {
         Dependencies.inject(new BidAiPlayerFactory(2));
 
         goToGameplay();
+        playResource.setIdle(false);
+        espressoWait();
 
-        playResource = new WinLostIdlingResource();
-        registerIdlingResources(playResource);
-
-        Ln.i("TEST", "waiting");
-        onView(isRoot()).perform(waitId(lostScreen(), LOST_GAME_DELAY + 1000));
-
-        Ln.i("TEST", "assert");
-        checkDisplayed(lostScreen());
+        waitFor(lostScreen(), LOST_GAME_DELAY + 1000);
     }
 
     private void goToGameplay() {
@@ -122,6 +121,12 @@ public class WinLostScenarioTest {
         clickOn(vsAndroid());
         clickOn(autoSetup());
         clickOn(done());
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                log("main thread is idle");
+            }
+        });
     }
 
     private class BidPlayerFactory implements PlayerFactory {
@@ -142,20 +147,25 @@ public class WinLostScenarioTest {
 
         @Override
         public void onWin() {
-            Log.i("TEST", "win");
-            playResource.setIdle();
+            log("win");
+            playResource.setIdle(true);
         }
 
         @Override
         public void onLost(@Nullable Board board) {
-            Log.i("TEST", "lost");
-            playResource.setIdle();
+            log("lost");
+            playResource.setIdle(true);
         }
 
         @Override
         public void onPlayersTurn() {
-//            playResource.setIdle();
+            log("turn");
+            playResource.setIdle(true);
         }
+    }
+
+    private static void log(String msg) {
+        Log.i("TEST", msg);
     }
 
 }
