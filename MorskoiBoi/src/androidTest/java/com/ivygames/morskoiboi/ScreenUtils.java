@@ -27,6 +27,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.instanceOf;
 
 public class ScreenUtils {
@@ -129,5 +130,15 @@ public class ScreenUtils {
                     }
                 },
                 Press.FINGER);
+    }
+
+    @NonNull
+    public static Matcher<View> noButton() {
+        return withText(R.string.no);
+    }
+
+    @NonNull
+    public static Matcher<View> yesButton() {
+        return withText(R.string.yes);
     }
 }

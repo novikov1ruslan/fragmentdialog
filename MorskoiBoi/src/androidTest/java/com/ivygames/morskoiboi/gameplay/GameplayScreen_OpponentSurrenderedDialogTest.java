@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;
@@ -43,8 +44,8 @@ public class GameplayScreen_OpponentSurrenderedDialogTest extends GameplayScreen
 
     private void checkWinScreenDisplayedInOpponentSurrenderedMode() {
         checkDisplayed(WIN_LAYOUT);
-        checkNotDisplayed(yesButton());
-        checkNotDisplayed(noButton());
+        checkNotDisplayed(ScreenUtils.yesButton());
+        checkNotDisplayed(ScreenUtils.noButton());
         checkDisplayed(continueButton());
     }
 

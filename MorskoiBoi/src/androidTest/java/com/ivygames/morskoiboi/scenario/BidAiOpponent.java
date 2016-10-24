@@ -10,18 +10,19 @@ import com.ivygames.morskoiboi.player.AiOpponent;
 
 public class BidAiOpponent extends AiOpponent {
 
-    private final int mBid;
+    private final int[] mBid;
+    private int mCurBid;
 
     public BidAiOpponent(@NonNull String name,
                          @NonNull Placement placement,
                          @NonNull Rules rules,
-                         @NonNull BotAlgorithm bot, int bid) {
+                         @NonNull BotAlgorithm bot, int[] bid) {
         super(name, placement, rules, bot, new Bidder());
         mBid = bid;
     }
 
     @Override
     public void startBidding(int bid) {
-        super.startBidding(mBid);
+        super.startBidding(mBid[mCurBid++]);
     }
 }

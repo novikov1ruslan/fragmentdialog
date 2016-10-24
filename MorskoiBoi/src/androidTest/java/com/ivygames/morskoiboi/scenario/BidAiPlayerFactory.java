@@ -10,13 +10,14 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class BidAiPlayerFactory implements AiPlayerFactory {
 
-    private final int mBid;
+    private final int[] mBid;
 
-    public BidAiPlayerFactory(int bid) {
+    public BidAiPlayerFactory(int... bid) {
         mBid = bid;
     }
 
@@ -32,10 +33,11 @@ class BidAiPlayerFactory implements AiPlayerFactory {
         private int mCurShot;
 
         @NonNull
-        private final List<Vector2> mShots;
+        private final List<Vector2> mShots = new ArrayList<>();
 
         public MyBotAlgorithm(Rules rules, Placement placement) {
-            mShots = Utils.getShots(rules, placement);
+            mShots.addAll(Utils.getShots(rules, placement));
+            mShots.addAll(Utils.getShots(rules, placement));
         }
 
         @NonNull

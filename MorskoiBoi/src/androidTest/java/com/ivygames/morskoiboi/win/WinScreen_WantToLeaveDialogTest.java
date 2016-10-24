@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.win;
 
+import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreen_ {
         setGameType(Game.Type.BLUETOOTH);
         surrendered = false;
         showScreen();
-        clickOn(noButton());
+        clickOn(ScreenUtils.noButton());
         checkDisplayed(wantToLeaveDialog());
     }
 

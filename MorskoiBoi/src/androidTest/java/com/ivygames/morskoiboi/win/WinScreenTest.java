@@ -4,6 +4,7 @@ import android.support.test.espresso.matcher.ViewMatchers;
 
 import com.ivygames.common.SignInListener;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
@@ -119,16 +120,16 @@ public class WinScreenTest extends WinScreen_ {
     public void WhenOpponentNotSurrendered__YesNoButtonsShowed() {
         surrendered = false;
         showScreen();
-        checkDisplayed(yesButton());
-        checkDisplayed(noButton());
+        checkDisplayed(ScreenUtils.yesButton());
+        checkDisplayed(ScreenUtils.noButton());
     }
 
     @Test
     public void WhenOpponentSurrendered__InsteadOfYesNoContinueButtonShowed() {
         surrendered = true;
         showScreen();
-        checkNotDisplayed(yesButton());
-        checkNotDisplayed(noButton());
+        checkNotDisplayed(ScreenUtils.yesButton());
+        checkNotDisplayed(ScreenUtils.noButton());
         checkDisplayed(continueButton());
     }
 
@@ -144,7 +145,7 @@ public class WinScreenTest extends WinScreen_ {
         surrendered = false;
         showScreen();
         when(rules.getAllShipsSizes()).thenReturn(new int[]{});
-        clickOn(yesButton());
+        clickOn(ScreenUtils.yesButton());
         checkDisplayed(BOARD_SETUP_LAYOUT);
     }
 
@@ -153,7 +154,7 @@ public class WinScreenTest extends WinScreen_ {
         setGameType(Game.Type.VS_ANDROID);
         surrendered = false;
         showScreen();
-        clickOn(noButton());
+        clickOn(ScreenUtils.noButton());
         backToSelectGame();
     }
 

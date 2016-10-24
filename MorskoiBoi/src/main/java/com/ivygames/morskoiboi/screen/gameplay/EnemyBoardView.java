@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.google.example.games.basegameutils.BuildConfig;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ShotResult;
@@ -90,7 +91,9 @@ public class EnemyBoardView extends BaseBoardView {
             postInvalidateDelayed(mRenderer.animateExplosions(canvas, mLastShotResult.aim));
         }
 
-        mRenderer.drawDebug(canvas, mTouchState.getX(), mTouchState.getY());
+        if (BuildConfig.DEBUG) {
+            mRenderer.drawDebug(canvas, mTouchState.getX(), mTouchState.getY());
+        }
     }
 
     private Aiming getAiming(int width, int height) {

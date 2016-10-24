@@ -38,6 +38,7 @@ import static com.ivygames.morskoiboi.ScreenUtils.lostScreen;
 import static com.ivygames.morskoiboi.ScreenUtils.playButton;
 import static com.ivygames.morskoiboi.ScreenUtils.vsAndroid;
 import static com.ivygames.morskoiboi.ScreenUtils.waitFor;
+import static com.ivygames.morskoiboi.ScreenUtils.yesButton;
 
 public class WinLostScenarioTest {
     private static final long WON_GAME_DELAY = 3000; // milliseconds
@@ -74,66 +75,91 @@ public class WinLostScenarioTest {
     }
 
     @Test
-    public void WhenGameIsWon__WinScreenIsDisplayed() throws InterruptedException {
-        Dependencies.inject(new BidPlayerFactory(2));
-        Dependencies.inject(new BidAiPlayerFactory(1));
+    public void WinWin() throws InterruptedException {
+        Dependencies.inject(new BidPlayerFactory(2, 2));
+        Dependencies.inject(new BidAiPlayerFactory(1, 1));
 
         goToGameplay();
 
-        Shooter shooter = new Shooter(Dependencies.getRules(),
-                Dependencies.getPlacement(),
-                rule.getActivity().findViewById(R.id.enemy_board),
-                (int) rule.getActivity().getResources().getDimension(R.dimen.ship_border));
+        shootToWin();
+        verifyWin();
 
-        log("ready to shoot");
-        while (shooter.hasShots()) {
-            playResource.setIdle(false);
-            espressoWait();
-            shooter.shoot();
-        }
+        clickOn(yesButton());
+        clickOn(autoSetup());
+        clickOn(done());
 
-        playResource.setIdle(false);
-        espressoWait();
-        waitFor(WIN_LAYOUT, WON_GAME_DELAY + 1000);
-    }
-
-    private void espressoWait() throws InterruptedException {
-        while (!playResource.isIdleNow()) {
-            Thread.sleep(1000);
-            log("sleeping");
-        }
+        shootToWin();
+        verifyWin();
     }
 
     @Test
-    public void WhenGameIsLost__LostScreenIsDisplayed() throws InterruptedException {
-        Dependencies.inject(new BidPlayerFactory(1));
-        Dependencies.inject(new BidAiPlayerFactory(2));
+    public void WinLost() throws InterruptedException {
+        Dependencies.inject(new BidPlayerFactory(2, 1));
+        Dependencies.inject(new BidAiPlayerFactory(1 ,2));
 
         goToGameplay();
-        playResource.setIdle(false);
-        espressoWait();
 
-        waitFor(lostScreen(), LOST_GAME_DELAY + 1000);
-    }
+        shootToWin();
+        verifyWin();
 
-    private void goToGameplay() {
-        clickOn(playButton());
-        clickOn(vsAndroid());
+        clickOn(yesButton());
         clickOn(autoSetup());
         clickOn(done());
-        instrumentation.runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                log("main thread is idle");
-            }
-        });
+
+        idleWait();
+        verifyLost();
+    }
+
+    @Test
+    public void LostLost() throws InterruptedException {
+        Dependencies.inject(new BidPlayerFactory(1, 1));
+        Dependencies.inject(new BidAiPlayerFactory(2 ,2));
+
+        goToGameplay();
+
+        idleWait();
+        verifyLost();
+
+        clickOn(yesButton());
+        clickOn(autoSetup());
+        clickOn(done());
+
+        idleWait();
+        verifyLost();
+    }
+
+    @Test
+    public void LostWin() throws InterruptedException {
+        Dependencies.inject(new BidPlayerFactory(1, 2));
+        Dependencies.inject(new BidAiPlayerFactory(2 ,1));
+
+        goToGameplay();
+
+        idleWait();
+        verifyLost();
+
+        clickOn(yesButton());
+        clickOn(autoSetup());
+        clickOn(done());
+
+        shootToWin();
+        verifyWin();
+    }
+
+    private void idleWait() throws InterruptedException {
+        playResource.setIdle(false);
+        espressoWait();
+    }
+
+    private void verifyLost() {
+        waitFor(lostScreen(), LOST_GAME_DELAY + 1000);
     }
 
     private class BidPlayerFactory implements PlayerFactory {
 
-        private final int mBid;
+        private final int[] mBid;
 
-        public BidPlayerFactory(int bid) {
+        public BidPlayerFactory(int... bid) {
             mBid = bid;
         }
 
@@ -162,6 +188,50 @@ public class WinLostScenarioTest {
             log("turn");
             playResource.setIdle(true);
         }
+    }
+
+    private void espressoWait() throws InterruptedException {
+        while (!playResource.isIdleNow()) {
+            Thread.sleep(1000);
+            log("sleeping");
+        }
+    }
+
+    private void goToGameplay() {
+        clickOn(playButton());
+        clickOn(vsAndroid());
+        clickOn(autoSetup());
+        clickOn(done());
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                log("main thread is idle");
+            }
+        });
+    }
+
+    private void shootToWin() throws InterruptedException {
+        Shooter shooter = newShooter();
+
+        log("ready to shoot");
+        while (shooter.hasShots()) {
+            idleWait();
+            shooter.shoot();
+        }
+
+        idleWait();
+    }
+
+    @NonNull
+    private Shooter newShooter() {
+        return new Shooter(Dependencies.getRules(),
+                Dependencies.getPlacement(),
+                rule.getActivity().findViewById(R.id.enemy_board),
+                (int) rule.getActivity().getResources().getDimension(R.dimen.ship_border));
+    }
+
+    private void verifyWin() {
+        waitFor(WIN_LAYOUT, WON_GAME_DELAY + 1000);
     }
 
     private static void log(String msg) {

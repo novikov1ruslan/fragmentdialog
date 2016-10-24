@@ -254,16 +254,6 @@ public abstract class ScreenTest {
     }
 
     @NonNull
-    protected final Matcher<View> noButton() {
-        return withText(R.string.no);
-    }
-
-    @NonNull
-    protected final Matcher<View> yesButton() {
-        return withText(R.string.yes);
-    }
-
-    @NonNull
     protected Matcher<View> signInButton() {
         return withText(R.string.sign_in);
     }
