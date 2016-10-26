@@ -21,7 +21,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     @NonNull
     protected final Game mGame;
     @NonNull
-    private final Runnable mBackToSelectGameCommand;
+    private final Runnable mEndGameCommand;
     @NonNull
     private final String mOpponentName;
     @NonNull
@@ -32,8 +32,9 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
         mGame = game;
         mOpponentName = opponentName;
 
+        mEndGameCommand = new EndGameCommand(game, new BackToSelectGameCommand(parent));
+
         // FIXME: if registered here it can happen that event will arrive to more than 1 screen
-        mBackToSelectGameCommand = new BackToSelectGameCommand(parent);
         mMultiplayer.registerConnectionLostListener(this);
     }
 
@@ -56,12 +57,12 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     }
 
     private void showOpponentLeftDialog() {
-        SimpleActionDialog.create(R.string.opponent_left, mBackToSelectGameCommand).show(mFm, DIALOG);
+        SimpleActionDialog.create(R.string.opponent_left, mEndGameCommand).show(mFm, DIALOG);
     }
 
     protected final void showConnectionLostDialog() {
         SimpleActionDialog.create(R.string.connection_lost,
-                mBackToSelectGameCommand).show(mFm, DIALOG);
+                mEndGameCommand).show(mFm, DIALOG);
     }
 
     protected final boolean shouldNotifyOpponent() {
@@ -70,11 +71,11 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
 
     protected final void showWantToLeaveRoomDialog() {
         String message = getString(R.string.want_to_leave_room, mOpponentName);
-        DialogUtils.newOkCancelDialog(message, mBackToSelectGameCommand).show(mFm, DIALOG);
+        DialogUtils.newOkCancelDialog(message, mEndGameCommand).show(mFm, DIALOG);
     }
 
     protected final void backToSelectGame() {
-        mBackToSelectGameCommand.run();
+        mEndGameCommand.run();
     }
 
 }

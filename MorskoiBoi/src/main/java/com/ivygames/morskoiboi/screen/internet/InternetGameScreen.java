@@ -162,7 +162,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public void onBackPressed() {
         if (mKeyLock) {
-            Ln.w("keys are locked");
+            Ln.d("keys are locked");
             return;
         }
 

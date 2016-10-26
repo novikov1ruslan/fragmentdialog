@@ -15,6 +15,8 @@ import org.junit.Before;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public abstract class OnlineScreen_ extends ScreenTest {
@@ -69,7 +71,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
     }
     // TODO: inline
     protected final void backToSelectGame() {
-//        verifyGameFinished();
+        verifyGameFinished();
         checkDisplayed(SELECT_GAME_LAYOUT);
     }
 
@@ -77,9 +79,9 @@ public abstract class OnlineScreen_ extends ScreenTest {
         return withText(R.string.continue_str);
     }
 
-//    private void verifyGameFinished() {
-//        verify(game, times(1)).finish();
-//    }
+    private void verifyGameFinished() {
+        verify(game, times(1)).finish();
+    }
 
     protected final Matcher<View> opponentLeftDialog() {
         return withText(R.string.opponent_left);

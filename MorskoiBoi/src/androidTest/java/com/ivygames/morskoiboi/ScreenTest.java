@@ -84,7 +84,7 @@ public abstract class ScreenTest {
     private BattleshipScreen screen;
 
     protected final Set<String> INVITATIONS = new HashSet<>();
-    protected final Set<String> NO_INVITATIONS = UnmodifiableSet.<String>unmodifiableSet(Collections.<String>emptySet());
+    protected final Set<String> NO_INVITATIONS = UnmodifiableSet.unmodifiableSet(Collections.<String>emptySet());
 
     protected abstract BattleshipScreen newScreen();
 

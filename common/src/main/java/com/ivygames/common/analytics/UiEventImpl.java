@@ -5,11 +5,12 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 import com.google.android.gms.analytics.Tracker;
+import com.google.example.games.basegameutils.BuildConfig;
 
 import org.commons.logger.Ln;
 
 public final class UiEventImpl {
-    private static final boolean LOG_ENABLED = true;
+    private static final boolean LOG_ENABLED = BuildConfig.DEBUG;
 
     private static final String GA_CAT_UI = "ui";
 
