@@ -6,6 +6,7 @@ import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
@@ -63,7 +64,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        mPlacement.populateBoardWithShips(getBoard(), mRules.generateFullFleet());
+        mPlacement.populateBoardWithShips(getBoard(), ShipUtils.generateFullFleet(mRules));
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());
         }

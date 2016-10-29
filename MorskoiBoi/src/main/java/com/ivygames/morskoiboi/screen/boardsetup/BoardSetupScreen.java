@@ -19,6 +19,7 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
@@ -78,13 +79,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
         super(parent, game, session.opponent.getName());
         mSession = session;
-        mFleet.addAll(generateFullHorizontalFleet());
+        mFleet.addAll(ShipUtils.generateFullHorizontalFleet(mRules));
         Ln.d("new board created, fleet initialized");
-    }
-
-    @NonNull
-    private Collection<Ship> generateFullHorizontalFleet() {
-        return Ship.setOrientationForShips(mRules.generateFullFleet(), Ship.Orientation.HORIZONTAL);
     }
 
     @NonNull
@@ -131,9 +127,9 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void autoSetup() {
             UiEvent.send("auto");
             mBoard.clearBoard();
-            Collection<Ship> ships = mRules.generateFullFleet();
+            Collection<Ship> ships = ShipUtils.generateFullFleet(mRules);
             while (BoardSetupUtils.onlyHorizontalShips(ships)) {
-                ships = mRules.generateFullFleet();
+                ships = ShipUtils.generateFullFleet(mRules);
             }
             mPlacement.populateBoardWithShips(mBoard, ships);
             mFleet.clear();

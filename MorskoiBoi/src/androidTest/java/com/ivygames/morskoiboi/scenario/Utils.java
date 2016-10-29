@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.scenario;
 
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -13,7 +14,7 @@ import java.util.List;
 public class Utils {
     static List<Vector2> getShots(Rules rules, Placement placement) {
         Board board = new Board();
-        Collection<Ship> ships = rules.generateFullFleet();
+        Collection<Ship> ships = ShipUtils.generateFullFleet(rules);
         placement.populateBoardWithShips(board, ships);
 
         List<Vector2> shots = new ArrayList<>(20);

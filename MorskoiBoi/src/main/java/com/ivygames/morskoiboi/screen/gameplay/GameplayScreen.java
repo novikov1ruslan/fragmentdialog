@@ -32,6 +32,7 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -579,7 +580,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private Collection<Ship> getWorkingEnemyShips() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fleet = mRules.generateFullFleet();
+        Collection<Ship> fleet = ShipUtils.generateFullFleet(mRules);
         for (Ship ship : killedShips) {
             GameplayUtils.removeShipFromFleet(fleet, ship);
         }

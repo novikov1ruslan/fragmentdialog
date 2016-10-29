@@ -22,7 +22,7 @@ import static org.hamcrest.core.Is.is;
 
 public class PlacementTest {
 
-    private Placement mAlgorithm;
+    private Placement mPlacement;
     private int mNumberOfDistinctShips;
     private Rules rules;
     private Board mBoard;
@@ -37,13 +37,13 @@ public class PlacementTest {
         mBoard = new Board();
         rules = new RussianRules(new Random());
         Dependencies.inject(rules);
-        mAlgorithm = new Placement(new Random(1), rules);
+        mPlacement = new Placement(new Random(1), rules);
 	}
 
     @Test
     public void after_generating_full_board_it_has_russian_fleet() {
         Board board = new Board();
-        mAlgorithm.populateBoardWithShips(board, rules.generateFullFleet());
+        mPlacement.populateBoardWithShips(board, rules.generateFullFleet());
         assertAllTheShipsAreRussianFleet(board.getShips());
     }
 
@@ -53,10 +53,10 @@ public class PlacementTest {
         putShipAt(mBoard, ship, 5, 5);
         mBoard.getCell(8, 8).setMiss();
 
-        assertNull(mAlgorithm.removeShipFrom(mBoard, 4, 4));
+        assertNull(mPlacement.removeShipFrom(mBoard, 4, 4));
         assertEquals(1, mBoard.getShips().size());
 
-        assertNotNull(mAlgorithm.removeShipFrom(mBoard, 5, 5));
+        assertNotNull(mPlacement.removeShipFrom(mBoard, 5, 5));
         assertEquals(0, mBoard.getShips().size());
 
         for (int i = 0; i < 10; i++) {
@@ -80,14 +80,14 @@ public class PlacementTest {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (!((i == 5 && j == 5) || (i == 6 && j == 6))) {
-                    assertNull(i + "," + j, mAlgorithm.removeShipFrom(mBoard, i, j));
+                    assertNull(i + "," + j, mPlacement.removeShipFrom(mBoard, i, j));
                 }
             }
         }
 
         assertEquals(2, mBoard.getShips().size());
         assertFalse(91 == mBoard.getEmptyCells().size());
-        Ship ship2 = mAlgorithm.removeShipFrom(mBoard, 5, 5);
+        Ship ship2 = mPlacement.removeShipFrom(mBoard, 5, 5);
         assert ship2 != null;
 
         assertEquals(ship.getSize(), ship2.getSize());
@@ -103,7 +103,7 @@ public class PlacementTest {
     public void testCanRotateShip() {
         Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 5);
-        mAlgorithm.rotateShipAt(mBoard, 5, 5);
+        mPlacement.rotateShipAt(mBoard, 5, 5);
 
         assertFalse(ship.isHorizontal());
         assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
@@ -113,7 +113,7 @@ public class PlacementTest {
     public void testCannotRotateShip() {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 7);
-        mAlgorithm.rotateShipAt(mBoard, 5, 7);
+        mPlacement.rotateShipAt(mBoard, 5, 7);
 
         assertFalse(ship.isHorizontal());
         assertEquals(5, ship.getX());
@@ -126,7 +126,7 @@ public class PlacementTest {
     }
 
     private void putShipAt(Board board, Ship ship, int x, int y) {
-        mAlgorithm.putShipAt(board, ship, x, y);
+        mPlacement.putShipAt(board, ship, x, y);
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {

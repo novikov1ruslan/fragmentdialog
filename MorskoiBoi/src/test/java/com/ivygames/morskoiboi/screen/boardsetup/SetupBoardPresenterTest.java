@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -45,7 +46,7 @@ public class SetupBoardPresenterTest {
     @Test
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
-        mPlacement.populateBoardWithShips(board, rules.generateFullFleet());
+        mPlacement.populateBoardWithShips(board, ShipUtils.generateFullFleet(rules));
         mPresenter.dropShip(board, 5, 5);
     }
 
