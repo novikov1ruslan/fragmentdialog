@@ -31,9 +31,8 @@ class TurnTimerSync implements TurnTimer {
     }
 
     @Override
-    public boolean cancel(boolean b) {
+    public void cancel() {
         cancelled = true;
-        return false;
     }
 
     @Override

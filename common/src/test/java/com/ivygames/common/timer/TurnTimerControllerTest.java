@@ -13,7 +13,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
@@ -65,14 +64,14 @@ public class TurnTimerControllerTest {
     public void WhenPauseCalled__TimerCancelled() {
         controller.start();
         controller.pause();
-        verify(timer, times(1)).cancel(true);
+        verify(timer, times(1)).cancel();
         verify(listener, times(1)).onCanceled();
     }
 
     @Test
     public void WhenPauseCalledWithoutStart__CallIsIgnored() {
         controller.pause();
-        verify(timer, never()).cancel(anyBoolean());
+        verify(timer, never()).cancel();
         verify(listener, never()).onCanceled();
     }
 
@@ -95,13 +94,13 @@ public class TurnTimerControllerTest {
     public void WhenStopCalled__TimerCancelled() {
         controller.start();
         controller.stop();
-        verify(timer, times(1)).cancel(true);
+        verify(timer, times(1)).cancel();
     }
 
     @Test
     public void WhenStopCalledWithoutStart__CallIsIgnored() {
         controller.stop();
-        verify(timer, never()).cancel(anyBoolean());
+        verify(timer, never()).cancel();
         verify(listener, never()).onCanceled();
     }
 

@@ -43,7 +43,7 @@ public class TurnTimerController {
             return;
         }
 
-        mTurnTimer.cancel(true);
+        mTurnTimer.cancel();
         mTimeLeft = mTurnTimer.getRemainedTime();
         Ln.d("timer pausing with " + mTimeLeft);
         processCancelRequest();
@@ -56,7 +56,7 @@ public class TurnTimerController {
             return;
         }
 
-        mTurnTimer.cancel(true);
+        mTurnTimer.cancel();
         mTimeLeft = mTurnTimeout;
         Ln.v("timer stopped");
         processCancelRequest();
@@ -64,7 +64,7 @@ public class TurnTimerController {
 
     private void processCancelRequest() {
         mTurnTimer = null;
-        mTimerListener.onCanceled();
+        mTimerListener.cancel();
     }
 
     public void setListener(@NonNull TurnListener listener) {
@@ -91,11 +91,11 @@ public class TurnTimerController {
             mTurnListener.setCurrentTime(time);
         }
 
-        public void onCanceled() {
+        void cancel() {
             mTurnListener.onCanceled();
         }
 
-        public void setDelegate(@NonNull TurnListener listener) {
+        void setDelegate(@NonNull TurnListener listener) {
             mTurnListener = listener;
         }
     }

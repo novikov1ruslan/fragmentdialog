@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import org.commons.logger.Ln;
 
-public class TimerUpdater {
+class TimerUpdater {
 
     private volatile int mRemainedTime;
     @NonNull

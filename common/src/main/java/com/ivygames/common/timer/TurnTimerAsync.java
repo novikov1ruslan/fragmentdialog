@@ -34,10 +34,9 @@ class TurnTimerAsync implements TurnTimer {
     }
 
     @Override
-    public boolean cancel(boolean b) {
+    public void cancel() {
         Ln.v("cancelling timer");
         mHandler.removeCallbacks(mUpdateTask);
-        return true;
     }
 
     @Override
