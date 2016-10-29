@@ -1,12 +1,8 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.timer.TimerListener;
-import com.ivygames.common.timer.TimerUpdater;
-import com.ivygames.common.timer.TurnTimer;
-
-public class TurnTimerSync implements TurnTimer {
+class TurnTimerSync implements TurnTimer {
 
     private static final int RESOLUTION = 1000;
 

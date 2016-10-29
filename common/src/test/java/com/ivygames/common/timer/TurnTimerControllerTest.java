@@ -1,14 +1,8 @@
-package com.ivygames.morskoiboi.screen.gameplay;
+package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.analytics.ExceptionHandler;
-import com.ivygames.common.timer.TimerListener;
-import com.ivygames.common.timer.TurnListener;
-import com.ivygames.common.timer.TurnTimer;
-import com.ivygames.common.timer.TurnTimerAsync;
-import com.ivygames.common.timer.TurnTimerController;
-import com.ivygames.common.timer.TurnTimerFactory;
 
 import org.junit.Before;
 import org.junit.Test;
