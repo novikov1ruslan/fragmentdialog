@@ -26,11 +26,6 @@ public abstract class Game implements Finishable {
         return false;
     }
 
-    @Override
-    public boolean hasFinished() {
-        return mFinished;
-    }
-
     /**
      * @return timeout in seconds
      */
