@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.common.SignInListener;
-
 import static org.commons.logger.Ln.d;
 import static org.commons.logger.Ln.e;
 import static org.commons.logger.Ln.v;

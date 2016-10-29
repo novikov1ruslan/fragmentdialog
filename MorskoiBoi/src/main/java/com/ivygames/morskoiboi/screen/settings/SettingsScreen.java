@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
-import com.ivygames.common.SignInListener;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;

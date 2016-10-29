@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.common.SignInListener;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;

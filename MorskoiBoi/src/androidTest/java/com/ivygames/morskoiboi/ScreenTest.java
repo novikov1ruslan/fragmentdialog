@@ -8,7 +8,7 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.common.SignInListener;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;

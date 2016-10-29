@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
-import com.ivygames.common.SignInListener;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;

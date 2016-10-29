@@ -12,7 +12,7 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
-import com.ivygames.common.SignInListener;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.InvitationToShowListener;
