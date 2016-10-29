@@ -1,10 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.component;
 
 import android.view.View;
 
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.googleapi.ApiClient;
+import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 
 import org.mockito.Mock;

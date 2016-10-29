@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.invitations;
+package com.ivygames.common.multiplayer;
 
 import org.junit.After;
 import org.junit.Before;

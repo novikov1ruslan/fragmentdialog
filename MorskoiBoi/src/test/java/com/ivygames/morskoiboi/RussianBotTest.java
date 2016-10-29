@@ -2,14 +2,12 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Random;
@@ -19,12 +17,7 @@ import static org.hamcrest.core.Is.is;
 
 public class RussianBotTest {
 
-    private BotAlgorithm mBot;
-
-    @BeforeClass
-    public static void runBeforeClass() {
-
-    }
+    private RussianBot mBot;
 
     @Before
     public void setup() {

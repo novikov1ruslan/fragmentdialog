@@ -20,7 +20,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class RussianPlacementTest {
+public class PlacementTest {
 
     private Placement mAlgorithm;
     private int mNumberOfDistinctShips;

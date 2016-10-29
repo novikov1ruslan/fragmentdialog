@@ -1,6 +1,8 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.component;
 
 import com.ivygames.common.analytics.ExceptionHandler;
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.AiOpponent;

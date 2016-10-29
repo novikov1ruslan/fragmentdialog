@@ -31,7 +31,7 @@ public class RussianRulesTest {
     private static final long MIN_TIME = 20000;
     private static final long MAX_TIME = 300000;
 
-    private Rules mRules;
+    private RussianRules mRules;
     private Placement placement;
 
     @Mock
@@ -41,11 +41,11 @@ public class RussianRulesTest {
     @Before
     public void setUp() {
         initMocks(this);
-        RussianRules rules = new RussianRules(new Random());
-        Dependencies.inject(rules);
-        Dependencies.inject(new Placement(new Random(1), rules));
+        mRules = new RussianRules(new Random());
+
+        Dependencies.inject(mRules);
+        Dependencies.inject(new Placement(new Random(1), mRules));
         placement = Dependencies.getPlacement();
-        mRules = Dependencies.getRules();
     }
 
     @Test
