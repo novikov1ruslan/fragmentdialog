@@ -63,7 +63,6 @@ public class PlayerOpponentTest {
 
         mPlacement = new Placement(new Random(), russianRules);
         mPlayer = newPlayer(russianRules);
-        Dependencies.inject(new RussianBotFactory());
     }
 
     @NonNull
@@ -427,7 +426,7 @@ public class PlayerOpponentTest {
         private boolean lostCalled;
 
         public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            super(name, placement, rules, Dependencies.getBotFactory().createBot(), new Bidder());
+            super(name, placement, rules, new RussianBotFactory().createBot(), new Bidder());
         }
 
         @Override

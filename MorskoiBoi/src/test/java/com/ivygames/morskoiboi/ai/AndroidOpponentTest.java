@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
@@ -59,15 +58,13 @@ public class AndroidOpponentTest {
         mCancellableOpponent = new DelegateOpponent();
         mCancellableOpponent.setOpponent(mOpponent);
 
-        Dependencies.inject(new RussianBotFactory());
-
         Bidder bidder = mock(Bidder.class);
         when(bidder.newBid()).thenReturn(1);
         mAndroid = newAndroid(bidder);
     }
 
     private AiOpponent newAndroid(Bidder bidder) {
-        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mPlacement, mRules, Dependencies.getBotFactory().createBot(), bidder);
+        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mPlacement, mRules, new RussianBotFactory().createBot(), bidder);
         aiOpponent.setBoard(mBoard);
         aiOpponent.setOpponent(mCancellableOpponent);
 
