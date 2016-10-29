@@ -28,10 +28,7 @@ public abstract class Command implements Runnable {
 
     @Override
     public String toString() {
-        return uniqueName();
+        return DebugUtils.getSimpleName(this);
     }
 
-    protected final String uniqueName() {
-        return getClass().getSimpleName() + "#" + (hashCode() % 1000);
-    }
 }

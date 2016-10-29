@@ -24,6 +24,6 @@ final class OnShootAtCommand extends Command {
 
     @Override
     public String toString() {
-        return uniqueName() + mAim;
+        return super.toString() + mAim;
     }
 }
