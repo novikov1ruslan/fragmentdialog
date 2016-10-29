@@ -2,8 +2,6 @@ package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.timer.TimerListener;
-
 import org.commons.logger.Ln;
 
 public class TimerUpdater {
