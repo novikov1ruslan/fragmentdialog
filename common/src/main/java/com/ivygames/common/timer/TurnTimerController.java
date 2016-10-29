@@ -2,11 +2,6 @@ package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.timer.TimerListener;
-import com.ivygames.common.timer.TurnListener;
-import com.ivygames.common.timer.TurnTimer;
-import com.ivygames.common.timer.TurnTimerFactory;
-
 import org.commons.logger.Ln;
 
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;

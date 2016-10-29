@@ -1,7 +1,4 @@
-package com.ivygames.morskoiboi.screen.gameplay;
-
-import com.ivygames.common.timer.TimerListener;
-import com.ivygames.common.timer.TimerUpdater;
+package com.ivygames.common.timer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class TimerUpdaterTest {
+public class TimerUpdaterTest2 {
 
     private static final int DEFAULT_TIMEOUT = 2 * 60 * 1000;
     private static final int RESOLUTION = 1000;

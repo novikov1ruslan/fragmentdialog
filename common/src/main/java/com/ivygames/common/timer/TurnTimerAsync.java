@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 import org.commons.logger.Ln;
 
-public class TurnTimerAsync implements TurnTimer {
+class TurnTimerAsync implements TurnTimer {
     private static final int RESOLUTION = 1000;
 
     @NonNull
