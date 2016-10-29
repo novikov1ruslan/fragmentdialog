@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -135,7 +136,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mEnemyPublicBoard = mPlayer.getEnemyBoard();
         mPlayerPrivateBoard = mPlayer.getBoard();
 
-        mVibrator = new VibratorWrapper(mParent);
+        mVibrator = new VibratorWrapper((Vibrator) parent.getSystemService(Context.VIBRATOR_SERVICE));
 
         mMatchStatusIntent = new Intent(parent, InternetService.class);
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());

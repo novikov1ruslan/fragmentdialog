@@ -1,6 +1,5 @@
 package com.ivygames.common;
 
-import android.content.Context;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
@@ -9,8 +8,8 @@ public class VibratorWrapper {
     @NonNull
     private final Vibrator mVibrator;
 
-    public VibratorWrapper(@NonNull Context context) {
-        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    public VibratorWrapper(@NonNull Vibrator vibrator) {
+        mVibrator = vibrator;
     }
 
     public void vibrate(int milliseconds) {

@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen;
 
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.VibratorWrapper;
@@ -49,8 +50,8 @@ public class ScreenCreator {
     }
 
     @NonNull
-    public static SettingsScreen newSettingsScreen() {
-        VibratorWrapper vibratorFacade = new VibratorWrapper(activity);
+    public static SettingsScreen newSettingsScreen(Vibrator vibrator) {
+        VibratorWrapper vibratorFacade = new VibratorWrapper(vibrator);
         return new SettingsScreen(activity, vibratorFacade);
     }
 
