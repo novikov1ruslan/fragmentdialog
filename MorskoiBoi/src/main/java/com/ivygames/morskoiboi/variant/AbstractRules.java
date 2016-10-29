@@ -21,21 +21,6 @@ public abstract class AbstractRules implements Rules {
         mRandom = random;
     }
 
-    @NonNull
-    private static Collection<Ship> generateShipsForSizes(@NonNull int[] allShipsSizes,
-                                                          @NonNull Random random) {
-        List<Ship> fleet = new ArrayList<>();
-        for (int length : allShipsSizes) {
-            fleet.add(new Ship(length, calcRandomOrientation(random)));
-        }
-
-        return fleet;
-    }
-
-    private static Ship.Orientation calcRandomOrientation(@NonNull Random random) {
-        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
-    }
-
     @Override
     public boolean isBoardSet(@NonNull Board board) {
         return allShipsAreOnBoard(board) && !isThereConflictingCell(board);
@@ -88,8 +73,25 @@ public abstract class AbstractRules implements Rules {
         return health;
     }
 
+    @NonNull
     @Override
     public Collection<Ship> generateFullFleet() {
         return generateShipsForSizes(getAllShipsSizes(), mRandom);
+    }
+
+    @NonNull
+    private static Collection<Ship> generateShipsForSizes(@NonNull int[] allShipsSizes,
+                                                          @NonNull Random random) {
+        List<Ship> fleet = new ArrayList<>();
+        for (int length : allShipsSizes) {
+            fleet.add(new Ship(length, calcRandomOrientation(random)));
+        }
+
+        return fleet;
+    }
+
+    @NonNull
+    private static Ship.Orientation calcRandomOrientation(@NonNull Random random) {
+        return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
     }
 }

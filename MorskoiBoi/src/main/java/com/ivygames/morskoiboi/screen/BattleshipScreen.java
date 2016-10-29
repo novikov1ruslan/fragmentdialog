@@ -20,7 +20,7 @@ public abstract class BattleshipScreen extends ActivityScreen {
     @NonNull
     protected final FragmentManager mFm;
 
-    public BattleshipScreen(BattleshipActivity parent) {
+    protected BattleshipScreen(BattleshipActivity parent) {
         super(parent);
         mFm = getFragmentManager();
         UiEvent.screenView(this.getClass().getSimpleName());

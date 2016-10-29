@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
@@ -18,14 +19,14 @@ public class Bitmaps {
     private static final SparseArray<Bitmap> sBitmaps = new SparseArray<>();
 
     private static int sMemoryUsed;
-    private static FleetBitmaps fleetBitmapsChooser;
+    private static FleetBitmaps sFleetBitmapsChooser;
 
     private Bitmaps() {
     }
 
     public static void loadBitmaps(@NonNull FleetBitmaps fleetBitmapsChooser,
                                    @NonNull Resources res) {
-        Bitmaps.fleetBitmapsChooser = fleetBitmapsChooser;
+        sFleetBitmapsChooser = fleetBitmapsChooser;
 
         put(res, R.drawable.aircraft_carrier);
         put(res, R.drawable.battleship);
@@ -70,7 +71,7 @@ public class Bitmaps {
         Ln.d("memory used by bitmaps: " + (sMemoryUsed / 1024) + "k");
     }
 
-    private static void put(Resources res, int resId) {
+    private static void put(@NonNull Resources res, @DrawableRes int resId) {
         Bitmap bitmap = BitmapFactory.decodeResource(res, resId);
         sBitmaps.put(resId, bitmap);
 
@@ -92,57 +93,13 @@ public class Bitmaps {
         return bitmap;
     }
 
-    public static Bitmap getSideBitmapForShipSize(Resources resources, int size) {
-        return fleetBitmapsChooser.getSideBitmapForShipSize(resources, size);
+    public static Bitmap getSideBitmapForShipSize(@NonNull Resources resources, int size) {
+        // TODO: what if called before load? NPE
+        return sFleetBitmapsChooser.getSideBitmapForShipSize(resources, size);
     }
 
-    public static Bitmap getTopBitmapForShipSize(Resources resources, int size) {
-        return fleetBitmapsChooser.getTopBitmapForShipSize(resources, size);
+    public static Bitmap getTopBitmapForShipSize(@NonNull Resources resources, int size) {
+        return sFleetBitmapsChooser.getTopBitmapForShipSize(resources, size);
     }
 
-    public int getBitmapSize(Resources res, int resId) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        Bitmap tmp = BitmapFactory.decodeResource(res, resId, options);
-        return tmp.getByteCount();
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
 }

@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class ChatDialog extends FragmentAlertDialog {
         return ((ChatDialogLayout) getContentView()).getChatMessage();
     }
 
-    public void setAdapter(ChatAdapter adapter) {
+    public void setAdapter(@NonNull ChatAdapter adapter) {
         mChatAdapter = adapter;
     }
 

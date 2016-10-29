@@ -6,7 +6,6 @@ import android.support.multidex.MultiDex;
 
 import org.acra.ReportField;
 import org.acra.annotation.ReportsCrashes;
-import org.commons.logger.Ln;
 
 /**
  * ANDROID_VERSION ﻿﻿APP_VERSION_CODE ﻿﻿APP_VERSION_NAME ﻿﻿PACKAGE_NAME ﻿REPORT_ID ﻿STACK_TRACE ﻿USER_APP_START_DATE ﻿USER_CRASH_DATE

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.AiPlayerFactory;
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 

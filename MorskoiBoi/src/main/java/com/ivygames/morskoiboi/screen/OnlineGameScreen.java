@@ -27,7 +27,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     @NonNull
     private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
 
-    public OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull String opponentName) {
+    protected OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull String opponentName) {
         super(parent);
         mGame = game;
         mOpponentName = opponentName;

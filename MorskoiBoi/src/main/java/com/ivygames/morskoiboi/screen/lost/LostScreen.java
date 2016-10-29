@@ -27,26 +27,27 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "LOST";
 
     @NonNull
-    private final SoundBar mSoundBar;
+    private final SoundBar mLostMusic;
 
     @NonNull
     private final GameSettings mSettings = Dependencies.getSettings();
 
     private View mView;
-    private Session mSession;
+    @NonNull
+    private final Session mSession;
 
     public LostScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
         super(parent, game, session.opponent.getName());
         mSession = session;
 
-        mSoundBar = createSoundBar(parent, "lost.ogg");
-        mSoundBar.play();
+        mLostMusic = createLostMusic(parent);
+        mLostMusic.play();
         mSettings.incrementGamesPlayedCounter();
     }
 
-    private SoundBar createSoundBar(@NonNull Context context, @NonNull String soundName) {
+    private SoundBar createLostMusic(@NonNull Context context) {
         if (mSettings.isSoundOn()) {
-            return SoundBarFactory.create(context, soundName);
+            return SoundBarFactory.create(context, "lost.ogg");
         } else {
             return new NullSoundBar();
         }
@@ -87,19 +88,19 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     @Override
     public void onPause() {
         super.onPause();
-        mSoundBar.pause();
+        mLostMusic.pause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mSoundBar.resume();
+        mLostMusic.resume();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSoundBar.release();
+        mLostMusic.release();
     }
 
     @Override

@@ -81,8 +81,8 @@ public class SetupBoardPresenter {
         }
     }
 
-    public void pickShipFromBoard(@NonNull Board board, @NonNull Vector2 coordinate) {
-        pickShipFromBoard(board, coordinate.getX(), coordinate.getY());
+    public void pickShipFromBoard(@NonNull Board board, @NonNull Vector2 v) {
+        pickShipFromBoard(board, v.getX(), v.getY());
     }
 
     public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {

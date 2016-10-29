@@ -1,12 +1,13 @@
 package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 
 class AimingG {
     public Rect vertical;
     public Rect horizontal;
 
-    public AimingG(Rect vertical, Rect horizontal) {
+    public AimingG(@NonNull Rect vertical, @NonNull Rect horizontal) {
         this.vertical = vertical;
         this.horizontal = horizontal;
     }

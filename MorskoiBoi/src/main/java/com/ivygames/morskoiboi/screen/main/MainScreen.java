@@ -116,7 +116,8 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
         }
     }
 
-    private MainScreenActions mMainScreenActions = new MainScreenActions() {
+    @NonNull
+    private final MainScreenActions mMainScreenActions = new MainScreenActions() {
 
         @Override
         public void play() {

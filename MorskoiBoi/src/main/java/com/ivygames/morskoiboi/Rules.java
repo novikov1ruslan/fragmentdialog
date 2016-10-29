@@ -11,15 +11,16 @@ import com.ivygames.morskoiboi.model.Ship;
 import java.util.Collection;
 
 public interface Rules {
-    boolean isBoardSet(Board board);
+    boolean isBoardSet(@NonNull Board board);
 
-    boolean isCellConflicting(Cell cell);
+    boolean isCellConflicting(@NonNull Cell cell);
 
     /**
      * @return true if board has full fleet and all the ships are destroyed
      */
-    boolean isItDefeatedBoard(Board board);
+    boolean isItDefeatedBoard(@NonNull Board board);
 
+    @NonNull
     int[] getAllShipsSizes();
 
     int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type,
@@ -29,5 +30,6 @@ public interface Rules {
 
     int calcSurrenderPenalty(@NonNull Collection<Ship> ships);
 
+    @NonNull
     Collection<Ship> generateFullFleet();
 }

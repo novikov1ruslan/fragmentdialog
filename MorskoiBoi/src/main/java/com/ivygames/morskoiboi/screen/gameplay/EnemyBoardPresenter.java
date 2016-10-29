@@ -1,11 +1,8 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
-import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.renderer.BaseGeometryProcessor;
 import com.ivygames.morskoiboi.screen.view.TouchState;
 
 import org.commons.logger.Ln;

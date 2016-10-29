@@ -43,14 +43,15 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private WinLayoutSmall mLayout;
     private final long mTime;
 
-    private Session mSession;
+    @NonNull
+    private final Session mSession;
     @NonNull
     private final Collection<Ship> mShips;
 
     private final int mScores;
 
     @NonNull
-    private final SoundBar mSoundBar;
+    private final SoundBar mWinMusicBar;
     @NonNull
     private final ApiClient mApiClient = Dependencies.getApiClient();
     @NonNull
@@ -74,8 +75,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mShips = fleet;
         mOpponentSurrendered = opponentSurrendered;
 
-        mSoundBar = createSoundBar(parent, "win.ogg");
-        mSoundBar.play();
+        mWinMusicBar = createWinMusic(parent);
+        mWinMusicBar.play();
 
         mTime = statistics.getTimeSpent();
         mScores = mRules.calcTotalScores(fleet, game.getType(), statistics, opponentSurrendered);
@@ -98,9 +99,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         processScores();
     }
 
-    private SoundBar createSoundBar(@NonNull Context context, @NonNull String soundName) {
+    private SoundBar createWinMusic(@NonNull Context context) {
         if (mSettings.isSoundOn()) {
-            return SoundBarFactory.create(context, soundName);
+            return SoundBarFactory.create(context, "win.ogg");
         } else {
             return new NullSoundBar();
         }
@@ -173,13 +174,13 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         } else {
             mLayout.hideSignInForAchievements();
         }
-        mSoundBar.resume();
+        mWinMusicBar.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mSoundBar.pause();
+        mWinMusicBar.pause();
     }
 
     @Override
@@ -218,7 +219,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             }
         }
 
-        mSoundBar.release();
+        mWinMusicBar.release();
         Ln.d(this + " destroyed - sound pool released");
     }
 

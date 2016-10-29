@@ -207,14 +207,6 @@ public class GameSettings implements AchievementsSettings {
         return mPreferences.getBoolean(NEW_RANK_ACHIEVED, false);
     }
 
-    public boolean hasProgressMigrated() {
-        return mPreferences.getBoolean(PROGRESS_MIGRATED, false);
-    }
-
-    public void setProgressMigrated() {
-        mEditor.putBoolean(PROGRESS_MIGRATED, true);
-    }
-
     @NonNull
     public Progress incrementProgress(int increment) {
         int oldScores = getProgress().getScores();

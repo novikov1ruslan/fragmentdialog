@@ -8,6 +8,7 @@ public class Progress {
 
     public final int progress;
 
+    // TODO: remove
     public int getScores() {
         return progress;
     }

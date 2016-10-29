@@ -30,7 +30,6 @@ public class FleetView extends View {
     private Map<Integer, Integer> mMyShipsLeft;
     private Map<Integer, Integer> mEnemyShipsLeft;
 
-    private final FleetViewPresenter mPresenter;
     private final FleetViewRenderer mRenderer;
 
     private final int largestShipHeight;
@@ -49,7 +48,6 @@ public class FleetView extends View {
         largestShipHeight = aircraftCarrier.getHeight();
         largestShipWidth = aircraftCarrier.getWidth();
 
-        mPresenter = new FleetViewPresenter();
         mRenderer = new FleetViewRenderer(resources);
     }
 

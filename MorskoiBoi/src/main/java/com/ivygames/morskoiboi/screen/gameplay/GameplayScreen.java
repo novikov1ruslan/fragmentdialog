@@ -103,7 +103,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final ChatAdapter mChatAdapter;
     @NonNull
     private final GameplaySoundManager mGameplaySounds;
-    private Session mSession;
+    @NonNull
+    private final Session mSession;
     @NonNull
     private final TurnTimerController mTimerController;
     @NonNull
@@ -453,7 +454,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 mLayout.shakePlayerBoard();
             }
             mGameplaySounds.playKillSound();
-            vibrate(VIBRATION_ON_KILL);
+            vibrate();
         }
 
         @Override
@@ -488,7 +489,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
             disableBackPress();
             mLayout.lost();
-            showLostScreenDelayed(LOST_GAME_DELAY);
+            showLostScreenDelayed();
         }
 
         @Override
@@ -531,8 +532,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
     }
 
-    private void showLostScreenDelayed(long mseconds) {
-        mUiThreadHandler.postDelayed(mShowLostScreenCommand, mseconds);
+    private void showLostScreenDelayed() {
+        mUiThreadHandler.postDelayed(mShowLostScreenCommand, GameplayScreen.LOST_GAME_DELAY);
     }
 
     private void disableBackPress() {
@@ -540,9 +541,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mBackPressEnabled = false;
     }
 
-    private void vibrate(int duration) {
+    private void vibrate() {
         if (mSettings.isVibrationOn() && isResumed()) {
-            mVibrator.vibrate(duration);
+            mVibrator.vibrate(VIBRATION_ON_KILL);
         }
     }
 

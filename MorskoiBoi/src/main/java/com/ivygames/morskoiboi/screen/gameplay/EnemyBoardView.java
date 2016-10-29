@@ -83,7 +83,7 @@ public class EnemyBoardView extends BaseBoardView {
 
             if (Board.contains(i, j)) {
                 boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
-                mRenderer.drawAiming(canvas, getAiming(1, 1), locked);
+                mRenderer.drawAiming(canvas, getAiming(), locked);
             }
         }
 
@@ -96,10 +96,10 @@ public class EnemyBoardView extends BaseBoardView {
         }
     }
 
-    private Aiming getAiming(int width, int height) {
+    private Aiming getAiming() {
         int i = mRenderer.xToI(mTouchState.getX());
         int j = mRenderer.yToJ(mTouchState.getY());
-        mAiming.set(i, j, width, height);
+        mAiming.set(i, j, 1, 1);
         return mAiming;
     }
 

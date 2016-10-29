@@ -19,10 +19,11 @@ public abstract class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public boolean isCellConflicting(Cell cell) {
+    public boolean isCellConflicting(@NonNull Cell cell) {
         return cell.isReserved() && cell.getProximity() >= Cell.RESERVED_PROXIMITY_VALUE * 2;
     }
 
+    @NonNull
     @Override
     public int[] getAllShipsSizes() {
         return TOTAL_SHIPS;

@@ -13,6 +13,11 @@ public final class NetworkReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (!ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
+            Ln.w("got wrong action: " + intent.getAction());
+            return;
+        }
+
         boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
         String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);

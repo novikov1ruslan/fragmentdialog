@@ -29,7 +29,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
         mName = defaultName;
     }
 
-    public abstract void send(@NonNull String message);
+    protected abstract void send(@NonNull String message);
 
     protected final void onRealTimeMessageReceived(String message) {
         char opCode = message.charAt(0);

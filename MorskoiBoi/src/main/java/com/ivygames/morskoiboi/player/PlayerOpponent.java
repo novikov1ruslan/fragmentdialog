@@ -25,8 +25,8 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent implements Opponent {
     public static volatile Board debug_board;
-    private Handler debug_handler = new Handler(Looper.getMainLooper());
-    private Runnable debug_thread_break_task = new Runnable() {
+    private final Handler debug_handler = new Handler(Looper.getMainLooper());
+    private final Runnable debug_thread_break_task = new Runnable() {
         @Override
         public void run() {
             Ln.v("---------------------- main thread ----------------------");

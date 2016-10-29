@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
@@ -369,7 +371,7 @@ public class BoardTest {
     public void CopyOfABoard__IsIdenticalToOriginal() {
         Board board = BoardSerialization.fromJson(BOARD_WITH_SHIP);
 
-        Board copy = BoardSerialization.copy(board);
+        Board copy = copy(board);
 
         assertThat(copy, equalTo(board));
     }
@@ -423,5 +425,10 @@ public class BoardTest {
 		addIfHit(board, hits, x, y - 1);
 
 		return hits;
+	}
+
+	@NonNull
+	private static Board copy(@NonNull Board board) {
+		return BoardSerialization.fromJson(BoardSerialization.toJson(board));
 	}
 }

@@ -24,11 +24,6 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @Override
-    protected void setBoardVerticalOffset(int offset) {
-        super.setBoardVerticalOffset(offset);
-    }
-
-    @Override
     protected void measure(int w, int h, int hPadding, int vPadding) {
         // calculate mShipSelectionRect (it starts from left=0, top=0)
         mShipSelectionRect.right = w / 2;

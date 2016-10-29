@@ -14,11 +14,6 @@ public class BoardSerialization {
     private static final String SHIPS = "ships";
 
     @NonNull
-    public static Board copy(@NonNull Board board) {
-        return fromJson(toJson(board));
-    }
-
-    @NonNull
     public static Board fromJson(@NonNull String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);

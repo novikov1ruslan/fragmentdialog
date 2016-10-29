@@ -93,7 +93,8 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
     @NonNull
     private final AchievementsManager mAchievementsManager = Dependencies.getAchievementsManager();
 
-    private RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
+    @NonNull
+    private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
 
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();

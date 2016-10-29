@@ -20,7 +20,7 @@ public abstract class BaseBoardView extends View {
 
     private final DisplayMetrics mDisplayMetrics;
 
-    protected BaseBoardRenderer mRenderer;
+    protected final BaseBoardRenderer mRenderer;
 
     protected Board mBoard;
 
@@ -43,11 +43,11 @@ public abstract class BaseBoardView extends View {
         invalidate();
     }
 
-    protected final int getHorizontalPadding() {
+    private int getHorizontalPadding() {
         return getPaddingLeft() + getPaddingRight();
     }
 
-    protected final int getVerticalPadding() {
+    private int getVerticalPadding() {
         return getPaddingTop() + getPaddingBottom();
     }
 

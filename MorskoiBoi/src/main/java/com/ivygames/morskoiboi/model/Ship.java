@@ -12,6 +12,7 @@ public class Ship {
     private static final String IS_HORIZONTAL = "is_horizontal";
     private static final String SIZE = "size";
 
+    // TODO: remove this method
     public static Collection<Ship> setOrientationForShips(Collection<Ship> ships, Orientation orientation) {
         for (Ship ship: ships) {
             ship.mOrientation = orientation;

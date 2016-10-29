@@ -41,10 +41,10 @@ public class Board {
     }
 
     /**
-     * @param aim coordinate on the board where the 1st ship's square is to be put
+     * @param v coordinate on the board where the 1st ship's square is to be put
      */
-    public boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 aim) {
-        return shipFitsTheBoard(ship, aim.getX(), aim.getY());
+    public boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 v) {
+        return shipFitsTheBoard(ship, v.getX(), v.getY());
     }
 
     /**
@@ -113,8 +113,8 @@ public class Board {
         return ships;
     }
 
-    private boolean canHaveShipAt(@NonNull Vector2 coordinate) {
-        return canHaveShipAt(coordinate.getX(), coordinate.getY());
+    private boolean canHaveShipAt(@NonNull Vector2 v) {
+        return canHaveShipAt(v.getX(), v.getY());
     }
 
     private boolean canHaveShipAt(int i, int j) {

@@ -72,7 +72,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             }).show(mFm, FragmentAlertDialog.TAG);
         }
     };
-    private Session mSession;
+    @NonNull
+    private final Session mSession;
 
     public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
         super(parent, game, session.opponent.getName());
@@ -209,7 +210,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         return mLayout;
     }
 
-    protected final void showOnlyHorizontalDialog() {
+    private void showOnlyHorizontalDialog() {
         AnalyticsEvent.send("only_horizontal");
 
         String message = getString(R.string.only_horizontal_ships) + " " +

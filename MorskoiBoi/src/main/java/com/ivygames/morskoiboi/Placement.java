@@ -55,8 +55,8 @@ public class Placement {
         return false;
     }
 
-    public void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 coordinate) {
-        putShipAt(board, ship, coordinate.getX(), coordinate.getY());
+    public void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 v) {
+        putShipAt(board, ship, v.getX(), v.getY());
     }
 
     public void putShipAt(@NonNull Board board, @NonNull Ship ship, int x, int y) {
@@ -90,7 +90,7 @@ public class Placement {
         board.getShips().add(ship);
     }
 
-    public void putShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
+    private void putShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             putShipAt(board, ship, ship.getX(), ship.getY());
         }

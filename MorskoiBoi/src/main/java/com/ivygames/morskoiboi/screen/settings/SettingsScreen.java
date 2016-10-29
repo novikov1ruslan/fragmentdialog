@@ -93,8 +93,8 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
         mLayout.showSignOutBar();
     }
 
-    private SettingsScreenActions mSettingsActions = new SettingsScreenActions() {
-
+    @NonNull
+    private final SettingsScreenActions mSettingsActions = new SettingsScreenActions() {
 
         @Override
         public void onSoundChanged() {

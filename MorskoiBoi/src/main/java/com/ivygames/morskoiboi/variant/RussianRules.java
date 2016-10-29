@@ -41,10 +41,11 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public boolean isCellConflicting(Cell cell) {
+    public boolean isCellConflicting(@NonNull Cell cell) {
         return cell.isReserved() && cell.getProximity() > Cell.RESERVED_PROXIMITY_VALUE;
     }
 
+    @NonNull
     @Override
     public int[] getAllShipsSizes() {
         return TOTAL_SHIPS;
