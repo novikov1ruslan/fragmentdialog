@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.VibratorWrapper;
-import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
@@ -84,8 +83,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final Runnable mShowLostScreenCommand = new ShowLostScreenCommand();
     @NonNull
-    private final TurnListener mTurnTimerListener = new TurnTimerListener();
-    @NonNull
     private final Runnable mShotHangDetectionTask = new ShotHangDetectionTask();
     @NonNull
     private final Runnable mTurnHangDetectionTask = new TurnHangDetectionTask();
@@ -111,10 +108,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final TurnTimerController mTimerController;
     @NonNull
     private final Intent mMatchStatusIntent;
-    @NonNull
-    private final AdProvider mAdProvider = Dependencies.getAdProvider();
 
-    private boolean mMyTurn;
     private long mUnlockedTime;
     private long mStartTime;
     private boolean mGameIsOn;
@@ -128,7 +122,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mSession = session;
         mTimerController = timerController;
 
-        mAdProvider.needToShowAfterPlayAd();
+        Dependencies.getAdProvider().needToShowAfterPlayAd();
         mGameplaySounds = new GameplayScreenSounds((AudioManager) parent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mPlayer = session.player;
@@ -141,7 +135,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mMatchStatusIntent = new Intent(parent, InternetService.class);
         mMatchStatusIntent.putExtra(InternetService.EXTRA_CONTENT_TITLE, getString(R.string.match_against) + " " + mEnemy.getName());
         mChatAdapter = new ChatAdapter(getLayoutInflater());
-        mTimerController.setListener(mTurnTimerListener);
+        mTimerController.setListener(new TurnTimerListener());
     }
 
     @NonNull
@@ -419,7 +413,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mParent.startService(getServiceIntent(getString(R.string.opponent_s_turn)));
         mLayout.enemyTurn();
         updateUnlockedTime();
-        mMyTurn = false;
     }
 
     private class UiPlayerCallback implements PlayerCallback {
@@ -517,7 +510,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mLayout.playerTurn();
             mGameIsOn = true;
             mStartTime = SystemClock.elapsedRealtime();
-            mMyTurn = true;
 
             if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
                 Ln.d("player's turn - starting timer");

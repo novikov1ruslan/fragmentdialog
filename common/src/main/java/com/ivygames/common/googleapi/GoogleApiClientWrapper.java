@@ -31,6 +31,7 @@ import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.common.BuildConfig;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationLoadListener;
@@ -55,12 +56,12 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure;
-    private int mSignInRequestCode;
-    private int mServiceResolveRequestCode;
-    private String mErrorMessage;
+    private final int mSignInRequestCode;
+    private final int mServiceResolveRequestCode;
+    private final String mResolveConnectionFailureErrorMessage;
 
     public GoogleApiClientWrapper(@NonNull Context context, int signInRequestCode,
-                                  @NonNull String errorMessage, int serviceResolveRequestCode) {
+                                  @NonNull String resolveConnectionFailureErrorMessage, int serviceResolveRequestCode) {
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(context, new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(@Nullable Bundle bundle) {
@@ -89,7 +90,7 @@ public class GoogleApiClientWrapper implements ApiClient {
 
         mSignInRequestCode = signInRequestCode;
         mServiceResolveRequestCode = serviceResolveRequestCode;
-        mErrorMessage = errorMessage;
+        mResolveConnectionFailureErrorMessage = resolveConnectionFailureErrorMessage;
     }
 
     @Override
@@ -236,6 +237,7 @@ public class GoogleApiClientWrapper implements ApiClient {
         return builder;
     }
 
+    @Nullable
     private static Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
         Bundle autoMatchCriteria = null;
         if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
@@ -380,13 +382,13 @@ public class GoogleApiClientWrapper implements ApiClient {
 
             Ln.v("resolving connection failure");
             mResolvingConnectionFailure = BaseGameUtils.resolveConnectionFailure(mActivity, mGoogleApiClient,
-                    result, mSignInRequestCode, mErrorMessage);
+                    result, mSignInRequestCode, mResolveConnectionFailureErrorMessage);
             Ln.v("has resolution = " + mResolvingConnectionFailure);
         }
     }
 
     @Override
     public String toString() {
-        return GoogleApiClientWrapper.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

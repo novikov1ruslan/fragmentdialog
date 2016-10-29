@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import static org.apache.commons.lang3.Validate.notNull;
+
 public class MultiplayerImpl implements RealTimeMultiplayer {
     private static final int MIN_PLAYERS = 2;
 
@@ -116,7 +118,7 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
             // Handle the result of the invitation inbox UI, where the player can pick an invitation to accept.
             // We react by accepting the selected invitation, if any.
             if (resultCode == Activity.RESULT_OK) {
-                Invitation invitation = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
+                Invitation invitation = (Invitation) notNull(data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION));
                 mApiClient.joinRoom(invitation, mRoom, mRtmListener);
             } else {
                 Ln.d("invitation cancelled");

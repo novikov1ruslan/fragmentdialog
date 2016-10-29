@@ -20,9 +20,7 @@ public class GameInvitation {
 
         GameInvitation that = (GameInvitation) o;
 
-        if (!name.equals(that.name)) return false;
-        return id.equals(that.id);
-
+        return name.equals(that.name) && id.equals(that.id);
     }
 
     @Override

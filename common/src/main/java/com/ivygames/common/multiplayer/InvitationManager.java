@@ -27,17 +27,17 @@ class InvitationManager {
     @NonNull
     private final ApiClient mApiClient;
 
-    public InvitationManager(@NonNull ApiClient client) {
+    InvitationManager(@NonNull ApiClient client) {
         mApiClient = client;
     }
 
-    public void addInvitationListener(@NonNull InvitationListener listener) {
+    void addInvitationListener(@NonNull InvitationListener listener) {
         mInvitationListeners.add(listener);
         Ln.v(listener + " registered as invitation listener");
         listener.onInvitationsUpdated(getInvitationIds());
     }
 
-    public void removeInvitationReceiver(@NonNull InvitationListener listener) {
+    void removeInvitationReceiver(@NonNull InvitationListener listener) {
         mInvitationListeners.remove(listener);
         Ln.v(listener + " unregistered as invitation listener");
     }
@@ -55,7 +55,7 @@ class InvitationManager {
     }
 
     @NonNull
-    public Set<String> getInvitationIds() {
+    Set<String> getInvitationIds() {
         return new HashSet<>(mIncomingInvitationIds);
     }
 

@@ -9,9 +9,9 @@ import org.commons.logger.Ln;
 
 public class AchievementsApi {
     @NonNull
-    protected final AchievementsSettings mSettings;
+    private final AchievementsSettings mSettings;
     @NonNull
-    protected final ApiClient mApiClient;
+    private final ApiClient mApiClient;
     @NonNull
     private final AchievementsResultCallback mAchievementsLoadCallback;
 

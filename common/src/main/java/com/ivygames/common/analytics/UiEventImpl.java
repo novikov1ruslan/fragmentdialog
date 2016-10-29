@@ -9,7 +9,7 @@ import com.google.example.games.basegameutils.BuildConfig;
 
 import org.commons.logger.Ln;
 
-public final class UiEventImpl {
+final class UiEventImpl {
     private static final boolean LOG_ENABLED = BuildConfig.DEBUG;
 
     private static final String GA_CAT_UI = "ui";

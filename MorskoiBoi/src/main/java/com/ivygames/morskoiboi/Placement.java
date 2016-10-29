@@ -126,7 +126,7 @@ public class Placement {
      */
     @Nullable
     public Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
-        if (!board.contains(x, y)) {
+        if (!Board.contains(x, y)) {
             // throw new IllegalArgumentException("(" + x + "," + y +
             // ") is outside the board");
             Ln.w("(" + x + "," + y + ") is outside the board");

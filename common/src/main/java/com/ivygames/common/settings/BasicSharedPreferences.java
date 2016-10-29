@@ -13,7 +13,7 @@ public abstract class BasicSharedPreferences implements SharedPreferences {
 
     private final SharedPreferences sp;
 
-    public BasicSharedPreferences(@NonNull Context context) {
+    protected BasicSharedPreferences(@NonNull Context context) {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
     }
 

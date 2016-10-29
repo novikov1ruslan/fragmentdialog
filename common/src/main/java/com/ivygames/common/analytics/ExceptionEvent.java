@@ -7,7 +7,7 @@ public final class ExceptionEvent {
     @Nullable
     private static ExceptionEventImpl sImpl;
 
-    public static void setImpl(@NonNull ExceptionEventImpl impl) {
+    static void setImpl(@NonNull ExceptionEventImpl impl) {
         sImpl = impl;
     }
 
