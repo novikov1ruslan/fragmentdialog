@@ -47,12 +47,32 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenScreenDisplayedWithPositiveScoreBalance__ProgressUpdated() {
+        // TODO: this is component test
+        setScores(100);
+        setPenalty(0);
+        showScreen();
+        verify(settings(), times(1)).incrementProgress(100);
+        verify(settings(), times(1)).setProgressPenalty(0);
+    }
+
+    @Test
+    public void IfScoreBalancePositive_AndConnected__ProgressSynchronized() {
+        // TODO: this is component test
+        when(progressManager.isConnected()).thenReturn(true);
         setScores(100);
         setPenalty(0);
         showScreen();
         expectSynchronizeBeCalled(times(1));
-        verify(settings(), times(1)).incrementProgress(100);
-        verify(settings(), times(1)).setProgressPenalty(0);
+    }
+
+    @Test
+    public void IfNotConnected__ProgressNotSynchronized() {
+        // TODO: this is component test
+        when(progressManager.isConnected()).thenReturn(false);
+        setScores(100);
+        setPenalty(0);
+        showScreen();
+        expectSynchronizeBeCalled(never());
     }
 
     @Test

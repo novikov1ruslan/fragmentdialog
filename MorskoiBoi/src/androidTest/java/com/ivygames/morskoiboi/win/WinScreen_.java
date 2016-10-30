@@ -32,11 +32,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class WinScreen_ extends OnlineScreen_ {
+abstract class WinScreen_ extends OnlineScreen_ {
 
     protected Rules rules;
     private AchievementsManager achievementsManager;
-    private ProgressManager progressManager;
+    // FIXME: substitute by real
+    protected ProgressManager progressManager;
     private Collection<Ship> fleet = new ArrayList<>();
     protected boolean surrendered;
     protected ScoreStatistics statistics;
