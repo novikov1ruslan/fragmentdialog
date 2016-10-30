@@ -114,6 +114,12 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
+    @Nullable
+    public Player getCurrentPlayer() {
+        return Games.Players.getCurrentPlayer(mGoogleApiClient);
+    }
+
+    @Override
     public void registerInvitationListener(@NonNull OnInvitationReceivedListener listener) {
         if (LOG_ENABLED) {
             Ln.v("registering invitation listener: " + listener);
@@ -173,11 +179,13 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
+    @Nullable
     public PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot) {
         return Games.Snapshots.resolveConflict(mGoogleApiClient, conflictId, snapshot);
     }
 
     @Override
+    @Nullable
     public PendingResult<Snapshots.CommitSnapshotResult> commitAndClose(@NonNull Snapshot snapshot, @NonNull SnapshotMetadataChange change) {
         return Games.Snapshots.commitAndClose(mGoogleApiClient, snapshot, change);
     }
@@ -307,18 +315,15 @@ public class GoogleApiClientWrapper implements ApiClient {
     }
 
     @Override
-    public Player getCurrentPlayer() {
-        return Games.Players.getCurrentPlayer(mGoogleApiClient);
-    }
-
-    @Override
     public void setConnectionListener(@NonNull ApiConnectionListener callback) {
         mConnectedListener = callback;
+        Ln.v("connection listener set to: " + callback);
     }
 
     @Override
     public void setActivity(@NonNull Activity activity) {
         mActivity = activity;
+        Ln.v("activity set to: " + activity);
     }
 
     @Override

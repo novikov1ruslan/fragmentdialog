@@ -8,6 +8,8 @@ import com.ivygames.common.googleapi.ApiClient;
 import org.commons.logger.Ln;
 
 public class AchievementsApi {
+    private static final String API_NOT_CONNECTED = "api_not_connected_";
+
     @NonNull
     private final AchievementsSettings mSettings;
     @NonNull
@@ -42,17 +44,25 @@ public class AchievementsApi {
         AnalyticsEvent.send("achievement", achievementId);
         if (mApiClient.isConnected()) {
             mApiClient.unlockAchievement(achievementId);
+        } else {
+            Ln.e(API_NOT_CONNECTED + "unlock");
         }
     }
 
     public void loadAchievements() {
-        mApiClient.loadAchievements(mAchievementsLoadCallback);
+        if (mApiClient.isConnected()) {
+            mApiClient.loadAchievements(mAchievementsLoadCallback);
+        } else {
+            Ln.e(API_NOT_CONNECTED + "loadAchievements");
+        }
     }
 
     public final void increment(@NonNull String achievementId, int steps) {
         Ln.d("incrementing achievement: " + achievementId + " by " + steps);
         if (mApiClient.isConnected()) {
             mApiClient.increment(achievementId, steps);
+        } else {
+            Ln.e(API_NOT_CONNECTED + "increment");
         }
     }
 
@@ -61,6 +71,8 @@ public class AchievementsApi {
         mSettings.revealAchievement(achievementId);
         if (mApiClient.isConnected()) {
             mApiClient.revealAchievement(achievementId);
+        } else {
+            Ln.e(API_NOT_CONNECTED + "reveal");
         }
     }
 }

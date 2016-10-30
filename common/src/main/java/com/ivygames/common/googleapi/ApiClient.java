@@ -2,6 +2,7 @@ package com.ivygames.common.googleapi;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -47,6 +48,7 @@ public interface ApiClient {
     void openAsynchronously(@NonNull String snapshotName,
                             @NonNull ResultCallback<? super Snapshots.OpenSnapshotResult> callback);
 
+    @Nullable
     PendingResult<Snapshots.OpenSnapshotResult> resolveConflict(@NonNull String conflictId, @NonNull Snapshot snapshot);
 
     /**
@@ -54,6 +56,7 @@ public interface ApiClient {
      *
      * @throws Exception
      */
+    @Nullable
     PendingResult<Snapshots.CommitSnapshotResult> commitAndClose(@NonNull Snapshot snapshot,
                                                                  @NonNull SnapshotMetadataChange change) throws Exception;
 
@@ -82,6 +85,7 @@ public interface ApiClient {
 
     void submitScore(@NonNull String boardName, int totalScores);
 
+    @Nullable
     Player getCurrentPlayer();
 
     void setConnectionListener(@NonNull ApiConnectionListener callback);

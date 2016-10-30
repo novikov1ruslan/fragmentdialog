@@ -44,7 +44,7 @@ class InvitationManager {
 
     public void loadInvitations() {
         if (!mApiClient.isConnected()) {
-            Ln.w("API client has to be connected");
+            Ln.e("API client has to be connected");
             return;
         }
 
