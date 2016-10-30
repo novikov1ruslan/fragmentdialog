@@ -13,13 +13,15 @@ final class EnemyBoardPresenter {
 
     private boolean mLocked = true;
 
+    @NonNull
     private TouchState mTouchState = new TouchState();
 
-    public void setShotListener(@NonNull ShotListener shotListener) {
+    void setShotListener(@NonNull ShotListener shotListener) {
         mShotListener = shotListener;
+        Ln.v("listener: " + shotListener);
     }
 
-    public void touch(@NonNull TouchState event, int i, int j) {
+    void touch(@NonNull TouchState event, int i, int j) {
         mTouchState = event;
         int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
@@ -35,7 +37,7 @@ final class EnemyBoardPresenter {
         }
     }
 
-    public void unlock() {
+    void unlock() {
         mLocked = false;
         Ln.v("unlocked");
         int action = mTouchState.getAction();
@@ -44,12 +46,12 @@ final class EnemyBoardPresenter {
         }
     }
 
-    public void lock() {
+    void lock() {
         mLocked = true;
         Ln.v("locked");
     }
 
-    public boolean isLocked() {
+    boolean isLocked() {
         return mLocked;
     }
 

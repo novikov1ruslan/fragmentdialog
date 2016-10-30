@@ -3,11 +3,14 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
+
+import org.commons.logger.Ln;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -60,6 +63,9 @@ public class DigitalTimerView extends TextView {
         mPaint.setTextSize(textSize);
         int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         if (width <= 0) {
+            // FIXME:
+            Ln.e("fleet: impossible unit size=" + width + "; widthMeasureSpec=" + widthMeasureSpec
+                    + "; heightMeasureSpec=" + heightMeasureSpec + ", " + Build.DEVICE);
             return;
         }
         float measuredText = mPaint.measureText(DEFAULT_TEXT);

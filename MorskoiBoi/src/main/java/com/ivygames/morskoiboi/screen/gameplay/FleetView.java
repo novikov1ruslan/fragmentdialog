@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -94,7 +95,7 @@ public class FleetView extends View {
         int unitWidth = shipArea / CARRIER_LENGTH;
 
         if (unitWidth < 1) {
-            Ln.e("fleet: impossible unit size=" + unitWidth + "; w=" + w + "; text_width=" + mRenderer.getLetterWidth());
+            Ln.e("fleet: impossible unit size=" + unitWidth + "; w=" + w + "; h=" + h + ", " + Build.DEVICE);
             // FIXME: maybe because you haven't implemented onMeasure() system thinks no size is needed
             return;
         }

@@ -52,7 +52,7 @@ public class QueuedRtmSender implements RtmSender {
                             Ln.d("sending failed, retry");
                             sendNextMessage(mRoomId, mRecipientId);
                         } else {
-                            Ln.e("could not send message: " + statusCode);
+                            Ln.e("could not send message: " + getStatusString(statusCode));
                         }
                     }
                 }

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 
@@ -16,7 +15,10 @@ import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.ivygames.morskoiboi.ScreenUtils.*;
+import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.done;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +26,9 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
     @Test
     public void WhenBoardIsSet_AndAllShipsAreHorizontal_AndDonePressed__DialogDisplayed() {
         showScreen();
-        generateHorizontalFleet();
+        Collection<Ship> fleet = new ArrayList<>();
+        fleet.add(new Ship(4, Ship.Orientation.HORIZONTAL));
+        when(rules.generateFullFleet()).thenReturn(fleet);
         when(rules.isBoardSet(any(Board.class))).thenReturn(true);
 
         clickOn(done());
@@ -66,12 +70,6 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
         String message = getString(R.string.only_horizontal_ships) + " " +
                 getString(R.string.rotate_instruction);
         return withText(message);
-    }
-
-    private void generateHorizontalFleet() {
-        Collection<Ship> fleet = new ArrayList<>();
-        fleet.add(new Ship(4, Ship.Orientation.HORIZONTAL));
-        when(rules.generateFullFleet()).thenReturn(fleet);
     }
 
     private Matcher<View> rearrange() {

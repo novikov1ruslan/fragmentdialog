@@ -45,7 +45,7 @@ import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class BattleshipActivity extends Activity implements ApiConnectionListener, ChatListener {
-    private static final boolean _DEBUG_ALWAYS_SHOW_ADS = false;
+    private static final boolean _DEBUG_ALWAYS_SHOW_ADS = BuildConfig.DEBUG && false;
     // TODO:
      /*
       * base64EncodedPublicKey should be YOUR APPLICATION'S PUBLIC KEY (that you got from the Google Play developer console). This is not your developer public
@@ -189,7 +189,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
                 if (device.isBillingAvailable()) {
                     mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl());
                 } else {
-                    Ln.e("gpgs_not_available");
+                    Ln.e("billing_not_available");
                     hideNoAdsButton();
                 }
             }

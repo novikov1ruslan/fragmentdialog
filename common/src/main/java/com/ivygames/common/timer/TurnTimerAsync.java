@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.google.example.games.basegameutils.BuildConfig;
+
 import org.commons.logger.Ln;
 
 class TurnTimerAsync implements TurnTimer {
@@ -49,7 +51,9 @@ class TurnTimerAsync implements TurnTimer {
         public void run() {
             mDelegate.tick();
             if (mDelegate.getRemainedTime() > 0) {
-                Ln.v("time left: " + mDelegate.getRemainedTime() + "ms");
+                if (BuildConfig.DEBUG) {
+                    Ln.v("time left: " + mDelegate.getRemainedTime() + "ms");
+                }
                 update();
             }
         }

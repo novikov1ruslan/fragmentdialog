@@ -286,7 +286,7 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         if (!mRules.isItDefeatedBoard(mMyBoard)) {
-            reportException("lost while not defeated");
+            reportException("lost while not defeated: " + mMyBoard.getShips());
         }
 
         Ln.d(mName + ": resetting my state before lost");

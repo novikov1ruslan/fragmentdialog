@@ -214,16 +214,16 @@ public class Ship {
 
     @Override
     public String toString() {
-        StringBuilder ship = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < mSize; i++) {
             if (mHealth > i) {
-                ship.append('*');
+                sb.append('*');
             } else {
-                ship.append('x');
+                sb.append('x');
             }
         }
-        ship.append(isHorizontal() ? "(h)" : "(v)");
+        sb.append(isHorizontal() ? "(h)" : "(v)");
 
-        return ship.toString();
+        return sb.toString();
     }
 }

@@ -58,6 +58,8 @@ import java.util.Collection;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
+import static com.ivygames.common.analytics.ExceptionHandler.reportException;
+
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
     private static final String TAG = "GAMEPLAY";
 
@@ -358,17 +360,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onAimingFinished(int x, int y) {
-            Ln.v("aiming finished");
+        public void onAimingFinished(int i, int j) {
+            Ln.v("aiming finished: (" + i + ", " + j + ")");
             debug_aiming_started = false;
             mGameplaySounds.stopKantropSound();
 
-            if (!Board.contains(x, y)) {
-                Ln.v("pressing outside the board: " + x + "," + y);
+            if (!Board.contains(i, j)) {
+                reportException("pressing outside the board: " + i + "," + j);
                 return;
             }
 
-            Cell cell = mEnemyPublicBoard.getCell(x, y);
+            Cell cell = mEnemyPublicBoard.getCell(i, j);
             if (!cell.isEmpty()) {
                 Ln.d(cell + " is not empty");
                 // TODO: play sound
@@ -377,7 +379,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             // ----------------------------------
             mTimerController.stop();
 
-            Vector2 aim = Vector2.get(x, y);
+            Vector2 aim = Vector2.get(i, j);
             Ln.d("shooting at: " + aim + cell);
             mLayout.lock();
             updateUnlockedTime();
@@ -393,7 +395,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onAimingStarted() {
             Ln.v("aiming started");
             if (debug_aiming_started) {
-                Ln.e("aiming started");
+                reportException("aiming started");
             } else {
                 debug_aiming_started = true;
                 mGameplaySounds.playKantrop();
