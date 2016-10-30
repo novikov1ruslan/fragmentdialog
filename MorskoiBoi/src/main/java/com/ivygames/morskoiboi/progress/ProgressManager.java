@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.progress;
 
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.GamesStatusCodes;
@@ -32,8 +33,16 @@ public class ProgressManager {
     }
 
     public void synchronize() {
-        Ln.v("synchronizing progress...");
-        mApiClient.openAsynchronously(SNAPSHOT_NAME, new OpenSnapshotResultResultCallback());
+        if (mApiClient.isConnected()) {
+            Ln.v("synchronizing progress...");
+            mApiClient.openAsynchronously(SNAPSHOT_NAME, new OpenSnapshotResultResultCallback());
+        } else {
+            Ln.e("not connected, cannot synchronize progress");
+        }
+    }
+
+    public boolean isConnected() {
+        return mApiClient.isConnected();
     }
 
     private class OpenSnapshotResultResultCallback implements ResultCallback<Snapshots.OpenSnapshotResult> {
@@ -69,7 +78,10 @@ public class ProgressManager {
                 return;
             }
 
-            mApiClient.resolveConflict(conflictId, snapshot).setResultCallback(this);
+            PendingResult<Snapshots.OpenSnapshotResult> result = mApiClient.resolveConflict(conflictId, snapshot);
+            if (result != null) {
+                result.setResultCallback(this);
+            }
         }
 
         private void processSuccessResult(@NonNull Snapshot snapshot) throws Exception {

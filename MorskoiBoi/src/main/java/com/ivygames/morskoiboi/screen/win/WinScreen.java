@@ -7,7 +7,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
-import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
@@ -15,6 +14,7 @@ import com.ivygames.common.music.NullSoundBar;
 import com.ivygames.common.music.SoundBar;
 import com.ivygames.common.music.SoundBarFactory;
 import com.ivygames.common.ui.BackPressListener;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -200,7 +200,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
             if (newRankAchieved) {
                 mSettings.newRankAchieved(true);
             }
-            mProgressManager.synchronize();
+            if (mProgressManager.isConnected()) {
+                mProgressManager.synchronize();
+            }
             mSettings.setProgressPenalty(0);
         } else {
             mSettings.setProgressPenalty(-progressIncrement);
@@ -223,6 +225,15 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d(this + " destroyed - sound pool released");
     }
 
+    private void sendAnalyticsForPlayersScores(int totalScores) {
+        Player currentPlayer = mApiClient.getCurrentPlayer();
+        if (currentPlayer != null) {
+            String playerName = currentPlayer.getDisplayName();
+            String player = String.valueOf(playerName.hashCode());
+            AnalyticsEvent.send("scores", player, totalScores);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         UiEvent.send(UiEvent.GA_ACTION_BACK, "win");
@@ -237,15 +248,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     private void submitScore(int totalScores) {
         Ln.d("submitting scores: " + totalScores);
         mApiClient.submitScore(getString(R.string.leaderboard_normal), totalScores);
-    }
-
-    private void sendAnalyticsForPlayersScores(int totalScores) {
-        Player currentPlayer = mApiClient.getCurrentPlayer();
-        if (currentPlayer != null) {
-            String playerName = currentPlayer.getDisplayName();
-            String player = String.valueOf(playerName.hashCode());
-            AnalyticsEvent.send("scores", player, totalScores);
-        }
     }
 
     private void doNotContinue() {
