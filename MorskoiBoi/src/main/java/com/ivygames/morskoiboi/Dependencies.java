@@ -11,6 +11,8 @@ import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import org.commons.logger.Ln;
 
+import java.util.Random;
+
 public class Dependencies {
 
     private static ApiClient sApiClient;
@@ -24,6 +26,7 @@ public class Dependencies {
     private static PlayerFactory sPlayerFactory;
     private static AiPlayerFactory sAiPlayerFactory;
     private static Placement sPlacement;
+    private static Random sRandom;
 
     public static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
@@ -126,4 +129,13 @@ public class Dependencies {
         return sPlacement;
     }
 
+    public static void inject(@NonNull Random random) {
+        sRandom = random;
+        Ln.i(sRandom);
+    }
+
+    @NonNull
+    public static Random getRandom() {
+        return sRandom;
+    }
 }

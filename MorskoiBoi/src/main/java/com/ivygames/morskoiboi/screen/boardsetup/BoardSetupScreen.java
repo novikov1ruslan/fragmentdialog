@@ -32,6 +32,7 @@ import org.commons.logger.Ln;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -54,6 +55,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final Placement mPlacement = Dependencies.getPlacement();
+    @NonNull
+    private final Random mRandom = Dependencies.getRandom();
 
     private BoardSetupLayout mLayout;
     private View mTutView;
@@ -79,7 +82,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
         super(parent, game, session.opponent.getName());
         mSession = session;
-        mFleet.addAll(ShipUtils.generateFullHorizontalFleet(mRules));
+        Random random = new Random(System.currentTimeMillis());
+        mFleet.addAll(ShipUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes(), random));
         Ln.d("new board created, fleet initialized");
     }
 
@@ -127,9 +131,11 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void autoSetup() {
             UiEvent.send("auto");
             mBoard.clearBoard();
-            Collection<Ship> ships = ShipUtils.generateFullFleet(mRules);
+            int[] allShipsSizes = mRules.getAllShipsSizes();
+            ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(mRandom);
+            Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
             while (BoardSetupUtils.onlyHorizontalShips(ships)) {
-                ships = ShipUtils.generateFullFleet(mRules);
+                ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
             }
             mPlacement.populateBoardWithShips(mBoard, ships);
             mFleet.clear();

@@ -2,13 +2,9 @@ package com.ivygames.morskoiboi.boardsetup;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
@@ -30,7 +26,7 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
     @Test
     public void WhenBoardIsSet_PressingDone__OpensGameplayScreen() {
         showScreen();
-        generateNonHorizontalFleet();
+        mOrientationBuilder.setOrientation(Orientation.VERTICAL);
         clickOn(autoSetup());
         when(rules.isBoardSet(any(Board.class))).thenReturn(true);
         clickOn(done());
@@ -62,11 +58,5 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
         showScreen();
         pressBack();
         backToSelectGame();
-    }
-
-    private void generateNonHorizontalFleet() {
-        Collection<Ship> fleet = new ArrayList<>();
-        fleet.add(new Ship(4, Orientation.VERTICAL));
-        when(rules.generateFullFleet()).thenReturn(fleet);
     }
 }

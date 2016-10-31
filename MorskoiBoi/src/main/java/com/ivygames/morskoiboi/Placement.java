@@ -28,27 +28,26 @@ public class Placement {
         mRules = rules;
     }
 
+    // TODO: remove
     public void populateBoardWithShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             putShipOnBoard(ship, board);
         }
     }
 
-    private boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
+    public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
         List<Vector2> cells = board.getEmptyCells();
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
             Vector2 cell = cells.get(cellIndex);
             int i = cell.getX();
             int j = cell.getY();
-            if (board.shipFitsTheBoard(ship, i, j)) {
-                if (isPlaceEmpty(ship, board, i, j)) {
-                    putShipAt(board, ship, i, j);
-                    return true;
-                } else {
-                    // this cell is not suitable for placement
-                    cells.remove(cellIndex);
-                }
+            if (board.shipFitsTheBoard(ship, i, j) && isPlaceEmpty(ship, board, i, j)) {
+                putShipAt(board, ship, i, j);
+                return true;
+            } else {
+                // this cell is not suitable for placement
+                cells.remove(cellIndex);
             }
         }
 
@@ -77,6 +76,8 @@ public class Placement {
                     if (ship.isInShip(cellX, cellY)) {
                         cell.addShip();
                         if (ship.isDead()) {
+                            // TODO: this is probably done to properly render the board,
+                            // but in fact this is wrong
                             cell.setHit();
                         }
                     } else {
@@ -122,7 +123,7 @@ public class Placement {
 
     /**
      * @return null if no ship at (x,y) was found
-     * @throws IllegalArgumentException if (x,y) is outside the board
+     * or if (x,y) is outside the board
      */
     @Nullable
     public Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method

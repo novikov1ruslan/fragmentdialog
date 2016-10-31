@@ -12,21 +12,24 @@ import com.ivygames.morskoiboi.player.PlayerOpponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class BidAiPlayerFactory implements AiPlayerFactory {
 
+    private final Random mRandom;
     private final int[] mBid;
 
-    public BidAiPlayerFactory(int... bid) {
+    public BidAiPlayerFactory(Random random, int... bid) {
+        mRandom = random;
         mBid = bid;
     }
 
     @Override
     public PlayerOpponent createPlayer(@NonNull String name,
-                                       @NonNull final Placement placement,
-                                       @NonNull final Rules rules) {
-        BotAlgorithm bot = new MyBotAlgorithm(rules, placement);
-        return new BidAiOpponent("ai", placement, rules, bot, mBid);
+                                       @NonNull Placement placement,
+                                       @NonNull Rules rules) {
+        BotAlgorithm bot = new MyBotAlgorithm(rules);
+        return new BidAiOpponent("ai", placement, rules, bot, mBid, mRandom);
     }
 
     private class MyBotAlgorithm implements BotAlgorithm {
@@ -35,9 +38,9 @@ class BidAiPlayerFactory implements AiPlayerFactory {
         @NonNull
         private final List<Vector2> mShots = new ArrayList<>();
 
-        public MyBotAlgorithm(Rules rules, Placement placement) {
-            mShots.addAll(Utils.getShots(rules, placement));
-            mShots.addAll(Utils.getShots(rules, placement));
+        public MyBotAlgorithm(Rules rules) {
+            mShots.addAll(Utils.getShots(rules, mRandom));
+            mShots.addAll(Utils.getShots(rules, mRandom));
         }
 
         @NonNull

@@ -43,8 +43,9 @@ class ApplicationInitializer {
 
         GameSettings settings = new GameSettings(application);
         Resources resources = application.getResources();
-        RussianRules rules = new RussianRules(new Random(System.currentTimeMillis()));
-        Placement placement = new Placement(new Random(System.currentTimeMillis()), rules);
+        RussianRules rules = new RussianRules();
+        Random random = new Random(System.currentTimeMillis());
+        Placement placement = new Placement(random, rules);
         AndroidDevice device = new AndroidDevice(application);
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application,
@@ -55,8 +56,9 @@ class ApplicationInitializer {
         MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
                 BattleshipActivity.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactoryImpl();
-        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBotFactory());
+        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBotFactory(), random);
 
+        Dependencies.inject(random);
         Dependencies.inject(placement);
         Dependencies.inject(apiClient);
         Dependencies.inject(multiplayerManager);

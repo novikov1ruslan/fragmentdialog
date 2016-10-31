@@ -8,6 +8,8 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.player.AiOpponent;
 
+import java.util.Random;
+
 public class BidAiOpponent extends AiOpponent {
 
     private final int[] mBid;
@@ -16,8 +18,9 @@ public class BidAiOpponent extends AiOpponent {
     public BidAiOpponent(@NonNull String name,
                          @NonNull Placement placement,
                          @NonNull Rules rules,
-                         @NonNull BotAlgorithm bot, int[] bid) {
-        super(name, placement, rules, bot, new Bidder());
+                         @NonNull BotAlgorithm bot, int[] bid,
+                         @NonNull Random random) {
+        super(name, placement, rules, bot, new Bidder(random), random);
         mBid = bid;
     }
 

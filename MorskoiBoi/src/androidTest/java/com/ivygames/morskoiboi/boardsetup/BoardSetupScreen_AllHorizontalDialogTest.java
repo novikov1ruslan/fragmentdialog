@@ -10,9 +10,6 @@ import com.ivygames.morskoiboi.model.Ship;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
@@ -26,9 +23,7 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
     @Test
     public void WhenBoardIsSet_AndAllShipsAreHorizontal_AndDonePressed__DialogDisplayed() {
         showScreen();
-        Collection<Ship> fleet = new ArrayList<>();
-        fleet.add(new Ship(4, Ship.Orientation.HORIZONTAL));
-        when(rules.generateFullFleet()).thenReturn(fleet);
+        mOrientationBuilder.setOrientation(Ship.Orientation.HORIZONTAL);
         when(rules.isBoardSet(any(Board.class))).thenReturn(true);
 
         clickOn(done());

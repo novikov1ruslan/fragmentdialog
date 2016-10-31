@@ -3,13 +3,13 @@ package com.ivygames.morskoiboi.scenario;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.List;
+import java.util.Random;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -22,9 +22,9 @@ class Shooter {
     private final int mPadding;
     private int mCurShot;
 
-    Shooter(Rules rules, Placement placement, View view, int padding) {
+    Shooter(Rules rules, Random random, View view, int padding) {
         mPadding = padding;
-        mShots = Utils.getShots(rules, placement);
+        mShots = Utils.getShots(rules, random);
         mView = view;
     }
 

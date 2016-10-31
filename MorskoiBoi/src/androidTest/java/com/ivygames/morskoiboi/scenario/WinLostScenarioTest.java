@@ -25,7 +25,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static android.support.test.espresso.Espresso.registerIdlingResources;
@@ -39,6 +42,9 @@ import static com.ivygames.morskoiboi.ScreenUtils.playButton;
 import static com.ivygames.morskoiboi.ScreenUtils.vsAndroid;
 import static com.ivygames.morskoiboi.ScreenUtils.waitFor;
 import static com.ivygames.morskoiboi.ScreenUtils.yesButton;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class WinLostScenarioTest {
     private static final long WON_GAME_DELAY = 3000; // milliseconds
@@ -49,16 +55,21 @@ public class WinLostScenarioTest {
 
     private volatile WinLostIdlingResource playResource;
     private final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+    private Random mRandom;
 
     @Before
     public void setup() {
         BattleshipActivity activity = rule.getActivity();
+        Rules rules = new RussianRules();
+
+        mRandom = mock(Random.class);
+        when(mRandom.nextInt()).thenReturn(0);
+        when(mRandom.nextInt(anyInt())).thenReturn(0);
+
+        Dependencies.inject(mRandom);
         Dependencies.inject(new GameSettings(activity));
-
-        Rules rules = new RussianRules(new MyRandom());
-
         Dependencies.inject(rules);
-        Dependencies.inject(new Placement(new MyRandom(), rules));
+        Dependencies.inject(new Placement(mRandom, rules));
 
         IdlingPolicies.setMasterPolicyTimeout(20, TimeUnit.MINUTES);
         IdlingPolicies.setIdlingResourceTimeout(20, TimeUnit.MINUTES);
@@ -77,7 +88,7 @@ public class WinLostScenarioTest {
     @Test
     public void WinWin() throws InterruptedException {
         Dependencies.inject(new BidPlayerFactory(2, 2));
-        Dependencies.inject(new BidAiPlayerFactory(1, 1));
+        Dependencies.inject(new BidAiPlayerFactory(mRandom, 1, 1));
 
         goToGameplay();
 
@@ -95,7 +106,7 @@ public class WinLostScenarioTest {
     @Test
     public void WinLost() throws InterruptedException {
         Dependencies.inject(new BidPlayerFactory(2, 1));
-        Dependencies.inject(new BidAiPlayerFactory(1 ,2));
+        Dependencies.inject(new BidAiPlayerFactory(mRandom, 1 ,2));
 
         goToGameplay();
 
@@ -113,7 +124,7 @@ public class WinLostScenarioTest {
     @Test
     public void LostLost() throws InterruptedException {
         Dependencies.inject(new BidPlayerFactory(1, 1));
-        Dependencies.inject(new BidAiPlayerFactory(2 ,2));
+        Dependencies.inject(new BidAiPlayerFactory(mRandom, 2 ,2));
 
         goToGameplay();
 
@@ -131,7 +142,7 @@ public class WinLostScenarioTest {
     @Test
     public void LostWin() throws InterruptedException {
         Dependencies.inject(new BidPlayerFactory(1, 2));
-        Dependencies.inject(new BidAiPlayerFactory(2 ,1));
+        Dependencies.inject(new BidAiPlayerFactory(mRandom, 2 ,1));
 
         goToGameplay();
 
@@ -225,7 +236,7 @@ public class WinLostScenarioTest {
     @NonNull
     private Shooter newShooter() {
         return new Shooter(Dependencies.getRules(),
-                Dependencies.getPlacement(),
+                mRandom,
                 rule.getActivity().findViewById(R.id.enemy_board),
                 (int) rule.getActivity().getResources().getDimension(R.dimen.ship_border));
     }

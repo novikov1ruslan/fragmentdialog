@@ -32,21 +32,24 @@ public class SetupBoardPresenterTest {
 
     private Placement mPlacement;
     private RussianRules rules;
+    private Random mRandom;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mPresenter = new SetupBoardPresenter();
-        rules = new RussianRules(new Random());
+        rules = new RussianRules();
         Dependencies.inject(rules);
-        mPlacement = new Placement(new Random(), rules);
+        mRandom = new Random();
+        mPlacement = new Placement(mRandom, rules);
         Dependencies.inject(mPlacement);
     }
 
     @Test
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
-        mPlacement.populateBoardWithShips(board, ShipUtils.generateFullFleet(rules));
+        mPlacement.populateBoardWithShips(board, ShipUtils.generateFullFleet(rules.getAllShipsSizes(),
+                new ShipUtils.OrientationBuilder(mRandom)));
         mPresenter.dropShip(board, 5, 5);
     }
 

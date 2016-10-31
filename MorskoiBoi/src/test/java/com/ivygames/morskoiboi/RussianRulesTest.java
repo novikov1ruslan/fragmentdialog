@@ -36,22 +36,24 @@ public class RussianRulesTest {
 
     @Mock
     private ScoreStatistics statistics;
-
+    private int[] allShipsSizes;
+    private ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(new Random());
 
     @Before
     public void setUp() {
         initMocks(this);
-        mRules = new RussianRules(new Random());
+        mRules = new RussianRules();
+        allShipsSizes = mRules.getAllShipsSizes();
 
         Dependencies.inject(mRules);
-        Dependencies.inject(new Placement(new Random(1), mRules));
+        Dependencies.inject(new Placement(new Random(), mRules));
         placement = Dependencies.getPlacement();
     }
 
     @Test
     public void board_is_set_when_it_has_full_russian_fleet_and_no_conflicting_cells() {
         Board board = new Board();
-        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(mRules));
+        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
         assertThat(mRules.isBoardSet(board), is(true));
     }
 
@@ -63,7 +65,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_not_set_when_it_has_less_than_full_russian_fleet() {
         Board board = new Board();
-        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(mRules));
+        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
         Ship ship = board.getShips().iterator().next();
         placement.removeShipFrom(board, ship.getX(), ship.getY());
         assertThat(mRules.isBoardSet(board), is(false));
@@ -72,7 +74,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_not_set_when_it_has_conflicting_cells_although_all_the_fleet_is_on_a_board() {
         Board board = new Board();
-        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(mRules));
+        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
         Collection<Ship> shipsCopy = new ArrayList<>(board.getShips());
         for (Ship ship : shipsCopy) {
             placement.removeShipFrom(board, ship.getX(), ship.getY());
@@ -112,7 +114,7 @@ public class RussianRulesTest {
     public void max_scores_for_android_game_is_31250() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(ShipUtils.generateFullFleet(mRules), Game.Type.VS_ANDROID,
+        assertThat(mRules.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), Game.Type.VS_ANDROID,
                 statistics, false), is(31250));
     }
 
@@ -120,7 +122,7 @@ public class RussianRulesTest {
     public void max_scores_for_surrendered_game_is_5000() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(mRules.calcTotalScores(ShipUtils.generateFullFleet(mRules), Game.Type.VS_ANDROID,
+        assertThat(mRules.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), Game.Type.VS_ANDROID,
                 statistics, true), is(5000));
     }
 
@@ -150,7 +152,7 @@ public class RussianRulesTest {
         ScoreStatistics statistics = mockPerfectGame();
 
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(mRules.calcTotalScores(ShipUtils.generateFullFleet(mRules), Game.Type.VS_ANDROID, statistics,
+        assertThat(mRules.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), Game.Type.VS_ANDROID, statistics,
                 false), is(31250));
     }
 
@@ -238,7 +240,7 @@ public class RussianRulesTest {
 
     @Test
     public void SurrenderPenaltyForTheFullFleet_1000() {
-        Collection<Ship> fullFleet = ShipUtils.generateFullFleet(mRules);
+        Collection<Ship> fullFleet = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
         assertThat(mRules.calcSurrenderPenalty(fullFleet), is(1000));
     }
 

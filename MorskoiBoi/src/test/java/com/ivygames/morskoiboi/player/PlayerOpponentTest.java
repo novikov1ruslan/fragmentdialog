@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
@@ -42,13 +41,11 @@ public class PlayerOpponentTest {
     private PlayerOpponent mPlayer;
     @Mock
     private Opponent mEnemy;
-    @Mock
-    private Random mRandom;
     private Placement mPlacement;
     @Mock
     private PlayerCallback callback;
 
-    private Rules russianRules = new RussianRules(new Random());
+    private Rules russianRules = new RussianRules();
     private ChatListener listener = new ChatListener() {
         @Override
         public void showChatCrouton(ChatMessage message) {
@@ -67,7 +64,7 @@ public class PlayerOpponentTest {
 
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        Placement placement = new Placement(new Random(), new RussianRules(new Random()));
+        Placement placement = new Placement(new Random(), new RussianRules());
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
@@ -405,7 +402,7 @@ public class PlayerOpponentTest {
     @Test
     public void WhenPlayerWinsOverAiOpponent__OpponentLost() {
         PlayerOpponent player = newPlayer(PlayerUtils.defeatedBoardRules());
-        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules(new Random()));
+        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules());
         player.setOpponent(aiOpponent);
         aiOpponent.setOpponent(player);
 
@@ -426,7 +423,7 @@ public class PlayerOpponentTest {
         private boolean lostCalled;
 
         public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            super(name, placement, rules, new RussianBotFactory().createBot(), new Bidder());
+            super(name, placement, rules, new RussianBotFactory().createBot(), new Bidder(new Random()), new Random());
         }
 
         @Override

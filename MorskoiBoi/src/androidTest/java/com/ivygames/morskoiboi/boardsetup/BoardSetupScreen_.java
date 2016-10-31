@@ -6,20 +6,27 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
 
+import java.util.Random;
+
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class BoardSetupScreen_ extends OnlineScreen_ {
 
+    protected MyOrientationBuilder mOrientationBuilder = new MyOrientationBuilder();
+
     @Before
     public void setup() {
         super.setup();
+
     }
 
     @Override
@@ -52,5 +59,26 @@ public class BoardSetupScreen_ extends OnlineScreen_ {
 
     protected final Matcher<View> gotIt() {
         return withId(R.id.got_it_button);
+    }
+
+    public static class MyOrientationBuilder extends ShipUtils.OrientationBuilder {
+        private Ship.Orientation orientation;
+
+        public MyOrientationBuilder() {
+            super(new Random());
+        }
+
+        @Override
+        public Ship.Orientation nextOrientation() {
+            if (orientation == null) {
+                return super.nextOrientation();
+            }
+
+            return orientation;
+        }
+
+        public void setOrientation(Ship.Orientation orientation) {
+            this.orientation = orientation;
+        }
     }
 }

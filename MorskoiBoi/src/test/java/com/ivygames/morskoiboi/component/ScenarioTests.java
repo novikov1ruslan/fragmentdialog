@@ -3,11 +3,8 @@ package com.ivygames.morskoiboi.component;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ChatMessage;
-import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -21,7 +18,7 @@ import java.util.Random;
 @RunWith(RobolectricTestRunner.class)
 public class ScenarioTests {
 
-    private Rules rules = new RussianRules(new Random());
+    private Rules rules = new RussianRules();
     private Placement placement = new Placement(new Random(), rules);
 
     private ChatListener listener = new ChatListener() {

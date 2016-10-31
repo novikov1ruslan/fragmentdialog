@@ -64,7 +64,8 @@ public class AndroidOpponentTest {
     }
 
     private AiOpponent newAndroid(Bidder bidder) {
-        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mPlacement, mRules, new RussianBotFactory().createBot(), bidder);
+        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mPlacement, mRules,
+                new RussianBotFactory().createBot(), bidder, mRandom);
         aiOpponent.setBoard(mBoard);
         aiOpponent.setOpponent(mCancellableOpponent);
 
@@ -73,7 +74,7 @@ public class AndroidOpponentTest {
 
     @NonNull
     private Placement placement() {
-        return new Placement(new Random(), new RussianRules(new Random()));
+        return new Placement(new Random(), new RussianRules());
     }
 
     @Test

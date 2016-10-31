@@ -24,8 +24,9 @@ public class PlacementTest {
 
     private Placement mPlacement;
     private int mNumberOfDistinctShips;
-    private Rules rules;
-    private Board mBoard;
+    private Rules rules = new RussianRules();
+    private Board mBoard = new Board();
+    private Random mRandom = new Random();
 
     @BeforeClass
     public static void runBeforeClass() {
@@ -34,17 +35,49 @@ public class PlacementTest {
 
     @Before
 	public void setup() {
-        mBoard = new Board();
-        rules = new RussianRules(new Random());
         Dependencies.inject(rules);
-        mPlacement = new Placement(new Random(1), rules);
+        mPlacement = new Placement(mRandom, rules);
 	}
 
     @Test
     public void after_generating_full_board_it_has_russian_fleet() {
         Board board = new Board();
-        mPlacement.populateBoardWithShips(board, rules.generateFullFleet());
+        // TODO: this test tests populateBoardWithShips actually and not generation
+        Collection<Ship> ships = ShipUtils.generateFullFleet(rules.getAllShipsSizes(),
+                new ShipUtils.OrientationBuilder(mRandom));
+
+        mPlacement.populateBoardWithShips(board, ships);
+
         assertAllTheShipsAreRussianFleet(board.getShips());
+    }
+
+    @Test
+    public void whenPossibleToPutShipOnBoard__BoardHasTheShip() {
+        Board board = new Board();
+        Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
+
+        boolean success = mPlacement.putShipOnBoard(ship, board);
+        assertThat(success, is(true));
+
+        assertThat(board.getShips().iterator().next(), is(ship));
+    }
+
+    @Test
+    public void whenNotPossibleToPutShipOnBoard__BoardDoeNotHaveTheShip() {
+        Board board = new Board();
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+
+        boolean success = mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
+        assertThat(success, is(false));
     }
 
     @Test
@@ -100,12 +133,22 @@ public class PlacementTest {
     }
 
     @Test
-    public void testCanRotateShip() {
+    public void canRotateHorizontalShip() {
         Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 5);
         mPlacement.rotateShipAt(mBoard, 5, 5);
 
-        assertFalse(ship.isHorizontal());
+        assertThat(ship.isHorizontal(), is(false));
+        assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
+    }
+
+    @Test
+    public void canRotateVerticalShip() {
+        Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
+        putShipAt(ship, 5, 5);
+        mPlacement.rotateShipAt(mBoard, 5, 5);
+
+        assertThat(ship.isHorizontal(), is(true));
         assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
     }
 

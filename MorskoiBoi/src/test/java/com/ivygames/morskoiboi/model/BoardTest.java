@@ -42,7 +42,7 @@ public class BoardTest {
 		mBoard = new Board();
 		Random random = mock(Random.class);
 		when(random.nextInt(anyInt())).thenReturn(0);
-		Rules rules = new RussianRules(new Random());
+		Rules rules = new RussianRules();
 		Dependencies.inject(rules);
 		Dependencies.inject(new Placement(random, rules));
 		mPlacement = Dependencies.getPlacement();

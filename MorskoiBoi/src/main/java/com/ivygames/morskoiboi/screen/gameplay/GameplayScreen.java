@@ -55,6 +55,7 @@ import org.commons.logger.Ln;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -83,6 +84,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = Dependencies.getRules();
+    @NonNull
+    private final Random mRandom = Dependencies.getRandom();
     @NonNull
     private final Runnable mShowLostScreenCommand = new ShowLostScreenCommand();
     @NonNull
@@ -194,7 +197,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mUiThreadHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPlayer.startBidding(new Bidder().newBid());
+                mPlayer.startBidding(new Bidder(mRandom).newBid());
             }
         }, START_DELAY);
 
@@ -582,7 +585,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private Collection<Ship> getWorkingEnemyShips() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        Collection<Ship> fleet = ShipUtils.generateFullFleet(mRules);
+        Random random = new Random(System.currentTimeMillis());
+        ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(random);
+        Collection<Ship> fleet = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
         for (Ship ship : killedShips) {
             GameplayUtils.removeShipFromFleet(fleet, ship);
         }

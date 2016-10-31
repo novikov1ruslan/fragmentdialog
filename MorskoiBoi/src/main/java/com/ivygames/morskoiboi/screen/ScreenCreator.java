@@ -8,6 +8,7 @@ import com.ivygames.common.timer.AsyncTurnTimerFactory;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Session;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
