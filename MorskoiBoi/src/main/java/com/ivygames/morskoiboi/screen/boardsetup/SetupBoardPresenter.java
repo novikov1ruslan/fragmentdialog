@@ -27,6 +27,7 @@ public class SetupBoardPresenter {
     /**
      * currently picked ship (awaiting to be placed)
      */
+    @Nullable
     private Ship mPickedShip;
 
     public Ship getDockedShip() {
@@ -81,10 +82,12 @@ public class SetupBoardPresenter {
         }
     }
 
-    public void pickShipFromBoard(@NonNull Board board, @NonNull Vector2 v) {
-        pickShipFromBoard(board, v.getX(), v.getY());
+    @Nullable
+    public Ship pickShipFromBoard(@NonNull Board board, @NonNull Vector2 v) {
+        return pickShipFromBoard(board, v.getX(), v.getY());
     }
 
+    @Nullable
     public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
         mPickedShip = mPlacement.removeShipFrom(board, i, j);
         return mPickedShip;
