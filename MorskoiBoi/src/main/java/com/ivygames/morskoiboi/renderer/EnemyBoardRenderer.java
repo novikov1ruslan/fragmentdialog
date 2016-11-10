@@ -115,7 +115,7 @@ public class EnemyBoardRenderer extends BaseBoardRenderer {
         if (mNauticalBitmap == null) {
             Ln.e("could not decode nautical");
         } else {
-            final Random random = new Random(System.currentTimeMillis());
+            final Random random = new Random();
             int x = random.nextInt(mNauticalBitmap.getWidth() - TEXTURE_SIZE);
             int y = random.nextInt(mNauticalBitmap.getHeight() - TEXTURE_SIZE);
             mSrcRect = new Rect(x, y, x + TEXTURE_SIZE, y + TEXTURE_SIZE);

@@ -44,7 +44,7 @@ class ApplicationInitializer {
         GameSettings settings = new GameSettings(application);
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules();
-        Random random = new Random(System.currentTimeMillis());
+        Random random = new Random();
         Placement placement = new Placement(random, rules);
         AndroidDevice device = new AndroidDevice(application);
 

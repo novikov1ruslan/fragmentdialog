@@ -8,7 +8,7 @@ import java.util.Random;
 public class RussianBotFactory implements BotFactory {
     @Override
     public BotAlgorithm createBot() {
-        return new RussianBot(new Random(System.currentTimeMillis()));
+        return new RussianBot(new Random());
     }
 
     @Override

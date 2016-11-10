@@ -13,7 +13,6 @@ public class Bidder {
     }
 
     public int newBid() {
-        mRandom.setSeed(System.currentTimeMillis() + hashCode());
         return mRandom.nextInt(Integer.MAX_VALUE);
     }
 }

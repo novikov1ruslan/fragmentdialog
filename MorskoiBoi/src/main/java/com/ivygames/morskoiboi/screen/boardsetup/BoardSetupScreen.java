@@ -82,8 +82,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     public BoardSetupScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull Session session) {
         super(parent, game, session.opponent.getName());
         mSession = session;
-        Random random = new Random(System.currentTimeMillis());
-        mFleet.addAll(ShipUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes(), random));
+        mFleet.addAll(ShipUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes(), new Random()));
         Ln.d("new board created, fleet initialized");
     }
 

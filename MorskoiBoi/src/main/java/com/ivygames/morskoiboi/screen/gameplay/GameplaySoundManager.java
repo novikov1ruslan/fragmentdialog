@@ -32,7 +32,9 @@ public class GameplaySoundManager {
     private int mHitStream;
     private int mKillStream;
 
-    private final Random mRandom = new Random(System.currentTimeMillis());
+    @NonNull
+    private final Random mRandom = new Random();
+    @NonNull
     private final AudioManager mAudioManager;
 
     public GameplaySoundManager(@NonNull AudioManager audioManager) {

@@ -25,8 +25,7 @@ public class AiPlayerFactoryImpl implements AiPlayerFactory {
     public AiOpponent createPlayer(@NonNull String name,
                                    @NonNull Placement placement,
                                    @NonNull Rules rules) {
-        return new AiOpponent(name, placement, rules, mBotFactory.createBot(), new Bidder(mRandom),
-                new Random(System.currentTimeMillis()));
+        return new AiOpponent(name, placement, rules, mBotFactory.createBot(), new Bidder(mRandom), mRandom);
     }
 
     @Override
