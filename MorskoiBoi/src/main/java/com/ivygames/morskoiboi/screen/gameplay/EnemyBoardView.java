@@ -78,8 +78,8 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (mTouchState.isDragging()) {
-            int i = mRenderer.xToI(mTouchState.getX());
-            int j = mRenderer.yToJ(mTouchState.getY());
+            int i = getI();
+            int j = getJ();
 
             if (Board.contains(i, j)) {
                 boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
@@ -97,18 +97,14 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private Aiming getAiming() {
-        int i = mRenderer.xToI(mTouchState.getX());
-        int j = mRenderer.yToJ(mTouchState.getY());
-        mAiming.set(i, j, 1, 1);
+        mAiming.set(getI(), getJ(), 1, 1);
         return mAiming;
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        int i = mRenderer.xToI(mTouchState.getX());
-        int j = mRenderer.yToJ(mTouchState.getY());
-        mPresenter.touch(mTouchState, i, j);
+        mPresenter.touch(mTouchState, getI(), getJ());
         invalidate();
 
         return true;
@@ -139,5 +135,13 @@ public class EnemyBoardView extends BaseBoardView {
     public void setShotResult(@NonNull ShotResult result) {
         mLastShotResult = result;
         mRenderer.startAnimation(result);
+    }
+
+    private int getI() {
+        return mRenderer.xToI(mTouchState.getX());
+    }
+
+    private int getJ() {
+        return mRenderer.yToJ(mTouchState.getY());
     }
 }
