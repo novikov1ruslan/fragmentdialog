@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.view.Aiming;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
@@ -158,11 +157,6 @@ public class BaseGeometryProcessor {
     @NonNull
     final AimingG getAimingG(@NonNull Vector2 aim, int widthCells, int heightCells) {
         return getAimingG(aim.getX(), aim.getY(), widthCells, heightCells);
-    }
-
-    @NonNull
-    final AimingG getAimingG(@NonNull Aiming aiming) {
-        return getAimingG(aiming.i, aiming.j, aiming.widthCells, aiming.heightCells);
     }
 
     // TODO: add Board, truncate Board

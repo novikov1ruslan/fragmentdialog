@@ -5,7 +5,6 @@ import android.graphics.Rect;
 
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.view.Aiming;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +35,7 @@ public class BaseGeometryProcessorTest {
         int j = 5;
         int width = 1;
         int height = 1;
-        Aiming aiming = new Aiming();
-        aiming.set(i, j, width, height);
-        AimingG aimingG = mPresenter.getAimingG(aiming);
+        AimingG aimingG = mPresenter.getAimingG(i, j, width, height);
 
         AimingG expected = new AimingG(new Rect(160, 105, 191, 415), new Rect(5, 260, 315, 291));
         assertThat(aimingG, equalTo(expected));
@@ -95,9 +92,7 @@ public class BaseGeometryProcessorTest {
     @Test(expected=IllegalArgumentException.class)
     public void getAimingThrowsException() {
         mPresenter = new BaseGeometryProcessor(10, 2);
-        Aiming aiming = new Aiming();
-        aiming.set(0, 0, 0, 1);
-        mPresenter.getAimingG(aiming);
+        mPresenter.getAimingG(0, 0, 0, 1);
     }
 
     @Test

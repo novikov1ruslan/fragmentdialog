@@ -98,6 +98,10 @@ public class EnemyBoardRenderer extends BaseBoardRenderer {
         }
     }
 
+    public void drawAiming(@NonNull Canvas canvas, int i, int j, boolean locked) {
+        drawAiming(canvas, mProcessor.getAimingG(i, j), locked);
+    }
+
     public void drawAim(@NonNull Canvas canvas, @NonNull Vector2 aim) {
         drawAim(canvas, mProcessor.getAimRectDst(aim));
     }

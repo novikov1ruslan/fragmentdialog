@@ -14,7 +14,6 @@ import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
-import com.ivygames.morskoiboi.screen.view.Aiming;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 import com.ivygames.morskoiboi.screen.view.TouchState;
 
@@ -28,8 +27,6 @@ public class EnemyBoardView extends BaseBoardView {
     private final EnemyBoardRenderer mRenderer;
     @NonNull
     private final TouchState mTouchState = new TouchState();
-    @NonNull
-    private final Aiming mAiming = new Aiming();
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -83,7 +80,7 @@ public class EnemyBoardView extends BaseBoardView {
 
             if (Board.contains(i, j)) {
                 boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
-                mRenderer.drawAiming(canvas, getAiming(), locked);
+                mRenderer.drawAiming(canvas, i, j, locked);
             }
         }
 
@@ -94,11 +91,6 @@ public class EnemyBoardView extends BaseBoardView {
         if (BuildConfig.DEBUG) {
             mRenderer.drawDebug(canvas, mTouchState.getX(), mTouchState.getY());
         }
-    }
-
-    private Aiming getAiming() {
-        mAiming.set(getI(), getJ(), 1, 1);
-        return mAiming;
     }
 
     @Override

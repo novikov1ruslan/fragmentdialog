@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.view.Aiming;
 
 public class BaseBoardRenderer {
     @NonNull
@@ -69,17 +68,8 @@ public class BaseBoardRenderer {
         mProcessor = processor;
     }
 
-    public void drawAiming(@NonNull Canvas canvas, @NonNull Aiming aiming, boolean locked) {
-        drawAiming(canvas, mProcessor.getAimingG(aiming), locked);
-    }
-
-    protected final void drawAiming(@NonNull Canvas canvas, @NonNull AimingG aiming) {
-        drawAiming(canvas, aiming, false);
-    }
-
-    private void drawAiming(@NonNull Canvas canvas, @NonNull AimingG aiming, boolean locked) {
-        Paint paint = locked ? mAimingLockedPaint : mAimingPaint;
-        drawAiming(canvas, aiming, paint);
+    protected final void drawAiming(@NonNull Canvas canvas, @NonNull AimingG aiming, boolean locked) {
+        drawAiming(canvas, aiming, locked ? mAimingLockedPaint : mAimingPaint);
     }
 
     private void drawAiming(@NonNull Canvas canvas, @NonNull AimingG aiming, @NonNull Paint paint) {

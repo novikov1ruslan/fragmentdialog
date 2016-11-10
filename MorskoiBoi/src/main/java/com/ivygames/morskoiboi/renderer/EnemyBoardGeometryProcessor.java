@@ -64,4 +64,8 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
         return mBoardRect;
     }
 
+    @NonNull
+    final AimingG getAimingG(int i, int j) {
+        return getAimingG(i, j, 1, 1);
+    }
 }

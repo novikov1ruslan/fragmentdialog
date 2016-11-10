@@ -117,9 +117,8 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
 //        drawShipInRect(canvas, ship, pickedShipRect);
     }
 
-    public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 coordinate) {
-        AimingG aiming = mProcessor.getAimingForShip(ship, coordinate.getX(), coordinate.getY());
-        drawAiming(canvas, aiming);
+    public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 v) {
+        drawAiming(canvas, mProcessor.getAimingForShip(ship, v.getX(), v.getY()), false);
     }
 
     @NonNull
