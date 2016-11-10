@@ -44,9 +44,19 @@ public class EnemyBoardPresenterTest {
     }
 
     @Test
-    public void WhenUnlockedBoardTouchedUp__AimingFinishedEventFired() {
-        mPresenter.unlock();
+    public void BeforeAimingStartedBoardTouchedUp__AimingFinishedEventNotFired() {
         mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP), 3, 3);
+
+        verify(shotListener, never()).onAimingFinished(3, 3);
+    }
+
+    @Test
+    public void AfterAimingStartedBoardTouchedUp__AimingFinishedEventFired() {
+        mPresenter.unlock();
+        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_DOWN), 3, 3);
+
+        mPresenter.touch(getMotionEvent(100f, 200f, MotionEvent.ACTION_UP), 3, 3);
+
         verify(shotListener, times(1)).onAimingFinished(3, 3);
     }
 

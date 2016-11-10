@@ -369,7 +369,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mGameplaySounds.stopKantropSound();
 
             if (!Board.contains(i, j)) {
-                Ln.d("pressing outside the board: " + i + "," + j);
+                Ln.w("pressing outside the board: " + i + "," + j);
                 return;
             }
 

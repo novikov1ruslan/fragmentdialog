@@ -96,7 +96,7 @@ public class EnemyBoardView extends BaseBoardView {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        mPresenter.touch(mTouchState, getI(), getJ());
+        mPresenter.touch(mTouchState, Vector2.get(getI(), getJ()));
         invalidate();
 
         return true;
