@@ -77,7 +77,7 @@ public class BaseBoardRenderer {
         canvas.drawRect(aiming.vertical, paint);
     }
 
-    public void drawDebug(@NonNull Canvas canvas, int x, int y) {
+    public void drawDebug(@NonNull Canvas canvas, float x, float y) {
         canvas.drawCircle(x, y, 5, debug_paint);
     }
 

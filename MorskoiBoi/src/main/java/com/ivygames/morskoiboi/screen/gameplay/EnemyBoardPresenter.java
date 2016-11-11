@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.view.TouchState;
 
 import org.commons.logger.Ln;
 
@@ -16,10 +15,10 @@ final class EnemyBoardPresenter {
     private boolean mLocked = true;
 
     @NonNull
-    private TouchState mTouchState = new TouchState();
-    @NonNull
     private Vector2 mTouch = Vector2.INVALID_VECTOR;
     private boolean mAimingStarted;
+    private boolean mIsDragging;
+    private int mLastTouchAction;
 
     void setShotListener(@NonNull ShotListener shotListener) {
         mShotListener = shotListener;
@@ -27,28 +26,27 @@ final class EnemyBoardPresenter {
     }
 
     @Deprecated
-    void touch(@NonNull TouchState event, int i, int j) {
-        touch(event, Vector2.get(i, j));
+    void touch(int action, int i, int j) {
+        touch(action, Vector2.get(i, j));
     }
 
-    void touch(@NonNull TouchState event, @NonNull Vector2 v) {
-        mTouchState = event;
+    void touch(int action, @NonNull Vector2 v) {
         mTouch = v;
+        mLastTouchAction = action;
 
-        int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
+            mIsDragging = true;
             if (!Board.contains(v)) {
                 Ln.w("pressing outside the board: " + v);
                 return;
             }
 
-            Ln.v("DOWN: x=" + event.getX() + "; y=" + event.getY());
             if (!mLocked) {
                 mAimingStarted = true;
                 mShotListener.onAimingStarted();
             }
         } else if (action == MotionEvent.ACTION_UP) {
-            Ln.v("UP: x=" + event.getX() + "; y=" + event.getY());
+            mIsDragging = false;
             if (mAimingStarted) {
                 mAimingStarted = false;
                 mShotListener.onAimingFinished(v.getX(), v.getY());
@@ -59,7 +57,7 @@ final class EnemyBoardPresenter {
     void unlock() {
         mLocked = false;
         Ln.v("unlocked");
-        if (isTouching(mTouchState.getAction())) {
+        if (isTouching(mLastTouchAction)) {
             if (Board.contains(mTouch)) {
                 mAimingStarted = true;
                 mShotListener.onAimingStarted();
@@ -80,5 +78,9 @@ final class EnemyBoardPresenter {
 
     boolean isLocked() {
         return mLocked;
+    }
+
+    public boolean isDragging() {
+        return mIsDragging;
     }
 }

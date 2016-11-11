@@ -43,7 +43,7 @@ public class TouchStateTest {
     }
 
     @NonNull
-    private static MotionEvent newMotionEvent(float x, float y, int action) {
+    public static MotionEvent newMotionEvent(float x, float y, int action) {
         MotionEvent event = mock(MotionEvent.class);
         when(event.getX()).thenReturn(x);
         when(event.getY()).thenReturn(y);

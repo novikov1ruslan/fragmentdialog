@@ -15,7 +15,8 @@ import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
-import com.ivygames.morskoiboi.screen.view.TouchState;
+
+import org.commons.logger.Ln;
 
 public class EnemyBoardView extends BaseBoardView {
 
@@ -26,8 +27,7 @@ public class EnemyBoardView extends BaseBoardView {
     private final EnemyBoardPresenter mPresenter;
     @NonNull
     private final EnemyBoardRenderer mRenderer;
-    @NonNull
-    private final TouchState mTouchState = new TouchState();
+    private MotionEvent debug_last_event;
     @NonNull
     private Vector2 mAiming = Vector2.INVALID_VECTOR;
 
@@ -77,7 +77,7 @@ public class EnemyBoardView extends BaseBoardView {
             mRenderer.drawAim(canvas, mLockAim);
         }
 
-        if (mTouchState.isDragging()) {
+        if (mPresenter.isDragging()) {
             if (mAiming != Vector2.INVALID_VECTOR) {
                 mRenderer.drawAiming(canvas, mAiming, isLocked(mAiming));
             }
@@ -88,7 +88,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (BuildConfig.DEBUG) {
-            mRenderer.drawDebug(canvas, mTouchState.getX(), mTouchState.getY());
+            mRenderer.drawDebug(canvas, debug_last_event.getX(), debug_last_event.getY());
         }
     }
 
@@ -98,12 +98,21 @@ public class EnemyBoardView extends BaseBoardView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mTouchState.setEvent(event);
-        mAiming = Vector2.get(getI(), getJ());
-        mPresenter.touch(mTouchState, mAiming);
+        debug_last_event = event;
+        mAiming = Vector2.get(getI(event.getX()), getJ(event.getY()));
+        logAction(event);
+        mPresenter.touch(event.getAction(), mAiming);
         invalidate();
 
         return true;
+    }
+
+    private void logAction(@NonNull MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            Ln.v("DOWN: x=" + event.getX() + "; y=" + event.getY());
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            Ln.v("UP: x=" + event.getX() + "; y=" + event.getY());
+        }
     }
 
     public void setLockAim(@NonNull Vector2 aim) {
@@ -133,11 +142,11 @@ public class EnemyBoardView extends BaseBoardView {
         mRenderer.startAnimation(result);
     }
 
-    private int getI() {
-        return mRenderer.xToI(mTouchState.getX());
+    private int getI(float x) {
+        return mRenderer.xToI((int) x);
     }
 
-    private int getJ() {
-        return mRenderer.yToJ(mTouchState.getY());
+    private int getJ(float y) {
+        return mRenderer.yToJ((int) y);
     }
 }
