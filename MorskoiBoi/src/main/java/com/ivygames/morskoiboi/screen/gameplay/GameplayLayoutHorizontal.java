@@ -84,12 +84,12 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
 
     @Override
     public void setAim(@NonNull Vector2 aim) {
-        mEnemyBoardView.setAim(aim);
+        mEnemyBoardView.setLockAim(aim);
     }
 
     @Override
     public void removeAim() {
-        mEnemyBoardView.removeAim();
+        mEnemyBoardView.removeLockAim();
     }
 
     @Override

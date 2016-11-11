@@ -81,5 +81,4 @@ final class EnemyBoardPresenter {
     boolean isLocked() {
         return mLocked;
     }
-
 }

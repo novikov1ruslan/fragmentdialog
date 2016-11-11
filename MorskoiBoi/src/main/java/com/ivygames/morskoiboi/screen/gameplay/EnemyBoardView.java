@@ -4,12 +4,12 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.google.example.games.basegameutils.BuildConfig;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
@@ -20,13 +20,16 @@ import com.ivygames.morskoiboi.screen.view.TouchState;
 public class EnemyBoardView extends BaseBoardView {
 
     private ShotResult mLastShotResult;
-    private Vector2 mAim;
+    @Nullable
+    private Vector2 mLockAim;
     @NonNull
     private final EnemyBoardPresenter mPresenter;
     @NonNull
     private final EnemyBoardRenderer mRenderer;
     @NonNull
     private final TouchState mTouchState = new TouchState();
+    @NonNull
+    private Vector2 mAiming = Vector2.INVALID_VECTOR;
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -70,17 +73,13 @@ public class EnemyBoardView extends BaseBoardView {
         mRenderer.drawNautical(canvas);
         super.onDraw(canvas);
 
-        if (mAim != null) {
-            mRenderer.drawAim(canvas, mAim);
+        if (mLockAim != null) {
+            mRenderer.drawAim(canvas, mLockAim);
         }
 
         if (mTouchState.isDragging()) {
-            int i = getI();
-            int j = getJ();
-
-            if (Board.contains(i, j)) {
-                boolean locked = mBoard.getCell(i, j).beenShot() || mPresenter.isLocked();
-                mRenderer.drawAiming(canvas, i, j, locked);
+            if (mAiming != Vector2.INVALID_VECTOR) {
+                mRenderer.drawAiming(canvas, mAiming, isLocked(mAiming));
             }
         }
 
@@ -93,22 +92,27 @@ public class EnemyBoardView extends BaseBoardView {
         }
     }
 
+    private boolean isLocked(@NonNull Vector2 v) {
+        return mBoard.getCell(v).beenShot() || mPresenter.isLocked();
+    }
+
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchState.setEvent(event);
-        mPresenter.touch(mTouchState, Vector2.get(getI(), getJ()));
+        mAiming = Vector2.get(getI(), getJ());
+        mPresenter.touch(mTouchState, mAiming);
         invalidate();
 
         return true;
     }
 
-    public void setAim(@NonNull Vector2 aim) {
-        mAim = aim;
+    public void setLockAim(@NonNull Vector2 aim) {
+        mLockAim = aim;
         invalidate();
     }
 
-    public void removeAim() {
-        mAim = null;
+    public void removeLockAim() {
+        mLockAim = null;
         invalidate();
     }
 

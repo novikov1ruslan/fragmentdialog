@@ -71,12 +71,12 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
 
     @Override
     public void setAim(@NonNull Vector2 aim) {
-        mEnemyBoardView.setAim(aim);
+        mEnemyBoardView.setLockAim(aim);
     }
 
     @Override
     public void removeAim() {
-        mEnemyBoardView.removeAim();
+        mEnemyBoardView.removeLockAim();
     }
 
     @Override

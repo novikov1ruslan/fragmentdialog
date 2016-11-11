@@ -75,6 +75,10 @@ public class Board {
         return i < DIMENSION && i >= 0 && j < DIMENSION && j >= 0;
     }
 
+    public Cell getCell(@NonNull Vector2 v) {
+        return getCell(v.getX(), v.getY());
+    }
+
     /**
      * @throws IndexOutOfBoundsException when trying to access cell outside of the board
      */
