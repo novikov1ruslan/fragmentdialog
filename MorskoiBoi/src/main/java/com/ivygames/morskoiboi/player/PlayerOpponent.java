@@ -186,7 +186,7 @@ public class PlayerOpponent implements Opponent {
 
         notifyOnShotResult(result);
         if (shipSank(result.ship)) {
-            notifyOnKill(PlayerCallback.Side.OPPONENT);
+            notifyOnKillEnemy();
             if (mRules.isItDefeatedBoard(mEnemyBoard)) {
                 Ln.d(mName + ": actually opponent lost");
 
@@ -205,11 +205,11 @@ public class PlayerOpponent implements Opponent {
         } else if (result.cell.isMiss()) {
             Ln.d(mName + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
-            notifyOnMiss(PlayerCallback.Side.OPPONENT);
+            notifyOnMiss();
             notifyOpponentTurn();
         } else {
             Ln.d(mName + ": it's a hit!");
-            notifyOnHit(PlayerCallback.Side.OPPONENT);
+            notifyOnHit();
         }
     }
 
@@ -232,12 +232,12 @@ public class PlayerOpponent implements Opponent {
         if (shipSank(result.ship)) {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
-            notifyOnKill(PlayerCallback.Side.PLAYER);
+            notifyOnKillPlayer();
         } else if (result.cell.isMiss()) {
-            notifyOnMiss(PlayerCallback.Side.PLAYER);
+            notifyOnMiss();
         } else {
             Ln.d(mName + ": my ship is hit");
-            notifyOnHit(PlayerCallback.Side.PLAYER);
+            notifyOnHit();
         }
 
         mOpponent.onShotResult(result);
@@ -367,21 +367,27 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    private void notifyOnHit(PlayerCallback.Side player) {
+    private void notifyOnHit() {
         for (PlayerCallback callback : mCallbacks) {
-            callback.onHit(player);
+            callback.onHit();
         }
     }
 
-    private void notifyOnMiss(PlayerCallback.Side player) {
+    private void notifyOnMiss() {
         for (PlayerCallback callback : mCallbacks) {
-            callback.onMiss(player);
+            callback.onMiss();
         }
     }
 
-    private void notifyOnKill(PlayerCallback.Side player) {
+    private void notifyOnKillEnemy() {
         for (PlayerCallback callback : mCallbacks) {
-            callback.onKill(player);
+            callback.onKillEnemy();
+        }
+    }
+
+    private void notifyOnKillPlayer() {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onKillPlayer();
         }
     }
 

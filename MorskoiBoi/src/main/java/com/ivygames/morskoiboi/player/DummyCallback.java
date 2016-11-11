@@ -21,17 +21,22 @@ public class DummyCallback implements PlayerCallback {
     }
 
     @Override
-    public void onKill(@NonNull Side side) {
+    public void onKillPlayer() {
 
     }
 
     @Override
-    public void onMiss(@NonNull Side side) {
+    public void onKillEnemy() {
 
     }
 
     @Override
-    public void onHit(@NonNull Side side) {
+    public void onMiss() {
+
+    }
+
+    @Override
+    public void onHit() {
 
     }
 

@@ -450,25 +450,30 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onKill(@NonNull Side side) {
-            if (side == Side.OPPONENT) {
-                Ln.d("enemy ship is sunk!! - shake enemy board");
-                mLayout.shakeEnemyBoard();
-            } else {
-                Ln.d("my ship is sunk!! - shake my board");
-                mLayout.shakePlayerBoard();
-            }
+        public void onKillEnemy() {
+            Ln.d("enemy ship is sunk!! - shake enemy board");
+            mLayout.shakeEnemyBoard();
+
             mGameplaySounds.playKillSound();
             vibrate();
         }
 
         @Override
-        public void onMiss(@NonNull Side side) {
+        public void onKillPlayer() {
+            Ln.d("my ship is sunk!! - shake my board");
+            mLayout.shakePlayerBoard();
+
+            mGameplaySounds.playKillSound();
+            vibrate();
+        }
+
+        @Override
+        public void onMiss() {
             mGameplaySounds.playSplash();
         }
 
         @Override
-        public void onHit(@NonNull Side side) {
+        public void onHit() {
             mGameplaySounds.playHitSound();
 
             mLayout.invalidate();

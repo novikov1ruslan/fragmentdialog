@@ -9,20 +9,17 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 public interface PlayerCallback {
 
-    enum Side {
-        PLAYER,
-        OPPONENT
-    }
-
     void onShotResult(@NonNull ShotResult result);
 
     void onWin();
 
-    void onKill(@NonNull Side side);
+    void onKillPlayer();
 
-    void onMiss(@NonNull Side side);
+    void onKillEnemy();
 
-    void onHit(@NonNull Side side);
+    void onMiss();
+
+    void onHit();
 
     void onShotAt(@NonNull Vector2 aim);
 

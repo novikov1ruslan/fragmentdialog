@@ -228,7 +228,7 @@ public class PlayerOpponentTest {
         ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit(), new Ship(1));
         mPlayer.onShotResult(result);
 
-        verify(callback, times(1)).onKill(PlayerCallback.Side.OPPONENT);
+        verify(callback, times(1)).onKillEnemy();
     }
 
     @Test
@@ -236,7 +236,7 @@ public class PlayerOpponentTest {
         ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit());
         mPlayer.onShotResult(result);
 
-        verify(callback, times(1)).onHit(PlayerCallback.Side.OPPONENT);
+        verify(callback, times(1)).onHit();
     }
 
     @Test
@@ -244,7 +244,7 @@ public class PlayerOpponentTest {
         ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newMiss());
         mPlayer.onShotResult(result);
 
-        verify(callback, times(1)).onMiss(PlayerCallback.Side.OPPONENT);
+        verify(callback, times(1)).onMiss();
         verify(callback, times(1)).onOpponentTurn();
     }
 
@@ -265,7 +265,7 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotAt(aim);
 
-        verify(callback, times(1)).onHit(PlayerCallback.Side.PLAYER);
+        verify(callback, times(1)).onHit();
     }
 
     @Test
@@ -277,7 +277,7 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotAt(aim);
 
-        verify(callback, times(1)).onMiss(PlayerCallback.Side.PLAYER);
+        verify(callback, times(1)).onMiss();
     }
 
     @Test
@@ -289,7 +289,7 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotAt(aim);
 
-        verify(callback, times(1)).onKill(PlayerCallback.Side.PLAYER);
+        verify(callback, times(1)).onKillPlayer();
     }
 
     @Test
