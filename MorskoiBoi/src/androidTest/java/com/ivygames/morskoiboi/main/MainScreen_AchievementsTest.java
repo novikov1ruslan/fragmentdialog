@@ -13,7 +13,6 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Mockito.never;
 
 public class MainScreen_AchievementsTest extends MainScreen_ {
 
@@ -46,7 +45,7 @@ public class MainScreen_AchievementsTest extends MainScreen_ {
     public void WhenCancelPressedForAchievementsDialog__NotConnectedAndDialogDismissed() {
         WhenAchievementsButtonPressedWhenNonConnected__SignInDialogDisplayed();
         clickOn(cancelButton());
-        verifyConnected(never());
+        verifyDisconnected();
         checkDoesNotExist(achievementsDialog());
     }
 

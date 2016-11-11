@@ -193,7 +193,7 @@ public class WinScreenTest extends WinScreen_ {
         setSignedIn(true);
         showScreen();
         pressBack();
-        expectSubmitScoreBeCalled(times(1));
+        expectSubmitScoreBeCalled(true);
     }
 
     @Test
@@ -202,7 +202,7 @@ public class WinScreenTest extends WinScreen_ {
         setSignedIn(true);
         showScreen();
         pressBack();
-        expectSubmitScoreBeCalled(never());
+        expectSubmitScoreBeCalled(false);
     }
 
     @Test
@@ -211,7 +211,7 @@ public class WinScreenTest extends WinScreen_ {
         setSignedIn(false);
         showScreen();
         pressBack();
-        expectSubmitScoreBeCalled(never());
+        expectSubmitScoreBeCalled(false);
     }
 
 }

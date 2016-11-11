@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ui.SignInListener;
-import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
 import com.ivygames.morskoiboi.model.Progress;
@@ -29,7 +28,6 @@ import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.mockito.verification.VerificationMode;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,16 +44,14 @@ import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public abstract class ScreenTest {
@@ -79,7 +75,7 @@ public abstract class ScreenTest {
     private TaskResource pause;
     private TaskResource resume;
     private TaskResource destroy;
-    private ApiClient apiClient;
+    private ThrowingApiClient apiClient;
     private AndroidDevice androidDevice;
     private BattleshipScreen screen;
 
@@ -130,7 +126,11 @@ public abstract class ScreenTest {
     }
 
     protected void setSignedIn(boolean signedIn) {
-        when(apiClient.isConnected()).thenReturn(signedIn);
+        if (signedIn) {
+            apiClient.connect();
+        } else {
+            apiClient.disconnect();
+        }
     }
 
     protected final BattleshipScreen screen() {
@@ -279,27 +279,22 @@ public abstract class ScreenTest {
     }
 
     protected final void verifyConnected() {
-        verifyConnected(times(1));
-    }
-
-    protected final void verifyConnected(VerificationMode mode) {
-        verify(apiClient, mode).connect();
+        assertThat(apiClient.isConnected(), is(true));
     }
 
     protected final void verifyDisconnected() {
-        verify(apiClient, times(1)).disconnect();
+        assertThat(apiClient.isConnected(), is(false));
     }
 
     protected final void verifyAchievementsShown() {
-        verify(apiClient, times(1)).showAchievements(anyInt());
+        assertThat(apiClient.achievementsShown(), is(true));
     }
 
     protected final void verifyLeaderboardsShown() {
-        verify(apiClient, times(1)).showLeaderboards(anyString(), anyInt());
-    }
+        assertThat(apiClient.leaderboardsShown(), is(true));    }
 
-    protected final void expectSubmitScoreBeCalled(VerificationMode mode) {
-        verify(apiClient, mode).submitScore(anyString(), anyInt());
+    protected final void expectSubmitScoreBeCalled(boolean called) {
+        assertThat(apiClient.submitScoreBeCalled(), is(called));
     }
 
     public void onActivityResult(int request, int result, Intent data) {

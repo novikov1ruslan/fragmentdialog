@@ -14,7 +14,6 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.pressBack;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Mockito.never;
 
 public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     @Test
@@ -38,7 +37,7 @@ public class SelectGameScreen_InternetTest extends SelectGameScreen_ {
     public void WhenCancelPressedForAchievementsDialog__NotConnectedAndDialogDismissed() {
         WhenInternetButtonPressedButNotConnected__SignInDialogOpens();
         clickOn(cancelButton());
-        verifyConnected(never());
+        verifyDisconnected();
         checkDoesNotExist(signInDialog());
     }
 

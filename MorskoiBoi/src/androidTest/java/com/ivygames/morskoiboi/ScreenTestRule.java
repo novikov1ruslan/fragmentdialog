@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi;
 import android.support.test.rule.ActivityTestRule;
 
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
-    private ApiClient apiClient;
+    private ThrowingApiClient apiClient;
     private AndroidDevice device;
     private GameSettings settings;
 
@@ -27,8 +26,8 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
 
         settings = mock(GameSettings.class);
         Dependencies.inject(settings);
-        apiClient = mock(ApiClient.class);
-        when(apiClient.isConnected()).thenReturn(true);
+        apiClient = new ThrowingApiClient();
+        apiClient.connect();
         Dependencies.inject(apiClient);
         Dependencies.inject(new MultiplayerImpl(apiClient, 1000));
         Dependencies.inject(mock(AchievementsManager.class));
@@ -39,7 +38,7 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         Dependencies.inject(device);
     }
 
-    public ApiClient getApiClient() {
+    public ThrowingApiClient getApiClient() {
         return apiClient;
     }
 

@@ -16,7 +16,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Mockito.never;
 
 public class MainScreen_LeaderboardTest extends MainScreen_ {
     @NonNull
@@ -48,7 +47,7 @@ public class MainScreen_LeaderboardTest extends MainScreen_ {
     public void WhenCancelPressedForSignInDialog__NotConnectedAndDialogDismissed() {
         WhenLeaderBoardPressedAndNotConnected__SignInDialogDisplayed();
         clickOn(cancelButton());
-        verifyConnected(never());
+        verifyDisconnected();
         checkDoesNotExist(leaderBoardDialog());
     }
 
