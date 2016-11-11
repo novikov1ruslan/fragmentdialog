@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -16,7 +17,6 @@ import com.ivygames.morskoiboi.screen.ScreenCreator;
 import org.commons.logger.Ln;
 
 public class RanksListScreen extends BattleshipScreen implements BackPressListener {
-    private static final String TAG = "RANKS";
     private RanksLayout mLayout;
 
     @NonNull
@@ -68,6 +68,6 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 }

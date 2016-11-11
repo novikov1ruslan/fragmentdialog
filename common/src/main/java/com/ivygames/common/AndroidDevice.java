@@ -93,6 +93,6 @@ public class AndroidDevice {
 
     @Override
     public String toString() {
-        return AndroidDevice.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

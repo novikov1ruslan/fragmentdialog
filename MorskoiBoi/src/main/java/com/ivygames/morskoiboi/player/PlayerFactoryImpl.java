@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.player;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.Rules;
@@ -17,6 +18,6 @@ public class PlayerFactoryImpl implements PlayerFactory {
 
     @Override
     public String toString() {
-        return PlayerFactoryImpl.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ActivityScreen;
@@ -28,10 +29,6 @@ public abstract class BattleshipScreen extends ActivityScreen {
 
     protected final void setScreen(BattleshipScreen screen) {
         parent().setScreen(screen);
-    }
-
-    protected final String debugSuffix() {
-        return "(" + (hashCode() % 1000) + ")";
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.achievement;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.achievements.AchievementsApi;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
@@ -174,6 +175,6 @@ public class AchievementsManager {
 
     @Override
     public String toString() {
-        return AchievementsManager.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

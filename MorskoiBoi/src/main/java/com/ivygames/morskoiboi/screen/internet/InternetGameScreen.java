@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
@@ -38,8 +39,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 import org.commons.logger.Ln;
 
 public class InternetGameScreen extends BattleshipScreen implements BackPressListener {
-    private static final String TAG = "INTERNET_GAME";
-
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private InternetGame mInternetGame;
@@ -244,7 +243,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
     private class RoomConnectionErrorListenerImpl implements RoomConnectionErrorListener {

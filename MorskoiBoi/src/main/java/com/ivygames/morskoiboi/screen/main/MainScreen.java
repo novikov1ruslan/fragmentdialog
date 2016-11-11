@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.ui.SignInListener;
@@ -33,7 +34,6 @@ import com.ruslan.fragmentdialog.FragmentAlertDialog;
 import org.commons.logger.Ln;
 
 public class MainScreen extends BattleshipScreen implements SignInListener {
-    private static final String TAG = "MAIN";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private boolean mAchievementsRequested;
@@ -245,7 +245,7 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
 }

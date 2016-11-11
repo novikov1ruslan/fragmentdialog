@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.achievements.AchievementsSettings;
 import com.ivygames.common.backup.BackupSharedPreferences;
 import com.ivygames.morskoiboi.model.Progress;
@@ -221,6 +222,6 @@ public class GameSettings implements AchievementsSettings {
 
     @Override
     public String toString() {
-        return GameSettings.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

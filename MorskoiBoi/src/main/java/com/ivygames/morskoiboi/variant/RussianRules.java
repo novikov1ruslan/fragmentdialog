@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.variant;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
@@ -142,6 +143,6 @@ public class RussianRules extends AbstractRules {
 
     @Override
     public String toString() {
-        return RussianRules.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

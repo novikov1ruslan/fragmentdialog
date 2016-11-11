@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.googleapi.ApiClient;
 
 import org.commons.logger.Ln;
@@ -127,7 +128,7 @@ public class QueuedRtmSender implements RtmSender {
 
     @Override
     public String toString() {
-        return QueuedRtmSender.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 
 }

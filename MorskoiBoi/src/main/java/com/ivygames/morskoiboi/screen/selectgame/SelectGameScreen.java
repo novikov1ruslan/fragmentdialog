@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
@@ -45,7 +46,6 @@ import org.commons.logger.Ln;
 
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener {
-    private static final String TAG = "SELECT_GAME";
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private SelectGameLayout mLayout;
@@ -297,7 +297,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
 }

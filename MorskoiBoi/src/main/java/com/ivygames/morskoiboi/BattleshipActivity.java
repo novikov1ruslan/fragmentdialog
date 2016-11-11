@@ -16,6 +16,7 @@ import android.view.WindowManager;
 
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.AndroidUtils;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.billing.PurchaseManager;
@@ -450,6 +451,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
 
     @Override
     public String toString() {
-        return BattleshipActivity.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

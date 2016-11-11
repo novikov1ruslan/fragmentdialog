@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.morskoiboi.R;
 
 import org.commons.logger.Ln;
 
 public class WaitFragment extends Fragment {
-    private static final String TAG = "WAIT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,12 +32,8 @@ public class WaitFragment extends Fragment {
         Ln.v(this + " fragment destroyed");
     }
 
-    private String debugSuffix() {
-        return "(" + (hashCode() % 1000) + ")";
-    }
-
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 }

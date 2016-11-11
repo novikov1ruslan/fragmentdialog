@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -237,6 +238,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public String toString() {
-        return "BLUETOOTH" + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 }

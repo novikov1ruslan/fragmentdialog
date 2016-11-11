@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
@@ -13,7 +14,6 @@ import com.ivygames.morskoiboi.screen.ScreenCreator;
 import org.commons.logger.Ln;
 
 public class HelpScreen extends BattleshipScreen implements BackPressListener {
-    private static final String TAG = "HELP";
     private View mLayout;
 
     public HelpScreen(BattleshipActivity parent) {
@@ -46,7 +46,7 @@ public class HelpScreen extends BattleshipScreen implements BackPressListener {
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
 }

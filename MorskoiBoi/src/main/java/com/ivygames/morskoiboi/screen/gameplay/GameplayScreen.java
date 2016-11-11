@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
@@ -62,8 +63,6 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class GameplayScreen extends OnlineGameScreen implements BackPressListener {
-    private static final String TAG = "GAMEPLAY";
-
     private static final String DIALOG = FragmentAlertDialog.TAG;
 
     private static final int START_DELAY = 3000;
@@ -534,7 +533,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public String toString() {
-            return UiPlayerCallback.class.getSimpleName() + "#" + (hashCode() % 1000);
+            return DebugUtils.getSimpleName(this);
         }
     }
 
@@ -608,7 +607,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
     private class GameplayLayoutListenerImpl implements GameplayLayoutListener {

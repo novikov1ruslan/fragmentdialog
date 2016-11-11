@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.player;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.variant.RussianBot;
 
@@ -13,6 +14,6 @@ public class RussianBotFactory implements BotFactory {
 
     @Override
     public String toString() {
-        return RussianBotFactory.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -258,6 +259,6 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     @Override
     public String toString() {
-        return "DEVICE_LIST" + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 }

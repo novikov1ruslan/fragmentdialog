@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.player;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.AiPlayerFactory;
 import com.ivygames.morskoiboi.Placement;
@@ -30,6 +31,6 @@ public class AiPlayerFactoryImpl implements AiPlayerFactory {
 
     @Override
     public String toString() {
-        return AiPlayerFactoryImpl.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

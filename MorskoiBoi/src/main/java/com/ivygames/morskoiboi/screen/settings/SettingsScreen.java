@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.ui.SignInListener;
@@ -24,7 +25,6 @@ import com.ivygames.morskoiboi.screen.settings.SettingsLayout.SettingsScreenActi
 import org.commons.logger.Ln;
 
 public class SettingsScreen extends BattleshipScreen implements SignInListener, BackPressListener {
-    private static final String TAG = "SETTINGS";
 
     @NonNull
     private final ApiClient mApiClient = Dependencies.getApiClient();
@@ -162,6 +162,6 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 }

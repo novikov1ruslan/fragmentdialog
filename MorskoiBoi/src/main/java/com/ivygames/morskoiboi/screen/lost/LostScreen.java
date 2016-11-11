@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.NullSoundBar;
 import com.ivygames.common.music.SoundBar;
@@ -24,7 +25,6 @@ import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import org.commons.logger.Ln;
 
 public class LostScreen extends OnlineGameScreen implements BackPressListener {
-    private static final String TAG = "LOST";
 
     @NonNull
     private final SoundBar mLostMusic;
@@ -124,6 +124,6 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 }

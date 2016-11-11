@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.DialogUtils;
@@ -235,7 +236,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
 }

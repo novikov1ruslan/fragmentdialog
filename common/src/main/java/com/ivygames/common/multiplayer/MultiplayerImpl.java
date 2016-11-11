@@ -10,6 +10,7 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
 
@@ -234,6 +235,6 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
 
     @Override
     public String toString() {
-        return MultiplayerImpl.class.getSimpleName() + "#" + (hashCode() % 1000);
+        return DebugUtils.getSimpleName(this);
     }
 }

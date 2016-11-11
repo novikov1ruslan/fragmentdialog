@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
+import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
@@ -38,7 +39,6 @@ import org.commons.logger.Ln;
 import java.util.Collection;
 
 public class WinScreen extends OnlineGameScreen implements BackPressListener, SignInListener {
-    private static final String TAG = "WIN";
 
     private WinLayoutSmall mLayout;
     private final long mTime;
@@ -260,7 +260,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     @Override
     public String toString() {
-        return TAG + debugSuffix();
+        return DebugUtils.getSimpleName(this);
     }
 
 }
