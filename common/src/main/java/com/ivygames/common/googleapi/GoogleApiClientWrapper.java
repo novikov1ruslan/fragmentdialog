@@ -238,21 +238,14 @@ public class GoogleApiClientWrapper implements ApiClient {
         RoomConfig.Builder builder = getRoomConfigBuilder(roomListener, rtListener);
 
         Bundle autoMatchCriteria = createAutomatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers);
-        if (autoMatchCriteria != null) {
-            Ln.v("automatch criteria: " + autoMatchCriteria);
-            builder.setAutoMatchCriteria(autoMatchCriteria);
-        }
+        Ln.v("automatch criteria: " + autoMatchCriteria);
+        builder.setAutoMatchCriteria(autoMatchCriteria);
         return builder;
     }
 
     @Nullable
     private static Bundle createAutomatchCriteria(int minAutoMatchPlayers, int maxAutoMatchPlayers) {
-        Bundle autoMatchCriteria = null;
-        if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
-            // TODO: call this method anyway - do not return null
-            autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
-        }
-        return autoMatchCriteria;
+        return RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
     }
 
     private RoomConfig.Builder getRoomConfigBuilder(@NonNull RoomListener roomListener,

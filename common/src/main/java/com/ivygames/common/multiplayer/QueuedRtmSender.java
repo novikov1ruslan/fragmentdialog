@@ -70,6 +70,9 @@ public class QueuedRtmSender implements RtmSender {
         mApiClient = apiClient;
     }
 
+    /**
+     * After the sender is stopped it will not send any message
+     */
     public void stop() {
         mStopped = true;
         Ln.d("sender stopped");

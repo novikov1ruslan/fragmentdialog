@@ -32,9 +32,9 @@ public class GoogleAnalyticsInitializer {
 
         Thread.UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         ExceptionReporter exceptionReporter = new ExceptionReporter(tracker, exceptionHandler, application);
-        // TODO: Make exceptionReporter the new default uncaught exception handler.
-        Thread.setDefaultUncaughtExceptionHandler(exceptionReporter);
         exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
+
+        Thread.setDefaultUncaughtExceptionHandler(exceptionReporter);
     }
 
     private static class AnalyticsExceptionParser implements ExceptionParser {
