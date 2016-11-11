@@ -167,7 +167,8 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     }
 
     @Override
-    public void invalidatePlayerBoard() {
+    public void invalidate() {
+        super.invalidate();
         mMyBoardView.invalidate();
     }
 

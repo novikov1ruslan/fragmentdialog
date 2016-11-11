@@ -60,7 +60,7 @@ public interface GameplayLayoutInterface {
 
     void shakePlayerBoard();
 
-    void invalidatePlayerBoard();
+    void invalidate();
 
     void lost();
 

@@ -471,9 +471,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onHit(@NonNull Side side) {
             mGameplaySounds.playHitSound();
 
-            if (side == Side.PLAYER) {
-                mLayout.invalidatePlayerBoard();
-            }
+            mLayout.invalidate();
         }
 
         @Override

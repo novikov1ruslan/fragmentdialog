@@ -167,7 +167,8 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     }
 
     @Override
-    public void invalidatePlayerBoard() {
+    public void invalidate() {
+        super.invalidate();
         mMyBoardView.invalidate();
     }
 
