@@ -105,8 +105,10 @@ public class RussianRulesTest {
     @Test
     public void cell_is_conflicting_if_it_is_occupied_by_ship_A_and_ship_B_is_touching_the_cell() {
         Board board = new Board();
-        placement.putShipAt(board, new Ship(1), 5, 5);
         placement.putShipAt(board, new Ship(1), 6, 6);
+
+        placement.putShipAt(board, new Ship(1), 5, 5);
+
         assertThat(mRules.isCellConflicting(board.getCell(5, 5)), is(true));
     }
 

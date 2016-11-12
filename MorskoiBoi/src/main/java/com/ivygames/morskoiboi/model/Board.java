@@ -82,8 +82,8 @@ public class Board {
     /**
      * @throws IndexOutOfBoundsException when trying to access cell outside of the board
      */
-    public Cell getCell(int x, int y) {
-        return mCells[x][y];
+    public Cell getCell(int i, int j) {
+        return mCells[i][j];
     }
 
     public Cell getCellAt(@NonNull Vector2 vector) {
