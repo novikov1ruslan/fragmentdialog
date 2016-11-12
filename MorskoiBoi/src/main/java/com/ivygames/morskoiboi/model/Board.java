@@ -67,8 +67,8 @@ public class Board {
         return canPut;
     }
 
-    public static boolean contains(@NonNull Vector2 aim) {
-        return contains(aim.getX(), aim.getY());
+    public static boolean contains(@NonNull Vector2 v) {
+        return contains(v.getX(), v.getY());
     }
 
     public static boolean contains(int i, int j) {
