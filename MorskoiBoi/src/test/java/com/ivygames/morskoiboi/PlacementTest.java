@@ -190,7 +190,7 @@ public class PlacementTest {
 
     private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
         Cell cell = board.getCell(i, j);
-        if (Ship.isInProximity(ship, i, j)) {
+        if (ShipTestUtils.isInProximity(ship, i, j)) {
             assertTrue(cell.toString(), cell.isReserved());
         } else {
             assertTrue(cell.toString(), cell.isEmpty());

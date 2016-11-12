@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ShipTestUtils;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -208,7 +209,7 @@ public class BoardTest {
 		putShipAt(ship, 3, 3);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				if (Ship.isInProximity(ship, i, j)) {
+				if (ShipTestUtils.isInProximity(ship, i, j)) {
 					Cell cell = mBoard.getCell(i, j);
 					if (ship.isInShip(i, j)) {
 						assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell.isHit());
@@ -222,7 +223,7 @@ public class BoardTest {
 
 	private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
 		Cell cell = board.getCell(i, j);
-		if (Ship.isInProximity(ship, i, j)) {
+		if (ShipTestUtils.isInProximity(ship, i, j)) {
 			assertTrue(cell.toString(), cell.isReserved());
 		} else {
 			assertTrue(cell.toString(), cell.isEmpty());
@@ -258,7 +259,7 @@ public class BoardTest {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				Cell cell = mBoard.getCell(i, j);
-				if (Ship.isInProximity(ship, i, j)) {
+				if (ShipTestUtils.isInProximity(ship, i, j)) {
 					if (ship.isInShip(i, j)) {
 						assertEquals(i + "," + j, 8, cell.getProximity());
 					} else {
