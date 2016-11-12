@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class Board {
@@ -221,9 +222,44 @@ public class Board {
             if (other.mShips != null) {
                 return false;
             }
-        } else if (!mShips.equals(other.mShips)) {
+        } else if (!equals(mShips, other.mShips)) {
             return false;
         }
+        return true;
+    }
+
+    private static boolean equals(@NonNull Collection<Ship> ships1, @NonNull Collection<Ship> ships2) {
+        if (ships1.size() != ships2.size()) {
+            return false;
+        }
+
+        Iterator<Ship> iterator = ships2.iterator();
+        for (Ship ship : ships1) {
+            if (!similar(ship, iterator.next())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean similar(Ship ship1, Ship ship2) {
+        if (ship1.isDead() && !ship1.isDead()) {
+            return false;
+        }
+        if (ship1.isHorizontal() && !ship2.isHorizontal()) {
+            return false;
+        }
+        if (ship1.getHealth() != ship2.getHealth()) {
+            return false;
+        }
+        if (ship1.getX() != ship2.getX()) {
+            return false;
+        }
+        if (ship1.getY() != ship2.getY()) {
+            return false;
+        }
+
         return true;
     }
 

@@ -153,42 +153,6 @@ public class Ship {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + mSize;
-        return result;
-    }
-
-    // TODO: remove this equals method after x,y removed from the ship
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Ship other = (Ship) obj;
-        if (mHealth != other.mHealth) {
-            return false;
-        }
-        if (mOrientation != other.mOrientation) {
-            return false;
-        }
-        if (mSize != other.mSize) {
-            return false;
-        }
-        if (mX != other.mX) {
-            return false;
-        }
-        return mY == other.mY;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < mSize; i++) {

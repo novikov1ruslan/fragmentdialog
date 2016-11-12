@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -33,13 +34,14 @@ public class BoardSerializationTest {
         Random random = mock(Random.class);
         when(random.nextInt(anyInt())).thenReturn(0);
         mPlacement = new Placement(random, new RussianRules());
+        Dependencies.inject(mPlacement);
     }
 
     @Test
     public void successful_Recreation_After_Serializing_To_Json_Empty_Board() {
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);
-        assertBoardsEqual(mBoard, board);
+        assertEquals(mBoard, board);
     }
 
     @Test
@@ -50,9 +52,12 @@ public class BoardSerializationTest {
 
     @Test
     public void ParsingBoardWithShip() {
-        Board board = BoardSerialization.fromJson(BOARD_WITH_SHIP);
-        putShipAt(new Ship(1), 5, 5);
-        assertBoardsEqual(mBoard, board);
+        Board board2 = new Board();
+        putShipAt(board2, new Ship(1), 5, 5);
+
+        Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP);
+
+        assertEquals(board1, board2);
     }
 
     @Test
@@ -60,7 +65,7 @@ public class BoardSerializationTest {
         putShipAt(new Ship(1), 5, 5);
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);
-        assertBoardsEqual(mBoard, board);
+        assertEquals(mBoard, board);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -75,16 +80,6 @@ public class BoardSerializationTest {
         Board copy = copy(board);
 
         assertThat(copy, equalTo(board));
-    }
-
-    private static void assertBoardsEqual(Board board1, Board board2) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                assertEquals(board1.getCell(i, j), board2.getCell(i, j));
-            }
-        }
-
-        assertEquals(board1.getShips(), board2.getShips());
     }
 
     @NonNull
