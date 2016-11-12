@@ -195,6 +195,7 @@ public class MultiplayerRoom implements RoomListener {
         }
 
         Ln.d("participants left: " + participantIds);
+        mSender.stop();
         mConnectionListener.onConnectionLost(MultiplayerEvent.OPPONENT_LEFT);
     }
 
@@ -219,6 +220,7 @@ public class MultiplayerRoom implements RoomListener {
         }
 
         Ln.d("participants disconnected from the room: " + participantIds);
+        mSender.stop();
         mConnectionListener.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
     }
 
@@ -277,6 +279,7 @@ public class MultiplayerRoom implements RoomListener {
 
         mRoom = null;
         mRecipientId = null;
+        mSender.stop();
     }
 
     @Override

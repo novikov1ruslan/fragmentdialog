@@ -116,7 +116,6 @@ public class QueuedRtmSender implements RtmSender {
     private void sendMessage(@NonNull String message, @NonNull String roomId, String recipientId) {
         mIsSending = true;
         byte[] messageData = message.getBytes();
-        //  FIXME: only if room connected
         /*
          * The API uses weak references to listeners, so it often happens that these listeners will get garbage-collected before they are called.
          * Please try again using a non-anonymous listener, that is, a listener that you hold a reference to. (Bruno Oliveira)
