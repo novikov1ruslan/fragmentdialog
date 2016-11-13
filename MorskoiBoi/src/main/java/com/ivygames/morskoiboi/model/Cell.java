@@ -12,11 +12,13 @@ public class Cell {
     private final static char RESERVED = '0';
     private final static char MISS = '*';
     private final static char HIT = 'X';
-    public static final int RESERVED_PROXIMITY_VALUE = 8;
+    /**
+     * Old versions (< 1.4.21) can send boards with proximity value.
+     * To support old versions this constant is preserved.
+     */
+    private static final int LEGACY_RESERVED_PROXIMITY_VALUE = 8;
 
     private char mState;
-    // TODO: proximity calculation should move outside
-    private int mProximity;
 
     public static Cell newEmpty() {
         return new Cell(EMPTY);
@@ -51,10 +53,8 @@ public class Cell {
 
     private static Cell parseProximityCell(char c) {
         int zero = '0';
-        if (c >= zero && c <= zero + RESERVED_PROXIMITY_VALUE) {
-            Cell cell = Cell.newReserved();
-            cell.mProximity = c - zero;
-            return cell;
+        if (c >= zero && c <= zero + LEGACY_RESERVED_PROXIMITY_VALUE) {
+            return Cell.newReserved();
         } else {
             throw new IllegalArgumentException(Character.toString(c));
         }
@@ -102,13 +102,9 @@ public class Cell {
         }
 
         if (mState != MISS) {
+            // TODO: can it even be set for miss?
             mState = RESERVED;
-            mProximity++;
         }
-    }
-
-    public int getProximity() {
-        return mProximity;
     }
 
     /**
@@ -117,7 +113,6 @@ public class Cell {
     public void addShip() {
         // TODO: remove
         mState = RESERVED;
-        mProximity += RESERVED_PROXIMITY_VALUE;
     }
 
     // TODO: remove
@@ -133,7 +128,6 @@ public class Cell {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + mProximity;
         result = prime * result + mState;
         return result;
     }
@@ -150,15 +144,12 @@ public class Cell {
             return false;
         }
         Cell other = (Cell) obj;
-        if (mProximity != other.mProximity) {
-            return false;
-        }
         return mState == other.mState;
     }
 
     @Override
     public String toString() {
-        return mState == RESERVED ? ("[" + mProximity + "]") : ("[" + mState + "]");
+        return "[" + mState + "]";
     }
 
 }
