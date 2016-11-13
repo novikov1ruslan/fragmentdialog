@@ -93,7 +93,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private boolean isLocked(@NonNull Vector2 v) {
-        return mBoard.getCell(v).beenShot() || mPresenter.isLocked();
+        return mBoard.getCell(v).isMiss() || mBoard.getCell(v).isHit() || mPresenter.isLocked();
     }
 
     @Override

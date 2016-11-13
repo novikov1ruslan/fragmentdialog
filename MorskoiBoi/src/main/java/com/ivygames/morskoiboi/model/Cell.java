@@ -18,11 +18,7 @@ public class Cell {
      */
     private static final int LEGACY_RESERVED_PROXIMITY_VALUE = 8;
 
-    private char mState;
-
-    public static Cell newEmpty() {
-        return new Cell(EMPTY);
-    }
+    private final char mState;
 
     public static Cell newReserved() {
         return new Cell(RESERVED);
@@ -39,13 +35,13 @@ public class Cell {
     public static Cell parse(char c) {
         switch (c) {
             case RESERVED:
-                return Cell.newReserved();
+                return new Cell(RESERVED);
             case MISS:
-                return Cell.newMiss();
+                return new Cell(MISS);
             case HIT:
-                return Cell.newHit();
+                return new Cell(HIT);
             case EMPTY:
-                return Cell.newEmpty();
+                return new Cell(EMPTY);
             default:
                 return Cell.parseProximityCell(c);
         }
@@ -82,11 +78,6 @@ public class Cell {
 
     public boolean isReserved() {
         return mState == RESERVED;
-    }
-
-    // TODO: remove
-    public boolean beenShot() {
-        return isMiss() || isHit();// || isSunk();
     }
 
     public char toChar() {
