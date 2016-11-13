@@ -96,17 +96,6 @@ public class Cell {
         mState = MISS;
     }
 
-    public void setReserved() throws IllegalStateException {
-        if (mState == HIT) {
-            throw new IllegalStateException("wrong state: " + mState);
-        }
-
-        if (mState != MISS) {
-            // TODO: can it even be set for miss?
-            mState = RESERVED;
-        }
-    }
-
     // TODO: remove
     public boolean beenShot() {
         return isMiss() || isHit();// || isSunk();

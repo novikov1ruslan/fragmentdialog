@@ -63,10 +63,11 @@ public class BoardTest {
 
     @Test
     public void testGetCellsAround() {
-        mBoard.getCell(5, 4).setReserved();
-        mBoard.getCell(5, 6).setReserved();
-        mBoard.getCell(4, 5).setReserved();
-        mBoard.getCell(6, 5).setReserved();
+        Cell reserved = Cell.newReserved();
+        mBoard.setCell(reserved, 5, 4);
+        mBoard.setCell(reserved, 5, 6);
+        mBoard.setCell(reserved, 4, 5);
+        mBoard.setCell(reserved, 6, 5);
         Collection<Cell> cells = getCellsAround(mBoard, 5, 5);
         assertEquals(4, cells.size());
         for (Cell cell : cells) {
@@ -223,10 +224,10 @@ public class BoardTest {
     public void testGetCell() {
         Cell cell = mBoard.getCell(0, 0);
         assertNotNull(cell);
-        cell.setReserved();
+        mBoard.setCell(Cell.newReserved(), 0, 0);
         cell = mBoard.getCell(0, 0);
         assertTrue(cell.isReserved());
-        cell.setMiss();
+        mBoard.setCell(Cell.newMiss(), 0, 0);
         cell = mBoard.getCell(0, 0);
         assertTrue(cell.isMiss());
     }
