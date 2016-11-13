@@ -26,14 +26,6 @@ public class CellTest {
     }
 
 	@Test
-	public void testEmpty() {
-//		mCell.setReserved();
-//		assertFalse(mCell.isEmpty());
-//		mCell.setEmpty();
-//		assertTrue(mCell.isEmpty());
-	}
-
-	@Test
 	public void testBeenShotAfterHit() {
 		mCell.setHit();
 		assertTrue(mCell.beenShot());
@@ -41,14 +33,7 @@ public class CellTest {
 
 	@Test
 	public void testBeenShotAfterEmpty() {
-//		mCell.setEmpty();
 		assertFalse(mCell.beenShot());
-	}
-
-	@Test
-	public void testBeenShotAfterMiss() {
-		mCell.setMiss();
-		assertTrue(mCell.beenShot());
 	}
 
 }

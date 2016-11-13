@@ -42,16 +42,9 @@ public class RussianBotTest {
     }
 
     private void missAt(Board board, int x, int y) {
-        Cell cell = newMissCell();
+        Cell cell = Cell.newMiss();
         Vector2 aim = Vector2.get(x, y);
         board.setCell(cell, aim);
-    }
-
-    @NonNull
-    private Cell newMissCell() {
-        Cell cell = new Cell();
-        cell.setMiss();
-        return cell;
     }
 
     @Test

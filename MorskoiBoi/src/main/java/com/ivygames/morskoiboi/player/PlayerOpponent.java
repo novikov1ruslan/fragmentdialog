@@ -313,21 +313,18 @@ public class PlayerOpponent implements Opponent {
         // ship if found will be shot and returned
         Ship ship = mMyBoard.getFirstShipAt(aim);
 
-        // this cell will be changed and returned in result later
-        Cell cell = mMyBoard.getCellAt(aim);
-
         if (ship == null) {
-            cell.setMiss();
+            mMyBoard.setCell(Cell.newMiss(), aim);
         } else {
-            cell.setHit();
+            mMyBoard.setCell(Cell.newHit(), aim);
             ship.shoot();
 
             if (ship.isDead()) {
-                return new ShotResult(aim, cell, ship);
+                return new ShotResult(aim, mMyBoard.getCellAt(aim), ship);
             }
         }
 
-        return new ShotResult(aim, cell);
+        return new ShotResult(aim, mMyBoard.getCellAt(aim));
     }
 
     private void updateEnemyBoard(@NonNull ShotResult result) {

@@ -88,14 +88,6 @@ public class Cell {
         mState = HIT;
     }
 
-    public void setMiss() throws IllegalStateException {
-        if (mState == HIT) {
-            throw new IllegalStateException("wrong state: " + mState);
-        }
-
-        mState = MISS;
-    }
-
     // TODO: remove
     public boolean beenShot() {
         return isMiss() || isHit();// || isSunk();

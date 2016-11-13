@@ -84,7 +84,7 @@ public class PlacementTest {
     public void testRemoveShipFrom2() {
         Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
         putShipAt(mBoard, ship, 5, 5);
-        mBoard.getCell(8, 8).setMiss();
+        mBoard.setCell(Cell.newMiss(), 8, 8);
 
         assertNull(mPlacement.removeShipFrom(mBoard, 4, 4));
         assertEquals(1, mBoard.getShips().size());

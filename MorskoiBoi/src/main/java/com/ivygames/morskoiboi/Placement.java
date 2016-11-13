@@ -162,7 +162,7 @@ public class Placement {
             putShips(board, ships);
 
             for (Vector2 missPlace : missedList) {
-                board.getCell(missPlace.getX(), missPlace.getY()).setMiss();
+                board.setCell(Cell.newMiss(), missPlace.getX(), missPlace.getY());
             }
 
             for (Vector2 hitPlace : hitList) {
