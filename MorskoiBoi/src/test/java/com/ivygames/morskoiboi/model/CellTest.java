@@ -26,12 +26,6 @@ public class CellTest {
     }
 
 	@Test
-	public void testBeenShotAfterHit() {
-		mCell.setHit();
-		assertTrue(mCell.beenShot());
-	}
-
-	@Test
 	public void testBeenShotAfterEmpty() {
 		assertFalse(mCell.beenShot());
 	}

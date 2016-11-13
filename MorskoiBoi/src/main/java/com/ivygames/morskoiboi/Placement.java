@@ -72,12 +72,11 @@ public class Placement {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
                 if (Board.contains(cellX, cellY)) {
-                    Cell cell = board.getCell(cellX, cellY);
                     if (ship.isInShip(cellX, cellY)) {
                         if (ship.isDead()) {
                             // TODO: this is probably done to properly render the board,
                             // but in fact this is wrong
-                            cell.setHit();
+                            board.setCell(Cell.newHit(), cellX, cellY);
                         } else {
                             board.setCell(Cell.newReserved(), cellX, cellY);
                         }
@@ -166,7 +165,7 @@ public class Placement {
             }
 
             for (Vector2 hitPlace : hitList) {
-                board.getCell(hitPlace.getX(), hitPlace.getY()).setHit();
+                board.setCell(Cell.newHit(), hitPlace.getX(), hitPlace.getY());
             }
         }
 

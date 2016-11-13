@@ -80,7 +80,7 @@ public class BoardTest {
         Collection<Vector2> hits = getHitsAround(mBoard, 5, 5);
         assertEquals(0, hits.size());
 
-        mBoard.getCell(5, 6).setHit();
+        mBoard.setCell(Cell.newHit(), 5, 6);
         hits = getHitsAround(mBoard, 5, 5);
         assertEquals(1, hits.size());
         Vector2 hit = hits.iterator().next();
@@ -138,11 +138,8 @@ public class BoardTest {
         putShipAt(ship, 5, 5);
         assertSingleShip(mBoard, ship);
 
-        mBoard.getCell(5, 5).setHit();
+        mBoard.setCell(Cell.newHit(), 5, 5);
         assertSingleShip(mBoard, ship);
-
-//		mBoard.getCell(6, 5).setSunk();
-//		assertSigleShip(mBoard, ship);
     }
 
     @Test

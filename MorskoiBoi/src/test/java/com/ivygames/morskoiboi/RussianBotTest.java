@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import android.support.annotation.NonNull;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -123,7 +121,7 @@ public class RussianBotTest {
     public void hit_and_kill() {
         Board board = new Board();
         Vector2 aim = Vector2.get(5, 5);
-        board.setCell(newHitCell(), aim);
+        board.setCell(Cell.newHit(), aim);
 
         Vector2 shoot = mBot.shoot(board);
 
@@ -137,7 +135,7 @@ public class RussianBotTest {
     }
 
     private void hitAt(Board board, int x, int y) {
-        Cell cell = newHitCell();
+        Cell cell = Cell.newHit();
         Vector2 aim = Vector2.get(x, y);
         board.setCell(cell, aim);
     }
@@ -154,13 +152,6 @@ public class RussianBotTest {
 
     private void missAt(Board board, Vector2 aim) {
         missAt(board, aim.getX(), aim.getY());
-    }
-
-    @NonNull
-    private Cell newHitCell() {
-        Cell cell = new Cell();
-        cell.setHit();
-        return cell;
     }
 
 }

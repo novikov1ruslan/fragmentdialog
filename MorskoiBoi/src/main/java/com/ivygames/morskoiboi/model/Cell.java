@@ -84,10 +84,6 @@ public class Cell {
         return mState == RESERVED;
     }
 
-    public void setHit() {
-        mState = HIT;
-    }
-
     // TODO: remove
     public boolean beenShot() {
         return isMiss() || isHit();// || isSunk();
