@@ -24,7 +24,7 @@ public class BoardSetupUtils {
     }
 
     // TODO: unit test
-    public static Collection<Vector2> getNeibouringCoordinates(int x, int y) {
+    public static Collection<Vector2> getNeighboringCoordinates(int x, int y) {
         Collection<Vector2> coordinates = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j < 2; j++) {

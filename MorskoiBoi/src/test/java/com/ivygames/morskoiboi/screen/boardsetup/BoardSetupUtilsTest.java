@@ -49,7 +49,7 @@ public class BoardSetupUtilsTest {
 
     @Test
     public void NeighbouringCells8() {
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(1, 1);
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(1, 1);
 
         assertThat(coordinates.size(), is(8));
         assertThat(coordinates, containsInAnyOrder(
@@ -67,7 +67,7 @@ public class BoardSetupUtilsTest {
 
     @Test
     public void NeighbouringCellsCorner() {
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(0, 0);
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(0, 0);
 
         assertThat(coordinates.size(), is(3));
         assertThat(coordinates, containsInAnyOrder(
@@ -78,7 +78,7 @@ public class BoardSetupUtilsTest {
 
     @Test
     public void NeighbouringCellsWall() {
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(0, 1);
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(0, 1);
 
         assertThat(coordinates.size(), is(5));
         assertThat(coordinates, containsInAnyOrder(

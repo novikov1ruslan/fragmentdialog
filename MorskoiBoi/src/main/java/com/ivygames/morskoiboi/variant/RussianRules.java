@@ -52,7 +52,7 @@ public class RussianRules extends AbstractRules {
 
         Ship ship = theseShips.iterator().next();
 
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(i, j);
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(i, j);
         for (Vector2 v : coordinates) {
             Collection<Ship> otherShips = board.getShipsAt(v);
             for (Ship otherShip : otherShips) {
