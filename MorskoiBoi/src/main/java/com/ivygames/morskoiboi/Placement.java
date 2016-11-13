@@ -81,8 +81,7 @@ public class Placement {
                             cell.setHit();
                         }
                     } else {
-                        cell = mRules.setAdjacentCellForShip(ship, cell);
-                        board.setCell(cell, cellX, cellY);
+                        board.setCell(mRules.getCellNearShip(ship), cellX, cellY);
                     }
                 }
             }

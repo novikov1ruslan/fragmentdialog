@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.variant;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.DebugUtils;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
@@ -157,13 +156,12 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public Cell setAdjacentCellForShip(@NonNull Ship ship, @NonNull Cell cell) {
+    public Cell getCellNearShip(@NonNull Ship ship) {
         if (ship.isDead()) {
-            cell.setMiss();
-        } else {
-            cell.setReserved();
+            return Cell.newMiss();
         }
-        return cell;
+
+        return Cell.newReserved();
     }
 
     @Override

@@ -26,8 +26,7 @@ public interface Rules {
     int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type,
                         @NonNull ScoreStatistics statistics, boolean surrendered);
 
-    // TODO: replace by getCellNearShip()
-    Cell setAdjacentCellForShip(@NonNull Ship ship, @NonNull Cell cell);
+    Cell getCellNearShip(@NonNull Ship ship);
 
     int calcSurrenderPenalty(@NonNull Collection<Ship> ships);
 }
