@@ -74,11 +74,12 @@ public class Placement {
                 if (Board.contains(cellX, cellY)) {
                     Cell cell = board.getCell(cellX, cellY);
                     if (ship.isInShip(cellX, cellY)) {
-                        cell.addShip();
                         if (ship.isDead()) {
                             // TODO: this is probably done to properly render the board,
                             // but in fact this is wrong
                             cell.setHit();
+                        } else {
+                            board.setCell(Cell.newReserved(), cellX, cellY);
                         }
                     } else {
                         board.setCell(mRules.getCellNearShip(ship), cellX, cellY);

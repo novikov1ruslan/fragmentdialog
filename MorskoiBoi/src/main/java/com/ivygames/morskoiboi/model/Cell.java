@@ -107,14 +107,6 @@ public class Cell {
         }
     }
 
-    /**
-     * sets proximity to {@code RESERVED_PROXIMITY_VALUE} and state to {@link #RESERVED}
-     */
-    public void addShip() {
-        // TODO: remove
-        mState = RESERVED;
-    }
-
     // TODO: remove
     public boolean beenShot() {
         return isMiss() || isHit();// || isSunk();

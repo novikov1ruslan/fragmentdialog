@@ -124,10 +124,4 @@ public class CellTest {
 		assertTrue(mCell.isMiss());
 	}
 
-	@Test
-	public void testAddShip() {
-		mCell.addShip();
-		assertTrue(mCell.isReserved());
-	}
-
 }
