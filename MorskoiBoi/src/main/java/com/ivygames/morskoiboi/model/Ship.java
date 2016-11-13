@@ -6,7 +6,7 @@ public class Ship {
         HORIZONTAL, VERTICAL
     }
 
-    final int mSize;
+    private final int mSize;
     Orientation mOrientation;
     //TODO: store it on board
     int mX;

@@ -5,6 +5,7 @@ import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -162,6 +163,22 @@ public class PlacementTest {
         assertEquals(5, ship.getX());
         assertEquals(6, ship.getY());
         assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
+    }
+
+    @Test
+    public void testIsInProximity() {
+        Ship ship = new Ship(1);
+        ship.setX(5);
+        ship.setY(5);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (i >= 4 && i <= 6 && j >= 4 && j <= 6) {
+                    Assert.assertTrue(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
+                } else {
+                    Assert.assertFalse(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
+                }
+            }
+        }
     }
 
     private void putShipAt(Ship ship, int x, int y) {

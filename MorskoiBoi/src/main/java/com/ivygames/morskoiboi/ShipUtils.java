@@ -11,6 +11,26 @@ import java.util.Random;
 
 // TODO: write unit tests
 public class ShipUtils {
+    public static boolean similar(Ship ship1, Ship ship2) {
+        if (ship1.isDead() && !ship1.isDead()) {
+            return false;
+        }
+        if (ship1.isHorizontal() && !ship2.isHorizontal()) {
+            return false;
+        }
+        if (ship1.getHealth() != ship2.getHealth()) {
+            return false;
+        }
+        if (ship1.getX() != ship2.getX()) {
+            return false;
+        }
+        if (ship1.getY() != ship2.getY()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static class OrientationBuilder {
         @NonNull
         private final Random mRandom;

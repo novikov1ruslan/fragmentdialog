@@ -23,7 +23,6 @@ public class BoardSetupUtils {
         return true;
     }
 
-    // TODO: unit test
     public static Collection<Vector2> getNeighboringCoordinates(int x, int y) {
         Collection<Vector2> coordinates = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {

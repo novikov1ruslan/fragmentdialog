@@ -3,6 +3,8 @@ package com.ivygames.morskoiboi.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.morskoiboi.ShipUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -255,29 +257,9 @@ public class Board {
 
         Iterator<Ship> iterator = ships2.iterator();
         for (Ship ship : ships1) {
-            if (!similar(ship, iterator.next())) {
+            if (!ShipUtils.similar(ship, iterator.next())) {
                 return false;
             }
-        }
-
-        return true;
-    }
-
-    private static boolean similar(Ship ship1, Ship ship2) {
-        if (ship1.isDead() && !ship1.isDead()) {
-            return false;
-        }
-        if (ship1.isHorizontal() && !ship2.isHorizontal()) {
-            return false;
-        }
-        if (ship1.getHealth() != ship2.getHealth()) {
-            return false;
-        }
-        if (ship1.getX() != ship2.getX()) {
-            return false;
-        }
-        if (ship1.getY() != ship2.getY()) {
-            return false;
         }
 
         return true;
