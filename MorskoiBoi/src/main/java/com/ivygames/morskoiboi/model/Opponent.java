@@ -10,7 +10,7 @@ public interface Opponent {
     /**
      * This opponent is being shot at given coordinate. <br>
      * This call will trigger this opponent to call {@link #onShotResult(ShotResult)} on its opponent. <br>
-     * If the result of the shot is {@link Cell#isHit()}, {@link #go()} method is called afterwards.
+     * If the result of the shot is {@link Cell#HIT}, {@link #go()} method is called afterwards.
      */
     void onShotAt(@NonNull Vector2 aim);
 

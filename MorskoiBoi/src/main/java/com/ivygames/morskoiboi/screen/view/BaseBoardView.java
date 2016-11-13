@@ -64,9 +64,9 @@ public abstract class BaseBoardView extends View {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
-                if (cell.isHit()) {
+                if (cell == Cell.HIT) {
                     mRenderer.drawHitMark(canvas, i, j);
-                } else if (cell.isMiss()) {
+                } else if (cell == Cell.MISS) {
                     mRenderer.drawMissMark(canvas, i, j);
                 }
             }

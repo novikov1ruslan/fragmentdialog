@@ -26,14 +26,14 @@ public class Board {
     }
 
     /**
-     * @return all cells that will return true on {@link Cell#isEmpty()}
+     * @return all cells that will return true on {@link Cell#EMPTY}
      */
     @NonNull
     public List<Vector2> getEmptyCells() {
         List<Vector2> emptyCells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {
-                if (mCells[i][j].isEmpty()) {
+                if (mCells[i][j] == Cell.EMPTY) {
                     emptyCells.add(Vector2.get(i, j));
                 }
             }
@@ -124,7 +124,7 @@ public class Board {
 
     private boolean canHaveShipAt(int i, int j) {
         Cell cell = getCell(i, j);
-        return cell.isReserved() || cell.isHit();
+        return cell == Cell.RESERVED || cell == Cell.HIT;
     }
 
     public boolean hasShipAt(@NonNull Vector2 coordinate) {
@@ -158,7 +158,7 @@ public class Board {
         Cell[][] cells = new Cell[DIMENSION][DIMENSION];
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                cells[i][j] = new Cell();
+                cells[i][j] = Cell.EMPTY;
             }
         }
 

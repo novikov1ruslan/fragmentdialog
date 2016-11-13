@@ -40,7 +40,7 @@ public class RussianBotTest {
     }
 
     private void missAt(Board board, int x, int y) {
-        Cell cell = Cell.newMiss();
+        Cell cell = Cell.MISS;
         Vector2 aim = Vector2.get(x, y);
         board.setCell(cell, aim);
     }
@@ -121,7 +121,7 @@ public class RussianBotTest {
     public void hit_and_kill() {
         Board board = new Board();
         Vector2 aim = Vector2.get(5, 5);
-        board.setCell(Cell.newHit(), aim);
+        board.setCell(Cell.HIT, aim);
 
         Vector2 shoot = mBot.shoot(board);
 
@@ -135,7 +135,7 @@ public class RussianBotTest {
     }
 
     private void hitAt(Board board, int x, int y) {
-        Cell cell = Cell.newHit();
+        Cell cell = Cell.HIT;
         Vector2 aim = Vector2.get(x, y);
         board.setCell(cell, aim);
     }

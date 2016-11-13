@@ -84,7 +84,7 @@ public class PlacementTest {
     public void testRemoveShipFrom2() {
         Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
         putShipAt(mBoard, ship, 5, 5);
-        mBoard.setCell(Cell.newMiss(), 8, 8);
+        mBoard.setCell(Cell.MISS, 8, 8);
 
         assertNull(mPlacement.removeShipFrom(mBoard, 4, 4));
         assertEquals(1, mBoard.getShips().size());
@@ -96,9 +96,9 @@ public class PlacementTest {
             for (int j = 0; j < 10; j++) {
                 Cell cell = mBoard.getCell(i, j);
                 if (i == 8 && j == 8) {
-                    assertTrue(cell.isMiss());
+                    assertTrue(cell == Cell.MISS);
                 } else {
-                    assertTrue(cell.isEmpty());
+                    assertTrue(cell == Cell.EMPTY);
                 }
             }
         }
@@ -191,9 +191,9 @@ public class PlacementTest {
     private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
         Cell cell = board.getCell(i, j);
         if (ShipTestUtils.isInProximity(ship, i, j)) {
-            assertTrue(cell.toString(), cell.isReserved());
+            assertTrue(cell.toString(), cell == Cell.RESERVED);
         } else {
-            assertTrue(cell.toString(), cell.isEmpty());
+            assertTrue(cell.toString(), cell == Cell.EMPTY);
         }
     }
 

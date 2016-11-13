@@ -90,7 +90,7 @@ public class BoardSerializationTest {
     private static void assertBoardIsEmpty(Board board) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                assertTrue(board.getCell(i, j).isEmpty());
+                assertTrue(board.getCell(i, j) == Cell.EMPTY);
             }
         }
     }

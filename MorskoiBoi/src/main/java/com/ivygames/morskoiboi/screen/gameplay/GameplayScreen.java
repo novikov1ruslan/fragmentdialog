@@ -373,7 +373,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
 
             Cell cell = mEnemyPublicBoard.getCell(i, j);
-            if (!cell.isEmpty()) {
+            if (!(cell == Cell.EMPTY)) {
                 Ln.d(cell + " is not empty");
                 // TODO: play sound
                 return;

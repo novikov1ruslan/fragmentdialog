@@ -63,7 +63,7 @@ public class BoardTest {
 
     @Test
     public void testGetCellsAround() {
-        Cell reserved = Cell.newReserved();
+        Cell reserved = Cell.RESERVED;
         mBoard.setCell(reserved, 5, 4);
         mBoard.setCell(reserved, 5, 6);
         mBoard.setCell(reserved, 4, 5);
@@ -71,7 +71,7 @@ public class BoardTest {
         Collection<Cell> cells = getCellsAround(mBoard, 5, 5);
         assertEquals(4, cells.size());
         for (Cell cell : cells) {
-            assertTrue(cell.isReserved());
+            assertTrue(cell == Cell.RESERVED);
         }
     }
 
@@ -80,7 +80,7 @@ public class BoardTest {
         Collection<Vector2> hits = getHitsAround(mBoard, 5, 5);
         assertEquals(0, hits.size());
 
-        mBoard.setCell(Cell.newHit(), 5, 6);
+        mBoard.setCell(Cell.HIT, 5, 6);
         hits = getHitsAround(mBoard, 5, 5);
         assertEquals(1, hits.size());
         Vector2 hit = hits.iterator().next();
@@ -138,7 +138,7 @@ public class BoardTest {
         putShipAt(ship, 5, 5);
         assertSingleShip(mBoard, ship);
 
-        mBoard.setCell(Cell.newHit(), 5, 5);
+        mBoard.setCell(Cell.HIT, 5, 5);
         assertSingleShip(mBoard, ship);
     }
 
@@ -185,9 +185,9 @@ public class BoardTest {
                 if (ShipTestUtils.isInProximity(ship, i, j)) {
                     Cell cell = mBoard.getCell(i, j);
                     if (ship.isInShip(i, j)) {
-                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell.isHit());
+                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.HIT);
                     } else {
-                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell.isMiss());
+                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.MISS);
                     }
                 }
             }
@@ -197,9 +197,9 @@ public class BoardTest {
     private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
         Cell cell = board.getCell(i, j);
         if (ShipTestUtils.isInProximity(ship, i, j)) {
-            assertTrue(cell.toString(), cell.isReserved());
+            assertTrue(cell.toString(), cell == Cell.RESERVED);
         } else {
-            assertTrue(cell.toString(), cell.isEmpty());
+            assertTrue(cell.toString(), cell == Cell.EMPTY);
         }
     }
 
@@ -221,12 +221,12 @@ public class BoardTest {
     public void testGetCell() {
         Cell cell = mBoard.getCell(0, 0);
         assertNotNull(cell);
-        mBoard.setCell(Cell.newReserved(), 0, 0);
+        mBoard.setCell(Cell.RESERVED, 0, 0);
         cell = mBoard.getCell(0, 0);
-        assertTrue(cell.isReserved());
-        mBoard.setCell(Cell.newMiss(), 0, 0);
+        assertTrue(cell == Cell.RESERVED);
+        mBoard.setCell(Cell.MISS, 0, 0);
         cell = mBoard.getCell(0, 0);
-        assertTrue(cell.isMiss());
+        assertTrue(cell == Cell.MISS);
     }
 
     @Test
@@ -300,7 +300,7 @@ public class BoardTest {
     }
 
     public void addIfHit(Board board, Collection<Vector2> hits, int x, int y) {
-        if (Board.contains(x, y) && board.getCell(x, y).isHit()) {
+        if (Board.contains(x, y) && board.getCell(x, y) == Cell.HIT) {
             hits.add(Vector2.get(x, y));
         }
     }

@@ -76,9 +76,9 @@ public class Placement {
                         if (ship.isDead()) {
                             // TODO: this is probably done to properly render the board,
                             // but in fact this is wrong
-                            board.setCell(Cell.newHit(), cellX, cellY);
+                            board.setCell(Cell.HIT, cellX, cellY);
                         } else {
-                            board.setCell(Cell.newReserved(), cellX, cellY);
+                            board.setCell(Cell.RESERVED, cellX, cellY);
                         }
                     } else {
                         board.setCell(mRules.getCellNearShip(ship), cellX, cellY);
@@ -146,9 +146,9 @@ public class Placement {
                 for (int j = 0; j < Board.DIMENSION; j++) {
                     Cell cell = board.getCell(i, j);
                     Vector2 vector = Vector2.get(i, j);
-                    if (cell.isMiss()) {
+                    if (cell == Cell.MISS) {
                         missedList.add(vector);
-                    } else if (cell.isHit()) {
+                    } else if (cell == Cell.HIT) {
                         hitList.add(vector);
                     }
                 }
@@ -161,11 +161,11 @@ public class Placement {
             putShips(board, ships);
 
             for (Vector2 missPlace : missedList) {
-                board.setCell(Cell.newMiss(), missPlace.getX(), missPlace.getY());
+                board.setCell(Cell.MISS, missPlace.getX(), missPlace.getY());
             }
 
             for (Vector2 hitPlace : hitList) {
-                board.setCell(Cell.newHit(), hitPlace.getX(), hitPlace.getY());
+                board.setCell(Cell.HIT, hitPlace.getX(), hitPlace.getY());
             }
         }
 
@@ -180,7 +180,7 @@ public class Placement {
         for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
             int x = isHorizontal ? k : i;
             int y = isHorizontal ? j : k;
-            if (!board.getCell(x, y).isEmpty()) {
+            if (board.getCell(x, y) != Cell.EMPTY) {
                 return false;
             }
         }

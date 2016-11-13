@@ -117,7 +117,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void when_result_of_a_shot_is_miss__opponent_goes() {
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newMiss());
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.MISS);
         mAndroid.onShotResult(result);
         verify(mOpponent, times(1)).go();
     }

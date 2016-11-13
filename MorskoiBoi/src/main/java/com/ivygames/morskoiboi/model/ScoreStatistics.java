@@ -36,7 +36,7 @@ public class ScoreStatistics {
             Ln.d("combo! " + mCombo);
         }
 
-        if (cell.isMiss()) {
+        if (cell == Cell.MISS) {
             mLastShip = null;
         } else if (ship != null) {
             Ln.v("sank");

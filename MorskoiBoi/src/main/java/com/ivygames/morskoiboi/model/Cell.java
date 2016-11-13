@@ -1,47 +1,40 @@
 package com.ivygames.morskoiboi.model;
 
-/**
- * E->M, E->H, E->R
- * R->H
- *
- */
-// TODO: make Cell immutable
-public class Cell {
+public enum Cell {
+    EMPTY(Cell.EMPTY_VAL),
+    RESERVED(Cell.RESERVED_VAL),
+    MISS(Cell.MISS_VAL),
+    HIT(Cell.HIT_VAL);
 
-    private final static char EMPTY = ' ';
-    private final static char RESERVED = '0';
-    private final static char MISS = '*';
-    private final static char HIT = 'X';
+    private final static char EMPTY_VAL = ' ';
+    private final static char RESERVED_VAL = '0';
+    private final static char MISS_VAL = '*';
+    private final static char HIT_VAL = 'X';
+
+    private final char mState;
+
+    Cell(char c) {
+        mState = c;
+    }
+
+
     /**
      * Old versions (< 1.4.21) can send boards with proximity value.
      * To support old versions this constant is preserved.
      */
     private static final int LEGACY_RESERVED_PROXIMITY_VALUE = 8;
 
-    private final char mState;
-
-    public static Cell newReserved() {
-        return new Cell(RESERVED);
-    }
-
-    public static Cell newMiss() {
-        return new Cell(MISS);
-    }
-
-    public static Cell newHit() {
-        return new Cell(HIT);
-    }
 
     public static Cell parse(char c) {
         switch (c) {
-            case RESERVED:
-                return new Cell(RESERVED);
-            case MISS:
-                return new Cell(MISS);
-            case HIT:
-                return new Cell(HIT);
-            case EMPTY:
-                return new Cell(EMPTY);
+            case RESERVED_VAL:
+                return RESERVED;
+            case MISS_VAL:
+                return MISS;
+            case HIT_VAL:
+                return HIT;
+            case EMPTY_VAL:
+                return EMPTY;
             default:
                 return Cell.parseProximityCell(c);
         }
@@ -50,34 +43,10 @@ public class Cell {
     private static Cell parseProximityCell(char c) {
         int zero = '0';
         if (c >= zero && c <= zero + LEGACY_RESERVED_PROXIMITY_VALUE) {
-            return Cell.newReserved();
+            return RESERVED;
         } else {
             throw new IllegalArgumentException(Character.toString(c));
         }
-    }
-
-    public Cell() {
-        mState = EMPTY;
-    }
-
-    private Cell(char c) {
-        mState = c;
-    }
-
-    public boolean isEmpty() {
-        return mState == EMPTY;
-    }
-
-    public boolean isMiss() {
-        return mState == MISS;
-    }
-
-    public boolean isHit() {
-        return mState == HIT;
-    }
-
-    public boolean isReserved() {
-        return mState == RESERVED;
     }
 
     public char toChar() {

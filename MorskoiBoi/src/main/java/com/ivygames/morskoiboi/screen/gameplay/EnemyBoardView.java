@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 
 import com.google.example.games.basegameutils.BuildConfig;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
@@ -93,7 +94,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private boolean isLocked(@NonNull Vector2 v) {
-        return mBoard.getCell(v).isMiss() || mBoard.getCell(v).isHit() || mPresenter.isLocked();
+        return mBoard.getCell(v) == Cell.MISS || mBoard.getCell(v) == Cell.HIT || mPresenter.isLocked();
     }
 
     @Override

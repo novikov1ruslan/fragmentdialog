@@ -202,7 +202,7 @@ public class PlayerOpponent implements Opponent {
                 reset();
                 notifyOnWin();
             }
-        } else if (result.cell.isMiss()) {
+        } else if (result.cell == Cell.MISS) {
             Ln.d(mName + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
             notifyOnMiss();
@@ -233,7 +233,7 @@ public class PlayerOpponent implements Opponent {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
             markNeighbouringCellsAsOccupied(result.ship);
             notifyOnKillPlayer();
-        } else if (result.cell.isMiss()) {
+        } else if (result.cell == Cell.MISS) {
             notifyOnMiss();
         } else {
             Ln.d(mName + ": my ship is hit");
@@ -242,7 +242,7 @@ public class PlayerOpponent implements Opponent {
 
         mOpponent.onShotResult(result);
 
-        if (result.cell.isHit()) {
+        if (result.cell == Cell.HIT) {
             if (mRules.isItDefeatedBoard(mMyBoard)) {
                 Ln.d(mName + ": I'm defeated, no turn to pass");
                 if (!versionSupportsBoardReveal()) {
@@ -314,9 +314,9 @@ public class PlayerOpponent implements Opponent {
         Ship ship = mMyBoard.getFirstShipAt(aim);
 
         if (ship == null) {
-            mMyBoard.setCell(Cell.newMiss(), aim);
+            mMyBoard.setCell(Cell.MISS, aim);
         } else {
-            mMyBoard.setCell(Cell.newHit(), aim);
+            mMyBoard.setCell(Cell.HIT, aim);
             ship.shoot();
 
             if (ship.isDead()) {

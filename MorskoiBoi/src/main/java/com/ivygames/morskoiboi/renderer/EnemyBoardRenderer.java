@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.common.gfx.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -88,7 +89,7 @@ public class EnemyBoardRenderer extends BaseBoardRenderer {
     }
 
     public void startAnimation(@NonNull ShotResult result) {
-        mCurrentAnimation = result.cell.isMiss() ? mSplashAnimation : mExplosionAnimation;
+        mCurrentAnimation = result.cell == Cell.MISS ? mSplashAnimation : mExplosionAnimation;
         mCurrentAnimation.start();
     }
 

@@ -94,7 +94,7 @@ public class PlayerOpponentTest {
     @Test
     public void after_shot_result_is_miss__enemy_board_shows_miss() {
         Vector2 aim = Vector2.get(5, 5);
-        Cell cell = Cell.newMiss();
+        Cell cell = Cell.MISS;
         ShotResult result = new ShotResult(aim, cell);
         mPlayer.onShotResult(result);
         assertThat(enemyCellAt(aim), equalTo(cell));
@@ -103,7 +103,7 @@ public class PlayerOpponentTest {
     @Test
     public void after_shot_result_is_hit__enemy_board_shows_hit() {
         Vector2 aim = Vector2.get(5, 5);
-        Cell cell = Cell.newHit();
+        Cell cell = Cell.HIT;
         ShotResult result = new ShotResult(aim, cell);
         mPlayer.onShotResult(result);
         assertThat(enemyCellAt(aim), equalTo(cell));
@@ -112,7 +112,7 @@ public class PlayerOpponentTest {
     @Test
     public void after_shot_result_is_kill__enemy_board_shows_killed_ship() {
         Vector2 aim = Vector2.get(5, 5);
-        Cell cell = Cell.newHit();
+        Cell cell = Cell.HIT;
         Ship ship = new Ship(2);
         ship.setCoordinates(5, 5);
         ShotResult result = new ShotResult(aim, cell, ship);
@@ -128,7 +128,7 @@ public class PlayerOpponentTest {
         mPlayer.setBoard(board);
         mPlayer.onShotAt(aim);
 
-        assertThat(board.getCell(5, 5).isMiss(), is(true));
+        assertThat(board.getCell(5, 5) == Cell.MISS, is(true));
     }
 
 //    @Test
@@ -167,7 +167,7 @@ public class PlayerOpponentTest {
     @Test
     public void when_asking_for_board__actual_board_returned() {
         Board board = new Board();
-        board.setCell(Cell.newMiss(), Vector2.get(4, 4));
+        board.setCell(Cell.MISS, Vector2.get(4, 4));
         mPlayer.setBoard(board);
         assertThat(mPlayer.getBoard(), equalTo(board));
     }
@@ -217,7 +217,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerGetsShotResult__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit());
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onShotResult(result);
@@ -225,7 +225,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerKillsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit(), new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT, new Ship(1));
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onKillEnemy();
@@ -233,7 +233,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerHitsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newHit());
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onHit();
@@ -241,7 +241,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerMissesShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.newMiss());
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.MISS);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onMiss();
@@ -329,7 +329,7 @@ public class PlayerOpponentTest {
         mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
@@ -340,7 +340,7 @@ public class PlayerOpponentTest {
         mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, never()).onLost(any(Board.class));
@@ -406,7 +406,7 @@ public class PlayerOpponentTest {
         player.setOpponent(aiOpponent);
         aiOpponent.setOpponent(player);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.newHit(), new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
         player.onShotResult(result);
 
         assertThat(aiOpponent.lostCalled(), is(true));
