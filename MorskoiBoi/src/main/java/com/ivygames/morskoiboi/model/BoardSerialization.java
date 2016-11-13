@@ -51,7 +51,7 @@ public class BoardSerialization {
     private static void populateShipsFromJson(@NonNull Board board, @NonNull JSONArray shipsJson) throws JSONException {
         for (int i = 0; i < shipsJson.length(); i++) {
             JSONObject shipJson = shipsJson.getJSONObject(i);
-            Ship ship = Ship.fromJson(shipJson);
+            Ship ship = ShipSerialization.fromJson(shipJson);
             // TODO: should be placement independent
             Dependencies.getPlacement().putShipAt(board, ship, ship.getX(), ship.getY());
         }
@@ -77,7 +77,7 @@ public class BoardSerialization {
 
             JSONArray shipsJson = new JSONArray();
             for (Ship ship : board.mShips) {
-                shipsJson.put(ship.toJson());
+                shipsJson.put(ShipSerialization.toJson(ship));
             }
             jsonObject.put(SHIPS, shipsJson);
 

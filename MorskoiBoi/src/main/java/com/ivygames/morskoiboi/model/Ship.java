@@ -1,61 +1,17 @@
 package com.ivygames.morskoiboi.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Ship {
-    private static final String HEALTH = "health";
-    private static final String Y = "y";
-    private static final String X = "x";
-    private static final String IS_HORIZONTAL = "is_horizontal";
-    private static final String SIZE = "size";
 
     public enum Orientation {
         HORIZONTAL, VERTICAL
     }
 
-    private final int mSize;
-    private Orientation mOrientation;
+    final int mSize;
+    Orientation mOrientation;
     //TODO: store it on board
-    private int mX;
-    private int mY;
-    private int mHealth;
-
-    public JSONObject toJson() {
-        JSONObject shipJson = new JSONObject();
-        try {
-            shipJson.put(SIZE, getSize());
-            shipJson.put(IS_HORIZONTAL, isHorizontal());
-            shipJson.put(X, mX);
-            shipJson.put(Y, mY);
-            shipJson.put(HEALTH, mHealth);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        return shipJson;
-    }
-
-    public static Ship fromJson(String json) {
-        try {
-            return Ship.fromJson(new JSONObject(json));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static Ship fromJson(JSONObject json) {
-        try {
-            Ship ship = new Ship(json.getInt(SIZE));
-            ship.mOrientation = json.getBoolean(IS_HORIZONTAL) ? Orientation.HORIZONTAL : Orientation.VERTICAL;
-            ship.setX(json.getInt(X));
-            ship.setY(json.getInt(Y));
-            ship.mHealth = json.getInt(HEALTH);
-            return ship;
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    int mX;
+    int mY;
+    int mHealth;
 
     public boolean isInShip(int i, int j) {
         int x = getX();

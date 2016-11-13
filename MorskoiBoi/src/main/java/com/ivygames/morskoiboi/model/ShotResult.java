@@ -25,7 +25,7 @@ public class ShotResult {
 
             if (jsonObject.has(SHIP)) {
                 JSONObject shipJson = jsonObject.getJSONObject(SHIP);
-                ship = Ship.fromJson(shipJson);
+                ship = ShipSerialization.fromJson(shipJson);
             }
             if (jsonObject.has(AIM)) {
                 JSONObject aimJson = jsonObject.getJSONObject(AIM);
@@ -45,7 +45,7 @@ public class ShotResult {
             jsonObject.put(CELL, cell.toChar());
 
             if (ship != null) {
-                jsonObject.put(SHIP, ship.toJson());
+                jsonObject.put(SHIP, ShipSerialization.toJson(ship));
             }
 
             jsonObject.put(AIM, aim.toJson());
