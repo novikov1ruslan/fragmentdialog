@@ -14,7 +14,6 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.SetupBoardGeometryProcessor;
@@ -78,8 +77,7 @@ public class SetupBoardView extends BaseBoardView {
     private void drawConflictingCells(Canvas canvas) {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
-                Cell cell = mBoard.getCell(i, j);
-                if (mRules.isCellConflicting(cell)) {
+                if (mRules.isCellConflicting(mBoard, i, j)) {
                     mRenderer.renderConflictingCell(canvas, i, j);
                 }
             }

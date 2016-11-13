@@ -3,11 +3,15 @@ package com.ivygames.morskoiboi.variant;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.DebugUtils;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 
 import org.commons.logger.Ln;
 
@@ -37,8 +41,29 @@ public class RussianRules extends AbstractRules {
     private static final int MAX_SCORE_FOR_SURRENDERED_GAME = 5000;
 
     @Override
-    public boolean isCellConflicting(@NonNull Cell cell) {
-        return cell.isReserved() && cell.getProximity() > Cell.RESERVED_PROXIMITY_VALUE;
+    public boolean isCellConflicting(@NonNull Board board, int i, int j) {
+        Collection<Ship> theseShips = board.getShipsAt(i, j);
+        if (theseShips.isEmpty()) {
+            return false;
+        }
+
+        if (theseShips.size() > 1) {
+            return true;
+        }
+
+        Ship ship = theseShips.iterator().next();
+
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(i, j);
+        for (Vector2 v : coordinates) {
+            Collection<Ship> otherShips = board.getShipsAt(v);
+            for (Ship otherShip : otherShips) {
+                if (otherShip != ship) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @NonNull

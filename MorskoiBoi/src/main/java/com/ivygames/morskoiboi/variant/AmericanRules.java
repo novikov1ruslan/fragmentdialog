@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.variant;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -19,8 +20,8 @@ public abstract class AmericanRules extends AbstractRules {
     }
 
     @Override
-    public boolean isCellConflicting(@NonNull Cell cell) {
-        return cell.isReserved() && cell.getProximity() >= Cell.RESERVED_PROXIMITY_VALUE * 2;
+    public boolean isCellConflicting(@NonNull Board board, int i, int j) {
+        return false;
     }
 
     @NonNull

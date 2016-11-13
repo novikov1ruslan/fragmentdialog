@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -44,4 +46,47 @@ public class BoardSetupUtilsTest {
         onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(false));
     }
+
+    @Test
+    public void NeighbouringCells8() {
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(1, 1);
+
+        assertThat(coordinates.size(), is(8));
+        assertThat(coordinates, containsInAnyOrder(
+                Vector2.get(0, 0),
+                Vector2.get(1, 0),
+                Vector2.get(2, 0),
+
+                Vector2.get(0, 1),
+                Vector2.get(2, 1),
+
+                Vector2.get(0, 2),
+                Vector2.get(1, 2),
+                Vector2.get(2, 2)));
+    }
+
+    @Test
+    public void NeighbouringCellsCorner() {
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(0, 0);
+
+        assertThat(coordinates.size(), is(3));
+        assertThat(coordinates, containsInAnyOrder(
+                Vector2.get(0, 1),
+                Vector2.get(1, 1),
+                Vector2.get(1, 0)));
+    }
+
+    @Test
+    public void NeighbouringCellsWall() {
+        Collection<Vector2> coordinates = BoardSetupUtils.getNeibouringCoordinates(0, 1);
+
+        assertThat(coordinates.size(), is(5));
+        assertThat(coordinates, containsInAnyOrder(
+                Vector2.get(0, 0),
+                Vector2.get(0, 2),
+                Vector2.get(1, 0),
+                Vector2.get(1, 1),
+                Vector2.get(1, 2)));
+    }
+
 }
