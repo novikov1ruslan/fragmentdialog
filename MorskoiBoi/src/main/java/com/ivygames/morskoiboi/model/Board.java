@@ -215,7 +215,7 @@ public class Board {
             return false;
         }
         Board other = (Board) obj;
-        if (!Arrays.deepEquals(mCells, other.mCells)) {
+        if (!equals(mCells, other.mCells)) {
             return false;
         }
         if (mShips == null) {
@@ -224,6 +224,26 @@ public class Board {
             }
         } else if (!equals(mShips, other.mShips)) {
             return false;
+        }
+        return true;
+    }
+
+    // TODO: remove when cell becomes immutable
+    private boolean equals(Cell[][] cells1, Cell[][] cells2) {
+        if (cells1.length != cells2.length) {
+            return false;
+        }
+        for (int i = 0; i < cells1.length; i++) {
+            if (cells1[i].length != cells2[i].length) {
+                return false;
+            }
+            for (int j = 0; j < cells1[i].length; j++) {
+                Cell cell1 = cells1[i][j];
+                Cell cell2 = cells2[i][j];
+                if (cell1.toChar() != cell2.toChar()) {
+                    return false;
+                }
+            }
         }
         return true;
     }
