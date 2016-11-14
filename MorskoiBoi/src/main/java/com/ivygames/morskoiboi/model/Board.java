@@ -124,13 +124,9 @@ public class Board {
         return ships;
     }
 
-    private boolean canHaveShipAt(@NonNull Vector2 v) {
-        return canHaveShipAt(v.getX(), v.getY());
-    }
-
     private boolean canHaveShipAt(int i, int j) {
         Cell cell = getCell(i, j);
-        return cell == Cell.RESERVED || cell == Cell.HIT;
+        return cell != Cell.MISS && cell != Cell.EMPTY;
     }
 
     public boolean hasShipAt(@NonNull Vector2 coordinate) {

@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.ShipTestUtils;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -88,14 +91,6 @@ public class BoardTest {
         assertEquals(6, hit.getY());
     }
 
-    private void putShipAt(Ship ship, int x, int y) {
-        putShipAt(mBoard, ship, x, y);
-    }
-
-    private void putShipAt(Board board, Ship ship, int x, int y) {
-        mPlacement.putShipAt(board, ship, x, y);
-    }
-
     @Test
     public void testEmptyBoard() {
         assertEquals(100, mBoard.getEmptyCells().size());
@@ -106,7 +101,7 @@ public class BoardTest {
         assertFalse(!Board.allAvailableShipsAreDestroyed(mBoard));
 
         Ship ship = new Ship(2);
-        putShipAt(ship, 5, 5);
+        mPlacement.putShipAt(mBoard, ship, 5, 5);
         assertFalse(Board.allAvailableShipsAreDestroyed(mBoard));
 
         ship.shoot();
@@ -116,56 +111,40 @@ public class BoardTest {
         assertTrue(Board.allAvailableShipsAreDestroyed(mBoard));
     }
 
-    private static void assertSingleShip(Board board, Ship ship) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                Collection<Ship> ships = board.getShipsAt(i, j);
-                if (ship.isInShip(i, j)) {
-                    assertEquals(board + "\n" + i + "," + j, 1, ships.size());
-                } else {
-                    assertEquals(board + "\n" + i + "," + j, 0, ships.size());
-                }
-            }
-        }
-    }
-
     @Test
     public void testGetShipsAt() {
-        Collection<Ship> ships = mBoard.getShipsAt(Vector2.get(5, 5));
-        assertEquals(0, ships.size());
+        Board board = new Board();
 
-        Ship ship = new Ship(3);
-        putShipAt(ship, 5, 5);
-        assertSingleShip(mBoard, ship);
+        mPlacement.putShipAt(board, new Ship(1), 5, 5);
 
-        mBoard.setCell(Cell.HIT, 5, 5);
-        assertSingleShip(mBoard, ship);
+        assertThat(board.getShipsAt(5, 5).size(), is(1));
+        assertThat(board.getShipsAt(5, 6).size(), Matchers.is(0));
     }
 
     @Test
     public void testPutHorizontalShipSucceeded() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
-        putShipAt(ship, 8, 5);
+        mPlacement.putShipAt(mBoard, ship, 8, 5);
         assertShipIsCorrectlyAllignedAt(mBoard, ship, 8, 5);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testPutHorizontalShipFailed() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
-        putShipAt(ship, 9, 5);
+        mPlacement.putShipAt(mBoard, ship, 9, 5);
     }
 
     @Test
     public void testPutVerticalShipSucceeded() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
-        putShipAt(ship, 3, 7);
+        mPlacement.putShipAt(mBoard, ship, 3, 7);
         assertShipIsCorrectlyAllignedAt(mBoard, ship, 3, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testPutVerticalShipFailed() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
-        putShipAt(ship, 3, 8);
+        mPlacement.putShipAt(mBoard, ship, 3, 8);
     }
 
     // public void testPutShip() {
@@ -179,7 +158,7 @@ public class BoardTest {
         Ship ship = new Ship(2, Orientation.VERTICAL);
         ship.shoot();
         ship.shoot();
-        putShipAt(ship, 3, 3);
+        mPlacement.putShipAt(mBoard, ship, 3, 3);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (ShipTestUtils.isInProximity(ship, i, j)) {
@@ -233,10 +212,10 @@ public class BoardTest {
     public void testEmptyCells() {
         assertEquals(100, mBoard.getEmptyCells().size());
 
-        putShipAt(new Ship(1), 5, 5);
+        mPlacement.putShipAt(mBoard, new Ship(1), 5, 5);
         assertEquals(91, mBoard.getEmptyCells().size());
 
-        putShipAt(new Ship(2, Orientation.VERTICAL), 9, 8);
+        mPlacement.putShipAt(mBoard, new Ship(2, Orientation.VERTICAL), 9, 8);
         assertEquals(85, mBoard.getEmptyCells().size());
     }
 
@@ -245,11 +224,11 @@ public class BoardTest {
         int totalShips = mBoard.getShips().size();
         assertEquals(0, totalShips);
 
-        putShipAt(new Ship(1), 5, 5);
+        mPlacement.putShipAt(mBoard, new Ship(1), 5, 5);
         totalShips = mBoard.getShips().size();
         assertEquals(1, totalShips);
 
-        putShipAt(new Ship(2), 8, 9);
+        mPlacement.putShipAt(mBoard, new Ship(2), 8, 9);
         totalShips = mBoard.getShips().size();
         assertEquals(2, totalShips);
     }
