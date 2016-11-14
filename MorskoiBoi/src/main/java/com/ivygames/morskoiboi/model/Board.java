@@ -27,6 +27,10 @@ public class Board {
         return mShips;
     }
 
+    public boolean removeShip(@NonNull Ship ship) {
+        return mShips.remove(ship);
+    }
+
     /**
      * @return all cells that will return true on {@link Cell#EMPTY}
      */

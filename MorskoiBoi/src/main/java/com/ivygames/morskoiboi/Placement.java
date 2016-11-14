@@ -96,6 +96,15 @@ public class Placement {
         }
     }
 
+    @Nullable
+    public static Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
+        Ship ship = board.getFirstShipAt(i, j);
+        if (ship != null) {
+            board.removeShip(ship);
+        }
+        return ship;
+    }
+
     public void rotateShipAt(@NonNull Board board, int x, int y) {
         if (!Board.contains(x, y)) {
             Ln.w("(" + x + "," + y + ") is outside the board");

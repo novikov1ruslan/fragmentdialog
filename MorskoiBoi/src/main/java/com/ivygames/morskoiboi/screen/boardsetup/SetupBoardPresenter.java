@@ -89,7 +89,7 @@ public class SetupBoardPresenter {
 
     @Nullable
     public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
-        mPickedShip = mPlacement.removeShipFrom(board, i, j);
+        mPickedShip = Placement.pickShipFromBoard(board, i, j);
         return mPickedShip;
     }
 
