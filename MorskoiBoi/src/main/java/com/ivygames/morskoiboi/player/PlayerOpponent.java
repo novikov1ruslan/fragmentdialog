@@ -231,7 +231,7 @@ public class PlayerOpponent implements Opponent {
         notifyOnShotAt(aim);
         if (shipSank(result.ship)) {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
-            markNeighbouringCellsAsOccupied(result.ship);
+            mPlacement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
             notifyOnKillPlayer();
         } else if (result.cell == Cell.MISS) {
             notifyOnMiss();
@@ -263,12 +263,6 @@ public class PlayerOpponent implements Opponent {
         mOpponent = new HandlerDelegateOpponent(opponent);
         Ln.d(mName + ": my opponent is " + mOpponent);
         opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
-    }
-
-    private void markNeighbouringCellsAsOccupied(@NonNull Ship ship) {
-        // if is dead we remove and put ship back to mark adjacent cells as reserved
-        mPlacement.removeShipFrom(mMyBoard, ship.getX(), ship.getY());
-        mPlacement.putShipAt(mMyBoard, ship, ship.getX(), ship.getY());
     }
 
     @Override

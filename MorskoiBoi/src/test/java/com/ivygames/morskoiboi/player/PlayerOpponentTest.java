@@ -123,41 +123,44 @@ public class PlayerOpponentTest {
 
     @Test
     public void after_shooting_on_my_empty_cell__result_is_miss() {
-        Vector2 aim = Vector2.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
-        mPlayer.onShotAt(aim);
+        mPlayer.onShotAt(Vector2.get(5, 5));
 
         assertThat(board.getCell(5, 5) == Cell.MISS, is(true));
     }
 
-//    @Test
-//    public void after_shooting_on_my_ship__result_is_hit() {
-//        Vector2 aim = Vector2.get(5, 5);
-//        Board board = new Board();
-//        mPlayer.setBoard(board);
-//        mPlacement.putShipAt(board, new Ship(2), 5, 5);
-//        ShotResult result = mPlayer.createResultForShootingAt(aim);
-//        mPlayer.onShotAtForResult(result);
-//        assertThat(result.cell.isHit(), is(true));
-//        assertThat(result.ship, is(nullValue()));
-//    }
+    @Test
+    public void after_shooting_on_my_ship__result_is_hit() {
+        Vector2 aim = Vector2.get(5, 5);
+        Board board = new Board();
+        mPlayer.setBoard(board);
+        mPlacement.putShipAt(board, new Ship(2), aim);
 
-//    @Test
-//    public void after_killing_on_my_ship__result_is_kill() {
-//        Vector2 aim = Vector2.get(5, 5);
-//        Board board = new Board();
-//        mPlayer.setBoard(board);
-//        mPlacement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
-//        ShotResult result = mPlayer.createResultForShootingAt(aim);
-//        mPlayer.onShotAtForResult(result);
-//        result = mPlayer.createResultForShootingAt(Vector2.get(5, 6));
-//
-//        mPlayer.onShotAtForResult(result);
-//
-//        assertThat(result.cell.isHit(), is(true));
-//        assertThat(result.ship, is(notNullValue()));
-//    }
+        mPlayer.onShotAt(aim);
+
+        assertThat(board.getCell(aim) == Cell.HIT, is(true));
+    }
+
+    @Test
+    public void after_killing_on_my_ship__result_is_kill() {
+        Vector2 aim = Vector2.get(5, 5);
+        Board board = new Board();
+        mPlayer.setBoard(board);
+        mPlacement.putShipAt(board, new Ship(1), aim);
+
+        mPlayer.onShotAt(aim);
+
+        assertThat(board.getCell(4, 4) == Cell.MISS, is(true));
+        assertThat(board.getCell(4, 5) == Cell.MISS, is(true));
+        assertThat(board.getCell(4, 6) == Cell.MISS, is(true));
+        assertThat(board.getCell(5, 4) == Cell.MISS, is(true));
+        assertThat(board.getCell(5, 5) == Cell.HIT, is(true));
+        assertThat(board.getCell(5, 6) == Cell.MISS, is(true));
+        assertThat(board.getCell(6, 4) == Cell.MISS, is(true));
+        assertThat(board.getCell(6, 5) == Cell.MISS, is(true));
+        assertThat(board.getCell(6, 6) == Cell.MISS, is(true));
+    }
 
     @Test
     public void when_asking_for_name__actual_name_returned() {

@@ -284,4 +284,7 @@ public class Board {
         return board.toString();
     }
 
+    public void addShip(@NonNull Ship ship) {
+        mShips.add(ship);
+    }
 }

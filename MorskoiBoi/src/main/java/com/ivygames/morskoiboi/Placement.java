@@ -87,7 +87,7 @@ public class Placement {
             }
         }
 
-        board.getShips().add(ship);
+        board.addShip(ship);
     }
 
     private void putShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
@@ -137,38 +137,38 @@ public class Placement {
         Ship removedShip = board.getFirstShipAt(x, y);
 
         // if the ship found - recreate the board without this ship
-        if (removedShip != null) {
-            // missed and hit cells are not recreated by adding ships back, so
-            // we need to remember them
-            List<Vector2> missedList = new LinkedList<>();
-            List<Vector2> hitList = new LinkedList<>();
-            for (int i = 0; i < Board.DIMENSION; i++) {
-                for (int j = 0; j < Board.DIMENSION; j++) {
-                    Cell cell = board.getCell(i, j);
-                    Vector2 vector = Vector2.get(i, j);
-                    if (cell == Cell.MISS) {
-                        missedList.add(vector);
-                    } else if (cell == Cell.HIT) {
-                        hitList.add(vector);
-                    }
+        if (removedShip == null) {
+            return null;
+        }
+        // missed and hit cells are not recreated by adding ships back, so
+        // we need to remember them
+        List<Vector2> missedList = new LinkedList<>();
+        List<Vector2> hitList = new LinkedList<>();
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
+                Cell cell = board.getCell(i, j);
+                Vector2 vector = Vector2.get(i, j);
+                if (cell == Cell.MISS) {
+                    missedList.add(vector);
+                } else if (cell == Cell.HIT) {
+                    hitList.add(vector);
                 }
-            }
-
-            // clear the board and add the rest of the ships
-            Collection<Ship> ships = board.getShips();
-            ships.remove(removedShip);
-            board.clearBoard();
-            putShips(board, ships);
-
-            for (Vector2 missPlace : missedList) {
-                board.setCell(Cell.MISS, missPlace.getX(), missPlace.getY());
-            }
-
-            for (Vector2 hitPlace : hitList) {
-                board.setCell(Cell.HIT, hitPlace.getX(), hitPlace.getY());
             }
         }
 
+        // clear the board and add the rest of the ships
+        Collection<Ship> ships = board.getShips();
+        ships.remove(removedShip);
+        board.clearBoard();
+        putShips(board, ships);
+
+        for (Vector2 missPlace : missedList) {
+            board.setCell(Cell.MISS, missPlace.getX(), missPlace.getY());
+        }
+
+        for (Vector2 hitPlace : hitList) {
+            board.setCell(Cell.HIT, hitPlace.getX(), hitPlace.getY());
+        }
         return removedShip;
     }
 
