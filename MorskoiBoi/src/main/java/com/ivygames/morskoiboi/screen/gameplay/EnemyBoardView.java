@@ -15,6 +15,7 @@ import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 
 import org.commons.logger.Ln;
@@ -94,7 +95,11 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private boolean isLocked(@NonNull Vector2 v) {
-        return mBoard.getCell(v) == Cell.MISS || mBoard.getCell(v) == Cell.HIT || mPresenter.isLocked();
+        return isNotEmpty(v) || mPresenter.isLocked();
+    }
+
+    private boolean isNotEmpty(@NonNull Vector2 v) {
+        return mBoard.getCell(v) == Cell.MISS || mBoard.getCell(v) == Cell.HIT;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -56,12 +57,14 @@ public class BoardSetupUtils {
         return coordinates;
     }
 
-    public static List<Vector2> getCellsFreeFromShips(@NonNull Board board) {
+    public static List<Vector2> getCellsFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector2> cells = Vector2.getAllCoordinates();
         Collection<Ship> ships = board.getShips();
         for (Ship ship : ships) {
             cells.removeAll(getCells(ship, false));
-            cells.removeAll(getCells(ship, true));
+            if (!allowAdjacentShips) {
+                cells.removeAll(getCells(ship, true));
+            }
         }
         return cells;
     }

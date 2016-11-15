@@ -389,14 +389,14 @@ public class PlayerOpponentTest {
     public void WhenGameEnds__PlayersBoardIsEmpty() {
         mPlayer.onLost(new Board());
 
-        assertThat(BoardSetupUtils.getCellsFreeFromShips(mPlayer.getBoard()).size(), is(100));
+        assertThat(BoardSetupUtils.getCellsFreeFromShips(mPlayer.getBoard(), false).size(), is(100));
     }
 
     @Test
     public void WhenOpponentLooses__enemy_board_is_empty() {
         mPlayer.onLost(new Board());
 
-        assertThat(BoardSetupUtils.getCellsFreeFromShips(mPlayer.getEnemyBoard()).size(), is(100));
+        assertThat(BoardSetupUtils.getCellsFreeFromShips(mPlayer.getEnemyBoard(), false).size(), is(100));
     }
 
     @Test

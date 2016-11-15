@@ -106,12 +106,12 @@ public class BoardSetupUtilsTest {
         Random random = mock(Random.class);
         Dependencies.inject(new Placement(random, new RussianRules()));
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
-        assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board).size());
+        assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
 
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5);
-        assertEquals(91, BoardSetupUtils.getCellsFreeFromShips(board).size());
+        assertEquals(91, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
 
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5_x2_5_5);
-        assertEquals(85, BoardSetupUtils.getCellsFreeFromShips(board).size());
+        assertEquals(85, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
     }
 }

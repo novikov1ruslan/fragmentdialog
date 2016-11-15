@@ -68,7 +68,7 @@ public class RussianBot implements BotAlgorithm {
     }
 
     private static List<Vector2> getPossibleShots(@NonNull Board board) {
-        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board);
+        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board, false);
         cells.removeAll(board.getCellsByType(Cell.HIT));
         cells.removeAll(board.getCellsByType(Cell.MISS));
         return cells;
