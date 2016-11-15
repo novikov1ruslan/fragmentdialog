@@ -128,8 +128,6 @@ public class Placement {
     @Nullable
     private Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
         if (!Board.contains(x, y)) {
-            // throw new IllegalArgumentException("(" + x + "," + y +
-            // ") is outside the board");
             Ln.w("(" + x + "," + y + ") is outside the board");
             return null;
         }
@@ -141,12 +139,7 @@ public class Placement {
         if (removedShip == null) {
             return null;
         }
-
-        // clear the board and add the rest of the ships
-        Collection<Ship> ships = board.getShips();
-        ships.remove(removedShip);
-        board.clearBoard();
-        putShips(board, ships);
+        board.removeShip(removedShip);
 
         return removedShip;
     }
