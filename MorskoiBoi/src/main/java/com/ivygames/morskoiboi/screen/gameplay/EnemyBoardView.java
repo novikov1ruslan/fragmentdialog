@@ -9,8 +9,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.google.example.games.basegameutils.BuildConfig;
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
@@ -19,6 +19,8 @@ import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 
 import org.commons.logger.Ln;
+
+import java.util.List;
 
 public class EnemyBoardView extends BaseBoardView {
 
@@ -32,6 +34,7 @@ public class EnemyBoardView extends BaseBoardView {
     private MotionEvent debug_last_event;
     @NonNull
     private Vector2 mAiming = Vector2.INVALID_VECTOR;
+    private List<Vector2> mPossibleShots;
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -95,11 +98,11 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     private boolean isLocked(@NonNull Vector2 v) {
-        return isNotEmpty(v) || mPresenter.isLocked();
+        return !isEmpty(v) || mPresenter.isLocked();
     }
 
-    private boolean isNotEmpty(@NonNull Vector2 v) {
-        return mBoard.getCell(v) == Cell.MISS || mBoard.getCell(v) == Cell.HIT;
+    private boolean isEmpty(@NonNull Vector2 v) {
+        return mPossibleShots.contains(v);
     }
 
     @Override
@@ -140,6 +143,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void unLock() {
+        mPossibleShots = BoardSetupUtils.getPossibleShots(mBoard, Dependencies.getRules().allowAdjacentShip());
         mPresenter.unlock();
     }
 

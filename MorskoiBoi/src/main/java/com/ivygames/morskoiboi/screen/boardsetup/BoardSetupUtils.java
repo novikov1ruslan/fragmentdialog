@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
 
@@ -69,4 +70,10 @@ public class BoardSetupUtils {
         return cells;
     }
 
+    public static List<Vector2> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
+        List<Vector2> cells = getCellsFreeFromShips(board, allowAdjacentShips);
+        cells.removeAll(board.getCellsByType(Cell.HIT));
+        cells.removeAll(board.getCellsByType(Cell.MISS));
+        return cells;
+    }
 }

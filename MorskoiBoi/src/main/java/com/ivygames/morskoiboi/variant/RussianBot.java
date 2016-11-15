@@ -48,7 +48,7 @@ public class RussianBot implements BotAlgorithm {
         List<Vector2> hitDecks = createDecks(board);
         List<Vector2> possibleShots;
         if (hitDecks.size() == 0) {
-            possibleShots = getPossibleShots(board);
+            possibleShots = BoardSetupUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
             Vector2 v = hitDecks.get(0);
             possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
@@ -65,13 +65,6 @@ public class RussianBot implements BotAlgorithm {
             }
             throw e;
         }
-    }
-
-    private static List<Vector2> getPossibleShots(@NonNull Board board) {
-        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board, false);
-        cells.removeAll(board.getCellsByType(Cell.HIT));
-        cells.removeAll(board.getCellsByType(Cell.MISS));
-        return cells;
     }
 
     private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
