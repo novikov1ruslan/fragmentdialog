@@ -64,20 +64,6 @@ public class BoardTest {
     }
 
     @Test
-    public void testGetCellsAround() {
-        Cell reserved = Cell.RESERVED;
-        mBoard.setCell(reserved, 5, 4);
-        mBoard.setCell(reserved, 5, 6);
-        mBoard.setCell(reserved, 4, 5);
-        mBoard.setCell(reserved, 6, 5);
-        Collection<Cell> cells = getCellsAround(mBoard, 5, 5);
-        assertEquals(4, cells.size());
-        for (Cell cell : cells) {
-            assertTrue(cell == Cell.RESERVED);
-        }
-    }
-
-    @Test
     public void testGetHitsAround() {
         Collection<Vector2> hits = getHitsAround(mBoard, 5, 5);
         assertEquals(0, hits.size());
@@ -174,9 +160,11 @@ public class BoardTest {
     public void testGetCell() {
         Cell cell = mBoard.getCell(0, 0);
         assertNotNull(cell);
-        mBoard.setCell(Cell.RESERVED, 0, 0);
+
+        mBoard.setCell(Cell.HIT, 0, 0);
         cell = mBoard.getCell(0, 0);
-        assertTrue(cell == Cell.RESERVED);
+        assertTrue(cell == Cell.HIT);
+
         mBoard.setCell(Cell.MISS, 0, 0);
         cell = mBoard.getCell(0, 0);
         assertTrue(cell == Cell.MISS);
@@ -223,22 +211,6 @@ public class BoardTest {
         assertFalse(Board.contains(10, 0));
         assertFalse(Board.contains(0, 10));
         assertFalse(Board.contains(0, -1));
-    }
-
-    private static void addIfContains(Board board, Collection<Cell> cells, int x, int y) {
-        if (Board.contains(x, y)) {
-            cells.add(board.getCell(x, y));
-        }
-    }
-
-    public static Collection<Cell> getCellsAround(Board board, int x, int y) {
-        Collection<Cell> cells = new ArrayList<>();
-        addIfContains(board, cells, x + 1, y);
-        addIfContains(board, cells, x - 1, y);
-        addIfContains(board, cells, x, y + 1);
-        addIfContains(board, cells, x, y - 1);
-
-        return cells;
     }
 
     public void addIfHit(Board board, Collection<Vector2> hits, int x, int y) {
