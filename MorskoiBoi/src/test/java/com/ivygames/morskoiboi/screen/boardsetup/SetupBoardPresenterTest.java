@@ -13,7 +13,7 @@ import com.ivygames.morskoiboi.variant.RussianRules;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.PriorityQueue;
@@ -25,6 +25,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
@@ -32,15 +33,15 @@ public class SetupBoardPresenterTest {
 
     private Placement mPlacement;
     private RussianRules rules;
+    @Mock
     private Random mRandom;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        initMocks(this);
         mPresenter = new SetupBoardPresenter();
         rules = new RussianRules();
         Dependencies.inject(rules);
-        mRandom = new Random();
         mPlacement = new Placement(mRandom, rules);
         Dependencies.inject(mPlacement);
     }

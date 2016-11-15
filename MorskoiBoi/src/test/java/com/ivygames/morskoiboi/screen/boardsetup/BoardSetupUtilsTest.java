@@ -22,6 +22,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardSetupUtilsTest {
@@ -102,7 +103,8 @@ public class BoardSetupUtilsTest {
 
     @Test
     public void testEmptyCells() {
-        Dependencies.inject(new Placement(new Random(), new RussianRules()));
+        Random random = mock(Random.class);
+        Dependencies.inject(new Placement(random, new RussianRules()));
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
         assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board).size());
 

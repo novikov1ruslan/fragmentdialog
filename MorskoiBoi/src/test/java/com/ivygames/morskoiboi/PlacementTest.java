@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Collection;
 import java.util.Random;
@@ -28,7 +30,9 @@ public class PlacementTest {
     private int mNumberOfDistinctShips;
     private Rules rules = new RussianRules();
     private Board mBoard = new Board();
-    private Random mRandom = new Random();
+
+    @Mock
+    private Random mRandom;
 
     @BeforeClass
     public static void runBeforeClass() {
@@ -37,6 +41,7 @@ public class PlacementTest {
 
     @Before
 	public void setup() {
+        MockitoAnnotations.initMocks(this);
         Dependencies.inject(rules);
         mPlacement = new Placement(mRandom, rules);
 	}

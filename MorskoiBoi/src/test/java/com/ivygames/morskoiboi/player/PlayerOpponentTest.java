@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Random;
@@ -34,6 +33,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 public class PlayerOpponentTest {
@@ -53,19 +53,21 @@ public class PlayerOpponentTest {
 
         }
     };
+    @Mock
+    private Random mRandom;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        initMocks(this);
         ExceptionHandler.setDryRun(true);
 
-        mPlacement = new Placement(new Random(), russianRules);
+        mPlacement = new Placement(mRandom, russianRules);
         mPlayer = newPlayer(russianRules);
     }
 
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        Placement placement = new Placement(new Random(), new RussianRules());
+        Placement placement = new Placement(mRandom, new RussianRules());
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
@@ -424,12 +426,12 @@ public class PlayerOpponentTest {
         return mPlayer.getEnemyBoard().getCellAt(aim);
     }
 
-    private static class MyAiOpponent extends AiOpponent {
+    private class MyAiOpponent extends AiOpponent {
 
         private boolean lostCalled;
 
         public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            super(name, placement, rules, new RussianBotFactory().createBot(), new Bidder(new Random()), new Random());
+            super(name, placement, rules, new RussianBotFactory().createBot(), new Bidder(mRandom), mRandom);
         }
 
         @Override

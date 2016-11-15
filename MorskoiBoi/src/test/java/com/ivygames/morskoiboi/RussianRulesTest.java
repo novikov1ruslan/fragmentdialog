@@ -36,16 +36,19 @@ public class RussianRulesTest {
     @Mock
     private ScoreStatistics statistics;
     private int[] allShipsSizes;
-    private ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(new Random());
+    private ShipUtils.OrientationBuilder orientationBuilder;
 
     @Before
     public void setUp() {
         initMocks(this);
+
+        Random random = mock(Random.class);
+        orientationBuilder = new ShipUtils.OrientationBuilder(random);
         mRules = new RussianRules();
         allShipsSizes = mRules.getAllShipsSizes();
 
         Dependencies.inject(mRules);
-        Dependencies.inject(new Placement(new Random(), mRules));
+        Dependencies.inject(new Placement(random, mRules));
         placement = Dependencies.getPlacement();
     }
 
