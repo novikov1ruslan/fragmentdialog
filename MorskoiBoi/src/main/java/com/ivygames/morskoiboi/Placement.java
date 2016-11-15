@@ -7,6 +7,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 
 import org.commons.logger.Ln;
 
@@ -37,6 +38,13 @@ public class Placement {
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
         List<Vector2> cells = board.getEmptyCells();
+//        List<Vector2> cells = new ArrayList<>();
+//        Collection<Ship> ships = board.getShips();
+//        for (int i = 0; i < Board.DIMENSION; i++) {
+//            for (int j = 0; j < Board.DIMENSION; j++) {
+//                if ()
+//            }
+//        }
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
             Vector2 cell = cells.get(cellIndex);
@@ -66,26 +74,41 @@ public class Placement {
         // TODO: if it is exactly the same ship, remove and put again
         ship.setCoordinates(x, y);
 
-        boolean horizontal = ship.isHorizontal();
-        for (int i = -1; i <= ship.getSize(); i++) {
-            for (int j = -1; j < 2; j++) {
-                int cellX = x + (horizontal ? i : j);
-                int cellY = y + (horizontal ? j : i);
-                if (Board.contains(cellX, cellY)) {
-                    if (ship.isInShip(cellX, cellY)) {
-                        if (ship.isDead()) {
-                            // TODO: this is probably done to properly render the board,
-                            // but in fact this is wrong
-                            board.setCell(Cell.HIT, cellX, cellY);
-                        } else {
-                            board.setCell(Cell.RESERVED, cellX, cellY);
-                        }
-                    } else {
-                        board.setCell(mRules.getCellNearShip(ship), cellX, cellY);
-                    }
-                }
+        Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
+        for (Vector2 cell : neighboringCells) {
+            board.setCell(mRules.getCellNearShip(ship), cell);
+        }
+        Collection<Vector2> inShipCells = BoardSetupUtils.getCells(ship, false);
+        for (Vector2 cell : inShipCells) {
+            if (ship.isDead()) {
+                // TODO: this is probably done to properly render the board,
+                // but in fact this is wrong
+                board.setCell(Cell.HIT, cell);
+            } else {
+                board.setCell(Cell.RESERVED, cell);
             }
         }
+//
+//        boolean horizontal = ship.isHorizontal();
+//        for (int i = -1; i <= ship.getSize(); i++) {
+//            for (int j = -1; j < 2; j++) {
+//                int cellX = x + (horizontal ? i : j);
+//                int cellY = y + (horizontal ? j : i);
+//                if (Board.contains(cellX, cellY)) {
+//                    if (ship.isInShip(cellX, cellY)) {
+//                        if (ship.isDead()) {
+//                            // TODO: this is probably done to properly render the board,
+//                            // but in fact this is wrong
+//                            board.setCell(Cell.HIT, cellX, cellY);
+//                        } else {
+//                            board.setCell(Cell.RESERVED, cellX, cellY);
+//                        }
+//                    } else {
+//                        board.setCell(mRules.getCellNearShip(ship), cellX, cellY);
+//                    }
+//                }
+//            }
+//        }
 
         board.addShip(ship);
     }

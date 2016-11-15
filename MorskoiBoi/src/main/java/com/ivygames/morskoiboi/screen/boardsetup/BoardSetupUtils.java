@@ -24,19 +24,34 @@ public class BoardSetupUtils {
     }
 
     public static Collection<Vector2> getNeighboringCoordinates(int x, int y) {
+        Ship ship = new Ship(1);
+        ship.setCoordinates(x, y);
+
+        return getCells(ship, true);
+    }
+
+    public static Collection<Vector2> getCells(@NonNull Ship ship, boolean neighboring) {
         Collection<Vector2> coordinates = new ArrayList<>();
-        for (int i = -1; i <= 1; i++) {
+
+        int x = ship.getX();
+        int y = ship.getY();
+        boolean horizontal = ship.isHorizontal();
+
+        for (int i = -1; i <= ship.getSize(); i++) {
             for (int j = -1; j < 2; j++) {
-                if ((i == 0) && (j == 0)) {
-                    continue;
-                }
-                int cellX = x + i;
-                int cellY = y + j;
+                int cellX = x + (horizontal ? i : j);
+                int cellY = y + (horizontal ? j : i);
                 if (Board.contains(cellX, cellY)) {
-                    coordinates.add(Vector2.get(cellX, cellY));
+                    boolean inShip = ship.isInShip(cellX, cellY);
+                    if (inShip && !neighboring) {
+                        coordinates.add(Vector2.get(cellX, cellY));
+                    } else if (!inShip && neighboring) {
+                        coordinates.add(Vector2.get(cellX, cellY));
+                    }
                 }
             }
         }
+
         return coordinates;
     }
 }
