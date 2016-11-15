@@ -156,12 +156,8 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public Cell getCellNearShip(@NonNull Ship ship) {
-        if (ship.isDead()) {
-            return Cell.MISS;
-        }
-
-        return Cell.RESERVED;
+    public boolean canHaveAdjacentShip() {
+        return false;
     }
 
     @Override

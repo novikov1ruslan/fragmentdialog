@@ -69,8 +69,15 @@ public class Placement {
         ship.setCoordinates(x, y);
 
         Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
-        for (Vector2 cell : neighboringCells) {
-            board.setCell(mRules.getCellNearShip(ship), cell);
+        for (Vector2 v : neighboringCells) {
+            //TODO: only for rendering and touch prevention, move it to rendering and tp
+            if (!mRules.canHaveAdjacentShip()) {
+                if (ship.isDead()) {
+                    board.setCell(Cell.MISS, v);
+                } else {
+                    board.setCell(Cell.RESERVED, v);
+                }
+            }
         }
 
         board.addShip(ship);

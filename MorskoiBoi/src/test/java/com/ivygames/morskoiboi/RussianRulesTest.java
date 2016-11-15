@@ -52,7 +52,9 @@ public class RussianRulesTest {
     @Test
     public void board_is_set_when_it_has_full_russian_fleet_and_no_conflicting_cells() {
         Board board = new Board();
+
         placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
+
         assertThat(mRules.isBoardSet(board), is(true));
     }
 
