@@ -69,19 +69,18 @@ public class RussianRulesTest {
     @Test
     public void board_is_not_set_when_it_has_less_than_full_russian_fleet() {
         Board board = new Board();
-        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
-        Ship ship = board.getShips().iterator().next();
-        placement.removeShipFrom(board, ship.getX(), ship.getY());
+        Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+        ships.remove(ships.iterator().next());
+        placement.populateBoardWithShips(board, ships);
+
         assertThat(mRules.isBoardSet(board), is(false));
     }
 
     @Test
-    public void board_is_not_set_when_it_has_conflicting_cells_although_all_the_fleet_is_on_a_board() {
+    public void board_is_not_set_when_it_has_conflicting_cells_when_all_the_fleet_is_on_a_board() {
         Board board = new Board();
-        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
-        Collection<Ship> shipsCopy = new ArrayList<>(board.getShips());
-        for (Ship ship : shipsCopy) {
-            placement.removeShipFrom(board, ship.getX(), ship.getY());
+        Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+        for (Ship ship : ships) {
             placement.putShipAt(board, ship, 0, 0);
         }
         assertThat(board.getShips().size(), is(10));

@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Assert;
@@ -18,8 +17,6 @@ import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -85,62 +82,6 @@ public class PlacementTest {
 
         boolean success = mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
         assertThat(success, is(false));
-    }
-
-    @Test
-    public void testRemoveShipFrom2() {
-        Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
-        putShipAt(mBoard, ship, 5, 5);
-        mBoard.setCell(Cell.MISS, 8, 8);
-
-        assertNull(mPlacement.removeShipFrom(mBoard, 4, 4));
-        assertEquals(1, mBoard.getShips().size());
-
-        assertNotNull(mPlacement.removeShipFrom(mBoard, 5, 5));
-        assertEquals(0, mBoard.getShips().size());
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                Cell cell = mBoard.getCell(i, j);
-                if (i == 8 && j == 8) {
-                    assertTrue(cell == Cell.MISS);
-                } else {
-                    assertTrue(cell == Cell.EMPTY);
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testRemoveShipFrom() {
-        Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
-        putShipAt(ship, 5, 5);
-        putShipAt(new Ship(1), 6, 6);
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (!((i == 5 && j == 5) || (i == 6 && j == 6))) {
-                    assertNull(i + "," + j, mPlacement.removeShipFrom(mBoard, i, j));
-                }
-            }
-        }
-
-        assertEquals(2, mBoard.getShips().size());
-        assertFalse(91 == BoardSetupUtils.getCellsFreeFromShips(mBoard).size());
-        Ship ship2 = mPlacement.removeShipFrom(mBoard, 5, 5);
-        assert ship2 != null;
-
-        assertEquals(ship.getSize(), ship2.getSize());
-        assertEquals(ship.isHorizontal(), ship2.isHorizontal());
-        assertEquals(ship.getX(), ship2.getX());
-        assertEquals(ship.getY(), ship2.getY());
-
-        assertEquals(91, getEmptyCells(mBoard).size());
-        assertEquals(1, mBoard.getShips().size());
-    }
-
-    private Collection getEmptyCells(Board mBoard) {
-        return BoardSetupUtils.getCellsFreeFromShips(mBoard);
     }
 
     @Test

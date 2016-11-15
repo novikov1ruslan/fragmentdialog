@@ -12,7 +12,6 @@ import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import org.commons.logger.Ln;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -127,7 +126,7 @@ public class Placement {
      * or if (x,y) is outside the board
      */
     @Nullable
-    public Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
+    private Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
         if (!Board.contains(x, y)) {
             // throw new IllegalArgumentException("(" + x + "," + y +
             // ") is outside the board");
@@ -142,21 +141,6 @@ public class Placement {
         if (removedShip == null) {
             return null;
         }
-        // missed and hit cells are not recreated by adding ships back, so
-        // we need to remember them
-        List<Vector2> missedList = new LinkedList<>();
-        List<Vector2> hitList = new LinkedList<>();
-        for (int i = 0; i < Board.DIMENSION; i++) {
-            for (int j = 0; j < Board.DIMENSION; j++) {
-                Cell cell = board.getCell(i, j);
-                Vector2 vector = Vector2.get(i, j);
-                if (cell == Cell.MISS) {
-                    missedList.add(vector);
-                } else if (cell == Cell.HIT) {
-                    hitList.add(vector);
-                }
-            }
-        }
 
         // clear the board and add the rest of the ships
         Collection<Ship> ships = board.getShips();
@@ -164,13 +148,6 @@ public class Placement {
         board.clearBoard();
         putShips(board, ships);
 
-        for (Vector2 missPlace : missedList) {
-            board.setCell(Cell.MISS, missPlace.getX(), missPlace.getY());
-        }
-
-        for (Vector2 hitPlace : hitList) {
-            board.setCell(Cell.HIT, hitPlace.getX(), hitPlace.getY());
-        }
         return removedShip;
     }
 
