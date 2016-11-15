@@ -31,7 +31,7 @@ public class BoardSerializationTest {
             "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":1}" +
             "]," +
             "\"cells\":\"                                                                                                    \"}";
-    private static final String BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
+    private static final String LEGACY_BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
             "\"cells\":\"                                            000       000       000                                 \"}";
 
     private Board mBoard = new Board();
@@ -63,7 +63,7 @@ public class BoardSerializationTest {
         Board board2 = new Board();
         putShipAt(board2, new Ship(1), 5, 5);
 
-        Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP);
+        Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
         assertEquals(board1, board2);
     }
@@ -83,7 +83,7 @@ public class BoardSerializationTest {
 
     @Test
     public void CopyOfABoard__IsIdenticalToOriginal() {
-        Board board = BoardSerialization.fromJson(BOARD_WITH_SHIP);
+        Board board = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
         Board copy = copy(board);
 
