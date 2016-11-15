@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.model;
 
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.ShipTestUtils;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -125,7 +124,7 @@ public class BoardTest {
     public void testPutHorizontalShipSucceeded() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
         mPlacement.putShipAt(mBoard, ship, 8, 5);
-        assertShipIsCorrectlyAllignedAt(mBoard, ship, 8, 5);
+        assertShipIsCorrectlyAlignedAt(ship, 8, 5);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -138,7 +137,7 @@ public class BoardTest {
     public void testPutVerticalShipSucceeded() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
         mPlacement.putShipAt(mBoard, ship, 3, 7);
-        assertShipIsCorrectlyAllignedAt(mBoard, ship, 3, 7);
+        assertShipIsCorrectlyAlignedAt(ship, 3, 7);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -153,48 +152,28 @@ public class BoardTest {
     // assertPutShipSucceeded(mBoard, ship, ship.getX(), ship.getY());
     // }
 
-    @Test
-    public void testPutSunkShipAt() {
-        Ship ship = new Ship(2, Orientation.VERTICAL);
-        ship.shoot();
-        ship.shoot();
-        mPlacement.putShipAt(mBoard, ship, 3, 3);
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (ShipTestUtils.isInProximity(ship, i, j)) {
-                    Cell cell = mBoard.getCell(i, j);
-                    if (ship.isInShip(i, j)) {
-                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.HIT);
-                    } else {
-                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.MISS);
-                    }
-                }
-            }
-        }
-    }
+//    private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
+//        Cell cell = board.getCell(i, j);
+//        if (ShipTestUtils.isInProximity(ship, i, j)) {
+//            assertTrue(cell.toString(), cell == Cell.RESERVED);
+//        } else {
+//            assertTrue(cell.toString(), cell == Cell.EMPTY);
+//        }
+//    }
 
-    private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
-        Cell cell = board.getCell(i, j);
-        if (ShipTestUtils.isInProximity(ship, i, j)) {
-            assertTrue(cell.toString(), cell == Cell.RESERVED);
-        } else {
-            assertTrue(cell.toString(), cell == Cell.EMPTY);
-        }
-    }
-
-    private static void assertShipIsCorrectlyAllignedAt(Board board, Ship ship, int x, int y) {
+    private static void assertShipIsCorrectlyAlignedAt(Ship ship, int x, int y) {
         assertEquals(x, ship.getX());
         assertEquals(y, ship.getY());
-        assertReservedOnlyInProximityOnCleanBoard(board, ship);
+//        assertReservedOnlyInProximityOnCleanBoard(board, ship);
     }
 
-    private static void assertReservedOnlyInProximityOnCleanBoard(Board board, Ship ship) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                assertReservedOnlyInProximity(board, ship, i, j);
-            }
-        }
-    }
+//    private static void assertReservedOnlyInProximityOnCleanBoard(Board board, Ship ship) {
+//        for (int i = 0; i < 10; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                assertReservedOnlyInProximity(board, ship, i, j);
+//            }
+//        }
+//    }
 
     @Test
     public void testGetCell() {

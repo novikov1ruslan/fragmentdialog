@@ -125,8 +125,9 @@ public class Board {
     }
 
     private boolean canHaveShipAt(int i, int j) {
-        Cell cell = getCell(i, j);
-        return cell != Cell.MISS && cell != Cell.EMPTY;
+//        Cell cell = getCell(i, j);
+//        return cell != Cell.MISS && cell != Cell.EMPTY;
+        return true;
     }
 
     public boolean hasShipAt(@NonNull Vector2 coordinate) {

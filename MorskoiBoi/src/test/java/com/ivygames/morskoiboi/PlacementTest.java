@@ -140,17 +140,16 @@ public class PlacementTest {
         mPlacement.rotateShipAt(mBoard, 5, 5);
 
         assertThat(ship.isHorizontal(), is(false));
-        assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
     }
 
     @Test
     public void canRotateVerticalShip() {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         putShipAt(ship, 5, 5);
+
         mPlacement.rotateShipAt(mBoard, 5, 5);
 
         assertThat(ship.isHorizontal(), is(true));
-        assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
     }
 
     @Test
@@ -162,7 +161,6 @@ public class PlacementTest {
         assertFalse(ship.isHorizontal());
         assertEquals(5, ship.getX());
         assertEquals(6, ship.getY());
-        assertReservedOnlyInProximityOnCleanBoard(mBoard, ship);
     }
 
     @Test
@@ -176,6 +174,26 @@ public class PlacementTest {
                     Assert.assertTrue(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
                 } else {
                     Assert.assertFalse(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testPutSunkShipAt() {
+        Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
+        ship.shoot();
+        ship.shoot();
+        mPlacement.putShipAt(mBoard, ship, 3, 3);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (ShipTestUtils.isInProximity(ship, i, j)) {
+                    Cell cell = mBoard.getCell(i, j);
+                    if (ship.isInShip(i, j)) {
+                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.HIT);
+                    } else {
+                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.MISS);
+                    }
                 }
             }
         }
@@ -203,23 +221,6 @@ public class PlacementTest {
         assertThereIsNewDistinctShip(distinct, 1);
         assertThereIsNewDistinctShip(distinct, 1);
         assertThereIsNewDistinctShip(distinct, 1);
-    }
-
-    private static void assertReservedOnlyInProximity(Board board, Ship ship, int i, int j) {
-        Cell cell = board.getCell(i, j);
-        if (ShipTestUtils.isInProximity(ship, i, j)) {
-            assertTrue(cell.toString(), cell == Cell.RESERVED);
-        } else {
-            assertTrue(cell.toString(), cell == Cell.EMPTY);
-        }
-    }
-
-    private static void assertReservedOnlyInProximityOnCleanBoard(Board board, Ship ship) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                assertReservedOnlyInProximity(board, ship, i, j);
-            }
-        }
     }
 
     private void assertThereIsNewDistinctShip(Collection<Ship> distinct, int shipSize) {
