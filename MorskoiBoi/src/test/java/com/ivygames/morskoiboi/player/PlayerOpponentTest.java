@@ -113,13 +113,15 @@ public class PlayerOpponentTest {
     @Test
     public void after_shot_result_is_kill__enemy_board_shows_killed_ship() {
         Vector2 aim = Vector2.get(5, 5);
-        Cell cell = Cell.HIT;
         Ship ship = new Ship(2);
         ship.setCoordinates(5, 5);
-        ShotResult result = new ShotResult(aim, cell, ship);
+        ShotResult result = new ShotResult(aim, Cell.HIT, ship);
+
         mPlayer.onShotResult(result);
+
         Ship actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
         assertThat(actual, equalTo(ship));
+        assertThat(enemyCellAt(aim), equalTo(Cell.HIT));
     }
 
     @Test
