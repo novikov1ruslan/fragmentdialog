@@ -5,6 +5,11 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 public final class Vector2 {
     private static final Vector2[][] POOL = new Vector2[Board.DIMENSION][Board.DIMENSION];
     public static final Vector2 INVALID_VECTOR = new Vector2(-1, -1);
@@ -72,6 +77,14 @@ public final class Vector2 {
             return INVALID_VECTOR;
         }
         return POOL[i][j];
+    }
+
+    public static List<Vector2> getAllCoordinates() {
+        ArrayList<Vector2> coordinates = new ArrayList<>(Board.DIMENSION * Board.DIMENSION);
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            coordinates.addAll(Arrays.asList(POOL[i]));
+        }
+        return coordinates;
     }
 
     // TODO: remove getters
