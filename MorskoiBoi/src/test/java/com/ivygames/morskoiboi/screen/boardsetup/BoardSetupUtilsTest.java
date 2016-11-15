@@ -1,18 +1,29 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
+import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.morskoiboi.model.BoardSerialization;
+import com.ivygames.morskoiboi.model.BoardSerializationTest;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+@RunWith(RobolectricTestRunner.class)
 public class BoardSetupUtilsTest {
 
     @Test
@@ -89,4 +100,16 @@ public class BoardSetupUtilsTest {
                 Vector2.get(1, 2)));
     }
 
+    @Test
+    public void testEmptyCells() {
+        Dependencies.inject(new Placement(new Random(), new RussianRules()));
+        Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
+        assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board).size());
+
+        board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5);
+        assertEquals(91, BoardSetupUtils.getCellsFreeFromShips(board).size());
+
+        board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5_x2_5_5);
+        assertEquals(85, BoardSetupUtils.getCellsFreeFromShips(board).size());
+    }
 }

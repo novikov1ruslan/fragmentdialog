@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class BoardSetupUtils {
     private BoardSetupUtils() {
@@ -54,4 +55,15 @@ public class BoardSetupUtils {
 
         return coordinates;
     }
+
+    public static List<Vector2> getCellsFreeFromShips(@NonNull Board board) {
+        List<Vector2> cells = Vector2.getAllCoordinates();
+        Collection<Ship> ships = board.getShips();
+        for (Ship ship : ships) {
+            cells.removeAll(getCells(ship, false));
+            cells.removeAll(getCells(ship, true));
+        }
+        return cells;
+    }
+
 }

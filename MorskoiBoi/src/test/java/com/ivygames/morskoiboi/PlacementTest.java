@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Assert;
@@ -120,7 +121,7 @@ public class PlacementTest {
         }
 
         assertEquals(2, mBoard.getShips().size());
-        assertFalse(91 == mBoard.getEmptyCells().size());
+        assertFalse(91 == BoardSetupUtils.getCellsFreeFromShips(mBoard).size());
         Ship ship2 = mPlacement.removeShipFrom(mBoard, 5, 5);
         assert ship2 != null;
 
@@ -129,8 +130,12 @@ public class PlacementTest {
         assertEquals(ship.getX(), ship2.getX());
         assertEquals(ship.getY(), ship2.getY());
 
-        assertEquals(91, mBoard.getEmptyCells().size());
+        assertEquals(91, getEmptyCells(mBoard).size());
         assertEquals(1, mBoard.getShips().size());
+    }
+
+    private Collection getEmptyCells(Board mBoard) {
+        return BoardSetupUtils.getCellsFreeFromShips(mBoard);
     }
 
     @Test

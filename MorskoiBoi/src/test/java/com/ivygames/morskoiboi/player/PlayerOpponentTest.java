@@ -14,6 +14,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -384,14 +385,14 @@ public class PlayerOpponentTest {
     public void WhenGameEnds__PlayersBoardIsEmpty() {
         mPlayer.onLost(new Board());
 
-        assertThat(mPlayer.getBoard().getEmptyCells().size(), is(100));
+        assertThat(BoardSetupUtils.getCellsFreeFromShips(mPlayer.getBoard()).size(), is(100));
     }
 
     @Test
     public void WhenOpponentLooses__enemy_board_is_empty() {
         mPlayer.onLost(new Board());
 
-        assertThat(mPlayer.getEnemyBoard().getEmptyCells().size(), is(100));
+        assertThat(BoardSetupUtils.getCellsFreeFromShips(mPlayer.getEnemyBoard()).size(), is(100));
     }
 
     @Test

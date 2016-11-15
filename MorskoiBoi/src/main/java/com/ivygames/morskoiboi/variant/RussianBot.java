@@ -7,6 +7,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +48,7 @@ public class RussianBot implements BotAlgorithm {
         List<Vector2> hitDecks = createDecks(board);
         List<Vector2> possibleShots;
         if (hitDecks.size() == 0) {
-            possibleShots = board.getEmptyCells();
+            possibleShots = getPossibleShots(board);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
             Vector2 v = hitDecks.get(0);
             possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
@@ -64,6 +65,13 @@ public class RussianBot implements BotAlgorithm {
             }
             throw e;
         }
+    }
+
+    private static List<Vector2> getPossibleShots(@NonNull Board board) {
+        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board);
+        cells.removeAll(board.getCellsByType(Cell.HIT));
+        cells.removeAll(board.getCellsByType(Cell.MISS));
+        return cells;
     }
 
     private static boolean isEmptyCell(@NonNull Board board, int x, int y) {

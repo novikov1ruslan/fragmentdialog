@@ -91,11 +91,6 @@ public class BoardTest {
     }
 
     @Test
-    public void testEmptyBoard() {
-        assertEquals(100, mBoard.getEmptyCells().size());
-    }
-
-    @Test
     public void testAllShipsAreDestroyed() {
         assertFalse(!Board.allAvailableShipsAreDestroyed(mBoard));
 
@@ -185,17 +180,6 @@ public class BoardTest {
         mBoard.setCell(Cell.MISS, 0, 0);
         cell = mBoard.getCell(0, 0);
         assertTrue(cell == Cell.MISS);
-    }
-
-    @Test
-    public void testEmptyCells() {
-        assertEquals(100, mBoard.getEmptyCells().size());
-
-        mPlacement.putShipAt(mBoard, new Ship(1), 5, 5);
-        assertEquals(91, mBoard.getEmptyCells().size());
-
-        mPlacement.putShipAt(mBoard, new Ship(2, Orientation.VERTICAL), 9, 8);
-        assertEquals(85, mBoard.getEmptyCells().size());
     }
 
     @Test

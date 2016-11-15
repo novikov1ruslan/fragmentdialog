@@ -23,8 +23,16 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardSerializationTest {
-    private static final String EMPTY_BOARD = "{\"ships\":[],\"cells\":\"                                                                                                    \"}";
-    private static final String BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}],\"cells\":\"                                            000       000       000                                 \"}";
+    public static final String EMPTY_BOARD = "{\"ships\":[],\"cells\":\"                                                                                                    \"}";
+    public static final String BOARD_WITH_SHIP_x1_5_5 = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
+            "\"cells\":\"                                                                                                    \"}";
+    public static final String BOARD_WITH_SHIP_x1_5_5_x2_5_5 = "{\"ships\":[" +
+            "{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}," +
+            "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":1}" +
+            "]," +
+            "\"cells\":\"                                                                                                    \"}";
+    private static final String BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
+            "\"cells\":\"                                            000       000       000                                 \"}";
 
     private Board mBoard = new Board();
     private Placement mPlacement;

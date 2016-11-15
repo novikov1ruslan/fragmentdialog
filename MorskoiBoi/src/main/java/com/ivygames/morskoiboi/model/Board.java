@@ -31,20 +31,20 @@ public class Board {
         return mShips.remove(ship);
     }
 
-    /**
-     * @return all cells that will return true on {@link Cell#EMPTY}
-     */
-    @NonNull
-    public List<Vector2> getEmptyCells() {
-        List<Vector2> emptyCells = new ArrayList<>();
+    public void addShip(@NonNull Ship ship) {
+        mShips.add(ship);
+    }
+
+    public List<Vector2> getCellsByType(Cell cell) {
+        List<Vector2> cells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {
-                if (mCells[i][j] == Cell.EMPTY) {
-                    emptyCells.add(Vector2.get(i, j));
+                if (mCells[i][j] == cell) {
+                    cells.add(Vector2.get(i, j));
                 }
             }
         }
-        return emptyCells;
+        return cells;
     }
 
     /**
@@ -285,7 +285,4 @@ public class Board {
         return board.toString();
     }
 
-    public void addShip(@NonNull Ship ship) {
-        mShips.add(ship);
-    }
 }

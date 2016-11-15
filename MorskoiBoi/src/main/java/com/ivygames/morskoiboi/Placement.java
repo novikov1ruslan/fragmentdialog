@@ -37,7 +37,7 @@ public class Placement {
     }
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
-        List<Vector2> cells = getEmptyCells(board);
+        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board);
 
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
@@ -54,16 +54,6 @@ public class Placement {
         }
 
         return false;
-    }
-
-    private List<Vector2> getEmptyCells(@NonNull Board board) {
-        List<Vector2> cells = Vector2.getAllCoordinates();
-        Collection<Ship> ships = board.getShips();
-        for (Ship ship : ships) {
-            cells.removeAll(BoardSetupUtils.getCells(ship, false));
-            cells.removeAll(BoardSetupUtils.getCells(ship, true));
-        }
-        return cells;
     }
 
     public void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 v) {
