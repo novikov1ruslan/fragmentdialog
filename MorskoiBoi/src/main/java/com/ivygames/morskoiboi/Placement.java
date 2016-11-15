@@ -72,14 +72,6 @@ public class Placement {
         for (Vector2 cell : neighboringCells) {
             board.setCell(mRules.getCellNearShip(ship), cell);
         }
-        Collection<Vector2> inShipCells = BoardSetupUtils.getCells(ship, false);
-        for (Vector2 cell : inShipCells) {
-            if (ship.isDead()) {
-                // TODO: this is probably done to properly render the board,
-                // but in fact this is wrong
-                board.setCell(Cell.HIT, cell);
-            }
-        }
 
         board.addShip(ship);
     }

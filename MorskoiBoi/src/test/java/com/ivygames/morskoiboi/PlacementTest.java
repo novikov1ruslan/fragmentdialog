@@ -189,14 +189,14 @@ public class PlacementTest {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         ship.shoot();
         ship.shoot();
+
         mPlacement.putShipAt(mBoard, ship, 3, 3);
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (ShipTestUtils.isInProximity(ship, i, j)) {
                     Cell cell = mBoard.getCell(i, j);
-                    if (ship.isInShip(i, j)) {
-                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.HIT);
-                    } else {
+                    if (!ship.isInShip(i, j)) {
                         assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.MISS);
                     }
                 }
