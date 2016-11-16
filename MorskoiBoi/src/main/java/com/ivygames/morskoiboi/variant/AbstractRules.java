@@ -14,17 +14,17 @@ public abstract class AbstractRules implements Rules {
 
     @Override
     public boolean isBoardSet(@NonNull Board board) {
-        return allShipsAreOnBoard(board) && !isThereConflictingCell(board);
+        return allShipsAreOnBoard(board) && !hasConflictingCell(board, allowAdjacentShips());
     }
 
     private boolean allShipsAreOnBoard(@NonNull Board board) {
         return board.getShips().size() == getAllShipsSizes().length;
     }
 
-    private boolean isThereConflictingCell(@NonNull Board board) {
+    private static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
         for (int i = 0; i < board.horizontalDimension(); i++) {
             for (int j = 0; j < board.verticalDimension(); j++) {
-                if (BoardSetupUtils.isCellConflicting(board, i, j, allowAdjacentShip())) {
+                if (BoardSetupUtils.isCellConflicting(board, i, j, allowAdjacentShips)) {
                     return true;
                 }
             }

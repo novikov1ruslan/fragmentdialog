@@ -129,7 +129,7 @@ public class RussianRules extends AbstractRules {
     }
 
     @Override
-    public boolean allowAdjacentShip() {
+    public boolean allowAdjacentShips() {
         return false;
     }
 

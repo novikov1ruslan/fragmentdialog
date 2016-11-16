@@ -36,7 +36,7 @@ public class Placement {
     }
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
-        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board, mRules.allowAdjacentShip());
+        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board, mRules.allowAdjacentShips());
 
         while (!cells.isEmpty()) {
             int cellIndex = mRandom.nextInt(cells.size());
@@ -71,7 +71,7 @@ public class Placement {
         Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
         for (Vector2 v : neighboringCells) {
             //TODO: only for rendering and touch prevention, move it to rendering and tp
-            if (!mRules.allowAdjacentShip()) {
+            if (!mRules.allowAdjacentShips()) {
                 if (ship.isDead()) {
                     board.setCell(Cell.MISS, v);
                 } else {

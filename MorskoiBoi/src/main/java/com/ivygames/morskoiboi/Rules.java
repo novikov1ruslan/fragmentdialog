@@ -24,7 +24,7 @@ public interface Rules {
     int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type,
                         @NonNull ScoreStatistics statistics, boolean surrendered);
 
-    boolean allowAdjacentShip();
+    boolean allowAdjacentShips();
 
     int calcSurrenderPenalty(@NonNull Collection<Ship> ships);
 }

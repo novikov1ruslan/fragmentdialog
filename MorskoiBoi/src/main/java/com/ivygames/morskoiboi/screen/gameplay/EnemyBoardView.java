@@ -143,7 +143,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void unLock() {
-        mPossibleShots = BoardSetupUtils.getPossibleShots(mBoard, Dependencies.getRules().allowAdjacentShip());
+        mPossibleShots = BoardSetupUtils.getPossibleShots(mBoard, Dependencies.getRules().allowAdjacentShips());
         mPresenter.unlock();
     }
 
