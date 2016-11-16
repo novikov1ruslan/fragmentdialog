@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;

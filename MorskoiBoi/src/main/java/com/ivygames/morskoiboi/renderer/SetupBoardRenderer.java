@@ -90,6 +90,10 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         return Bitmap.createBitmap(bitmap, 0, 0, width, height, mRotationMatrix, true);
     }
 
+    public void renderConflictingCell(@NonNull Canvas canvas, @NonNull Vector2 v) {
+        renderConflictingCell(canvas, v.getX(), v.getY());
+    }
+
     public void renderConflictingCell(@NonNull Canvas canvas, int i, int j) {
         Rect invalidRect = mProcessor.getRectForCell(i, j);
         canvas.drawRect(invalidRect, mConflictCellPaint);

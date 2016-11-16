@@ -43,8 +43,9 @@ public class Placement {
             Vector2 cell = cells.get(cellIndex);
             int i = cell.getX();
             int j = cell.getY();
-            if (board.shipFitsTheBoard(ship, i, j) && isPlaceEmpty(ship, board, i, j)) {
-                putShipAt(board, ship, i, j);
+            // TODO: isPlaceEmpty relies on Cell.EMPTY
+            if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j)) {
+                putShipAt(board, ship, cell);
                 return true;
             } else {
                 // this cell is not suitable for placement
