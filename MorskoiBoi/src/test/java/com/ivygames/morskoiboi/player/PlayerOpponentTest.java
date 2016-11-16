@@ -302,7 +302,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerLoses__CallbackNotCalled() {
-        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
+        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules(1));
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
         Board board = new Board();
@@ -334,10 +334,11 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerWins__OpponentLost() {
-        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
+        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules(1));
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
+        Ship ship = newDeadShip();
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, ship);
         mPlayer.onShotResult(result);
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
@@ -345,7 +346,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenEnemyLoses_AndEnemyDoesNotSupportBoardReveal__CallbackNotCalled() {
-        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules());
+        mPlayer = newPlayer(PlayerUtils.defeatedBoardRules(1));
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
         ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
@@ -409,15 +410,23 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerWinsOverAiOpponent__OpponentLost() {
-        PlayerOpponent player = newPlayer(PlayerUtils.defeatedBoardRules());
+        PlayerOpponent player = newPlayer(PlayerUtils.defeatedBoardRules(1));
         MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules());
         player.setOpponent(aiOpponent);
         aiOpponent.setOpponent(player);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
+        Ship ship = newDeadShip();
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, ship);
         player.onShotResult(result);
 
         assertThat(aiOpponent.lostCalled(), is(true));
+    }
+
+    @NonNull
+    private Ship newDeadShip() {
+        Ship ship = new Ship(1);
+        ship.shoot();
+        return ship;
     }
 
     // TODO: when callback is set - sticky

@@ -13,42 +13,12 @@ import java.util.Collection;
 public abstract class AbstractRules implements Rules {
 
     @Override
-    public boolean isBoardSet(@NonNull Board board) {
-        return allShipsAreOnBoard(board) && !hasConflictingCell(board, allowAdjacentShips());
-    }
-
-    private boolean allShipsAreOnBoard(@NonNull Board board) {
-        return board.getShips().size() == getAllShipsSizes().length;
-    }
-
-    private static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
-        for (int i = 0; i < board.horizontalDimension(); i++) {
-            for (int j = 0; j < board.verticalDimension(); j++) {
-                if (BoardSetupUtils.isCellConflicting(board, i, j, allowAdjacentShips)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return true if board has 10 ships and all of them are destroyed
-     */
-    @Override
-    public boolean isItDefeatedBoard(@NonNull Board board) {
-        return allShipsAreOnBoard(board) && Board.allAvailableShipsAreDestroyed(board);
-    }
-
-    @Override
     public int calcSurrenderPenalty(@NonNull Collection<Ship> ships) {
-        int decksLost = getTotalHealth() - getRemainedHealth(ships);
+        int decksLost = getTotalHealth(getAllShipsSizes()) - getRemainedHealth(ships);
         return decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
     }
 
-    private int getTotalHealth() {
-        int[] ships = getAllShipsSizes();
+    private static int getTotalHealth(int[] ships) {
         int totalHealth = 0;
         for (int ship : ships) {
             totalHealth += ship;

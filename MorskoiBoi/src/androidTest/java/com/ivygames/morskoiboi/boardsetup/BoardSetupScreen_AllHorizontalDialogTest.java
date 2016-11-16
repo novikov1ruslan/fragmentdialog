@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 
 import org.hamcrest.Matcher;
@@ -16,7 +15,6 @@ import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ {
@@ -24,11 +22,15 @@ public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ 
     public void WhenBoardIsSet_AndAllShipsAreHorizontal_AndDonePressed__DialogDisplayed() {
         showScreen();
         mOrientationBuilder.setOrientation(Ship.Orientation.HORIZONTAL);
-        when(rules.isBoardSet(any(Board.class))).thenReturn(true);
+        isBoardSet(true);
 
         clickOn(done());
 
         checkDisplayed(onlyHorizontalDialog());
+    }
+
+    private void isBoardSet(boolean b) {
+        when(rules.getAllShipsSizes()).thenReturn(new int[0]);
     }
 
     @Test

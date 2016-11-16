@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
@@ -101,5 +102,32 @@ public class BoardSetupUtils {
         }
 
         return false;
+    }
+
+    public static boolean isBoardSet(@NonNull Board board, @NonNull Rules rules) {
+        return allShipsAreOnBoard(board, rules) && !hasConflictingCell(board, rules.allowAdjacentShips());
+    }
+
+    private static boolean allShipsAreOnBoard(@NonNull Board board, @NonNull Rules rules) {
+        return board.getShips().size() == rules.getAllShipsSizes().length;
+    }
+
+    private static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
+        for (int i = 0; i < board.horizontalDimension(); i++) {
+            for (int j = 0; j < board.verticalDimension(); j++) {
+                if (isCellConflicting(board, i, j, allowAdjacentShips)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return true if board has 10 ships and all of them are destroyed
+     */
+    public static boolean isItDefeatedBoard(@NonNull Board board, @NonNull Rules rules) {
+        return allShipsAreOnBoard(board, rules) && Board.allAvailableShipsAreDestroyed(board);
     }
 }

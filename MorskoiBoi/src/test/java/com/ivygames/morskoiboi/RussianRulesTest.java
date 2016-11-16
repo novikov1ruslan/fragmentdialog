@@ -59,12 +59,12 @@ public class RussianRulesTest {
 
         placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
 
-        assertThat(mRules.isBoardSet(board), is(true));
+        assertThat(BoardSetupUtils.isBoardSet(board, mRules), is(true));
     }
 
     @Test
     public void empty_board_is_not_set() {
-        assertThat(mRules.isBoardSet(new Board()), is(false));
+        assertThat(BoardSetupUtils.isBoardSet(new Board(), mRules), is(false));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class RussianRulesTest {
         ships.remove(ships.iterator().next());
         placement.populateBoardWithShips(board, ships);
 
-        assertThat(mRules.isBoardSet(board), is(false));
+        assertThat(BoardSetupUtils.isBoardSet(board, mRules), is(false));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class RussianRulesTest {
             placement.putShipAt(board, ship, 0, 0);
         }
         assertThat(board.getShips().size(), is(10));
-        assertThat(mRules.isBoardSet(board), is(false));
+        assertThat(BoardSetupUtils.isBoardSet(board, mRules), is(false));
     }
 
     @Test
@@ -236,7 +236,7 @@ public class RussianRulesTest {
         Collection<Ship> ships = mock(Collection.class);
         when(ships.size()).thenReturn(9);
         when(board.getShips()).thenReturn(ships);
-        assertThat(mRules.isItDefeatedBoard(board), is(false));
+        assertThat(BoardSetupUtils.isItDefeatedBoard(board, mRules), is(false));
     }
 
     @Test
@@ -245,7 +245,7 @@ public class RussianRulesTest {
         Collection<Ship> ships = mock_9_dead_1_alive_ship();
         when(board.getShips()).thenReturn(ships);
 
-        assertThat(mRules.isItDefeatedBoard(board), is(false));
+        assertThat(BoardSetupUtils.isItDefeatedBoard(board, mRules), is(false));
     }
 
     @Test
@@ -254,7 +254,7 @@ public class RussianRulesTest {
         Collection<Ship> ships = mock_10_dead_ships();
         when(board.getShips()).thenReturn(ships);
 
-        assertThat(mRules.isItDefeatedBoard(board), is(true));
+        assertThat(BoardSetupUtils.isItDefeatedBoard(board, mRules), is(true));
     }
 
     @Test

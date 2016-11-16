@@ -101,8 +101,7 @@ public class AndroidOpponentTest {
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
         placement().putShipAt(mBoard, new Ship(2), 5, 5);
-        when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(false);
-
+        setBoardDefeated(false);
         mAndroid.onShotAt(Vector2.get(5, 5));
 
         verify(mOpponent, times(1)).go();
@@ -110,9 +109,17 @@ public class AndroidOpponentTest {
 
     @Test
     public void if_android_is_lost__opponent_does_NOT_go() {
-        when(mRules.isItDefeatedBoard(any(Board.class))).thenReturn(true);
+        setBoardDefeated(true);
         mAndroid.onShotAt(Vector2.get(5, 5));
         verify(mOpponent, never()).go();
+    }
+
+    private void setBoardDefeated(boolean defeated) {
+        if (defeated) {
+            when(mRules.getAllShipsSizes()).thenReturn(new int[0]);
+        } else {
+            when(mRules.getAllShipsSizes()).thenReturn(new int[1]);
+        }
     }
 
     @Test

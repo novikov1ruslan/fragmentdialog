@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi.boardsetup;
 
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 
@@ -11,7 +10,6 @@ import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -28,9 +26,13 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
         showScreen();
         mOrientationBuilder.setOrientation(Orientation.VERTICAL);
         clickOn(autoSetup());
-        when(rules.isBoardSet(any(Board.class))).thenReturn(true);
+        setBoardSet();
         clickOn(done());
         checkDisplayed(GAMEPLAY_LAYOUT);
+    }
+
+    private void setBoardSet() {
+        when(rules.getAllShipsSizes()).thenReturn(new int[0]);
     }
 
     @Test
