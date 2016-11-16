@@ -13,8 +13,6 @@ import java.util.Collection;
 public interface Rules {
     boolean isBoardSet(@NonNull Board board);
 
-    boolean isCellConflicting(@NonNull Board board, int i, int j);
-
     /**
      * @return true if board has full fleet and all the ships are destroyed
      */

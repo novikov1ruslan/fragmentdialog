@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
@@ -75,5 +74,32 @@ public class BoardSetupUtils {
         cells.removeAll(board.getCellsByType(Cell.HIT));
         cells.removeAll(board.getCellsByType(Cell.MISS));
         return cells;
+    }
+
+    public static boolean isCellConflicting(@NonNull Board board, int i, int j, boolean allowAdjacentShips) {
+        Collection<Ship> theseShips = board.getShipsAt(i, j);
+        if (theseShips.isEmpty()) {
+            return false;
+        }
+
+        if (theseShips.size() > 1) {
+            return true;
+        }
+
+        if (!allowAdjacentShips) {
+            Ship ship = theseShips.iterator().next();
+
+            Collection<Vector2> coordinates = getNeighboringCoordinates(i, j);
+            for (Vector2 v : coordinates) {
+                Collection<Ship> otherShips = board.getShipsAt(v);
+                for (Ship otherShip : otherShips) {
+                    if (otherShip != ship) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

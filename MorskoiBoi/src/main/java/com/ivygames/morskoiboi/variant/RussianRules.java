@@ -38,32 +38,6 @@ public class RussianRules extends AbstractRules {
     private static final float MIN_TIME_BONUS_MULTIPLIER = 1f;
     private static final int MAX_SCORE_FOR_SURRENDERED_GAME = 5000;
 
-    @Override
-    public boolean isCellConflicting(@NonNull Board board, int i, int j) {
-        Collection<Ship> theseShips = board.getShipsAt(i, j);
-        if (theseShips.isEmpty()) {
-            return false;
-        }
-
-        if (theseShips.size() > 1) {
-            return true;
-        }
-
-        Ship ship = theseShips.iterator().next();
-
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(i, j);
-        for (Vector2 v : coordinates) {
-            Collection<Ship> otherShips = board.getShipsAt(v);
-            for (Ship otherShip : otherShips) {
-                if (otherShip != ship) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     @NonNull
     @Override
     public int[] getAllShipsSizes() {

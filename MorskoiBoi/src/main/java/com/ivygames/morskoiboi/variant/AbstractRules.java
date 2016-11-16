@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 
 import java.util.Collection;
 
@@ -23,7 +24,7 @@ public abstract class AbstractRules implements Rules {
     private boolean isThereConflictingCell(@NonNull Board board) {
         for (int i = 0; i < board.horizontalDimension(); i++) {
             for (int j = 0; j < board.verticalDimension(); j++) {
-                if (isCellConflicting(board, i, j)) {
+                if (BoardSetupUtils.isCellConflicting(board, i, j, allowAdjacentShip())) {
                     return true;
                 }
             }

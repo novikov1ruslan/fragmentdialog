@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
@@ -90,21 +91,21 @@ public class RussianRulesTest {
     @Test
     public void EmptyCellIsNotConflicting() {
         Board board = new Board();
-        assertThat(mRules.isCellConflicting(board, 5, 5), is(false));
+        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShip()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship() {
         Board board = new Board();
         placement.putShipAt(board, new Ship(1), 5, 5);
-        assertThat(mRules.isCellConflicting(board, 5, 5), is(false));
+        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShip()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship2() {
         Board board = new Board();
         placement.putShipAt(board, new Ship(1), 1, 5);
-        assertThat(mRules.isCellConflicting(board, 1, 5), is(false));
+        assertThat(BoardSetupUtils.isCellConflicting(board, 1, 5, mRules.allowAdjacentShip()), is(false));
     }
 
     @Test
@@ -114,7 +115,18 @@ public class RussianRulesTest {
 
         placement.putShipAt(board, new Ship(1), 5, 5);
 
-        assertThat(mRules.isCellConflicting(board, 5, 5), is(true));
+        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShip()), is(true));
+        assertThat(BoardSetupUtils.isCellConflicting(board, 6, 6, mRules.allowAdjacentShip()), is(true));
+    }
+
+    @Test
+    public void WhenShipsOverlap__ThereIsAConflict() {
+        Board board = new Board();
+        placement.putShipAt(board, new Ship(1), 5, 5);
+
+        placement.putShipAt(board, new Ship(1), 5, 5);
+
+        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShip()), is(true));
     }
 
     @Test
