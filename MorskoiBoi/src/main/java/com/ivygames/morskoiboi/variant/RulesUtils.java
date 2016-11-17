@@ -3,18 +3,15 @@ package com.ivygames.morskoiboi.variant;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 
 import java.util.Collection;
 
-public abstract class AbstractRules implements Rules {
+public abstract class RulesUtils {
 
-    @Override
-    public int calcSurrenderPenalty(@NonNull Collection<Ship> ships) {
-        int decksLost = getTotalHealth(getAllShipsSizes()) - getRemainedHealth(ships);
+    public static int calcSurrenderPenalty(@NonNull Collection<Ship> ships, int[] shipsSizes) {
+        int decksLost = getTotalHealth(shipsSizes) - getRemainedHealth(ships);
         return decksLost * Game.SURRENDER_PENALTY_PER_DECK + Game.MIN_SURRENDER_PENALTY;
     }
 

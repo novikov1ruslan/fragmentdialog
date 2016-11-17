@@ -4,27 +4,33 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.variant.RulesUtils;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
     private static final int PENALTY = 2000;
+    private static final int[] FLEET = new int[]{1, 2, 3};
 
     @Before
     public void setup() {
         super.setup();
-        when(rules.calcSurrenderPenalty(anyCollection())).thenReturn(PENALTY);
+        when(rules.getAllShipsSizes()).thenReturn(FLEET);
     }
 
     @Test
@@ -66,7 +72,8 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
         WhenBackPressedForInternetGame_AndEnemyIsReady__DialogDisplayed();
         clickOn(okButton());
         checkDoesNotExist(surrenderDialog());
-        verify(settings(), times(1)).setProgressPenalty(PENALTY);
+        Collection<Ship> ships = new ArrayList<>(Arrays.asList(new Ship(1), new Ship(1)));
+        verify(settings(), times(1)).setProgressPenalty(RulesUtils.calcSurrenderPenalty(ships, FLEET));
         backToSelectGame();
     }
 

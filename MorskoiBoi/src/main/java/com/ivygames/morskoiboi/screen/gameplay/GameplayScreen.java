@@ -49,6 +49,7 @@ import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
+import com.ivygames.morskoiboi.variant.RulesUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -335,7 +336,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showSurrenderDialog() {
-        final int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
+        final int penalty = RulesUtils.calcSurrenderPenalty(mPlayerPrivateBoard.getShips(), mRules.getAllShipsSizes());
         String message = getString(R.string.surrender_question, -penalty);
 
         new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
@@ -688,7 +689,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             stopAlarmSound();
 
             AnalyticsEvent.send("surrendered_passively");
-            int penalty = mRules.calcSurrenderPenalty(mPlayerPrivateBoard.getShips());
+            int penalty = RulesUtils.calcSurrenderPenalty(mPlayerPrivateBoard.getShips(), mRules.getAllShipsSizes());
             Ln.d("player surrender passively with penalty: " + penalty);
             surrender(penalty);
         }

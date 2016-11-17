@@ -3,19 +3,17 @@ package com.ivygames.morskoiboi.variant;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.DebugUtils;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 
 import org.commons.logger.Ln;
 
 import java.util.Collection;
 
-public class RussianRules extends AbstractRules {
+public class RussianRules implements Rules {
 
     private static final int BLUETOOTH_WIN_POINTS = 5000;
     private static final int INTERNET_WIN_POINTS = 10000;

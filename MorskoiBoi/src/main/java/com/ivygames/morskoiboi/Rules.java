@@ -16,6 +16,4 @@ public interface Rules {
                         @NonNull ScoreStatistics statistics, boolean surrendered);
 
     boolean allowAdjacentShips();
-
-    int calcSurrenderPenalty(@NonNull Collection<Ship> ships);
 }
