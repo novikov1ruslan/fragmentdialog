@@ -46,7 +46,7 @@ public class PlayerOpponentTest {
     @Mock
     private PlayerCallback callback;
 
-    private Rules russianRules = new RussianRules();
+    private Rules rules = new RussianRules();
     private ChatListener listener = new ChatListener() {
         @Override
         public void showChatCrouton(ChatMessage message) {
@@ -61,13 +61,13 @@ public class PlayerOpponentTest {
         initMocks(this);
         ExceptionHandler.setDryRun(true);
 
-        mPlacement = new Placement(mRandom, russianRules);
-        mPlayer = newPlayer(russianRules);
+        mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
+        mPlayer = newPlayer(rules);
     }
 
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        Placement placement = new Placement(mRandom, new RussianRules());
+        Placement placement = new Placement(mRandom, rules.allowAdjacentShips());
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);

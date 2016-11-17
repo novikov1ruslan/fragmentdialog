@@ -25,8 +25,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -69,7 +67,7 @@ public class WinLostScenarioTest {
         Dependencies.inject(mRandom);
         Dependencies.inject(new GameSettings(activity));
         Dependencies.inject(rules);
-        Dependencies.inject(new Placement(mRandom, rules));
+        Dependencies.inject(new Placement(mRandom, rules.allowAdjacentShips()));
 
         IdlingPolicies.setMasterPolicyTimeout(20, TimeUnit.MINUTES);
         IdlingPolicies.setIdlingResourceTimeout(20, TimeUnit.MINUTES);

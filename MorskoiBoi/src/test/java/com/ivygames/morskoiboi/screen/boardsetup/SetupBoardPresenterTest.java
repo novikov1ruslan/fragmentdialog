@@ -42,7 +42,7 @@ public class SetupBoardPresenterTest {
         mPresenter = new SetupBoardPresenter();
         rules = new RussianRules();
         Dependencies.inject(rules);
-        mPlacement = new Placement(mRandom, rules);
+        mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
         Dependencies.inject(mPlacement);
     }
 

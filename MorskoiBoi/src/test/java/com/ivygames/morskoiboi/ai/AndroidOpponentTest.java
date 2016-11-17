@@ -13,7 +13,6 @@ import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.RussianBotFactory;
-import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -74,7 +73,7 @@ public class AndroidOpponentTest {
 
     @NonNull
     private Placement placement() {
-        return new Placement(mRandom, new RussianRules());
+        return new Placement(mRandom, mRules.allowAdjacentShips());
     }
 
     @Test

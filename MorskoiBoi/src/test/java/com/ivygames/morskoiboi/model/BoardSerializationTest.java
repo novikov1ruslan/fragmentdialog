@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.variant.RussianRules;
+import com.ivygames.morskoiboi.Rules;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,8 @@ public class BoardSerializationTest {
     public void setup() {
         Random random = mock(Random.class);
         when(random.nextInt(anyInt())).thenReturn(0);
-        mPlacement = new Placement(random, new RussianRules());
+        Rules rules = mock(Rules.class);
+        mPlacement = new Placement(random, rules.allowAdjacentShips());
         Dependencies.inject(mPlacement);
     }
 

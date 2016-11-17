@@ -19,7 +19,7 @@ import java.util.Random;
 public class ScenarioTests {
 
     private Rules rules = new RussianRules();
-    private Placement placement = new Placement(new Random(), rules);
+    private Placement placement = new Placement(new Random(), rules.allowAdjacentShips());
 
     private ChatListener listener = new ChatListener() {
         @Override

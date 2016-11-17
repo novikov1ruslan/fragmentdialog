@@ -39,7 +39,7 @@ public class PlacementTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         Dependencies.inject(rules);
-        mPlacement = new Placement(mRandom, rules);
+        mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class PlacementTest {
                 }
             }
         };
-        Placement placement = new Placement(random, rules);
+        Placement placement = new Placement(random, rules.allowAdjacentShips());
         placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
         placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
         placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);

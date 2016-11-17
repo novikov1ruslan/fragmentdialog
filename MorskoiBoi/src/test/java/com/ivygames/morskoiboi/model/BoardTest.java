@@ -36,7 +36,7 @@ public class BoardTest {
         Random random = mock(Random.class);
         when(random.nextInt(anyInt())).thenReturn(0);
         Rules rules = new RussianRules();
-        mPlacement = new Placement(random, rules);
+        mPlacement = new Placement(random, rules.allowAdjacentShips());
     }
 
     @Test

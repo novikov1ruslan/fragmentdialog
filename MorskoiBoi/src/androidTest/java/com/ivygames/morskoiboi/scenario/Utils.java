@@ -18,7 +18,7 @@ public class Utils {
     static List<Vector2> getShots(@NonNull Rules rules, @NonNull Random random) {
         Board board = new Board();
         Collection<Ship> ships = ShipUtils.generateFullFleet(rules.getAllShipsSizes(), new ShipUtils.OrientationBuilder(random));
-        new Placement(random, rules).populateBoardWithShips(board, ships);
+        new Placement(random, rules.allowAdjacentShips()).populateBoardWithShips(board, ships);
 
         List<Vector2> shots = new ArrayList<>(20);
 

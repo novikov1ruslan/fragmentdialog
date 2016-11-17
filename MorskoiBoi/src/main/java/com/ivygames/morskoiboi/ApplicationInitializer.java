@@ -45,7 +45,7 @@ class ApplicationInitializer {
         Resources resources = application.getResources();
         RussianRules rules = new RussianRules();
         Random random = new Random();
-        Placement placement = new Placement(random, rules);
+        Placement placement = new Placement(random, rules.allowAdjacentShips());
         AndroidDevice device = new AndroidDevice(application);
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application,

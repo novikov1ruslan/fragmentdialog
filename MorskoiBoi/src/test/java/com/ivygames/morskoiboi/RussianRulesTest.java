@@ -50,7 +50,7 @@ public class RussianRulesTest {
         allShipsSizes = mRules.getAllShipsSizes();
 
         Dependencies.inject(mRules);
-        Dependencies.inject(new Placement(random, mRules));
+        Dependencies.inject(new Placement(random, mRules.allowAdjacentShips()));
         placement = Dependencies.getPlacement();
     }
 

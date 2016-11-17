@@ -2,12 +2,12 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.BoardSerializationTest;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -104,7 +104,8 @@ public class BoardSetupUtilsTest {
     @Test
     public void testEmptyCells() {
         Random random = mock(Random.class);
-        Dependencies.inject(new Placement(random, new RussianRules()));
+        Rules rules = mock(Rules.class);
+        Dependencies.inject(new Placement(random, rules.allowAdjacentShips()));
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
         assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
 

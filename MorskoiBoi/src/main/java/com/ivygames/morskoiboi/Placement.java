@@ -20,12 +20,11 @@ public class Placement {
 
     @NonNull
     private final Random mRandom;
-    @NonNull
-    private final Rules mRules;
+    private final boolean m_allowAdjacentShips;
 
-    public Placement(@NonNull Random random, @NonNull Rules rules) {
+    public Placement(@NonNull Random random, boolean allowAdjacentShips) {
         mRandom = random;
-        mRules = rules;
+        m_allowAdjacentShips = allowAdjacentShips;
     }
 
     // TODO: remove
@@ -36,14 +35,13 @@ public class Placement {
     }
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
-        List<Vector2> freeCells = BoardSetupUtils.getCellsFreeFromShips(board, mRules.allowAdjacentShips());
+        List<Vector2> freeCells = BoardSetupUtils.getCellsFreeFromShips(board, m_allowAdjacentShips);
 
         while (!freeCells.isEmpty()) {
             int cellIndex = mRandom.nextInt(freeCells.size());
             Vector2 cell = freeCells.get(cellIndex);
             int i = cell.getX();
             int j = cell.getY();
-            // TODO: isPlaceEmpty relies on Cell.EMPTY
             if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
                 putShipAt(board, ship, cell);
                 return true;
