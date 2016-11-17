@@ -89,7 +89,7 @@ public class Placement {
         return ship;
     }
 
-    public void rotateShipAt(@NonNull Board board, int x, int y) {
+    public static void rotateShipAt(@NonNull Board board, int x, int y) {
         if (!Board.contains(x, y)) {
             Ln.w("(" + x + "," + y + ") is outside the board");
             return;
@@ -118,7 +118,7 @@ public class Placement {
      * or if (x,y) is outside the board
      */
     @Nullable
-    private Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
+    private static Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
         if (!Board.contains(x, y)) {
             Ln.w("(" + x + "," + y + ") is outside the board");
             return null;

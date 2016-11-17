@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Board;
@@ -132,7 +133,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    mPresenter.rotateShipAt(mBoard, coordinate);
+                    Placement.rotateShipAt(mBoard, coordinate.getX(), coordinate.getY());
                 } else if (mPresenter.hasPickedShip()) {
                     Ln.v("dropping picked ship to: " + mPickedShipCoordinate);
                     mPresenter.dropShip(mBoard, mPickedShipCoordinate);

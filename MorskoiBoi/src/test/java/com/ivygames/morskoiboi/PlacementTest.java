@@ -124,7 +124,8 @@ public class PlacementTest {
     public void canRotateHorizontalShip() {
         Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 5);
-        mPlacement.rotateShipAt(mBoard, 5, 5);
+
+        Placement.rotateShipAt(mBoard, 5, 5);
 
         assertThat(ship.isHorizontal(), is(false));
     }
@@ -134,7 +135,7 @@ public class PlacementTest {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         putShipAt(ship, 5, 5);
 
-        mPlacement.rotateShipAt(mBoard, 5, 5);
+        Placement.rotateShipAt(mBoard, 5, 5);
 
         assertThat(ship.isHorizontal(), is(true));
     }
@@ -143,7 +144,8 @@ public class PlacementTest {
     public void testCannotRotateShip() {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 7);
-        mPlacement.rotateShipAt(mBoard, 5, 7);
+
+        Placement.rotateShipAt(mBoard, 5, 7);
 
         assertFalse(ship.isHorizontal());
         assertEquals(5, ship.getX());

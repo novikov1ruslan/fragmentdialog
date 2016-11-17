@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
@@ -15,8 +14,6 @@ import java.util.PriorityQueue;
 
 public class SetupBoardPresenter {
 
-    @NonNull
-    private final Placement mPlacement = Dependencies.getPlacement();
     /**
      * ship displayed at the top of the screen (selection area)
      */
@@ -91,14 +88,6 @@ public class SetupBoardPresenter {
     public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
         mPickedShip = Placement.pickShipFromBoard(board, i, j);
         return mPickedShip;
-    }
-
-    public void rotateShipAt(@NonNull Board board, @NonNull Vector2 aim) {
-        rotateShipAt(board, aim.getX(), aim.getY());
-    }
-
-    public void rotateShipAt(@NonNull Board board, int i, int j) {
-        mPlacement.rotateShipAt(board, i, j);
     }
 
     public void setFleet(@NonNull PriorityQueue<Ship> ships) {
