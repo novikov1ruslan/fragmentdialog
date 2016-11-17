@@ -1,8 +1,8 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Assert;
@@ -17,7 +17,6 @@ import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -37,11 +36,11 @@ public class PlacementTest {
     }
 
     @Before
-	public void setup() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         Dependencies.inject(rules);
         mPlacement = new Placement(mRandom, rules);
-	}
+    }
 
     @Test
     public void after_generating_full_board_it_has_russian_fleet() {
@@ -67,7 +66,7 @@ public class PlacementTest {
     }
 
     @Test
-    public void whenNotPossibleToPutShipOnBoard__BoardDoeNotHaveTheShip() {
+    public void whenNotPossibleToPutShipOnBoard__BoardDoesNotHaveTheShip() {
         Board board = new Board();
         mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
         mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
@@ -82,6 +81,44 @@ public class PlacementTest {
 
         boolean success = mPlacement.putShipOnBoard(new Ship(4, Ship.Orientation.HORIZONTAL), board);
         assertThat(success, is(false));
+    }
+
+    @Test
+    public void WhenShipIsPlaced__BoardHasNoConflictingCells() {
+        Board board = new Board();
+        Random random = new Random() {
+
+            boolean even;
+
+            @Override
+            public int nextInt(int i) {
+                if (even) {
+                    even = false;
+                    return 0;
+                } else {
+                    even = true;
+                    return i / 2;
+                }
+            }
+        };
+        Placement placement = new Placement(random, rules);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+
+        boolean success = placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
+        assertThat(success, is(true));
+        assertThat(BoardSetupUtils.hasConflictingCell(board, rules.allowAdjacentShips()), is(false));
     }
 
     @Test
@@ -125,26 +162,6 @@ public class PlacementTest {
                     Assert.assertTrue(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
                 } else {
                     Assert.assertFalse(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testPutSunkShipAt() {
-        Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
-        ship.shoot();
-        ship.shoot();
-
-        mPlacement.putShipAt(mBoard, ship, 3, 3);
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (ShipTestUtils.isInProximity(ship, i, j)) {
-                    Cell cell = mBoard.getCell(i, j);
-                    if (!ship.isInShip(i, j)) {
-                        assertTrue(cell.toString() + " " + i + "," + j + "\n" + mBoard.toString(), cell == Cell.MISS);
-                    }
                 }
             }
         }

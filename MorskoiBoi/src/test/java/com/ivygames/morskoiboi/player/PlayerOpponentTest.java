@@ -156,15 +156,7 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotAt(aim);
 
-        assertThat(board.getCell(4, 4) == Cell.MISS, is(true));
-        assertThat(board.getCell(4, 5) == Cell.MISS, is(true));
-        assertThat(board.getCell(4, 6) == Cell.MISS, is(true));
-        assertThat(board.getCell(5, 4) == Cell.MISS, is(true));
         assertThat(board.getCell(5, 5) == Cell.HIT, is(true));
-        assertThat(board.getCell(5, 6) == Cell.MISS, is(true));
-        assertThat(board.getCell(6, 4) == Cell.MISS, is(true));
-        assertThat(board.getCell(6, 5) == Cell.MISS, is(true));
-        assertThat(board.getCell(6, 6) == Cell.MISS, is(true));
     }
 
     @Test

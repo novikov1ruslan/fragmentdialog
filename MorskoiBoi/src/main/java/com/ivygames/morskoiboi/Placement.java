@@ -36,20 +36,20 @@ public class Placement {
     }
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
-        List<Vector2> cells = BoardSetupUtils.getCellsFreeFromShips(board, mRules.allowAdjacentShips());
+        List<Vector2> freeCells = BoardSetupUtils.getCellsFreeFromShips(board, mRules.allowAdjacentShips());
 
-        while (!cells.isEmpty()) {
-            int cellIndex = mRandom.nextInt(cells.size());
-            Vector2 cell = cells.get(cellIndex);
+        while (!freeCells.isEmpty()) {
+            int cellIndex = mRandom.nextInt(freeCells.size());
+            Vector2 cell = freeCells.get(cellIndex);
             int i = cell.getX();
             int j = cell.getY();
             // TODO: isPlaceEmpty relies on Cell.EMPTY
-            if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j)) {
+            if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
                 putShipAt(board, ship, cell);
                 return true;
             } else {
                 // this cell is not suitable for placement
-                cells.remove(cellIndex);
+                freeCells.remove(cellIndex);
             }
         }
 
@@ -68,17 +68,16 @@ public class Placement {
         // TODO: if it is exactly the same ship, remove and put again
         ship.setCoordinates(x, y);
 
-        Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
-        for (Vector2 v : neighboringCells) {
-            //TODO: only for rendering and touch prevention, move it to rendering and tp
-            if (!mRules.allowAdjacentShips()) {
-                if (ship.isDead()) {
-                    board.setCell(Cell.MISS, v);
-                } else {
-                    board.setCell(Cell.RESERVED, v);
-                }
-            }
-        }
+//        Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
+//        for (Vector2 v : neighboringCells) {
+//            if (!mRules.allowAdjacentShips()) {
+//                if (ship.isDead()) {
+//                    board.setCell(Cell.MISS, v);
+//                } else {
+//                    board.setCell(Cell.RESERVED, v);
+//                }
+//            }
+//        }
 
         board.addShip(ship);
     }
@@ -142,12 +141,16 @@ public class Placement {
     /**
      * @return true if the {@code board} has empty space for the {@code ship} at coordinates ({@code i},{@code j}
      */
-    private static boolean isPlaceEmpty(@NonNull Ship ship, @NonNull Board board, int i, int j) {
+    private static boolean isPlaceEmpty(@NonNull Ship ship, @NonNull Board board, int i, int j, @NonNull Collection<Vector2> freeCells) {
+        if (board.getCell(i, j) != Cell.EMPTY) {
+            return false;
+        }
+
         boolean isHorizontal = ship.isHorizontal();
         for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
             int x = isHorizontal ? k : i;
             int y = isHorizontal ? j : k;
-            if (board.getCell(x, y) != Cell.EMPTY) {
+            if (!freeCells.contains(Vector2.get(x, y))) {
                 return false;
             }
         }

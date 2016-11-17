@@ -112,7 +112,7 @@ public class BoardSetupUtils {
         return board.getShips().size() == rules.getAllShipsSizes().length;
     }
 
-    private static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
+    public static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
         for (int i = 0; i < board.horizontalDimension(); i++) {
             for (int j = 0; j < board.verticalDimension(); j++) {
                 if (isCellConflicting(board, i, j, allowAdjacentShips)) {
