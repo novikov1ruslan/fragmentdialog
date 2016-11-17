@@ -48,10 +48,7 @@ public class RussianRulesTest {
         orientationBuilder = new ShipUtils.OrientationBuilder(random);
         mRules = new RussianRules();
         allShipsSizes = mRules.getAllShipsSizes();
-
-        Dependencies.inject(mRules);
-        Dependencies.inject(new Placement(random, mRules.allowAdjacentShips()));
-        placement = Dependencies.getPlacement();
+        placement = new Placement(random, mRules.allowAdjacentShips());
     }
 
     @Test

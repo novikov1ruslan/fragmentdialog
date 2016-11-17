@@ -105,7 +105,7 @@ public class BoardSetupUtilsTest {
     public void testEmptyCells() {
         Random random = mock(Random.class);
         Rules rules = mock(Rules.class);
-        Dependencies.inject(new Placement(random, rules.allowAdjacentShips()));
+        Dependencies.inject(new Placement(random, rules.allowAdjacentShips())); // needed
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
         assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
 

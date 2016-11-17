@@ -43,7 +43,7 @@ public class BoardSerializationTest {
         when(random.nextInt(anyInt())).thenReturn(0);
         Rules rules = mock(Rules.class);
         mPlacement = new Placement(random, rules.allowAdjacentShips());
-        Dependencies.inject(mPlacement);
+        Dependencies.inject(mPlacement); // needed
     }
 
     @Test

@@ -38,7 +38,6 @@ public class PlacementTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        Dependencies.inject(rules);
         mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
     }
 

@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.model.Board;
@@ -41,9 +40,7 @@ public class SetupBoardPresenterTest {
         initMocks(this);
         mPresenter = new SetupBoardPresenter();
         rules = new RussianRules();
-        Dependencies.inject(rules);
         mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
-        Dependencies.inject(mPlacement);
     }
 
     @Test
