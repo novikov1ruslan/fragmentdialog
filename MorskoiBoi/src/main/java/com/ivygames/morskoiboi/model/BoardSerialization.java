@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.model;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
 import org.json.JSONArray;
@@ -53,7 +54,7 @@ public class BoardSerialization {
             JSONObject shipJson = shipsJson.getJSONObject(i);
             Ship ship = ShipSerialization.fromJson(shipJson);
             // TODO: should be placement independent
-            Dependencies.getPlacement().putShipAt(board, ship, ship.getX(), ship.getY());
+            Placement.putShipAt(board, ship, ship.getX(), ship.getY());
         }
     }
 

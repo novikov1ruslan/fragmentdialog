@@ -232,7 +232,7 @@ public class PlayerOpponent implements Opponent {
         notifyOnShotAt(aim);
         if (shipSank(result.ship)) {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
-            mPlacement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
+            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
             notifyOnKillPlayer();
         } else if (result.cell == Cell.MISS) {
             notifyOnMiss();
@@ -328,7 +328,7 @@ public class PlayerOpponent implements Opponent {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
             mEnemyBoard.setCell(result.cell, result.aim);
-            mPlacement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
+            Placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }

@@ -2,9 +2,7 @@ package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,15 +33,11 @@ public class BoardSerializationTest {
             "\"cells\":\"                                            000       000       000                                 \"}";
 
     private Board mBoard = new Board();
-    private Placement mPlacement;
 
     @Before
     public void setup() {
         Random random = mock(Random.class);
         when(random.nextInt(anyInt())).thenReturn(0);
-        Rules rules = mock(Rules.class);
-        mPlacement = new Placement(random, rules.allowAdjacentShips());
-        Dependencies.inject(mPlacement); // needed
     }
 
     @Test
@@ -62,7 +56,7 @@ public class BoardSerializationTest {
     @Test
     public void ParsingBoardWithShip() {
         Board board2 = new Board();
-        putShipAt(board2, new Ship(1), 5, 5);
+        Placement.putShipAt(board2, new Ship(1), 5, 5);
 
         Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
@@ -105,10 +99,6 @@ public class BoardSerializationTest {
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        putShipAt(mBoard, ship, x, y);
-    }
-
-    private void putShipAt(Board board, Ship ship, int x, int y) {
-        mPlacement.putShipAt(board, ship, x, y);
+        Placement.putShipAt(mBoard, ship, x, y);
     }
 }

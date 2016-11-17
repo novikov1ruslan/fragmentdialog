@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.ai;
 
-import android.support.annotation.NonNull;
-
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
@@ -71,11 +69,6 @@ public class AndroidOpponentTest {
         return aiOpponent;
     }
 
-    @NonNull
-    private Placement placement() {
-        return new Placement(mRandom, mRules.allowAdjacentShips());
-    }
-
     @Test
     public void when_asking_for_name__actual_name_returned() {
         assertThat(mAndroid.getName(), equalTo(ANDROID_NAME));
@@ -99,7 +92,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
-        placement().putShipAt(mBoard, new Ship(2), 5, 5);
+        Placement.putShipAt(mBoard, new Ship(2), 5, 5);
         setBoardDefeated(false);
         mAndroid.onShotAt(Vector2.get(5, 5));
 

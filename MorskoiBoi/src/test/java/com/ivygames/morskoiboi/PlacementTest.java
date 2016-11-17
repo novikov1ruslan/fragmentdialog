@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Collection;
 import java.util.Random;
@@ -19,6 +18,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PlacementTest {
 
@@ -37,7 +37,7 @@ public class PlacementTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        initMocks(this);
         mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
     }
 
@@ -167,11 +167,7 @@ public class PlacementTest {
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        putShipAt(mBoard, ship, x, y);
-    }
-
-    private void putShipAt(Board board, Ship ship, int x, int y) {
-        mPlacement.putShipAt(board, ship, x, y);
+        Placement.putShipAt(mBoard, ship, x, y);
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {

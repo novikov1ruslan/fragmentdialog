@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.model;
 
 public enum Cell {
     EMPTY(Cell.EMPTY_VAL),
+    // TODO: this is not really needed
     RESERVED(Cell.RESERVED_VAL),
     MISS(Cell.MISS_VAL),
     HIT(Cell.HIT_VAL);

@@ -54,11 +54,11 @@ public class Placement {
         return false;
     }
 
-    public void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 v) {
+    public static void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 v) {
         putShipAt(board, ship, v.getX(), v.getY());
     }
 
-    public void putShipAt(@NonNull Board board, @NonNull Ship ship, int x, int y) {
+    public static void putShipAt(@NonNull Board board, @NonNull Ship ship, int x, int y) {
         if (!board.shipFitsTheBoard(ship, x, y)) {
             throw new IllegalArgumentException("cannot put ship " + ship + " at (" + x + "," + y + ")");
         }
