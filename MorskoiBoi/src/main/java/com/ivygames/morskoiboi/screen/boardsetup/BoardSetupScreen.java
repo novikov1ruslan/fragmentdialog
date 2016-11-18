@@ -14,6 +14,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
@@ -134,8 +135,10 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             int[] allShipsSizes = mRules.getAllShipsSizes();
             ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(mRandom);
             Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
-            while (BoardSetupUtils.onlyHorizontalShips(ships)) {
-                ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+            if (!BuildConfig.DEBUG) { // needed for ui testing to simulate all horizontal ships
+                while (BoardSetupUtils.onlyHorizontalShips(ships)) {
+                    ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+                }
             }
             mPlacement.populateBoardWithShips(mBoard, ships);
             mFleet.clear();

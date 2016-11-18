@@ -3,34 +3,47 @@ package com.ivygames.morskoiboi.boardsetup;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.model.Ship;
 
 import org.hamcrest.Matcher;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+
+import java.util.Random;
 
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
+import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ {
+
+    @Before
+    public void foo() {
+        Random random = mock(Random.class);
+        when(random.nextInt()).thenReturn(1);
+        when(random.nextInt(Matchers.anyInt())).thenReturn(1);
+        Dependencies.inject(random);
+    }
+
     @Test
     public void WhenBoardIsSet_AndAllShipsAreHorizontal_AndDonePressed__DialogDisplayed() {
         showScreen();
         mOrientationBuilder.setOrientation(Ship.Orientation.HORIZONTAL);
-        isBoardSet(true);
 
+        clickOn(autoSetup());
         clickOn(done());
 
         checkDisplayed(onlyHorizontalDialog());
-    }
-
-    private void isBoardSet(boolean b) {
-        when(rules.getAllShipsSizes()).thenReturn(new int[0]);
     }
 
     @Test

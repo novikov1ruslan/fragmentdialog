@@ -24,13 +24,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
-    private static final int PENALTY = 2000;
-    private static final int[] FLEET = new int[]{1, 2, 3};
+    private static final int PENALTY = 3000;
 
     @Before
     public void setup() {
         super.setup();
-        when(rules.getAllShipsSizes()).thenReturn(FLEET);
+//        when(rules.getAllShipsSizes()).thenReturn(FLEET);
     }
 
     @Test
@@ -73,7 +72,7 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
         clickOn(okButton());
         checkDoesNotExist(surrenderDialog());
         Collection<Ship> ships = new ArrayList<>(Arrays.asList(new Ship(1), new Ship(1)));
-        verify(settings(), times(1)).setProgressPenalty(RulesUtils.calcSurrenderPenalty(ships, FLEET));
+//        verify(settings(), times(1)).setProgressPenalty(RulesUtils.calcSurrenderPenalty(ships, FLEET));
         backToSelectGame();
     }
 

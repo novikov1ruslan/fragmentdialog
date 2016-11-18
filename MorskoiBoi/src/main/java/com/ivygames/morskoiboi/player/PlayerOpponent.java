@@ -232,7 +232,8 @@ public class PlayerOpponent implements Opponent {
         notifyOnShotAt(aim);
         if (shipSank(result.ship)) {
             Ln.d(mName + ": my ship is destroyed - " + result.ship);
-            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
+            // FIXME: add unit test for removed below line
+//            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
             notifyOnKillPlayer();
         } else if (result.cell == Cell.MISS) {
             notifyOnMiss();

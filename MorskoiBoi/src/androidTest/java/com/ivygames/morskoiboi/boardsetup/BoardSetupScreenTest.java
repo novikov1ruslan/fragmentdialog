@@ -10,7 +10,6 @@ import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
-import static org.mockito.Mockito.when;
 
 
 public class BoardSetupScreenTest extends BoardSetupScreen_ {
@@ -32,7 +31,7 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
     }
 
     private void setBoardSet() {
-        when(rules.getAllShipsSizes()).thenReturn(new int[0]);
+//        when(rules.getAllShipsSizes()).thenReturn(new int[0]);
     }
 
     @Test

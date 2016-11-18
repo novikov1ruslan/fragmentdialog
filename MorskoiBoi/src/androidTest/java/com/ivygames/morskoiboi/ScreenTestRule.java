@@ -5,8 +5,10 @@ import android.support.test.rule.ActivityTestRule;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +27,8 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         super.beforeActivityLaunched();
 
         settings = mock(GameSettings.class);
+        when(settings.getProgress()).thenReturn(new Progress(1));
+        when(settings.incrementProgress(anyInt())).thenReturn(new Progress(1));
         Dependencies.inject(settings);
         apiClient = new ThrowingApiClient();
         apiClient.connect();
