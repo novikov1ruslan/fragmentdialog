@@ -21,12 +21,6 @@ public class ShipUtils {
         if (ship1.getHealth() != ship2.getHealth()) {
             return false;
         }
-        if (ship1.getX() != ship2.getX()) {
-            return false;
-        }
-        if (ship1.getY() != ship2.getY()) {
-            return false;
-        }
 
         return true;
     }

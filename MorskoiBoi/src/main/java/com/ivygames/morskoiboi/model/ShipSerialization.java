@@ -26,7 +26,7 @@ public class ShipSerialization {
         return shipJson;
     }
 
-    public static Ship fromJson(String json) {
+    public static Board.LocatedShip fromJson(String json) {
         try {
             return fromJson(new JSONObject(json));
         } catch (JSONException e) {
@@ -34,14 +34,16 @@ public class ShipSerialization {
         }
     }
 
-    public static Ship fromJson(JSONObject json) {
+    public static Board.LocatedShip fromJson(JSONObject json) {
         try {
             Ship ship = new Ship(json.getInt(SIZE));
             ship.mOrientation = json.getBoolean(IS_HORIZONTAL) ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
-            ship.setX(json.getInt(X));
-            ship.setY(json.getInt(Y));
+            int i = json.getInt(X);
+            ship.setX(i);
+            int j = json.getInt(Y);
+            ship.setY(j);
             ship.mHealth = json.getInt(HEALTH);
-            return ship;
+            return new Board.LocatedShip(ship, Vector2.get(i, j));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

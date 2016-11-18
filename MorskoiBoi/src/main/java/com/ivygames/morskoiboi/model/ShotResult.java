@@ -17,7 +17,7 @@ public class ShotResult {
 
     public static ShotResult fromJson(String json) {
         Cell cell;
-        Ship ship = null;
+        Board.LocatedShip ship = null;
         Vector2 aim = null;
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -35,7 +35,10 @@ public class ShotResult {
             throw new RuntimeException(e);
         }
 
-        return new ShotResult(aim, cell, ship);
+        if (ship != null) {
+            return new ShotResult(aim, cell, ship.ship);
+        }
+        return new ShotResult(aim, cell);
     }
 
     // TODO: unit test

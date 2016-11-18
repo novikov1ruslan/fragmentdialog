@@ -20,7 +20,7 @@ public class ShipSerializationTest {
         ship.setY(7);
         JSONObject shipJson = ShipSerialization.toJson(ship);
 
-        Ship ship2 = ShipSerialization.fromJson(shipJson);
+        Ship ship2 = ShipSerialization.fromJson(shipJson).ship;
         assertThat(ShipUtils.similar(ship, ship2), is(true));
     }
 }

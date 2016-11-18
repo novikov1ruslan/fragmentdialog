@@ -273,12 +273,12 @@ public class Board {
         return board.toString();
     }
 
-    private static class LocatedShip {
+    static class LocatedShip {
 
         @NonNull
-        private final Ship ship;
+        final Ship ship;
         @NonNull
-        private final Vector2 position;
+        final Vector2 position;
 
         LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
             this.ship = ship;
