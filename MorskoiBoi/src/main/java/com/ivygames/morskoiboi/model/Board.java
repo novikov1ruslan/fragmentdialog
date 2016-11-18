@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.ShipUtils;
 
+import org.apache.commons.collections4.collection.UnmodifiableCollection;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +18,8 @@ public class Board {
 
     public static final int DIMENSION = 10;
 
-    private Collection<Ship> mShips;
+    @NonNull
+    private final Collection<Ship> mShips = new ArrayList<>();
     Cell[][] mCells;
 
     public Board() {
@@ -25,7 +28,7 @@ public class Board {
 
     @NonNull
     public Collection<Ship> getShips() {
-        return mShips;
+        return UnmodifiableCollection.unmodifiableCollection(mShips);
     }
 
     public boolean removeShip(@NonNull Ship ship) {
@@ -106,7 +109,7 @@ public class Board {
      */
     public void clearBoard() {
         mCells = createNewBoard();
-        mShips = new ArrayList<>();
+        mShips.clear();
     }
 
     @NonNull
@@ -211,11 +214,7 @@ public class Board {
         if (!equals(mCells, other.mCells)) {
             return false;
         }
-        if (mShips == null) {
-            if (other.mShips != null) {
-                return false;
-            }
-        } else if (!equals(mShips, other.mShips)) {
+        if (!equals(mShips, other.mShips)) {
             return false;
         }
         return true;

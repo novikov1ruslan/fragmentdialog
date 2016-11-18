@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
@@ -50,7 +51,7 @@ public class PlacementTest {
 
         mPlacement.populateBoardWithShips(board, ships);
 
-        assertAllTheShipsAreRussianFleet(board.getShips());
+        assertAllTheShipsAreRussianFleet(new ArrayList<>(board.getShips()));
     }
 
     @Test
