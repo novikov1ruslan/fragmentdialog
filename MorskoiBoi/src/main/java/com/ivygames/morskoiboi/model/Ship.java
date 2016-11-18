@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+
 public class Ship {
 
     public enum Orientation {
@@ -13,9 +15,13 @@ public class Ship {
     int mY;
     int mHealth;
 
-    public static boolean isInShip(Ship ship, Vector2 v) {
-        int x = ship.getX();
-        int y = ship.getY();
+    public static boolean isInShip(@NonNull Vector2 v, @NonNull Ship ship) {
+        return isInShip(v, ship, ship.getPosition());
+    }
+
+    public static boolean isInShip(@NonNull Vector2 v, @NonNull Ship ship, @NonNull Vector2 shipPisition) {
+        int x = shipPisition.getX();
+        int y = shipPisition.getY();
 
         int i = v.getX();
         int j = v.getY();
@@ -75,6 +81,10 @@ public class Ship {
     public Ship setY(int y) {
         mY = y;
         return this;
+    }
+
+    public Vector2 getPosition() {
+        return Vector2.get(mX, mY);
     }
 
     public Ship setCoordinates(int x, int y) {

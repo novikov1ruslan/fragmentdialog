@@ -112,21 +112,21 @@ public class ShipTest {
             for (int j = 0; j < 10; j++) {
                 Vector2 v = Vector2.get(i, j);
                 if ((i == 5 || i == 6) && j == 5) {
-                    assertTrue(i + "," + j, Ship.isInShip(ship1, v));
+                    assertTrue(i + "," + j, Ship.isInShip(v, ship1));
                 } else {
-                    assertFalse(i + "," + j, Ship.isInShip(ship1, v));
+                    assertFalse(i + "," + j, Ship.isInShip(v, ship1));
                 }
 
                 if (i == 5 && (j == 5 || j == 6)) {
-                    assertTrue(i + "," + j, Ship.isInShip(ship2, v));
+                    assertTrue(i + "," + j, Ship.isInShip(v, ship2));
                 } else {
-                    assertFalse(i + "," + j, Ship.isInShip(ship2, v));
+                    assertFalse(i + "," + j, Ship.isInShip(v, ship2));
                 }
 
                 if (i == 4 && (j >= 3 && j <= 5)) {
-                    assertTrue(i + "," + j, Ship.isInShip(ship3, v));
+                    assertTrue(i + "," + j, Ship.isInShip(v, ship3));
                 } else {
-                    assertFalse(i + "," + j, Ship.isInShip(ship3, v));
+                    assertFalse(i + "," + j, Ship.isInShip(v, ship3));
                 }
             }
         }

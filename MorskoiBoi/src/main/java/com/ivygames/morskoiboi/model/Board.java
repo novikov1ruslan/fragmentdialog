@@ -20,7 +20,7 @@ public class Board {
     public static final int DIMENSION = 10;
 
     @NonNull
-    private final Collection<Ship> mShips = new ArrayList<>();
+    private final Collection<LocatedShip> mShips = new ArrayList<>();
     Cell[][] mCells;
 
     public Board() {
@@ -29,15 +29,19 @@ public class Board {
 
     @NonNull
     public Collection<Ship> getShips() {
-        return UnmodifiableCollection.unmodifiableCollection(mShips);
+        Collection<Ship> ships = new HashSet<>(mShips.size());
+        for (LocatedShip ship : mShips) {
+            ships.add(ship.ship);
+        }
+        return UnmodifiableCollection.unmodifiableCollection(ships);
     }
 
     public boolean removeShip(@NonNull Ship ship) {
-        return mShips.remove(ship);
+        return mShips.remove(new LocatedShip(ship, ship.getPosition()));
     }
 
     public void addShip(@NonNull Ship ship) {
-        mShips.add(ship);
+        mShips.add(new LocatedShip(ship, ship.getPosition()));
     }
 
     public List<Vector2> getCellsByType(@NonNull Cell cell) {
@@ -116,9 +120,9 @@ public class Board {
     @NonNull
     public Collection<Ship> getShipsAt(@NonNull Vector2 v) {
         Set<Ship> ships = new HashSet<>();
-        for (Ship ship : mShips) {
-            if (Ship.isInShip(ship, v)) {
-                ships.add(ship);
+        for (LocatedShip ship : mShips) {
+            if (Ship.isInShip(v, ship.ship, ship.position)) {
+                ships.add(ship.ship);
             }
         }
 
@@ -136,9 +140,9 @@ public class Board {
 
     @Nullable
     public Ship getFirstShipAt(@NonNull Vector2 v) {
-        for (Ship ship : mShips) {
-            if (Ship.isInShip(ship, v)) {
-                return ship;
+        for (LocatedShip ship : mShips) {
+            if (Ship.isInShip(v, ship.ship)) {
+                return ship.ship;
             }
         }
 
@@ -174,7 +178,7 @@ public class Board {
         setCell(cell, v.getX(), v.getY());
     }
 
-    public void setCell(@NonNull Cell cell, int i, int j) {
+    void setCell(@NonNull Cell cell, int i, int j) {
         mCells[i][j] = cell;
     }
 
@@ -196,7 +200,7 @@ public class Board {
         final int prime = 31;
         int result = 1;
         result = prime * result + Arrays.hashCode(mCells);
-        result = prime * result + ((mShips == null) ? 0 : mShips.hashCode());
+        result = prime * result + mShips.hashCode();
         return result;
     }
 
@@ -212,13 +216,7 @@ public class Board {
             return false;
         }
         Board other = (Board) obj;
-        if (!equals(mCells, other.mCells)) {
-            return false;
-        }
-        if (!equals(mShips, other.mShips)) {
-            return false;
-        }
-        return true;
+        return equals(mCells, other.mCells) && equals(getShips(), other.getShips());
     }
 
     // TODO: remove when cell becomes immutable
@@ -277,14 +275,30 @@ public class Board {
 
     private static class LocatedShip {
 
+        @NonNull
         private final Ship ship;
-        private final Vector2 v;
+        @NonNull
+        private final Vector2 position;
 
-        LocatedShip(Ship ship, Vector2 v) {
+        LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
             this.ship = ship;
-            this.v = v;
+            this.position = position;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            LocatedShip that = (LocatedShip) o;
+
+            return ship.equals(that.ship);
+        }
+
+        @Override
+        public int hashCode() {
+            return ship.hashCode();
+        }
     }
 
 }

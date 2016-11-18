@@ -47,7 +47,7 @@ public class BoardSetupUtils {
                 int cellY = y + (horizontal ? j : i);
                 Vector2 v = Vector2.get(cellX, cellY);
                 if (Board.contains(v)) {
-                    boolean inShip = Ship.isInShip(ship, v);
+                    boolean inShip = Ship.isInShip(v, ship);
                     if (inShip && !neighboring) {
                         coordinates.add(v);
                     } else if (!inShip && neighboring) {
