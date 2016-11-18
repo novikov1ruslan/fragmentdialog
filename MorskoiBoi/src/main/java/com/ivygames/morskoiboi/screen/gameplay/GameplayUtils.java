@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 class GameplayUtils {
     @NonNull
-    static LinkedList<Ship> getWorkingShips(Collection<Ship> ships) {
+    static LinkedList<Ship> getWorkingShips(@NonNull Collection<Ship> ships) {
         LinkedList<Ship> workingShips = new LinkedList<>();
         for (Ship ship : ships) {
             if (!ship.isDead()) {

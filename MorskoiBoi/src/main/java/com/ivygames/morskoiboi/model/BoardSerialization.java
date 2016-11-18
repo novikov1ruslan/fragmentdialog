@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
@@ -77,7 +76,7 @@ public class BoardSerialization {
             jsonObject.put(CELLS, getStringFromCells(board.mCells));
 
             JSONArray shipsJson = new JSONArray();
-            for (Ship ship : board.mShips) {
+            for (Ship ship : board.getShips()) {
                 shipsJson.put(ShipSerialization.toJson(ship));
             }
             jsonObject.put(SHIPS, shipsJson);

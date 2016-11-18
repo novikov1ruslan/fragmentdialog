@@ -5,7 +5,6 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,15 +28,6 @@ import static org.mockito.Mockito.when;
 public class BoardTest {
 
     private Board mBoard = new Board();
-    private Placement mPlacement;
-
-    @Before
-    public void setUp() throws Exception {
-        Random random = mock(Random.class);
-        when(random.nextInt(anyInt())).thenReturn(0);
-        Rules rules = new RussianRules();
-        mPlacement = new Placement(random, rules.allowAdjacentShips());
-    }
 
     @Test
     public void testEquals() {
@@ -98,14 +88,29 @@ public class BoardTest {
         Placement.putShipAt(board, new Ship(1), 5, 5);
 
         assertThat(board.getShipsAt(5, 5).size(), is(1));
-        assertThat(board.getShipsAt(5, 6).size(), Matchers.is(0));
+        assertThat(board.getShipsAt(5, 6).size(), is(0));
     }
 
     @Test
     public void testPutHorizontalShipSucceeded() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
+
         Placement.putShipAt(mBoard, ship, 8, 5);
+
         assertShipIsCorrectlyAlignedAt(ship, 8, 5);
+        assertThat(ship, is(mBoard.getShipsAt(8, 5).iterator().next()));
+        assertThat(ship, is(mBoard.getShipsAt(9, 5).iterator().next()));
+    }
+
+    @Test
+    public void testRemoveHorizontalShipSucceeded() {
+        Ship ship = new Ship(2, Orientation.HORIZONTAL);
+        ship.setCoordinates(8, 5);
+        mBoard.addShip(ship);
+
+        mBoard.removeShip(ship);
+
+        assertThat(mBoard.getShips().size(), is(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -117,8 +122,12 @@ public class BoardTest {
     @Test
     public void testPutVerticalShipSucceeded() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
+
         Placement.putShipAt(mBoard, ship, 3, 7);
+
         assertShipIsCorrectlyAlignedAt(ship, 3, 7);
+        assertThat(ship, is(mBoard.getShipsAt(3, 7).iterator().next()));
+        assertThat(ship, is(mBoard.getShipsAt(3, 8).iterator().next()));
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -16,13 +16,14 @@ public class Board {
 
     public static final int DIMENSION = 10;
 
-    Collection<Ship> mShips;
+    private Collection<Ship> mShips;
     Cell[][] mCells;
 
     public Board() {
         clearBoard();
     }
 
+    @NonNull
     public Collection<Ship> getShips() {
         return mShips;
     }
@@ -35,7 +36,7 @@ public class Board {
         mShips.add(ship);
     }
 
-    public List<Vector2> getCellsByType(Cell cell) {
+    public List<Vector2> getCellsByType(@NonNull Cell cell) {
         List<Vector2> cells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {
@@ -82,6 +83,7 @@ public class Board {
         return i < DIMENSION && i >= 0 && j < DIMENSION && j >= 0;
     }
 
+    @NonNull
     public Cell getCell(@NonNull Vector2 v) {
         return getCell(v.getX(), v.getY());
     }
@@ -89,12 +91,14 @@ public class Board {
     /**
      * @throws IndexOutOfBoundsException when trying to access cell outside of the board
      */
+    @NonNull
     public Cell getCell(int i, int j) {
         return mCells[i][j];
     }
 
-    public Cell getCellAt(@NonNull Vector2 vector) {
-        return getCell(vector.getX(), vector.getY());
+    @NonNull
+    public Cell getCellAt(@NonNull Vector2 v) {
+        return getCell(v.getX(), v.getY());
     }
 
     /**
@@ -106,50 +110,36 @@ public class Board {
     }
 
     @NonNull
-    public Collection<Ship> getShipsAt(@NonNull Vector2 vector) {
-        return getShipsAt(vector.getX(), vector.getY());
+    public Collection<Ship> getShipsAt(@NonNull Vector2 v) {
+        return getShipsAt(v.getX(), v.getY());
     }
 
     @NonNull
     public Collection<Ship> getShipsAt(int i, int j) {
         HashSet<Ship> ships = new HashSet<>();
-        if (canHaveShipAt(i, j)) {
-            for (Ship ship : mShips) {
-                if (ship.isInShip(i, j)) {
-                    ships.add(ship);
-                }
+        for (Ship ship : mShips) {
+            if (ship.isInShip(i, j)) {
+                ships.add(ship);
             }
         }
 
         return ships;
     }
 
-    private boolean canHaveShipAt(int i, int j) {
-//        Cell cell = getCell(i, j);
-//        return cell != Cell.MISS && cell != Cell.EMPTY;
-        return true;
-    }
-
-    public boolean hasShipAt(@NonNull Vector2 coordinate) {
-        return hasShipAt(coordinate.getX(), coordinate.getY());
-    }
-
-    public boolean hasShipAt(int i, int j) {
-        return getFirstShipAt(i, j) != null;
+    public boolean hasShipAt(@NonNull Vector2 v) {
+        return getFirstShipAt(v.getX(), v.getY()) != null;
     }
 
     @Nullable
-    public Ship getFirstShipAt(@NonNull Vector2 vector) {
-        return getFirstShipAt(vector.getX(), vector.getY());
+    public Ship getFirstShipAt(@NonNull Vector2 v) {
+        return getFirstShipAt(v.getX(), v.getY());
     }
 
     @Nullable
     public Ship getFirstShipAt(int i, int j) {
-        if (canHaveShipAt(i, j)) {
-            for (Ship ship : mShips) {
-                if (ship.isInShip(i, j)) {
-                    return ship;
-                }
+        for (Ship ship : mShips) {
+            if (ship.isInShip(i, j)) {
+                return ship;
             }
         }
 
@@ -176,8 +166,8 @@ public class Board {
         return DIMENSION;
     }
 
-    public void setCell(@NonNull Cell cell, @NonNull Vector2 vector) {
-        setCell(cell, vector.getX(), vector.getY());
+    public void setCell(@NonNull Cell cell, @NonNull Vector2 v) {
+        setCell(cell, v.getX(), v.getY());
     }
 
     public void setCell(@NonNull Cell cell, int i, int j) {
@@ -277,7 +267,7 @@ public class Board {
             }
             board.append('\n');
         }
-        for (Ship ship : mShips) {
+        for (Ship ship : getShips()) {
             board.append(ship).append("; ");
         }
         board.append('\n');

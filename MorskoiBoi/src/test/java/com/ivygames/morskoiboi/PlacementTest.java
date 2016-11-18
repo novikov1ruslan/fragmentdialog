@@ -195,8 +195,7 @@ public class PlacementTest {
     }
 
     private boolean removeShipFromSet(Collection<Ship> distinct, int size) {
-        for (Ship ship :
-                distinct) {
+        for (Ship ship : distinct) {
             if (ship.getSize() == size) {
                 distinct.remove(ship);
                 return true;

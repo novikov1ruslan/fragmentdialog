@@ -33,6 +33,7 @@ public class BoardSetupUtils {
         return getCells(ship, true);
     }
 
+    // TODO: use enum instead of boolean
     public static Collection<Vector2> getCells(@NonNull Ship ship, boolean neighboring) {
         Collection<Vector2> coordinates = new ArrayList<>();
 
@@ -60,8 +61,7 @@ public class BoardSetupUtils {
 
     public static List<Vector2> getCellsFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector2> cells = Vector2.getAllCoordinates();
-        Collection<Ship> ships = board.getShips();
-        for (Ship ship : ships) {
+        for (Ship ship : board.getShips()) {
             cells.removeAll(getCells(ship, false));
             if (!allowAdjacentShips) {
                 cells.removeAll(getCells(ship, true));

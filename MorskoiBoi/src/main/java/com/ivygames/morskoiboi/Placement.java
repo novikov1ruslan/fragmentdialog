@@ -58,13 +58,14 @@ public class Placement {
         putShipAt(board, ship, v.getX(), v.getY());
     }
 
-    public static void putShipAt(@NonNull Board board, @NonNull Ship ship, int x, int y) {
-        if (!board.shipFitsTheBoard(ship, x, y)) {
-            throw new IllegalArgumentException("cannot put ship " + ship + " at (" + x + "," + y + ")");
+    // TODO: when ship has no coordinates this method is not needed, use Board#addShip
+    public static void putShipAt(@NonNull Board board, @NonNull Ship ship, int i, int j) {
+        if (!board.shipFitsTheBoard(ship, i, j)) {
+            throw new IllegalArgumentException("cannot put ship " + ship + " at (" + i + "," + j + ")");
         }
 
         // TODO: if it is exactly the same ship, remove and put again
-        ship.setCoordinates(x, y);
+        ship.setCoordinates(i, j);
 
 //        Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
 //        for (Vector2 v : neighboringCells) {
@@ -103,7 +104,7 @@ public class Placement {
         ship.rotate();
 
         if (board.shipFitsTheBoard(ship, x, y)) {
-            putShipAt(board, ship, x, y); // FIXME: ship.getX(), ship.getY(). // what did I mean here?
+            putShipAt(board, ship, x, y);
         } else {
             if (ship.isHorizontal()) {
                 putShipAt(board, ship, board.horizontalDimension() - ship.getSize(), y);
@@ -118,7 +119,7 @@ public class Placement {
      * or if (x,y) is outside the board
      */
     @Nullable
-    private static Ship removeShipFrom(@NonNull Board board, int x, int y) { // TODO: bad, very bad method
+    private static Ship removeShipFrom(@NonNull Board board, int x, int y) {
         if (!Board.contains(x, y)) {
             Ln.w("(" + x + "," + y + ") is outside the board");
             return null;

@@ -444,10 +444,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mStatistics.setTimeSpent(mUnlockedTime);
             mLayout.win();
 
-            Collection<Ship> fleet = new ArrayList<>();
-            fleet.addAll(mPlayerPrivateBoard.getShips());
-
-            showWinScreenDelayed(fleet);
+            showWinScreenDelayed(new ArrayList<>(mPlayerPrivateBoard.getShips()));
         }
 
         @Override
