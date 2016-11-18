@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class Board {
 
@@ -119,9 +120,9 @@ public class Board {
 
     @NonNull
     public Collection<Ship> getShipsAt(int i, int j) {
-        HashSet<Ship> ships = new HashSet<>();
+        Set<Ship> ships = new HashSet<>();
         for (Ship ship : mShips) {
-            if (ship.isInShip(i, j)) {
+            if (Ship.isInShip(ship, i, j)) {
                 ships.add(ship);
             }
         }
@@ -141,7 +142,7 @@ public class Board {
     @Nullable
     public Ship getFirstShipAt(int i, int j) {
         for (Ship ship : mShips) {
-            if (ship.isInShip(i, j)) {
+            if (Ship.isInShip(ship, i, j)) {
                 return ship;
             }
         }
@@ -272,6 +273,18 @@ public class Board {
         board.append('\n');
 
         return board.toString();
+    }
+
+    private static class LocatedShip {
+
+        private final Ship ship;
+        private final Vector2 v;
+
+        LocatedShip(Ship ship, Vector2 v) {
+            this.ship = ship;
+            this.v = v;
+        }
+
     }
 
 }

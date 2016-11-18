@@ -13,14 +13,14 @@ public class Ship {
     int mY;
     int mHealth;
 
-    public boolean isInShip(int i, int j) {
-        int x = getX();
-        int y = getY();
+    public static boolean isInShip(Ship ship, int i, int j) {
+        int x = ship.getX();
+        int y = ship.getY();
 
-        if (isHorizontal()) {
-            return i >= x && i < x + getSize() && j == y;
+        if (ship.isHorizontal()) {
+            return i >= x && i < x + ship.getSize() && j == y;
         } else {
-            return j >= y && j < y + getSize() && i == x;
+            return j >= y && j < y + ship.getSize() && i == x;
         }
     }
 
