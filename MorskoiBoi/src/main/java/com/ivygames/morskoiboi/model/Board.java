@@ -115,19 +115,19 @@ public class Board {
 
     @NonNull
     public Collection<Ship> getShipsAt(@NonNull Vector2 v) {
-        return getShipsAt(v.getX(), v.getY());
-    }
-
-    @NonNull
-    public Collection<Ship> getShipsAt(int i, int j) {
         Set<Ship> ships = new HashSet<>();
         for (Ship ship : mShips) {
-            if (Ship.isInShip(ship, i, j)) {
+            if (Ship.isInShip(ship, v)) {
                 ships.add(ship);
             }
         }
 
         return ships;
+    }
+
+    @NonNull
+    public Collection<Ship> getShipsAt(int i, int j) {
+        return getShipsAt(Vector2.get(i, j));
     }
 
     public boolean hasShipAt(@NonNull Vector2 v) {
@@ -136,18 +136,18 @@ public class Board {
 
     @Nullable
     public Ship getFirstShipAt(@NonNull Vector2 v) {
-        return getFirstShipAt(v.getX(), v.getY());
-    }
-
-    @Nullable
-    public Ship getFirstShipAt(int i, int j) {
         for (Ship ship : mShips) {
-            if (Ship.isInShip(ship, i, j)) {
+            if (Ship.isInShip(ship, v)) {
                 return ship;
             }
         }
 
         return null;
+    }
+
+    @Nullable
+    public Ship getFirstShipAt(int i, int j) {
+        return getFirstShipAt(Vector2.get(i, j));
     }
 
     @NonNull

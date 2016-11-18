@@ -45,12 +45,13 @@ public class BoardSetupUtils {
             for (int j = -1; j < 2; j++) {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
-                if (Board.contains(cellX, cellY)) {
-                    boolean inShip = Ship.isInShip(ship, cellX, cellY);
+                Vector2 v = Vector2.get(cellX, cellY);
+                if (Board.contains(v)) {
+                    boolean inShip = Ship.isInShip(ship, v);
                     if (inShip && !neighboring) {
-                        coordinates.add(Vector2.get(cellX, cellY));
+                        coordinates.add(v);
                     } else if (!inShip && neighboring) {
-                        coordinates.add(Vector2.get(cellX, cellY));
+                        coordinates.add(v);
                     }
                 }
             }
