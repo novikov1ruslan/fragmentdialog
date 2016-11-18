@@ -32,7 +32,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     public AiOpponent(@NonNull String name, @NonNull Placement placement,
                       @NonNull Rules rules, @NonNull BotAlgorithm bot,
                       @NonNull Bidder bidder, @NonNull Random random) {
-        super(name, placement, rules);
+        super(name, rules);
         mPlacement = placement;
         mRules = rules;
         mBot = bot;

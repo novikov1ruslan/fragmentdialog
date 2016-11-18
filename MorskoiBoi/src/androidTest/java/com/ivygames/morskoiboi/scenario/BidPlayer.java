@@ -5,10 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
-
-import java.util.List;
 
 class BidPlayer extends PlayerOpponent {
     private final int[] mBid;
@@ -17,7 +14,7 @@ class BidPlayer extends PlayerOpponent {
     protected BidPlayer(@NonNull String name,
                         @NonNull Placement placement,
                         @NonNull Rules rules, int[] bid, PlayerCallback callback) {
-        super(name, placement, rules);
+        super(name, rules);
         mBid = bid;
         registerCallback(callback);
     }

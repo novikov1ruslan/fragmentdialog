@@ -55,16 +55,11 @@ public class PlayerOpponent implements Opponent {
     @NonNull
     private final String mName;
     @NonNull
-    private final Placement mPlacement;
-    @NonNull
     private final Rules mRules;
     private boolean mGameStarted;
 
-    protected PlayerOpponent(@NonNull String name,
-                   @NonNull Placement placement,
-                   @NonNull Rules rules) {
+    protected PlayerOpponent(@NonNull String name, @NonNull Rules rules) {
         mName = name;
-        mPlacement = placement;
         mRules = rules;
         Ln.v("new player created");
     }

@@ -68,7 +68,7 @@ public class PlayerOpponentTest {
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
         Placement placement = new Placement(mRandom, rules.allowAdjacentShips());
-        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, placement, rules);
+        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
         player.registerCallback(callback);
