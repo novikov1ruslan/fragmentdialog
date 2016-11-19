@@ -34,8 +34,8 @@ class Shooter {
 
         Vector2 vector2 = mShots.get(mCurShot);
         mCurShot++;
-        int x = processor.getX(vector2.getX());
-        int y = processor.getY(vector2.getY());
+        int x = processor.getX(vector2.x);
+        int y = processor.getY(vector2.y);
         onView(withId(R.id.enemy_board)).perform(ScreenUtils.clickXY(x, y));
     }
 

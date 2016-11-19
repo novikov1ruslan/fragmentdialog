@@ -60,7 +60,7 @@ public class Board {
      * @param v coordinate on the board where the 1st ship's square is to be put
      */
     public boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 v) {
-        return shipFitsTheBoard(ship, v.getX(), v.getY());
+        return shipFitsTheBoard(ship, v.x, v.y);
     }
 
     /**
@@ -84,7 +84,7 @@ public class Board {
     }
 
     public static boolean contains(@NonNull Vector2 v) {
-        return contains(v.getX(), v.getY());
+        return contains(v.x, v.y);
     }
 
     public static boolean contains(int i, int j) {
@@ -93,7 +93,7 @@ public class Board {
 
     @NonNull
     public Cell getCell(@NonNull Vector2 v) {
-        return getCell(v.getX(), v.getY());
+        return getCell(v.x, v.y);
     }
 
     /**
@@ -130,7 +130,7 @@ public class Board {
     }
 
     public boolean hasShipAt(@NonNull Vector2 v) {
-        return getFirstShipAt(v.getX(), v.getY()) != null;
+        return getFirstShipAt(v.x, v.y) != null;
     }
 
     @Nullable
@@ -170,7 +170,7 @@ public class Board {
     }
 
     public void setCell(@NonNull Cell cell, @NonNull Vector2 v) {
-        setCell(cell, v.getX(), v.getY());
+        setCell(cell, v.x, v.y);
     }
 
     void setCell(@NonNull Cell cell, int i, int j) {

@@ -40,8 +40,8 @@ public class Placement {
         while (!freeCells.isEmpty()) {
             int cellIndex = mRandom.nextInt(freeCells.size());
             Vector2 cell = freeCells.get(cellIndex);
-            int i = cell.getX();
-            int j = cell.getY();
+            int i = cell.x;
+            int j = cell.y;
             if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
                 putShipAt(board, ship, cell);
                 return true;
@@ -55,7 +55,7 @@ public class Placement {
     }
 
     public static void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 v) {
-        putShipAt(board, ship, v.getX(), v.getY());
+        putShipAt(board, ship, v.x, v.y);
     }
 
     // TODO: when ship has no coordinates this method is not needed, use Board#addShip

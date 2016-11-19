@@ -33,8 +33,8 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     final Rect getAnimationDestination(@NonNull Vector2 aim, float cellRatio) {
-        int dx = aim.getX() * mCellSizePx + mAnimationHorOffset;
-        int dy = aim.getY() * mCellSizePx + mAnimationVerOffset;
+        int dx = aim.x * mCellSizePx + mAnimationHorOffset;
+        int dy = aim.y * mCellSizePx + mAnimationVerOffset;
 
         int d = (int) (cellRatio * mHalfCellSize);
         mDstRect.left = dx - d;
@@ -47,8 +47,8 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     final Rect getAimRectDst(@NonNull Vector2 aim) {
-        int x = aim.getX();
-        int y = aim.getY();
+        int x = aim.x;
+        int y = aim.y;
         int left = x * mCellSizePx + mBoardRect.left;
         int top = y * mCellSizePx + mBoardRect.top;
         mLockDstRect.left = left;

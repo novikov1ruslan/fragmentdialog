@@ -32,10 +32,10 @@ public class RussianBot implements BotAlgorithm {
      */
     private static boolean coordinatesAlignedHorizontally(@NonNull @Size(min = 1) List<Vector2> coordinates) {
 
-        int y = coordinates.get(0).getY();
+        int y = coordinates.get(0).y;
 
         for (int i = 1; i < coordinates.size(); i++) {
-            if (y != coordinates.get(i).getY()) {
+            if (y != coordinates.get(i).y) {
                 return false;
             }
         }
@@ -76,7 +76,7 @@ public class RussianBot implements BotAlgorithm {
             possibleShots = BoardUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
             Vector2 v = hitDecks.get(0);
-            possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
+            possibleShots = getPossibleShotsAround(board, v.x, v.y);
         } else { // wounded ship with > 1 decks hit
             possibleShots = getPossibleShotsLinear(board, hitDecks);
         }
@@ -105,12 +105,12 @@ public class RussianBot implements BotAlgorithm {
     private static List<Vector2> getPossibleShotsLinear(@NonNull Board board,
                                                         @NonNull @Size(min = 2) List<Vector2> hitDecks) {
         List<Vector2> possibleShots = new ArrayList<>();
-        int minX = hitDecks.get(0).getX();
-        int minY = hitDecks.get(0).getY();
-        int maxX = hitDecks.get(0).getX();
-        int maxY = hitDecks.get(0).getY();
+        int minX = hitDecks.get(0).x;
+        int minY = hitDecks.get(0).y;
+        int maxX = hitDecks.get(0).x;
+        int maxY = hitDecks.get(0).y;
         for (Vector2 v : hitDecks) {
-            int x = v.getX();
+            int x = v.x;
             if (x < minX) {
                 minX = x;
             }
@@ -118,7 +118,7 @@ public class RussianBot implements BotAlgorithm {
                 maxX = x;
             }
 
-            int y = v.getY();
+            int y = v.y;
             if (y < minY) {
                 minY = y;
             }

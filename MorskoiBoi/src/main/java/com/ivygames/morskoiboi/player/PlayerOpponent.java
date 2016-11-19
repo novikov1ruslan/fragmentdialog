@@ -348,11 +348,11 @@ public class PlayerOpponent implements Opponent {
     }
 
     private Vector2 goUp(Vector2 position) {
-        return Vector2.get(position.getX(), position.getY() - 1);
+        return Vector2.get(position.x, position.y - 1);
     }
 
     private Vector2 goLeft(Vector2 position) {
-        return Vector2.get(position.getX() - 1, position.getY());
+        return Vector2.get(position.x - 1, position.y);
     }
 
     private boolean isHit(@NonNull Board board, Vector2 position) {

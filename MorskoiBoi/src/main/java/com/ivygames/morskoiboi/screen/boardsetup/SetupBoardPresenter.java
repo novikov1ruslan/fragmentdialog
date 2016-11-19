@@ -46,7 +46,7 @@ public class SetupBoardPresenter {
     }
 
     public void dropShip(@NonNull Board board, @NonNull Vector2 coordinate) {
-        dropShip(board, coordinate.getX(), coordinate.getY());
+        dropShip(board, coordinate.x, coordinate.y);
     }
 
     public void dropShip(@NonNull Board board, int i, int j) {
@@ -81,7 +81,7 @@ public class SetupBoardPresenter {
 
     @Nullable
     public Ship pickShipFromBoard(@NonNull Board board, @NonNull Vector2 v) {
-        return pickShipFromBoard(board, v.getX(), v.getY());
+        return pickShipFromBoard(board, v.x, v.y);
     }
 
     @Nullable

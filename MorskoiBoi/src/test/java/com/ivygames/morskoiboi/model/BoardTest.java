@@ -1,18 +1,14 @@
 package com.ivygames.morskoiboi.model;
 
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
-import com.ivygames.morskoiboi.variant.RussianRules;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -20,9 +16,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardTest {
@@ -62,8 +56,8 @@ public class BoardTest {
         hits = getHitsAround(mBoard, 5, 5);
         assertEquals(1, hits.size());
         Vector2 hit = hits.iterator().next();
-        assertEquals(5, hit.getX());
-        assertEquals(6, hit.getY());
+        assertEquals(5, hit.x);
+        assertEquals(6, hit.y);
     }
 
     @Test

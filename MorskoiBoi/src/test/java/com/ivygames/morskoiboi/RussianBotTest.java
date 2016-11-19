@@ -147,11 +147,11 @@ public class RussianBotTest {
     }
 
     private void hitAt(Board board, Vector2 aim) {
-        hitAt(board, aim.getX(), aim.getY());
+        hitAt(board, aim.x, aim.y);
     }
 
     private void missAt(Board board, Vector2 aim) {
-        missAt(board, aim.getX(), aim.getY());
+        missAt(board, aim.x, aim.y);
     }
 
 }

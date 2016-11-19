@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public final class Vector2 {
@@ -22,8 +21,8 @@ public final class Vector2 {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
-            json.put(X, mX);
-            json.put(Y, mY);
+            json.put(X, x);
+            json.put(Y, y);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -52,8 +51,8 @@ public final class Vector2 {
     }
 
     private Vector2(int x, int y) {
-        mX = x;
-        mY = y;
+        this.x = x;
+        this.y = y;
     }
 
     static {
@@ -64,8 +63,8 @@ public final class Vector2 {
         }
     }
 
-    private final int mX;
-    private final int mY;
+    public final int x;
+    public final int y;
 
     private static boolean containsCell(int i, int j) {
         return i < Board.DIMENSION && i >= 0 && j < Board.DIMENSION && j >= 0;
@@ -87,21 +86,12 @@ public final class Vector2 {
         return coordinates;
     }
 
-    // TODO: remove getters
-    public int getX() {
-        return mX;
-    }
-
-    public int getY() {
-        return mY;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + mX;
-        result = prime * result + mY;
+        result = prime * result + x;
+        result = prime * result + y;
         return result;
     }
 
@@ -117,14 +107,14 @@ public final class Vector2 {
             return false;
         }
         Vector2 other = (Vector2) obj;
-        if (mX != other.mX) {
+        if (x != other.x) {
             return false;
         }
-        return mY == other.mY;
+        return y == other.y;
     }
 
     @Override
     public String toString() {
-        return "[" + mX + "," + mY + "]";
+        return "[" + x + "," + y + "]";
     }
 }

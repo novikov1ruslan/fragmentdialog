@@ -49,7 +49,7 @@ final class EnemyBoardPresenter {
             mIsDragging = false;
             if (mAimingStarted) {
                 mAimingStarted = false;
-                mShotListener.onAimingFinished(v.getX(), v.getY());
+                mShotListener.onAimingFinished(v.x, v.y);
             }
         }
     }

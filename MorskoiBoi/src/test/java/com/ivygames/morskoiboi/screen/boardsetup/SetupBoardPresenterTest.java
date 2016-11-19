@@ -126,7 +126,7 @@ public class SetupBoardPresenterTest {
         Board board = new Board();
         Vector2 coordinate = Vector2.get(5, 5);
         mPresenter.dropShip(board, coordinate);
-        Placement.rotateShipAt(board, coordinate.getX(), coordinate.getY());
+        Placement.rotateShipAt(board, coordinate.x, coordinate.y);
         assertThat(ship.isHorizontal(), is(false));
     }
 

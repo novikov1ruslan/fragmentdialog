@@ -91,7 +91,7 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     }
 
     public void renderConflictingCell(@NonNull Canvas canvas, @NonNull Vector2 v) {
-        renderConflictingCell(canvas, v.getX(), v.getY());
+        renderConflictingCell(canvas, v.x, v.y);
     }
 
     public void renderConflictingCell(@NonNull Canvas canvas, int i, int j) {
@@ -122,7 +122,7 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     }
 
     public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 v) {
-        drawAiming(canvas, mProcessor.getAimingForShip(ship, v.getX(), v.getY()), false);
+        drawAiming(canvas, mProcessor.getAimingForShip(ship, v.x, v.y), false);
     }
 
     @NonNull

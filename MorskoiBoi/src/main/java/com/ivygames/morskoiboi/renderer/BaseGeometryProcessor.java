@@ -156,7 +156,7 @@ public class BaseGeometryProcessor {
 
     @NonNull
     final AimingG getAimingG(@NonNull Vector2 aim, int widthCells, int heightCells) {
-        return getAimingG(aim.getX(), aim.getY(), widthCells, heightCells);
+        return getAimingG(aim.x, aim.y, widthCells, heightCells);
     }
 
     // TODO: add Board, truncate Board

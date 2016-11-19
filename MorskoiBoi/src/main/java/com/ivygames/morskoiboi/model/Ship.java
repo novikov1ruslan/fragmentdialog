@@ -19,12 +19,12 @@ public class Ship {
         return isInShip(v, ship, ship.getPosition());
     }
 
-    public static boolean isInShip(@NonNull Vector2 v, @NonNull Ship ship, @NonNull Vector2 shipPisition) {
-        int x = shipPisition.getX();
-        int y = shipPisition.getY();
+    public static boolean isInShip(@NonNull Vector2 v, @NonNull Ship ship, @NonNull Vector2 shipPosition) {
+        int x = shipPosition.x;
+        int y = shipPosition.y;
 
-        int i = v.getX();
-        int j = v.getY();
+        int i = v.x;
+        int j = v.y;
 
         if (ship.isHorizontal()) {
             return i >= x && i < x + ship.getSize() && j == y;

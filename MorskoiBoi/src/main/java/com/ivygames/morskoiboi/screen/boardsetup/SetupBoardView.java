@@ -133,7 +133,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    Placement.rotateShipAt(mBoard, coordinate.getX(), coordinate.getY());
+                    Placement.rotateShipAt(mBoard, coordinate.x, coordinate.y);
                 } else if (mPresenter.hasPickedShip()) {
                     Ln.v("dropping picked ship to: " + mPickedShipCoordinate);
                     mPresenter.dropShip(mBoard, mPickedShipCoordinate);
