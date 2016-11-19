@@ -43,6 +43,29 @@ public class RussianBot implements BotAlgorithm {
         return true;
     }
 
+    private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
+        return Board.contains(x, y) && board.getCell(x, y) == Cell.EMPTY;
+    }
+
+    @NonNull
+    private static List<Vector2> getPossibleShotsAround(@NonNull Board board, int x, int y) {
+        ArrayList<Vector2> possibleShots = new ArrayList<>();
+        if (isEmptyCell(board, x - 1, y)) {
+            possibleShots.add(Vector2.get(x - 1, y));
+        }
+        if (isEmptyCell(board, x + 1, y)) {
+            possibleShots.add(Vector2.get(x + 1, y));
+        }
+        if (isEmptyCell(board, x, y - 1)) {
+            possibleShots.add(Vector2.get(x, y - 1));
+        }
+        if (isEmptyCell(board, x, y + 1)) {
+            possibleShots.add(Vector2.get(x, y + 1));
+        }
+
+        return possibleShots;
+    }
+
     @NonNull
     @Override
     public Vector2 shoot(@NonNull Board board) {
@@ -53,7 +76,7 @@ public class RussianBot implements BotAlgorithm {
             possibleShots = BoardUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
             Vector2 v = hitDecks.get(0);
-            possibleShots = BoardUtils.getPossibleShotsAround(board, v.getX(), v.getY());
+            possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
         } else { // wounded ship with > 1 decks hit
             possibleShots = getPossibleShotsLinear(board, hitDecks);
         }
@@ -79,7 +102,8 @@ public class RussianBot implements BotAlgorithm {
     }
 
     @NonNull
-    private static List<Vector2> getPossibleShotsLinear(@NonNull Board board, @NonNull List<Vector2> hitDecks) {
+    private static List<Vector2> getPossibleShotsLinear(@NonNull Board board,
+                                                        @NonNull @Size(min = 2) List<Vector2> hitDecks) {
         List<Vector2> possibleShots = new ArrayList<>();
         int minX = hitDecks.get(0).getX();
         int minY = hitDecks.get(0).getY();
