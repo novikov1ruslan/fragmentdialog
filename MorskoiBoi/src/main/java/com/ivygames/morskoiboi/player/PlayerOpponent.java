@@ -311,11 +311,11 @@ public class PlayerOpponent implements Opponent {
             ship.shoot();
 
             if (ship.isDead()) {
-                return new ShotResult(aim, mMyBoard.getCellAt(aim), ship);
+                return new ShotResult(aim, mMyBoard.getCell(aim), ship);
             }
         }
 
-        return new ShotResult(aim, mMyBoard.getCellAt(aim));
+        return new ShotResult(aim, mMyBoard.getCell(aim));
     }
 
     private void updateEnemyBoard(@NonNull ShotResult result) {
@@ -324,9 +324,39 @@ public class PlayerOpponent implements Opponent {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
             mEnemyBoard.setCell(result.cell, result.aim);
-            Placement.putShipAt(mEnemyBoard, ship, ship.getX(), ship.getY());
+            Placement.putShipAt(mEnemyBoard, ship, findShipLocation(mEnemyBoard, ship, result.aim));
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
+    }
+
+    @NonNull
+    private Vector2 findShipLocation(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 lastKnownPosition) {
+        Vector2 position = lastKnownPosition;
+        if (ship.isHorizontal()) {
+            while (isHit(board, position)) {
+                lastKnownPosition = position;
+                position = goLeft(position);
+            }
+        } else {
+            while (isHit(board, position)) {
+                lastKnownPosition = position;
+                position = goUp(position);
+            }
+        }
+
+        return lastKnownPosition;
+    }
+
+    private Vector2 goUp(Vector2 position) {
+        return Vector2.get(position.getX(), position.getY() - 1);
+    }
+
+    private Vector2 goLeft(Vector2 position) {
+        return Vector2.get(position.getX() - 1, position.getY());
+    }
+
+    private boolean isHit(@NonNull Board board, Vector2 position) {
+        return Board.contains(position) && board.getCell(position) == Cell.HIT;
     }
 
     private boolean opponentStarts() {

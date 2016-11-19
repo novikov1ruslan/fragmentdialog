@@ -104,11 +104,6 @@ public class Board {
         return mCells[i][j];
     }
 
-    @NonNull
-    public Cell getCellAt(@NonNull Vector2 v) {
-        return getCell(v.getX(), v.getY());
-    }
-
     /**
      * clears cells and ships from the board - like a new board
      */

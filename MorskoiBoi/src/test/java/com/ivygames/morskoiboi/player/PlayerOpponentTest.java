@@ -424,7 +424,7 @@ public class PlayerOpponentTest {
     // TODO: when callback is set - sticky
 
     private Cell enemyCellAt(Vector2 aim) {
-        return mPlayer.getEnemyBoard().getCellAt(aim);
+        return mPlayer.getEnemyBoard().getCell(aim);
     }
 
     private class MyAiOpponent extends AiOpponent {
