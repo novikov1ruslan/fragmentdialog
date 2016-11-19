@@ -102,14 +102,14 @@ public class AchievementsManager {
         int cruisersCounter = 0;
         int destroyersCounter = 0;
         for (Ship ship : ships) {
-            if (ship.getSize() == 4 && !ship.isDead()) {
+            if (ship.size == 4 && !ship.isDead()) {
                 unlockIfNotUnlocked(AIRCRAFTSMAN);
-            } else if (ship.getSize() == 3 && !ship.isDead()) {
+            } else if (ship.size == 3 && !ship.isDead()) {
                 if (cruisersCounter == 1) {
                     unlockIfNotUnlocked(CRUISER_COMMANDER);
                 }
                 cruisersCounter++;
-            } else if (ship.getSize() == 2 && !ship.isDead()) {
+            } else if (ship.size == 2 && !ship.isDead()) {
                 if (destroyersCounter == 2) {
                     unlockIfNotUnlocked(DESTROYER);
                 }

@@ -80,9 +80,9 @@ public class Board {
 
         if (canPut) {
             if (ship.isHorizontal()) {
-                canPut = i + ship.getSize() <= DIMENSION;
+                canPut = i + ship.size <= DIMENSION;
             } else {
-                canPut = j + ship.getSize() <= DIMENSION;
+                canPut = j + ship.size <= DIMENSION;
             }
         }
         return canPut;

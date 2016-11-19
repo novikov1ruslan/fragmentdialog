@@ -44,7 +44,7 @@ public class WinLayout extends WinLayoutSmall {
             if (ship.isDead()) {
                 continue;
             }
-            switch (ship.getSize()) {
+            switch (ship.size) {
                 case 4:
                     shipView = (ImageView) findViewById(R.id.ship4);
                     shipView.setImageResource(R.drawable.aircraft_carrier);
@@ -66,7 +66,7 @@ public class WinLayout extends WinLayoutSmall {
                     break;
 
                 default:
-                    Ln.w("wrong ship size: " + ship.getSize());
+                    Ln.w("wrong ship size: " + ship.size);
                     break;
             }
         }

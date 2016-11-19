@@ -107,9 +107,9 @@ public class Placement {
             putShipAt(board, ship, x, y);
         } else {
             if (ship.isHorizontal()) {
-                putShipAt(board, ship, board.horizontalDimension() - ship.getSize(), y);
+                putShipAt(board, ship, board.horizontalDimension() - ship.size, y);
             } else {
-                putShipAt(board, ship, x, board.horizontalDimension() - ship.getSize());
+                putShipAt(board, ship, x, board.horizontalDimension() - ship.size);
             }
         }
     }
@@ -146,7 +146,7 @@ public class Placement {
         }
 
         boolean isHorizontal = ship.isHorizontal();
-        for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.getSize(); k++) {
+        for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.size; k++) {
             int x = isHorizontal ? k : i;
             int y = isHorizontal ? j : k;
             if (!freeCells.contains(Vector2.get(x, y))) {

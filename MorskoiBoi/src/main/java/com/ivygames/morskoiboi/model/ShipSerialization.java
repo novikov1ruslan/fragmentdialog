@@ -14,7 +14,7 @@ public class ShipSerialization {
     public static JSONObject toJson(Ship ship) {
         JSONObject shipJson = new JSONObject();
         try {
-            shipJson.put(SIZE, ship.getSize());
+            shipJson.put(SIZE, ship.size);
             shipJson.put(IS_HORIZONTAL, ship.isHorizontal());
             shipJson.put(X, ship.mX);
             shipJson.put(Y, ship.mY);

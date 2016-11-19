@@ -105,7 +105,7 @@ public class RussianRules implements Rules {
                 continue;
             }
 
-            switch (ship.getSize()) {
+            switch (ship.size) {
                 case 1:
                     shipsWeight += SHIP_1X_WEIGHT;
                     break;
@@ -119,7 +119,7 @@ public class RussianRules implements Rules {
                     shipsWeight += SHIP_4X_WEIGHT;
                     break;
                 default:
-                    Ln.e("impossible ship size = " + ship.getSize());
+                    Ln.e("impossible ship size = " + ship.size);
                     break;
             }
         }

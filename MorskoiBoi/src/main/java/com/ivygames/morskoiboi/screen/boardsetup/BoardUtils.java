@@ -18,7 +18,7 @@ public class BoardUtils {
 
     static boolean onlyHorizontalShips(@NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
-            if (ship.getSize() > 1 && !ship.isHorizontal()) {
+            if (ship.size > 1 && !ship.isHorizontal()) {
                 return false;
             }
         }
@@ -41,7 +41,7 @@ public class BoardUtils {
         Ship ship = locatedShip.ship;
         boolean horizontal = ship.isHorizontal();
 
-        for (int i = -1; i <= ship.getSize(); i++) {
+        for (int i = -1; i <= ship.size; i++) {
             for (int j = -1; j < 2; j++) {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);

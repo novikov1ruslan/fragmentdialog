@@ -8,7 +8,7 @@ public class Ship {
         HORIZONTAL, VERTICAL
     }
 
-    private final int mSize;
+    public final int size;
     Orientation mOrientation;
     //TODO: store it on board
     int mX;
@@ -24,14 +24,14 @@ public class Ship {
         int j = v.y;
 
         if (ship.isHorizontal()) {
-            return i >= x && i < x + ship.getSize() && j == y;
+            return i >= x && i < x + ship.size && j == y;
         } else {
-            return j >= y && j < y + ship.getSize() && i == x;
+            return j >= y && j < y + ship.size && i == x;
         }
     }
 
     public Ship(int size, Orientation orientation) {
-        mSize = size;
+        this.size = size;
         mOrientation = orientation;
         mHealth = size;
     }
@@ -46,7 +46,7 @@ public class Ship {
     }
 
     public Ship(Ship ship) {
-        mSize = ship.mSize;
+        size = ship.size;
         mOrientation = ship.mOrientation;
         mX = ship.mX;
         mY = ship.mY;
@@ -55,10 +55,6 @@ public class Ship {
 
     public boolean isHorizontal() {
         return mOrientation == Orientation.HORIZONTAL;
-    }
-
-    public int getSize() {
-        return mSize;
     }
 
     public int getX() {
@@ -102,7 +98,7 @@ public class Ship {
     }
 
     /**
-     * @return true if {@link #shoot()} was called on this ship at least {@link #getSize()} times
+     * @return true if {@link #shoot()} was called on this ship at least {@link #size} times
      */
     public boolean isDead() {
         return mHealth == 0;
@@ -121,7 +117,7 @@ public class Ship {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < mSize; i++) {
+        for (int i = 0; i < size; i++) {
             if (mHealth > i) {
                 sb.append('*');
             } else {

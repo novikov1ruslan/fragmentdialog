@@ -81,7 +81,7 @@ public class FleetView extends View {
             map.put(size, 0);
         }
         for (Ship ship : ships) {
-            map.put(ship.getSize(), map.get(ship.getSize()) + 1);
+            map.put(ship.size, map.get(ship.size) + 1);
         }
     }
 

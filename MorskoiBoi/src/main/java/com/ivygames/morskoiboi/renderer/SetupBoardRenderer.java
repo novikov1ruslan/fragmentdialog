@@ -70,14 +70,14 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     }
 
     private Bitmap getTopBitmapForShipSize(@NonNull Ship ship) {
-        Bitmap horizontalBitmap = Bitmaps.getTopBitmapForShipSize(mResources, ship.getSize());
+        Bitmap horizontalBitmap = Bitmaps.getTopBitmapForShipSize(mResources, ship.size);
         if (ship.isHorizontal()) {
             return horizontalBitmap;
         } else {
-            Bitmap verticalBitmap = mVerticalBitmaps.get(ship.getSize());
+            Bitmap verticalBitmap = mVerticalBitmaps.get(ship.size);
             if (verticalBitmap == null) {
                 verticalBitmap = rotate(horizontalBitmap);
-                mVerticalBitmaps.put(ship.getSize(), verticalBitmap);
+                mVerticalBitmaps.put(ship.size, verticalBitmap);
             }
 
             return verticalBitmap;
@@ -100,14 +100,14 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
     }
 
     public void drawDockedShip(@NonNull Canvas canvas, @NonNull Ship dockedShip) {
-        Bitmap bitmap = Bitmaps.getSideBitmapForShipSize(mResources, dockedShip.getSize());
+        Bitmap bitmap = Bitmaps.getSideBitmapForShipSize(mResources, dockedShip.size);
         Point center = mProcessor.getShipDisplayAreaCenter();
         int displayLeft = center.x - bitmap.getWidth() / 2;
         int displayTop = center.y - bitmap.getHeight() / 2;
         canvas.drawBitmap(bitmap, displayLeft, displayTop, null);
 
         Rect rectForDockedShip = mProcessor.getRectForDockedShip(dockedShip);
-        for (int i = 1; i < dockedShip.getSize(); i++) {
+        for (int i = 1; i < dockedShip.size; i++) {
             int x = rectForDockedShip.left + i * mProcessor.getCellSize();
             canvas.drawLine(x, rectForDockedShip.top, x, rectForDockedShip.bottom, mLinePaint);
         }

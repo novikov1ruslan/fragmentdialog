@@ -227,7 +227,7 @@ public class BaseGeometryProcessor {
         mShipRect.left = left;
         mShipRect.top = top;
 
-        int shipSize = ship.getSize();
+        int shipSize = ship.size;
         if (ship.isHorizontal()) {
             mShipRect.right = mShipRect.left + mCellSizePx * shipSize;
             mShipRect.bottom = mShipRect.top + mCellSizePx;

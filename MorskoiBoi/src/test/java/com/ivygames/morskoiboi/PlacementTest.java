@@ -1,13 +1,10 @@
 package com.ivygames.morskoiboi;
 
-import android.test.MoreAsserts;
-
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -182,7 +179,7 @@ public class PlacementTest {
 
     private boolean removeShipFromSet(Collection<Ship> distinct, int size) {
         for (Ship ship : distinct) {
-            if (ship.getSize() == size) {
+            if (ship.size == size) {
                 distinct.remove(ship);
                 return true;
             }

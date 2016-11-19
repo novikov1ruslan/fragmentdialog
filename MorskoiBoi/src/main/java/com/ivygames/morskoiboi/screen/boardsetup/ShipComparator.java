@@ -10,6 +10,6 @@ final class ShipComparator implements Comparator<Ship> {
 
     @Override
     public int compare(@NonNull Ship lhs, @NonNull Ship rhs) {
-        return rhs.getSize() - lhs.getSize();
+        return rhs.size - lhs.size;
     }
 }

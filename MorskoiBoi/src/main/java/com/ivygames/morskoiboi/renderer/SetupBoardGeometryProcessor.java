@@ -75,7 +75,7 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     final Rect getRectForDockedShip(@NonNull Ship ship) {
-        Point p = getTopLeftPointInTopArea(ship.getSize());
+        Point p = getTopLeftPointInTopArea(ship.size);
         return getRectForShip(ship, p);
     }
 
@@ -99,8 +99,8 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     final AimingG getAimingForShip(@NonNull Ship ship, int i, int j) {
-        int width = ship.isHorizontal() ? ship.getSize() : 1;
-        int height = ship.isHorizontal() ? 1 : ship.getSize();
+        int width = ship.isHorizontal() ? ship.size : 1;
+        int height = ship.isHorizontal() ? 1 : ship.size;
         return getAimingG(i, j, width, height);
     }
 
@@ -117,7 +117,7 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
 
     @NonNull
     private Rect centerPickedShipRectAround(@NonNull Ship ship, int x, int y) {
-        int widthInPx = getShipWidthInPx(ship.getSize());
+        int widthInPx = getShipWidthInPx(ship.size);
         int halfWidthInPx = widthInPx / 2;
         boolean isHorizontal = ship.isHorizontal();
         mPickedShipRect.left = x - (isHorizontal ? halfWidthInPx : mHalfCellSize);

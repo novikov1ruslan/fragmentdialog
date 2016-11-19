@@ -24,7 +24,7 @@ class GameplayUtils {
         Iterator<Ship> iterator = fleet.iterator();
         while (iterator.hasNext()) {
             Ship next = iterator.next();
-            if (ship.getSize() == next.getSize()) {
+            if (ship.size == next.size) {
                 iterator.remove();
                 break;
             }

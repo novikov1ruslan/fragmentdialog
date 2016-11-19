@@ -9,13 +9,13 @@ public class ShipTest {
     @Test
     public void testSize() {
         Ship ship = new Ship(1);
-        assertEquals(1, ship.getSize());
+        assertEquals(1, ship.size);
         ship = new Ship(2);
-        assertEquals(2, ship.getSize());
+        assertEquals(2, ship.size);
         ship = new Ship(3);
-        assertEquals(3, ship.getSize());
+        assertEquals(3, ship.size);
         ship = new Ship(4);
-        assertEquals(4, ship.getSize());
+        assertEquals(4, ship.size);
     }
 
     @Test
@@ -23,17 +23,17 @@ public class ShipTest {
         Ship ship = new Ship(1);
 
         assertTrue(ship.isHorizontal());
-        assertEquals(1, ship.getSize());
+        assertEquals(1, ship.size);
 
         ship = new Ship(4);
-        assertEquals(4, ship.getSize());
+        assertEquals(4, ship.size);
 
         ship = new Ship(3, Ship.Orientation.VERTICAL);
-        assertEquals(3, ship.getSize());
+        assertEquals(3, ship.size);
         assertFalse(ship.isHorizontal());
 
         ship = new Ship(2, Ship.Orientation.HORIZONTAL);
-        assertEquals(2, ship.getSize());
+        assertEquals(2, ship.size);
         assertTrue(ship.isHorizontal());
     }
 
