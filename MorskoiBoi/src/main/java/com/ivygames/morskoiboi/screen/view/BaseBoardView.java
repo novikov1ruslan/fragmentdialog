@@ -11,10 +11,7 @@ import android.view.WindowManager;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
-
-import java.util.Collection;
 
 public abstract class BaseBoardView extends View {
 
@@ -74,8 +71,8 @@ public abstract class BaseBoardView extends View {
     }
 
     private void drawShips(Canvas canvas) {
-        for (Ship ship : mBoard.getShips()) {
-            mRenderer.drawShip(canvas, ship);
+        for (Board.LocatedShip ship : mBoard.getLocatedShips()) {
+            mRenderer.drawShip(canvas, ship.ship, ship.position);
         }
     }
 

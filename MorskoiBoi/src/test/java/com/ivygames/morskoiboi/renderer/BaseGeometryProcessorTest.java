@@ -84,9 +84,9 @@ public class BaseGeometryProcessorTest {
     }
 
     @Test(expected=IllegalStateException.class)
-    public void getRectForShipThrowsException() {
+    public void getRectForShipThrowsExceptionWhenCalledBeforeMeasure() {
         mPresenter = new BaseGeometryProcessor(10, 2);
-        mPresenter.getRectForShip(new Ship(1));
+        mPresenter.getRectForShip(new Ship(1), Vector2.get(5, 5));
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -156,14 +156,14 @@ public class BaseGeometryProcessorTest {
 
     @Test
     public void getRectForShipHorizontal() {
-        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.HORIZONTAL));
+        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.HORIZONTAL), Vector2.get(0, 0));
         Rect expected = new Rect(5, 105, 129, 136);
         assertThat(rect, equalTo(expected));
     }
 
     @Test
     public void getRectForShipVertical() {
-        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.VERTICAL));
+        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.VERTICAL), Vector2.get(0, 0));
         Rect expected = new Rect(5, 105, 36, 229);
         assertThat(rect, equalTo(expected));
     }

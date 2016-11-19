@@ -36,6 +36,11 @@ public class Board {
         return UnmodifiableCollection.unmodifiableCollection(ships);
     }
 
+    @NonNull
+    public Collection<LocatedShip> getLocatedShips() {
+        return UnmodifiableCollection.unmodifiableCollection(mShips);
+    }
+
     public boolean removeShip(@NonNull Ship ship) {
         return mShips.remove(new LocatedShip(ship, ship.getPosition()));
     }
@@ -268,12 +273,12 @@ public class Board {
         return board.toString();
     }
 
-    static class LocatedShip {
+    public static class LocatedShip {
 
         @NonNull
-        final Ship ship;
+        public final Ship ship;
         @NonNull
-        final Vector2 position;
+        public final Vector2 position;
 
         LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
             this.ship = ship;

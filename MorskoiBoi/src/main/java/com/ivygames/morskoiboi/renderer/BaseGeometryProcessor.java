@@ -211,8 +211,8 @@ public class BaseGeometryProcessor {
     }
 
     @NonNull
-    final Rect getRectForShip(@NonNull Ship ship) {
-        return getRectForShip(ship, getLeft(ship.getX()), getTop(ship.getY()));
+    final Rect getRectForShip(@NonNull Ship ship, Vector2 location) {
+        return getRectForShip(ship, getLeft(location.x), getTop(location.y));
     }
 
     @NonNull
