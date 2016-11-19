@@ -136,7 +136,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(mRandom);
             Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
             if (!BuildConfig.DEBUG) { // needed for ui testing to simulate all horizontal ships
-                while (BoardSetupUtils.onlyHorizontalShips(ships)) {
+                while (BoardUtils.onlyHorizontalShips(ships)) {
                     ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
                 }
             }
@@ -154,8 +154,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         @Override
         public void done() {
             UiEvent.send("done");
-            if (BoardSetupUtils.isBoardSet(mBoard, mRules)) {
-                if (BoardSetupUtils.onlyHorizontalShips(mBoard.getShips())) {
+            if (BoardUtils.isBoardSet(mBoard, mRules)) {
+                if (BoardUtils.onlyHorizontalShips(mBoard.getShips())) {
                     showOnlyHorizontalDialog();
                 } else {
                     continueToGameplay();

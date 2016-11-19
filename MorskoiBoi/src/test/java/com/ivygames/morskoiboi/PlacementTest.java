@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.Assert;
@@ -118,7 +118,7 @@ public class PlacementTest {
 
         boolean success = placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
         assertThat(success, is(true));
-        assertThat(BoardSetupUtils.hasConflictingCell(board, rules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.hasConflictingCell(board, rules.allowAdjacentShips()), is(false));
     }
 
     @Test

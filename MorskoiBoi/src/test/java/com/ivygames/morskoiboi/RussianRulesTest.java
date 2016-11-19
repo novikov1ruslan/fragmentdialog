@@ -6,7 +6,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.variant.RulesUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -57,12 +57,12 @@ public class RussianRulesTest {
 
         placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
 
-        assertThat(BoardSetupUtils.isBoardSet(board, mRules), is(true));
+        assertThat(BoardUtils.isBoardSet(board, mRules), is(true));
     }
 
     @Test
     public void empty_board_is_not_set() {
-        assertThat(BoardSetupUtils.isBoardSet(new Board(), mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(new Board(), mRules), is(false));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class RussianRulesTest {
         ships.remove(ships.iterator().next());
         placement.populateBoardWithShips(board, ships);
 
-        assertThat(BoardSetupUtils.isBoardSet(board, mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
     }
 
     @Test
@@ -83,27 +83,27 @@ public class RussianRulesTest {
             Placement.putShipAt(board, ship, 0, 0);
         }
         assertThat(board.getShips().size(), is(10));
-        assertThat(BoardSetupUtils.isBoardSet(board, mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
     }
 
     @Test
     public void EmptyCellIsNotConflicting() {
         Board board = new Board();
-        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship() {
         Board board = new Board();
         Placement.putShipAt(board, new Ship(1), 5, 5);
-        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship2() {
         Board board = new Board();
         Placement.putShipAt(board, new Ship(1), 1, 5);
-        assertThat(BoardSetupUtils.isCellConflicting(board, 1, 5, mRules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.isCellConflicting(board, 1, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
@@ -113,8 +113,8 @@ public class RussianRulesTest {
 
         Placement.putShipAt(board, new Ship(1), 5, 5);
 
-        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
-        assertThat(BoardSetupUtils.isCellConflicting(board, 6, 6, mRules.allowAdjacentShips()), is(true));
+        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
+        assertThat(BoardUtils.isCellConflicting(board, 6, 6, mRules.allowAdjacentShips()), is(true));
     }
 
     @Test
@@ -124,7 +124,7 @@ public class RussianRulesTest {
 
         Placement.putShipAt(board, new Ship(1), 5, 5);
 
-        assertThat(BoardSetupUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
+        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
     }
 
     @Test
@@ -234,7 +234,7 @@ public class RussianRulesTest {
         Collection<Ship> ships = mock(Collection.class);
         when(ships.size()).thenReturn(9);
         when(board.getShips()).thenReturn(ships);
-        assertThat(BoardSetupUtils.isItDefeatedBoard(board, mRules), is(false));
+        assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(false));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class RussianRulesTest {
         Collection<Ship> ships = mock_9_dead_1_alive_ship();
         when(board.getShips()).thenReturn(ships);
 
-        assertThat(BoardSetupUtils.isItDefeatedBoard(board, mRules), is(false));
+        assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(false));
     }
 
     @Test
@@ -252,7 +252,7 @@ public class RussianRulesTest {
         Collection<Ship> ships = mock_10_dead_ships();
         when(board.getShips()).thenReturn(ships);
 
-        assertThat(BoardSetupUtils.isItDefeatedBoard(board, mRules), is(true));
+        assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(true));
     }
 
     @Test

@@ -15,7 +15,7 @@ import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
 
@@ -183,7 +183,7 @@ public class PlayerOpponent implements Opponent {
         notifyOnShotResult(result);
         if (shipSank(result.ship)) {
             notifyOnKillEnemy();
-            if (BoardSetupUtils.isItDefeatedBoard(mEnemyBoard, mRules)) {
+            if (BoardUtils.isItDefeatedBoard(mEnemyBoard, mRules)) {
                 Ln.d(mName + ": actually opponent lost");
 
                 // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
@@ -240,7 +240,7 @@ public class PlayerOpponent implements Opponent {
         mOpponent.onShotResult(result);
 
         if (result.cell == Cell.HIT) {
-            if (BoardSetupUtils.isItDefeatedBoard(mMyBoard, mRules)) {
+            if (BoardUtils.isItDefeatedBoard(mMyBoard, mRules)) {
                 Ln.d(mName + ": I'm defeated, no turn to pass");
                 if (!versionSupportsBoardReveal()) {
                     Ln.d(mName + ": opponent version doesn't support board reveal = " + mOpponentVersion);
@@ -276,7 +276,7 @@ public class PlayerOpponent implements Opponent {
     public void onLost(@NonNull Board board) {
         debug_handler.post(debug_thread_break_task);
 
-        if (!BoardSetupUtils.isItDefeatedBoard(mMyBoard, mRules)) {
+        if (!BoardUtils.isItDefeatedBoard(mMyBoard, mRules)) {
             reportException("lost while not defeated: " + mMyBoard.getShips());
         }
 

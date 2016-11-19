@@ -15,7 +15,7 @@ import com.ivygames.morskoiboi.model.ShotResult;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 
 import org.commons.logger.Ln;
@@ -143,7 +143,7 @@ public class EnemyBoardView extends BaseBoardView {
     }
 
     public void unLock() {
-        mPossibleShots = BoardSetupUtils.getPossibleShots(mBoard, Dependencies.getRules().allowAdjacentShips());
+        mPossibleShots = BoardUtils.getPossibleShots(mBoard, Dependencies.getRules().allowAdjacentShips());
         mPresenter.unlock();
     }
 

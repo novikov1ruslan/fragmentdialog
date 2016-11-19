@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BoardSetupUtils {
-    private BoardSetupUtils() {
+public class BoardUtils {
+    private BoardUtils() {
     }
 
     static boolean onlyHorizontalShips(@NonNull Collection<Ship> ships) {
@@ -132,5 +132,28 @@ public class BoardSetupUtils {
      */
     public static boolean isItDefeatedBoard(@NonNull Board board, @NonNull Rules rules) {
         return allShipsAreOnBoard(board, rules) && Board.allAvailableShipsAreDestroyed(board);
+    }
+
+    private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
+        return Board.contains(x, y) && board.getCell(x, y) == Cell.EMPTY;
+    }
+
+    @NonNull
+    public static List<Vector2> getPossibleShotsAround(@NonNull Board board, int x, int y) {
+        ArrayList<Vector2> possibleShots = new ArrayList<>();
+        if (isEmptyCell(board, x - 1, y)) {
+            possibleShots.add(Vector2.get(x - 1, y));
+        }
+        if (isEmptyCell(board, x + 1, y)) {
+            possibleShots.add(Vector2.get(x + 1, y));
+        }
+        if (isEmptyCell(board, x, y - 1)) {
+            possibleShots.add(Vector2.get(x, y - 1));
+        }
+        if (isEmptyCell(board, x, y + 1)) {
+            possibleShots.add(Vector2.get(x, y + 1));
+        }
+
+        return possibleShots;
     }
 }

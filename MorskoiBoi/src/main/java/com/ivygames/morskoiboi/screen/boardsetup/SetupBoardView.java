@@ -78,7 +78,7 @@ public class SetupBoardView extends BaseBoardView {
     private void drawConflictingCells(Canvas canvas) {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
-                if (BoardSetupUtils.isCellConflicting(mBoard, i, j, mRules.allowAdjacentShips())) {
+                if (BoardUtils.isCellConflicting(mBoard, i, j, mRules.allowAdjacentShips())) {
                     mRenderer.renderConflictingCell(canvas, i, j);
                 }
             }

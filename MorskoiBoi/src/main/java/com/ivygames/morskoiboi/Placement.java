@@ -7,7 +7,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
 
@@ -20,11 +20,11 @@ public class Placement {
 
     @NonNull
     private final Random mRandom;
-    private final boolean m_allowAdjacentShips;
+    private final boolean mAllowAdjacentShips;
 
     public Placement(@NonNull Random random, boolean allowAdjacentShips) {
         mRandom = random;
-        m_allowAdjacentShips = allowAdjacentShips;
+        mAllowAdjacentShips = allowAdjacentShips;
     }
 
     // TODO: remove
@@ -35,7 +35,7 @@ public class Placement {
     }
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
-        List<Vector2> freeCells = BoardSetupUtils.getCellsFreeFromShips(board, m_allowAdjacentShips);
+        List<Vector2> freeCells = BoardUtils.getCellsFreeFromShips(board, mAllowAdjacentShips);
 
         while (!freeCells.isEmpty()) {
             int cellIndex = mRandom.nextInt(freeCells.size());
@@ -67,7 +67,7 @@ public class Placement {
         // TODO: if it is exactly the same ship, remove and put again
         ship.setCoordinates(i, j);
 
-//        Collection<Vector2> neighboringCells = BoardSetupUtils.getCells(ship, true);
+//        Collection<Vector2> neighboringCells = BoardUtils.getCells(ship, true);
 //        for (Vector2 v : neighboringCells) {
 //            if (!mRules.allowAdjacentShips()) {
 //                if (ship.isDead()) {

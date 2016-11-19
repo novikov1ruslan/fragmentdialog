@@ -25,13 +25,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
-public class BoardSetupUtilsTest {
+public class BoardUtilsTest {
 
     @Test
     public void testOnlyHorizontalShips() {
         Collection<Ship> ships = new ArrayList<>();
 
-        boolean onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
+        boolean onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(true));
 
         Ship vertical1 = new Ship(1, Ship.Orientation.VERTICAL);
@@ -39,29 +39,29 @@ public class BoardSetupUtilsTest {
         Ship vertical2 = new Ship(2, Ship.Orientation.VERTICAL);
 
         ships = Arrays.asList(vertical1);
-        onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
+        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(true));
 
         ships = Arrays.asList(horizontal2);
-        onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
+        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(true));
 
         ships = Arrays.asList(vertical2);
-        onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
+        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(false));
 
         ships = Arrays.asList(vertical2, horizontal2);
-        onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
+        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(false));
 
         ships = Arrays.asList(vertical2, horizontal2, vertical1);
-        onlyHorizontalShips = BoardSetupUtils.onlyHorizontalShips(ships);
+        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
         assertThat(onlyHorizontalShips, is(false));
     }
 
     @Test
     public void NeighbouringCells8() {
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(1, 1);
+        Collection<Vector2> coordinates = BoardUtils.getNeighboringCoordinates(1, 1);
 
         assertThat(coordinates.size(), is(8));
         assertThat(coordinates, containsInAnyOrder(
@@ -79,7 +79,7 @@ public class BoardSetupUtilsTest {
 
     @Test
     public void NeighbouringCellsCorner() {
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(0, 0);
+        Collection<Vector2> coordinates = BoardUtils.getNeighboringCoordinates(0, 0);
 
         assertThat(coordinates.size(), is(3));
         assertThat(coordinates, containsInAnyOrder(
@@ -90,7 +90,7 @@ public class BoardSetupUtilsTest {
 
     @Test
     public void NeighbouringCellsWall() {
-        Collection<Vector2> coordinates = BoardSetupUtils.getNeighboringCoordinates(0, 1);
+        Collection<Vector2> coordinates = BoardUtils.getNeighboringCoordinates(0, 1);
 
         assertThat(coordinates.size(), is(5));
         assertThat(coordinates, containsInAnyOrder(
@@ -107,12 +107,12 @@ public class BoardSetupUtilsTest {
         Rules rules = mock(Rules.class);
         Dependencies.inject(new Placement(random, rules.allowAdjacentShips())); // needed
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
-        assertEquals(100, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
+        assertEquals(100, BoardUtils.getCellsFreeFromShips(board, false).size());
 
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5);
-        assertEquals(91, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
+        assertEquals(91, BoardUtils.getCellsFreeFromShips(board, false).size());
 
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5_x2_5_5);
-        assertEquals(85, BoardSetupUtils.getCellsFreeFromShips(board, false).size());
+        assertEquals(85, BoardUtils.getCellsFreeFromShips(board, false).size());
     }
 }

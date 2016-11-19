@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,10 +50,10 @@ public class RussianBot implements BotAlgorithm {
         List<Vector2> hitDecks = findHitCells(board);
         List<Vector2> possibleShots;
         if (hitDecks.size() == 0) {
-            possibleShots = BoardSetupUtils.getPossibleShots(board, false);
+            possibleShots = BoardUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
             Vector2 v = hitDecks.get(0);
-            possibleShots = getPossibleShotsAround(board, v.getX(), v.getY());
+            possibleShots = BoardUtils.getPossibleShotsAround(board, v.getX(), v.getY());
         } else { // wounded ship with > 1 decks hit
             possibleShots = getPossibleShotsLinear(board, hitDecks);
         }
@@ -67,29 +67,6 @@ public class RussianBot implements BotAlgorithm {
             }
             throw e;
         }
-    }
-
-    private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
-        return Board.contains(x, y) && board.getCell(x, y) == Cell.EMPTY;
-    }
-
-    @NonNull
-    public static List<Vector2> getPossibleShotsAround(@NonNull Board board, int x, int y) {
-        ArrayList<Vector2> possibleShots = new ArrayList<>();
-        if (isEmptyCell(board, x - 1, y)) {
-            possibleShots.add(Vector2.get(x - 1, y));
-        }
-        if (isEmptyCell(board, x + 1, y)) {
-            possibleShots.add(Vector2.get(x + 1, y));
-        }
-        if (isEmptyCell(board, x, y - 1)) {
-            possibleShots.add(Vector2.get(x, y - 1));
-        }
-        if (isEmptyCell(board, x, y + 1)) {
-            possibleShots.add(Vector2.get(x, y + 1));
-        }
-
-        return possibleShots;
     }
 
     private static void addCellIfEmpty(@NonNull Board board, int x, int y, @NonNull Collection<Vector2> out) {
