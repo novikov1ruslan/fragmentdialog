@@ -68,12 +68,6 @@ public class Ship {
         return this;
     }
 
-    public Ship setCoordinates(int x, int y) {
-        mX = x;
-        mY = y;
-        return this;
-    }
-
     /**
      * reverses the orientation
      */

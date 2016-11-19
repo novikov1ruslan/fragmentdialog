@@ -97,7 +97,6 @@ public class BoardTest {
     @Test
     public void testRemoveHorizontalShipSucceeded() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
-        ship.setCoordinates(8, 5);
         mBoard.addShip(new Board.LocatedShip(ship, 8, 5));
 
         mBoard.removeShip(new Board.LocatedShip(ship, 8, 5));

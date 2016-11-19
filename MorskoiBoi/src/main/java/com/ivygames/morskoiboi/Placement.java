@@ -63,9 +63,6 @@ public class Placement {
             throw new IllegalArgumentException("cannot put ship " + ship + " at (" + i + "," + j + ")");
         }
 
-        // TODO: if it is exactly the same ship, remove and put again
-        ship.setCoordinates(i, j);
-
 //        Collection<Vector2> neighboringCells = BoardUtils.getCells(ship, true);
 //        for (Vector2 v : neighboringCells) {
 //            if (!mRules.allowAdjacentShips()) {
