@@ -56,7 +56,7 @@ public class BoardSerializationTest {
     @Test
     public void ParsingBoardWithShip() {
         Board board2 = new Board();
-        Placement.putShipAt(board2, new Ship(1), 5, 5);
+        Placement.putShipAt(board2, new Board.LocatedShip(new Ship(1), 5, 5));
 
         Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
@@ -99,6 +99,6 @@ public class BoardSerializationTest {
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        Placement.putShipAt(mBoard, ship, x, y);
+        Placement.putShipAt(mBoard, new Board.LocatedShip(ship, x, y));
     }
 }

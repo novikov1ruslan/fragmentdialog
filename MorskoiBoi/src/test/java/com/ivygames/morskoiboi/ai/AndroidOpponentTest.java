@@ -92,7 +92,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
-        Placement.putShipAt(mBoard, new Ship(2), 5, 5);
+        Placement.putShipAt(mBoard, new Board.LocatedShip(new Ship(2), 5, 5));
         setBoardDefeated(false);
         mAndroid.onShotAt(Vector2.get(5, 5));
 

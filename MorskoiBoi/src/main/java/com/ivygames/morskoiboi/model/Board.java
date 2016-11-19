@@ -41,12 +41,12 @@ public class Board {
         return UnmodifiableCollection.unmodifiableCollection(mShips);
     }
 
-    public boolean removeShip(@NonNull Ship ship) {
-        return mShips.remove(new LocatedShip(ship, ship.getPosition()));
+    public boolean removeShip(@NonNull LocatedShip locatedShip) {
+        return mShips.remove(locatedShip);
     }
 
-    public void addShip(@NonNull Ship ship) {
-        mShips.add(new LocatedShip(ship, ship.getPosition()));
+    public void addShip(@NonNull LocatedShip locatedShip) {
+        mShips.add(locatedShip);
     }
 
     public List<Vector2> getCellsByType(@NonNull Cell cell) {

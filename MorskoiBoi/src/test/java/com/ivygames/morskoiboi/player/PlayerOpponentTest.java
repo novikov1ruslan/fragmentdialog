@@ -140,7 +140,8 @@ public class PlayerOpponentTest {
         Vector2 aim = Vector2.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
-        mPlacement.putShipAt(board, new Ship(2), aim);
+        Ship ship = new Ship(2);
+        mPlacement.putShipAt(board, new Board.LocatedShip(ship, aim));
 
         mPlayer.onShotAt(aim);
 
@@ -152,7 +153,8 @@ public class PlayerOpponentTest {
         Vector2 aim = Vector2.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
-        Placement.putShipAt(board, new Ship(1), aim);
+        Ship ship = new Ship(1);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, aim));
 
         mPlayer.onShotAt(aim);
 
@@ -259,7 +261,8 @@ public class PlayerOpponentTest {
     @Test
     public void WhenPlayerIsHit__CallbackCalled() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
+        Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
         Vector2 aim = Vector2.get(5, 5);
 
@@ -271,7 +274,8 @@ public class PlayerOpponentTest {
     @Test
     public void WhenPlayerIsMissed__CallbackCalled() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(2, Ship.Orientation.VERTICAL), 5, 5);
+        Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
         Vector2 aim = Vector2.get(1, 1);
 
@@ -283,7 +287,8 @@ public class PlayerOpponentTest {
     @Test
     public void WhenPlayerIsKilled__CallbackCalled() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(1, Ship.Orientation.VERTICAL), 5, 5);
+        Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
         Vector2 aim = Vector2.get(5, 5);
 
@@ -298,7 +303,8 @@ public class PlayerOpponentTest {
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(1), 5, 5);
+        Ship ship = new Ship(1);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
 
         mPlayer.onShotAt(Vector2.get(5, 5));

@@ -55,7 +55,7 @@ public class SetupBoardPresenter {
         }
 
         if (board.shipFitsTheBoard(mPickedShip, i, j)) {
-            Placement.putShipAt(board, mPickedShip, i, j);
+            Placement.putShipAt(board, new Board.LocatedShip(mPickedShip, i, j));
         } else {
             returnShipToPool(mPickedShip);
         }

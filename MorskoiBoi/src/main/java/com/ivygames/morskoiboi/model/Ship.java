@@ -68,10 +68,6 @@ public class Ship {
         return this;
     }
 
-    public Vector2 getPosition() {
-        return Vector2.get(mX, mY);
-    }
-
     public Ship setCoordinates(int x, int y) {
         mX = x;
         mY = y;

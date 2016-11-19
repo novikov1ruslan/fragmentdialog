@@ -80,7 +80,7 @@ public class RussianRulesTest {
         Board board = new Board();
         Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
         for (Ship ship : ships) {
-            Placement.putShipAt(board, ship, 0, 0);
+            Placement.putShipAt(board, new Board.LocatedShip(ship, 0, 0));
         }
         assertThat(board.getShips().size(), is(10));
         assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
@@ -95,23 +95,27 @@ public class RussianRulesTest {
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(1), 5, 5);
+        Ship ship = new Ship(1);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
         assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship2() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(1), 1, 5);
+        Ship ship = new Ship(1);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 1, 5));
         assertThat(BoardUtils.isCellConflicting(board, 1, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_conflicting_if_it_is_occupied_by_ship_A_and_ship_B_is_touching_the_cell() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(1), 6, 6);
+        Ship ship = new Ship(1);
+        Placement.putShipAt(board, new Board.LocatedShip(ship, 6, 6));
 
-        Placement.putShipAt(board, new Ship(1), 5, 5);
+        Ship ship1 = new Ship(1);
+        Placement.putShipAt(board, new Board.LocatedShip(ship1, 5, 5));
 
         assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
         assertThat(BoardUtils.isCellConflicting(board, 6, 6, mRules.allowAdjacentShips()), is(true));
@@ -120,9 +124,9 @@ public class RussianRulesTest {
     @Test
     public void WhenShipsOverlap__ThereIsAConflict() {
         Board board = new Board();
-        Placement.putShipAt(board, new Ship(1), 5, 5);
+        Placement.putShipAt(board, new Board.LocatedShip(new Ship(1), 5, 5));
 
-        Placement.putShipAt(board, new Ship(1), 5, 5);
+        Placement.putShipAt(board, new Board.LocatedShip(new Ship(1), 5, 5));
 
         assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
     }

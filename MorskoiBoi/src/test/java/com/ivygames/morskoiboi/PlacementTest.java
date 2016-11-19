@@ -152,7 +152,7 @@ public class PlacementTest {
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        Placement.putShipAt(mBoard, ship, x, y);
+        Placement.putShipAt(mBoard, new Board.LocatedShip(ship, x, y));
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {

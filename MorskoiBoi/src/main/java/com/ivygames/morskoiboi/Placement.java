@@ -43,7 +43,7 @@ public class Placement {
             int i = cell.x;
             int j = cell.y;
             if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
-                putShipAt(board, ship, cell);
+                putShipAt(board, new Board.LocatedShip(ship, i, j));
                 return true;
             } else {
                 // this cell is not suitable for placement
@@ -54,12 +54,11 @@ public class Placement {
         return false;
     }
 
-    public static void putShipAt(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 v) {
-        putShipAt(board, ship, v.x, v.y);
-    }
-
     // TODO: when ship has no coordinates this method is not needed, use Board#addShip
-    public static void putShipAt(@NonNull Board board, @NonNull Ship ship, int i, int j) {
+    public static void putShipAt(@NonNull Board board, @NonNull Board.LocatedShip locatedShip) {
+        Ship ship = locatedShip.ship;
+        int i = locatedShip.position.x;
+        int j = locatedShip.position.y;
         if (!board.shipFitsTheBoard(ship, i, j)) {
             throw new IllegalArgumentException("cannot put ship " + ship + " at (" + i + "," + j + ")");
         }
@@ -78,7 +77,7 @@ public class Placement {
 //            }
 //        }
 
-        board.addShip(ship);
+        board.addShip(locatedShip);
     }
 
     @Nullable
@@ -90,7 +89,7 @@ public class Placement {
 
         Board.LocatedShip locatedShip = board.getFirstShipAt(i, j);
         if (locatedShip != null) {
-            board.removeShip(locatedShip.ship);
+            board.removeShip(locatedShip);
             return locatedShip.ship;
         }
         return null;
@@ -110,12 +109,13 @@ public class Placement {
         ship.rotate();
 
         if (board.shipFitsTheBoard(ship, x, y)) {
-            putShipAt(board, ship, x, y);
+            putShipAt(board, new Board.LocatedShip(ship, x, y));
         } else {
+            int i = board.horizontalDimension() - ship.size;
             if (ship.isHorizontal()) {
-                putShipAt(board, ship, board.horizontalDimension() - ship.size, y);
+                putShipAt(board, new Board.LocatedShip(ship, i, y));
             } else {
-                putShipAt(board, ship, x, board.horizontalDimension() - ship.size);
+                putShipAt(board, new Board.LocatedShip(ship, x, i));
             }
         }
     }
