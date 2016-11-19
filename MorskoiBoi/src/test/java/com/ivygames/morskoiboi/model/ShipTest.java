@@ -79,16 +79,9 @@ public class ShipTest {
     @Test
     public void testIsInShip() {
         Ship ship1 = new Ship(2, Ship.Orientation.HORIZONTAL);
-        ship1.setX(5);
-        ship1.setY(5);
         // TODO: position is changed together - make it a vector
         Ship ship2 = new Ship(2, Ship.Orientation.VERTICAL);
-        ship2.setX(5);
-        ship2.setY(5);
-
         Ship ship3 = new Ship(3, Ship.Orientation.VERTICAL);
-        ship3.setX(4);
-        ship3.setY(3);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
