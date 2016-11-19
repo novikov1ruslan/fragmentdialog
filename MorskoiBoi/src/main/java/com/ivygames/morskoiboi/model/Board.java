@@ -139,10 +139,10 @@ public class Board {
     }
 
     @Nullable
-    public Ship getFirstShipAt(@NonNull Vector2 v) {
+    public LocatedShip getFirstShipAt(@NonNull Vector2 v) {
         for (LocatedShip locatedShip : mShips) {
             if (Ship.isInShip(v, locatedShip)) {
-                return locatedShip.ship;
+                return locatedShip;
             }
         }
 
@@ -150,7 +150,7 @@ public class Board {
     }
 
     @Nullable
-    public Ship getFirstShipAt(int i, int j) {
+    public LocatedShip getFirstShipAt(int i, int j) {
         return getFirstShipAt(Vector2.get(i, j));
     }
 

@@ -300,13 +300,15 @@ public class PlayerOpponent implements Opponent {
     /**
      * marks the aimed cell
      */
+    @NonNull
     private ShotResult createResultForShootingAt(@NonNull Vector2 aim) {
         // ship if found will be shot and returned
-        Ship ship = mMyBoard.getFirstShipAt(aim);
+        Board.LocatedShip locatedShip = mMyBoard.getFirstShipAt(aim);
 
-        if (ship == null) {
+        if (locatedShip == null) {
             mMyBoard.setCell(Cell.MISS, aim);
         } else {
+            Ship ship = locatedShip.ship;
             mMyBoard.setCell(Cell.HIT, aim);
             ship.shoot();
 

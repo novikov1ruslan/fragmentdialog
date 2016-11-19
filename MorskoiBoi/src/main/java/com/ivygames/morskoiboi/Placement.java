@@ -88,11 +88,12 @@ public class Placement {
             return null;
         }
 
-        Ship ship = board.getFirstShipAt(i, j);
-        if (ship != null) {
-            board.removeShip(ship);
+        Board.LocatedShip locatedShip = board.getFirstShipAt(i, j);
+        if (locatedShip != null) {
+            board.removeShip(locatedShip.ship);
+            return locatedShip.ship;
         }
-        return ship;
+        return null;
     }
 
     public static void rotateShipAt(@NonNull Board board, int x, int y) {

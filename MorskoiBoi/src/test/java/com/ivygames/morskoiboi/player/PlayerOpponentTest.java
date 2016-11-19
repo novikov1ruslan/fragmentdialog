@@ -121,8 +121,8 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotResult(result);
 
-        Ship actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
-        assertThat(actual, equalTo(ship));
+        Board.LocatedShip actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
+        assertThat(actual.ship, equalTo(ship));
         assertThat(enemyCellAt(aim), equalTo(Cell.HIT));
     }
 
