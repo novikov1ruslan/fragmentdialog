@@ -30,7 +30,7 @@ public class Ship {
         }
     }
 
-    public Ship(int size, Orientation orientation) {
+    public Ship(int size, @NonNull Orientation orientation) {
         this.size = size;
         mOrientation = orientation;
         mHealth = size;
@@ -45,7 +45,7 @@ public class Ship {
         this(size, Orientation.HORIZONTAL);
     }
 
-    public Ship(Ship ship) {
+    public Ship(@NonNull Ship ship) {
         size = ship.size;
         mOrientation = ship.mOrientation;
         mX = ship.mX;
@@ -57,18 +57,10 @@ public class Ship {
         return mOrientation == Orientation.HORIZONTAL;
     }
 
-    public int getX() {
-        return mX;
-    }
-
     //TODO: remove as not used
     public Ship setX(int x) {
         mX = x;
         return this;
-    }
-
-    public int getY() {
-        return mY;
     }
 
     public Ship setY(int y) {

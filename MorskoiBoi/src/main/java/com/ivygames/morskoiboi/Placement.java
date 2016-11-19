@@ -83,6 +83,11 @@ public class Placement {
 
     @Nullable
     public static Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
+        if (!Board.contains(i, j)) {
+            Ln.w("(" + i + "," + j + ") is outside the board");
+            return null;
+        }
+
         Ship ship = board.getFirstShipAt(i, j);
         if (ship != null) {
             board.removeShip(ship);
@@ -96,7 +101,7 @@ public class Placement {
             return;
         }
 
-        Ship ship = removeShipFrom(board, x, y);
+        Ship ship = pickShipFromBoard(board, x, y);
         if (ship == null) {
             return;
         }
@@ -112,29 +117,6 @@ public class Placement {
                 putShipAt(board, ship, x, board.horizontalDimension() - ship.size);
             }
         }
-    }
-
-    /**
-     * @return null if no ship at (x,y) was found
-     * or if (x,y) is outside the board
-     */
-    @Nullable
-    private static Ship removeShipFrom(@NonNull Board board, int x, int y) {
-        if (!Board.contains(x, y)) {
-            Ln.w("(" + x + "," + y + ") is outside the board");
-            return null;
-        }
-
-        // find the ship to remove
-        Ship removedShip = board.getFirstShipAt(x, y);
-
-        // if the ship found - recreate the board without this ship
-        if (removedShip == null) {
-            return null;
-        }
-        board.removeShip(removedShip);
-
-        return removedShip;
     }
 
     /**
