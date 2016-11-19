@@ -26,7 +26,8 @@ public class BoardSetupUtils {
         return true;
     }
 
-    public static Collection<Vector2> getNeighboringCoordinates(int x, int y) {
+    @NonNull
+    public static List<Vector2> getNeighboringCoordinates(int x, int y) {
         Ship ship = new Ship(1);
         ship.setCoordinates(x, y);
 
@@ -34,8 +35,9 @@ public class BoardSetupUtils {
     }
 
     // TODO: use enum instead of boolean
-    public static Collection<Vector2> getCells(@NonNull Ship ship, boolean neighboring) {
-        Collection<Vector2> coordinates = new ArrayList<>();
+    @NonNull
+    public static List<Vector2> getCells(@NonNull Ship ship, boolean neighboring) {
+        List<Vector2> coordinates = new ArrayList<>();
 
         int x = ship.getX();
         int y = ship.getY();

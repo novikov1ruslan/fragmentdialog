@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.variant;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Size;
 
 import com.ivygames.morskoiboi.ai.BotAlgorithm;
 import com.ivygames.morskoiboi.model.Board;
@@ -19,16 +20,17 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class RussianBot implements BotAlgorithm {
 
+    @NonNull
     private final Random mRandom;
 
-    public RussianBot(Random random) {
+    public RussianBot(@NonNull Random random) {
         mRandom = random;
     }
 
     /**
      * @return true if coordinates {@code vector} are aligned horizontally
      */
-    private static boolean coordinatesAlignedHorizontally(List<Vector2> coordinates) {
+    private static boolean coordinatesAlignedHorizontally(@NonNull @Size(min = 1) List<Vector2> coordinates) {
 
         int y = coordinates.get(0).getY();
 
@@ -45,7 +47,7 @@ public class RussianBot implements BotAlgorithm {
     @Override
     public Vector2 shoot(@NonNull Board board) {
         // TODO: this method does not change the board. Add immutable board and pass it for correctness
-        List<Vector2> hitDecks = createDecks(board);
+        List<Vector2> hitDecks = findHitCells(board);
         List<Vector2> possibleShots;
         if (hitDecks.size() == 0) {
             possibleShots = BoardSetupUtils.getPossibleShots(board, false);
@@ -72,7 +74,7 @@ public class RussianBot implements BotAlgorithm {
     }
 
     @NonNull
-    private static List<Vector2> getPossibleShotsAround(@NonNull Board board, int x, int y) {
+    public static List<Vector2> getPossibleShotsAround(@NonNull Board board, int x, int y) {
         ArrayList<Vector2> possibleShots = new ArrayList<>();
         if (isEmptyCell(board, x - 1, y)) {
             possibleShots.add(Vector2.get(x - 1, y));
@@ -90,7 +92,7 @@ public class RussianBot implements BotAlgorithm {
         return possibleShots;
     }
 
-    private static void addCellIfEmpty(Board board, int x, int y, Collection<Vector2> out) {
+    private static void addCellIfEmpty(@NonNull Board board, int x, int y, @NonNull Collection<Vector2> out) {
         if (Board.contains(x, y)) {
             Cell cell = board.getCell(x, y);
             if (cell == Cell.EMPTY) {
@@ -135,12 +137,15 @@ public class RussianBot implements BotAlgorithm {
         return possibleShots;
     }
 
-    private static List<Vector2> createDecks(@NonNull Board board) {
+    /**
+     * Assumption is that the cells will belong to the same ship.
+     */
+    @NonNull
+    private static List<Vector2> findHitCells(@NonNull Board board) {
         List<Vector2> decks = new ArrayList<>();
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
-                Cell cell = board.getCell(i, j);
-                if (cell == Cell.HIT) {
+                if (board.getCell(i, j) == Cell.HIT) {
                     if (board.getShipsAt(i, j).isEmpty()) {
                         decks.add(Vector2.get(i, j));
                     }
