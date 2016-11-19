@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.json.JSONException;
@@ -11,34 +12,32 @@ public class ShotResult {
     private static final String SHIP = "SHIP";
     private static final String AIM = "AIM";
 
+    @NonNull
     public final Cell cell;
-    public final Ship ship;
+    @NonNull
     public final Vector2 aim;
+    @Nullable
+    public final Ship ship;
 
-    public static ShotResult fromJson(String json) {
-        Cell cell;
-        Board.LocatedShip ship = null;
-        Vector2 aim = null;
+    @NonNull
+    public static ShotResult fromJson(@NonNull String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
-            cell = Cell.parse((char) jsonObject.getInt(CELL));
+            Cell cell = Cell.parse((char) jsonObject.getInt(CELL));
+
+            JSONObject aimJson = jsonObject.getJSONObject(AIM);
+            Vector2 aim = Vector2.fromJson(aimJson);
 
             if (jsonObject.has(SHIP)) {
                 JSONObject shipJson = jsonObject.getJSONObject(SHIP);
-                ship = ShipSerialization.fromJson(shipJson);
+                Board.LocatedShip locatedShip = ShipSerialization.fromJson(shipJson);
+                return new ShotResult(aim, cell, locatedShip.ship);
             }
-            if (jsonObject.has(AIM)) {
-                JSONObject aimJson = jsonObject.getJSONObject(AIM);
-                aim = Vector2.fromJson(aimJson);
-            }
+
+            return new ShotResult(aim, cell);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
-        if (ship != null) {
-            return new ShotResult(aim, cell, ship.ship);
-        }
-        return new ShotResult(aim, cell);
     }
 
     // TODO: unit test
@@ -46,12 +45,11 @@ public class ShotResult {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(CELL, cell.toChar());
+            jsonObject.put(AIM, aim.toJson());
 
             if (ship != null) {
                 jsonObject.put(SHIP, ShipSerialization.toJson(ship));
             }
-
-            jsonObject.put(AIM, aim.toJson());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -60,13 +58,13 @@ public class ShotResult {
     }
 
     // TODO: ship can have different coordinates than aim - this is a bug
-    public ShotResult(Vector2 aim, Cell cell, @Nullable Ship ship) {
+    public ShotResult(@NonNull Vector2 aim, @NonNull Cell cell, @Nullable Ship ship) {
         this.cell = cell;
         this.ship = ship;
         this.aim = aim;
     }
 
-    public ShotResult(Vector2 aim, Cell cell) {
+    public ShotResult(@NonNull Vector2 aim, @NonNull Cell cell) {
         this.cell = cell;
         this.ship = null;
         this.aim = aim;

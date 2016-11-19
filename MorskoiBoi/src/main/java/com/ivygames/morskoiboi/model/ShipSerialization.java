@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,7 +13,8 @@ public class ShipSerialization {
     private static final String IS_HORIZONTAL = "is_horizontal";
     private static final String SIZE = "size";
 
-    public static JSONObject toJson(Ship ship) {
+    @NonNull
+    public static JSONObject toJson(@NonNull Ship ship) {
         JSONObject shipJson = new JSONObject();
         try {
             shipJson.put(SIZE, ship.size);
@@ -26,7 +29,8 @@ public class ShipSerialization {
         return shipJson;
     }
 
-    public static Board.LocatedShip fromJson(String json) {
+    @NonNull
+    public static Board.LocatedShip fromJson(@NonNull String json) {
         try {
             return fromJson(new JSONObject(json));
         } catch (JSONException e) {
@@ -34,7 +38,8 @@ public class ShipSerialization {
         }
     }
 
-    public static Board.LocatedShip fromJson(JSONObject json) {
+    @NonNull
+    public static Board.LocatedShip fromJson(@NonNull JSONObject json) {
         try {
             Ship ship = new Ship(json.getInt(SIZE));
             ship.mOrientation = json.getBoolean(IS_HORIZONTAL) ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
