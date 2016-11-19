@@ -15,13 +15,10 @@ public class Ship {
     int mY;
     int mHealth;
 
-    public static boolean isInShip(@NonNull Vector2 v, @NonNull Ship ship) {
-        return isInShip(v, ship, ship.getPosition());
-    }
-
-    public static boolean isInShip(@NonNull Vector2 v, @NonNull Ship ship, @NonNull Vector2 shipPosition) {
-        int x = shipPosition.x;
-        int y = shipPosition.y;
+    public static boolean isInShip(@NonNull Vector2 v, @NonNull Board.LocatedShip locatedShip) {
+        int x = locatedShip.position.x;
+        int y = locatedShip.position.y;
+        Ship ship = locatedShip.ship;
 
         int i = v.x;
         int j = v.y;

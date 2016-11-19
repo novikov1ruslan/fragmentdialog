@@ -30,8 +30,8 @@ public class Board {
     @NonNull
     public Collection<Ship> getShips() {
         Collection<Ship> ships = new HashSet<>(mShips.size());
-        for (LocatedShip ship : mShips) {
-            ships.add(ship.ship);
+        for (LocatedShip locatedShip : mShips) {
+            ships.add(locatedShip.ship);
         }
         return UnmodifiableCollection.unmodifiableCollection(ships);
     }
@@ -120,9 +120,9 @@ public class Board {
     @NonNull
     public Collection<Ship> getShipsAt(@NonNull Vector2 v) {
         Set<Ship> ships = new HashSet<>();
-        for (LocatedShip ship : mShips) {
-            if (Ship.isInShip(v, ship.ship, ship.position)) {
-                ships.add(ship.ship);
+        for (LocatedShip locatedShip : mShips) {
+            if (Ship.isInShip(v, locatedShip)) {
+                ships.add(locatedShip.ship);
             }
         }
 
@@ -140,9 +140,9 @@ public class Board {
 
     @Nullable
     public Ship getFirstShipAt(@NonNull Vector2 v) {
-        for (LocatedShip ship : mShips) {
-            if (Ship.isInShip(v, ship.ship)) {
-                return ship.ship;
+        for (LocatedShip locatedShip : mShips) {
+            if (Ship.isInShip(v, locatedShip)) {
+                return locatedShip.ship;
             }
         }
 
@@ -186,6 +186,7 @@ public class Board {
      * @return true if every ship on the board is sunk
      */
     public static boolean allAvailableShipsAreDestroyed(@NonNull Board board) {
+        // TODO: optimize iterating over Located or move the method from here
         for (Ship ship : board.getShips()) {
             if (!ship.isDead()) {
                 return false;
@@ -280,9 +281,13 @@ public class Board {
         @NonNull
         public final Vector2 position;
 
-        LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
+        public LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
             this.ship = ship;
             this.position = position;
+        }
+
+        public LocatedShip(@NonNull Ship ship, int i, int j) {
+            this(ship, Vector2.get(i, j));
         }
 
         @Override
@@ -298,6 +303,14 @@ public class Board {
         @Override
         public int hashCode() {
             return ship.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "LocatedShip{" +
+                    "ship=" + ship +
+                    ", position=" + position +
+                    '}';
         }
     }
 

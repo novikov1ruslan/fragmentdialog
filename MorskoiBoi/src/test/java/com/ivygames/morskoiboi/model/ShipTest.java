@@ -94,21 +94,21 @@ public class ShipTest {
             for (int j = 0; j < 10; j++) {
                 Vector2 v = Vector2.get(i, j);
                 if ((i == 5 || i == 6) && j == 5) {
-                    assertTrue(i + "," + j, Ship.isInShip(v, ship1));
+                    assertTrue(i + "," + j, Ship.isInShip(v, new Board.LocatedShip(ship1, 5, 5)));
                 } else {
-                    assertFalse(i + "," + j, Ship.isInShip(v, ship1));
+                    assertFalse(i + "," + j, Ship.isInShip(v, new Board.LocatedShip(ship1, 5, 5)));
                 }
 
                 if (i == 5 && (j == 5 || j == 6)) {
-                    assertTrue(i + "," + j, Ship.isInShip(v, ship2));
+                    assertTrue(i + "," + j, Ship.isInShip(v, new Board.LocatedShip(ship2, 5, 5)));
                 } else {
-                    assertFalse(i + "," + j, Ship.isInShip(v, ship2));
+                    assertFalse(i + "," + j, Ship.isInShip(v, new Board.LocatedShip(ship2, 5, 5)));
                 }
 
                 if (i == 4 && (j >= 3 && j <= 5)) {
-                    assertTrue(i + "," + j, Ship.isInShip(v, ship3));
+                    assertTrue(i + "," + j, Ship.isInShip(v, new Board.LocatedShip(ship3, 4, 3)));
                 } else {
-                    assertFalse(i + "," + j, Ship.isInShip(v, ship3));
+                    assertFalse(i + "," + j, Ship.isInShip(v, new Board.LocatedShip(ship3, 4, 3)));
                 }
             }
         }

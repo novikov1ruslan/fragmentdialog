@@ -28,19 +28,17 @@ public class BoardUtils {
 
     @NonNull
     public static List<Vector2> getNeighboringCoordinates(int x, int y) {
-        Ship ship = new Ship(1);
-        ship.setCoordinates(x, y);
-
-        return getCells(ship, true);
+        return getCells(new Board.LocatedShip(new Ship(1), Vector2.get(x, y)), true);
     }
 
     // TODO: use enum instead of boolean
     @NonNull
-    public static List<Vector2> getCells(@NonNull Ship ship, boolean neighboring) {
+    private static List<Vector2> getCells(@NonNull Board.LocatedShip locatedShip, boolean neighboring) {
         List<Vector2> coordinates = new ArrayList<>();
 
-        int x = ship.getX();
-        int y = ship.getY();
+        int x = locatedShip.position.x;
+        int y = locatedShip.position.y;
+        Ship ship = locatedShip.ship;
         boolean horizontal = ship.isHorizontal();
 
         for (int i = -1; i <= ship.getSize(); i++) {
@@ -49,7 +47,7 @@ public class BoardUtils {
                 int cellY = y + (horizontal ? j : i);
                 Vector2 v = Vector2.get(cellX, cellY);
                 if (Board.contains(v)) {
-                    boolean inShip = Ship.isInShip(v, ship);
+                    boolean inShip = Ship.isInShip(v, locatedShip);
                     if (inShip && !neighboring) {
                         coordinates.add(v);
                     } else if (!inShip && neighboring) {
@@ -64,10 +62,10 @@ public class BoardUtils {
 
     public static List<Vector2> getCellsFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector2> cells = Vector2.getAllCoordinates();
-        for (Ship ship : board.getShips()) {
-            cells.removeAll(getCells(ship, false));
+        for (Board.LocatedShip locatedShip : board.getLocatedShips()) {
+            cells.removeAll(getCells(locatedShip, false));
             if (!allowAdjacentShips) {
-                cells.removeAll(getCells(ship, true));
+                cells.removeAll(getCells(locatedShip, true));
             }
         }
         return cells;
