@@ -16,7 +16,6 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardTest {
@@ -91,7 +90,6 @@ public class BoardTest {
 
         Placement.putShipAt(mBoard, ship, 8, 5);
 
-        assertShipIsCorrectlyAlignedAt(ship, 8, 5);
         assertThat(ship, is(mBoard.getShipsAt(8, 5).iterator().next()));
         assertThat(ship, is(mBoard.getShipsAt(9, 5).iterator().next()));
     }
@@ -119,7 +117,6 @@ public class BoardTest {
 
         Placement.putShipAt(mBoard, ship, 3, 7);
 
-        assertShipIsCorrectlyAlignedAt(ship, 3, 7);
         assertThat(ship, is(mBoard.getShipsAt(3, 7).iterator().next()));
         assertThat(ship, is(mBoard.getShipsAt(3, 8).iterator().next()));
     }
@@ -128,11 +125,6 @@ public class BoardTest {
     public void testPutVerticalShipFailed() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
         Placement.putShipAt(mBoard, ship, 3, 8);
-    }
-
-    private static void assertShipIsCorrectlyAlignedAt(Ship ship, int x, int y) {
-        assertEquals(x, ship.getX());
-        assertEquals(y, ship.getY());
     }
 
     @Test

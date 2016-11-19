@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi;
 
+import android.test.MoreAsserts;
+
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
@@ -149,24 +151,7 @@ public class PlacementTest {
         Placement.rotateShipAt(mBoard, 5, 7);
 
         assertFalse(ship.isHorizontal());
-        assertEquals(5, ship.getX());
-        assertEquals(6, ship.getY());
-    }
-
-    @Test
-    public void testIsInProximity() {
-        Ship ship = new Ship(1);
-        ship.setX(5);
-        ship.setY(5);
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (i >= 4 && i <= 6 && j >= 4 && j <= 6) {
-                    Assert.assertTrue(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
-                } else {
-                    Assert.assertFalse(i + "," + j, ShipTestUtils.isInProximity(ship, i, j));
-                }
-            }
-        }
+        assertThat(mBoard.getShipsAt(5, 6).contains(ship), is(true));
     }
 
     private void putShipAt(Ship ship, int x, int y) {

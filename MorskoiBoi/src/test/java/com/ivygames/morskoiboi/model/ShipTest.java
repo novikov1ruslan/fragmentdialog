@@ -47,24 +47,6 @@ public class ShipTest {
     }
 
     @Test
-    public void testX() {
-        Ship ship = new Ship(1);
-        assertEquals(0, ship.getX());
-
-        ship.setX(5);
-        assertEquals(5, ship.getX());
-    }
-
-    @Test
-    public void testY() {
-        Ship ship = new Ship(1);
-        assertEquals(0, ship.getY());
-
-        ship.setY(5);
-        assertEquals(5, ship.getY());
-    }
-
-    @Test
     public void testRotate() {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
         ship.rotate();
