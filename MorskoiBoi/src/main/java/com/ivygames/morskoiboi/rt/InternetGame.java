@@ -43,4 +43,8 @@ public class InternetGame extends Game {
         return TURN_TIMEOUT;
     }
 
+    @Override
+    public String toString() {
+        return "[Internet Game]";
+    }
 }

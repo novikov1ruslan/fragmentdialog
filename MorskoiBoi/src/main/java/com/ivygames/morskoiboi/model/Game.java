@@ -21,7 +21,7 @@ public abstract class Game implements Finishable {
     @Override
     public boolean finish() {
         if (mFinished) {
-            Ln.w(getType() + " already finished");
+            Ln.w(this + " already finished");
             return true;
         }
         mFinished = true;
@@ -32,10 +32,4 @@ public abstract class Game implements Finishable {
      * @return timeout in seconds
      */
     public abstract int getTurnTimeout();
-
-    @Override
-    public String toString() {
-        return "[type=" + getType() + "]";
-    }
-
 }

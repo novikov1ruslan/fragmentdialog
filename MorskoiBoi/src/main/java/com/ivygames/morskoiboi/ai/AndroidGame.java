@@ -35,4 +35,8 @@ public class AndroidGame extends Game {
         return TURN_TIMEOUT;
     }
 
+    @Override
+    public String toString() {
+        return "[Android Game]";
+    }
 }

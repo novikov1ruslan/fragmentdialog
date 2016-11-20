@@ -51,4 +51,8 @@ public class BluetoothGame extends Game {
         return TURN_TIMEOUT;
     }
 
+    @Override
+    public String toString() {
+        return "[Bluetooth Game]";
+    }
 }
