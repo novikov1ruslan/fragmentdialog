@@ -10,9 +10,6 @@ public class Ship {
 
     public final int size;
     Orientation mOrientation;
-    //TODO: store it on board
-    int mX;
-    int mY;
     int mHealth;
 
     public Ship(int size, @NonNull Orientation orientation) {
@@ -33,24 +30,11 @@ public class Ship {
     public Ship(@NonNull Ship ship) {
         size = ship.size;
         mOrientation = ship.mOrientation;
-        mX = ship.mX;
-        mY = ship.mY;
         mHealth = ship.mHealth;
     }
 
     public boolean isHorizontal() {
         return mOrientation == Orientation.HORIZONTAL;
-    }
-
-    //TODO: remove as not used
-    public Ship setX(int x) {
-        mX = x;
-        return this;
-    }
-
-    public Ship setY(int y) {
-        mY = y;
-        return this;
     }
 
     /**
