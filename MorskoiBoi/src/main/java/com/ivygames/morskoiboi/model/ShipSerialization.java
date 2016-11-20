@@ -14,13 +14,29 @@ public class ShipSerialization {
     private static final String SIZE = "size";
 
     @NonNull
+    public static JSONObject toJson(@NonNull Board.LocatedShip locatedShip) {
+        JSONObject shipJson = new JSONObject();
+        try {
+            Ship ship = locatedShip.ship;
+            Vector2 position = locatedShip.position;
+            shipJson.put(SIZE, ship.size);
+            shipJson.put(IS_HORIZONTAL, ship.isHorizontal());
+            shipJson.put(X, position.x);
+            shipJson.put(Y, position.y);
+            shipJson.put(HEALTH, ship.mHealth);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        return shipJson;
+    }
+
+    @NonNull
     public static JSONObject toJson(@NonNull Ship ship) {
         JSONObject shipJson = new JSONObject();
         try {
             shipJson.put(SIZE, ship.size);
             shipJson.put(IS_HORIZONTAL, ship.isHorizontal());
-            shipJson.put(X, ship.mX);
-            shipJson.put(Y, ship.mY);
             shipJson.put(HEALTH, ship.mHealth);
         } catch (JSONException e) {
             throw new RuntimeException(e);

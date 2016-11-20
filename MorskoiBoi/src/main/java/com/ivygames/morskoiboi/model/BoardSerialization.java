@@ -76,8 +76,8 @@ public class BoardSerialization {
             jsonObject.put(CELLS, getStringFromCells(board.mCells));
 
             JSONArray shipsJson = new JSONArray();
-            for (Ship ship : board.getShips()) {
-                shipsJson.put(ShipSerialization.toJson(ship));
+            for (Board.LocatedShip locatedShip : board.getLocatedShips()) {
+                shipsJson.put(ShipSerialization.toJson(locatedShip));
             }
             jsonObject.put(SHIPS, shipsJson);
 
