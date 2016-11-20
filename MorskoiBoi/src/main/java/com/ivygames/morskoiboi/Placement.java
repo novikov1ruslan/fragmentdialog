@@ -56,11 +56,10 @@ public class Placement {
 
     // TODO: when ship has no coordinates this method is not needed, use Board#addShip
     public static void putShipAt(@NonNull Board board, @NonNull Board.LocatedShip locatedShip) {
-        Ship ship = locatedShip.ship;
         int i = locatedShip.position.x;
         int j = locatedShip.position.y;
-        if (!board.shipFitsTheBoard(ship, i, j)) {
-            throw new IllegalArgumentException("cannot put ship " + ship + " at (" + i + "," + j + ")");
+        if (!board.shipFitsTheBoard(locatedShip.ship, i, j)) {
+            throw new IllegalArgumentException("cannot put ship " + locatedShip);
         }
 
 //        Collection<Vector2> neighboringCells = BoardUtils.getCells(ship, true);
