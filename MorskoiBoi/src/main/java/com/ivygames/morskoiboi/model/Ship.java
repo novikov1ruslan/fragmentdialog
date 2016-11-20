@@ -15,21 +15,6 @@ public class Ship {
     int mY;
     int mHealth;
 
-    public static boolean isInShip(@NonNull Vector2 v, @NonNull Board.LocatedShip locatedShip) {
-        int x = locatedShip.position.x;
-        int y = locatedShip.position.y;
-        Ship ship = locatedShip.ship;
-
-        int i = v.x;
-        int j = v.y;
-
-        if (ship.isHorizontal()) {
-            return i >= x && i < x + ship.size && j == y;
-        } else {
-            return j >= y && j < y + ship.size && i == x;
-        }
-    }
-
     public Ship(int size, @NonNull Orientation orientation) {
         this.size = size;
         mOrientation = orientation;

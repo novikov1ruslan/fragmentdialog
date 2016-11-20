@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Ship;
@@ -47,7 +48,7 @@ public class BoardUtils {
                 int cellY = y + (horizontal ? j : i);
                 Vector2 v = Vector2.get(cellX, cellY);
                 if (Board.contains(v)) {
-                    boolean inShip = Ship.isInShip(v, locatedShip);
+                    boolean inShip = ShipUtils.isInShip(v, locatedShip);
                     if (inShip && !neighboring) {
                         coordinates.add(v);
                     } else if (!inShip && neighboring) {

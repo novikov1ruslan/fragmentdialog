@@ -3,6 +3,8 @@ package com.ivygames.morskoiboi.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.morskoiboi.ShipUtils;
+
 import org.apache.commons.collections4.collection.UnmodifiableCollection;
 
 import java.util.ArrayList;
@@ -119,7 +121,7 @@ public class Board {
     public Collection<Ship> getShipsAt(@NonNull Vector2 v) {
         Set<Ship> ships = new HashSet<>();
         for (LocatedShip locatedShip : mShips) {
-            if (Ship.isInShip(v, locatedShip)) {
+            if (ShipUtils.isInShip(v, locatedShip)) {
                 ships.add(locatedShip.ship);
             }
         }
@@ -139,7 +141,7 @@ public class Board {
     @Nullable
     public LocatedShip getFirstShipAt(@NonNull Vector2 v) {
         for (LocatedShip locatedShip : mShips) {
-            if (Ship.isInShip(v, locatedShip)) {
+            if (ShipUtils.isInShip(v, locatedShip)) {
                 return locatedShip;
             }
         }

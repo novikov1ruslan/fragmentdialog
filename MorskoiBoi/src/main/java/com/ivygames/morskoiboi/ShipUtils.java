@@ -2,7 +2,9 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +13,21 @@ import java.util.Random;
 
 // TODO: write unit tests
 public class ShipUtils {
+
+    public static boolean isInShip(@NonNull Vector2 v, @NonNull Board.LocatedShip locatedShip) {
+        int x = locatedShip.position.x;
+        int y = locatedShip.position.y;
+        Ship ship = locatedShip.ship;
+
+        int i = v.x;
+        int j = v.y;
+
+        if (ship.isHorizontal()) {
+            return i >= x && i < x + ship.size && j == y;
+        } else {
+            return j >= y && j < y + ship.size && i == x;
+        }
+    }
 
     public static class OrientationBuilder {
         @NonNull
