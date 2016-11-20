@@ -67,7 +67,6 @@ public class PlayerOpponentTest {
 
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        Placement placement = new Placement(mRandom, rules.allowAdjacentShips());
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, rules);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
@@ -116,7 +115,7 @@ public class PlayerOpponentTest {
     public void after_shot_result_is_kill__enemy_board_shows_killed_ship() {
         Vector2 aim = Vector2.get(5, 5);
         Ship ship = new Ship(2);
-        ShotResult result = new ShotResult(aim, Cell.HIT, ship);
+        ShotResult result = new ShotResult(aim, Cell.HIT, new Board.LocatedShip(ship));
 
         mPlayer.onShotResult(result);
 
@@ -140,7 +139,7 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(2);
-        mPlacement.putShipAt(board, new Board.LocatedShip(ship, aim));
+        board.addShip(new Board.LocatedShip(ship, aim));
 
         mPlayer.onShotAt(aim);
 
@@ -226,7 +225,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerKillsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT, new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT, new Board.LocatedShip(new Ship(1)));
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onKillEnemy();
@@ -335,7 +334,7 @@ public class PlayerOpponentTest {
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, ship);
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Board.LocatedShip(ship));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
@@ -346,7 +345,7 @@ public class PlayerOpponentTest {
         mPlayer = newPlayer(PlayerUtils.defeatedBoardRules(1));
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Ship(1));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Board.LocatedShip(new Ship(1)));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, never()).onLost(any(Board.class));
@@ -413,7 +412,7 @@ public class PlayerOpponentTest {
         aiOpponent.setOpponent(player);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, ship);
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Board.LocatedShip(ship));
         player.onShotResult(result);
 
         assertThat(aiOpponent.lostCalled(), is(true));

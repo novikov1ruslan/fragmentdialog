@@ -21,8 +21,7 @@ public class ShotResultSerialization {
 
             if (jsonObject.has(SHIP)) {
                 JSONObject shipJson = jsonObject.getJSONObject(SHIP);
-                Board.LocatedShip locatedShip = ShipSerialization.fromJson(shipJson);
-                return new ShotResult(aim, cell, locatedShip.ship);
+                return new ShotResult(aim, cell, ShipSerialization.fromJson(shipJson));
             }
 
             return new ShotResult(aim, cell);
@@ -38,8 +37,8 @@ public class ShotResultSerialization {
             jsonObject.put(CELL, result.cell.toChar());
             jsonObject.put(AIM, result.aim.toJson());
 
-            if (result.ship != null) {
-                jsonObject.put(SHIP, ShipSerialization.toJson(result.ship));
+            if (result.locatedShip != null) {
+                jsonObject.put(SHIP, ShipSerialization.toJson(result.locatedShip));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);

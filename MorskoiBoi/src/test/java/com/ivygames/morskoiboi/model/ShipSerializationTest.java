@@ -28,9 +28,7 @@ public class ShipSerializationTest {
     @Test
     public void testJson() {
         Ship ship = new Ship(3, Ship.Orientation.VERTICAL);
-        ship.setX(5);
-        ship.setY(7);
-        JSONObject shipJson = ShipSerialization.toJson(ship);
+        JSONObject shipJson = ShipSerialization.toJson(new Board.LocatedShip(ship, 5, 7));
 
         Ship ship2 = ShipSerialization.fromJson(shipJson).ship;
         assertThat(similar(ship, ship2), is(true));

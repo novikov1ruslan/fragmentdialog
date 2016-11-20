@@ -428,7 +428,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         public void onShotResult(@NonNull ShotResult result) {
             stopDetectingShotTimeout();
 
-            mStatistics.updateWithNewShot(result.ship, result.cell);
+            mStatistics.updateWithNewShot(result.isaKill(), result.cell);
 
             mLayout.removeAim();
             mLayout.setShotResult(result);

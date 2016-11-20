@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.commons.logger.Ln;
 
@@ -10,7 +9,7 @@ public class ScoreStatistics {
 
     private int mShells = INITIAL_SHELLS_NUMBER;
     private long mTimeSpent;
-    private Ship mLastShip;
+    private boolean mLastShotWasKill;
     private int mCombo;
 
     public int getShells() {
@@ -30,26 +29,26 @@ public class ScoreStatistics {
         mTimeSpent = millis;
     }
 
-    public void updateWithNewShot(@Nullable Ship ship, @NonNull Cell cell) {
+    public void updateWithNewShot(boolean kill, @NonNull Cell cell) {
         mShells--;
 
         // used for bonus scores calculation
-        if (ship != null && mLastShip != null) {
+        if (kill && mLastShotWasKill) {
             mCombo++;
             Ln.d("combo! " + mCombo);
         }
 
         if (cell == Cell.MISS) {
-            mLastShip = null;
-        } else if (ship != null) {
+            mLastShotWasKill = false;
+        } else if (kill) {
             Ln.v("sank");
-            mLastShip = ship;
+            mLastShotWasKill = true;
         }
     }
 
     @Override
     public String toString() {
-        return "[shells=" + mShells + ", timeSpent=" + mTimeSpent + ", lastShip=" + mLastShip + ", combo=" + mCombo + "]";
+        return "[shells=" + mShells + ", timeSpent=" + mTimeSpent + ", lastShip=" + mLastShotWasKill + ", combo=" + mCombo + "]";
     }
 
 }

@@ -181,7 +181,7 @@ public class PlayerOpponent implements Opponent {
         updateEnemyBoard(result);
 
         notifyOnShotResult(result);
-        if (shipSank(result.ship)) {
+        if (result.isaKill()) {
             notifyOnKillEnemy();
             if (BoardUtils.isItDefeatedBoard(mEnemyBoard, mRules)) {
                 Ln.d(mName + ": actually opponent lost");
@@ -209,10 +209,6 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    private boolean shipSank(@Nullable Ship ship) {
-        return ship != null;
-    }
-
     private boolean versionSupportsBoardReveal() {
         return mOpponentVersion >= PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL;
     }
@@ -225,8 +221,8 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": <- hitting my board at " + aim + " yields: " + result);
 
         notifyOnShotAt(aim);
-        if (shipSank(result.ship)) {
-            Ln.d(mName + ": my ship is destroyed - " + result.ship);
+        if (result.isaKill()) {
+            Ln.d(mName + ": my ship is destroyed - " + result.locatedShip);
             // FIXME: add unit test for removed below line
 //            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
             notifyOnKillPlayer();
@@ -313,7 +309,7 @@ public class PlayerOpponent implements Opponent {
             ship.shoot();
 
             if (ship.isDead()) {
-                return new ShotResult(aim, mMyBoard.getCell(aim), ship);
+                return new ShotResult(aim, mMyBoard.getCell(aim), locatedShip);
             }
         }
 
@@ -321,10 +317,10 @@ public class PlayerOpponent implements Opponent {
     }
 
     private void updateEnemyBoard(@NonNull ShotResult result) {
-        Ship ship = result.ship;
-        if (ship == null) {
+        if (result.locatedShip == null) {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
+            Ship ship = result.locatedShip.ship;
             mEnemyBoard.setCell(result.cell, result.aim);
             Vector2 location = findShipLocation(mEnemyBoard, ship, result.aim);
             Placement.putShipAt(mEnemyBoard, new Board.LocatedShip(ship, location));

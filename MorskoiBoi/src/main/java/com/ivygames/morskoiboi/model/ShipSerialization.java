@@ -32,20 +32,6 @@ public class ShipSerialization {
     }
 
     @NonNull
-    public static JSONObject toJson(@NonNull Ship ship) {
-        JSONObject shipJson = new JSONObject();
-        try {
-            shipJson.put(SIZE, ship.size);
-            shipJson.put(IS_HORIZONTAL, ship.isHorizontal());
-            shipJson.put(HEALTH, ship.mHealth);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        return shipJson;
-    }
-
-    @NonNull
     public static Board.LocatedShip fromJson(@NonNull String json) {
         try {
             return fromJson(new JSONObject(json));

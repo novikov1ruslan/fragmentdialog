@@ -293,6 +293,10 @@ public class Board {
         @NonNull
         public final Vector2 position;
 
+        public LocatedShip(@NonNull Ship ship) {
+            this(ship, Vector2.INVALID_VECTOR);
+        }
+
         public LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
             this.ship = ship;
             this.position = position;

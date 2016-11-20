@@ -10,22 +10,26 @@ public class ShotResult {
     @NonNull
     public final Vector2 aim;
     @Nullable
-    public final Ship ship;
+    public final Board.LocatedShip locatedShip;
 
-    public ShotResult(@NonNull Vector2 aim, @NonNull Cell cell, @Nullable Ship ship) {
+    public ShotResult(@NonNull Vector2 aim, @NonNull Cell cell, @Nullable Board.LocatedShip locatedShip) {
         this.cell = cell;
-        this.ship = ship;
         this.aim = aim;
+        this.locatedShip = locatedShip;
     }
 
     public ShotResult(@NonNull Vector2 aim, @NonNull Cell cell) {
         this.cell = cell;
-        this.ship = null;
         this.aim = aim;
+        this.locatedShip = null;
+    }
+
+    public boolean isaKill() {
+        return locatedShip != null;
     }
 
     @Override
     public String toString() {
-        return aim + "; " + cell + "; " + (ship == null ? "" : ship.toString());
+        return aim + "; " + cell + "; " + (locatedShip == null ? "" : locatedShip.toString());
     }
 }
