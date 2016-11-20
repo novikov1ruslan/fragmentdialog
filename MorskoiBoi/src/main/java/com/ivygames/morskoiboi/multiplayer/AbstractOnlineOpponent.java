@@ -6,6 +6,7 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.BoardSerialization;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.ShotResult;
+import com.ivygames.morskoiboi.model.ShotResultSerialization;
 import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
@@ -49,7 +50,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
                 mOpponent.onShotAt(Vector2.fromJson(body));
                 break;
             case SHOOT_RESULT:
-                mOpponent.onShotResult(ShotResult.fromJson(body));
+                mOpponent.onShotResult(ShotResultSerialization.fromJson(body));
                 break;
             case WIN:
                 mOpponent.onLost(BoardSerialization.fromJson(body));
@@ -69,7 +70,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
 
     @Override
     public void onShotResult(@NonNull ShotResult shotResult) {
-        send(SHOOT_RESULT + shotResult.toJson().toString());
+        send(SHOOT_RESULT + ShotResultSerialization.toJson(shotResult).toString());
     }
 
     @Override

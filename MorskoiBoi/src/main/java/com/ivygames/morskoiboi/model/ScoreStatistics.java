@@ -1,5 +1,8 @@
 package com.ivygames.morskoiboi.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.commons.logger.Ln;
 
 public class ScoreStatistics {
@@ -27,7 +30,7 @@ public class ScoreStatistics {
         mTimeSpent = millis;
     }
 
-    public void updateWithNewShot(Ship ship, Cell cell) {
+    public void updateWithNewShot(@Nullable Ship ship, @NonNull Cell cell) {
         mShells--;
 
         // used for bonus scores calculation
