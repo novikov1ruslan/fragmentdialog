@@ -191,7 +191,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     @Override
     public void onBackPressed() {
         UiEvent.send(UiEvent.GA_ACTION_BACK, "setup");
-        if (shouldNotifyOpponent()) {
+        if (mGame.shouldNotifyOpponent()) {
             Ln.d("match against a real human - ask the player if he really wants to exit");
             showWantToLeaveRoomDialog();
         } else {

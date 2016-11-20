@@ -16,6 +16,8 @@ public abstract class Game implements Finishable {
 
     public abstract Type getType();
 
+    public abstract boolean shouldNotifyOpponent();
+
     @Override
     public boolean finish() {
         if (mFinished) {

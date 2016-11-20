@@ -305,7 +305,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return;
         }
 
-        if (shouldNotifyOpponent()) {
+        if (mGame.shouldNotifyOpponent()) {
             if (mPlayer.isOpponentReady()) {
                 Ln.d("Captain, do you really want to surrender?");
                 showSurrenderDialog();

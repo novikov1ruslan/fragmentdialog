@@ -65,10 +65,6 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
                 mEndGameCommand).show(mFm, DIALOG);
     }
 
-    protected final boolean shouldNotifyOpponent() {
-        return mGame.getType() != Game.Type.VS_ANDROID;
-    }
-
     protected final void showWantToLeaveRoomDialog() {
         String message = getString(R.string.want_to_leave_room, mOpponentName);
         DialogUtils.newOkCancelDialog(message, mEndGameCommand).show(mFm, DIALOG);

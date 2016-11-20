@@ -42,6 +42,11 @@ public class BluetoothGame extends Game {
     }
 
     @Override
+    public boolean shouldNotifyOpponent() {
+        return true;
+    }
+
+    @Override
     public int getTurnTimeout() {
         return TURN_TIMEOUT;
     }

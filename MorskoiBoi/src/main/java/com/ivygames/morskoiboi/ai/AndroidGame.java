@@ -26,6 +26,11 @@ public class AndroidGame extends Game {
     }
 
     @Override
+    public boolean shouldNotifyOpponent() {
+        return false;
+    }
+
+    @Override
     public int getTurnTimeout() {
         return TURN_TIMEOUT;
     }

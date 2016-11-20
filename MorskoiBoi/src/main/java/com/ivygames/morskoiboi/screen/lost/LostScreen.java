@@ -110,7 +110,7 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     }
 
     private void doNotContinue() {
-        if (shouldNotifyOpponent()) {
+        if (mGame.shouldNotifyOpponent()) {
             showWantToLeaveRoomDialog();
         } else {
             backToSelectGame();
