@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.player;
 
-import com.ivygames.morskoiboi.ai.BotAlgorithm;
+import com.ivygames.morskoiboi.ai.Bot;
 
 public interface BotFactory {
-    BotAlgorithm createBot();
+    Bot createBot();
 }

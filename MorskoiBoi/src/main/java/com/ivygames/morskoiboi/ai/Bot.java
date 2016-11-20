@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Vector2;
 
-public interface BotAlgorithm {
+public interface Bot {
 
     /**
      * analyzes the board, chooses which cell to shoot, and marks it either miss or hit

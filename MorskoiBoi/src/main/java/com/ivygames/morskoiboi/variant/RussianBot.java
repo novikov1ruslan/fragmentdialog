@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.variant;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
-import com.ivygames.morskoiboi.ai.BotAlgorithm;
+import com.ivygames.morskoiboi.ai.Bot;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.Vector2;
@@ -18,7 +18,7 @@ import java.util.Random;
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 
-public class RussianBot implements BotAlgorithm {
+public class RussianBot implements Bot {
 
     @NonNull
     private final Random mRandom;

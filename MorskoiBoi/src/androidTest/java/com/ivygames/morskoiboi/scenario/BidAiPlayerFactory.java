@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.AiPlayerFactory;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.ai.BotAlgorithm;
+import com.ivygames.morskoiboi.ai.Bot;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
@@ -28,17 +28,17 @@ class BidAiPlayerFactory implements AiPlayerFactory {
     public PlayerOpponent createPlayer(@NonNull String name,
                                        @NonNull Placement placement,
                                        @NonNull Rules rules) {
-        BotAlgorithm bot = new MyBotAlgorithm(rules);
+        Bot bot = new MyBot(rules);
         return new BidAiOpponent("ai", placement, rules, bot, mBid, mRandom);
     }
 
-    private class MyBotAlgorithm implements BotAlgorithm {
+    private class MyBot implements Bot {
         private int mCurShot;
 
         @NonNull
         private final List<Vector2> mShots = new ArrayList<>();
 
-        public MyBotAlgorithm(Rules rules) {
+        public MyBot(Rules rules) {
             mShots.addAll(Utils.getShots(rules, mRandom));
             mShots.addAll(Utils.getShots(rules, mRandom));
         }

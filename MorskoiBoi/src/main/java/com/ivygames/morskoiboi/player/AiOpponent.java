@@ -7,7 +7,7 @@ import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ShipUtils;
-import com.ivygames.morskoiboi.ai.BotAlgorithm;
+import com.ivygames.morskoiboi.ai.Bot;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.Ship;
 
@@ -23,14 +23,14 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     @NonNull
     private final Rules mRules;
     @NonNull
-    private final BotAlgorithm mBot;
+    private final Bot mBot;
     @NonNull
     private final Bidder mBidder;
     @NonNull
     private final Random mRandom;
 
     public AiOpponent(@NonNull String name, @NonNull Placement placement,
-                      @NonNull Rules rules, @NonNull BotAlgorithm bot,
+                      @NonNull Rules rules, @NonNull Bot bot,
                       @NonNull Bidder bidder, @NonNull Random random) {
         super(name, rules);
         mPlacement = placement;
