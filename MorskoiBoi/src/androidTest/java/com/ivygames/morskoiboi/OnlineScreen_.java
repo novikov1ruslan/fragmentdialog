@@ -3,28 +3,32 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.common.multiplayer.MultiplayerRoom;
+import com.ivygames.morskoiboi.ai.AndroidGame;
+import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
+import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
 
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public abstract class OnlineScreen_ extends ScreenTest {
 
     protected static final String OPPONENT_NAME = "Sagi";
 
-//    protected Rules rules;
-    protected Game game;
+    protected TestableGame game;
     protected PlayerOpponent player;
     protected Opponent opponent;
     protected Session session;
@@ -35,17 +39,11 @@ public abstract class OnlineScreen_ extends ScreenTest {
         opponent = mock(Opponent.class);
         when(opponent.getName()).thenReturn(OPPONENT_NAME);
 
-        game = mock(Game.class);
-
         player = mockPlayer();
 
         session = new Session(player, opponent);
         Session.bindOpponents(player, opponent);
-
-//        rules = mock(Rules.class);
-//        when(rules.getAllShipsSizes()).thenReturn(new int[]{4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
-//
-//        Dependencies.inject(rules);
+        setGameType(Game.Type.VS_ANDROID);
     }
 
     public PlayerOpponent mockPlayer() {
@@ -67,8 +65,21 @@ public abstract class OnlineScreen_ extends ScreenTest {
     }
 
     protected final void setGameType(Game.Type type) {
-        when(game.getType()).thenReturn(type);
+        switch (type) {
+            case VS_ANDROID:
+                game = new TestableGame(new AndroidGame());
+                break;
+            case BLUETOOTH:
+                BluetoothConnection connection = mock(BluetoothConnection.class);
+                game = new TestableGame(new BluetoothGame(connection));
+                break;
+            case INTERNET:
+                MultiplayerRoom room = mock(MultiplayerRoom.class);
+                game = new TestableGame(new InternetGame(room));
+                break;
+        }
     }
+
     // TODO: inline
     protected final void backToSelectGame() {
         verifyGameFinished();
@@ -80,7 +91,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
     }
 
     private void verifyGameFinished() {
-        verify(game, times(1)).finish();
+        assertThat(game.hasFinished(), is(true));
     }
 
     protected final Matcher<View> opponentLeftDialog() {

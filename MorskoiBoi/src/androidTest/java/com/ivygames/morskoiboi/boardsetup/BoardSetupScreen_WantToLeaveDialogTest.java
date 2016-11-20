@@ -1,12 +1,13 @@
 package com.ivygames.morskoiboi.boardsetup;
 
-import com.ivygames.morskoiboi.ScreenUtils;
 import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static com.ivygames.morskoiboi.ScreenUtils.*;
+import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 
 public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreen_ {
     @Test
