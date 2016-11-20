@@ -2,22 +2,14 @@ package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Placement;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardSerializationTest {
@@ -34,29 +26,25 @@ public class BoardSerializationTest {
 
     private Board mBoard = new Board();
 
-    @Before
-    public void setup() {
-        Random random = mock(Random.class);
-        when(random.nextInt(anyInt())).thenReturn(0);
-    }
-
     @Test
-    public void successful_Recreation_After_Serializing_To_Json_Empty_Board() {
+    public void EmptyBoardSuccessfullyRecreated() {
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);
+
         assertEquals(mBoard, board);
     }
 
     @Test
     public void ParsingEmptyBoard() {
         Board board = BoardSerialization.fromJson(EMPTY_BOARD);
+
         assertBoardIsEmpty(board);
     }
 
     @Test
     public void ParsingBoardWithShip() {
         Board board2 = new Board();
-        Placement.putShipAt(board2, new Board.LocatedShip(new Ship(1), 5, 5));
+        board2.addShip(new Board.LocatedShip(new Ship(1), 5, 5));
 
         Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
@@ -64,15 +52,17 @@ public class BoardSerializationTest {
     }
 
     @Test
-    public void successful_Recreation_After_Serializing_To_String_Board_With_Ship() {
-        putShipAt(new Ship(1), 5, 5);
+    public void BoardWithShipSuccessfullySerializedAndParsed() {
+        mBoard.addShip(new Board.LocatedShip(new Ship(1), 5, 5));
+
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);
+
         assertEquals(mBoard, board);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throw_IllegalArgumentException_On_Illegal_String() {
+    public void ShouldThrowIllegalArgumentExceptionOnIllegalString() {
         BoardSerialization.fromJson("just some garbage");
     }
 
@@ -98,7 +88,4 @@ public class BoardSerializationTest {
         }
     }
 
-    private void putShipAt(Ship ship, int x, int y) {
-        Placement.putShipAt(mBoard, new Board.LocatedShip(ship, x, y));
-    }
 }

@@ -44,9 +44,7 @@ public class ShipSerialization {
             Ship ship = new Ship(json.getInt(SIZE));
             ship.mOrientation = json.getBoolean(IS_HORIZONTAL) ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
             int i = json.getInt(X);
-            ship.setX(i);
             int j = json.getInt(Y);
-            ship.setY(j);
             ship.mHealth = json.getInt(HEALTH);
             return new Board.LocatedShip(ship, Vector2.get(i, j));
         } catch (JSONException e) {

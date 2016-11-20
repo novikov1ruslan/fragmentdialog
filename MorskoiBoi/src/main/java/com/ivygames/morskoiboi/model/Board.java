@@ -3,8 +3,6 @@ package com.ivygames.morskoiboi.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.ShipUtils;
-
 import org.apache.commons.collections4.collection.UnmodifiableCollection;
 
 import java.util.ArrayList;
@@ -217,7 +215,7 @@ public class Board {
             return false;
         }
         Board other = (Board) obj;
-        return equals(mCells, other.mCells) && equals(getShips(), other.getShips());
+        return equals(mCells, other.mCells) && equals(getLocatedShips(), other.getLocatedShips());
     }
 
     // TODO: remove when cell becomes immutable
@@ -240,19 +238,33 @@ public class Board {
         return true;
     }
 
-    private static boolean equals(@NonNull Collection<Ship> ships1, @NonNull Collection<Ship> ships2) {
+    private static boolean equals(@NonNull Collection<LocatedShip> ships1, @NonNull Collection<LocatedShip> ships2) {
         if (ships1.size() != ships2.size()) {
             return false;
         }
 
-        Iterator<Ship> iterator = ships2.iterator();
-        for (Ship ship : ships1) {
-            if (!ShipUtils.similar(ship, iterator.next())) {
+        Iterator<LocatedShip> iterator = ships2.iterator();
+        for (LocatedShip locatedShip : ships1) {
+            if (!similar(locatedShip, iterator.next())) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private static boolean similar(LocatedShip ship1, LocatedShip ship2) {
+        if (ship1.ship.isDead() && !ship1.ship.isDead()) {
+            return false;
+        }
+        if (ship1.ship.isHorizontal() && !ship2.ship.isHorizontal()) {
+            return false;
+        }
+        if (ship1.ship.getHealth() != ship2.ship.getHealth()) {
+            return false;
+        }
+
+        return ship1.position == ship2.position;
     }
 
     @Override
