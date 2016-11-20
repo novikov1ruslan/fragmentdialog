@@ -26,14 +26,14 @@ public class BoardTest {
     public void testEquals() {
         Board board1 = new Board();
         Board board2 = new Board();
-        assertEquals(board1, board2);
+        assertThat(BoardTestUtils.similar(board1, board2), is(true));
 
         Ship ship = new Ship(3);
         Placement.putShipAt(board2, new Board.LocatedShip(ship, 5, 5));
-        assertFalse(board1.equals(board2));
+        assertFalse(BoardTestUtils.similar(board1, board2));
 
         Placement.putShipAt(board1, new Board.LocatedShip(ship, 5, 5));
-        assertEquals(board1, board2);
+        assertThat(BoardTestUtils.similar(board1, board2), is(true));
     }
 
     @Test

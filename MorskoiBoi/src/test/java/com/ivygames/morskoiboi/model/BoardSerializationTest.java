@@ -8,7 +8,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -31,7 +31,7 @@ public class BoardSerializationTest {
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);
 
-        assertEquals(mBoard, board);
+        assertThat(BoardTestUtils.similar(mBoard, board), is(true));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class BoardSerializationTest {
 
         Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
-        assertEquals(board1, board2);
+        assertThat(BoardTestUtils.similar(board1, board2), is(true));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class BoardSerializationTest {
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);
 
-        assertEquals(mBoard, board);
+        assertThat(BoardTestUtils.similar(mBoard, board), is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -72,7 +72,7 @@ public class BoardSerializationTest {
 
         Board copy = copy(board);
 
-        assertThat(copy, equalTo(board));
+        assertThat(BoardTestUtils.similar(copy, board), is(true));
     }
 
     @NonNull

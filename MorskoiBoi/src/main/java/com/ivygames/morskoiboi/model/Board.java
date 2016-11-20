@@ -8,10 +8,8 @@ import com.ivygames.morskoiboi.ShipUtils;
 import org.apache.commons.collections4.collection.UnmodifiableCollection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +47,7 @@ public class Board {
         mShips.add(locatedShip);
     }
 
+    @NonNull
     public List<Vector2> getCellsByType(@NonNull Cell cell) {
         List<Vector2> cells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
@@ -194,79 +193,6 @@ public class Board {
         }
 
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Arrays.hashCode(mCells);
-        result = prime * result + mShips.hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Board other = (Board) obj;
-        return equals(mCells, other.mCells) && equals(getLocatedShips(), other.getLocatedShips());
-    }
-
-    // TODO: remove when cell becomes immutable
-    private boolean equals(Cell[][] cells1, Cell[][] cells2) {
-        if (cells1.length != cells2.length) {
-            return false;
-        }
-        for (int i = 0; i < cells1.length; i++) {
-            if (cells1[i].length != cells2[i].length) {
-                return false;
-            }
-            for (int j = 0; j < cells1[i].length; j++) {
-                Cell cell1 = cells1[i][j];
-                Cell cell2 = cells2[i][j];
-                if (cell1.toChar() != cell2.toChar()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private static boolean equals(@NonNull Collection<LocatedShip> ships1, @NonNull Collection<LocatedShip> ships2) {
-        if (ships1.size() != ships2.size()) {
-            return false;
-        }
-
-        Iterator<LocatedShip> iterator = ships2.iterator();
-        for (LocatedShip locatedShip : ships1) {
-            if (!similar(locatedShip, iterator.next())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static boolean similar(LocatedShip ship1, LocatedShip ship2) {
-        if (ship1.ship.isDead() && !ship1.ship.isDead()) {
-            return false;
-        }
-        if (ship1.ship.isHorizontal() && !ship2.ship.isHorizontal()) {
-            return false;
-        }
-        if (ship1.ship.getHealth() != ship2.ship.getHealth()) {
-            return false;
-        }
-
-        return ship1.position == ship2.position;
     }
 
     @Override
