@@ -52,6 +52,16 @@ public class BluetoothGame extends Game {
     }
 
     @Override
+    public boolean hasSetupTimeout() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsAchievements() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "[Bluetooth Game]";
     }

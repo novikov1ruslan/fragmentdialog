@@ -86,7 +86,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.v("fleet: " + fleet);
 
         // TODO: remove achievements manager from here
-        if (game.getType() == Type.VS_ANDROID) {
+        if (game.supportsAchievements()) {
             int combo = statistics.getCombo();
             if (combo > 0) {
                 mAchievementsManager.processCombo(combo);

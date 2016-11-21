@@ -5,6 +5,7 @@ import com.ivygames.common.Finishable;
 import org.commons.logger.Ln;
 
 public abstract class Game implements Finishable {
+
     public enum Type {
         VS_ANDROID, BLUETOOTH, INTERNET
     }
@@ -32,4 +33,8 @@ public abstract class Game implements Finishable {
      * @return timeout in seconds
      */
     public abstract int getTurnTimeout();
+
+    public abstract boolean hasSetupTimeout();
+
+    public abstract boolean supportsAchievements();
 }

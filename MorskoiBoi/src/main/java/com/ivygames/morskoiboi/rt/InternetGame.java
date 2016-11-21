@@ -44,6 +44,16 @@ public class InternetGame extends Game {
     }
 
     @Override
+    public boolean hasSetupTimeout() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsAchievements() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "[Internet Game]";
     }

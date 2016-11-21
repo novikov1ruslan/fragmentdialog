@@ -36,6 +36,16 @@ public class AndroidGame extends Game {
     }
 
     @Override
+    public boolean hasSetupTimeout() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsAchievements() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "[Android Game]";
     }

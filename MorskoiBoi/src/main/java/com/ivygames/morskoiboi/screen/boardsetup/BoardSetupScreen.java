@@ -96,7 +96,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         mLayout.setBoard(mBoard, mFleet);
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
-        if (mGame.getType() == Game.Type.INTERNET) {
+        if (mGame.hasSetupTimeout()) {
             Ln.d("initial timeout: " + BOARD_SETUP_TIMEOUT);
             mHandler.postDelayed(mTimeoutTask, BOARD_SETUP_TIMEOUT);
         }
