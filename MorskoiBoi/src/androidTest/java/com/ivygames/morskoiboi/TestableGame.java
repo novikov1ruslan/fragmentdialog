@@ -27,6 +27,21 @@ public class TestableGame extends Game {
     }
 
     @Override
+    public boolean hasSetupTimeout() {
+        return mGame.hasSetupTimeout();
+    }
+
+    @Override
+    public boolean supportsAchievements() {
+        return mGame.supportsAchievements();
+    }
+
+    @Override
+    public int getWinPoints() {
+        return mGame.getWinPoints();
+    }
+
+    @Override
     public boolean finish() {
         mHasFinished = true;
         return mGame.finish();

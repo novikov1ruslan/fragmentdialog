@@ -8,6 +8,7 @@ import com.ivygames.morskoiboi.model.Game;
 import org.commons.logger.Ln;
 
 public class InternetGame extends Game {
+    public static final int INTERNET_WIN_POINTS = 10000;
     private static final int TURN_TIMEOUT = 40 * 1000;
 
     @NonNull
@@ -51,6 +52,11 @@ public class InternetGame extends Game {
     @Override
     public boolean supportsAchievements() {
         return false;
+    }
+
+    @Override
+    public int getWinPoints() {
+        return INTERNET_WIN_POINTS;
     }
 
     @Override

@@ -12,7 +12,7 @@ public interface Rules {
     @NonNull
     int[] getAllShipsSizes();
 
-    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type,
+    int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game,
                         @NonNull ScoreStatistics statistics, boolean surrendered);
 
     boolean allowAdjacentShips();

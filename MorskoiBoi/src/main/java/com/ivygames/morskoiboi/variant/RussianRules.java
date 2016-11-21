@@ -15,9 +15,6 @@ import java.util.Collection;
 
 public class RussianRules implements Rules {
 
-    private static final int BLUETOOTH_WIN_POINTS = 5000;
-    private static final int INTERNET_WIN_POINTS = 10000;
-
     private static final int[] TOTAL_SHIPS = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
 
     private static final int MAX_TIME_MILLIS = 300000; // 5 minutes
@@ -43,8 +40,9 @@ public class RussianRules implements Rules {
     }
 
     @Override
-    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game.Type type, @NonNull ScoreStatistics statistics, boolean surrendered) {
-        int score = calculateScoresForGame(type, ships, statistics);
+    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game,
+                               @NonNull ScoreStatistics statistics, boolean surrendered) {
+        int score = calculateScoresForGame(ships, statistics, game);
 
         if (surrendered) {
             score = score / 2;
@@ -55,14 +53,12 @@ public class RussianRules implements Rules {
         return score;
     }
 
-    private static int calculateScoresForGame(@NonNull Game.Type type, @NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics) {
+    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game) {
         int progress;
-        if (type == Game.Type.VS_ANDROID) {
+        if (game.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
             progress = calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
-        } else if (type == Game.Type.INTERNET) {
-            progress = INTERNET_WIN_POINTS;
         } else {
-            progress = BLUETOOTH_WIN_POINTS;
+            progress = game.getWinPoints();
         }
         return progress;
     }

@@ -46,6 +46,11 @@ public class AndroidGame extends Game {
     }
 
     @Override
+    public int getWinPoints() {
+        return Game.WIN_POINTS_SHOULD_BE_CALCULATED;
+    }
+
+    @Override
     public String toString() {
         return "[Android Game]";
     }

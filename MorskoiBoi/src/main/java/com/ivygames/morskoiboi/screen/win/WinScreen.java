@@ -79,7 +79,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mWinMusicBar.play();
 
         mTime = statistics.getTimeSpent();
-        mScores = mRules.calcTotalScores(fleet, game.getType(), statistics, opponentSurrendered);
+        mScores = mRules.calcTotalScores(fleet, game, statistics, opponentSurrendered);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();

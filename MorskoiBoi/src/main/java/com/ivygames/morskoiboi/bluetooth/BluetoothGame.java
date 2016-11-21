@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public class BluetoothGame extends Game {
 
+    public static final int BLUETOOTH_WIN_POINTS = 5000;
     private static final int TURN_TIMEOUT = 40 * 1000;
 
     // Unique UUID for this application
@@ -59,6 +60,11 @@ public class BluetoothGame extends Game {
     @Override
     public boolean supportsAchievements() {
         return false;
+    }
+
+    @Override
+    public int getWinPoints() {
+        return BLUETOOTH_WIN_POINTS;
     }
 
     @Override

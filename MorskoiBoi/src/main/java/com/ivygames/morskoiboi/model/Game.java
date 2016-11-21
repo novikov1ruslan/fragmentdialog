@@ -6,6 +6,8 @@ import org.commons.logger.Ln;
 
 public abstract class Game implements Finishable {
 
+    public static final int WIN_POINTS_SHOULD_BE_CALCULATED = -1;
+
     public enum Type {
         VS_ANDROID, BLUETOOTH, INTERNET
     }
@@ -37,4 +39,6 @@ public abstract class Game implements Finishable {
     public abstract boolean hasSetupTimeout();
 
     public abstract boolean supportsAchievements();
+    
+    public abstract int getWinPoints();
 }
