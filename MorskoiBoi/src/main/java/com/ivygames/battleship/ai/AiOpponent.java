@@ -1,15 +1,16 @@
-package com.ivygames.morskoiboi.player;
+package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ShipUtils;
-import com.ivygames.morskoiboi.ai.Bot;
 import com.ivygames.morskoiboi.ai.Cancellable;
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.player.DummyCallback;
+import com.ivygames.morskoiboi.player.PlayerOpponent;
 
 import org.commons.logger.Ln;
 

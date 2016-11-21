@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
@@ -27,7 +28,6 @@ import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;

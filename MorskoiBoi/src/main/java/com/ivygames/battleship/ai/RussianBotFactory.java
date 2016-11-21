@@ -1,8 +1,6 @@
-package com.ivygames.morskoiboi.player;
+package com.ivygames.battleship.ai;
 
 import com.ivygames.common.DebugUtils;
-import com.ivygames.morskoiboi.ai.Bot;
-import com.ivygames.morskoiboi.variant.RussianBot;
 
 import java.util.Random;
 

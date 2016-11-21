@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
@@ -22,9 +24,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ShipUtils;
-import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupLayout.BoardSetupLayoutListener;

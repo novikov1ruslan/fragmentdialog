@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.Random;
 // TODO: write unit tests
 public class ShipUtils {
 
-    public static boolean isInShip(@NonNull Vector2 v, @NonNull Board.LocatedShip locatedShip) {
+    public static boolean isInShip(@NonNull Vector2 v, @NonNull LocatedShip locatedShip) {
         int x = locatedShip.position.x;
         int y = locatedShip.position.y;
         Ship ship = locatedShip.ship;

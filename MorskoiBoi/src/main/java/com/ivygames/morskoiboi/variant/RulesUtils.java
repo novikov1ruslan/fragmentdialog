@@ -2,8 +2,8 @@ package com.ivygames.morskoiboi.variant;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Ship;
 
 import java.util.Collection;
 

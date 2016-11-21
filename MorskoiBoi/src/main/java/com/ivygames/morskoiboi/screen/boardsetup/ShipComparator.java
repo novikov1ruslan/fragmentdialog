@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.battleship.ship.Ship;
 
 import java.util.Comparator;
 

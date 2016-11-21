@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.battleship.ship.Ship;
 
 import java.util.Collection;
 import java.util.Iterator;

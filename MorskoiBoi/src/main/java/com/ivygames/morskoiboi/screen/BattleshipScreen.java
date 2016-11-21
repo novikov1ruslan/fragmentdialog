@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ActivityScreen;

@@ -3,10 +3,11 @@ package com.ivygames.morskoiboi;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
@@ -43,7 +44,7 @@ public class Placement {
             int i = cell.x;
             int j = cell.y;
             if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
-                putShipAt(board, new Board.LocatedShip(ship, i, j));
+                putShipAt(board, new LocatedShip(ship, i, j));
                 return true;
             } else {
                 // this cell is not suitable for placement
@@ -55,7 +56,7 @@ public class Placement {
     }
 
     // TODO: when ship has no coordinates this method is not needed, use Board#addShip
-    public static void putShipAt(@NonNull Board board, @NonNull Board.LocatedShip locatedShip) {
+    public static void putShipAt(@NonNull Board board, @NonNull LocatedShip locatedShip) {
         int i = locatedShip.position.x;
         int j = locatedShip.position.y;
         if (!board.shipFitsTheBoard(locatedShip.ship, i, j)) {
@@ -83,7 +84,7 @@ public class Placement {
             return null;
         }
 
-        Board.LocatedShip locatedShip = board.getFirstShipAt(i, j);
+        LocatedShip locatedShip = board.getFirstShipAt(i, j);
         if (locatedShip != null) {
             board.removeShip(locatedShip);
             return locatedShip.ship;
@@ -105,13 +106,13 @@ public class Placement {
         ship.rotate();
 
         if (board.shipFitsTheBoard(ship, x, y)) {
-            putShipAt(board, new Board.LocatedShip(ship, x, y));
+            putShipAt(board, new LocatedShip(ship, x, y));
         } else {
             int i = board.horizontalDimension() - ship.size;
             if (ship.isHorizontal()) {
-                putShipAt(board, new Board.LocatedShip(ship, i, y));
+                putShipAt(board, new LocatedShip(ship, i, y));
             } else {
-                putShipAt(board, new Board.LocatedShip(ship, x, i));
+                putShipAt(board, new LocatedShip(ship, x, i));
             }
         }
     }

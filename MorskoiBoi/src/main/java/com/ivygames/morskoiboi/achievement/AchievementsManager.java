@@ -2,11 +2,11 @@ package com.ivygames.morskoiboi.achievement;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.achievements.AchievementsApi;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.model.Ship;
 
 import org.commons.logger.Ln;
 

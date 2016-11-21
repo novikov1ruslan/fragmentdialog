@@ -5,10 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Vector2;
 
 public class BaseBoardRenderer {
     @NonNull
@@ -100,7 +100,7 @@ public class BaseBoardRenderer {
         return mShipPaint;
     }
 
-    public void drawShip(@NonNull Canvas canvas, @NonNull Board.LocatedShip locatedShip) {
+    public void drawShip(@NonNull Canvas canvas, @NonNull LocatedShip locatedShip) {
         canvas.drawRect(mProcessor.getRectForShip(locatedShip.ship, locatedShip.position), mShipPaint);
     }
 

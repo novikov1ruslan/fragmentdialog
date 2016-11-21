@@ -9,11 +9,11 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;

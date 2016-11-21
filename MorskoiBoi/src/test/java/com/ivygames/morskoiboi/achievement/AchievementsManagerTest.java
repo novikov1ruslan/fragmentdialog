@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Before;
 import org.junit.Test;

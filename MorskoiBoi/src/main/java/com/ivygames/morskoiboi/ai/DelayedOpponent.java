@@ -5,10 +5,10 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.shot.ShotResult;
 
 import org.commons.logger.Ln;
 
@@ -75,6 +75,7 @@ public class DelayedOpponent implements Opponent, Cancellable {
         mOpponent.onEnemyBid(bid);
     }
 
+    @NonNull
     @Override
     public String getName() {
         return mOpponent.getName();

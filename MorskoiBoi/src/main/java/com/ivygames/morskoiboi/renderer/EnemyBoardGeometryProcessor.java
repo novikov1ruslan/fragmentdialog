@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.renderer;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Vector2;
 
 public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
 

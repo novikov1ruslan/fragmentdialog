@@ -10,9 +10,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Ship;
 
 import org.commons.logger.Ln;
 

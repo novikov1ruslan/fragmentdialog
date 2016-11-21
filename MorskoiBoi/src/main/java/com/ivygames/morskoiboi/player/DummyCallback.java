@@ -3,10 +3,10 @@ package com.ivygames.morskoiboi.player;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
 
 public class DummyCallback implements PlayerCallback {
 

@@ -4,8 +4,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 
 public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
     @NonNull

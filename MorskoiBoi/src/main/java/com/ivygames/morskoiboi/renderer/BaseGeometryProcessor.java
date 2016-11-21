@@ -4,8 +4,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 
 import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;

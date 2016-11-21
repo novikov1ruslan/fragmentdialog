@@ -16,14 +16,13 @@ import com.ivygames.morskoiboi.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScreenTestRule;
-import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.battleship.board.Board;
 import com.ivygames.morskoiboi.player.DummyCallback;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 

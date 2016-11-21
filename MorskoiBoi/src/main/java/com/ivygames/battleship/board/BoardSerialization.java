@@ -1,7 +1,8 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.board;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.ShipSerialization;
 import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
@@ -51,7 +52,7 @@ public class BoardSerialization {
     private static void populateShipsFromJson(@NonNull Board board, @NonNull JSONArray shipsJson) throws JSONException {
         for (int i = 0; i < shipsJson.length(); i++) {
             JSONObject shipJson = shipsJson.getJSONObject(i);
-            Board.LocatedShip locatedShip = ShipSerialization.fromJson(shipJson);
+            LocatedShip locatedShip = ShipSerialization.fromJson(shipJson);
             // TODO: should be placement independent
             Placement.putShipAt(board, locatedShip);
         }
@@ -76,7 +77,7 @@ public class BoardSerialization {
             jsonObject.put(CELLS, getStringFromCells(board.mCells));
 
             JSONArray shipsJson = new JSONArray();
-            for (Board.LocatedShip locatedShip : board.getLocatedShips()) {
+            for (LocatedShip locatedShip : board.getLocatedShips()) {
                 shipsJson.put(ShipSerialization.toJson(locatedShip));
             }
             jsonObject.put(SHIPS, shipsJson);

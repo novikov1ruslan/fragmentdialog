@@ -1,6 +1,8 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.ship;
 
+import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.board.Vector2;
 
 import org.junit.Test;
 
@@ -89,21 +91,21 @@ public class ShipTest {
             for (int j = 0; j < 10; j++) {
                 Vector2 v = Vector2.get(i, j);
                 if ((i == 5 || i == 6) && j == 5) {
-                    assertTrue(i + "," + j, ShipUtils.isInShip(v, new Board.LocatedShip(ship1, 5, 5)));
+                    assertTrue(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship1, 5, 5)));
                 } else {
-                    assertFalse(i + "," + j, ShipUtils.isInShip(v, new Board.LocatedShip(ship1, 5, 5)));
+                    assertFalse(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship1, 5, 5)));
                 }
 
                 if (i == 5 && (j == 5 || j == 6)) {
-                    assertTrue(i + "," + j, ShipUtils.isInShip(v, new Board.LocatedShip(ship2, 5, 5)));
+                    assertTrue(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship2, 5, 5)));
                 } else {
-                    assertFalse(i + "," + j, ShipUtils.isInShip(v, new Board.LocatedShip(ship2, 5, 5)));
+                    assertFalse(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship2, 5, 5)));
                 }
 
                 if (i == 4 && (j >= 3 && j <= 5)) {
-                    assertTrue(i + "," + j, ShipUtils.isInShip(v, new Board.LocatedShip(ship3, 4, 3)));
+                    assertTrue(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship3, 4, 3)));
                 } else {
-                    assertFalse(i + "," + j, ShipUtils.isInShip(v, new Board.LocatedShip(ship3, 4, 3)));
+                    assertFalse(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship3, 4, 3)));
                 }
             }
         }

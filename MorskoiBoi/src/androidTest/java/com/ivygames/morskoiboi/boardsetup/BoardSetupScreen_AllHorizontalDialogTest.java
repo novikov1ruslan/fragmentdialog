@@ -5,14 +5,12 @@ import android.view.View;
 
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.battleship.ship.Ship;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import java.util.Random;
 

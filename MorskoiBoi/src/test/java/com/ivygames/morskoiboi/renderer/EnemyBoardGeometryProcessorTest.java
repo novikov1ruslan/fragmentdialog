@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Rect;
 
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Vector2;
 
 import org.junit.Before;
 import org.junit.Test;

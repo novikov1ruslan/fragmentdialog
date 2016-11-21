@@ -2,12 +2,12 @@ package com.ivygames.morskoiboi.multiplayer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.BoardSerialization;
-import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.ShotResultSerialization;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.BoardSerialization;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.shot.ShotResult;
+import com.ivygames.battleship.shot.ShotResultSerialization;
 
 import org.commons.logger.Ln;
 
@@ -88,6 +88,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
         send(String.valueOf(BID) + bid);
     }
 
+    @NonNull
     @Override
     public String getName() {
         return mName;

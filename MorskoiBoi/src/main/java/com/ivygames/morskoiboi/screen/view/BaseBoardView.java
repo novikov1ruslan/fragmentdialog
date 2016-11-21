@@ -9,9 +9,10 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
@@ -81,7 +82,7 @@ public abstract class BaseBoardView extends View {
     }
 
     private void drawShips(@NonNull Canvas canvas) {
-        for (Board.LocatedShip locatedShip : mBoard.getLocatedShips()) {
+        for (LocatedShip locatedShip : mBoard.getLocatedShips()) {
             mRenderer.drawShip(canvas, locatedShip);
             if (locatedShip.ship.isDead() && !mAllowAdjacentShips) {
                 drawMissMarks(canvas, BoardUtils.getCells(locatedShip, true));

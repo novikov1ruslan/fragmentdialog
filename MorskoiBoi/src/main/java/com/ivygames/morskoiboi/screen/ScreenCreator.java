@@ -3,16 +3,15 @@ package com.ivygames.morskoiboi.screen;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.timer.AsyncTurnTimerFactory;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListScreen;

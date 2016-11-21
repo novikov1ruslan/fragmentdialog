@@ -1,9 +1,9 @@
-package com.ivygames.morskoiboi.ai;
+package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Vector2;
 
 public interface Bot {
 

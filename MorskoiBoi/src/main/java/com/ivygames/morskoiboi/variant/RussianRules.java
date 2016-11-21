@@ -2,12 +2,12 @@ package com.ivygames.morskoiboi.variant;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
-import com.ivygames.morskoiboi.model.Ship;
 
 import org.commons.logger.Ln;
 

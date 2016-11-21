@@ -3,10 +3,11 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 
@@ -55,7 +56,7 @@ public class SetupBoardPresenter {
         }
 
         if (board.shipFitsTheBoard(mPickedShip, i, j)) {
-            Placement.putShipAt(board, new Board.LocatedShip(mPickedShip, i, j));
+            Placement.putShipAt(board, new LocatedShip(mPickedShip, i, j));
         } else {
             returnShipToPool(mPickedShip);
         }

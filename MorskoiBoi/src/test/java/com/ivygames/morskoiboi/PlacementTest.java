@@ -1,7 +1,8 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -152,7 +153,7 @@ public class PlacementTest {
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        Placement.putShipAt(mBoard, new Board.LocatedShip(ship, x, y));
+        Placement.putShipAt(mBoard, new LocatedShip(ship, x, y));
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {

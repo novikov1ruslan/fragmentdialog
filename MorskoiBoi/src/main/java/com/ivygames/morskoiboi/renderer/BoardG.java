@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Rect;
 
-import com.ivygames.morskoiboi.model.Board;
+import com.ivygames.battleship.board.Board;
 
 import java.util.Arrays;
 

@@ -6,8 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Ship;
 import com.ivygames.morskoiboi.screen.view.NotepadLinearLayout;
 
 import java.util.Collection;

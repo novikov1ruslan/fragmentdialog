@@ -4,11 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.ai.Cancellable;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
 
 class HandlerDelegateOpponent implements Opponent, Cancellable {
 
@@ -66,6 +66,7 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
         });
     }
 
+    @NonNull
     @Override
     public String getName() {
         return mDelegate.getName();

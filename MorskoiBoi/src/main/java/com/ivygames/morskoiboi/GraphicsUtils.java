@@ -1,10 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
 
 public final class GraphicsUtils {
 

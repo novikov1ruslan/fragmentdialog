@@ -2,6 +2,8 @@ package com.ivygames.morskoiboi.model;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.board.Cell;
+
 import org.commons.logger.Ln;
 
 public class ScoreStatistics {

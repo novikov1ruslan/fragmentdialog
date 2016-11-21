@@ -1,6 +1,8 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.board;
 
 import android.support.annotation.NonNull;
+
+import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +46,7 @@ public class BoardSerializationTest {
     @Test
     public void ParsingBoardWithShip() {
         Board board2 = new Board();
-        board2.addShip(new Board.LocatedShip(new Ship(1), 5, 5));
+        board2.addShip(new LocatedShip(new Ship(1), 5, 5));
 
         Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
@@ -53,7 +55,7 @@ public class BoardSerializationTest {
 
     @Test
     public void BoardWithShipSuccessfullySerializedAndParsed() {
-        mBoard.addShip(new Board.LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
 
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);

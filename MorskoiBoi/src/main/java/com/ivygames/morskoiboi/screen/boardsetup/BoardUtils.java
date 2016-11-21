@@ -2,12 +2,13 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ShipUtils;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,12 +30,12 @@ public class BoardUtils {
 
     @NonNull
     public static List<Vector2> getNeighboringCoordinates(int x, int y) {
-        return getCells(new Board.LocatedShip(new Ship(1), Vector2.get(x, y)), true);
+        return getCells(new LocatedShip(new Ship(1), Vector2.get(x, y)), true);
     }
 
     // TODO: use enum instead of boolean
     @NonNull
-    public static List<Vector2> getCells(@NonNull Board.LocatedShip locatedShip, boolean neighboring) {
+    public static List<Vector2> getCells(@NonNull LocatedShip locatedShip, boolean neighboring) {
         List<Vector2> coordinates = new ArrayList<>();
 
         int x = locatedShip.position.x;
@@ -63,7 +64,7 @@ public class BoardUtils {
 
     public static List<Vector2> getCellsFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector2> cells = Vector2.getAllCoordinates();
-        for (Board.LocatedShip locatedShip : board.getLocatedShips()) {
+        for (LocatedShip locatedShip : board.getLocatedShips()) {
             cells.removeAll(getCells(locatedShip, false));
             if (!allowAdjacentShips) {
                 cells.removeAll(getCells(locatedShip, true));

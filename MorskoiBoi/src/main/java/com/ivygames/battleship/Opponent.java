@@ -1,6 +1,11 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
+
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.shot.ShotResult;
 
 public interface Opponent {
 
@@ -40,6 +45,7 @@ public interface Opponent {
      */
     void onEnemyBid(int bid);
 
+    @NonNull
     String getName();
 
     void onLost(@NonNull Board board);

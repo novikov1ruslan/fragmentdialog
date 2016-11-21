@@ -5,16 +5,17 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
-import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
@@ -299,7 +300,7 @@ public class PlayerOpponent implements Opponent {
     @NonNull
     private ShotResult createResultForShootingAt(@NonNull Vector2 aim) {
         // ship if found will be shot and returned
-        Board.LocatedShip locatedShip = mMyBoard.getFirstShipAt(aim);
+        LocatedShip locatedShip = mMyBoard.getFirstShipAt(aim);
 
         if (locatedShip == null) {
             mMyBoard.setCell(Cell.MISS, aim);
@@ -323,7 +324,7 @@ public class PlayerOpponent implements Opponent {
             Ship ship = result.locatedShip.ship;
             mEnemyBoard.setCell(result.cell, result.aim);
             Vector2 location = findShipLocation(mEnemyBoard, ship, result.aim);
-            Placement.putShipAt(mEnemyBoard, new Board.LocatedShip(ship, location));
+            Placement.putShipAt(mEnemyBoard, new LocatedShip(ship, location));
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }
@@ -374,6 +375,7 @@ public class PlayerOpponent implements Opponent {
         return mPlayerReady;
     }
 
+    @NonNull
     @Override
     public String getName() {
         return mName;

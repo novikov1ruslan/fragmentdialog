@@ -1,4 +1,6 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.board;
+
+import android.support.annotation.NonNull;
 
 public enum Cell {
     EMPTY(Cell.EMPTY_VAL),
@@ -18,7 +20,6 @@ public enum Cell {
         mState = c;
     }
 
-
     /**
      * Old versions (< 1.4.21) can send boards with proximity value.
      * To support old versions this constant is preserved.
@@ -26,6 +27,7 @@ public enum Cell {
     private static final int LEGACY_RESERVED_PROXIMITY_VALUE = 8;
 
 
+    @NonNull
     public static Cell parse(char c) {
         switch (c) {
             case RESERVED_VAL:
@@ -41,6 +43,7 @@ public enum Cell {
         }
     }
 
+    @NonNull
     private static Cell parseProximityCell(char c) {
         int zero = '0';
         if (c >= zero && c <= zero + LEGACY_RESERVED_PROXIMITY_VALUE) {

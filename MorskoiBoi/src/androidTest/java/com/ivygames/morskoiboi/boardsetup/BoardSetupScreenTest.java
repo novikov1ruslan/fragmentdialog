@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.boardsetup;
 
 import com.ivygames.morskoiboi.OnlineScreen_;
-import com.ivygames.morskoiboi.model.Ship.Orientation;
+import com.ivygames.battleship.ship.Ship.Orientation;
 
 import org.junit.Test;
 

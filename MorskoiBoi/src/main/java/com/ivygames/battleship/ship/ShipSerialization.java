@@ -1,6 +1,9 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.ship;
 
 import android.support.annotation.NonNull;
+
+import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +17,7 @@ public class ShipSerialization {
     private static final String SIZE = "size";
 
     @NonNull
-    public static JSONObject toJson(@NonNull Board.LocatedShip locatedShip) {
+    public static JSONObject toJson(@NonNull LocatedShip locatedShip) {
         JSONObject shipJson = new JSONObject();
         try {
             Ship ship = locatedShip.ship;
@@ -32,7 +35,7 @@ public class ShipSerialization {
     }
 
     @NonNull
-    public static Board.LocatedShip fromJson(@NonNull String json) {
+    public static LocatedShip fromJson(@NonNull String json) {
         try {
             return fromJson(new JSONObject(json));
         } catch (JSONException e) {
@@ -41,14 +44,14 @@ public class ShipSerialization {
     }
 
     @NonNull
-    public static Board.LocatedShip fromJson(@NonNull JSONObject json) {
+    public static LocatedShip fromJson(@NonNull JSONObject json) {
         try {
             Ship ship = new Ship(json.getInt(SIZE));
             ship.mOrientation = json.getBoolean(IS_HORIZONTAL) ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
             int i = json.getInt(X);
             int j = json.getInt(Y);
             ship.mHealth = json.getInt(HEALTH);
-            return new Board.LocatedShip(ship, Vector2.get(i, j));
+            return new LocatedShip(ship, Vector2.get(i, j));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

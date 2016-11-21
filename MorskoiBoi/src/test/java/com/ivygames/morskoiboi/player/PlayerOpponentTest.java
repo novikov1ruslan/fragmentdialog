@@ -2,18 +2,21 @@ package com.ivygames.morskoiboi.player;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ai.AiOpponent;
+import com.ivygames.battleship.ai.RussianBotFactory;
+import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
-import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.shot.ShotResult;
+import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.variant.RussianRules;
 
@@ -115,11 +118,11 @@ public class PlayerOpponentTest {
     public void after_shot_result_is_kill__enemy_board_shows_killed_ship() {
         Vector2 aim = Vector2.get(5, 5);
         Ship ship = new Ship(2);
-        ShotResult result = new ShotResult(aim, Cell.HIT, new Board.LocatedShip(ship));
+        ShotResult result = new ShotResult(aim, Cell.HIT, new LocatedShip(ship));
 
         mPlayer.onShotResult(result);
 
-        Board.LocatedShip actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
+        LocatedShip actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
         assertThat(actual.ship, equalTo(ship));
         assertThat(enemyCellAt(aim), equalTo(Cell.HIT));
     }
@@ -139,7 +142,7 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(2);
-        board.addShip(new Board.LocatedShip(ship, aim));
+        board.addShip(new LocatedShip(ship, aim));
 
         mPlayer.onShotAt(aim);
 
@@ -152,7 +155,7 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(1);
-        Placement.putShipAt(board, new Board.LocatedShip(ship, aim));
+        Placement.putShipAt(board, new LocatedShip(ship, aim));
 
         mPlayer.onShotAt(aim);
 
@@ -225,7 +228,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerKillsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT, new Board.LocatedShip(new Ship(1)));
+        ShotResult result = new ShotResult(Vector2.get(1, 1), Cell.HIT, new LocatedShip(new Ship(1)));
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onKillEnemy();
@@ -260,7 +263,7 @@ public class PlayerOpponentTest {
     public void WhenPlayerIsHit__CallbackCalled() {
         Board board = new Board();
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
-        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
+        Placement.putShipAt(board, new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
         Vector2 aim = Vector2.get(5, 5);
 
@@ -273,7 +276,7 @@ public class PlayerOpponentTest {
     public void WhenPlayerIsMissed__CallbackCalled() {
         Board board = new Board();
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
-        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
+        Placement.putShipAt(board, new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
         Vector2 aim = Vector2.get(1, 1);
 
@@ -286,7 +289,7 @@ public class PlayerOpponentTest {
     public void WhenPlayerIsKilled__CallbackCalled() {
         Board board = new Board();
         Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
-        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
+        Placement.putShipAt(board, new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
         Vector2 aim = Vector2.get(5, 5);
 
@@ -302,7 +305,7 @@ public class PlayerOpponentTest {
 
         Board board = new Board();
         Ship ship = new Ship(1);
-        Placement.putShipAt(board, new Board.LocatedShip(ship, 5, 5));
+        Placement.putShipAt(board, new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
 
         mPlayer.onShotAt(Vector2.get(5, 5));
@@ -334,7 +337,7 @@ public class PlayerOpponentTest {
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Board.LocatedShip(ship));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new LocatedShip(ship));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
@@ -345,7 +348,7 @@ public class PlayerOpponentTest {
         mPlayer = newPlayer(PlayerUtils.defeatedBoardRules(1));
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Board.LocatedShip(new Ship(1)));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new LocatedShip(new Ship(1)));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, never()).onLost(any(Board.class));
@@ -412,7 +415,7 @@ public class PlayerOpponentTest {
         aiOpponent.setOpponent(player);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new Board.LocatedShip(ship));
+        ShotResult result = new ShotResult(Vector2.get(5, 5), Cell.HIT, new LocatedShip(ship));
         player.onShotResult(result);
 
         assertThat(aiOpponent.lostCalled(), is(true));

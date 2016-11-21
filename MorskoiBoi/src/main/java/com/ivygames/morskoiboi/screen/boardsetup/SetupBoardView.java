@@ -10,13 +10,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.SetupBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.SetupBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;

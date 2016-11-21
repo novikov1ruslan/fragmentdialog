@@ -9,8 +9,8 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Bitmaps;
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.GraphicsUtils;
+import com.ivygames.morskoiboi.R;
 
 import java.util.Map;
 

@@ -2,10 +2,10 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.common.dialog.DialogUtils;
 import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.multiplayer.ConnectionLostListener;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;

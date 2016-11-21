@@ -1,16 +1,17 @@
 package com.ivygames.morskoiboi.ai;
 
+import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Opponent;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.player.AiOpponent;
-import com.ivygames.morskoiboi.player.RussianBotFactory;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.shot.ShotResult;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ai.AiOpponent;
+import com.ivygames.battleship.ai.RussianBotFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -92,7 +93,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
-        Placement.putShipAt(mBoard, new Board.LocatedShip(new Ship(2), 5, 5));
+        Placement.putShipAt(mBoard, new LocatedShip(new Ship(2), 5, 5));
         setBoardDefeated(false);
         mAndroid.onShotAt(Vector2.get(5, 5));
 

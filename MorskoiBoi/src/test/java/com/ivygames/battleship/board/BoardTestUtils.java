@@ -1,6 +1,8 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.board;
 
 import android.support.annotation.NonNull;
+
+import com.ivygames.battleship.ship.Ship;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,13 +32,13 @@ public class BoardTestUtils {
         return true;
     }
 
-    private static boolean similar(@NonNull Collection<Board.LocatedShip> ships1, @NonNull Collection<Board.LocatedShip> ships2) {
+    private static boolean similar(@NonNull Collection<LocatedShip> ships1, @NonNull Collection<LocatedShip> ships2) {
         if (ships1.size() != ships2.size()) {
             return false;
         }
 
-        Iterator<Board.LocatedShip> iterator = ships2.iterator();
-        for (Board.LocatedShip locatedShip : ships1) {
+        Iterator<LocatedShip> iterator = ships2.iterator();
+        for (LocatedShip locatedShip : ships1) {
             if (!similar(locatedShip, iterator.next())) {
                 return false;
             }
@@ -45,7 +47,7 @@ public class BoardTestUtils {
         return true;
     }
 
-    private static boolean similar(Board.LocatedShip ship1, Board.LocatedShip ship2) {
+    private static boolean similar(LocatedShip ship1, LocatedShip ship2) {
         if (!similar(ship1.ship, ship2.ship)) {
             return false;
         }

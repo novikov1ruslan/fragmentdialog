@@ -12,11 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
 
 import java.util.Collection;
 

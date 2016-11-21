@@ -6,7 +6,7 @@ import android.view.View;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScreenUtils;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Vector2;
 
 import java.util.List;
 import java.util.Random;

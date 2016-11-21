@@ -7,7 +7,7 @@ import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.player.AiOpponent;
+import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 

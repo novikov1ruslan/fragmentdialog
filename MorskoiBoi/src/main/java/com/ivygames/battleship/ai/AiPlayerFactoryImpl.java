@@ -1,10 +1,9 @@
-package com.ivygames.morskoiboi.player;
+package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.AiPlayerFactory;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 

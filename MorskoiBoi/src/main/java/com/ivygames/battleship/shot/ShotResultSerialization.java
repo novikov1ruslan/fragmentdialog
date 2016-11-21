@@ -1,6 +1,10 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.battleship.shot;
 
 import android.support.annotation.NonNull;
+
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.ShipSerialization;
 
 import org.json.JSONException;
 import org.json.JSONObject;

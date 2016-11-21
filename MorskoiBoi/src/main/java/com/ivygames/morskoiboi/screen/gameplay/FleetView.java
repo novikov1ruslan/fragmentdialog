@@ -9,9 +9,9 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Ship;
 
 import org.commons.logger.Ln;
 

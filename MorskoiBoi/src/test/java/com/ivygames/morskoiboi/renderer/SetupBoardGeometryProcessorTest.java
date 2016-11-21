@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.renderer;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Before;
 import org.junit.Test;

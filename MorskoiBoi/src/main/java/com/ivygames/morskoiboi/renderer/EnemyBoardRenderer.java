@@ -7,12 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.gfx.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.ShotResult;
-import com.ivygames.morskoiboi.model.Vector2;
 
 import org.commons.logger.Ln;
 

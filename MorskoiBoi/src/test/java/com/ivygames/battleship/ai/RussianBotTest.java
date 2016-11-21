@@ -1,17 +1,16 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.battleship.ai;
 
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Vector2;
-import com.ivygames.morskoiboi.variant.RussianBot;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Vector2;
 
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,14 +28,14 @@ public class RussianBotTest {
     @Test
     public void provided_random_seed_is_1_shooting_on_empty_board_returns_8_5() {
         Board board = new Board();
-        assertThat(mBot.shoot(board), is(Vector2.get(0, 0)));
+        assertThat(mBot.shoot(board), Is.is(Vector2.get(0, 0)));
     }
 
     @Test
     public void shooting_when_already_missed() {
         Board board = new Board();
         missAt(board, 8, 5);
-        assertThat(mBot.shoot(board), is(Vector2.get(0, 0)));
+        assertThat(mBot.shoot(board), Is.is(Vector2.get(0, 0)));
     }
 
     private void missAt(Board board, int x, int y) {
@@ -49,7 +48,7 @@ public class RussianBotTest {
     public void shooting_when_already_hit() {
         Board board = new Board();
         hitAt(board, 5, 5);
-        assertThat(mBot.shoot(board), is(Vector2.get(4, 5)));
+        assertThat(mBot.shoot(board), Is.is(Vector2.get(4, 5)));
     }
 
     @Test
@@ -57,7 +56,7 @@ public class RussianBotTest {
         Board board = new Board();
         hitAt(board, 5, 5);
         hitAt(board, 5, 4);
-        assertThat(mBot.shoot(board), is(Vector2.get(5, 3)));
+        assertThat(mBot.shoot(board), Is.is(Vector2.get(5, 3)));
     }
 
     @Test
@@ -65,7 +64,7 @@ public class RussianBotTest {
         Board board = new Board();
         hitAt(board, 5, 5);
         missAt(board, 5, 4);
-        assertThat(mBot.shoot(board), is(Vector2.get(4, 5)));
+        assertThat(mBot.shoot(board), Is.is(Vector2.get(4, 5)));
     }
 
     @Test
@@ -125,12 +124,12 @@ public class RussianBotTest {
 
         Vector2 shoot = mBot.shoot(board);
 
-        assertThat(shoot, is(Vector2.get(4, 5)));
+        assertThat(shoot, Is.is(Vector2.get(4, 5)));
     }
 
     private void assertHitAt(Board board, int x, int y) {
         Vector2 aim = mBot.shoot(board);
-        assertThat(aim, is(Vector2.get(x, y)));
+        assertThat(aim, Is.is(Vector2.get(x, y)));
         hitAt(board, aim);
     }
 
@@ -142,7 +141,7 @@ public class RussianBotTest {
 
     private void assertMissAt(Board board, int x, int y) {
         Vector2 aim = mBot.shoot(board);
-        assertThat(aim, is(Vector2.get(x, y)));
+        assertThat(aim, Is.is(Vector2.get(x, y)));
         missAt(board, aim);
     }
 

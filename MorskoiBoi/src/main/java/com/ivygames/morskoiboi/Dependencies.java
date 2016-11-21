@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.googleapi.ApiClient;

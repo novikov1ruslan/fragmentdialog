@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ShipUtils;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.board.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collection;

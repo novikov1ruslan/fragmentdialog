@@ -1,12 +1,11 @@
-package com.ivygames.morskoiboi.variant;
+package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
-import com.ivygames.morskoiboi.ai.Bot;
-import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Cell;
-import com.ivygames.morskoiboi.model.Vector2;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
