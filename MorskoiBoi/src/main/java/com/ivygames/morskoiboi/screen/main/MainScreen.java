@@ -26,7 +26,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
-import com.ivygames.morskoiboi.screen.SignInDialog;
+import com.ivygames.morskoiboi.dialogs.SignInDialog;
 import com.ivygames.morskoiboi.screen.main.MainScreenLayout.MainScreenActions;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;

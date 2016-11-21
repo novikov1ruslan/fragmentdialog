@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen;
+package com.ivygames.morskoiboi.dialogs;
 
 import com.ivygames.morskoiboi.R;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;

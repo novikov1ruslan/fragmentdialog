@@ -1,4 +1,4 @@
-<com.ivygames.morskoiboi.screen.view.SingleTextDialog xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ivygames.morskoiboi.dialogs.SingleTextDialog xmlns:android="http://schemas.android.com/apk/res/android"
     style="@android:style/Theme.Dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,4 +23,4 @@
 
     </com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout>
 
-</com.ivygames.morskoiboi.screen.view.SingleTextDialog>
+</com.ivygames.morskoiboi.dialogs.SingleTextDialog>

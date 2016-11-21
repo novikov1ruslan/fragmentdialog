@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.dialogs;
 
 import android.content.Context;
 import android.util.AttributeSet;

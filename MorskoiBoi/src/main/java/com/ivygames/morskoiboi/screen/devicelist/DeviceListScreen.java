@@ -31,7 +31,7 @@ import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
-import com.ivygames.morskoiboi.screen.view.SingleTextDialog;
+import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 
 import org.commons.logger.Ln;
 
