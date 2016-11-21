@@ -7,8 +7,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
-import com.ivygames.morskoiboi.variant.FleetBitmaps;
-
 import org.commons.logger.Ln;
 
 public class Bitmaps {

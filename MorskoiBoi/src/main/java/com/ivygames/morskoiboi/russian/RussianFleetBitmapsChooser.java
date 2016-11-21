@@ -1,10 +1,11 @@
-package com.ivygames.morskoiboi.variant;
+package com.ivygames.morskoiboi.russian;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Bitmaps;
+import com.ivygames.morskoiboi.FleetBitmaps;
 import com.ivygames.morskoiboi.R;
 
 public class RussianFleetBitmapsChooser implements FleetBitmaps {

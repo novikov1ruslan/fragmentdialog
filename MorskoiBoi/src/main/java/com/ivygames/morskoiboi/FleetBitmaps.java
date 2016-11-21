@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.variant;
+package com.ivygames.morskoiboi;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

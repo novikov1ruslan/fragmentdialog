@@ -5,7 +5,7 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.variant.RussianRules;
+import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;

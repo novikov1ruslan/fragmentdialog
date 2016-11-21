@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.variant;
+package com.ivygames.morskoiboi.config;
 
 import android.support.annotation.NonNull;
 

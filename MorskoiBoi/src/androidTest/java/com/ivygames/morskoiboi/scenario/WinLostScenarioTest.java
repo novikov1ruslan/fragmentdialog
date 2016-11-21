@@ -19,7 +19,7 @@ import com.ivygames.morskoiboi.ScreenTestRule;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.morskoiboi.player.DummyCallback;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
-import com.ivygames.morskoiboi.variant.RussianRules;
+import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.After;
 import org.junit.Before;

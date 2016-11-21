@@ -13,8 +13,8 @@ import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
-import com.ivygames.morskoiboi.variant.RulesUtils;
-import com.ivygames.morskoiboi.variant.RussianRules;
+import com.ivygames.morskoiboi.config.RulesUtils;
+import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;

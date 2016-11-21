@@ -18,9 +18,8 @@ import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.player.PlayerFactoryImpl;
 import com.ivygames.morskoiboi.progress.ProgressManager;
-import com.ivygames.morskoiboi.variant.FleetBitmaps;
-import com.ivygames.morskoiboi.variant.RussianFleetBitmapsChooser;
-import com.ivygames.morskoiboi.variant.RussianRules;
+import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
+import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.acra.ACRA;
 import org.commons.logger.Config;

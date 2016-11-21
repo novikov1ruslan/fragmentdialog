@@ -18,7 +18,7 @@ import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
-import com.ivygames.morskoiboi.variant.RussianRules;
+import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;
