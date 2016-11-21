@@ -94,6 +94,9 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         mLayout = (BoardSetupLayout) getLayoutInflater().inflate(R.layout.board_setup, container, false);
         mLayout.setScreenActionsListener(mLayoutListener);
         mLayout.setBoard(mBoard, mFleet);
+        if (mRules.allowAdjacentShips()) {
+            mLayout.allowAdjacentShips();
+        }
         mTutView = mLayout.setTutView(inflate(R.layout.board_setup_tut));
 
         if (mGame.isRemote()) {

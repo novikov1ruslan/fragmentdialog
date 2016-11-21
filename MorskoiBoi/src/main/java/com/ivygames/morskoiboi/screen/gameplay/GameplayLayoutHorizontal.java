@@ -107,6 +107,12 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     }
 
     @Override
+    public void allowAdjacentShips() {
+        mMyBoardView.allowAdjacentShips();
+        mEnemyBoardView.allowAdjacentShips();
+    }
+
+    @Override
     public void setPlayerBoard(@NonNull Board board) {
         mMyBoardView.setBoard(board);
     }

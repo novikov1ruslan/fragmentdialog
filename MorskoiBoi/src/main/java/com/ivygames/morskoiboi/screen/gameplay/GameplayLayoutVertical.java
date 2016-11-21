@@ -94,6 +94,12 @@ public class GameplayLayoutVertical extends OldHandsetGameplayLayout {
     }
 
     @Override
+    public void allowAdjacentShips() {
+        mMyBoardView.allowAdjacentShips();
+        mEnemyBoardView.allowAdjacentShips();
+    }
+
+    @Override
     public void setPlayerBoard(@NonNull Board board) {
         mMyBoardView.setBoard(board);
     }

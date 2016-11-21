@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Ship;
+import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Vector2;
 
 public class BaseBoardRenderer {
@@ -100,12 +100,16 @@ public class BaseBoardRenderer {
         return mShipPaint;
     }
 
-    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector2 v) {
-        canvas.drawRect(mProcessor.getRectForShip(ship, v), mShipPaint);
+    public void drawShip(@NonNull Canvas canvas, @NonNull Board.LocatedShip locatedShip) {
+        canvas.drawRect(mProcessor.getRectForShip(locatedShip.ship, locatedShip.position), mShipPaint);
     }
 
     public void drawHitMark(@NonNull Canvas canvas, int i, int j) {
         drawHitMark(canvas, mProcessor.getMark(i, j));
+    }
+
+    public void drawMissMark(@NonNull Canvas canvas, @NonNull Vector2 v) {
+        drawMissMark(canvas, mProcessor.getMark(v.x, v.y));
     }
 
     public void drawMissMark(@NonNull Canvas canvas, int i, int j) {

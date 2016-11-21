@@ -11,10 +11,15 @@ import android.view.WindowManager;
 
 import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
+import com.ivygames.morskoiboi.model.Vector2;
 import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
+
+import java.util.List;
 
 public abstract class BaseBoardView extends View {
 
+    @NonNull
     private final DisplayMetrics mDisplayMetrics;
 
     protected final BaseBoardRenderer mRenderer;
@@ -22,6 +27,7 @@ public abstract class BaseBoardView extends View {
     protected Board mBoard;
 
     private boolean mShowTurn;
+    private boolean mAllowAdjacentShips;
 
     public BaseBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -35,9 +41,13 @@ public abstract class BaseBoardView extends View {
     @NonNull
     protected abstract BaseBoardRenderer renderer();
 
-    public final void setBoard(Board board) {
+    public final void setBoard(@NonNull Board board) {
         mBoard = board;
         invalidate();
+    }
+
+    public void allowAdjacentShips() {
+        mAllowAdjacentShips = true;
     }
 
     private int getHorizontalPadding() {
@@ -57,7 +67,7 @@ public abstract class BaseBoardView extends View {
         drawShips(canvas);
     }
 
-    private void drawCells(Canvas canvas) {
+    private void drawCells(@NonNull Canvas canvas) {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 Cell cell = mBoard.getCell(i, j);
@@ -70,9 +80,18 @@ public abstract class BaseBoardView extends View {
         }
     }
 
-    private void drawShips(Canvas canvas) {
-        for (Board.LocatedShip ship : mBoard.getLocatedShips()) {
-            mRenderer.drawShip(canvas, ship.ship, ship.position);
+    private void drawShips(@NonNull Canvas canvas) {
+        for (Board.LocatedShip locatedShip : mBoard.getLocatedShips()) {
+            mRenderer.drawShip(canvas, locatedShip);
+            if (locatedShip.ship.isDead() && !mAllowAdjacentShips) {
+                drawMissMarks(canvas, BoardUtils.getCells(locatedShip, true));
+            }
+        }
+    }
+
+    private void drawMissMarks(@NonNull Canvas canvas, @NonNull List<Vector2> cells) {
+        for (Vector2 cell : cells) {
+            mRenderer.drawMissMark(canvas, cell);
         }
     }
 
@@ -87,7 +106,8 @@ public abstract class BaseBoardView extends View {
         mRenderer.measure(w, h, getHorizontalPadding(), getVerticalPadding());
     }
 
-    private DisplayMetrics getDisplayMetrics(WindowManager wm) {
+    @NonNull
+    private DisplayMetrics getDisplayMetrics(@NonNull WindowManager wm) {
         Display display = wm.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);

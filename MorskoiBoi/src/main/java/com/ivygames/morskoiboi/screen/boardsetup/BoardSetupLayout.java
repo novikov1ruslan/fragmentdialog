@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
@@ -74,9 +75,13 @@ public class BoardSetupLayout extends RelativeLayout implements View.OnClickList
         }
     }
 
-    public void setBoard(Board board, PriorityQueue<Ship> fleet) {
+    public void setBoard(@NonNull Board board, @NonNull PriorityQueue<Ship> fleet) {
         mBoardView.setBoard(board);
         mBoardView.setFleet(fleet);
+    }
+
+    public void allowAdjacentShips() {
+        mBoardView.allowAdjacentShips();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

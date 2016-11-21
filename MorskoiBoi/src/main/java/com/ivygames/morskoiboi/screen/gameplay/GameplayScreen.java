@@ -175,6 +175,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mLayout.setPlayerBoard(mPlayerPrivateBoard);
         updateEnemyStatus();
         mLayout.setEnemyBoard(mEnemyPublicBoard);
+        if (mRules.allowAdjacentShips()) {
+            mLayout.allowAdjacentShips();
+        }
         mLayout.setAlarmTime(ALARM_TIME_SECONDS * 1000);
 
         mLayout.setPlayerName(mPlayer.getName());

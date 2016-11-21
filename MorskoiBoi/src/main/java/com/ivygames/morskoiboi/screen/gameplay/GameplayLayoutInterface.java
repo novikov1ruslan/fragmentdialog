@@ -17,6 +17,8 @@ public interface GameplayLayoutInterface {
 
     void setEnemyBoard(@NonNull Board board);
 
+    void allowAdjacentShips();
+
     /**
      * @param millis time in milliseconds
      */

@@ -34,7 +34,7 @@ public class BoardUtils {
 
     // TODO: use enum instead of boolean
     @NonNull
-    private static List<Vector2> getCells(@NonNull Board.LocatedShip locatedShip, boolean neighboring) {
+    public static List<Vector2> getCells(@NonNull Board.LocatedShip locatedShip, boolean neighboring) {
         List<Vector2> coordinates = new ArrayList<>();
 
         int x = locatedShip.position.x;
