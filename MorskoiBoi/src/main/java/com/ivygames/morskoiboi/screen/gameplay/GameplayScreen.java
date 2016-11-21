@@ -338,7 +338,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showSurrenderDialog() {
-        final int penalty = RulesUtils.calcSurrenderPenalty(mPlayerPrivateBoard.getShips(), mRules.getAllShipsSizes());
+        final int penalty = RulesUtils.calcSurrenderPenalty(mRules.getAllShipsSizes(), mPlayerPrivateBoard.getShips());
         String message = getString(R.string.surrender_question, -penalty);
 
         new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
@@ -688,7 +688,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             stopAlarmSound();
 
             AnalyticsEvent.send("surrendered_passively");
-            int penalty = RulesUtils.calcSurrenderPenalty(mPlayerPrivateBoard.getShips(), mRules.getAllShipsSizes());
+            int penalty = RulesUtils.calcSurrenderPenalty(mRules.getAllShipsSizes(), mPlayerPrivateBoard.getShips());
             Ln.d("player surrender passively with penalty: " + penalty);
             surrender(penalty);
         }

@@ -272,14 +272,14 @@ public class RussianRulesTest {
     @Test
     public void SurrenderPenaltyForTheFullFleet_1000() {
         Collection<Ship> fullFleet = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
-        assertThat(RulesUtils.calcSurrenderPenalty(fullFleet, mRules.getAllShipsSizes()), is(1000));
+        assertThat(RulesUtils.calcSurrenderPenalty(mRules.getAllShipsSizes(), fullFleet), is(1000));
     }
 
     @Test
     public void SurrenderPenaltyFor_1_is_2900() {
         Collection<Ship> fullFleet = new ArrayList<>();
         fullFleet.add(new Ship(1));
-        assertThat(RulesUtils.calcSurrenderPenalty(fullFleet, mRules.getAllShipsSizes()), is(2900));
+        assertThat(RulesUtils.calcSurrenderPenalty(mRules.getAllShipsSizes(), fullFleet), is(2900));
     }
 
     @NonNull
