@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.gameplay;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.gameplay.ChatDialogLayout;
 
 import org.hamcrest.Matcher;
@@ -27,7 +27,7 @@ public class GameplayScreen_ChatDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenChatButtonClicked__ChatDialogDisplayed() {
-        setGameType(Game.Type.INTERNET);
+        setGameType(OnlineScreen_.Type.INTERNET);
         showScreen();
         clickOn(chat());
         checkDisplayed(chatDialog());

@@ -12,11 +12,6 @@ public class TestableGame extends Game {
     }
 
     @Override
-    public Type getType() {
-        return mGame.getType();
-    }
-
-    @Override
     public boolean shouldNotifyOpponent() {
         return mGame.shouldNotifyOpponent();
     }
@@ -27,8 +22,8 @@ public class TestableGame extends Game {
     }
 
     @Override
-    public boolean hasSetupTimeout() {
-        return mGame.hasSetupTimeout();
+    public boolean isRemote() {
+        return mGame.isRemote();
     }
 
     @Override
@@ -47,7 +42,17 @@ public class TestableGame extends Game {
         return mGame.finish();
     }
 
+    @Override
+    public boolean isPausable() {
+        return mGame.isPausable();
+    }
+
     public boolean hasFinished() {
         return mHasFinished;
+    }
+
+    @Override
+    public String toString() {
+        return "[T[" + mGame + "]]";
     }
 }

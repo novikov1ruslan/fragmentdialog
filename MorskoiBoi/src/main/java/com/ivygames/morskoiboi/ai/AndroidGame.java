@@ -21,11 +21,6 @@ public class AndroidGame extends Game {
     }
 
     @Override
-    public Type getType() {
-        return Type.VS_ANDROID;
-    }
-
-    @Override
     public boolean shouldNotifyOpponent() {
         return false;
     }
@@ -36,7 +31,7 @@ public class AndroidGame extends Game {
     }
 
     @Override
-    public boolean hasSetupTimeout() {
+    public boolean isRemote() {
         return false;
     }
 
@@ -48,6 +43,11 @@ public class AndroidGame extends Game {
     @Override
     public int getWinPoints() {
         return Game.WIN_POINTS_SHOULD_BE_CALCULATED;
+    }
+
+    @Override
+    public boolean isPausable() {
+        return true;
     }
 
     @Override

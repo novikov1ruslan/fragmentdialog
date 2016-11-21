@@ -38,11 +38,6 @@ public class BluetoothGame extends Game {
     }
 
     @Override
-    public Type getType() {
-        return Type.BLUETOOTH;
-    }
-
-    @Override
     public boolean shouldNotifyOpponent() {
         return true;
     }
@@ -53,7 +48,7 @@ public class BluetoothGame extends Game {
     }
 
     @Override
-    public boolean hasSetupTimeout() {
+    public boolean isRemote() {
         return false;
     }
 
@@ -65,6 +60,11 @@ public class BluetoothGame extends Game {
     @Override
     public int getWinPoints() {
         return BLUETOOTH_WIN_POINTS;
+    }
+
+    @Override
+    public boolean isPausable() {
+        return false;
     }
 
     @Override

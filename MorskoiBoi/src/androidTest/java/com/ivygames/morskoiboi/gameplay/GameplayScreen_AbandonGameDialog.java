@@ -2,8 +2,8 @@ package com.ivygames.morskoiboi.gameplay;
 
 import android.view.View;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Game;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class GameplayScreen_AbandonGameDialog extends GameplayScreen_ {
 
     @Test
     public void WhenBackPressedForAndroidGame__DialogDisplayed() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         pressBack();
         checkDisplayed(abandonGameDialog());

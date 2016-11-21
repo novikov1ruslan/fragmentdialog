@@ -3,9 +3,9 @@ package com.ivygames.morskoiboi.win;
 import android.support.test.espresso.matcher.ViewMatchers;
 
 import com.ivygames.common.ui.SignInListener;
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ScreenUtils;
-import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
 
@@ -33,14 +33,14 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenScreenDisplayedForAndroidGame__AchievementsProcessed() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         expectProcessAchievementsBeCalled(times(1));
     }
 
     @Test
     public void WhenScreenDisplayedForNonAndroidGame__AchievementsNotProcessed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         expectProcessAchievementsBeCalled(never());
     }
@@ -87,7 +87,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenGameTypeIsAndroid__ScoresAndDurationShown() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         when(statistics.getTimeSpent()).thenReturn(135000L);
         setScores(100);
         showScreen();
@@ -97,7 +97,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenGameTypeIsNotAndroid__ScoresAndDurationNotShown() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         checkNotDisplayed(timeView());
         checkNotDisplayed(scoresView());
@@ -105,7 +105,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenSignedIn__SignInOptionHidden() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         setSignedIn(true);
         showScreen();
         checkNotDisplayed(signInBar());
@@ -113,7 +113,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenNotAndroidGame__SignInOptionHidden() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         setSignedIn(false);
         showScreen();
         checkNotDisplayed(signInBar());
@@ -121,7 +121,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenAndroidGameAndNotSignedIn__SignInOptionDisplayed() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         setSignedIn(false);
         showScreen();
         checkDisplayed(signInBar());
@@ -171,7 +171,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void AfterNoPressedForAndroid__SelectGameScreenShown() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         surrendered = false;
         showScreen();
         clickOn(ScreenUtils.noButton());
@@ -181,7 +181,7 @@ public class WinScreenTest extends WinScreen_ {
     @Test
     public void WhenOpponentSurrendersPressingBack__FinishesGameOpensSelectGameScreen() {
         surrendered = true;
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         pressBack();
         backToSelectGame();
@@ -189,7 +189,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenScreenDestroyedForAndroidConnectedGame__ScoresSubmitted() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         setSignedIn(true);
         showScreen();
         pressBack();
@@ -198,7 +198,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenScreenDestroyedForNonAndroidGame__ScoresNotSubmitted() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         setSignedIn(true);
         showScreen();
         pressBack();
@@ -207,7 +207,7 @@ public class WinScreenTest extends WinScreen_ {
 
     @Test
     public void WhenScreenDestroyedWhenNotConnected__ScoresNotSubmitted() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         setSignedIn(false);
         showScreen();
         pressBack();

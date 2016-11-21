@@ -1,7 +1,7 @@
 package com.ivygames.morskoiboi.win;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.ScreenUtils;
-import com.ivygames.morskoiboi.model.Game;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreen_ {
     @Test
     public void WhenBackPressedForNotSurrenderedNonAndroidGame__WantToLeaveDialogDisplayed() {
         surrendered = false;
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         pressBack();
         checkDisplayed(wantToLeaveDialog());
@@ -23,7 +23,7 @@ public class WinScreen_WantToLeaveDialogTest extends WinScreen_ {
 
     @Test
     public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         surrendered = false;
         showScreen();
         clickOn(ScreenUtils.noButton());

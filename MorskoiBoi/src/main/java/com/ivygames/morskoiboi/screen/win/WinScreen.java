@@ -25,7 +25,6 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
@@ -117,7 +116,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (WinLayoutSmall) getLayoutInflater().inflate(R.layout.win, container, false);
-        if (mGame.getType() == Type.VS_ANDROID) {
+        if (mGame.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
             mLayout.setDuration(mTime);
             mLayout.setTotalScore(mScores);
             mLayout.setSignInClickListener(new OnClickListener() {
@@ -129,7 +128,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
                 }
             });
         } else {
-            Ln.d("online game - hiding scores", mGame.getType());
+            Ln.d("online game - hiding scores", mGame);
             mLayout.hideScores();
             mLayout.hideDuration();
             mLayout.hideSignInForAchievements();
@@ -168,7 +167,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @Override
     public void onResume() {
         super.onResume();
-        if (mGame.getType() == Type.VS_ANDROID && !mApiClient.isConnected()) {
+        if (mGame.supportsAchievements() && !mApiClient.isConnected()) {
             Ln.d("game vs Android, but client is not connected - show sign button");
             mLayout.showSignInForAchievements();
         } else {
@@ -191,7 +190,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
 
     private void processScores() {
         int penalty = mSettings.getProgressPenalty();
-        Ln.d("updating player's progress [" + mScores + "] for game type: " + mGame.getType() + "; penalty=" + penalty);
+        Ln.d("updating player's progress [" + mScores + "] for game: " + mGame + "; penalty=" + penalty);
         int progressIncrement = mScores - penalty;
         if (progressIncrement > 0) {
             int oldScores = mSettings.getProgress().getScores();
@@ -212,7 +211,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mGame.getType() == Type.VS_ANDROID) {
+        if (mGame.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
             if (mApiClient.isConnected()) {
                 submitScore(mScores);
                 sendAnalyticsForPlayersScores(mScores);

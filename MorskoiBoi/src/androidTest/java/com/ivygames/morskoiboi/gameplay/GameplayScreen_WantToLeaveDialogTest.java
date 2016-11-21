@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.gameplay;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.OnlineScreen_;
 
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenBackPressedForInternetGame__DialogDisplayed() {
-        setGameType(Game.Type.INTERNET);
+        setGameType(OnlineScreen_.Type.INTERNET);
         showScreen();
         pressBack();
         checkDisplayed(wantToLeaveDialog());
@@ -20,7 +20,7 @@ public class GameplayScreen_WantToLeaveDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenBackPressedForBluetoothGame__WantToLeaveDialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         pressBack();
         checkDisplayed(wantToLeaveDialog());

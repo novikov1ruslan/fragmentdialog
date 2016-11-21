@@ -39,7 +39,6 @@ import com.ivygames.morskoiboi.model.Board;
 import com.ivygames.morskoiboi.model.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Game;
-import com.ivygames.morskoiboi.model.Game.Type;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.morskoiboi.model.Ship;
@@ -161,7 +160,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
         mLayout.setShipsSizes(mRules.getAllShipsSizes());
-        if (mGame.getType() != Type.INTERNET) {
+        if (!mGame.isRemote()) {
             Ln.v("not internet game - hide chat button");
             mLayout.hideChatButton();
         }
@@ -213,7 +212,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onPause() {
         super.onPause();
         Ln.d(this + " is partially obscured - pausing sounds");
-        if (mGame.getType() == Type.VS_ANDROID) {
+        if (mGame.isPausable()) {
             // timer is not running if it is not player's turn, but cancel it just in case
             mTimerController.pause();
         }
@@ -223,7 +222,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     public void onResume() {
         super.onResume();
         Ln.d(this + " is fully visible - resuming sounds");
-        if (mGame.getType() == Type.VS_ANDROID && !mLayout.isLocked()) {
+        if (mGame.isPausable() && !mLayout.isLocked()) {
             Ln.v("showing pause dialog");
             showPauseDialog();
         }
@@ -518,7 +517,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mGameIsOn = true;
             mStartTime = SystemClock.elapsedRealtime();
 
-            if (mGame.getType() != Type.VS_ANDROID || isResumed()) {
+            if (!mGame.isPausable() || isResumed()) {
                 Ln.d("player's turn - starting timer");
                 mTimerController.start(); // for all practical scenarios - start will only be called from here
             } else {

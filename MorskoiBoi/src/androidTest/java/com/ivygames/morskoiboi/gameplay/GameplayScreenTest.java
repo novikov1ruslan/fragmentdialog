@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.common.multiplayer.MultiplayerEvent;
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.player.AiOpponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
@@ -25,7 +25,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
 
     @Test
     public void WhenScreenPausedForAndroidGame__TimerPaused() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         pause();
         verify(timeController, times(1)).pause();
@@ -33,21 +33,21 @@ public class GameplayScreenTest extends GameplayScreen_ {
 
     @Test
     public void ForAndroidGame__ChatButtonHidden() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         checkNotDisplayed(chat());
     }
 
     @Test
     public void ForBluetoothGame__ChatButtonHidden() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         checkNotDisplayed(chat());
     }
 
     @Test
     public void ForInternetGame__ChatButtonVisible() {
-        setGameType(Game.Type.INTERNET);
+        setGameType(OnlineScreen_.Type.INTERNET);
         showScreen();
         checkDisplayed(chat());
     }
@@ -79,7 +79,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
         AiOpponent android = mock(AiOpponent.class);
         when(android.getName()).thenReturn(OPPONENT_NAME);
         session = new Session(player, android);
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
 
         destroy();

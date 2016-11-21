@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi.gameplay;
 
 import android.view.View;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.gameplay.EnemyBoardView;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutInterface;
 
@@ -37,7 +37,7 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenBoardIsLocked_ForAndroidGame_AfterResume__PauseDialogNotDisplayed() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         pause();
         resume();
@@ -46,7 +46,7 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenBoardIsNotLocked_ForBluetoothGame_AfterResume__PauseDialogNotDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         unlockBoard();
         pause();
@@ -56,7 +56,7 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenBoardIsNotLocked_ForInternetGame_AfterResume__PauseDialogNotDisplayed() {
-        setGameType(Game.Type.INTERNET);
+        setGameType(OnlineScreen_.Type.INTERNET);
         showScreen();
         unlockBoard();
         pause();
@@ -66,7 +66,7 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreen_ {
 
     @Test
     public void WhenBoardIsNotLocked_ForAndroidGame_AfterResume__PauseDialogDisplayed() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         unlockBoard();
         pause();

@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.lost;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.OnlineScreen_;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
 
     @Test
     public void AfterNoPressedForNonAndroid__WantToLeaveDialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         clickOn(noButton());
         checkDisplayed(wantToLeaveDialog());
@@ -19,7 +19,7 @@ public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
 
     @Test
     public void WhenBackButtonPressedForNonAndroid__WantToLeaveDialogShown() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         pressBack();
         checkDisplayed(wantToLeaveDialog());

@@ -85,8 +85,8 @@ abstract class WinScreen_ extends OnlineScreen_ {
     }
 
     protected void setScores(int scores) {
-        setGameType(Game.Type.VS_ANDROID);
-        when(rules.calcTotalScores(any(Collection.class), any(Game.Type.class), any(ScoreStatistics.class), anyBoolean())).thenReturn(scores);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
+        when(rules.calcTotalScores(any(Collection.class), any(Game.class), any(ScoreStatistics.class), anyBoolean())).thenReturn(scores);
     }
 
     protected void setPenalty(Integer penalty) {

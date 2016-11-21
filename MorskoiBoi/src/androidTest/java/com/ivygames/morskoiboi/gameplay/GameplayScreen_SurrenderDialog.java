@@ -2,10 +2,9 @@ package com.ivygames.morskoiboi.gameplay;
 
 import android.view.View;
 
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Ship;
-import com.ivygames.morskoiboi.variant.RulesUtils;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -19,7 +18,6 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +32,7 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
 
     @Test
     public void WhenBackPressedForInternetGame_AndEnemyIsReady__DialogDisplayed() {
-        setGameType(Game.Type.INTERNET);
+        setGameType(OnlineScreen_.Type.INTERNET);
         showScreen();
         when(player.isOpponentReady()).thenReturn(true);
         pressBack();
@@ -43,7 +41,7 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
 
     @Test
     public void WhenBackPressedForBluetoothGame_AndEnemyIsReady__DialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
         when(player.isOpponentReady()).thenReturn(true);
         pressBack();

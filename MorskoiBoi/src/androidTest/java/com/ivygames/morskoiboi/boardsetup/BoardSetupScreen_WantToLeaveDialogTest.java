@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.boardsetup;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.OnlineScreen_;
 
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 public class BoardSetupScreen_WantToLeaveDialogTest extends BoardSetupScreen_ {
     @Test
     public void WhenBackPressedForNonAndroidGame__WantToLeaveDialogDisplayed() {
-        setGameType(Game.Type.BLUETOOTH);
+        setGameType(OnlineScreen_.Type.BLUETOOTH);
         showScreen();
 
         pressBack();

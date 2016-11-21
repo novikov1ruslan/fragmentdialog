@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.boardsetup;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.model.Ship.Orientation;
 
 import org.junit.Test;
@@ -55,7 +55,7 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
 
     @Test
     public void WhenPressedBackForAndroidGame__GameFinishes_OpensSelectGameScreen() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         pressBack();
         backToSelectGame();

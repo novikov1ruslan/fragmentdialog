@@ -8,7 +8,6 @@ import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.model.Board;
-import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Opponent;
 import com.ivygames.morskoiboi.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
@@ -43,7 +42,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
 
         session = new Session(player, opponent);
         Session.bindOpponents(player, opponent);
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(Type.VS_ANDROID);
     }
 
     public PlayerOpponent mockPlayer() {
@@ -64,7 +63,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
         return withText(getString(R.string.want_to_leave_room, OPPONENT_NAME));
     }
 
-    protected final void setGameType(Game.Type type) {
+    protected final void setGameType(Type type) {
         switch (type) {
             case VS_ANDROID:
                 game = new TestableGame(new AndroidGame());
@@ -102,4 +101,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
         return withText(R.string.connection_lost);
     }
 
+    public enum Type {
+        VS_ANDROID, BLUETOOTH, INTERNET
+    }
 }

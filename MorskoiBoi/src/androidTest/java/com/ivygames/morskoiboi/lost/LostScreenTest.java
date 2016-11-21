@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.lost;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.OnlineScreen_;
 
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class LostScreenTest extends LostScreen_ {
 
     @Test
     public void WhenBackButtonPressedForAndroid__SelectGameScreenShown() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         pressBack();
         backToSelectGame();
@@ -29,7 +29,7 @@ public class LostScreenTest extends LostScreen_ {
 
     @Test
     public void AfterNoPressedForAndroid__SelectGameScreenShown() {
-        setGameType(Game.Type.VS_ANDROID);
+        setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
         clickOn(noButton());
         backToSelectGame();

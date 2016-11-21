@@ -30,11 +30,6 @@ public class InternetGame extends Game {
     }
 
     @Override
-    public Type getType() {
-        return Type.INTERNET;
-    }
-
-    @Override
     public boolean shouldNotifyOpponent() {
         return true;
     }
@@ -45,7 +40,7 @@ public class InternetGame extends Game {
     }
 
     @Override
-    public boolean hasSetupTimeout() {
+    public boolean isRemote() {
         return true;
     }
 
@@ -57,6 +52,11 @@ public class InternetGame extends Game {
     @Override
     public int getWinPoints() {
         return INTERNET_WIN_POINTS;
+    }
+
+    @Override
+    public boolean isPausable() {
+        return false;
     }
 
     @Override
