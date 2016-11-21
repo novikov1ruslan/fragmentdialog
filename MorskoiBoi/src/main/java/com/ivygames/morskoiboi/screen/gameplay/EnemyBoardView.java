@@ -20,6 +20,7 @@ import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 
 import org.commons.logger.Ln;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnemyBoardView extends BaseBoardView {
@@ -34,7 +35,8 @@ public class EnemyBoardView extends BaseBoardView {
     private MotionEvent debug_last_event;
     @NonNull
     private Vector2 mAiming = Vector2.INVALID_VECTOR;
-    private List<Vector2> mPossibleShots;
+    @NonNull
+    private List<Vector2> mPossibleShots = new ArrayList<>();
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
