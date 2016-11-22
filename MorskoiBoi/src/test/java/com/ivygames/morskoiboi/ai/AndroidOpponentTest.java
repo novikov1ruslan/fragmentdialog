@@ -12,6 +12,7 @@ import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.RussianBotFactory;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -93,7 +94,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
-        Placement.putShipAt(mBoard, new LocatedShip(new Ship(2), 5, 5));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(new Ship(2), 5, 5));
         setBoardDefeated(false);
         mAndroid.onShotAt(Vector2.get(5, 5));
 

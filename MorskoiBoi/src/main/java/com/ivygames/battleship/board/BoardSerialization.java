@@ -3,7 +3,7 @@ package com.ivygames.battleship.board;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.ShipSerialization;
-import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
 import org.json.JSONArray;
@@ -54,7 +54,7 @@ public class BoardSerialization {
             JSONObject shipJson = shipsJson.getJSONObject(i);
             LocatedShip locatedShip = ShipSerialization.fromJson(shipJson);
             // TODO: should be placement independent
-            Placement.putShipAt(board, locatedShip);
+            BoardUtils.putShipAt(board, locatedShip);
         }
     }
 

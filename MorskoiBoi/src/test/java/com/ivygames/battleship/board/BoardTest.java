@@ -1,8 +1,8 @@
 package com.ivygames.battleship.board;
 
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.ship.Ship.Orientation;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,10 +30,10 @@ public class BoardTest {
         assertThat(BoardTestUtils.similar(board1, board2), is(true));
 
         Ship ship = new Ship(3);
-        Placement.putShipAt(board2, new LocatedShip(ship, 5, 5));
+        BoardUtils.putShipAt(board2, new LocatedShip(ship, 5, 5));
         assertFalse(BoardTestUtils.similar(board1, board2));
 
-        Placement.putShipAt(board1, new LocatedShip(ship, 5, 5));
+        BoardUtils.putShipAt(board1, new LocatedShip(ship, 5, 5));
         assertThat(BoardTestUtils.similar(board1, board2), is(true));
     }
 
@@ -65,7 +65,7 @@ public class BoardTest {
         assertFalse(!Board.allAvailableShipsAreDestroyed(mBoard));
 
         Ship ship = new Ship(2);
-        Placement.putShipAt(mBoard, new LocatedShip(ship, 5, 5));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(ship, 5, 5));
         assertFalse(Board.allAvailableShipsAreDestroyed(mBoard));
 
         ship.shoot();
@@ -79,7 +79,7 @@ public class BoardTest {
     public void testGetShipsAt() {
         Board board = new Board();
 
-        Placement.putShipAt(board, new LocatedShip(new Ship(1), 5, 5));
+        BoardUtils.putShipAt(board, new LocatedShip(new Ship(1), 5, 5));
 
         assertThat(board.getShipsAt(5, 5).size(), is(1));
         assertThat(board.getShipsAt(5, 6).size(), is(0));
@@ -89,7 +89,7 @@ public class BoardTest {
     public void testPutHorizontalShipSucceeded() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
 
-        Placement.putShipAt(mBoard, new LocatedShip(ship, 8, 5));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(ship, 8, 5));
 
         assertThat(ship, is(mBoard.getShipsAt(8, 5).iterator().next()));
         assertThat(ship, is(mBoard.getShipsAt(9, 5).iterator().next()));
@@ -108,14 +108,14 @@ public class BoardTest {
     @Test(expected = IllegalArgumentException.class)
     public void testPutHorizontalShipFailed() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
-        Placement.putShipAt(mBoard, new LocatedShip(ship, 9, 5));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(ship, 9, 5));
     }
 
     @Test
     public void testPutVerticalShipSucceeded() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
 
-        Placement.putShipAt(mBoard, new LocatedShip(ship, 3, 7));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(ship, 3, 7));
 
         assertThat(ship, is(mBoard.getShipsAt(3, 7).iterator().next()));
         assertThat(ship, is(mBoard.getShipsAt(3, 8).iterator().next()));
@@ -124,7 +124,7 @@ public class BoardTest {
     @Test(expected = IllegalArgumentException.class)
     public void testPutVerticalShipFailed() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
-        Placement.putShipAt(mBoard, new LocatedShip(ship, 3, 8));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(ship, 3, 8));
     }
 
     @Test
@@ -146,11 +146,11 @@ public class BoardTest {
         int totalShips = mBoard.getShips().size();
         assertEquals(0, totalShips);
 
-        Placement.putShipAt(mBoard, new LocatedShip(new Ship(1), 5, 5));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(new Ship(1), 5, 5));
         totalShips = mBoard.getShips().size();
         assertEquals(1, totalShips);
 
-        Placement.putShipAt(mBoard, new LocatedShip(new Ship(2), 8, 9));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(new Ship(2), 8, 9));
         totalShips = mBoard.getShips().size();
         assertEquals(2, totalShips);
     }

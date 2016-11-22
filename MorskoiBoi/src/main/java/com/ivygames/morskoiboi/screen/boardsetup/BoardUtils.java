@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
@@ -9,6 +10,8 @@ import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ShipUtils;
+
+import org.commons.logger.Ln;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -134,4 +137,65 @@ public class BoardUtils {
         return allShipsAreOnBoard(board, rules) && Board.allAvailableShipsAreDestroyed(board);
     }
 
+    // TODO: when ship has no coordinates this method is not needed, use Board#addShip
+    public static void putShipAt(@NonNull Board board, @NonNull LocatedShip locatedShip) {
+        int i = locatedShip.position.x;
+        int j = locatedShip.position.y;
+        if (!board.shipFitsTheBoard(locatedShip.ship, i, j)) {
+            throw new IllegalArgumentException("cannot put ship " + locatedShip);
+        }
+
+//        Collection<Vector2> neighboringCells = BoardUtils.getCells(ship, true);
+//        for (Vector2 v : neighboringCells) {
+//            if (!mRules.allowAdjacentShips()) {
+//                if (ship.isDead()) {
+//                    board.setCell(Cell.MISS, v);
+//                } else {
+//                    board.setCell(Cell.RESERVED, v);
+//                }
+//            }
+//        }
+
+        board.addShip(locatedShip);
+    }
+
+    @Nullable
+    public static Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
+        if (!Board.contains(i, j)) {
+            Ln.w("(" + i + "," + j + ") is outside the board");
+            return null;
+        }
+
+        LocatedShip locatedShip = board.getFirstShipAt(i, j);
+        if (locatedShip != null) {
+            board.removeShip(locatedShip);
+            return locatedShip.ship;
+        }
+        return null;
+    }
+
+    public static void rotateShipAt(@NonNull Board board, int x, int y) {
+        if (!Board.contains(x, y)) {
+            Ln.w("(" + x + "," + y + ") is outside the board");
+            return;
+        }
+
+        Ship ship = pickShipFromBoard(board, x, y);
+        if (ship == null) {
+            return;
+        }
+
+        ship.rotate();
+
+        if (board.shipFitsTheBoard(ship, x, y)) {
+            putShipAt(board, new LocatedShip(ship, x, y));
+        } else {
+            int i = board.horizontalDimension() - ship.size;
+            if (ship.isHorizontal()) {
+                putShipAt(board, new LocatedShip(ship, i, y));
+            } else {
+                putShipAt(board, new LocatedShip(ship, x, i));
+            }
+        }
+    }
 }

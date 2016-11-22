@@ -14,7 +14,6 @@ import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.renderer.SetupBoardGeometryProcessor;
@@ -133,7 +132,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    Placement.rotateShipAt(mBoard, coordinate.x, coordinate.y);
+                    BoardUtils.rotateShipAt(mBoard, coordinate.x, coordinate.y);
                 } else if (mPresenter.hasPickedShip()) {
                     Ln.v("dropping picked ship to: " + mPickedShipCoordinate);
                     mPresenter.dropShip(mBoard, mPickedShipCoordinate);

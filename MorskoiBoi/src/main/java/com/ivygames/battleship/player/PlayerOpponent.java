@@ -12,7 +12,6 @@ import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -336,7 +335,7 @@ public class PlayerOpponent implements Opponent {
             Ship ship = result.locatedShip.ship;
             mEnemyBoard.setCell(result.cell, result.aim);
             Vector2 location = findShipLocation(mEnemyBoard, ship, result.aim);
-            Placement.putShipAt(mEnemyBoard, new LocatedShip(ship, location));
+            BoardUtils.putShipAt(mEnemyBoard, new LocatedShip(ship, location));
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }

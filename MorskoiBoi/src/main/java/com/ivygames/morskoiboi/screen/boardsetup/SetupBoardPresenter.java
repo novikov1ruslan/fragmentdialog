@@ -7,7 +7,6 @@ import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.Placement;
 
 import org.commons.logger.Ln;
 
@@ -56,7 +55,7 @@ public class SetupBoardPresenter {
         }
 
         if (board.shipFitsTheBoard(mPickedShip, i, j)) {
-            Placement.putShipAt(board, new LocatedShip(mPickedShip, i, j));
+            BoardUtils.putShipAt(board, new LocatedShip(mPickedShip, i, j));
         } else {
             returnShipToPool(mPickedShip);
         }
@@ -87,7 +86,7 @@ public class SetupBoardPresenter {
 
     @Nullable
     public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
-        mPickedShip = Placement.pickShipFromBoard(board, i, j);
+        mPickedShip = BoardUtils.pickShipFromBoard(board, i, j);
         return mPickedShip;
     }
 

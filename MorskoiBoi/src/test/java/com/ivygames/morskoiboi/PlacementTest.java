@@ -126,7 +126,7 @@ public class PlacementTest {
         Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 5);
 
-        Placement.rotateShipAt(mBoard, 5, 5);
+        BoardUtils.rotateShipAt(mBoard, 5, 5);
 
         assertThat(ship.isHorizontal(), is(false));
     }
@@ -136,7 +136,7 @@ public class PlacementTest {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         putShipAt(ship, 5, 5);
 
-        Placement.rotateShipAt(mBoard, 5, 5);
+        BoardUtils.rotateShipAt(mBoard, 5, 5);
 
         assertThat(ship.isHorizontal(), is(true));
     }
@@ -146,14 +146,14 @@ public class PlacementTest {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 7);
 
-        Placement.rotateShipAt(mBoard, 5, 7);
+        BoardUtils.rotateShipAt(mBoard, 5, 7);
 
         assertFalse(ship.isHorizontal());
         assertThat(mBoard.getShipsAt(5, 6).contains(ship), is(true));
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        Placement.putShipAt(mBoard, new LocatedShip(ship, x, y));
+        BoardUtils.putShipAt(mBoard, new LocatedShip(ship, x, y));
     }
 
     private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {
