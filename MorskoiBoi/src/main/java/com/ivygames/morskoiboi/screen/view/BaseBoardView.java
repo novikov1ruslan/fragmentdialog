@@ -15,6 +15,7 @@ import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.CoordinateType;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public abstract class BaseBoardView extends View {
         for (LocatedShip locatedShip : mBoard.getLocatedShips()) {
             mRenderer.drawShip(canvas, locatedShip);
             if (locatedShip.ship.isDead() && !mAllowAdjacentShips) {
-                drawMissMarks(canvas, BoardUtils.getCoordinates(locatedShip, BoardUtils.CoordinateType.NEAR_SHIP));
+                drawMissMarks(canvas, BoardUtils.getCoordinates(locatedShip, CoordinateType.NEAR_SHIP));
             }
         }
     }

@@ -51,7 +51,7 @@ public class RussianRulesTest {
     @Mock
     private ScoreStatistics statistics;
     private int[] allShipsSizes;
-    private ShipUtils.OrientationBuilder orientationBuilder;
+    private OrientationBuilder orientationBuilder;
     private ScoresCalculator scoresCalculator = new RussianScoresCalculator();
 
     @Before
@@ -59,7 +59,7 @@ public class RussianRulesTest {
         initMocks(this);
 
         Random random = mock(Random.class);
-        orientationBuilder = new ShipUtils.OrientationBuilder(random);
+        orientationBuilder = new OrientationBuilder(random);
         allShipsSizes = mRules.getAllShipsSizes();
         placement = new Placement(random, mRules.allowAdjacentShips());
     }

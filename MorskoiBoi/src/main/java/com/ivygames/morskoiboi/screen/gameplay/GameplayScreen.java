@@ -35,6 +35,7 @@ import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -588,7 +589,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private Collection<Ship> getWorkingEnemyShips() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
-        ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(new Random());
+        OrientationBuilder orientationBuilder = new OrientationBuilder(new Random());
         Collection<Ship> fleet = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
         for (Ship ship : killedShips) {
             GameplayUtils.removeShipFromFleet(fleet, ship);

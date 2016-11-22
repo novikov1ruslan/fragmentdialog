@@ -29,22 +29,18 @@ public class ShipUtils {
         }
     }
 
-    public static class OrientationBuilder {
-        @NonNull
-        private final Random mRandom;
-
-        public OrientationBuilder(@NonNull Random random) {
-            mRandom = random;
+    public static Collection<Vector2> getShipCoordinates(@NonNull Ship ship, @NonNull Vector2 coordinate) {
+        Collection<Vector2> coordinates = new ArrayList<>();
+        int i = coordinate.x;
+        int j = coordinate.y;
+        boolean isHorizontal = ship.isHorizontal();
+        for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.size; k++) {
+            int x = isHorizontal ? k : i;
+            int y = isHorizontal ? j : k;
+            coordinates.add(Vector2.get(x, y));
         }
 
-        public Ship.Orientation nextOrientation() {
-            return calcRandomOrientation(mRandom);
-        }
-
-        @NonNull
-        private static Ship.Orientation calcRandomOrientation(@NonNull Random random) {
-            return random.nextInt(2) == 1 ? Ship.Orientation.HORIZONTAL : Ship.Orientation.VERTICAL;
-        }
+        return coordinates;
     }
 
     @NonNull
@@ -70,4 +66,5 @@ public class ShipUtils {
 
         return fleet;
     }
+
 }

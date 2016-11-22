@@ -47,7 +47,7 @@ public class PlacementTest {
         Board board = new Board();
         // TODO: this test tests populateBoardWithShips actually and not generation
         Collection<Ship> ships = ShipUtils.generateFullFleet(rules.getAllShipsSizes(),
-                new ShipUtils.OrientationBuilder(mRandom));
+                new OrientationBuilder(mRandom));
 
         mPlacement.populateBoardWithShips(board, ships);
 

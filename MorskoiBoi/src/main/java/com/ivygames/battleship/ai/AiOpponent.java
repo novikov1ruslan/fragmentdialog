@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
+import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ShipUtils;
@@ -73,7 +74,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(mRandom);
+        OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
         Collection<Ship> ships = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
         mPlacement.populateBoardWithShips(getBoard(), ships);
         if (BuildConfig.DEBUG) {

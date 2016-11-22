@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.battleship.board.Board;
@@ -47,7 +48,7 @@ public class SetupBoardPresenterTest {
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
         mPlacement.populateBoardWithShips(board, ShipUtils.generateFullFleet(rules.getAllShipsSizes(),
-                new ShipUtils.OrientationBuilder(mRandom)));
+                new OrientationBuilder(mRandom)));
         mPresenter.dropShip(board, 5, 5);
     }
 

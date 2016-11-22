@@ -19,15 +19,6 @@ import java.util.List;
 
 public class BoardUtils {
 
-    public enum CoordinateType {
-        NEAR_SHIP,
-        IN_SHIP;
-
-        public boolean isNeighboring() {
-            return this == NEAR_SHIP;
-        }
-    }
-
     static boolean onlyHorizontalShips(@NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             if (ship.size > 1 && !ship.isHorizontal()) {
@@ -43,6 +34,7 @@ public class BoardUtils {
         return getCoordinates(new LocatedShip(new Ship(1), Vector2.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 
+    @NonNull
     public static List<Vector2> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
         List<Vector2> coordinates = new ArrayList<>();
 
@@ -55,8 +47,8 @@ public class BoardUtils {
             for (int j = -1; j < 2; j++) {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
-                Vector2 v = Vector2.get(cellX, cellY);
-                if (contains(v)) {
+                if (contains(cellX, cellY)) {
+                    Vector2 v = Vector2.get(cellX, cellY);
                     boolean inShip = ShipUtils.isInShip(v, locatedShip);
                     if (inShip && !type.isNeighboring()) {
                         coordinates.add(v);

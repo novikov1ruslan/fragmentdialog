@@ -19,6 +19,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
+import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
@@ -136,7 +137,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             UiEvent.send("auto");
             mBoard.clearBoard();
             int[] allShipsSizes = mRules.getAllShipsSizes();
-            ShipUtils.OrientationBuilder orientationBuilder = new ShipUtils.OrientationBuilder(mRandom);
+            OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
             Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
             if (!BuildConfig.DEBUG) { // needed for ui testing to simulate all horizontal ships
                 while (BoardUtils.onlyHorizontalShips(ships)) {
