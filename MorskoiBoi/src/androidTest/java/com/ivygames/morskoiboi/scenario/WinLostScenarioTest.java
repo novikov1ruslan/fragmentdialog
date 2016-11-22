@@ -34,6 +34,7 @@ import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static com.ivygames.morskoiboi.ScreenUtils.WIN_LAYOUT;
 import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOnEnemyCell;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
 import static com.ivygames.morskoiboi.ScreenUtils.lostScreen;
 import static com.ivygames.morskoiboi.ScreenUtils.playButton;
@@ -90,6 +91,7 @@ public class WinLostScenarioTest {
 
         goToGameplay();
 
+
         shootToWin();
         verifyWin();
 
@@ -143,6 +145,10 @@ public class WinLostScenarioTest {
         Dependencies.inject(new BidAiPlayerFactory(mRandom, 2 ,1));
 
         goToGameplay();
+
+        // Just to catch crash
+        clickOnEnemyCell(5, 5);
+        clickOnEnemyCell(7, 7);
 
         idleWait();
         verifyLost();

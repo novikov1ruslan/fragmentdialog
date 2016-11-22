@@ -141,4 +141,13 @@ public class ScreenUtils {
     public static Matcher<View> yesButton() {
         return withText(R.string.yes);
     }
+
+    public static void clickOnEnemyCell(int x, int y) {
+        onView(enemyBoard()).perform(clickXY(x, y));
+    }
+
+    @NonNull
+    public static Matcher<View> enemyBoard() {
+        return withId(R.id.enemy_board);
+    }
 }

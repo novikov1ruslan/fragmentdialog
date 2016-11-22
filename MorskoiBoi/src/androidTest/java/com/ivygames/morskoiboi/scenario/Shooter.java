@@ -3,16 +3,12 @@ package com.ivygames.morskoiboi.scenario;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.morskoiboi.R;
+import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScreenUtils;
-import com.ivygames.battleship.board.Vector2;
 
 import java.util.List;
 import java.util.Random;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 class Shooter {
 
@@ -36,7 +32,7 @@ class Shooter {
         mCurShot++;
         int x = processor.getX(vector2.x);
         int y = processor.getY(vector2.y);
-        onView(withId(R.id.enemy_board)).perform(ScreenUtils.clickXY(x, y));
+        ScreenUtils.clickOnEnemyCell(x, y);
     }
 
     public boolean hasShots() {
