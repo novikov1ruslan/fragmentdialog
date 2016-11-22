@@ -20,7 +20,7 @@ public class BidAiOpponent extends AiOpponent {
                          @NonNull Rules rules,
                          @NonNull Bot bot, int[] bid,
                          @NonNull Random random) {
-        super(name, placement, rules, bot, new Bidder(random), random);
+        super(name, rules, bot, new Bidder(random), random);
         mBid = bid;
     }
 

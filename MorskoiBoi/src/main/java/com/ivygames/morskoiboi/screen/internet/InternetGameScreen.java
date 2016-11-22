@@ -55,8 +55,6 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
     @NonNull
-    private final Placement mPlacement = Dependencies.getPlacement();
-    @NonNull
     private final Rules mRules = Dependencies.getRules();
 
     private Session mSession;

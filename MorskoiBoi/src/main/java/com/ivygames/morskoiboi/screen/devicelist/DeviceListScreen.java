@@ -53,8 +53,6 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     @NonNull
     private final Rules mRules = Dependencies.getRules();
     @NonNull
-    private final Placement mPlacement = Dependencies.getPlacement();
-    @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
     public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {

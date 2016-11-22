@@ -440,7 +440,7 @@ public class PlayerOpponentTest {
         private boolean lostCalled;
 
         public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            super(name, placement, rules, new RussianBotFactory().createBot(), new Bidder(mRandom), mRandom);
+            super(name, rules, new RussianBotFactory().createBot(), new Bidder(mRandom), mRandom);
         }
 
         @Override

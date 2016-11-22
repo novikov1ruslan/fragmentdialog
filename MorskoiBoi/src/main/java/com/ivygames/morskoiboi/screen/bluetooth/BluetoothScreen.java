@@ -19,7 +19,6 @@ import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
@@ -55,8 +54,6 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     private final GameSettings mSettings = Dependencies.getSettings();
     @NonNull
     private final Rules mRules = Dependencies.getRules();
-    @NonNull
-    private final Placement mPlacement = Dependencies.getPlacement();
     @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 

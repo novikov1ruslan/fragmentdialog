@@ -21,8 +21,6 @@ import java.util.Random;
 
 public class AiOpponent extends PlayerOpponent implements Cancellable {
     @NonNull
-    private final Placement mPlacement;
-    @NonNull
     private final Rules mRules;
     @NonNull
     private final Bot mBot;
@@ -31,11 +29,10 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     @NonNull
     private final Random mRandom;
 
-    public AiOpponent(@NonNull String name, @NonNull Placement placement,
+    public AiOpponent(@NonNull String name,
                       @NonNull Rules rules, @NonNull Bot bot,
                       @NonNull Bidder bidder, @NonNull Random random) {
         super(name, rules);
-        mPlacement = placement;
         mRules = rules;
         mBot = bot;
         mBidder = bidder;
@@ -47,9 +44,9 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
 
     @Override
     public void cancel() {
-        if (mOpponent instanceof Cancellable) {
+        if (mOpponent != null) {
             Ln.v(this + ": cancelling " + mOpponent);
-            ((Cancellable) mOpponent).cancel();
+            mOpponent.cancel();
         }
     }
 
@@ -74,9 +71,10 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void placeShips() {
+        Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());
         OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
         Collection<Ship> ships = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
-        mPlacement.populateBoardWithShips(getBoard(), ships);
+        placement.populateBoardWithShips(getBoard(), ships);
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());
         }
