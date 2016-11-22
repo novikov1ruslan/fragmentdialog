@@ -7,7 +7,6 @@ import com.ivygames.battleship.ai.Bot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.player.PlayerOpponent;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 
 import java.util.ArrayList;
@@ -26,10 +25,9 @@ class BidAiPlayerFactory implements AiPlayerFactory {
 
     @Override
     public PlayerOpponent createPlayer(@NonNull String name,
-                                       @NonNull Placement placement,
                                        @NonNull Rules rules) {
         Bot bot = new MyBot(rules);
-        return new BidAiOpponent("ai", placement, rules, bot, mBid, mRandom);
+        return new BidAiOpponent("ai", rules, bot, mBid, mRandom);
     }
 
     private class MyBot implements Bot {

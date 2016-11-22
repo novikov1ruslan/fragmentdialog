@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 
 import java.util.Random;
@@ -23,7 +22,6 @@ public class AiPlayerFactoryImpl implements AiPlayerFactory {
 
     @Override
     public AiOpponent createPlayer(@NonNull String name,
-                                   @NonNull Placement placement,
                                    @NonNull Rules rules) {
         return new AiOpponent(name, rules, mBotFactory.createBot(), new Bidder(mRandom), mRandom);
     }

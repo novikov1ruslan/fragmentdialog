@@ -72,8 +72,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     private InvitationToShowListener mScreenInvitationListener;
     @NonNull
-    private final Placement mPlacement = Dependencies.getPlacement();
-    @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
     @NonNull
@@ -177,7 +175,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
 
     @NonNull
     private PlayerOpponent createAiOpponent() {
-        return mOpponentFactory.createPlayer(getString(R.string.android), mPlacement, mRules);
+        return mOpponentFactory.createPlayer(getString(R.string.android), mRules);
     }
 
     @NonNull

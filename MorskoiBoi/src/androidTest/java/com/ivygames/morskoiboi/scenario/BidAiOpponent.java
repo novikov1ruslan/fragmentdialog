@@ -16,7 +16,6 @@ public class BidAiOpponent extends AiOpponent {
     private int mCurBid;
 
     public BidAiOpponent(@NonNull String name,
-                         @NonNull Placement placement,
                          @NonNull Rules rules,
                          @NonNull Bot bot, int[] bid,
                          @NonNull Random random) {

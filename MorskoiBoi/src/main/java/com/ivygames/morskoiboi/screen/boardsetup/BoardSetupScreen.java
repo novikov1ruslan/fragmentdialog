@@ -58,8 +58,6 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     @NonNull
     private final Rules mRules = Dependencies.getRules();
     @NonNull
-    private final Placement mPlacement = Dependencies.getPlacement();
-    @NonNull
     private final Random mRandom = Dependencies.getRandom();
 
     private BoardSetupLayout mLayout;
@@ -145,7 +143,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
                     ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
                 }
             }
-            mPlacement.populateBoardWithShips(mBoard, ships);
+            new Placement(mRandom, mRules.allowAdjacentShips()).populateBoardWithShips(mBoard, ships);
             mFleet.clear();
             mLayout.notifyDataChanged();
             mLayout.invalidate();
