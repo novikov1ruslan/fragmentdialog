@@ -28,6 +28,7 @@ public class Dependencies {
     private static AiPlayerFactory sAiPlayerFactory;
     private static Placement sPlacement;
     private static Random sRandom;
+    private static ScoresCalculator sScoresCalculator;
 
     public static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
@@ -138,5 +139,15 @@ public class Dependencies {
     @NonNull
     public static Random getRandom() {
         return sRandom;
+    }
+
+    public static void inject(@NonNull ScoresCalculator scoresCalculator) {
+        sScoresCalculator = scoresCalculator;
+        Ln.i(sScoresCalculator);
+    }
+
+    @NonNull
+    public static ScoresCalculator getScoresCalculator() {
+        return sScoresCalculator;
     }
 }

@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.config;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -37,9 +37,10 @@ public abstract class RulesUtils {
         return health;
     }
 
-    public static int calcTotalScores(Rules rules, @NonNull Collection<Ship> ships, @NonNull Game game,
-                                      @NonNull ScoreStatistics statistics, boolean surrendered) {
-        int score = calculateScoresForGame(ships, statistics, game, rules);
+    public static int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game,
+                                      @NonNull ScoreStatistics statistics,
+                                      boolean surrendered, @NonNull ScoresCalculator scoresCalculator) {
+        int score = calculateScoresForGame(ships, statistics, game, scoresCalculator);
 
         if (surrendered) {
             score = score / 2;
@@ -50,10 +51,10 @@ public abstract class RulesUtils {
         return score;
     }
 
-    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game, @NonNull Rules rules) {
+    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game, ScoresCalculator scoresCalculator) {
         int progress;
         if (game.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
-            progress = rules.calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
+            progress = scoresCalculator.calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
         } else {
             progress = game.getWinPoints();
         }

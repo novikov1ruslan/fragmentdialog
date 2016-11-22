@@ -12,6 +12,7 @@ import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.rt.InternetGame;
+import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.config.RulesUtils;
 import com.ivygames.morskoiboi.russian.RussianRules;
@@ -38,7 +39,7 @@ public class RussianRulesTest {
     private static final long MIN_TIME = 20000;
     private static final long MAX_TIME = 300000;
 
-    private RussianRules mRules;
+    private RussianRules mRules = new RussianRules();
     private Placement placement;
 
     private final Game mBluetoothGame = new BluetoothGame(mock(BluetoothConnection.class));
@@ -49,6 +50,7 @@ public class RussianRulesTest {
     private ScoreStatistics statistics;
     private int[] allShipsSizes;
     private ShipUtils.OrientationBuilder orientationBuilder;
+    private ScoresCalculator scoresCalculator = new RussianScoresCalculator();
 
     @Before
     public void setUp() {
@@ -56,7 +58,6 @@ public class RussianRulesTest {
 
         Random random = mock(Random.class);
         orientationBuilder = new ShipUtils.OrientationBuilder(random);
-        mRules = new RussianRules();
         allShipsSizes = mRules.getAllShipsSizes();
         placement = new Placement(random, mRules.allowAdjacentShips());
     }
@@ -145,26 +146,26 @@ public class RussianRulesTest {
     public void max_scores_for_android_game_is_31250() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(RulesUtils.calcTotalScores(mRules, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame,
-                statistics, false), is(31250));
+        assertThat(RulesUtils.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame,
+                statistics, false, scoresCalculator), is(31250));
     }
 
     @Test
     public void max_scores_for_surrendered_game_is_5000() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(RulesUtils.calcTotalScores(mRules, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame,
-                statistics, true), is(5000));
+        assertThat(RulesUtils.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame,
+                statistics, true, scoresCalculator), is(5000));
     }
 
     @Test
     public void max_score_for_BT_game_is_5000() {
         ScoreStatistics statistics = new ScoreStatistics();
         int MAX_BT_SCORE = 5000;
-        assertThat(RulesUtils.calcTotalScores(mRules, new ArrayList<Ship>(), mBluetoothGame, statistics,
-                false), is(MAX_BT_SCORE));
-        assertThat(RulesUtils.calcTotalScores(mRules, new ArrayList<Ship>(), mBluetoothGame, statistics,
-                true), lessThan(MAX_BT_SCORE));
+        assertThat(RulesUtils.calcTotalScores(new ArrayList<Ship>(), mBluetoothGame, statistics,
+                false, scoresCalculator), is(MAX_BT_SCORE));
+        assertThat(RulesUtils.calcTotalScores(new ArrayList<Ship>(), mBluetoothGame, statistics,
+                true, scoresCalculator), lessThan(MAX_BT_SCORE));
     }
 
     @Test
@@ -172,10 +173,10 @@ public class RussianRulesTest {
         ScoreStatistics statistics = new ScoreStatistics();
 
         int MAX_INTERNET_SCORE = 10000;
-        assertThat(RulesUtils.calcTotalScores(mRules, new ArrayList<Ship>(), mInternetGame, statistics,
-                false), is(MAX_INTERNET_SCORE));
-        assertThat(RulesUtils.calcTotalScores(mRules, new ArrayList<Ship>(), mInternetGame, statistics,
-                true), lessThan(MAX_INTERNET_SCORE));
+        assertThat(RulesUtils.calcTotalScores(new ArrayList<Ship>(), mInternetGame, statistics,
+                false, scoresCalculator), is(MAX_INTERNET_SCORE));
+        assertThat(RulesUtils.calcTotalScores(new ArrayList<Ship>(), mInternetGame, statistics,
+                true, scoresCalculator), lessThan(MAX_INTERNET_SCORE));
     }
 
     @Test
@@ -183,8 +184,8 @@ public class RussianRulesTest {
         ScoreStatistics statistics = mockPerfectGame();
 
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(RulesUtils.calcTotalScores(mRules, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame, statistics,
-                false), is(31250));
+        assertThat(RulesUtils.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame, statistics,
+                false, scoresCalculator), is(31250));
     }
 
     @Test
@@ -195,7 +196,7 @@ public class RussianRulesTest {
         when(statistics.getShells()).thenReturn(0);
         when(statistics.getTimeSpent()).thenReturn(MAX_TIME);
 
-        int i = RulesUtils.calcTotalScores(mRules, ships, mAndroidGame, statistics, false);
+        int i = RulesUtils.calcTotalScores(ships, mAndroidGame, statistics, false, scoresCalculator);
         assertThat(i, is(230));
     }
 
@@ -207,24 +208,24 @@ public class RussianRulesTest {
         when(statistics.getShells()).thenReturn(0);
         when(statistics.getTimeSpent()).thenReturn(MAX_TIME*2);
 
-        assertThat(RulesUtils.calcTotalScores(mRules, ships, mAndroidGame, statistics,
-                false), is(230));
+        assertThat(RulesUtils.calcTotalScores(ships, mAndroidGame, statistics,
+                false, scoresCalculator), is(230));
     }
 
     @Test
     public void scores_2xCombo_1_4_ships_30xShells_150seconds_is_8737() {
         Collection<Ship> ships = ships_1_4();
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
-        assertThat(RulesUtils.calcTotalScores(mRules, ships, mAndroidGame, statistics,
-                false), is(8737));
+        assertThat(RulesUtils.calcTotalScores(ships, mAndroidGame, statistics,
+                false, scoresCalculator), is(8737));
     }
 
     @Test
     public void surrendered_game_scores_2x_less() {
         Collection<Ship> ships = ships_1_4();
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
-        assertThat(RulesUtils.calcTotalScores(mRules, ships, mAndroidGame, statistics,
-                true), is(4368));
+        assertThat(RulesUtils.calcTotalScores(ships, mAndroidGame, statistics,
+                true, scoresCalculator), is(4368));
     }
 
     @Test
@@ -233,8 +234,8 @@ public class RussianRulesTest {
         ships.add(mockDeadShip());
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
 
-        assertThat(RulesUtils.calcTotalScores(mRules, ships, mAndroidGame, statistics,
-                false), is(8737));
+        assertThat(RulesUtils.calcTotalScores(ships, mAndroidGame, statistics,
+                false, scoresCalculator), is(8737));
     }
 
     @Test

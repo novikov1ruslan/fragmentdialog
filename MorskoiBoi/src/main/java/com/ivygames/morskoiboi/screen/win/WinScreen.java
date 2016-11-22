@@ -22,7 +22,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.config.RulesUtils;
@@ -61,7 +61,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     @NonNull
     private final ProgressManager mProgressManager = Dependencies.getProgressManager();
     @NonNull
-    private final Rules mRules = Dependencies.getRules();
+    private final ScoresCalculator mScoresCalculator = Dependencies.getScoresCalculator();
     private final boolean mOpponentSurrendered;
 
     public WinScreen(@NonNull BattleshipActivity parent,
@@ -79,7 +79,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mWinMusicBar.play();
 
         mTime = statistics.getTimeSpent();
-        mScores = RulesUtils.calcTotalScores(mRules, fleet, game, statistics, opponentSurrendered);
+        mScores = RulesUtils.calcTotalScores(fleet, game, statistics, opponentSurrendered, mScoresCalculator);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();

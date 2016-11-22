@@ -20,6 +20,7 @@ import com.ivygames.morskoiboi.player.PlayerFactoryImpl;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.russian.RussianRules;
+import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
 
 import org.acra.ACRA;
 import org.commons.logger.Config;
@@ -43,7 +44,7 @@ class ApplicationInitializer {
 
         GameSettings settings = new GameSettings(application);
         Resources resources = application.getResources();
-        RussianRules rules = new RussianRules();
+        Rules rules = new RussianRules();
         Random random = new Random();
         Placement placement = new Placement(random, rules.allowAdjacentShips());
         AndroidDevice device = new AndroidDevice(application);
@@ -57,6 +58,7 @@ class ApplicationInitializer {
                 BattleshipActivity.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactoryImpl();
         AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBotFactory(), random);
+        ScoresCalculator scoresCalculator = new RussianScoresCalculator();
 
         Dependencies.inject(random);
         Dependencies.inject(placement);
@@ -69,6 +71,7 @@ class ApplicationInitializer {
         Dependencies.inject(device);
         Dependencies.inject(playerFactory);
         Dependencies.inject(aiPlayerFactory);
+        Dependencies.inject(scoresCalculator);
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
