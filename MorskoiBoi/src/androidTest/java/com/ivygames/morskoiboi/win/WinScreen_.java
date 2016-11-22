@@ -8,7 +8,9 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.config.RulesUtils;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -86,7 +88,8 @@ abstract class WinScreen_ extends OnlineScreen_ {
 
     protected void setScores(int scores) {
         setGameType(OnlineScreen_.Type.VS_ANDROID);
-        when(rules.calcTotalScores(any(Collection.class), any(Game.class), any(ScoreStatistics.class), anyBoolean())).thenReturn(scores);
+        when(RulesUtils.calcTotalScores(any(Collection.class), any(Game.class), any(ScoreStatistics.class),
+                anyBoolean(), any(ScoresCalculator.class))).thenReturn(scores);
     }
 
     protected void setPenalty(Integer penalty) {
