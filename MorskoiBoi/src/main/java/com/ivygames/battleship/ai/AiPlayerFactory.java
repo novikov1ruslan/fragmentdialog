@@ -3,9 +3,9 @@ package com.ivygames.battleship.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.PlayerFactory;
+import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 
 public interface AiPlayerFactory extends PlayerFactory {
     @Override

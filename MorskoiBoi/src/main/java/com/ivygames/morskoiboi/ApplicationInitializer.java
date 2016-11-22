@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.ai.AiPlayerFactoryImpl;
 import com.ivygames.battleship.ai.RussianBotFactory;
@@ -16,7 +17,7 @@ import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.player.PlayerFactoryImpl;
+import com.ivygames.battleship.player.PlayerFactoryImpl;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.russian.RussianRules;

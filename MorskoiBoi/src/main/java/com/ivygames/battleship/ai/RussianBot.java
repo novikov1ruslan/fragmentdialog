@@ -6,7 +6,7 @@ import android.support.annotation.Size;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector2;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import java.util.ArrayList;

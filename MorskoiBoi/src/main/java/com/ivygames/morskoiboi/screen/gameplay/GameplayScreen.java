@@ -44,7 +44,7 @@ import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;

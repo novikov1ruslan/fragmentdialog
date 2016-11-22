@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.player;
+package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
@@ -17,6 +17,7 @@ import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.battleship.board.Vector2;
+import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.russian.RussianRules;
 

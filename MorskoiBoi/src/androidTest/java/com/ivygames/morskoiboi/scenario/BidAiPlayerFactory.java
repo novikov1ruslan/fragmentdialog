@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.Rules;
 import com.ivygames.battleship.ai.Bot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector2;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.battleship.ai.AiOpponent;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;

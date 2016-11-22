@@ -9,7 +9,7 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.Opponent;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 

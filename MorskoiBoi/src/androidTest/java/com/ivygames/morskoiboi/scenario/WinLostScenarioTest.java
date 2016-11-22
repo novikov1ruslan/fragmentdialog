@@ -12,13 +12,13 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.PlayerFactory;
+import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScreenTestRule;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.morskoiboi.player.DummyCallback;
-import com.ivygames.morskoiboi.player.PlayerOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.After;

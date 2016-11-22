@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.player;
+package com.ivygames.battleship.player;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +16,8 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.morskoiboi.player.ChatListener;
+import com.ivygames.morskoiboi.player.QueuedCommandOpponent;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
