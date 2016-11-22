@@ -1,12 +1,14 @@
 package com.ivygames.battleship.ship;
 
-import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ShipUtils;
+import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ShipTest {
 

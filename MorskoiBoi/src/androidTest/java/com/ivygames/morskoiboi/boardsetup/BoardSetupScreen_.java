@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
 

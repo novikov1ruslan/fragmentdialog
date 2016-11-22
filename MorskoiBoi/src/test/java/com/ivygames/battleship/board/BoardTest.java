@@ -1,8 +1,8 @@
 package com.ivygames.battleship.board;
 
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.ship.Ship.Orientation;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,21 +2,21 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ShipUtils;
+import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.multiplayer.MultiplayerRoom;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
-import com.ivygames.battleship.board.Board;
+import com.ivygames.morskoiboi.config.RulesUtils;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
-import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.rt.InternetGame;
-import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
-import com.ivygames.morskoiboi.config.RulesUtils;
 import com.ivygames.morskoiboi.russian.RussianRules;
+import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
 
 import org.junit.Before;
 import org.junit.Test;

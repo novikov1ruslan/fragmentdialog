@@ -1,6 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import com.appodeal.ads.NonSkippableVideoCallbacks;
 import com.appodeal.ads.SkippableVideoCallbacks;
 
 import org.commons.logger.Ln;

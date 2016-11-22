@@ -11,13 +11,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.battleship.PlayerFactory;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
@@ -28,10 +29,9 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
 import com.ivygames.morskoiboi.bluetooth.ConnectThread;
 import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
-import com.ivygames.battleship.player.PlayerOpponent;
+import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
-import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 
 import org.commons.logger.Ln;
 

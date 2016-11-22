@@ -3,7 +3,6 @@ package com.ivygames.battleship.board;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.ShipSerialization;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
 import org.json.JSONArray;

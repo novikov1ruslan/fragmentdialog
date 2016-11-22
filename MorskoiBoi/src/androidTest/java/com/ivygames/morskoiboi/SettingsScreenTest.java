@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.ivygames.common.PlayUtils;
-import com.ivygames.common.ui.SignInListener;
 import com.ivygames.common.VibratorWrapper;
+import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.settings.SettingsScreen;
 

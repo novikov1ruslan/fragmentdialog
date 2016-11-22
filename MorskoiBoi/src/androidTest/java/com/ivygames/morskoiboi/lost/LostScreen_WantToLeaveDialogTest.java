@@ -5,7 +5,10 @@ import com.ivygames.morskoiboi.OnlineScreen_;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
-import static com.ivygames.morskoiboi.ScreenUtils.*;
+import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
+import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
+import static com.ivygames.morskoiboi.ScreenUtils.lostScreen;
+import static com.ivygames.morskoiboi.ScreenUtils.noButton;
 
 public class LostScreen_WantToLeaveDialogTest extends LostScreenTest {
 

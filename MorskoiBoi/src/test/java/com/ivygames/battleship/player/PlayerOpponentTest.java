@@ -2,23 +2,23 @@ package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.RussianBotFactory;
+import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Cell;
 import com.ivygames.morskoiboi.model.ChatMessage;
-import com.ivygames.battleship.Opponent;
-import com.ivygames.battleship.ship.Ship;
-import com.ivygames.battleship.shot.ShotResult;
-import com.ivygames.battleship.board.Vector2;
 import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.Before;

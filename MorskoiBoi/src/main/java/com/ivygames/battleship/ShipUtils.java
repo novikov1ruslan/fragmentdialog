@@ -68,4 +68,13 @@ public class ShipUtils {
         return fleet;
     }
 
+    public static boolean onlyHorizontalShips(@NonNull Collection<Ship> ships) {
+        for (Ship ship : ships) {
+            if (ship.size > 1 && !ship.isHorizontal()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

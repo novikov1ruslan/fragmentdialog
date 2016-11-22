@@ -2,10 +2,10 @@ package com.ivygames.morskoiboi.scenario;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.battleship.player.PlayerOpponent;
 
 class BidPlayer extends PlayerOpponent {
     private final int[] mBid;

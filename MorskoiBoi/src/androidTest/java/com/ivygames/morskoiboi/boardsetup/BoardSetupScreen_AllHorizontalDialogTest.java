@@ -3,9 +3,9 @@ package com.ivygames.morskoiboi.boardsetup;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.battleship.ship.Ship;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -21,7 +21,8 @@ import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BoardSetupScreen_AllHorizontalDialogTest extends BoardSetupScreen_ {
 

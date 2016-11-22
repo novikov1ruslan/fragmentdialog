@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;

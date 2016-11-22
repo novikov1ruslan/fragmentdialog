@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.AndroidDevice;
@@ -24,7 +26,6 @@ import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.battleship.ShipUtils;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -140,7 +141,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
             Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
             if (!BuildConfig.DEBUG) { // needed for ui testing to simulate all horizontal ships
-                while (BoardUtils.onlyHorizontalShips(ships)) {
+                while (ShipUtils.onlyHorizontalShips(ships)) {
                     ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
                 }
             }
@@ -159,7 +160,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         public void done() {
             UiEvent.send("done");
             if (BoardUtils.isBoardSet(mBoard, mRules)) {
-                if (BoardUtils.onlyHorizontalShips(mBoard.getShips())) {
+                if (ShipUtils.onlyHorizontalShips(mBoard.getShips())) {
                     showOnlyHorizontalDialog();
                 } else {
                     continueToGameplay();

@@ -2,12 +2,12 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import java.util.Collection;
 import java.util.List;

@@ -3,12 +3,12 @@ package com.ivygames.morskoiboi.gameplay;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.ivygames.battleship.ai.AiOpponent;
+import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.battleship.ai.AiOpponent;
-import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;

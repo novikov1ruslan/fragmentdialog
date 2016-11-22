@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi.gameplay;
 
 import android.view.View;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.battleship.ship.Ship;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -18,7 +18,6 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {

@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.boardsetup;
+package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +9,7 @@ import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.battleship.ShipUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.CoordinateType;
 
 import org.commons.logger.Ln;
 
@@ -18,16 +18,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class BoardUtils {
-
-    static boolean onlyHorizontalShips(@NonNull Collection<Ship> ships) {
-        for (Ship ship : ships) {
-            if (ship.size > 1 && !ship.isHorizontal()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     @NonNull
     public static List<Vector2> getNeighboringCoordinates(int x, int y) {
@@ -62,6 +52,7 @@ public class BoardUtils {
         return coordinates;
     }
 
+    @NonNull
     public static List<Vector2> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector2> coordinates = Vector2.getAllCoordinates();
         for (LocatedShip locatedShip : board.getLocatedShips()) {
@@ -73,6 +64,7 @@ public class BoardUtils {
         return coordinates;
     }
 
+    @NonNull
     public static List<Vector2> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector2> cells = getCoordinatesFreeFromShips(board, allowAdjacentShips);
         cells.removeAll(board.getCellsByType(Cell.HIT));

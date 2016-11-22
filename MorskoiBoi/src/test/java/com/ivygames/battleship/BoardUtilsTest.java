@@ -1,20 +1,17 @@
-package com.ivygames.morskoiboi.screen.boardsetup;
+package com.ivygames.battleship;
 
-import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.BoardSerialization;
 import com.ivygames.battleship.board.BoardSerializationTest;
-import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.board.Vector2;
+import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Placement;
+import com.ivygames.morskoiboi.Rules;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
@@ -26,38 +23,6 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardUtilsTest {
-
-    @Test
-    public void testOnlyHorizontalShips() {
-        Collection<Ship> ships = new ArrayList<>();
-
-        boolean onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
-        assertThat(onlyHorizontalShips, is(true));
-
-        Ship vertical1 = new Ship(1, Ship.Orientation.VERTICAL);
-        Ship horizontal2 = new Ship(2, Ship.Orientation.HORIZONTAL);
-        Ship vertical2 = new Ship(2, Ship.Orientation.VERTICAL);
-
-        ships = Arrays.asList(vertical1);
-        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
-        assertThat(onlyHorizontalShips, is(true));
-
-        ships = Arrays.asList(horizontal2);
-        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
-        assertThat(onlyHorizontalShips, is(true));
-
-        ships = Arrays.asList(vertical2);
-        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
-        assertThat(onlyHorizontalShips, is(false));
-
-        ships = Arrays.asList(vertical2, horizontal2);
-        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
-        assertThat(onlyHorizontalShips, is(false));
-
-        ships = Arrays.asList(vertical2, horizontal2, vertical1);
-        onlyHorizontalShips = BoardUtils.onlyHorizontalShips(ships);
-        assertThat(onlyHorizontalShips, is(false));
-    }
 
     @Test
     public void NeighbouringCells8() {

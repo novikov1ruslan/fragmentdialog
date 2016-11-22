@@ -9,13 +9,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.google.example.games.basegameutils.BuildConfig;
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.renderer.EnemyBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.EnemyBoardRenderer;
-import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
 
 import org.commons.logger.Ln;

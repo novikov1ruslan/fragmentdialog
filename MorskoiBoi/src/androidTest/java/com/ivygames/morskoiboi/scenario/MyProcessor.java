@@ -2,8 +2,6 @@ package com.ivygames.morskoiboi.scenario;
 
 import com.ivygames.morskoiboi.renderer.BaseGeometryProcessor;
 
-import static android.R.attr.y;
-
 class MyProcessor extends BaseGeometryProcessor {
 
 //    private final int mBoardSize;

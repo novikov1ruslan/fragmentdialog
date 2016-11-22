@@ -2,9 +2,9 @@ package com.ivygames.morskoiboi.achievement;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Before;
 import org.junit.Test;

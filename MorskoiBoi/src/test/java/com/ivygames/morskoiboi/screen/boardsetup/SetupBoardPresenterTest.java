@@ -2,12 +2,13 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.OrientationBuilder;
-import com.ivygames.morskoiboi.Placement;
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.ship.Ship;
+import com.ivygames.morskoiboi.OrientationBuilder;
+import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.Before;
