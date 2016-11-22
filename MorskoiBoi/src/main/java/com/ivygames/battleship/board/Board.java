@@ -20,11 +20,8 @@ public class Board {
 
     @NonNull
     private final Collection<LocatedShip> mShips = new ArrayList<>();
-    Cell[][] mCells;
-
-    public Board() {
-        clearBoard();
-    }
+    @NonNull
+    Cell[][] mCells = createNewBoard();
 
     @NonNull
     public Collection<Ship> getShips() {
@@ -155,7 +152,7 @@ public class Board {
     }
 
     @NonNull
-    private Cell[][] createNewBoard() {
+    private static Cell[][] createNewBoard() {
         Cell[][] cells = new Cell[DIMENSION][DIMENSION];
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {

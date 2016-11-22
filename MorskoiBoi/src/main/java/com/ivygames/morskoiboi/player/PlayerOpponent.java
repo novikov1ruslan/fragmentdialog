@@ -347,15 +347,17 @@ public class PlayerOpponent implements Opponent {
         return lastKnownPosition;
     }
 
-    private Vector2 goUp(Vector2 position) {
+    @NonNull
+    private Vector2 goUp(@NonNull Vector2 position) {
         return Vector2.get(position.x, position.y - 1);
     }
 
-    private Vector2 goLeft(Vector2 position) {
+    @NonNull
+    private Vector2 goLeft(@NonNull Vector2 position) {
         return Vector2.get(position.x - 1, position.y);
     }
 
-    private boolean isHit(@NonNull Board board, Vector2 position) {
+    private boolean isHit(@NonNull Board board, @NonNull Vector2 position) {
         return Board.contains(position) && board.getCell(position) == Cell.HIT;
     }
 
@@ -363,10 +365,12 @@ public class PlayerOpponent implements Opponent {
         return mMyBid < mEnemyBid;
     }
 
+    @NonNull
     public Board getEnemyBoard() {
         return mEnemyBoard;
     }
 
+    @NonNull
     public Board getBoard() {
         return mMyBoard;
     }
