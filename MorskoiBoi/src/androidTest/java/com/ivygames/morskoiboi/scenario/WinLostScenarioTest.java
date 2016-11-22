@@ -179,8 +179,8 @@ public class WinLostScenarioTest {
         }
 
         @Override
-        public PlayerOpponent createPlayer(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            return new BidPlayer("player1", placement, rules, mBid, new WinLostCallback());
+        public PlayerOpponent createPlayer(@NonNull String name, @NonNull Rules rules) {
+            return new BidPlayer("player1", rules, mBid, new WinLostCallback());
         }
     }
 

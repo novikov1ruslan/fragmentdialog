@@ -179,7 +179,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mPlacement, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules);
         player.setChatListener(parent());
         Session session = new Session(player, opponent);
         Session.bindOpponents(player, opponent);

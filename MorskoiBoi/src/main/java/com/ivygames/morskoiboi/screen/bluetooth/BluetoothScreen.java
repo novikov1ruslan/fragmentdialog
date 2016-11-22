@@ -200,7 +200,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
             Ln.i("player name is empty - replaced by " + playerName);
         }
 
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mPlacement, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules);
         player.setChatListener(parent());
         Session session = new Session(player, opponent);
         Session.bindOpponents(player, opponent);

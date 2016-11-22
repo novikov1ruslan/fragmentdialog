@@ -103,7 +103,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     @NonNull
     private PlayerOpponent newPlayer() {
-        PlayerOpponent player = mPlayerFactory.createPlayer(mSettings.getPlayerName(), mPlacement, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(mSettings.getPlayerName(), mRules);
         player.setChatListener(parent());
         return player;
     }

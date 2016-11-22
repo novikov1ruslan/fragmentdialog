@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.PlayerFactory;
+import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.DebugUtils;
@@ -76,7 +77,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
 
     @NonNull
-    private final PlayerFactory mOpponentFactory = Dependencies.getAiPlayerFactory();
+    private final AiPlayerFactory mOpponentFactory = Dependencies.getAiPlayerFactory();
 
     public SelectGameScreen(@NonNull BattleshipActivity parent) {
         super(parent);
@@ -186,7 +187,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mPlacement, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules);
         player.setChatListener(parent());
         return player;
     }

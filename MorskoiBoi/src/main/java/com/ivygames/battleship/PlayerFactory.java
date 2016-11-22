@@ -8,6 +8,5 @@ import com.ivygames.morskoiboi.Rules;
 
 public interface PlayerFactory {
     PlayerOpponent createPlayer(@NonNull String name,
-                                @NonNull Placement placement,
                                 @NonNull Rules rules);
 }
