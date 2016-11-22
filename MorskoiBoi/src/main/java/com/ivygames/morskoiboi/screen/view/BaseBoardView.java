@@ -85,7 +85,7 @@ public abstract class BaseBoardView extends View {
         for (LocatedShip locatedShip : mBoard.getLocatedShips()) {
             mRenderer.drawShip(canvas, locatedShip);
             if (locatedShip.ship.isDead() && !mAllowAdjacentShips) {
-                drawMissMarks(canvas, BoardUtils.getCells(locatedShip, true));
+                drawMissMarks(canvas, BoardUtils.getCoordinates(locatedShip, BoardUtils.CoordinateType.NEAR_SHIP));
             }
         }
     }

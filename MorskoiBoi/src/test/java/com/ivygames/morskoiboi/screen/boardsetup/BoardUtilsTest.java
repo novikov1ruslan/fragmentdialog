@@ -107,12 +107,12 @@ public class BoardUtilsTest {
         Rules rules = mock(Rules.class);
         Dependencies.inject(new Placement(random, rules.allowAdjacentShips())); // needed
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
-        assertEquals(100, BoardUtils.getCellsFreeFromShips(board, false).size());
+        assertEquals(100, BoardUtils.getCoordinatesFreeFromShips(board, false).size());
 
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5);
-        assertEquals(91, BoardUtils.getCellsFreeFromShips(board, false).size());
+        assertEquals(91, BoardUtils.getCoordinatesFreeFromShips(board, false).size());
 
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5_x2_5_5);
-        assertEquals(85, BoardUtils.getCellsFreeFromShips(board, false).size());
+        assertEquals(85, BoardUtils.getCoordinatesFreeFromShips(board, false).size());
     }
 }

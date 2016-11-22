@@ -123,7 +123,7 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotResult(result);
 
-        LocatedShip actual = mPlayer.getEnemyBoard().getFirstShipAt(aim);
+        LocatedShip actual = mPlayer.getEnemyBoard().getShipAt(aim);
         assertThat(actual.ship, equalTo(ship));
         assertThat(enemyCellAt(aim), equalTo(Cell.HIT));
     }
@@ -390,14 +390,14 @@ public class PlayerOpponentTest {
     public void WhenGameEnds__PlayersBoardIsEmpty() {
         mPlayer.onLost(new Board());
 
-        assertThat(BoardUtils.getCellsFreeFromShips(mPlayer.getBoard(), false).size(), is(100));
+        assertThat(BoardUtils.getCoordinatesFreeFromShips(mPlayer.getBoard(), false).size(), is(100));
     }
 
     @Test
     public void WhenOpponentLooses__enemy_board_is_empty() {
         mPlayer.onLost(new Board());
 
-        assertThat(BoardUtils.getCellsFreeFromShips(mPlayer.getEnemyBoard(), false).size(), is(100));
+        assertThat(BoardUtils.getCoordinatesFreeFromShips(mPlayer.getEnemyBoard(), false).size(), is(100));
     }
 
     @Test

@@ -20,9 +20,18 @@ public class Board {
     public static final int DIMENSION = 10;
 
     @NonNull
-    private final Set<LocatedShip> mShips = new HashSet<>();
-    @NonNull
     Cell[][] mCells = createNewBoard();
+
+    @NonNull
+    private final Set<LocatedShip> mShips = new HashSet<>();
+    
+    public int width() {
+        return DIMENSION;
+    }
+
+    public int height() {
+        return DIMENSION;
+    }
 
     @NonNull
     public Set<Ship> getShips() {
@@ -77,12 +86,12 @@ public class Board {
         return mCells[i][j];
     }
 
-    /**
-     * clears cells and ships from the board - like a new board
-     */
-    public void clearBoard() {
-        mCells = createNewBoard();
-        mShips.clear();
+    public void setCell(@NonNull Cell cell, @NonNull Vector2 v) {
+        setCell(cell, v.x, v.y);
+    }
+
+    public void setCell(@NonNull Cell cell, int i, int j) {
+        mCells[i][j] = cell;
     }
 
     @NonNull
@@ -102,12 +111,8 @@ public class Board {
         return getShipsAt(Vector2.get(i, j));
     }
 
-    public boolean hasShipAt(@NonNull Vector2 v) {
-        return getFirstShipAt(v.x, v.y) != null;
-    }
-
     @Nullable
-    public LocatedShip getFirstShipAt(@NonNull Vector2 v) {
+    public LocatedShip getShipAt(@NonNull Vector2 v) {
         for (LocatedShip locatedShip : mShips) {
             if (ShipUtils.isInShip(v, locatedShip)) {
                 return locatedShip;
@@ -118,8 +123,20 @@ public class Board {
     }
 
     @Nullable
-    public LocatedShip getFirstShipAt(int i, int j) {
-        return getFirstShipAt(Vector2.get(i, j));
+    public LocatedShip getShipAt(int i, int j) {
+        return getShipAt(Vector2.get(i, j));
+    }
+
+    public boolean hasShipAt(@NonNull Vector2 v) {
+        return getShipAt(v.x, v.y) != null;
+    }
+
+    /**
+     * clears cells and ships from the board - like a new board
+     */
+    public void clearBoard() {
+        mCells = createNewBoard();
+        mShips.clear();
     }
 
     @NonNull
@@ -132,22 +149,6 @@ public class Board {
         }
 
         return cells;
-    }
-
-    public int horizontalDimension() {
-        return DIMENSION;
-    }
-
-    public int verticalDimension() {
-        return DIMENSION;
-    }
-
-    public void setCell(@NonNull Cell cell, @NonNull Vector2 v) {
-        setCell(cell, v.x, v.y);
-    }
-
-    void setCell(@NonNull Cell cell, int i, int j) {
-        mCells[i][j] = cell;
     }
 
     @Override

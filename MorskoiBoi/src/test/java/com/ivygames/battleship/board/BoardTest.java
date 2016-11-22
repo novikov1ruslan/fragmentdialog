@@ -39,12 +39,12 @@ public class BoardTest {
 
     @Test
     public void testWidth() {
-        assertEquals(10, mBoard.horizontalDimension());
+        assertEquals(10, mBoard.width());
     }
 
     @Test
     public void testHeight() {
-        assertEquals(10, mBoard.verticalDimension());
+        assertEquals(10, mBoard.height());
     }
 
     @Test

@@ -18,7 +18,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class BoardUtils {
-    private BoardUtils() {
+
+    public enum CoordinateType {
+        NEAR_SHIP,
+        IN_SHIP;
+
+        public boolean isNeighboring() {
+            return this == NEAR_SHIP;
+        }
     }
 
     static boolean onlyHorizontalShips(@NonNull Collection<Ship> ships) {
@@ -33,12 +40,10 @@ public class BoardUtils {
 
     @NonNull
     public static List<Vector2> getNeighboringCoordinates(int x, int y) {
-        return getCells(new LocatedShip(new Ship(1), Vector2.get(x, y)), true);
+        return getCoordinates(new LocatedShip(new Ship(1), Vector2.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 
-    // TODO: use enum instead of boolean
-    @NonNull
-    public static List<Vector2> getCells(@NonNull LocatedShip locatedShip, boolean neighboring) {
+    public static List<Vector2> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
         List<Vector2> coordinates = new ArrayList<>();
 
         int x = locatedShip.position.x;
@@ -53,9 +58,9 @@ public class BoardUtils {
                 Vector2 v = Vector2.get(cellX, cellY);
                 if (contains(v)) {
                     boolean inShip = ShipUtils.isInShip(v, locatedShip);
-                    if (inShip && !neighboring) {
+                    if (inShip && !type.isNeighboring()) {
                         coordinates.add(v);
-                    } else if (!inShip && neighboring) {
+                    } else if (!inShip && type.isNeighboring()) {
                         coordinates.add(v);
                     }
                 }
@@ -65,19 +70,19 @@ public class BoardUtils {
         return coordinates;
     }
 
-    public static List<Vector2> getCellsFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
-        List<Vector2> cells = Vector2.getAllCoordinates();
+    public static List<Vector2> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
+        List<Vector2> coordinates = Vector2.getAllCoordinates();
         for (LocatedShip locatedShip : board.getLocatedShips()) {
-            cells.removeAll(getCells(locatedShip, false));
+            coordinates.removeAll(getCoordinates(locatedShip, CoordinateType.IN_SHIP));
             if (!allowAdjacentShips) {
-                cells.removeAll(getCells(locatedShip, true));
+                coordinates.removeAll(getCoordinates(locatedShip, CoordinateType.NEAR_SHIP));
             }
         }
-        return cells;
+        return coordinates;
     }
 
     public static List<Vector2> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
-        List<Vector2> cells = getCellsFreeFromShips(board, allowAdjacentShips);
+        List<Vector2> cells = getCoordinatesFreeFromShips(board, allowAdjacentShips);
         cells.removeAll(board.getCellsByType(Cell.HIT));
         cells.removeAll(board.getCellsByType(Cell.MISS));
         return cells;
@@ -119,8 +124,8 @@ public class BoardUtils {
     }
 
     public static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
-        for (int i = 0; i < board.horizontalDimension(); i++) {
-            for (int j = 0; j < board.verticalDimension(); j++) {
+        for (int i = 0; i < board.width(); i++) {
+            for (int j = 0; j < board.height(); j++) {
                 if (isCellConflicting(board, i, j, allowAdjacentShips)) {
                     return true;
                 }
@@ -144,7 +149,7 @@ public class BoardUtils {
             return null;
         }
 
-        LocatedShip locatedShip = board.getFirstShipAt(i, j);
+        LocatedShip locatedShip = board.getShipAt(i, j);
         if (locatedShip != null) {
             board.removeShip(locatedShip);
             return locatedShip.ship;
@@ -168,7 +173,7 @@ public class BoardUtils {
         if (shipFitsTheBoard(ship, x, y)) {
             board.addShip(new LocatedShip(ship, x, y));
         } else {
-            int i = board.horizontalDimension() - ship.size;
+            int i = board.width() - ship.size;
             if (ship.isHorizontal()) {
                 board.addShip(new LocatedShip(ship, i, y));
             } else {

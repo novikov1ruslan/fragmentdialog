@@ -311,7 +311,7 @@ public class PlayerOpponent implements Opponent {
     @NonNull
     private ShotResult createResultForShootingAt(@NonNull Vector2 aim) {
         // ship if found will be shot and returned
-        LocatedShip locatedShip = mMyBoard.getFirstShipAt(aim);
+        LocatedShip locatedShip = mMyBoard.getShipAt(aim);
 
         if (locatedShip == null) {
             mMyBoard.setCell(Cell.MISS, aim);
