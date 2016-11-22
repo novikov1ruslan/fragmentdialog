@@ -9,7 +9,7 @@ import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.ShipUtils;
 
 import org.commons.logger.Ln;
 

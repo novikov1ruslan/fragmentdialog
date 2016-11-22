@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;

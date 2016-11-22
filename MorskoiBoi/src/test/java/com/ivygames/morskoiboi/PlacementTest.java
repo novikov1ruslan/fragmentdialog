@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi;
 
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;

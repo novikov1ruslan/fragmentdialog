@@ -8,7 +8,7 @@ import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.player.DummyCallback;
 import com.ivygames.battleship.player.PlayerOpponent;

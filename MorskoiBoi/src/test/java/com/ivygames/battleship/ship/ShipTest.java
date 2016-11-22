@@ -1,7 +1,7 @@
 package com.ivygames.battleship.ship;
 
 import com.ivygames.battleship.board.LocatedShip;
-import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Vector2;
 
 import org.junit.Test;

@@ -40,7 +40,7 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.morskoiboi.ai.Cancellable;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.model.Game;

@@ -1,10 +1,11 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
+import com.ivygames.morskoiboi.OrientationBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;

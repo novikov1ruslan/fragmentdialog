@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.apache.commons.collections4.set.UnmodifiableSet;
@@ -24,7 +24,7 @@ public class Board {
 
     @NonNull
     private final Set<LocatedShip> mShips = new HashSet<>();
-    
+
     public int width() {
         return DIMENSION;
     }

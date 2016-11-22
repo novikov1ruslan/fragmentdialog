@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.board.Vector2;
