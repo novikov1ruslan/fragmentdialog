@@ -369,7 +369,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     private boolean isHit(@NonNull Board board, @NonNull Vector2 position) {
-        return Board.contains(position) && board.getCell(position) == Cell.HIT;
+        return BoardUtils.contains(position) && board.getCell(position) == Cell.HIT;
     }
 
     private boolean opponentStarts() {

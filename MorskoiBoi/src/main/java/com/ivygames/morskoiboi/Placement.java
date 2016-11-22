@@ -40,7 +40,7 @@ public class Placement {
             Vector2 cell = freeCells.get(cellIndex);
             int i = cell.x;
             int j = cell.y;
-            if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
+            if (BoardUtils.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
                 board.addShip(new LocatedShip(ship, i, j));
                 return true;
             } else {

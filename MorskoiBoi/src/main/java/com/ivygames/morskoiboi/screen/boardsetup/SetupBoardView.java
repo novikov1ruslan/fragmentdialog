@@ -96,7 +96,7 @@ public class SetupBoardView extends BaseBoardView {
             int x = mTouchState.getX();
             int y = mTouchState.getY();
             mRenderer.drawPickedShip(canvas, pickedShip, x, y);
-            if (Board.contains(mPickedShipCoordinate)) {
+            if (BoardUtils.contains(mPickedShipCoordinate)) {
                 mRenderer.drawAiming(canvas, pickedShip, mPickedShipCoordinate);
             }
         }
@@ -124,7 +124,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_DOWN:
                 if (mRenderer.isInDockArea(x, y)) {
                     mPresenter.pickDockedShip();
-                } else if (Board.contains(coordinate) && mBoard.hasShipAt(coordinate)) {
+                } else if (BoardUtils.contains(coordinate) && mBoard.hasShipAt(coordinate)) {
                     Ln.v("board has ship at: " + coordinate);
                     schedulePickingShip(x, y);
                 }

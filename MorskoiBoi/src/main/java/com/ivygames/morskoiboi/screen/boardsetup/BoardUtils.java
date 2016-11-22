@@ -51,7 +51,7 @@ public class BoardUtils {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
                 Vector2 v = Vector2.get(cellX, cellY);
-                if (Board.contains(v)) {
+                if (contains(v)) {
                     boolean inShip = ShipUtils.isInShip(v, locatedShip);
                     if (inShip && !neighboring) {
                         coordinates.add(v);
@@ -134,12 +134,12 @@ public class BoardUtils {
      * @return true if board has 10 ships and all of them are destroyed
      */
     public static boolean isItDefeatedBoard(@NonNull Board board, @NonNull Rules rules) {
-        return allShipsAreOnBoard(board, rules) && Board.allAvailableShipsAreDestroyed(board);
+        return allShipsAreOnBoard(board, rules) && allAvailableShipsAreDestroyed(board);
     }
 
     @Nullable
     public static Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
-        if (!Board.contains(i, j)) {
+        if (!contains(i, j)) {
             Ln.w("(" + i + "," + j + ") is outside the board");
             return null;
         }
@@ -153,7 +153,7 @@ public class BoardUtils {
     }
 
     public static void rotateShipAt(@NonNull Board board, int x, int y) {
-        if (!Board.contains(x, y)) {
+        if (!contains(x, y)) {
             Ln.w("(" + x + "," + y + ") is outside the board");
             return;
         }
@@ -165,7 +165,7 @@ public class BoardUtils {
 
         ship.rotate();
 
-        if (board.shipFitsTheBoard(ship, x, y)) {
+        if (shipFitsTheBoard(ship, x, y)) {
             board.addShip(new LocatedShip(ship, x, y));
         } else {
             int i = board.horizontalDimension() - ship.size;
@@ -175,5 +175,54 @@ public class BoardUtils {
                 board.addShip(new LocatedShip(ship, x, i));
             }
         }
+    }
+
+    /**
+     * @param v coordinate on the board where the 1st ship's square is to be put
+     */
+    public static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 v) {
+        return shipFitsTheBoard(ship, v.x, v.y);
+    }
+
+    /**
+     * does not check if cells are empty
+     *
+     * @param i horizontal coordinate on the board where the 1st ship's square is to be put
+     * @param j vertical coordinate on the board where the 1st ship's square is to be put
+     * @return true if the ship can fit out on the board
+     */
+    public static boolean shipFitsTheBoard(@NonNull Ship ship, int i, int j) {
+        boolean canPut = contains(i, j);
+
+        if (canPut) {
+            if (ship.isHorizontal()) {
+                canPut = i + ship.size <= Board.DIMENSION;
+            } else {
+                canPut = j + ship.size <= Board.DIMENSION;
+            }
+        }
+        return canPut;
+    }
+
+    public static boolean contains(@NonNull Vector2 v) {
+        return contains(v.x, v.y);
+    }
+
+    public static boolean contains(int i, int j) {
+        return i < Board.DIMENSION && i >= 0 && j < Board.DIMENSION && j >= 0;
+    }
+
+    /**
+     * @return true if every ship on the board is sunk
+     */
+    public static boolean allAvailableShipsAreDestroyed(@NonNull Board board) {
+        // TODO: optimize iterating over Located or move the method from here
+        for (Ship ship : board.getShips()) {
+            if (!ship.isDead()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

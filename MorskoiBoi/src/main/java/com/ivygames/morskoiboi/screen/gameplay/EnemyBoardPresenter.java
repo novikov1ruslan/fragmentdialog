@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
-import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector2;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.commons.logger.Ln;
 
@@ -36,7 +36,7 @@ final class EnemyBoardPresenter {
 
         if (action == MotionEvent.ACTION_DOWN) {
             mIsDragging = true;
-            if (!Board.contains(v)) {
+            if (!BoardUtils.contains(v)) {
                 Ln.w("pressing outside the board: " + v);
                 return;
             }
@@ -58,7 +58,7 @@ final class EnemyBoardPresenter {
         mLocked = false;
         Ln.v("unlocked");
         if (isTouching(mLastTouchAction)) {
-            if (Board.contains(mTouch)) {
+            if (BoardUtils.contains(mTouch)) {
                 mAimingStarted = true;
                 mShotListener.onAimingStarted();
             } else {

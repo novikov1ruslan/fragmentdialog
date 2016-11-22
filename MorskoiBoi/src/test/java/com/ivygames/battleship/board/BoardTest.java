@@ -2,6 +2,7 @@ package com.ivygames.battleship.board;
 
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.ship.Ship.Orientation;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,17 +62,17 @@ public class BoardTest {
 
     @Test
     public void testAllShipsAreDestroyed() {
-        assertFalse(!Board.allAvailableShipsAreDestroyed(mBoard));
+        assertFalse(!BoardUtils.allAvailableShipsAreDestroyed(mBoard));
 
         Ship ship = new Ship(2);
         mBoard.addShip(new LocatedShip(ship, 5, 5));
-        assertFalse(Board.allAvailableShipsAreDestroyed(mBoard));
+        assertFalse(BoardUtils.allAvailableShipsAreDestroyed(mBoard));
 
         ship.shoot();
-        assertFalse(Board.allAvailableShipsAreDestroyed(mBoard));
+        assertFalse(BoardUtils.allAvailableShipsAreDestroyed(mBoard));
 
         ship.shoot();
-        assertTrue(Board.allAvailableShipsAreDestroyed(mBoard));
+        assertTrue(BoardUtils.allAvailableShipsAreDestroyed(mBoard));
     }
 
     @Test
@@ -160,9 +161,9 @@ public class BoardTest {
         for (int i = -1; i < 11; i++) {
             for (int j = -1; j < 11; j++) {
                 if (i >= 0 && i < 10 && j >= 0 && j < 10) {
-                    assertTrue(mBoard.shipFitsTheBoard(ship, i, j));
+                    assertTrue(BoardUtils.shipFitsTheBoard(ship, i, j));
                 } else {
-                    assertFalse(mBoard.shipFitsTheBoard(ship, i, j));
+                    assertFalse(BoardUtils.shipFitsTheBoard(ship, i, j));
                 }
             }
         }
@@ -173,18 +174,18 @@ public class BoardTest {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                assertTrue(Board.contains(i, j));
+                assertTrue(BoardUtils.contains(i, j));
             }
         }
 
-        assertFalse(Board.contains(-1, 0));
-        assertFalse(Board.contains(10, 0));
-        assertFalse(Board.contains(0, 10));
-        assertFalse(Board.contains(0, -1));
+        assertFalse(BoardUtils.contains(-1, 0));
+        assertFalse(BoardUtils.contains(10, 0));
+        assertFalse(BoardUtils.contains(0, 10));
+        assertFalse(BoardUtils.contains(0, -1));
     }
 
     public void addIfHit(Board board, Collection<Vector2> hits, int x, int y) {
-        if (Board.contains(x, y) && board.getCell(x, y) == Cell.HIT) {
+        if (BoardUtils.contains(x, y) && board.getCell(x, y) == Cell.HIT) {
             hits.add(Vector2.get(x, y));
         }
     }

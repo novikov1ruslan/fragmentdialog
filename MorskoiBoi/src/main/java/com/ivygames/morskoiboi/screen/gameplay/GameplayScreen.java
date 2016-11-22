@@ -49,6 +49,7 @@ import com.ivygames.morskoiboi.rt.InternetService;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 import com.ivygames.morskoiboi.config.RulesUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 import com.ruslan.fragmentdialog.AlertDialogBuilder;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
@@ -370,7 +371,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             debug_aiming_started = false;
             mGameplaySounds.stopKantropSound();
 
-            if (!Board.contains(i, j)) {
+            if (!BoardUtils.contains(i, j)) {
                 Ln.w("pressing outside the board: " + i + "," + j);
                 return;
             }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.ShipUtils;
+import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
 import org.apache.commons.collections4.collection.UnmodifiableCollection;
 
@@ -44,7 +45,7 @@ public class Board {
     public void addShip(@NonNull LocatedShip locatedShip) {
         int i = locatedShip.position.x;
         int j = locatedShip.position.y;
-        if (!shipFitsTheBoard(locatedShip.ship, i, j)) {
+        if (!BoardUtils.shipFitsTheBoard(locatedShip.ship, i, j)) {
             throw new IllegalArgumentException("cannot put ship " + locatedShip);
         }
         mShips.add(locatedShip);
@@ -61,41 +62,6 @@ public class Board {
             }
         }
         return cells;
-    }
-
-    /**
-     * @param v coordinate on the board where the 1st ship's square is to be put
-     */
-    public boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 v) {
-        return shipFitsTheBoard(ship, v.x, v.y);
-    }
-
-    /**
-     * does not check if cells are empty
-     *
-     * @param i horizontal coordinate on the board where the 1st ship's square is to be put
-     * @param j vertical coordinate on the board where the 1st ship's square is to be put
-     * @return true if the ship can fit out on the board
-     */
-    public boolean shipFitsTheBoard(@NonNull Ship ship, int i, int j) {
-        boolean canPut = contains(i, j);
-
-        if (canPut) {
-            if (ship.isHorizontal()) {
-                canPut = i + ship.size <= DIMENSION;
-            } else {
-                canPut = j + ship.size <= DIMENSION;
-            }
-        }
-        return canPut;
-    }
-
-    public static boolean contains(@NonNull Vector2 v) {
-        return contains(v.x, v.y);
-    }
-
-    public static boolean contains(int i, int j) {
-        return i < DIMENSION && i >= 0 && j < DIMENSION && j >= 0;
     }
 
     @NonNull
@@ -182,20 +148,6 @@ public class Board {
 
     void setCell(@NonNull Cell cell, int i, int j) {
         mCells[i][j] = cell;
-    }
-
-    /**
-     * @return true if every ship on the board is sunk
-     */
-    public static boolean allAvailableShipsAreDestroyed(@NonNull Board board) {
-        // TODO: optimize iterating over Located or move the method from here
-        for (Ship ship : board.getShips()) {
-            if (!ship.isDead()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @Override
