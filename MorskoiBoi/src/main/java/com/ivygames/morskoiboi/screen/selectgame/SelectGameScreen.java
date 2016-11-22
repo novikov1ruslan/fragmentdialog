@@ -23,6 +23,7 @@ import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Placement;
@@ -47,6 +48,7 @@ import org.commons.logger.Ln;
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener {
     private static final String DIALOG = FragmentAlertDialog.TAG;
+    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && false;
 
     private SelectGameLayout mLayout;
 
@@ -153,6 +155,9 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         UiEvent.send("vsAndroid");
         setPlayerName();
         PlayerOpponent player = createPlayerOpponent();
+        if (ANDROID_VS_ANDROID) {
+            player = createAiOpponent();
+        }
         Opponent android = createAiOpponent();
 
         Session session = new Session(player, android);
@@ -170,7 +175,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @NonNull
-    private Opponent createAiOpponent() {
+    private PlayerOpponent createAiOpponent() {
         return mOpponentFactory.createPlayer(getString(R.string.android), mPlacement, mRules);
     }
 
