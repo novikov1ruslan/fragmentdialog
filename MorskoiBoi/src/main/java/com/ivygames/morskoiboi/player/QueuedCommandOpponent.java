@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.player;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
@@ -10,20 +8,33 @@ import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
-class HandlerDelegateOpponent implements Opponent, Cancellable {
+import java.util.LinkedList;
+import java.util.Queue;
 
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
+/**
+ * This class has to be {@link Cancellable}, because whatever it wrap can be cancellable.
+ * So this class should be able to propagate call to the delegate.
+ */
+public class QueuedCommandOpponent implements Opponent, Cancellable {
 
     @NonNull
     private final Opponent mDelegate;
 
-    HandlerDelegateOpponent(@NonNull Opponent opponent) {
+    QueuedCommandOpponent(@NonNull Opponent opponent) {
         mDelegate = opponent;
+    }
+
+    private Queue<Runnable> mQ = new LinkedList<>();
+
+    public void executePendingCommands() {
+        while (mQ.size() > 0) {
+            mQ.poll().run();
+        }
     }
 
     @Override
     public void onShotAt(@NonNull final Vector2 aim) {
-        mHandler.post(new Runnable() {
+        mQ.offer(new Runnable() {
             @Override
             public void run() {
                 mDelegate.onShotAt(aim);
@@ -33,7 +44,7 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
 
     @Override
     public void onShotResult(@NonNull final ShotResult shotResult) {
-        mHandler.post(new Runnable() {
+        mQ.offer(new Runnable() {
             @Override
             public void run() {
                 mDelegate.onShotResult(shotResult);
@@ -43,7 +54,7 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
 
     @Override
     public void go() {
-        mHandler.post(new Runnable() {
+        mQ.offer(new Runnable() {
             @Override
             public void run() {
                 mDelegate.go();
@@ -58,7 +69,7 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
 
     @Override
     public void onEnemyBid(final int bid) {
-        mHandler.post(new Runnable() {
+        mQ.offer(new Runnable() {
             @Override
             public void run() {
                 mDelegate.onEnemyBid(bid);
@@ -74,7 +85,7 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
 
     @Override
     public void onLost(@NonNull final Board board) {
-        mHandler.post(new Runnable() {
+        mQ.offer(new Runnable() {
             @Override
             public void run() {
                 mDelegate.onLost(board);
@@ -89,7 +100,8 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
 
     @Override
     public void onNewMessage(@NonNull final String text) {
-        mHandler.post(new Runnable() {
+        // Message can be sent directly, without command
+        mQ.offer(new Runnable() {
             @Override
             public void run() {
                 mDelegate.onNewMessage(text);
@@ -106,7 +118,6 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
 
     @Override
     public String toString() {
-        return "(H:" + mDelegate + ")";
+        return "(C:" + mDelegate + ")";
     }
-
 }

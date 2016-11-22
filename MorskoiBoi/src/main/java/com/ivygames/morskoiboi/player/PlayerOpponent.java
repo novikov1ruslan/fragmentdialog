@@ -50,7 +50,7 @@ public class PlayerOpponent implements Opponent {
     private ChatListener mChatListener;
     private boolean mPlayerReady;
     private int mOpponentVersion;
-    protected Opponent mOpponent;
+    protected QueuedCommandOpponent mOpponent;
     private boolean mOpponentReady;
 
     @NonNull
@@ -73,10 +73,9 @@ public class PlayerOpponent implements Opponent {
         mOpponentReady = false;
         mPlayerReady = false;
         mGameStarted = false;
-//        mOpponentVersion = 0;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(@NonNull Board board) {
         Ln.v(mName + ": my board is: " + board);
         mMyBoard = board;
         if (!board.getShips().isEmpty()) {
@@ -103,8 +102,11 @@ public class PlayerOpponent implements Opponent {
                     + " - sending him my bid: " + bid);
             mOpponent.onEnemyBid(bid);
         }
+
+        mOpponent.executePendingCommands();
     }
 
+    // TODO: what this game started mean?
     private void passFirstTurn() {
         if (!mGameStarted) {
             mGameStarted = true;
@@ -125,6 +127,8 @@ public class PlayerOpponent implements Opponent {
 
             notifyOpponentTurn();
         }
+
+        mOpponent.executePendingCommands();
     }
 
     private void setOpponentBid(int bid) {
@@ -172,6 +176,8 @@ public class PlayerOpponent implements Opponent {
         }
 
         notifyPlayersTurn();
+
+        mOpponent.executePendingCommands();
     }
 
     @Override
@@ -208,6 +214,8 @@ public class PlayerOpponent implements Opponent {
             Ln.d(mName + ": it's a hit!");
             notifyOnHit();
         }
+
+        mOpponent.executePendingCommands();
     }
 
     private boolean versionSupportsBoardReveal() {
@@ -250,11 +258,13 @@ public class PlayerOpponent implements Opponent {
                 mOpponent.go();
             }
         }
+
+        mOpponent.executePendingCommands();
     }
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        mOpponent = new HandlerDelegateOpponent(opponent);
+        mOpponent = new QueuedCommandOpponent(opponent);
         Ln.d(mName + ": my opponent is " + mOpponent);
         opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
