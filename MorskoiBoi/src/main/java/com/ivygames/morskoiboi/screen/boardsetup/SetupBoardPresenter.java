@@ -55,7 +55,7 @@ public class SetupBoardPresenter {
         }
 
         if (board.shipFitsTheBoard(mPickedShip, i, j)) {
-            BoardUtils.putShipAt(board, new LocatedShip(mPickedShip, i, j));
+            board.addShip(new LocatedShip(mPickedShip, i, j));
         } else {
             returnShipToPool(mPickedShip);
         }

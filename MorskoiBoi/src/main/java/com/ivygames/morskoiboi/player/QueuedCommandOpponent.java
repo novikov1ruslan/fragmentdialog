@@ -20,7 +20,7 @@ public class QueuedCommandOpponent implements Opponent, Cancellable {
     @NonNull
     private final Opponent mDelegate;
 
-    QueuedCommandOpponent(@NonNull Opponent opponent) {
+    public QueuedCommandOpponent(@NonNull Opponent opponent) {
         mDelegate = opponent;
     }
 

@@ -137,28 +137,6 @@ public class BoardUtils {
         return allShipsAreOnBoard(board, rules) && Board.allAvailableShipsAreDestroyed(board);
     }
 
-    // TODO: when ship has no coordinates this method is not needed, use Board#addShip
-    public static void putShipAt(@NonNull Board board, @NonNull LocatedShip locatedShip) {
-        int i = locatedShip.position.x;
-        int j = locatedShip.position.y;
-        if (!board.shipFitsTheBoard(locatedShip.ship, i, j)) {
-            throw new IllegalArgumentException("cannot put ship " + locatedShip);
-        }
-
-//        Collection<Vector2> neighboringCells = BoardUtils.getCells(ship, true);
-//        for (Vector2 v : neighboringCells) {
-//            if (!mRules.allowAdjacentShips()) {
-//                if (ship.isDead()) {
-//                    board.setCell(Cell.MISS, v);
-//                } else {
-//                    board.setCell(Cell.RESERVED, v);
-//                }
-//            }
-//        }
-
-        board.addShip(locatedShip);
-    }
-
     @Nullable
     public static Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
         if (!Board.contains(i, j)) {
@@ -188,13 +166,13 @@ public class BoardUtils {
         ship.rotate();
 
         if (board.shipFitsTheBoard(ship, x, y)) {
-            putShipAt(board, new LocatedShip(ship, x, y));
+            board.addShip(new LocatedShip(ship, x, y));
         } else {
             int i = board.horizontalDimension() - ship.size;
             if (ship.isHorizontal()) {
-                putShipAt(board, new LocatedShip(ship, i, y));
+                board.addShip(new LocatedShip(ship, i, y));
             } else {
-                putShipAt(board, new LocatedShip(ship, x, i));
+                board.addShip(new LocatedShip(ship, x, i));
             }
         }
     }

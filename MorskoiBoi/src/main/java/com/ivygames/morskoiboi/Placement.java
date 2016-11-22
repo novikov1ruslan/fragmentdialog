@@ -41,7 +41,7 @@ public class Placement {
             int i = cell.x;
             int j = cell.y;
             if (board.shipFitsTheBoard(ship, cell) && isPlaceEmpty(ship, board, i, j, freeCells)) {
-                BoardUtils.putShipAt(board, new LocatedShip(ship, i, j));
+                board.addShip(new LocatedShip(ship, i, j));
                 return true;
             } else {
                 // this cell is not suitable for placement

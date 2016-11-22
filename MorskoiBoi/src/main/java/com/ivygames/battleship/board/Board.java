@@ -42,6 +42,11 @@ public class Board {
     }
 
     public void addShip(@NonNull LocatedShip locatedShip) {
+        int i = locatedShip.position.x;
+        int j = locatedShip.position.y;
+        if (!shipFitsTheBoard(locatedShip.ship, i, j)) {
+            throw new IllegalArgumentException("cannot put ship " + locatedShip);
+        }
         mShips.add(locatedShip);
     }
 
