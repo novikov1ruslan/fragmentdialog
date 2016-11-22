@@ -70,8 +70,8 @@ public class WinLostScenarioTest {
         Dependencies.inject(rules);
         Dependencies.inject(new Placement(mRandom, rules.allowAdjacentShips()));
 
-        IdlingPolicies.setMasterPolicyTimeout(20, TimeUnit.MINUTES);
-        IdlingPolicies.setIdlingResourceTimeout(20, TimeUnit.MINUTES);
+        IdlingPolicies.setMasterPolicyTimeout(2, TimeUnit.MINUTES);
+        IdlingPolicies.setIdlingResourceTimeout(2, TimeUnit.MINUTES);
 
         playResource = new WinLostIdlingResource();
         registerIdlingResources(playResource);

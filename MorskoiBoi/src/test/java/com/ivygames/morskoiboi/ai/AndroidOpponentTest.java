@@ -48,12 +48,12 @@ public class AndroidOpponentTest {
     private Rules mRules;
 
     private final Board mBoard = new Board();
-    private DelegateOpponent mCancellableOpponent;
+    private DelegateOpponent mCancellableOpponent = new DelegateOpponent();
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mCancellableOpponent = new DelegateOpponent();
+
         mCancellableOpponent.setOpponent(mOpponent);
 
         Bidder bidder = mock(Bidder.class);
@@ -158,7 +158,9 @@ public class AndroidOpponentTest {
     @Test
     public void when_android_cancelled__its_cancellable_delegate_is_called() {
         assertThat(mCancellableOpponent.cancelCalled, is(false));
+
         mAndroid.cancel();
+
         assertThat(mCancellableOpponent.cancelCalled, is(true));
     }
 
