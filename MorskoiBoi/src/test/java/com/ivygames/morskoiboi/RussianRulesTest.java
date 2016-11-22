@@ -23,7 +23,9 @@ import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
@@ -246,7 +248,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_NOT_defeated_if_it_has_less_than_10_ships() {
         Board board = mock(Board.class);
-        Collection<Ship> ships = mock(Collection.class);
+        Set<Ship> ships = mock(Set.class);
         when(ships.size()).thenReturn(9);
         when(board.getShips()).thenReturn(ships);
         assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(false));
@@ -255,7 +257,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_NOT_defeated_if_it_has_at_least_1_alive_ship() {
         Board board = mock(Board.class);
-        Collection<Ship> ships = mock_9_dead_1_alive_ship();
+        Set<Ship> ships = mock_9_dead_1_alive_ship();
         when(board.getShips()).thenReturn(ships);
 
         assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(false));
@@ -264,7 +266,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_defeated_if_it_has_10_dead_ships() {
         Board board = mock(Board.class);
-        Collection<Ship> ships = mock_10_dead_ships();
+        Set<Ship> ships = mock_10_dead_ships();
         when(board.getShips()).thenReturn(ships);
 
         assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(true));
@@ -284,8 +286,8 @@ public class RussianRulesTest {
     }
 
     @NonNull
-    private Collection<Ship> mock_10_dead_ships() {
-        Collection<Ship> ships = new ArrayList<>();
+    private Set<Ship> mock_10_dead_ships() {
+        Set<Ship> ships = new HashSet<>();
         for (int i = 0; i < 10; i++) {
             ships.add(mockDeadShip());
         }
@@ -293,8 +295,8 @@ public class RussianRulesTest {
     }
 
     @NonNull
-    private Collection<Ship> mock_9_dead_1_alive_ship() {
-        Collection<Ship> ships = new ArrayList<>();
+    private Set<Ship> mock_9_dead_1_alive_ship() {
+        Set<Ship> ships = new HashSet<>();
         for (int i = 0; i < 9; i++) {
             ships.add(mockDeadShip());
         }

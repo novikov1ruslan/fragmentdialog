@@ -7,7 +7,7 @@ import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.ShipUtils;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardUtils;
 
-import org.apache.commons.collections4.collection.UnmodifiableCollection;
+import org.apache.commons.collections4.set.UnmodifiableSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,22 +20,22 @@ public class Board {
     public static final int DIMENSION = 10;
 
     @NonNull
-    private final Collection<LocatedShip> mShips = new ArrayList<>();
+    private final Set<LocatedShip> mShips = new HashSet<>();
     @NonNull
     Cell[][] mCells = createNewBoard();
 
     @NonNull
-    public Collection<Ship> getShips() {
-        Collection<Ship> ships = new HashSet<>(mShips.size());
+    public Set<Ship> getShips() {
+        Set<Ship> ships = new HashSet<>(mShips.size());
         for (LocatedShip locatedShip : mShips) {
             ships.add(locatedShip.ship);
         }
-        return UnmodifiableCollection.unmodifiableCollection(ships);
+        return UnmodifiableSet.unmodifiableSet(ships);
     }
 
     @NonNull
-    public Collection<LocatedShip> getLocatedShips() {
-        return UnmodifiableCollection.unmodifiableCollection(mShips);
+    public Set<LocatedShip> getLocatedShips() {
+        return UnmodifiableSet.unmodifiableSet(mShips);
     }
 
     public boolean removeShip(@NonNull LocatedShip locatedShip) {
