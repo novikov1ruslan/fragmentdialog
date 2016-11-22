@@ -25,6 +25,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.config.RulesUtils;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -78,7 +79,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         mWinMusicBar.play();
 
         mTime = statistics.getTimeSpent();
-        mScores = mRules.calcTotalScores(fleet, game, statistics, opponentSurrendered);
+        mScores = RulesUtils.calcTotalScores(mRules, fleet, game, statistics, opponentSurrendered);
         Ln.d("time spent in the game = " + mTime + "; scores = " + mScores + " incrementing played games counter");
 
         mSettings.incrementGamesPlayedCounter();

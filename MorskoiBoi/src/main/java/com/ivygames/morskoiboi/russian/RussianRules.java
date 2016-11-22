@@ -31,7 +31,6 @@ public class RussianRules implements Rules {
 
     private static final float MAX_TIME_BONUS_MULTIPLIER = 2f;
     private static final float MIN_TIME_BONUS_MULTIPLIER = 1f;
-    private static final int MAX_SCORE_FOR_SURRENDERED_GAME = 5000;
 
     @NonNull
     @Override
@@ -40,30 +39,7 @@ public class RussianRules implements Rules {
     }
 
     @Override
-    public int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game,
-                               @NonNull ScoreStatistics statistics, boolean surrendered) {
-        int score = calculateScoresForGame(ships, statistics, game);
-
-        if (surrendered) {
-            score = score / 2;
-            if (score > MAX_SCORE_FOR_SURRENDERED_GAME) {
-                score = MAX_SCORE_FOR_SURRENDERED_GAME;
-            }
-        }
-        return score;
-    }
-
-    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game) {
-        int progress;
-        if (game.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
-            progress = calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
-        } else {
-            progress = game.getWinPoints();
-        }
-        return progress;
-    }
-
-    private static int calcScoresForAndroidGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics) {
+    public int calcScoresForAndroidGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics) {
         float timeMultiplier = getTimeMultiplier(statistics.getTimeSpent());
         int shellsBonus = calcShellsBonus(statistics.getShells());
         int shipsBonus = calcSavedShipsBonus(ships);
