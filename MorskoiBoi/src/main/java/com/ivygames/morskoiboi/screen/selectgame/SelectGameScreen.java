@@ -29,7 +29,6 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Rules;
@@ -185,7 +184,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
         player.setChatListener(parent());
         return player;
     }

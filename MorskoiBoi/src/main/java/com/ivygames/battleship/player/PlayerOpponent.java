@@ -14,7 +14,6 @@ import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
-import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.player.QueuedCommandOpponent;
@@ -56,14 +55,13 @@ public class PlayerOpponent implements Opponent {
 
     @NonNull
     private final String mName;
-    @NonNull
-    private final Rules mRules;
     private boolean mGameStarted;
+    private final int mNumberOfShips;
 
-    protected PlayerOpponent(@NonNull String name, @NonNull Rules rules) {
+    protected PlayerOpponent(@NonNull String name, int numberOfShips) {
         mName = name;
-        mRules = rules;
-        Ln.v("new player created");
+        mNumberOfShips = numberOfShips;
+        Ln.v("new player created: " + name);
     }
 
     private void reset() {
@@ -191,7 +189,7 @@ public class PlayerOpponent implements Opponent {
         notifyOnShotResult(result);
         if (result.isaKill()) {
             notifyOnKillEnemy();
-            if (BoardUtils.isItDefeatedBoard(mEnemyBoard, mRules)) {
+            if (BoardUtils.isItDefeatedBoard(mEnemyBoard, mNumberOfShips)) {
                 Ln.d(mName + ": actually opponent lost");
 
                 // If the opponent's version does not support board reveal, just switch screen in 3 seconds.
@@ -246,7 +244,7 @@ public class PlayerOpponent implements Opponent {
         mOpponent.onShotResult(result);
 
         if (result.cell == Cell.HIT) {
-            if (BoardUtils.isItDefeatedBoard(mMyBoard, mRules)) {
+            if (BoardUtils.isItDefeatedBoard(mMyBoard, mNumberOfShips)) {
                 Ln.d(mName + ": I'm defeated, no turn to pass");
                 if (!versionSupportsBoardReveal()) {
                     Ln.d(mName + ": opponent version doesn't support board reveal = " + mOpponentVersion);
@@ -284,7 +282,7 @@ public class PlayerOpponent implements Opponent {
     public void onLost(@NonNull Board board) {
         debug_handler.post(debug_thread_break_task);
 
-        if (!BoardUtils.isItDefeatedBoard(mMyBoard, mRules)) {
+        if (!BoardUtils.isItDefeatedBoard(mMyBoard, mNumberOfShips)) {
             reportException("lost while not defeated: " + mMyBoard.getShips());
         }
 

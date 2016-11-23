@@ -4,13 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.common.DebugUtils;
-import com.ivygames.morskoiboi.Rules;
 
 public class PlayerFactoryImpl implements PlayerFactory {
     @Override
-    public PlayerOpponent createPlayer(@NonNull String name,
-                                       @NonNull Rules rules) {
-        return new PlayerOpponent(name, rules);
+    public PlayerOpponent createPlayer(@NonNull String name, int numberOfShips) {
+        return new PlayerOpponent(name, numberOfShips);
     }
 
     @Override

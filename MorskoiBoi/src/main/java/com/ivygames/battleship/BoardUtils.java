@@ -99,12 +99,12 @@ public class BoardUtils {
         return false;
     }
 
-    public static boolean isBoardSet(@NonNull Board board, @NonNull Rules rules) {
-        return allShipsAreOnBoard(board, rules) && !hasConflictingCell(board, rules.allowAdjacentShips());
+    public static boolean isBoardSet(@NonNull Board board, @NonNull Rules rules, int numberOfShips) {
+        return allShipsAreOnBoard(board, numberOfShips) && !hasConflictingCell(board, rules.allowAdjacentShips());
     }
 
-    private static boolean allShipsAreOnBoard(@NonNull Board board, @NonNull Rules rules) {
-        return board.getShips().size() == rules.getAllShipsSizes().length;
+    private static boolean allShipsAreOnBoard(@NonNull Board board, int numberOfShips) {
+        return board.getShips().size() == numberOfShips;
     }
 
     public static boolean hasConflictingCell(@NonNull Board board, boolean allowAdjacentShips) {
@@ -122,8 +122,8 @@ public class BoardUtils {
     /**
      * @return true if board has 10 ships and all of them are destroyed
      */
-    public static boolean isItDefeatedBoard(@NonNull Board board, @NonNull Rules rules) {
-        return allShipsAreOnBoard(board, rules) && allAvailableShipsAreDestroyed(board);
+    public static boolean isItDefeatedBoard(@NonNull Board board, int numberOfShips) {
+        return allShipsAreOnBoard(board, numberOfShips) && allAvailableShipsAreDestroyed(board);
     }
 
     @Nullable

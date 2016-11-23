@@ -54,6 +54,7 @@ public class RussianRulesTest {
     private int[] allShipsSizes;
     private OrientationBuilder orientationBuilder;
     private ScoresCalculator scoresCalculator = new RussianScoresCalculator();
+    private int mNumberOfShips;
 
     @Before
     public void setUp() {
@@ -63,6 +64,7 @@ public class RussianRulesTest {
         orientationBuilder = new OrientationBuilder(random);
         allShipsSizes = mRules.getAllShipsSizes();
         placement = new Placement(random, mRules.allowAdjacentShips());
+        mNumberOfShips = mRules.getAllShipsSizes().length;
     }
 
     @Test
@@ -71,12 +73,12 @@ public class RussianRulesTest {
 
         placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
 
-        assertThat(BoardUtils.isBoardSet(board, mRules), is(true));
+        assertThat(BoardUtils.isBoardSet(board, mRules, mNumberOfShips), is(true));
     }
 
     @Test
     public void empty_board_is_not_set() {
-        assertThat(BoardUtils.isBoardSet(new Board(), mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(new Board(), mRules, mNumberOfShips), is(false));
     }
 
     @Test
@@ -86,7 +88,7 @@ public class RussianRulesTest {
         ships.remove(ships.iterator().next());
         placement.populateBoardWithShips(board, ships);
 
-        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(board, mRules, mNumberOfShips), is(false));
     }
 
     @Test
@@ -97,7 +99,7 @@ public class RussianRulesTest {
             board.addShip(new LocatedShip(ship, 0, 0));
         }
         assertThat(board.getShips().size(), is(10));
-        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(board, mRules, mNumberOfShips), is(false));
     }
 
     @Test
@@ -252,7 +254,7 @@ public class RussianRulesTest {
         Set<Ship> ships = mock(Set.class);
         when(ships.size()).thenReturn(9);
         when(board.getShips()).thenReturn(ships);
-        assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(false));
+        assertThat(BoardUtils.isItDefeatedBoard(board, mNumberOfShips), is(false));
     }
 
     @Test
@@ -261,7 +263,7 @@ public class RussianRulesTest {
         Set<Ship> ships = mock_9_dead_1_alive_ship();
         when(board.getShips()).thenReturn(ships);
 
-        assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(false));
+        assertThat(BoardUtils.isItDefeatedBoard(board, mNumberOfShips), is(false));
     }
 
     @Test
@@ -270,7 +272,7 @@ public class RussianRulesTest {
         Set<Ship> ships = mock_10_dead_ships();
         when(board.getShips()).thenReturn(ships);
 
-        assertThat(BoardUtils.isItDefeatedBoard(board, mRules), is(true));
+        assertThat(BoardUtils.isItDefeatedBoard(board, mNumberOfShips), is(true));
     }
 
     @Test

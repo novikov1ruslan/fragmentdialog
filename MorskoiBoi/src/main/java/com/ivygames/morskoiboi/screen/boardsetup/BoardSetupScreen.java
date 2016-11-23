@@ -157,7 +157,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         @Override
         public void done() {
             UiEvent.send("done");
-            if (BoardUtils.isBoardSet(mBoard, mRules)) {
+            if (BoardUtils.isBoardSet(mBoard, mRules, mRules.getAllShipsSizes().length)) {
                 if (ShipUtils.onlyHorizontalShips(mBoard.getShips())) {
                     showOnlyHorizontalDialog();
                 } else {

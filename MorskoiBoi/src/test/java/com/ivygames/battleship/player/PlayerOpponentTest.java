@@ -71,7 +71,7 @@ public class PlayerOpponentTest {
 
     @NonNull
     private PlayerOpponent newPlayer(Rules rules) {
-        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, rules);
+        PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, rules.getAllShipsSizes().length);
         player.setChatListener(listener);
         player.setOpponent(mEnemy);
         player.registerCallback(callback);

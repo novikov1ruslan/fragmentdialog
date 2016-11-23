@@ -18,7 +18,6 @@ import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.Session;
@@ -177,7 +176,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules);
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
         player.setChatListener(parent());
         Session session = new Session(player, opponent);
         Session.bindOpponents(player, opponent);
