@@ -2,6 +2,7 @@ package com.ivygames.battleship.board;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Test;

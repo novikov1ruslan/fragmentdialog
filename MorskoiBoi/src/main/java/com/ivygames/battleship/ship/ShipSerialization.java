@@ -3,7 +3,6 @@ package com.ivygames.battleship.ship;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Vector;
-import com.ivygames.battleship.board.LocatedShip;
 
 import org.json.JSONException;
 import org.json.JSONObject;

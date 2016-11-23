@@ -1,8 +1,8 @@
-package com.ivygames.battleship.board;
+package com.ivygames.battleship.ship;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.ship.Ship;
+import com.ivygames.battleship.board.Vector;
 
 public class LocatedShip {
 

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
-import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.ship.LocatedShip;
 
 public class ShotResult {
 

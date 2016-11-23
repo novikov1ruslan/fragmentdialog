@@ -1,7 +1,6 @@
 package com.ivygames.battleship.ship;
 
 import com.ivygames.battleship.board.BoardTestUtils;
-import com.ivygames.battleship.board.LocatedShip;
 
 import org.json.JSONObject;
 import org.junit.Test;

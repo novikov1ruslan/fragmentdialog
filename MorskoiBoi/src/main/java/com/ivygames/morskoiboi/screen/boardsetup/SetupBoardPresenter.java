@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
-import com.ivygames.battleship.board.LocatedShip;
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import org.commons.logger.Ln;

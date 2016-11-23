@@ -1,6 +1,7 @@
 package com.ivygames.battleship.board;
 
 import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.ship.Ship.Orientation;
 

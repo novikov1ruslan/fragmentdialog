@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ShipUtils;
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import org.apache.commons.collections4.set.UnmodifiableSet;
