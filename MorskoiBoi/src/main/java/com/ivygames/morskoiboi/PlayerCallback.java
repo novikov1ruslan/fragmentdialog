@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.shot.ShotResult;
 
 public interface PlayerCallback {
@@ -21,7 +21,7 @@ public interface PlayerCallback {
 
     void onHit();
 
-    void onShotAt(@NonNull Vector2 aim);
+    void onShotAt(@NonNull Coordinate aim);
 
     void onLost(@Nullable Board board);
 

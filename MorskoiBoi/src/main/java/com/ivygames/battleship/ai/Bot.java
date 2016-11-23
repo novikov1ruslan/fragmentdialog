@@ -3,7 +3,7 @@ package com.ivygames.battleship.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 
 public interface Bot {
 
@@ -11,5 +11,5 @@ public interface Bot {
      * analyzes the board, chooses which cell to shoot, and marks it either miss or hit
      */
     @NonNull
-    Vector2 shoot(@NonNull Board board);
+    Coordinate shoot(@NonNull Board board);
 }

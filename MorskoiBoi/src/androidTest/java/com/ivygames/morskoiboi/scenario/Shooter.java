@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.scenario;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScreenUtils;
 
@@ -13,7 +13,7 @@ import java.util.Random;
 class Shooter {
 
     @NonNull
-    private final List<Vector2> mShots;
+    private final List<Coordinate> mShots;
     private final View mView;
     private final int mPadding;
     private int mCurShot;
@@ -28,10 +28,10 @@ class Shooter {
         MyProcessor processor = new MyProcessor(10, mPadding);
         processor.measure(mView.getWidth(), mView.getHeight(), mView.getPaddingLeft(), mView.getPaddingTop());
 
-        Vector2 vector2 = mShots.get(mCurShot);
+        Coordinate coordinate = mShots.get(mCurShot);
         mCurShot++;
-        int x = processor.getX(vector2.x);
-        int y = processor.getY(vector2.y);
+        int x = processor.getX(coordinate.i);
+        int y = processor.getY(coordinate.j);
         ScreenUtils.clickOnEnemyCell(x, y);
     }
 

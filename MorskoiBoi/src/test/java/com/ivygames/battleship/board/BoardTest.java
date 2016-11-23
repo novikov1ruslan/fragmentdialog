@@ -49,15 +49,15 @@ public class BoardTest {
 
     @Test
     public void testGetHitsAround() {
-        Collection<Vector2> hits = getHitsAround(mBoard, 5, 5);
+        Collection<Coordinate> hits = getHitsAround(mBoard, 5, 5);
         assertEquals(0, hits.size());
 
         mBoard.setCell(Cell.HIT, 5, 6);
         hits = getHitsAround(mBoard, 5, 5);
         assertEquals(1, hits.size());
-        Vector2 hit = hits.iterator().next();
-        assertEquals(5, hit.x);
-        assertEquals(6, hit.y);
+        Coordinate hit = hits.iterator().next();
+        assertEquals(5, hit.i);
+        assertEquals(6, hit.j);
     }
 
     @Test
@@ -184,14 +184,14 @@ public class BoardTest {
         assertFalse(BoardUtils.contains(0, -1));
     }
 
-    public void addIfHit(Board board, Collection<Vector2> hits, int x, int y) {
+    public void addIfHit(Board board, Collection<Coordinate> hits, int x, int y) {
         if (BoardUtils.contains(x, y) && board.getCell(x, y) == Cell.HIT) {
-            hits.add(Vector2.get(x, y));
+            hits.add(Coordinate.get(x, y));
         }
     }
 
-    public Collection<Vector2> getHitsAround(Board board, int x, int y) {
-        Collection<Vector2> hits = new ArrayList<>();
+    public Collection<Coordinate> getHitsAround(Board board, int x, int y) {
+        Collection<Coordinate> hits = new ArrayList<>();
         addIfHit(board, hits, x + 1, y);
         addIfHit(board, hits, x - 1, y);
         addIfHit(board, hits, x, y + 1);

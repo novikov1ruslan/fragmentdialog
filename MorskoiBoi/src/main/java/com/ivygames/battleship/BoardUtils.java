@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.board.LocatedShip;
-import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.screen.boardsetup.CoordinateType;
@@ -20,16 +20,16 @@ import java.util.List;
 public class BoardUtils {
 
     @NonNull
-    public static List<Vector2> getNeighboringCoordinates(int x, int y) {
-        return getCoordinates(new LocatedShip(new Ship(1), Vector2.get(x, y)), CoordinateType.NEAR_SHIP);
+    public static List<Coordinate> getNeighboringCoordinates(int x, int y) {
+        return getCoordinates(new LocatedShip(new Ship(1), Coordinate.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 
     @NonNull
-    public static List<Vector2> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
-        List<Vector2> coordinates = new ArrayList<>();
+    public static List<Coordinate> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
+        List<Coordinate> coordinates = new ArrayList<>();
 
-        int x = locatedShip.position.x;
-        int y = locatedShip.position.y;
+        int x = locatedShip.coordinate.i;
+        int y = locatedShip.coordinate.j;
         Ship ship = locatedShip.ship;
         boolean horizontal = ship.isHorizontal();
 
@@ -38,7 +38,7 @@ public class BoardUtils {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
                 if (contains(cellX, cellY)) {
-                    Vector2 v = Vector2.get(cellX, cellY);
+                    Coordinate v = Coordinate.get(cellX, cellY);
                     boolean inShip = ShipUtils.isInShip(v, locatedShip);
                     if (inShip && !type.isNeighboring()) {
                         coordinates.add(v);
@@ -53,8 +53,8 @@ public class BoardUtils {
     }
 
     @NonNull
-    public static List<Vector2> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
-        List<Vector2> coordinates = Vector2.getAllCoordinates();
+    public static List<Coordinate> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
+        List<Coordinate> coordinates = Coordinate.getAllCoordinates();
         for (LocatedShip locatedShip : board.getLocatedShips()) {
             coordinates.removeAll(getCoordinates(locatedShip, CoordinateType.IN_SHIP));
             if (!allowAdjacentShips) {
@@ -65,8 +65,8 @@ public class BoardUtils {
     }
 
     @NonNull
-    public static List<Vector2> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
-        List<Vector2> cells = getCoordinatesFreeFromShips(board, allowAdjacentShips);
+    public static List<Coordinate> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
+        List<Coordinate> cells = getCoordinatesFreeFromShips(board, allowAdjacentShips);
         cells.removeAll(board.getCellsByType(Cell.HIT));
         cells.removeAll(board.getCellsByType(Cell.MISS));
         return cells;
@@ -85,8 +85,8 @@ public class BoardUtils {
         if (!allowAdjacentShips) {
             Ship ship = theseShips.iterator().next();
 
-            Collection<Vector2> coordinates = getNeighboringCoordinates(i, j);
-            for (Vector2 v : coordinates) {
+            Collection<Coordinate> coordinates = getNeighboringCoordinates(i, j);
+            for (Coordinate v : coordinates) {
                 Collection<Ship> otherShips = board.getShipsAt(v);
                 for (Ship otherShip : otherShips) {
                     if (otherShip != ship) {
@@ -169,8 +169,8 @@ public class BoardUtils {
     /**
      * @param v coordinate on the board where the 1st ship's square is to be put
      */
-    public static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector2 v) {
-        return shipFitsTheBoard(ship, v.x, v.y);
+    public static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Coordinate v) {
+        return shipFitsTheBoard(ship, v.i, v.j);
     }
 
     /**
@@ -193,8 +193,8 @@ public class BoardUtils {
         return canPut;
     }
 
-    public static boolean contains(@NonNull Vector2 v) {
-        return contains(v.x, v.y);
+    public static boolean contains(@NonNull Coordinate v) {
+        return contains(v.i, v.j);
     }
 
     public static boolean contains(int i, int j) {

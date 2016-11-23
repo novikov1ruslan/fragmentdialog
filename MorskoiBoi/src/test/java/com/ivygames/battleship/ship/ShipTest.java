@@ -2,7 +2,7 @@ package com.ivygames.battleship.ship;
 
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.LocatedShip;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 
 import org.junit.Test;
 
@@ -85,13 +85,13 @@ public class ShipTest {
     @Test
     public void testIsInShip() {
         Ship ship1 = new Ship(2, Ship.Orientation.HORIZONTAL);
-        // TODO: position is changed together - make it a vector
+        // TODO: coordinate is changed together - make it a vector
         Ship ship2 = new Ship(2, Ship.Orientation.VERTICAL);
         Ship ship3 = new Ship(3, Ship.Orientation.VERTICAL);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                Vector2 v = Vector2.get(i, j);
+                Coordinate v = Coordinate.get(i, j);
                 if ((i == 5 || i == 6) && j == 5) {
                     assertTrue(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship1, 5, 5)));
                 } else {

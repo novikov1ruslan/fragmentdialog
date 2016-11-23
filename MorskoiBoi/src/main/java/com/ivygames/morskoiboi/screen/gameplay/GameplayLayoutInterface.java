@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.screen.gameplay;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 
@@ -38,7 +38,7 @@ public interface GameplayLayoutInterface {
 
     void showOpponentSettingBoardNote(@NonNull String message);
 
-    void setAim(@NonNull Vector2 aim);
+    void setAim(@NonNull Coordinate aim);
 
     /**
      * unlocks and sets border

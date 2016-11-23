@@ -4,7 +4,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.ship.Ship;
 
 import org.apache.commons.lang3.Validate;
@@ -155,8 +155,8 @@ public class BaseGeometryProcessor {
     }
 
     @NonNull
-    final AimingG getAimingG(@NonNull Vector2 aim, int widthCells, int heightCells) {
-        return getAimingG(aim.x, aim.y, widthCells, heightCells);
+    final AimingG getAimingG(@NonNull Coordinate aim, int widthCells, int heightCells) {
+        return getAimingG(aim.i, aim.j, widthCells, heightCells);
     }
 
     // TODO: add Board, truncate Board
@@ -211,8 +211,8 @@ public class BaseGeometryProcessor {
     }
 
     @NonNull
-    final Rect getRectForShip(@NonNull Ship ship, Vector2 location) {
-        return getRectForShip(ship, getLeft(location.x), getTop(location.y));
+    final Rect getRectForShip(@NonNull Ship ship, Coordinate location) {
+        return getRectForShip(ship, getLeft(location.i), getTop(location.j));
     }
 
     @NonNull

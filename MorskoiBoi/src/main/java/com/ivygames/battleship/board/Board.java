@@ -52,8 +52,8 @@ public class Board {
     }
 
     public void addShip(@NonNull LocatedShip locatedShip) {
-        int i = locatedShip.position.x;
-        int j = locatedShip.position.y;
+        int i = locatedShip.coordinate.i;
+        int j = locatedShip.coordinate.j;
         if (!BoardUtils.shipFitsTheBoard(locatedShip.ship, i, j)) {
             throw new IllegalArgumentException("cannot put ship " + locatedShip);
         }
@@ -61,12 +61,12 @@ public class Board {
     }
 
     @NonNull
-    public List<Vector2> getCellsByType(@NonNull Cell cell) {
-        List<Vector2> cells = new ArrayList<>();
+    public List<Coordinate> getCellsByType(@NonNull Cell cell) {
+        List<Coordinate> cells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {
                 if (mCells[i][j] == cell) {
-                    cells.add(Vector2.get(i, j));
+                    cells.add(Coordinate.get(i, j));
                 }
             }
         }
@@ -74,8 +74,8 @@ public class Board {
     }
 
     @NonNull
-    public Cell getCell(@NonNull Vector2 v) {
-        return getCell(v.x, v.y);
+    public Cell getCell(@NonNull Coordinate v) {
+        return getCell(v.i, v.j);
     }
 
     /**
@@ -86,8 +86,8 @@ public class Board {
         return mCells[i][j];
     }
 
-    public void setCell(@NonNull Cell cell, @NonNull Vector2 v) {
-        setCell(cell, v.x, v.y);
+    public void setCell(@NonNull Cell cell, @NonNull Coordinate v) {
+        setCell(cell, v.i, v.j);
     }
 
     public void setCell(@NonNull Cell cell, int i, int j) {
@@ -95,7 +95,7 @@ public class Board {
     }
 
     @NonNull
-    public Collection<Ship> getShipsAt(@NonNull Vector2 v) {
+    public Collection<Ship> getShipsAt(@NonNull Coordinate v) {
         Set<Ship> ships = new HashSet<>();
         for (LocatedShip locatedShip : mShips) {
             if (ShipUtils.isInShip(v, locatedShip)) {
@@ -108,11 +108,11 @@ public class Board {
 
     @NonNull
     public Collection<Ship> getShipsAt(int i, int j) {
-        return getShipsAt(Vector2.get(i, j));
+        return getShipsAt(Coordinate.get(i, j));
     }
 
     @Nullable
-    public LocatedShip getShipAt(@NonNull Vector2 v) {
+    public LocatedShip getShipAt(@NonNull Coordinate v) {
         for (LocatedShip locatedShip : mShips) {
             if (ShipUtils.isInShip(v, locatedShip)) {
                 return locatedShip;
@@ -124,11 +124,11 @@ public class Board {
 
     @Nullable
     public LocatedShip getShipAt(int i, int j) {
-        return getShipAt(Vector2.get(i, j));
+        return getShipAt(Coordinate.get(i, j));
     }
 
-    public boolean hasShipAt(@NonNull Vector2 v) {
-        return getShipAt(v.x, v.y) != null;
+    public boolean hasShipAt(@NonNull Coordinate v) {
+        return getShipAt(v.i, v.j) != null;
     }
 
     /**

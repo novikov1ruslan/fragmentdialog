@@ -9,19 +9,19 @@ public class LocatedShip {
     @NonNull
     public final Ship ship;
     @NonNull
-    public final Vector2 position;
+    public final Coordinate coordinate;
 
     public LocatedShip(@NonNull Ship ship) {
-        this(ship, Vector2.INVALID_VECTOR);
+        this(ship, Coordinate.INVALID_VECTOR);
     }
 
-    public LocatedShip(@NonNull Ship ship, @NonNull Vector2 position) {
+    public LocatedShip(@NonNull Ship ship, @NonNull Coordinate coordinate) {
         this.ship = ship;
-        this.position = position;
+        this.coordinate = coordinate;
     }
 
     public LocatedShip(@NonNull Ship ship, int i, int j) {
-        this(ship, Vector2.get(i, j));
+        this(ship, Coordinate.get(i, j));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class LocatedShip {
     public String toString() {
         return "LocatedShip{" +
                 "ship=" + ship +
-                ", position=" + position +
+                ", coordinate=" + coordinate +
                 '}';
     }
 }

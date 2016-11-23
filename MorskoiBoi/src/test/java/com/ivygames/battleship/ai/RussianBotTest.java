@@ -2,7 +2,7 @@ package com.ivygames.battleship.ai;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 
 import org.hamcrest.core.Is;
 import org.junit.Before;
@@ -28,19 +28,19 @@ public class RussianBotTest {
     @Test
     public void provided_random_seed_is_1_shooting_on_empty_board_returns_8_5() {
         Board board = new Board();
-        assertThat(mBot.shoot(board), Is.is(Vector2.get(0, 0)));
+        assertThat(mBot.shoot(board), Is.is(Coordinate.get(0, 0)));
     }
 
     @Test
     public void shooting_when_already_missed() {
         Board board = new Board();
         missAt(board, 8, 5);
-        assertThat(mBot.shoot(board), Is.is(Vector2.get(0, 0)));
+        assertThat(mBot.shoot(board), Is.is(Coordinate.get(0, 0)));
     }
 
     private void missAt(Board board, int x, int y) {
         Cell cell = Cell.MISS;
-        Vector2 aim = Vector2.get(x, y);
+        Coordinate aim = Coordinate.get(x, y);
         board.setCell(cell, aim);
     }
 
@@ -48,7 +48,7 @@ public class RussianBotTest {
     public void shooting_when_already_hit() {
         Board board = new Board();
         hitAt(board, 5, 5);
-        assertThat(mBot.shoot(board), Is.is(Vector2.get(4, 5)));
+        assertThat(mBot.shoot(board), Is.is(Coordinate.get(4, 5)));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class RussianBotTest {
         Board board = new Board();
         hitAt(board, 5, 5);
         hitAt(board, 5, 4);
-        assertThat(mBot.shoot(board), Is.is(Vector2.get(5, 3)));
+        assertThat(mBot.shoot(board), Is.is(Coordinate.get(5, 3)));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RussianBotTest {
         Board board = new Board();
         hitAt(board, 5, 5);
         missAt(board, 5, 4);
-        assertThat(mBot.shoot(board), Is.is(Vector2.get(4, 5)));
+        assertThat(mBot.shoot(board), Is.is(Coordinate.get(4, 5)));
     }
 
     @Test
@@ -119,38 +119,38 @@ public class RussianBotTest {
     @Test
     public void hit_and_kill() {
         Board board = new Board();
-        Vector2 aim = Vector2.get(5, 5);
+        Coordinate aim = Coordinate.get(5, 5);
         board.setCell(Cell.HIT, aim);
 
-        Vector2 shoot = mBot.shoot(board);
+        Coordinate shoot = mBot.shoot(board);
 
-        assertThat(shoot, Is.is(Vector2.get(4, 5)));
+        assertThat(shoot, Is.is(Coordinate.get(4, 5)));
     }
 
     private void assertHitAt(Board board, int x, int y) {
-        Vector2 aim = mBot.shoot(board);
-        assertThat(aim, Is.is(Vector2.get(x, y)));
+        Coordinate aim = mBot.shoot(board);
+        assertThat(aim, Is.is(Coordinate.get(x, y)));
         hitAt(board, aim);
     }
 
     private void hitAt(Board board, int x, int y) {
         Cell cell = Cell.HIT;
-        Vector2 aim = Vector2.get(x, y);
+        Coordinate aim = Coordinate.get(x, y);
         board.setCell(cell, aim);
     }
 
     private void assertMissAt(Board board, int x, int y) {
-        Vector2 aim = mBot.shoot(board);
-        assertThat(aim, Is.is(Vector2.get(x, y)));
+        Coordinate aim = mBot.shoot(board);
+        assertThat(aim, Is.is(Coordinate.get(x, y)));
         missAt(board, aim);
     }
 
-    private void hitAt(Board board, Vector2 aim) {
-        hitAt(board, aim.x, aim.y);
+    private void hitAt(Board board, Coordinate aim) {
+        hitAt(board, aim.i, aim.j);
     }
 
-    private void missAt(Board board, Vector2 aim) {
-        missAt(board, aim.x, aim.y);
+    private void missAt(Board board, Coordinate aim) {
+        missAt(board, aim.i, aim.j);
     }
 
 }

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
@@ -22,7 +22,7 @@ class HandlerDelegateOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onShotAt(@NonNull final Vector2 aim) {
+    public void onShotAt(@NonNull final Coordinate aim) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {

@@ -9,8 +9,8 @@ import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.board.LocatedShip;
-import com.ivygames.battleship.board.Vector2;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
@@ -222,7 +222,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     @Override
-    public void onShotAt(@NonNull Vector2 aim) {
+    public void onShotAt(@NonNull Coordinate aim) {
         debug_handler.post(debug_thread_break_task);
 
         ShotResult result = createResultForShootingAt(aim);
@@ -307,7 +307,7 @@ public class PlayerOpponent implements Opponent {
      * marks the aimed cell
      */
     @NonNull
-    private ShotResult createResultForShootingAt(@NonNull Vector2 aim) {
+    private ShotResult createResultForShootingAt(@NonNull Coordinate aim) {
         // ship if found will be shot and returned
         LocatedShip locatedShip = mMyBoard.getShipAt(aim);
 
@@ -332,42 +332,42 @@ public class PlayerOpponent implements Opponent {
         } else {
             Ship ship = result.locatedShip.ship;
             mEnemyBoard.setCell(result.cell, result.aim);
-            Vector2 location = findShipLocation(mEnemyBoard, ship, result.aim);
+            Coordinate location = findShipLocation(mEnemyBoard, ship, result.aim);
             mEnemyBoard.addShip(new LocatedShip(ship, location));
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
     }
 
     @NonNull
-    private Vector2 findShipLocation(@NonNull Board board, @NonNull Ship ship, @NonNull Vector2 lastKnownPosition) {
-        Vector2 position = lastKnownPosition;
+    private Coordinate findShipLocation(@NonNull Board board, @NonNull Ship ship, @NonNull Coordinate lastKnownCoordinate) {
+        Coordinate coordinate = lastKnownCoordinate;
         if (ship.isHorizontal()) {
-            while (isHit(board, position)) {
-                lastKnownPosition = position;
-                position = goLeft(position);
+            while (isHit(board, coordinate)) {
+                lastKnownCoordinate = coordinate;
+                coordinate = goLeft(coordinate);
             }
         } else {
-            while (isHit(board, position)) {
-                lastKnownPosition = position;
-                position = goUp(position);
+            while (isHit(board, coordinate)) {
+                lastKnownCoordinate = coordinate;
+                coordinate = goUp(coordinate);
             }
         }
 
-        return lastKnownPosition;
+        return lastKnownCoordinate;
     }
 
     @NonNull
-    private Vector2 goUp(@NonNull Vector2 position) {
-        return Vector2.get(position.x, position.y - 1);
+    private Coordinate goUp(@NonNull Coordinate coordinate) {
+        return Coordinate.get(coordinate.i, coordinate.j - 1);
     }
 
     @NonNull
-    private Vector2 goLeft(@NonNull Vector2 position) {
-        return Vector2.get(position.x - 1, position.y);
+    private Coordinate goLeft(@NonNull Coordinate coordinate) {
+        return Coordinate.get(coordinate.i - 1, coordinate.j);
     }
 
-    private boolean isHit(@NonNull Board board, @NonNull Vector2 position) {
-        return BoardUtils.contains(position) && board.getCell(position) == Cell.HIT;
+    private boolean isHit(@NonNull Board board, @NonNull Coordinate coordinate) {
+        return BoardUtils.contains(coordinate) && board.getCell(coordinate) == Cell.HIT;
     }
 
     private boolean opponentStarts() {
@@ -442,7 +442,7 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    private void notifyOnShotAt(@NonNull Vector2 aim) {
+    private void notifyOnShotAt(@NonNull Coordinate aim) {
         for (PlayerCallback callback : mCallbacks) {
             callback.onShotAt(aim);
         }

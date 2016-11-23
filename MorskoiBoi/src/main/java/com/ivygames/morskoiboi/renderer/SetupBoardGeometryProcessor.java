@@ -4,7 +4,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.ship.Ship;
 
 public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
@@ -105,12 +105,12 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    final Vector2 getPickedShipCoordinate(@NonNull Ship ship, @NonNull Point p) {
+    final Coordinate getPickedShipCoordinate(@NonNull Ship ship, @NonNull Point p) {
         return getPickedShipCoordinate(ship, p.x, p.y);
     }
 
     @NonNull
-    final Vector2 getPickedShipCoordinate(@NonNull Ship ship, int x, int y) {
+    final Coordinate getPickedShipCoordinate(@NonNull Ship ship, int x, int y) {
         mPickedShipRect = centerPickedShipRectAround(ship, x, y);
         return getPickedShipCoordinate(mPickedShipRect);
     }
@@ -128,12 +128,12 @@ public final class SetupBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    private Vector2 getPickedShipCoordinate(@NonNull Rect pickedShipRect) {
+    private Coordinate getPickedShipCoordinate(@NonNull Rect pickedShipRect) {
         int shipInBoardCoordinatesX = pickedShipRect.left + mHalfCellSize;
         int shipInBoardCoordinatesY = pickedShipRect.top + mHalfCellSize;
         int i = xToI(shipInBoardCoordinatesX);
         int j = yToJ(shipInBoardCoordinatesY);
-        return Vector2.get(i, j);
+        return Coordinate.get(i, j);
     }
 
     final int getCellSize() {

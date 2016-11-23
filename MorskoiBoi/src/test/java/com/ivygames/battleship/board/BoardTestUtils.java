@@ -52,7 +52,7 @@ public class BoardTestUtils {
             return false;
         }
 
-        return ship1.position == ship2.position;
+        return ship1.coordinate == ship2.coordinate;
     }
 
     public static boolean similar(Ship ship1, Ship ship2) {

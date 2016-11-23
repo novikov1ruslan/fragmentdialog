@@ -12,7 +12,7 @@ import android.view.ViewConfiguration;
 
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector2;
+import com.ivygames.battleship.board.Coordinate;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
@@ -47,7 +47,7 @@ public class SetupBoardView extends BaseBoardView {
     @NonNull
     private final TouchState mTouchState = new TouchState();
     @NonNull
-    private Vector2 mPickedShipCoordinate = Vector2.INVALID_VECTOR;
+    private Coordinate mPickedShipCoordinate = Coordinate.INVALID_VECTOR;
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -115,7 +115,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void processMotionEvent(int x, int y, int action) {
-        Vector2 coordinate = Vector2.get(mRenderer.xToI(x), mRenderer.yToJ(y));
+        Coordinate coordinate = Coordinate.get(mRenderer.xToI(x), mRenderer.yToJ(y));
         switch (action) {
             case MotionEvent.ACTION_MOVE:
                 if (movedBeyondSlope(x, y)) {
@@ -133,7 +133,7 @@ public class SetupBoardView extends BaseBoardView {
             case MotionEvent.ACTION_UP:
                 if (pickUpScheduled()) {
                     cancelLongPressTask();
-                    BoardUtils.rotateShipAt(mBoard, coordinate.x, coordinate.y);
+                    BoardUtils.rotateShipAt(mBoard, coordinate.i, coordinate.j);
                 } else if (mPresenter.hasPickedShip()) {
                     Ln.v("dropping picked ship to: " + mPickedShipCoordinate);
                     mPresenter.dropShip(mBoard, mPickedShipCoordinate);
