@@ -25,7 +25,7 @@ public class BoardTestUtils {
             for (int j = 0; j < cells1[i].length; j++) {
                 Cell cell1 = cells1[i][j];
                 Cell cell2 = cells2[i][j];
-                if (cell1.toChar() != cell2.toChar()) {
+                if (CellSerialization.toChar(cell1) != CellSerialization.toChar(cell2)) {
                     return false;
                 }
             }

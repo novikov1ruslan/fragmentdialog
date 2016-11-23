@@ -2,6 +2,7 @@ package com.ivygames.battleship.board;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.ShipSerialization;
 
 import org.commons.logger.Ln;
@@ -43,7 +44,7 @@ public class BoardSerialization {
         for (int i = 0; i < columns; i++) {
             int rows = cells[i].length;
             for (int j = 0; j < rows; j++) {
-                cells[i][j] = Cell.parse(cellsString.charAt(i * columns + j));
+                cells[i][j] = CellSerialization.parse(cellsString.charAt(i * columns + j));
             }
         }
     }
@@ -60,7 +61,7 @@ public class BoardSerialization {
 
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                sb.append(cells[i][j].toChar());
+                sb.append(CellSerialization.toChar(cells[i][j]));
             }
         }
 
