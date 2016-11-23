@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.renderer;
 
 import android.graphics.Rect;
 
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,14 +36,14 @@ public class EnemyBoardGeometryProcessorTest {
 
     @Test
     public void testGetAnimationDestination() {
-        Rect animationDestination = mProcessor.getAnimationDestination(Coordinate.get(5, 6), CELL_RATIO);
+        Rect animationDestination = mProcessor.getAnimationDestination(Coord.get(5, 6), CELL_RATIO);
         Rect expected = new Rect(145, 276, 205, 336);
         assertThat(animationDestination, equalTo(expected));
     }
 
     @Test
     public void testGetAimRectDst() {
-        Rect aimRectDst = mProcessor.getAimRectDst(Coordinate.get(5, 5));
+        Rect aimRectDst = mProcessor.getAimRectDst(Coord.get(5, 5));
         Rect expected = new Rect(160, 260, 191, 291);
         assertThat(aimRectDst, equalTo(expected));
     }

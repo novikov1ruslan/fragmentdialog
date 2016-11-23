@@ -11,7 +11,7 @@ public class CoordinateSerialization {
 
     // TODO: unit test
     @NonNull
-    public static JSONObject toJson(@NonNull Coordinate coordinate) {
+    public static JSONObject toJson(@NonNull Coord coordinate) {
         JSONObject json = new JSONObject();
         try {
             json.put(X, coordinate.i);
@@ -24,7 +24,7 @@ public class CoordinateSerialization {
     }
 
     @NonNull
-    public static Coordinate fromJson(@NonNull String json) {
+    public static Coord fromJson(@NonNull String json) {
         try {
             return fromJson(new JSONObject(json));
         } catch (JSONException e) {
@@ -33,11 +33,11 @@ public class CoordinateSerialization {
     }
 
     @NonNull
-    public static Coordinate fromJson(@NonNull JSONObject json) {
+    public static Coord fromJson(@NonNull JSONObject json) {
         try {
             int x = json.getInt(X);
             int y = json.getInt(Y);
-            return Coordinate.get(x, y);
+            return Coord.get(x, y);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.morskoiboi.GraphicsUtils;
 import com.ivygames.morskoiboi.R;
@@ -108,7 +108,7 @@ public class BaseBoardRenderer {
         drawHitMark(canvas, mProcessor.getMark(i, j));
     }
 
-    public void drawMissMark(@NonNull Canvas canvas, @NonNull Coordinate v) {
+    public void drawMissMark(@NonNull Canvas canvas, @NonNull Coord v) {
         drawMissMark(canvas, mProcessor.getMark(v.i, v.j));
     }
 

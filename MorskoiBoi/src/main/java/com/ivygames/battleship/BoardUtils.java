@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Rules;
@@ -20,13 +20,13 @@ import java.util.List;
 public class BoardUtils {
 
     @NonNull
-    public static List<Coordinate> getNeighboringCoordinates(int x, int y) {
-        return getCoordinates(new LocatedShip(new Ship(1), Coordinate.get(x, y)), CoordinateType.NEAR_SHIP);
+    public static List<Coord> getNeighboringCoordinates(int x, int y) {
+        return getCoordinates(new LocatedShip(new Ship(1), Coord.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 
     @NonNull
-    public static List<Coordinate> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
-        List<Coordinate> coordinates = new ArrayList<>();
+    public static List<Coord> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
+        List<Coord> coordinates = new ArrayList<>();
 
         int x = locatedShip.coordinate.i;
         int y = locatedShip.coordinate.j;
@@ -38,7 +38,7 @@ public class BoardUtils {
                 int cellX = x + (horizontal ? i : j);
                 int cellY = y + (horizontal ? j : i);
                 if (contains(cellX, cellY)) {
-                    Coordinate v = Coordinate.get(cellX, cellY);
+                    Coord v = Coord.get(cellX, cellY);
                     boolean inShip = ShipUtils.isInShip(v, locatedShip);
                     if (inShip && !type.isNeighboring()) {
                         coordinates.add(v);
@@ -53,8 +53,8 @@ public class BoardUtils {
     }
 
     @NonNull
-    public static List<Coordinate> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
-        List<Coordinate> coordinates = Coordinate.getAllCoordinates();
+    public static List<Coord> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
+        List<Coord> coordinates = Coord.getAllCoordinates();
         for (LocatedShip locatedShip : board.getLocatedShips()) {
             coordinates.removeAll(getCoordinates(locatedShip, CoordinateType.IN_SHIP));
             if (!allowAdjacentShips) {
@@ -65,8 +65,8 @@ public class BoardUtils {
     }
 
     @NonNull
-    public static List<Coordinate> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
-        List<Coordinate> cells = getCoordinatesFreeFromShips(board, allowAdjacentShips);
+    public static List<Coord> getPossibleShots(@NonNull Board board, boolean allowAdjacentShips) {
+        List<Coord> cells = getCoordinatesFreeFromShips(board, allowAdjacentShips);
         cells.removeAll(board.getCellsByType(Cell.HIT));
         cells.removeAll(board.getCellsByType(Cell.MISS));
         return cells;
@@ -85,8 +85,8 @@ public class BoardUtils {
         if (!allowAdjacentShips) {
             Ship ship = theseShips.iterator().next();
 
-            Collection<Coordinate> coordinates = getNeighboringCoordinates(i, j);
-            for (Coordinate v : coordinates) {
+            Collection<Coord> coordinates = getNeighboringCoordinates(i, j);
+            for (Coord v : coordinates) {
                 Collection<Ship> otherShips = board.getShipsAt(v);
                 for (Ship otherShip : otherShips) {
                     if (otherShip != ship) {
@@ -169,7 +169,7 @@ public class BoardUtils {
     /**
      * @param v coordinate on the board where the 1st ship's square is to be put
      */
-    public static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Coordinate v) {
+    public static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Coord v) {
         return shipFitsTheBoard(ship, v.i, v.j);
     }
 
@@ -193,7 +193,7 @@ public class BoardUtils {
         return canPut;
     }
 
-    public static boolean contains(@NonNull Coordinate v) {
+    public static boolean contains(@NonNull Coord v) {
         return contains(v.i, v.j);
     }
 

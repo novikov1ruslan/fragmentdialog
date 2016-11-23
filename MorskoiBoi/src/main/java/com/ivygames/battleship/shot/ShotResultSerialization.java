@@ -3,7 +3,7 @@ package com.ivygames.battleship.shot;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.CoordinateSerialization;
 import com.ivygames.battleship.ship.ShipSerialization;
 
@@ -22,7 +22,7 @@ public class ShotResultSerialization {
             Cell cell = Cell.parse((char) jsonObject.getInt(CELL));
 
             JSONObject aimJson = jsonObject.getJSONObject(AIM);
-            Coordinate aim = CoordinateSerialization.fromJson(aimJson);
+            Coord aim = CoordinateSerialization.fromJson(aimJson);
 
             if (jsonObject.has(SHIP)) {
                 JSONObject shipJson = jsonObject.getJSONObject(SHIP);

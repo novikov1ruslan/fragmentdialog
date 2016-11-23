@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
@@ -33,7 +33,7 @@ public class QueuedCommandOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onShotAt(@NonNull final Coordinate aim) {
+    public void onShotAt(@NonNull final Coord aim) {
         mQ.offer(new Runnable() {
             @Override
             public void run() {

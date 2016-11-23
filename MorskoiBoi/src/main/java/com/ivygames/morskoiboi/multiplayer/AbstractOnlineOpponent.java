@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.BoardSerialization;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.CoordinateSerialization;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.battleship.shot.ShotResultSerialization;
@@ -75,7 +75,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
     }
 
     @Override
-    public void onShotAt(@NonNull Coordinate aim) {
+    public void onShotAt(@NonNull Coord aim) {
         send(SHOOT + CoordinateSerialization.toJson(aim).toString());
     }
 

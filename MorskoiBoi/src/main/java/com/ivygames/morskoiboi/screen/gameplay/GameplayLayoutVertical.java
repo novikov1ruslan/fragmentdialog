@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.R;
@@ -94,7 +94,7 @@ public class GameplayLayoutVertical extends ViewGroup implements GameplayLayoutI
     }
 
     @Override
-    public void setAim(@NonNull Coordinate aim) {
+    public void setAim(@NonNull Coord aim) {
         mEnemyBoardView.setLockAim(aim);
     }
 

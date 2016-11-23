@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.renderer;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 
 public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
 
@@ -32,7 +32,7 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    final Rect getAnimationDestination(@NonNull Coordinate aim, float cellRatio) {
+    final Rect getAnimationDestination(@NonNull Coord aim, float cellRatio) {
         int dx = aim.i * mCellSizePx + mAnimationHorOffset;
         int dy = aim.j * mCellSizePx + mAnimationVerOffset;
 
@@ -46,7 +46,7 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    final Rect getAimRectDst(@NonNull Coordinate aim) {
+    final Rect getAimRectDst(@NonNull Coord aim) {
         int x = aim.i;
         int y = aim.j;
         int left = x * mCellSizePx + mBoardRect.left;

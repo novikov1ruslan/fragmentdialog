@@ -8,7 +8,7 @@ import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
@@ -99,7 +99,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void after_shot_result_is_miss__enemy_board_shows_miss() {
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
         Cell cell = Cell.MISS;
         ShotResult result = new ShotResult(aim, cell);
         mPlayer.onShotResult(result);
@@ -108,7 +108,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void after_shot_result_is_hit__enemy_board_shows_hit() {
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
         Cell cell = Cell.HIT;
         ShotResult result = new ShotResult(aim, cell);
         mPlayer.onShotResult(result);
@@ -117,7 +117,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void after_shot_result_is_kill__enemy_board_shows_killed_ship() {
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
         Ship ship = new Ship(2);
         ShotResult result = new ShotResult(aim, Cell.HIT, new LocatedShip(ship));
 
@@ -132,14 +132,14 @@ public class PlayerOpponentTest {
     public void after_shooting_on_my_empty_cell__result_is_miss() {
         Board board = new Board();
         mPlayer.setBoard(board);
-        mPlayer.onShotAt(Coordinate.get(5, 5));
+        mPlayer.onShotAt(Coord.get(5, 5));
 
         assertThat(board.getCell(5, 5) == Cell.MISS, is(true));
     }
 
     @Test
     public void after_shooting_on_my_ship__result_is_hit() {
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(2);
@@ -152,7 +152,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void after_killing_on_my_ship__result_is_kill() {
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(1);
@@ -171,7 +171,7 @@ public class PlayerOpponentTest {
     @Test
     public void when_asking_for_board__actual_board_returned() {
         Board board = new Board();
-        board.setCell(Cell.MISS, Coordinate.get(4, 4));
+        board.setCell(Cell.MISS, Coord.get(4, 4));
         mPlayer.setBoard(board);
         assertThat(mPlayer.getBoard(), equalTo(board));
     }
@@ -221,7 +221,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerGetsShotResult__CallbackCalled() {
-        ShotResult result = new ShotResult(Coordinate.get(1, 1), Cell.HIT);
+        ShotResult result = new ShotResult(Coord.get(1, 1), Cell.HIT);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onShotResult(result);
@@ -229,7 +229,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerKillsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Coordinate.get(1, 1), Cell.HIT, new LocatedShip(new Ship(1)));
+        ShotResult result = new ShotResult(Coord.get(1, 1), Cell.HIT, new LocatedShip(new Ship(1)));
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onKillEnemy();
@@ -237,7 +237,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerHitsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Coordinate.get(1, 1), Cell.HIT);
+        ShotResult result = new ShotResult(Coord.get(1, 1), Cell.HIT);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onHit();
@@ -245,7 +245,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerMissesShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Coordinate.get(1, 1), Cell.MISS);
+        ShotResult result = new ShotResult(Coord.get(1, 1), Cell.MISS);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onMiss();
@@ -254,7 +254,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerIsShotAt__CallbackCalled() {
-        Coordinate aim = Coordinate.get(1, 1);
+        Coord aim = Coord.get(1, 1);
         mPlayer.onShotAt(aim);
 
         verify(callback, times(1)).onShotAt(aim);
@@ -266,7 +266,7 @@ public class PlayerOpponentTest {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         board.addShip(new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
 
         mPlayer.onShotAt(aim);
 
@@ -279,7 +279,7 @@ public class PlayerOpponentTest {
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
         board.addShip(new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
-        Coordinate aim = Coordinate.get(1, 1);
+        Coord aim = Coord.get(1, 1);
 
         mPlayer.onShotAt(aim);
 
@@ -292,7 +292,7 @@ public class PlayerOpponentTest {
         Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
         board.addShip(new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
 
         mPlayer.onShotAt(aim);
 
@@ -309,7 +309,7 @@ public class PlayerOpponentTest {
         board.addShip(new LocatedShip(ship, 5, 5));
         mPlayer.setBoard(board);
 
-        mPlayer.onShotAt(Coordinate.get(5, 5));
+        mPlayer.onShotAt(Coord.get(5, 5));
 
         verify(callback, never()).onLost(any(Board.class));
     }
@@ -338,7 +338,7 @@ public class PlayerOpponentTest {
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Coordinate.get(5, 5), Cell.HIT, new LocatedShip(ship));
+        ShotResult result = new ShotResult(Coord.get(5, 5), Cell.HIT, new LocatedShip(ship));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
@@ -349,7 +349,7 @@ public class PlayerOpponentTest {
         mPlayer = newPlayer(PlayerUtils.defeatedBoardRules(1));
         mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
 
-        ShotResult result = new ShotResult(Coordinate.get(5, 5), Cell.HIT, new LocatedShip(new Ship(1)));
+        ShotResult result = new ShotResult(Coord.get(5, 5), Cell.HIT, new LocatedShip(new Ship(1)));
         mPlayer.onShotResult(result);
 
         verify(mEnemy, never()).onLost(any(Board.class));
@@ -416,7 +416,7 @@ public class PlayerOpponentTest {
         aiOpponent.setOpponent(player);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Coordinate.get(5, 5), Cell.HIT, new LocatedShip(ship));
+        ShotResult result = new ShotResult(Coord.get(5, 5), Cell.HIT, new LocatedShip(ship));
         player.onShotResult(result);
 
         assertThat(aiOpponent.lostCalled(), is(true));
@@ -431,7 +431,7 @@ public class PlayerOpponentTest {
 
     // TODO: when callback is set - sticky
 
-    private Cell enemyCellAt(Coordinate aim) {
+    private Cell enemyCellAt(Coord aim) {
         return mPlayer.getEnemyBoard().getCell(aim);
     }
 

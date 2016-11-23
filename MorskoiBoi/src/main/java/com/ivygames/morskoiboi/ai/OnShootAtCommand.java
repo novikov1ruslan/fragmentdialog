@@ -3,16 +3,16 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.common.Command;
 
 final class OnShootAtCommand extends Command {
     @NonNull
     private final Opponent mOpponent;
     @NonNull
-    private final Coordinate mAim;
+    private final Coord mAim;
 
-    OnShootAtCommand(@NonNull Opponent opponent, @NonNull Coordinate aim) {
+    OnShootAtCommand(@NonNull Opponent opponent, @NonNull Coord aim) {
         mOpponent = opponent;
         mAim = aim;
     }

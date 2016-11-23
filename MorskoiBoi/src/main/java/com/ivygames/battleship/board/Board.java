@@ -61,12 +61,12 @@ public class Board {
     }
 
     @NonNull
-    public List<Coordinate> getCellsByType(@NonNull Cell cell) {
-        List<Coordinate> cells = new ArrayList<>();
+    public List<Coord> getCellsByType(@NonNull Cell cell) {
+        List<Coord> cells = new ArrayList<>();
         for (int i = 0; i < DIMENSION; i++) {
             for (int j = 0; j < DIMENSION; j++) {
                 if (mCells[i][j] == cell) {
-                    cells.add(Coordinate.get(i, j));
+                    cells.add(Coord.get(i, j));
                 }
             }
         }
@@ -74,7 +74,7 @@ public class Board {
     }
 
     @NonNull
-    public Cell getCell(@NonNull Coordinate v) {
+    public Cell getCell(@NonNull Coord v) {
         return getCell(v.i, v.j);
     }
 
@@ -86,7 +86,7 @@ public class Board {
         return mCells[i][j];
     }
 
-    public void setCell(@NonNull Cell cell, @NonNull Coordinate v) {
+    public void setCell(@NonNull Cell cell, @NonNull Coord v) {
         setCell(cell, v.i, v.j);
     }
 
@@ -95,7 +95,7 @@ public class Board {
     }
 
     @NonNull
-    public Collection<Ship> getShipsAt(@NonNull Coordinate v) {
+    public Collection<Ship> getShipsAt(@NonNull Coord v) {
         Set<Ship> ships = new HashSet<>();
         for (LocatedShip locatedShip : mShips) {
             if (ShipUtils.isInShip(v, locatedShip)) {
@@ -108,11 +108,11 @@ public class Board {
 
     @NonNull
     public Collection<Ship> getShipsAt(int i, int j) {
-        return getShipsAt(Coordinate.get(i, j));
+        return getShipsAt(Coord.get(i, j));
     }
 
     @Nullable
-    public LocatedShip getShipAt(@NonNull Coordinate v) {
+    public LocatedShip getShipAt(@NonNull Coord v) {
         for (LocatedShip locatedShip : mShips) {
             if (ShipUtils.isInShip(v, locatedShip)) {
                 return locatedShip;
@@ -124,10 +124,10 @@ public class Board {
 
     @Nullable
     public LocatedShip getShipAt(int i, int j) {
-        return getShipAt(Coordinate.get(i, j));
+        return getShipAt(Coord.get(i, j));
     }
 
-    public boolean hasShipAt(@NonNull Coordinate v) {
+    public boolean hasShipAt(@NonNull Coord v) {
         return getShipAt(v.i, v.j) != null;
     }
 

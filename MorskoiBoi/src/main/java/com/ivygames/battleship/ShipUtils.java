@@ -2,7 +2,7 @@ package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
@@ -15,7 +15,7 @@ import java.util.Random;
 // TODO: write unit tests
 public class ShipUtils {
 
-    public static boolean isInShip(@NonNull Coordinate v, @NonNull LocatedShip locatedShip) {
+    public static boolean isInShip(@NonNull Coord v, @NonNull LocatedShip locatedShip) {
         int x = locatedShip.coordinate.i;
         int y = locatedShip.coordinate.j;
         Ship ship = locatedShip.ship;
@@ -30,15 +30,15 @@ public class ShipUtils {
         }
     }
 
-    public static Collection<Coordinate> getShipCoordinates(@NonNull Ship ship, @NonNull Coordinate coordinate) {
-        Collection<Coordinate> coordinates = new ArrayList<>();
+    public static Collection<Coord> getShipCoordinates(@NonNull Ship ship, @NonNull Coord coordinate) {
+        Collection<Coord> coordinates = new ArrayList<>();
         int i = coordinate.i;
         int j = coordinate.j;
         boolean isHorizontal = ship.isHorizontal();
         for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.size; k++) {
             int x = isHorizontal ? k : i;
             int y = isHorizontal ? j : k;
-            coordinates.add(Coordinate.get(x, y));
+            coordinates.add(Coord.get(x, y));
         }
 
         return coordinates;

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
@@ -46,7 +46,7 @@ public class SetupBoardPresenter {
         }
     }
 
-    public void dropShip(@NonNull Board board, @NonNull Coordinate coordinate) {
+    public void dropShip(@NonNull Board board, @NonNull Coord coordinate) {
         dropShip(board, coordinate.i, coordinate.j);
     }
 
@@ -81,7 +81,7 @@ public class SetupBoardPresenter {
     }
 
     @Nullable
-    public Ship pickShipFromBoard(@NonNull Board board, @NonNull Coordinate v) {
+    public Ship pickShipFromBoard(@NonNull Board board, @NonNull Coord v) {
         return pickShipFromBoard(board, v.i, v.j);
     }
 

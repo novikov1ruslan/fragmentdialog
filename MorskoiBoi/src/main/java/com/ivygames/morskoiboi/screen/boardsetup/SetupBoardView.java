@@ -12,7 +12,7 @@ import android.view.ViewConfiguration;
 
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
@@ -47,7 +47,7 @@ public class SetupBoardView extends BaseBoardView {
     @NonNull
     private final TouchState mTouchState = new TouchState();
     @NonNull
-    private Coordinate mPickedShipCoordinate = Coordinate.INVALID_VECTOR;
+    private Coord mPickedShipCoordinate = Coord.INVALID_VECTOR;
 
     public SetupBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -115,7 +115,7 @@ public class SetupBoardView extends BaseBoardView {
     }
 
     private void processMotionEvent(int x, int y, int action) {
-        Coordinate coordinate = Coordinate.get(mRenderer.xToI(x), mRenderer.yToJ(y));
+        Coord coordinate = Coord.get(mRenderer.xToI(x), mRenderer.yToJ(y));
         switch (action) {
             case MotionEvent.ACTION_MOVE:
                 if (movedBeyondSlope(x, y)) {

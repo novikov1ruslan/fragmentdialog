@@ -9,7 +9,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.GraphicsUtils;
@@ -90,7 +90,7 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         return Bitmap.createBitmap(bitmap, 0, 0, width, height, mRotationMatrix, true);
     }
 
-    public void renderConflictingCell(@NonNull Canvas canvas, @NonNull Coordinate v) {
+    public void renderConflictingCell(@NonNull Canvas canvas, @NonNull Coord v) {
         renderConflictingCell(canvas, v.i, v.j);
     }
 
@@ -121,12 +121,12 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
 //        drawShipInRect(canvas, ship, pickedShipRect);
     }
 
-    public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Coordinate v) {
+    public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Coord v) {
         drawAiming(canvas, mProcessor.getAimingForShip(ship, v.i, v.j), false);
     }
 
     @NonNull
-    public Coordinate getPickedShipCoordinate(@NonNull Ship ship, int x, int y) {
+    public Coord getPickedShipCoordinate(@NonNull Ship ship, int x, int y) {
         return mProcessor.getPickedShipCoordinate(ship, x, y);
     }
 

@@ -6,13 +6,14 @@ import com.ivygames.battleship.ai.Bot;
 import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.russian.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,8 +46,7 @@ public class AndroidOpponentTest {
     private Random mRandom;
     @Mock
     private Placement mPlacement;
-    @Mock
-    private Rules mRules;
+    private Rules mRules = new RussianRules();
 
     private final Board mBoard = new Board();
     private DelegateOpponent mCancellableOpponent = new DelegateOpponent();
@@ -77,14 +77,13 @@ public class AndroidOpponentTest {
 
     @Test
     public void when_android_says_go_to_opponent__opponent_receives_aim() {
-        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.go();
-        verify(mOpponent, times(1)).onShotAt(any(Coordinate.class));
+        verify(mOpponent, times(1)).onShotAt(any(Coord.class));
     }
 
     @Test
     public void after_android_is_shot_at__opponent_receives_shot_result() {
-        Coordinate aim = Coordinate.get(5, 5);
+        Coord aim = Coord.get(5, 5);
         ArgumentCaptor<ShotResult> argument = ArgumentCaptor.forClass(ShotResult.class);
         mAndroid.onShotAt(aim);
         verify(mOpponent, times(1)).onShotResult(argument.capture());
@@ -94,37 +93,29 @@ public class AndroidOpponentTest {
     @Test
     public void if_android_is_hit_but_NOT_lost__opponent_goes() {
         mBoard.addShip(new LocatedShip(new Ship(2), 5, 5));
-        setBoardDefeated(false);
-        mAndroid.onShotAt(Coordinate.get(5, 5));
+
+        mAndroid.onShotAt(Coord.get(5, 5));
 
         verify(mOpponent, times(1)).go();
     }
 
     @Test
     public void if_android_is_lost__opponent_does_NOT_go() {
-        setBoardDefeated(true);
-        mAndroid.onShotAt(Coordinate.get(5, 5));
-        verify(mOpponent, never()).go();
-    }
 
-    private void setBoardDefeated(boolean defeated) {
-        if (defeated) {
-            when(mRules.getAllShipsSizes()).thenReturn(new int[0]);
-        } else {
-            when(mRules.getAllShipsSizes()).thenReturn(new int[1]);
-        }
+        mAndroid.onShotAt(Coord.get(5, 5));
+
+        verify(mOpponent, never()).go();
     }
 
     @Test
     public void when_result_of_a_shot_is_miss__opponent_goes() {
-        ShotResult result = new ShotResult(Coordinate.get(5, 5), Cell.MISS);
+        ShotResult result = new ShotResult(Coord.get(5, 5), Cell.MISS);
         mAndroid.onShotResult(result);
         verify(mOpponent, times(1)).go();
     }
 
     @Test
     public void WhenOpponentBidsWithHigherBid__OpponentGoes() {
-        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
         mAndroid.startBidding(1);
 
         mAndroid.onEnemyBid(2);
@@ -134,8 +125,6 @@ public class AndroidOpponentTest {
 
     @Test
     public void WhenAndroidNotReady_AndOpponentBidsHigher__OpponentGoesOnlyOnce() {
-        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
-
         Bidder bidder = mock(Bidder.class);
         when(bidder.newBid()).thenReturn(1);
         mAndroid = newAndroid(bidder, new RussianBot(mRandom));
@@ -148,7 +137,6 @@ public class AndroidOpponentTest {
     @Test
     public void WhenOpponentBidsWithLowerBid__OpponentGetsMyBid() {
         mAndroid.startBidding(2);
-        when(mRules.getAllShipsSizes()).thenReturn(new int[]{});
 
         mAndroid.onEnemyBid(1);
 

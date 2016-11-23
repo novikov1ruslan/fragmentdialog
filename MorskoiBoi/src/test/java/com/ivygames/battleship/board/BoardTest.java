@@ -49,13 +49,13 @@ public class BoardTest {
 
     @Test
     public void testGetHitsAround() {
-        Collection<Coordinate> hits = getHitsAround(mBoard, 5, 5);
+        Collection<Coord> hits = getHitsAround(mBoard, 5, 5);
         assertEquals(0, hits.size());
 
         mBoard.setCell(Cell.HIT, 5, 6);
         hits = getHitsAround(mBoard, 5, 5);
         assertEquals(1, hits.size());
-        Coordinate hit = hits.iterator().next();
+        Coord hit = hits.iterator().next();
         assertEquals(5, hit.i);
         assertEquals(6, hit.j);
     }
@@ -184,14 +184,14 @@ public class BoardTest {
         assertFalse(BoardUtils.contains(0, -1));
     }
 
-    public void addIfHit(Board board, Collection<Coordinate> hits, int x, int y) {
+    public void addIfHit(Board board, Collection<Coord> hits, int x, int y) {
         if (BoardUtils.contains(x, y) && board.getCell(x, y) == Cell.HIT) {
-            hits.add(Coordinate.get(x, y));
+            hits.add(Coord.get(x, y));
         }
     }
 
-    public Collection<Coordinate> getHitsAround(Board board, int x, int y) {
-        Collection<Coordinate> hits = new ArrayList<>();
+    public Collection<Coord> getHitsAround(Board board, int x, int y) {
+        Collection<Coord> hits = new ArrayList<>();
         addIfHit(board, hits, x + 1, y);
         addIfHit(board, hits, x - 1, y);
         addIfHit(board, hits, x, y + 1);

@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 
 import com.google.example.games.basegameutils.BuildConfig;
 import com.ivygames.battleship.BoardUtils;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
@@ -27,16 +27,16 @@ public class EnemyBoardView extends BaseBoardView {
 
     private ShotResult mLastShotResult;
     @Nullable
-    private Coordinate mLockAim;
+    private Coord mLockAim;
     @NonNull
     private final EnemyBoardPresenter mPresenter;
     @NonNull
     private final EnemyBoardRenderer mRenderer;
     private MotionEvent debug_last_event;
     @NonNull
-    private Coordinate mAiming = Coordinate.INVALID_VECTOR;
+    private Coord mAiming = Coord.INVALID_VECTOR;
     @NonNull
-    private List<Coordinate> mPossibleShots = new ArrayList<>();
+    private List<Coord> mPossibleShots = new ArrayList<>();
 
     public EnemyBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -85,7 +85,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
 
         if (mPresenter.isDragging()) {
-            if (mAiming != Coordinate.INVALID_VECTOR) {
+            if (mAiming != Coord.INVALID_VECTOR) {
                 mRenderer.drawAiming(canvas, mAiming, isLocked(mAiming));
             }
         }
@@ -99,18 +99,18 @@ public class EnemyBoardView extends BaseBoardView {
         }
     }
 
-    private boolean isLocked(@NonNull Coordinate v) {
+    private boolean isLocked(@NonNull Coord v) {
         return !isEmpty(v) || mPresenter.isLocked();
     }
 
-    private boolean isEmpty(@NonNull Coordinate v) {
+    private boolean isEmpty(@NonNull Coord v) {
         return mPossibleShots.contains(v);
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         debug_last_event = event;
-        mAiming = Coordinate.get(getI(event.getX()), getJ(event.getY()));
+        mAiming = Coord.get(getI(event.getX()), getJ(event.getY()));
         logAction(event);
         mPresenter.touch(event.getAction(), mAiming);
         invalidate();
@@ -126,7 +126,7 @@ public class EnemyBoardView extends BaseBoardView {
         }
     }
 
-    public void setLockAim(@NonNull Coordinate aim) {
+    public void setLockAim(@NonNull Coord aim) {
         mLockAim = aim;
         invalidate();
     }

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coordinate;
+import com.ivygames.battleship.board.Coord;
 import com.ivygames.battleship.shot.ShotResult;
 
 public class DelegateOpponent implements Opponent, Cancellable {
@@ -18,7 +18,7 @@ public class DelegateOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onShotAt(@NonNull Coordinate aim) {
+    public void onShotAt(@NonNull Coord aim) {
         mOpponent.onShotAt(aim);
     }
 
