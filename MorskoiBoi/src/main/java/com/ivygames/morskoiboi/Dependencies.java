@@ -27,7 +27,6 @@ public class Dependencies {
     private static AdProvider sAdProvider;
     private static PlayerFactory sPlayerFactory;
     private static AiPlayerFactory sAiPlayerFactory;
-    private static Placement sPlacement;
     private static Random sRandom;
     private static ScoresCalculator sScoresCalculator;
 
@@ -120,16 +119,6 @@ public class Dependencies {
 
     public static AiPlayerFactory getAiPlayerFactory() {
         return sAiPlayerFactory;
-    }
-
-    public static void inject(@NonNull Placement placement) {
-        sPlacement = placement;
-        Ln.i(sPlacement);
-    }
-
-    @NonNull
-    public static Placement getPlacement() {
-        return sPlacement;
     }
 
     public static void inject(@NonNull Random random) {

@@ -47,7 +47,6 @@ class ApplicationInitializer {
         Resources resources = application.getResources();
         Rules rules = new RussianRules();
         Random random = new Random();
-        Placement placement = new Placement(random, rules.allowAdjacentShips());
         AndroidDevice device = new AndroidDevice(application);
 
         GoogleApiClientWrapper apiClient = new GoogleApiClientWrapper(application,
@@ -62,7 +61,6 @@ class ApplicationInitializer {
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();
 
         Dependencies.inject(random);
-        Dependencies.inject(placement);
         Dependencies.inject(apiClient);
         Dependencies.inject(multiplayerManager);
         Dependencies.inject(rules);

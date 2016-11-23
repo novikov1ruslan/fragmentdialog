@@ -4,22 +4,17 @@ import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.BoardSerialization;
 import com.ivygames.battleship.board.BoardSerializationTest;
 import com.ivygames.battleship.board.Vector2;
-import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collection;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class BoardUtilsTest {
@@ -68,9 +63,6 @@ public class BoardUtilsTest {
 
     @Test
     public void testEmptyCells() {
-        Random random = mock(Random.class);
-        Rules rules = mock(Rules.class);
-        Dependencies.inject(new Placement(random, rules.allowAdjacentShips())); // needed
         Board board = BoardSerialization.fromJson(BoardSerializationTest.EMPTY_BOARD);
         assertEquals(100, BoardUtils.getCoordinatesFreeFromShips(board, false).size());
 

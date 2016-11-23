@@ -68,7 +68,6 @@ public class WinLostScenarioTest {
         Dependencies.inject(mRandom);
         Dependencies.inject(new GameSettings(activity));
         Dependencies.inject(rules);
-        Dependencies.inject(new Placement(mRandom, rules.allowAdjacentShips()));
 
         IdlingPolicies.setMasterPolicyTimeout(2, TimeUnit.MINUTES);
         IdlingPolicies.setIdlingResourceTimeout(2, TimeUnit.MINUTES);
