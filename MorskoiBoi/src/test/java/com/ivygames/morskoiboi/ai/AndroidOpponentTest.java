@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.ai;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ai.AiOpponent;
-import com.ivygames.battleship.ai.RussianBotFactory;
+import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.LocatedShip;
@@ -62,8 +62,7 @@ public class AndroidOpponentTest {
     }
 
     private AiOpponent newAndroid(Bidder bidder) {
-        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mRules,
-                new RussianBotFactory().createBot(), bidder, mRandom);
+        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mRules, new RussianBot(mRandom), bidder, mRandom);
         aiOpponent.setBoard(mBoard);
         aiOpponent.setOpponent(mCancellableOpponent);
 

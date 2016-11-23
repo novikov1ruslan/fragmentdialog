@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ai.AiOpponent;
-import com.ivygames.battleship.ai.RussianBotFactory;
+import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.LocatedShip;
@@ -411,7 +411,7 @@ public class PlayerOpponentTest {
     @Test
     public void WhenPlayerWinsOverAiOpponent__OpponentLost() {
         PlayerOpponent player = newPlayer(PlayerUtils.defeatedBoardRules(1));
-        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", mPlacement, new RussianRules());
+        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", new RussianRules());
         player.setOpponent(aiOpponent);
         aiOpponent.setOpponent(player);
 
@@ -439,8 +439,8 @@ public class PlayerOpponentTest {
 
         private boolean lostCalled;
 
-        public MyAiOpponent(@NonNull String name, @NonNull Placement placement, @NonNull Rules rules) {
-            super(name, rules, new RussianBotFactory().createBot(), new Bidder(mRandom), mRandom);
+        public MyAiOpponent(@NonNull String name, @NonNull Rules rules) {
+            super(name, rules, new RussianBot(mRandom), new Bidder(mRandom), mRandom);
         }
 
         @Override

@@ -8,7 +8,7 @@ import android.util.Log;
 import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.ai.AiPlayerFactoryImpl;
-import com.ivygames.battleship.ai.RussianBotFactory;
+import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.player.PlayerFactoryImpl;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.analytics.ExceptionEvent;
@@ -57,7 +57,7 @@ class ApplicationInitializer {
         MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
                 BattleshipActivity.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactoryImpl();
-        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBotFactory(), random);
+        AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBot(random), random);
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();
 
         Dependencies.inject(random);

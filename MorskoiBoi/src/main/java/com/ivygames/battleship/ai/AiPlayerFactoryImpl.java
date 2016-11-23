@@ -11,19 +11,18 @@ import java.util.Random;
 public class AiPlayerFactoryImpl implements AiPlayerFactory {
 
     @NonNull
-    private final BotFactory mBotFactory;
+    private final Bot mBot;
     @NonNull
     private final Random mRandom;
 
-    public AiPlayerFactoryImpl(@NonNull BotFactory botFactory, @NonNull Random random) {
-        mBotFactory = botFactory;
+    public AiPlayerFactoryImpl(@NonNull Bot bot, @NonNull Random random) {
+        mBot = bot;
         mRandom = random;
     }
 
     @Override
-    public AiOpponent createPlayer(@NonNull String name,
-                                   @NonNull Rules rules) {
-        return new AiOpponent(name, rules, mBotFactory.createBot(), new Bidder(mRandom), mRandom);
+    public AiOpponent createPlayer(@NonNull String name, @NonNull Rules rules) {
+        return new AiOpponent(name, rules, mBot, new Bidder(mRandom), mRandom);
     }
 
     @Override
