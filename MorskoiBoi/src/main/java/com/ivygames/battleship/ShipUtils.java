@@ -2,7 +2,7 @@ package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
@@ -15,13 +15,13 @@ import java.util.Random;
 // TODO: write unit tests
 public class ShipUtils {
 
-    public static boolean isInShip(@NonNull Coord v, @NonNull LocatedShip locatedShip) {
-        int x = locatedShip.coordinate.i;
-        int y = locatedShip.coordinate.j;
+    public static boolean isInShip(@NonNull Vector v, @NonNull LocatedShip locatedShip) {
+        int x = locatedShip.coordinate.x;
+        int y = locatedShip.coordinate.y;
         Ship ship = locatedShip.ship;
 
-        int i = v.i;
-        int j = v.j;
+        int i = v.x;
+        int j = v.y;
 
         if (ship.isHorizontal()) {
             return i >= x && i < x + ship.size && j == y;
@@ -30,15 +30,15 @@ public class ShipUtils {
         }
     }
 
-    public static Collection<Coord> getShipCoordinates(@NonNull Ship ship, @NonNull Coord coordinate) {
-        Collection<Coord> coordinates = new ArrayList<>();
-        int i = coordinate.i;
-        int j = coordinate.j;
+    public static Collection<Vector> getShipCoordinates(@NonNull Ship ship, @NonNull Vector coordinate) {
+        Collection<Vector> coordinates = new ArrayList<>();
+        int i = coordinate.x;
+        int j = coordinate.y;
         boolean isHorizontal = ship.isHorizontal();
         for (int k = isHorizontal ? i : j; k < (isHorizontal ? i : j) + ship.size; k++) {
             int x = isHorizontal ? k : i;
             int y = isHorizontal ? j : k;
-            coordinates.add(Coord.get(x, y));
+            coordinates.add(Vector.get(x, y));
         }
 
         return coordinates;

@@ -2,7 +2,7 @@ package com.ivygames.battleship.ship;
 
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.LocatedShip;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 
 import org.junit.Test;
 
@@ -91,7 +91,7 @@ public class ShipTest {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                Coord v = Coord.get(i, j);
+                Vector v = Vector.get(i, j);
                 if ((i == 5 || i == 6) && j == 5) {
                     assertTrue(i + "," + j, ShipUtils.isInShip(v, new LocatedShip(ship1, 5, 5)));
                 } else {

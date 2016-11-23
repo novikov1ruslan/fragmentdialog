@@ -3,7 +3,7 @@ package com.ivygames.battleship;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.BoardSerialization;
 import com.ivygames.battleship.board.BoardSerializationTest;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,44 +21,44 @@ public class BoardUtilsTest {
 
     @Test
     public void NeighbouringCells8() {
-        Collection<Coord> coordinates = BoardUtils.getNeighboringCoordinates(1, 1);
+        Collection<Vector> coordinates = BoardUtils.getNeighboringCoordinates(1, 1);
 
         assertThat(coordinates.size(), is(8));
         assertThat(coordinates, containsInAnyOrder(
-                Coord.get(0, 0),
-                Coord.get(1, 0),
-                Coord.get(2, 0),
+                Vector.get(0, 0),
+                Vector.get(1, 0),
+                Vector.get(2, 0),
 
-                Coord.get(0, 1),
-                Coord.get(2, 1),
+                Vector.get(0, 1),
+                Vector.get(2, 1),
 
-                Coord.get(0, 2),
-                Coord.get(1, 2),
-                Coord.get(2, 2)));
+                Vector.get(0, 2),
+                Vector.get(1, 2),
+                Vector.get(2, 2)));
     }
 
     @Test
     public void NeighbouringCellsCorner() {
-        Collection<Coord> coordinates = BoardUtils.getNeighboringCoordinates(0, 0);
+        Collection<Vector> coordinates = BoardUtils.getNeighboringCoordinates(0, 0);
 
         assertThat(coordinates.size(), is(3));
         assertThat(coordinates, containsInAnyOrder(
-                Coord.get(0, 1),
-                Coord.get(1, 1),
-                Coord.get(1, 0)));
+                Vector.get(0, 1),
+                Vector.get(1, 1),
+                Vector.get(1, 0)));
     }
 
     @Test
     public void NeighbouringCellsWall() {
-        Collection<Coord> coordinates = BoardUtils.getNeighboringCoordinates(0, 1);
+        Collection<Vector> coordinates = BoardUtils.getNeighboringCoordinates(0, 1);
 
         assertThat(coordinates.size(), is(5));
         assertThat(coordinates, containsInAnyOrder(
-                Coord.get(0, 0),
-                Coord.get(0, 2),
-                Coord.get(1, 0),
-                Coord.get(1, 1),
-                Coord.get(1, 2)));
+                Vector.get(0, 0),
+                Vector.get(0, 2),
+                Vector.get(1, 0),
+                Vector.get(1, 1),
+                Vector.get(1, 2)));
     }
 
     @Test

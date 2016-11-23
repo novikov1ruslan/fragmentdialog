@@ -6,7 +6,7 @@ import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.LocatedShip;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 
 import java.util.Collection;
@@ -33,11 +33,11 @@ public class Placement {
     }
 
     public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
-        List<Coord> freeCells = BoardUtils.getCoordinatesFreeFromShips(board, mAllowAdjacentShips);
+        List<Vector> freeCells = BoardUtils.getCoordinatesFreeFromShips(board, mAllowAdjacentShips);
 
         while (!freeCells.isEmpty()) {
             int cellIndex = mRandom.nextInt(freeCells.size());
-            Coord coordinate = freeCells.get(cellIndex);
+            Vector coordinate = freeCells.get(cellIndex);
             if (BoardUtils.shipFitsTheBoard(ship, coordinate)) {
                 if (freeCells.containsAll(ShipUtils.getShipCoordinates(ship, coordinate))) {
                     board.addShip(new LocatedShip(ship, coordinate));

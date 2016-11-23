@@ -4,36 +4,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class Coord {
-    private static final Coord[][] POOL = new Coord[Board.DIMENSION][Board.DIMENSION];
-    public static final Coord INVALID_VECTOR = new Coord(-1, -1);
+public final class Vector {
+    private static final Vector[][] POOL = new Vector[Board.DIMENSION][Board.DIMENSION];
+    public static final Vector INVALID_VECTOR = new Vector(-1, -1);
 
     static {
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
-                POOL[i][j] = new Coord(i, j);
+                POOL[i][j] = new Vector(i, j);
             }
         }
     }
 
-    public final int i;
-    public final int j;
+    public final int x;
+    public final int y;
 
-    private Coord(int i, int j) {
-        this.i = i;
-        this.j = j;
+    private Vector(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     // TODO: test
-    public static Coord get(int i, int j) {
+    public static Vector get(int i, int j) {
         if (!containsCell(i, j)) {
             return INVALID_VECTOR;
         }
         return POOL[i][j];
     }
 
-    public static List<Coord> getAllCoordinates() {
-        ArrayList<Coord> coordinates = new ArrayList<>(Board.DIMENSION * Board.DIMENSION);
+    public static List<Vector> getAllCoordinates() {
+        ArrayList<Vector> coordinates = new ArrayList<>(Board.DIMENSION * Board.DIMENSION);
         for (int i = 0; i < Board.DIMENSION; i++) {
             coordinates.addAll(Arrays.asList(POOL[i]));
         }
@@ -42,7 +42,7 @@ public final class Coord {
 
     @Override
     public String toString() {
-        return "[" + i + "," + j + "]";
+        return "[" + x + "," + y + "]";
     }
 
     private static boolean containsCell(int i, int j) {

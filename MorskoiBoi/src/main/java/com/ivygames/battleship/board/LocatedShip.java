@@ -9,19 +9,19 @@ public class LocatedShip {
     @NonNull
     public final Ship ship;
     @NonNull
-    public final Coord coordinate;
+    public final Vector coordinate;
 
     public LocatedShip(@NonNull Ship ship) {
-        this(ship, Coord.INVALID_VECTOR);
+        this(ship, Vector.INVALID_VECTOR);
     }
 
-    public LocatedShip(@NonNull Ship ship, @NonNull Coord coordinate) {
+    public LocatedShip(@NonNull Ship ship, @NonNull Vector coordinate) {
         this.ship = ship;
         this.coordinate = coordinate;
     }
 
     public LocatedShip(@NonNull Ship ship, int i, int j) {
-        this(ship, Coord.get(i, j));
+        this(ship, Vector.get(i, j));
     }
 
     @Override

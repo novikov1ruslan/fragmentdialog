@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.board.LocatedShip;
 import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
 import com.ivygames.morskoiboi.screen.boardsetup.CoordinateType;
@@ -91,8 +91,8 @@ public abstract class BaseBoardView extends View {
         }
     }
 
-    private void drawMissMarks(@NonNull Canvas canvas, @NonNull List<Coord> cells) {
-        for (Coord cell : cells) {
+    private void drawMissMarks(@NonNull Canvas canvas, @NonNull List<Vector> cells) {
+        for (Vector cell : cells) {
             mRenderer.drawMissMark(canvas, cell);
         }
     }

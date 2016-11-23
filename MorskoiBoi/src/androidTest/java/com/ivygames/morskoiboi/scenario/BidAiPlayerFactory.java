@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.ai.Bot;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.Rules;
 
@@ -34,7 +34,7 @@ class BidAiPlayerFactory implements AiPlayerFactory {
         private int mCurShot;
 
         @NonNull
-        private final List<Coord> mShots = new ArrayList<>();
+        private final List<Vector> mShots = new ArrayList<>();
 
         public MyBot(Rules rules) {
             mShots.addAll(Utils.getShots(rules, mRandom));
@@ -43,7 +43,7 @@ class BidAiPlayerFactory implements AiPlayerFactory {
 
         @NonNull
         @Override
-        public Coord shoot(@NonNull Board board) {
+        public Vector shoot(@NonNull Board board) {
             return mShots.get(mCurShot++);
         }
     }

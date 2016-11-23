@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.ivygames.battleship.BoardUtils;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 
 import org.commons.logger.Ln;
 
@@ -15,7 +15,7 @@ final class EnemyBoardPresenter {
     private boolean mLocked = true;
 
     @NonNull
-    private Coord mTouch = Coord.INVALID_VECTOR;
+    private Vector mTouch = Vector.INVALID_VECTOR;
     private boolean mAimingStarted;
     private boolean mIsDragging;
     private int mLastTouchAction;
@@ -27,10 +27,10 @@ final class EnemyBoardPresenter {
 
     @Deprecated
     void touch(int action, int i, int j) {
-        touch(action, Coord.get(i, j));
+        touch(action, Vector.get(i, j));
     }
 
-    void touch(int action, @NonNull Coord v) {
+    void touch(int action, @NonNull Vector v) {
         mTouch = v;
         mLastTouchAction = action;
 
@@ -49,7 +49,7 @@ final class EnemyBoardPresenter {
             mIsDragging = false;
             if (mAimingStarted) {
                 mAimingStarted = false;
-                mShotListener.onAimingFinished(v.i, v.j);
+                mShotListener.onAimingFinished(v.x, v.y);
             }
         }
     }

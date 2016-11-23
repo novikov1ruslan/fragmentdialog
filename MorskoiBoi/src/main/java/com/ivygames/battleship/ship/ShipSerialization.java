@@ -2,7 +2,7 @@ package com.ivygames.battleship.ship;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.board.LocatedShip;
 
 import org.json.JSONException;
@@ -21,11 +21,11 @@ public class ShipSerialization {
         JSONObject shipJson = new JSONObject();
         try {
             Ship ship = locatedShip.ship;
-            Coord coordinate = locatedShip.coordinate;
+            Vector coordinate = locatedShip.coordinate;
             shipJson.put(SIZE, ship.size);
             shipJson.put(IS_HORIZONTAL, ship.isHorizontal());
-            shipJson.put(X, coordinate.i);
-            shipJson.put(Y, coordinate.j);
+            shipJson.put(X, coordinate.x);
+            shipJson.put(Y, coordinate.y);
             shipJson.put(HEALTH, ship.mHealth);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -51,7 +51,7 @@ public class ShipSerialization {
             int i = json.getInt(X);
             int j = json.getInt(Y);
             ship.mHealth = json.getInt(HEALTH);
-            return new LocatedShip(ship, Coord.get(i, j));
+            return new LocatedShip(ship, Vector.get(i, j));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

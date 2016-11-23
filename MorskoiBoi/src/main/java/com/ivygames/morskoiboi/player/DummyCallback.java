@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
 
@@ -41,7 +41,7 @@ public class DummyCallback implements PlayerCallback {
     }
 
     @Override
-    public void onShotAt(@NonNull Coord aim) {
+    public void onShotAt(@NonNull Vector aim) {
 
     }
 

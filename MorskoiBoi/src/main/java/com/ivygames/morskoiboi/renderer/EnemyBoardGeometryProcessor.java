@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.renderer;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 
 public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
 
@@ -32,9 +32,9 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    final Rect getAnimationDestination(@NonNull Coord aim, float cellRatio) {
-        int dx = aim.i * mCellSizePx + mAnimationHorOffset;
-        int dy = aim.j * mCellSizePx + mAnimationVerOffset;
+    final Rect getAnimationDestination(@NonNull Vector aim, float cellRatio) {
+        int dx = aim.x * mCellSizePx + mAnimationHorOffset;
+        int dy = aim.y * mCellSizePx + mAnimationVerOffset;
 
         int d = (int) (cellRatio * mHalfCellSize);
         mDstRect.left = dx - d;
@@ -46,9 +46,9 @@ public final class EnemyBoardGeometryProcessor extends BaseGeometryProcessor {
     }
 
     @NonNull
-    final Rect getAimRectDst(@NonNull Coord aim) {
-        int x = aim.i;
-        int y = aim.j;
+    final Rect getAimRectDst(@NonNull Vector aim) {
+        int x = aim.x;
+        int y = aim.y;
         int left = x * mCellSizePx + mBoardRect.left;
         int top = y * mCellSizePx + mBoardRect.top;
         mLockDstRect.left = left;

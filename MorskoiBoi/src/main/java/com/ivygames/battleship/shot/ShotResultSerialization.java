@@ -3,8 +3,8 @@ package com.ivygames.battleship.shot;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
-import com.ivygames.battleship.board.CoordinateSerialization;
+import com.ivygames.battleship.board.Vector;
+import com.ivygames.battleship.board.VectorSerialization;
 import com.ivygames.battleship.ship.ShipSerialization;
 
 import org.json.JSONException;
@@ -22,7 +22,7 @@ public class ShotResultSerialization {
             Cell cell = Cell.parse((char) jsonObject.getInt(CELL));
 
             JSONObject aimJson = jsonObject.getJSONObject(AIM);
-            Coord aim = CoordinateSerialization.fromJson(aimJson);
+            Vector aim = VectorSerialization.fromJson(aimJson);
 
             if (jsonObject.has(SHIP)) {
                 JSONObject shipJson = jsonObject.getJSONObject(SHIP);
@@ -40,7 +40,7 @@ public class ShotResultSerialization {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(CELL, result.cell.toChar());
-            jsonObject.put(AIM, CoordinateSerialization.toJson(result.aim));
+            jsonObject.put(AIM, VectorSerialization.toJson(result.aim));
 
             if (result.locatedShip != null) {
                 jsonObject.put(SHIP, ShipSerialization.toJson(result.locatedShip));

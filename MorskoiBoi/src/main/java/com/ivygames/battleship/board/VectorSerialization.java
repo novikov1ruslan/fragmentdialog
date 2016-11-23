@@ -5,17 +5,17 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CoordinateSerialization {
+public class VectorSerialization {
     private static final String X = "X";
     private static final String Y = "Y";
 
     // TODO: unit test
     @NonNull
-    public static JSONObject toJson(@NonNull Coord coordinate) {
+    public static JSONObject toJson(@NonNull Vector coordinate) {
         JSONObject json = new JSONObject();
         try {
-            json.put(X, coordinate.i);
-            json.put(Y, coordinate.j);
+            json.put(X, coordinate.x);
+            json.put(Y, coordinate.y);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -24,7 +24,7 @@ public class CoordinateSerialization {
     }
 
     @NonNull
-    public static Coord fromJson(@NonNull String json) {
+    public static Vector fromJson(@NonNull String json) {
         try {
             return fromJson(new JSONObject(json));
         } catch (JSONException e) {
@@ -33,11 +33,11 @@ public class CoordinateSerialization {
     }
 
     @NonNull
-    public static Coord fromJson(@NonNull JSONObject json) {
+    public static Vector fromJson(@NonNull JSONObject json) {
         try {
             int x = json.getInt(X);
             int y = json.getInt(Y);
-            return Coord.get(x, y);
+            return Vector.get(x, y);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

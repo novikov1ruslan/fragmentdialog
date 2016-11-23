@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.renderer;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Before;
@@ -47,7 +47,7 @@ public class BaseGeometryProcessorTest {
         int j = 6;
         int width = 1;
         int height = 4;
-        AimingG aiming = mPresenter.getAimingG(Coord.get(i, j), width, height);
+        AimingG aiming = mPresenter.getAimingG(Vector.get(i, j), width, height);
 
         AimingG expected = new AimingG(new Rect(191, 105, 222, 415), new Rect(5, 291, 315, 415));
         assertThat(aiming, equalTo(expected));
@@ -59,7 +59,7 @@ public class BaseGeometryProcessorTest {
         int j = 9;
         int width = 4;
         int height = 1;
-        AimingG aiming = mPresenter.getAimingG(Coord.get(i, j), width, height);
+        AimingG aiming = mPresenter.getAimingG(Vector.get(i, j), width, height);
 
         AimingG expected = new AimingG(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
         assertThat(aiming, equalTo(expected));
@@ -71,7 +71,7 @@ public class BaseGeometryProcessorTest {
         int j = 9;
         int width = 1;
         int height = 4;
-        AimingG aiming = mPresenter.getAimingG(Coord.get(i, j), width, height);
+        AimingG aiming = mPresenter.getAimingG(Vector.get(i, j), width, height);
 
         AimingG expected = new AimingG(new Rect(284, 105, 315, 415), new Rect(5, 384, 315, 415));
         assertThat(aiming, equalTo(expected));
@@ -86,7 +86,7 @@ public class BaseGeometryProcessorTest {
     @Test(expected=IllegalStateException.class)
     public void getRectForShipThrowsExceptionWhenCalledBeforeMeasure() {
         mPresenter = new BaseGeometryProcessor(10, 2);
-        mPresenter.getRectForShip(new Ship(1), Coord.get(5, 5));
+        mPresenter.getRectForShip(new Ship(1), Vector.get(5, 5));
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -156,14 +156,14 @@ public class BaseGeometryProcessorTest {
 
     @Test
     public void getRectForShipHorizontal() {
-        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.HORIZONTAL), Coord.get(0, 0));
+        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.HORIZONTAL), Vector.get(0, 0));
         Rect expected = new Rect(5, 105, 129, 136);
         assertThat(rect, equalTo(expected));
     }
 
     @Test
     public void getRectForShipVertical() {
-        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.VERTICAL), Coord.get(0, 0));
+        Rect rect = mPresenter.getRectForShip(new Ship(4, Ship.Orientation.VERTICAL), Vector.get(0, 0));
         Rect expected = new Rect(5, 105, 36, 229);
         assertThat(rect, equalTo(expected));
     }

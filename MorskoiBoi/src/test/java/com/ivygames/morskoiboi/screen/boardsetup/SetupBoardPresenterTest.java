@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
@@ -126,9 +126,9 @@ public class SetupBoardPresenterTest {
         Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
         pickDockedShip(ship);
         Board board = new Board();
-        Coord coordinate = Coord.get(5, 5);
+        Vector coordinate = Vector.get(5, 5);
         mPresenter.dropShip(board, coordinate);
-        BoardUtils.rotateShipAt(board, coordinate.i, coordinate.j);
+        BoardUtils.rotateShipAt(board, coordinate.x, coordinate.y);
         assertThat(ship.isHorizontal(), is(false));
     }
 

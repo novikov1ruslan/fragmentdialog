@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.board.LocatedShip;
 
 public class ShotResult {
@@ -12,17 +12,17 @@ public class ShotResult {
     @NonNull
     public final Cell cell;
     @NonNull
-    public final Coord aim;
+    public final Vector aim;
     @Nullable
     public final LocatedShip locatedShip;
 
-    public ShotResult(@NonNull Coord aim, @NonNull Cell cell, @Nullable LocatedShip locatedShip) {
+    public ShotResult(@NonNull Vector aim, @NonNull Cell cell, @Nullable LocatedShip locatedShip) {
         this.cell = cell;
         this.aim = aim;
         this.locatedShip = locatedShip;
     }
 
-    public ShotResult(@NonNull Coord aim, @NonNull Cell cell) {
+    public ShotResult(@NonNull Vector aim, @NonNull Cell cell) {
         this.cell = cell;
         this.aim = aim;
         this.locatedShip = null;

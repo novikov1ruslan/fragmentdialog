@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.screen.gameplay;
 
 import android.view.MotionEvent;
 
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -123,7 +123,7 @@ public class EnemyBoardPresenterTest {
 
     @Test
     public void testStartedDragging() {
-        Coord v = Coord.get(3, 3);
+        Vector v = Vector.get(3, 3);
         mPresenter.touch(MotionEvent.ACTION_UP, v);
         assertThat(mPresenter.isDragging(), is(false));
 

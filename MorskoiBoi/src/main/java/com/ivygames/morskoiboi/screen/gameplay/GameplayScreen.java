@@ -21,7 +21,7 @@ import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
@@ -386,7 +386,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             // ----------------------------------
             mTimerController.stop();
 
-            Coord aim = Coord.get(i, j);
+            Vector aim = Vector.get(i, j);
             Ln.d("shooting at: " + aim + cell);
             mLayout.lock();
             updateUnlockedTime();
@@ -482,7 +482,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onShotAt(@NonNull Coord aim) {
+        public void onShotAt(@NonNull Vector aim) {
             stopDetectingTurnTimeout();
             updateMyStatus();
         }

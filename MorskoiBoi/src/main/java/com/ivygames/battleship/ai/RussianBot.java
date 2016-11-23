@@ -6,7 +6,7 @@ import android.support.annotation.Size;
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.player.PlayerOpponent;
 
 import java.util.ArrayList;
@@ -29,12 +29,12 @@ public class RussianBot implements Bot {
     /**
      * @return true if coordinates {@code vector} are aligned horizontally
      */
-    private static boolean coordinatesAlignedHorizontally(@NonNull @Size(min = 1) List<Coord> coordinates) {
+    private static boolean coordinatesAlignedHorizontally(@NonNull @Size(min = 1) List<Vector> coordinates) {
 
-        int y = coordinates.get(0).j;
+        int y = coordinates.get(0).y;
 
         for (int i = 1; i < coordinates.size(); i++) {
-            if (y != coordinates.get(i).j) {
+            if (y != coordinates.get(i).y) {
                 return false;
             }
         }
@@ -47,19 +47,19 @@ public class RussianBot implements Bot {
     }
 
     @NonNull
-    private static List<Coord> getPossibleShotsAround(@NonNull Board board, int x, int y) {
-        ArrayList<Coord> possibleShots = new ArrayList<>();
+    private static List<Vector> getPossibleShotsAround(@NonNull Board board, int x, int y) {
+        ArrayList<Vector> possibleShots = new ArrayList<>();
         if (isEmptyCell(board, x - 1, y)) {
-            possibleShots.add(Coord.get(x - 1, y));
+            possibleShots.add(Vector.get(x - 1, y));
         }
         if (isEmptyCell(board, x + 1, y)) {
-            possibleShots.add(Coord.get(x + 1, y));
+            possibleShots.add(Vector.get(x + 1, y));
         }
         if (isEmptyCell(board, x, y - 1)) {
-            possibleShots.add(Coord.get(x, y - 1));
+            possibleShots.add(Vector.get(x, y - 1));
         }
         if (isEmptyCell(board, x, y + 1)) {
-            possibleShots.add(Coord.get(x, y + 1));
+            possibleShots.add(Vector.get(x, y + 1));
         }
 
         return possibleShots;
@@ -67,15 +67,15 @@ public class RussianBot implements Bot {
 
     @NonNull
     @Override
-    public Coord shoot(@NonNull Board board) {
+    public Vector shoot(@NonNull Board board) {
         // TODO: this method does not change the board. Add immutable board and pass it for correctness
-        List<Coord> hitDecks = findHitCells(board);
-        List<Coord> possibleShots;
+        List<Vector> hitDecks = findHitCells(board);
+        List<Vector> possibleShots;
         if (hitDecks.size() == 0) {
             possibleShots = BoardUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
-            Coord v = hitDecks.get(0);
-            possibleShots = getPossibleShotsAround(board, v.i, v.j);
+            Vector v = hitDecks.get(0);
+            possibleShots = getPossibleShotsAround(board, v.x, v.y);
         } else { // wounded ship with > 1 decks hit
             possibleShots = getPossibleShotsLinear(board, hitDecks);
         }
@@ -91,25 +91,25 @@ public class RussianBot implements Bot {
         }
     }
 
-    private static void addCellIfEmpty(@NonNull Board board, int x, int y, @NonNull Collection<Coord> out) {
+    private static void addCellIfEmpty(@NonNull Board board, int x, int y, @NonNull Collection<Vector> out) {
         if (BoardUtils.contains(x, y)) {
             Cell cell = board.getCell(x, y);
             if (cell == Cell.EMPTY) {
-                out.add(Coord.get(x, y));
+                out.add(Vector.get(x, y));
             }
         }
     }
 
     @NonNull
-    private static List<Coord> getPossibleShotsLinear(@NonNull Board board,
-                                                      @NonNull @Size(min = 2) List<Coord> hitDecks) {
-        List<Coord> possibleShots = new ArrayList<>();
-        int minX = hitDecks.get(0).i;
-        int minY = hitDecks.get(0).j;
-        int maxX = hitDecks.get(0).i;
-        int maxY = hitDecks.get(0).j;
-        for (Coord v : hitDecks) {
-            int x = v.i;
+    private static List<Vector> getPossibleShotsLinear(@NonNull Board board,
+                                                       @NonNull @Size(min = 2) List<Vector> hitDecks) {
+        List<Vector> possibleShots = new ArrayList<>();
+        int minX = hitDecks.get(0).x;
+        int minY = hitDecks.get(0).y;
+        int maxX = hitDecks.get(0).x;
+        int maxY = hitDecks.get(0).y;
+        for (Vector v : hitDecks) {
+            int x = v.x;
             if (x < minX) {
                 minX = x;
             }
@@ -117,7 +117,7 @@ public class RussianBot implements Bot {
                 maxX = x;
             }
 
-            int y = v.j;
+            int y = v.y;
             if (y < minY) {
                 minY = y;
             }
@@ -141,13 +141,13 @@ public class RussianBot implements Bot {
      * Assumption is that the cells will belong to the same ship.
      */
     @NonNull
-    private static List<Coord> findHitCells(@NonNull Board board) {
-        List<Coord> decks = new ArrayList<>();
+    private static List<Vector> findHitCells(@NonNull Board board) {
+        List<Vector> decks = new ArrayList<>();
         for (int i = 0; i < Board.DIMENSION; i++) {
             for (int j = 0; j < Board.DIMENSION; j++) {
                 if (board.getCell(i, j) == Cell.HIT) {
                     if (board.getShipsAt(i, j).isEmpty()) {
-                        decks.add(Coord.get(i, j));
+                        decks.add(Vector.get(i, j));
                     }
                 }
             }

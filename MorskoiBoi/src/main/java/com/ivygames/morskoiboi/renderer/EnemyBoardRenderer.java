@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.gfx.Animation;
 import com.ivygames.morskoiboi.Bitmaps;
@@ -82,7 +82,7 @@ public class EnemyBoardRenderer extends BaseBoardRenderer {
         return mCurrentAnimation != null && mCurrentAnimation.isRunning();
     }
 
-    public long animateExplosions(@NonNull Canvas canvas, @NonNull Coord aim) {
+    public long animateExplosions(@NonNull Canvas canvas, @NonNull Vector aim) {
         canvas.drawBitmap(mCurrentAnimation.getCurrentFrame(), mCurrentAnimation.getBounds(),
                 mProcessor.getAnimationDestination(aim, CELL_RATIO), null);
         return mCurrentAnimation.getFrameDuration();
@@ -99,15 +99,15 @@ public class EnemyBoardRenderer extends BaseBoardRenderer {
         }
     }
 
-    public void drawAiming(@NonNull Canvas canvas, @NonNull Coord v, boolean locked) {
-        drawAiming(canvas, v.i, v.j, locked);
+    public void drawAiming(@NonNull Canvas canvas, @NonNull Vector v, boolean locked) {
+        drawAiming(canvas, v.x, v.y, locked);
     }
 
     public void drawAiming(@NonNull Canvas canvas, int i, int j, boolean locked) {
         drawAiming(canvas, mProcessor.getAimingG(i, j), locked);
     }
 
-    public void drawAim(@NonNull Canvas canvas, @NonNull Coord aim) {
+    public void drawAim(@NonNull Canvas canvas, @NonNull Vector aim) {
         drawAim(canvas, mProcessor.getAimRectDst(aim));
     }
 

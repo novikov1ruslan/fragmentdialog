@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.shot.ShotResult;
 
 public interface Opponent {
@@ -17,7 +17,7 @@ public interface Opponent {
      * This call will trigger this opponent to call {@link #onShotResult(ShotResult)} on its opponent. <br>
      * If the result of the shot is {@link Cell#HIT}, {@link #go()} method is called afterwards.
      */
-    void onShotAt(@NonNull Coord aim);
+    void onShotAt(@NonNull Vector aim);
 
     /**
      * This opponent received result of his/her shot (Called on me)

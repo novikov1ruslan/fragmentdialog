@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Coord;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.R;
@@ -83,7 +83,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     }
 
     @Override
-    public void setAim(@NonNull Coord aim) {
+    public void setAim(@NonNull Vector aim) {
         mEnemyBoardView.setLockAim(aim);
     }
 
