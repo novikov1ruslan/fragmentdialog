@@ -1,16 +1,16 @@
-package com.ivygames.morskoiboi.ai;
+package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.shot.ShotResult;
 
-final class OnShotResultCommand extends OpponentCommand {
+public final class OnShotResultCommand extends OpponentCommand {
 
     @NonNull
     private final ShotResult mResult;
 
-    OnShotResultCommand(@NonNull Opponent opponent, @NonNull ShotResult result) {
+    public OnShotResultCommand(@NonNull Opponent opponent, @NonNull ShotResult result) {
         super(opponent);
         mResult = result;
     }

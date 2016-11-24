@@ -16,7 +16,6 @@ import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.player.QueuedCommandOpponent;
 
 import org.commons.logger.Ln;
 

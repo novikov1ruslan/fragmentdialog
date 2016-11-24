@@ -1,12 +1,12 @@
-package com.ivygames.morskoiboi.ai;
+package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 
-class GoCommand extends OpponentCommand {
+public class GoCommand extends OpponentCommand {
 
-    GoCommand(@NonNull Opponent opponent) {
+    public GoCommand(@NonNull Opponent opponent) {
         super(opponent);
     }
 

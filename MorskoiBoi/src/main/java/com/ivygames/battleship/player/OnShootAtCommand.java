@@ -1,15 +1,15 @@
-package com.ivygames.morskoiboi.ai;
+package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Vector;
 
-final class OnShootAtCommand extends OpponentCommand {
+public final class OnShootAtCommand extends OpponentCommand {
     @NonNull
     private final Vector mAim;
 
-    OnShootAtCommand(@NonNull Opponent opponent, @NonNull Vector aim) {
+    public OnShootAtCommand(@NonNull Opponent opponent, @NonNull Vector aim) {
         super(opponent);
         mAim = aim;
     }

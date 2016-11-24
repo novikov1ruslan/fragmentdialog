@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.player;
+package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
@@ -18,15 +18,16 @@ import java.util.Queue;
 public class QueuedCommandOpponent implements Opponent, Cancellable {
 
     @NonNull
+    private final Queue<Runnable> mQ = new LinkedList<>();
+
+    @NonNull
     private final Opponent mDelegate;
 
-    public QueuedCommandOpponent(@NonNull Opponent opponent) {
+    QueuedCommandOpponent(@NonNull Opponent opponent) {
         mDelegate = opponent;
     }
 
-    private Queue<Runnable> mQ = new LinkedList<>();
-
-    public void executePendingCommands() {
+    void executePendingCommands() {
         while (mQ.size() > 0) {
             mQ.poll().run();
         }
@@ -34,32 +35,17 @@ public class QueuedCommandOpponent implements Opponent, Cancellable {
 
     @Override
     public void onShotAt(@NonNull final Vector aim) {
-        mQ.offer(new Runnable() {
-            @Override
-            public void run() {
-                mDelegate.onShotAt(aim);
-            }
-        });
+        mQ.offer(new OnShootAtCommand(mDelegate, aim));
     }
 
     @Override
     public void onShotResult(@NonNull final ShotResult shotResult) {
-        mQ.offer(new Runnable() {
-            @Override
-            public void run() {
-                mDelegate.onShotResult(shotResult);
-            }
-        });
+        mQ.offer(new OnShotResultCommand(mDelegate, shotResult));
     }
 
     @Override
     public void go() {
-        mQ.offer(new Runnable() {
-            @Override
-            public void run() {
-                mDelegate.go();
-            }
-        });
+        mQ.offer(new GoCommand(mDelegate));
     }
 
     @Override

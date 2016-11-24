@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
+import com.ivygames.battleship.player.GoCommand;
+import com.ivygames.battleship.player.OnShootAtCommand;
+import com.ivygames.battleship.player.OnShotResultCommand;
 import com.ivygames.battleship.shot.ShotResult;
 
 import org.commons.logger.Ln;
