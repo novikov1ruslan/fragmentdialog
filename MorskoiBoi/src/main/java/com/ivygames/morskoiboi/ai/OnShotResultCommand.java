@@ -4,17 +4,14 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.shot.ShotResult;
-import com.ivygames.common.Command;
 
-final class OnShotResultCommand extends Command {
+final class OnShotResultCommand extends OpponentCommand {
 
-    @NonNull
-    private final Opponent mOpponent;
     @NonNull
     private final ShotResult mResult;
 
     OnShotResultCommand(@NonNull Opponent opponent, @NonNull ShotResult result) {
-        mOpponent = opponent;
+        super(opponent);
         mResult = result;
     }
 
