@@ -6,7 +6,10 @@ import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.shot.ShotResult;
+import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.ai.Cancellable;
+
+import org.commons.logger.Ln;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -22,6 +25,8 @@ public class QueuedCommandOpponent implements Opponent, Cancellable {
 
     @NonNull
     private final Opponent mDelegate;
+    @NonNull
+    private final AggregatePlayerCallback mCallback = new AggregatePlayerCallback();
 
     QueuedCommandOpponent(@NonNull Opponent opponent) {
         mDelegate = opponent;
@@ -105,5 +110,62 @@ public class QueuedCommandOpponent implements Opponent, Cancellable {
     @Override
     public String toString() {
         return "(C:" + mDelegate + ")";
+    }
+
+    public void registerCallback(PlayerCallback callback) {
+        mCallback.registerCallback(callback);
+    }
+
+    public void unregisterCallback(@NonNull PlayerCallback callback) {
+        mCallback.unregisterCallback(callback);
+        Ln.v(getName() + ": callback removed: " + callback);
+    }
+
+    public void notifyOpponentTurn() {
+        mCallback.onOpponentTurn();
+    }
+
+    public void notifyOnHit() {
+        mCallback.onHit();
+    }
+
+    public void notifyOnMiss() {
+        mCallback.onMiss();
+    }
+
+    public void notifyOnKillEnemy() {
+        mCallback.onKillEnemy();
+    }
+
+    public void notifyOnKillPlayer() {
+        mCallback.onKillPlayer();
+    }
+
+    public void notifyOnLost(@NonNull Board board) {
+        mCallback.onPlayerLost(board);
+    }
+
+    public void notifyOnMessage(@NonNull String text) {
+        mCallback.onMessage(text);
+    }
+
+    public void notifyOnWin() {
+        mCallback.onWin();
+    }
+
+    public void notifyOnShotAt() {
+        mCallback.onPlayerShotAt();
+    }
+
+    public void notifyPlayersTurn() {
+        mCallback.onPlayersTurn();
+    }
+
+    public void notifyOnShotResult(@NonNull ShotResult result) {
+        mCallback.onPlayerShotResult(result);
+    }
+
+    public void notifyOpponentReady() {
+        mCallback.opponentReady();
     }
 }

@@ -4,14 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
 
 public class DummyCallback implements PlayerCallback {
 
     @Override
-    public void onShotResult(@NonNull ShotResult result) {
+    public void onPlayerShotResult(@NonNull ShotResult result) {
 
     }
 
@@ -41,12 +40,12 @@ public class DummyCallback implements PlayerCallback {
     }
 
     @Override
-    public void onShotAt(@NonNull Vector aim) {
+    public void onPlayerShotAt() {
 
     }
 
     @Override
-    public void onLost(@Nullable Board board) {
+    public void onPlayerLost(@Nullable Board board) {
 
     }
 

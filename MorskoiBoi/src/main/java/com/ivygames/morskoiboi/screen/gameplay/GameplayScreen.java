@@ -429,7 +429,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private class UiPlayerCallback implements PlayerCallback {
 
         @Override
-        public void onShotResult(@NonNull ShotResult result) {
+        public void onPlayerShotResult(@NonNull ShotResult result) {
             stopDetectingShotTimeout();
 
             mStatistics.updateWithNewShot(result.isaKill(), result.cell);
@@ -482,13 +482,13 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
-        public void onShotAt(@NonNull Vector aim) {
+        public void onPlayerShotAt() {
             stopDetectingTurnTimeout();
             updateMyStatus();
         }
 
         @Override
-        public void onLost(@Nullable Board board) {
+        public void onPlayerLost(@Nullable Board board) {
             if (board == null) {
                 Ln.d("player lost");
                 AnalyticsEvent.send("reveal_not_supported");

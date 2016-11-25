@@ -19,9 +19,6 @@ import com.ivygames.morskoiboi.player.ChatListener;
 
 import org.commons.logger.Ln;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent implements Opponent {
@@ -37,8 +34,6 @@ public class PlayerOpponent implements Opponent {
     private static final int NOT_READY = -1;
 
     @NonNull
-    private final Set<PlayerCallback> mCallbacks = new HashSet<>();
-    @NonNull
     private Board mMyBoard = new Board();
     @NonNull
     private Board mEnemyBoard = new Board();
@@ -50,6 +45,9 @@ public class PlayerOpponent implements Opponent {
     private boolean mPlayerReady;
     private int mOpponentVersion;
     protected QueuedCommandOpponent mOpponent;
+    /**
+     * opponent is ready either when he has sent his bid or *go* command
+     */
     private boolean mOpponentReady;
 
     @NonNull
@@ -96,7 +94,7 @@ public class PlayerOpponent implements Opponent {
             Ln.d(mName + ": my bid: " + bid + ", opponent is ready and it is his turn");
             passFirstTurn();
         } else {
-            Ln.d(mName + ": opponent " + (mOpponentReady ? "is not ready" : "has higher bid")
+            Ln.d(mName + ": opponent " + (mOpponentReady ? "has lower bid" : "is not ready")
                     + " - sending him my bid: " + bid);
             mOpponent.onEnemyBid(bid);
         }
@@ -117,13 +115,13 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         setOpponentBid(bid);
-        notifyOpponentReady();
+        mOpponent.notifyOpponentReady();
 
         if (mPlayerReady && opponentStarts()) {
             Ln.d(mName + ": I'm ready , but it's opponent's turn, " + mOpponent + " begins");
             passFirstTurn();
 
-            notifyOpponentTurn();
+            mOpponent.notifyOpponentTurn();
         }
 
         mOpponent.executePendingCommands();
@@ -139,7 +137,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     public void registerCallback(@NonNull PlayerCallback callback) {
-        mCallbacks.add(callback);
+        mOpponent.registerCallback(callback);
         Ln.v(mName + ": [" + callback + "] callback added");
 
         if (mOpponentReady) {
@@ -157,8 +155,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     public void unregisterCallback(@NonNull PlayerCallback callback) {
-        mCallbacks.remove(callback);
-        Ln.v(mName + ": callback removed: " + callback);
+        mOpponent.unregisterCallback(callback);
     }
 
     @Override
@@ -170,10 +167,10 @@ public class PlayerOpponent implements Opponent {
             Ln.v(mName + ": opponent was not ready, but ready now");
             mOpponentReady = true;
 
-            notifyOpponentReady();
+            mOpponent.notifyOpponentReady();
         }
 
-        notifyPlayersTurn();
+        mOpponent.notifyPlayersTurn();
 
         mOpponent.executePendingCommands();
     }
@@ -185,9 +182,9 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": -> my shot result: " + result);
         updateEnemyBoard(result);
 
-        notifyOnShotResult(result);
+        mOpponent.notifyOnShotResult(result);
         if (result.isaKill()) {
-            notifyOnKillEnemy();
+            mOpponent.notifyOnKillEnemy();
             if (BoardUtils.isItDefeatedBoard(mEnemyBoard, mNumberOfShips)) {
                 Ln.d(mName + ": actually opponent lost");
 
@@ -201,16 +198,16 @@ public class PlayerOpponent implements Opponent {
 
                 Ln.d(mName + ": resetting my state before win");
                 reset();
-                notifyOnWin();
+                mOpponent.notifyOnWin();
             }
         } else if (result.cell == Cell.MISS) {
             Ln.d(mName + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
-            notifyOnMiss();
-            notifyOpponentTurn();
+            mOpponent.notifyOnMiss();
+            mOpponent.notifyOpponentTurn();
         } else {
             Ln.d(mName + ": it's a hit!");
-            notifyOnHit();
+            mOpponent.notifyOnHit();
         }
 
         mOpponent.executePendingCommands();
@@ -227,20 +224,20 @@ public class PlayerOpponent implements Opponent {
         ShotResult result = createResultForShootingAt(aim);
         Ln.v(mName + ": <- hitting my board at " + aim + " yields: " + result);
 
-        notifyOnShotAt(aim);
+        mOpponent.notifyOnShotAt();
         if (result.isaKill()) {
             Ln.d(mName + ": my ship is destroyed - " + result.locatedShip);
             // FIXME: add unit test for removed below line
 //            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
-            notifyOnKillPlayer();
+            mOpponent.notifyOnKillPlayer();
         } else if (result.cell == Cell.MISS) {
-            notifyOnMiss();
+            mOpponent.notifyOnMiss();
         } else {
             Ln.d(mName + ": my ship is hit");
-            notifyOnHit();
+            mOpponent.notifyOnHit();
         }
 
-        mOpponent.onShotResult(result);
+        mOpponent.notifyOnShotResult(result);
 
         if (result.cell == Cell.HIT) {
             if (BoardUtils.isItDefeatedBoard(mMyBoard, mNumberOfShips)) {
@@ -249,7 +246,7 @@ public class PlayerOpponent implements Opponent {
                     Ln.d(mName + ": opponent version doesn't support board reveal = " + mOpponentVersion);
                     Ln.d(mName + ": resetting my state before win");
                     reset();
-                    notifyOnWin();
+                    mOpponent.notifyOnWin();
                 }
             } else {
                 Ln.d(mName + ": I'm hit - " + mOpponent + " continues");
@@ -274,7 +271,7 @@ public class PlayerOpponent implements Opponent {
         if (mChatListener != null) {
             mChatListener.showChatCrouton(message);
         }
-        notifyOnMessage(text);
+        mOpponent.notifyOnMessage(text);
     }
 
     @Override
@@ -287,7 +284,7 @@ public class PlayerOpponent implements Opponent {
 
         Ln.d(mName + ": resetting my state before lost");
         reset();
-        notifyOnLost(board);
+        mOpponent.notifyOnLost(board);
     }
 
     @Override
@@ -391,78 +388,6 @@ public class PlayerOpponent implements Opponent {
     @Override
     public String getName() {
         return mName;
-    }
-
-    private void notifyOpponentTurn() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onOpponentTurn();
-        }
-    }
-
-    private void notifyOnHit() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onHit();
-        }
-    }
-
-    private void notifyOnMiss() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onMiss();
-        }
-    }
-
-    private void notifyOnKillEnemy() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onKillEnemy();
-        }
-    }
-
-    private void notifyOnKillPlayer() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onKillPlayer();
-        }
-    }
-
-    private void notifyOnLost(@NonNull Board board) {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onLost(board);
-        }
-    }
-
-    private void notifyOnMessage(@NonNull String text) {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onMessage(text);
-        }
-    }
-
-    private void notifyOnWin() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onWin();
-        }
-    }
-
-    private void notifyOnShotAt(@NonNull Vector aim) {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onShotAt(aim);
-        }
-    }
-
-    private void notifyPlayersTurn() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.onPlayersTurn();
-        }
-    }
-
-    private void notifyOnShotResult(@NonNull ShotResult result) {
-        for (PlayerCallback callback : mCallbacks) {
-           callback.onShotResult(result);
-        }
-    }
-
-    private void notifyOpponentReady() {
-        for (PlayerCallback callback : mCallbacks) {
-            callback.opponentReady();
-        }
     }
 
     @Override

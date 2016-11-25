@@ -9,7 +9,7 @@ import com.ivygames.battleship.shot.ShotResult;
 
 public interface PlayerCallback {
 
-    void onShotResult(@NonNull ShotResult result);
+    void onPlayerShotResult(@NonNull ShotResult result);
 
     void onWin();
 
@@ -21,9 +21,9 @@ public interface PlayerCallback {
 
     void onHit();
 
-    void onShotAt(@NonNull Vector aim);
+    void onPlayerShotAt();
 
-    void onLost(@Nullable Board board);
+    void onPlayerLost(@Nullable Board board);
 
     void opponentReady();
 

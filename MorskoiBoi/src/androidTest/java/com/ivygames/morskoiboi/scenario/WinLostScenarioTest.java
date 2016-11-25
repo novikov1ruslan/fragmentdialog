@@ -191,7 +191,7 @@ public class WinLostScenarioTest {
         }
 
         @Override
-        public void onLost(@Nullable Board board) {
+        public void onPlayerLost(@Nullable Board board) {
             log("lost");
             playResource.setIdle(true);
         }

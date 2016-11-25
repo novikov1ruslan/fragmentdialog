@@ -2,6 +2,7 @@ package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
@@ -37,8 +38,6 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         mBot = bot;
         mBidder = bidder;
         mRandom = random;
-
-        registerCallback(new PlayerCallbackImpl());
         Ln.v("Android opponent created with bot: " + bot);
     }
 
@@ -48,6 +47,12 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
             Ln.v(this + ": cancelling " + mOpponent);
             mOpponent.cancel();
         }
+    }
+
+    @Override
+    public void setOpponent(@NonNull Opponent opponent) {
+        super.setOpponent(opponent);
+        registerCallback(new PlayerCallbackImpl());
     }
 
     private class PlayerCallbackImpl extends DummyCallback {

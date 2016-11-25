@@ -221,7 +221,7 @@ public class PlayerOpponentTest {
         ShotResult result = new ShotResult(Vector.get(1, 1), Cell.HIT);
         mPlayer.onShotResult(result);
 
-        verify(callback, times(1)).onShotResult(result);
+        verify(callback, times(1)).onPlayerShotResult(result);
     }
 
     @Test
@@ -254,7 +254,7 @@ public class PlayerOpponentTest {
         Vector aim = Vector.get(1, 1);
         mPlayer.onShotAt(aim);
 
-        verify(callback, times(1)).onShotAt(aim);
+        verify(callback, times(1)).onPlayerShotAt();
     }
 
     @Test
@@ -308,7 +308,7 @@ public class PlayerOpponentTest {
 
         mPlayer.onShotAt(Vector.get(5, 5));
 
-        verify(callback, never()).onLost(any(Board.class));
+        verify(callback, never()).onPlayerLost(any(Board.class));
     }
 
     @Test
@@ -379,7 +379,7 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.onLost(board);
 
-        verify(callback, times(1)).onLost(board);
+        verify(callback, times(1)).onPlayerLost(board);
     }
 
     // TODO: repeat the 3 for win as well
