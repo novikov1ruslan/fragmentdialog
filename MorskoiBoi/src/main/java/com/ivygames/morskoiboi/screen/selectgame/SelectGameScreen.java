@@ -48,7 +48,7 @@ import org.commons.logger.Ln;
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener {
     private static final String DIALOG = FragmentAlertDialog.TAG;
-    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && false;
+    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && true;
 
     private SelectGameLayout mLayout;
 

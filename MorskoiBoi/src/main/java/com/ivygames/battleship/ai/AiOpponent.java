@@ -44,9 +44,9 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
 
     @Override
     public void cancel() {
-        if (mOpponent != null) {
+        if (mOpponent instanceof Cancellable) {
             Ln.v(this + ": cancelling " + mOpponent);
-            mOpponent.cancel();
+            ((Cancellable) mOpponent).cancel();
         }
     }
 
@@ -56,11 +56,12 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void start() {
-        if (!mOpponentReady) {
-            mOpponentReady = true;
-        } else {
-//            return;
+        if (mOpponentReady) {
+            // TODO: unit test to test lack of the return
+            return;
         }
+
+        mOpponentReady = true;
 
         if (getBoard().getShips().isEmpty()) {
             Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
@@ -78,7 +79,6 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         super.go();
         start();
         mOpponent.onShotAt(mBot.shoot(getEnemyBoard()));
-        mOpponent.executePendingCommands();
     }
 
     @Override

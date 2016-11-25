@@ -17,6 +17,7 @@ import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.player.DummyCallback;
+import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.commons.logger.Ln;
 
@@ -45,7 +46,7 @@ public class PlayerOpponent implements Opponent {
     private ChatListener mChatListener;
     private boolean mPlayerReady;
     private int mOpponentVersion;
-    protected QueuedCommandOpponent mOpponent;
+    protected Opponent mOpponent;
     @NonNull
     private PlayerCallback mCallback = new DummyCallback();
 
@@ -100,8 +101,6 @@ public class PlayerOpponent implements Opponent {
                     + " - sending him my bid: " + bid);
             mOpponent.onEnemyBid(bid);
         }
-
-        mOpponent.executePendingCommands();
     }
 
     @Override
@@ -117,8 +116,6 @@ public class PlayerOpponent implements Opponent {
 
             mCallback.onOpponentTurn();
         }
-
-        mOpponent.executePendingCommands();
     }
 
     private void setOpponentBid(int bid) {
@@ -169,8 +166,6 @@ public class PlayerOpponent implements Opponent {
         }
 
         mCallback.onPlayersTurn();
-
-        mOpponent.executePendingCommands();
     }
 
     @Override
@@ -207,8 +202,6 @@ public class PlayerOpponent implements Opponent {
             Ln.d(mName + ": it's a hit!");
             mCallback.onHit();
         }
-
-        mOpponent.executePendingCommands();
     }
 
     private boolean versionSupportsBoardReveal() {
@@ -251,13 +244,11 @@ public class PlayerOpponent implements Opponent {
                 mOpponent.go();
             }
         }
-
-        mOpponent.executePendingCommands();
     }
 
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
-        mOpponent = new QueuedCommandOpponent(opponent);
+        mOpponent = opponent;
         Ln.d(mName + ": my opponent is " + mOpponent);
         opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
     }
@@ -375,6 +366,7 @@ public class PlayerOpponent implements Opponent {
 
     @NonNull
     public Board getBoard() {
+        // TODO: return unmodifiable board
         return mMyBoard;
     }
 

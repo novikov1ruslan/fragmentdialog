@@ -190,7 +190,9 @@ public class PlayerOpponentTest {
     public void player_bids_second_and_higher__enemy_gets_player_bid() {
         int myBid = 2;
         mPlayer.onEnemyBid(1);
+
         mPlayer.startBidding(myBid);
+
         verify(mEnemy, times(1)).onEnemyBid(myBid);
     }
 
