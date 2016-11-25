@@ -12,7 +12,6 @@ import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ai.Cancellable;
-import com.ivygames.morskoiboi.player.DummyCallback;
 
 import org.commons.logger.Ln;
 
@@ -29,6 +28,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     private final Bidder mBidder;
     @NonNull
     private final Random mRandom;
+    private boolean mOpponentReady;
 
     public AiOpponent(@NonNull String name,
                       @NonNull Rules rules, @NonNull Bot bot,
@@ -52,27 +52,36 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     @Override
     public void setOpponent(@NonNull Opponent opponent) {
         super.setOpponent(opponent);
-        registerCallback(new PlayerCallbackImpl());
     }
 
-    private class PlayerCallbackImpl extends DummyCallback {
-        @Override
-        public void opponentReady() {
-            if (getBoard().getShips().isEmpty()) {
-                Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
-                placeShips();
-            }
-
-            if (!ready()) {
-                Ln.d(AiOpponent.this + ": opponent is ready, but I'm not, start bidding");
-                startBidding(mBidder.newBid());
-            }
+    private void start() {
+        if (!mOpponentReady) {
+            mOpponentReady = true;
         }
 
-        @Override
-        public void onPlayersTurn() {
-            mOpponent.onShotAt(mBot.shoot(getEnemyBoard()));
+        if (getBoard().getShips().isEmpty()) {
+            Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
+            placeShips();
         }
+
+        if (!ready()) {
+            Ln.d(getName() + ": opponent is ready, but I'm not, start bidding");
+            startBidding(mBidder.newBid());
+        }
+    }
+
+    @Override
+    public void go() {
+        super.go();
+        start();
+        mOpponent.onShotAt(mBot.shoot(getEnemyBoard()));
+        mOpponent.executePendingCommands();
+    }
+
+    @Override
+    public void onEnemyBid(int bid) {
+        super.onEnemyBid(bid);
+        start();
     }
 
     private void placeShips() {

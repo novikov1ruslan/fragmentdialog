@@ -32,7 +32,7 @@ public class QueuedCommandOpponent implements Opponent, Cancellable {
         mDelegate = opponent;
     }
 
-    void executePendingCommands() {
+    public void executePendingCommands() {
         while (mQ.size() > 0) {
             mQ.poll().run();
         }

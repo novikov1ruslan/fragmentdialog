@@ -1,5 +1,7 @@
 package com.ivygames.morskoiboi.ai;
 
+import android.support.annotation.NonNull;
+
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.Bot;
@@ -57,17 +59,8 @@ public class AndroidOpponentTest {
 
         mCancellableOpponent.setOpponent(mOpponent);
 
-        Bidder bidder = mock(Bidder.class);
-        when(bidder.newBid()).thenReturn(1);
+        Bidder bidder = getBidder(1);
         mAndroid = newAndroid(bidder, new RussianBot(mRandom));
-    }
-
-    private AiOpponent newAndroid(Bidder bidder, Bot bot) {
-        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mRules, bot, bidder, mRandom);
-        aiOpponent.setBoard(mBoard);
-        aiOpponent.setOpponent(mCancellableOpponent);
-
-        return aiOpponent;
     }
 
     @Test
@@ -78,6 +71,7 @@ public class AndroidOpponentTest {
     @Test
     public void when_android_says_go_to_opponent__opponent_receives_aim() {
         mAndroid.go();
+
         verify(mOpponent, times(1)).onShotAt(any(Vector.class));
     }
 
@@ -89,7 +83,7 @@ public class AndroidOpponentTest {
         mAndroid.onShotAt(aim);
 
         verify(mOpponent, times(1)).onShotResult(argument.capture());
-        assertThat(argument.getValue().aim, equalTo(aim));
+        assertThat(argument.getValue().aim, is(aim));
     }
 
     @Test
@@ -127,9 +121,7 @@ public class AndroidOpponentTest {
 
     @Test
     public void WhenAndroidNotReady_AndOpponentBidsHigher__OpponentGoesOnlyOnce() {
-        Bidder bidder = mock(Bidder.class);
-        when(bidder.newBid()).thenReturn(1);
-        mAndroid = newAndroid(bidder, new RussianBot(mRandom));
+        mAndroid = newAndroid(getBidder(1), new RussianBot(mRandom));
 
         mAndroid.onEnemyBid(2);
 
@@ -154,4 +146,18 @@ public class AndroidOpponentTest {
         assertThat(mCancellableOpponent.cancelCalled, is(true));
     }
 
+    private AiOpponent newAndroid(Bidder bidder, Bot bot) {
+        AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, mRules, bot, bidder, mRandom);
+        aiOpponent.setBoard(mBoard);
+        aiOpponent.setOpponent(mCancellableOpponent);
+
+        return aiOpponent;
+    }
+
+    @NonNull
+    private Bidder getBidder(int value) {
+        Bidder bidder = mock(Bidder.class);
+        when(bidder.newBid()).thenReturn(value);
+        return bidder;
+    }
 }

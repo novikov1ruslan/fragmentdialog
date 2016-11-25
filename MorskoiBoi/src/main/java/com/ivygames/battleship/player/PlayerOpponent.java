@@ -52,7 +52,6 @@ public class PlayerOpponent implements Opponent {
 
     @NonNull
     private final String mName;
-    private boolean mGameStarted;
     private final int mNumberOfShips;
 
     protected PlayerOpponent(@NonNull String name, int numberOfShips) {
@@ -68,7 +67,6 @@ public class PlayerOpponent implements Opponent {
         mEnemyBid = NOT_READY;
         mOpponentReady = false;
         mPlayerReady = false;
-        mGameStarted = false;
     }
 
     public void setBoard(@NonNull Board board) {
@@ -84,7 +82,7 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": my chat listener is: " + listener);
     }
 
-    public void startBidding(int bid) {
+    public final void startBidding(int bid) {
         debug_handler.post(debug_thread_break_task);
 
         mMyBid = bid;
@@ -92,7 +90,7 @@ public class PlayerOpponent implements Opponent {
 
         if (mOpponentReady && opponentStarts()) {
             Ln.d(mName + ": my bid: " + bid + ", opponent is ready and it is his turn");
-            passFirstTurn();
+            mOpponent.go();
         } else {
             Ln.d(mName + ": opponent " + (mOpponentReady ? "has lower bid" : "is not ready")
                     + " - sending him my bid: " + bid);
@@ -100,14 +98,6 @@ public class PlayerOpponent implements Opponent {
         }
 
         mOpponent.executePendingCommands();
-    }
-
-    // TODO: what this game started mean?
-    private void passFirstTurn() {
-        if (!mGameStarted) {
-            mGameStarted = true;
-            mOpponent.go();
-        }
     }
 
     @Override
@@ -119,7 +109,7 @@ public class PlayerOpponent implements Opponent {
 
         if (mPlayerReady && opponentStarts()) {
             Ln.d(mName + ": I'm ready , but it's opponent's turn, " + mOpponent + " begins");
-            passFirstTurn();
+            mOpponent.go();
 
             mOpponent.notifyOpponentTurn();
         }
@@ -237,7 +227,7 @@ public class PlayerOpponent implements Opponent {
             mOpponent.notifyOnHit();
         }
 
-        mOpponent.notifyOnShotResult(result);
+        mOpponent.onShotResult(result);
 
         if (result.cell == Cell.HIT) {
             if (BoardUtils.isItDefeatedBoard(mMyBoard, mNumberOfShips)) {
