@@ -43,6 +43,12 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        mOpponentReady = false;
+    }
+
+    @Override
     public void cancel() {
         if (mOpponent instanceof Cancellable) {
             Ln.v(this + ": cancelling " + mOpponent);

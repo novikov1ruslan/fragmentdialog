@@ -16,8 +16,6 @@ import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.player.DummyCallback;
-import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.commons.logger.Ln;
 
@@ -48,7 +46,7 @@ public class PlayerOpponent implements Opponent {
     private int mOpponentVersion;
     protected Opponent mOpponent;
     @NonNull
-    private PlayerCallback mCallback = new DummyCallback();
+    private final AggregatePlayerCallback mCallback = new AggregatePlayerCallback();
 
     /**
      * opponent is ready either when he has sent his bid or *go* command
@@ -65,7 +63,7 @@ public class PlayerOpponent implements Opponent {
         Ln.v("new player created: " + name);
     }
 
-    private void reset() {
+    protected void reset() {
         mEnemyBoard = new Board();
         mMyBoard = new Board();
         mMyBid = NOT_READY;
@@ -132,7 +130,7 @@ public class PlayerOpponent implements Opponent {
      *                 and the implementation must not call into this {@link PlayerOpponent}
      */
     public void registerCallback(@NonNull PlayerCallback callback) {
-        mCallback = callback;
+        mCallback.registerCallback(callback);
         Ln.v(mName + ": [" + callback + "] callback added");
 
         if (mOpponentReady) {
@@ -150,7 +148,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     public void unregisterCallback(@NonNull PlayerCallback callback) {
-        mCallback = new DummyCallback();
+        mCallback.unregisterCallback(callback);
     }
 
     @Override

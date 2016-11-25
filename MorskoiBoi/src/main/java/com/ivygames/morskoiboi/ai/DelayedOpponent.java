@@ -63,10 +63,10 @@ public class DelayedOpponent implements Opponent, Cancellable {
 
     @Override
     public void go() {
+        mGoCommand = new GoCommand(mOpponent);
         if (mOnShotResultCommand == null || mOnShotResultCommand.executed()) {
-            mOpponent.go();
+            mHandler.post(mGoCommand);
         } else {
-            mGoCommand = new GoCommand(mOpponent);
             Ln.v("scheduling " + mGoCommand + " after " + mOnShotResultCommand);
             assert mOnShotResultCommand != null;
             mOnShotResultCommand.setNextCommand(mGoCommand);
@@ -74,8 +74,13 @@ public class DelayedOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onEnemyBid(int bid) {
-        mOpponent.onEnemyBid(bid);
+    public void onEnemyBid(final int bid) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mOpponent.onEnemyBid(bid);
+            }
+        });
     }
 
     @NonNull
@@ -85,18 +90,33 @@ public class DelayedOpponent implements Opponent, Cancellable {
     }
 
     @Override
-    public void onLost(@NonNull Board board) {
-        mOpponent.onLost(board);
+    public void onLost(@NonNull final Board board) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mOpponent.onLost(board);
+            }
+        });
     }
 
     @Override
-    public void setOpponentVersion(int ver) {
-        mOpponent.setOpponentVersion(ver);
+    public void setOpponentVersion(final int ver) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mOpponent.setOpponentVersion(ver);
+            }
+        });
     }
 
     @Override
-    public void onNewMessage(@NonNull String text) {
-        mOpponent.onNewMessage(text);
+    public void onNewMessage(@NonNull final String text) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mOpponent.onNewMessage(text);
+            }
+        });
     }
 
     @Override

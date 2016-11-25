@@ -48,7 +48,7 @@ import org.commons.logger.Ln;
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener {
     private static final String DIALOG = FragmentAlertDialog.TAG;
-    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && true;
+    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && false;
 
     private SelectGameLayout mLayout;
 
@@ -152,11 +152,12 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
         setPlayerName();
-        PlayerOpponent player = createPlayerOpponent();
+        String playerName = getPlayerName();
+        PlayerOpponent player = createPlayerOpponent(playerName);
         if (ANDROID_VS_ANDROID) {
-            player = createAiOpponent();
+            player = createAiOpponent(playerName);
         }
-        Opponent android = createAiOpponent();
+        Opponent android = createAiOpponent(getString(R.string.android));
 
         Session session = new Session(player, android);
         player.setOpponent(android);
@@ -173,20 +174,25 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @NonNull
-    private PlayerOpponent createAiOpponent() {
-        return mOpponentFactory.createPlayer(getString(R.string.android), mRules);
+    private PlayerOpponent createAiOpponent(@NonNull String playerName) {
+        return mOpponentFactory.createPlayer(playerName, mRules);
     }
 
     @NonNull
-    private PlayerOpponent createPlayerOpponent() {
+    private PlayerOpponent createPlayerOpponent(@NonNull String playerName) {
+        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
+        player.setChatListener(parent());
+        return player;
+    }
+
+    @NonNull
+    private String getPlayerName() {
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
             Ln.i("player name is empty - replaced by " + playerName);
         }
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
-        player.setChatListener(parent());
-        return player;
+        return playerName;
     }
 
     @Override
