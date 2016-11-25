@@ -85,7 +85,9 @@ public class AndroidOpponentTest {
     public void after_android_is_shot_at__opponent_receives_shot_result() {
         Vector aim = Vector.get(5, 5);
         ArgumentCaptor<ShotResult> argument = ArgumentCaptor.forClass(ShotResult.class);
+
         mAndroid.onShotAt(aim);
+
         verify(mOpponent, times(1)).onShotResult(argument.capture());
         assertThat(argument.getValue().aim, equalTo(aim));
     }

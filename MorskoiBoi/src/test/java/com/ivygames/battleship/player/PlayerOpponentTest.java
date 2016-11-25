@@ -14,7 +14,6 @@ import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.model.ChatMessage;
@@ -46,7 +45,6 @@ public class PlayerOpponentTest {
     private PlayerOpponent mPlayer;
     @Mock
     private Opponent mEnemy;
-    private Placement mPlacement;
     @Mock
     private PlayerCallback callback;
 
@@ -65,7 +63,6 @@ public class PlayerOpponentTest {
         initMocks(this);
         ExceptionHandler.setDryRun(true);
 
-        mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
         mPlayer = newPlayer(rules);
     }
 
