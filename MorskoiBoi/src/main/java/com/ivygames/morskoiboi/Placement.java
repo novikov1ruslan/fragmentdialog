@@ -26,6 +26,7 @@ public class Placement {
     }
 
     // TODO: remove
+    // TODO: do not modify board, create new
     public void populateBoardWithShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
             putShipOnBoard(ship, board);

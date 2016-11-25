@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.ShipUtils;
+import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
@@ -57,6 +58,8 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     private void start() {
         if (!mOpponentReady) {
             mOpponentReady = true;
+        } else {
+//            return;
         }
 
         if (getBoard().getShips().isEmpty()) {
@@ -88,7 +91,9 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());
         OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
         Collection<Ship> ships = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
-        placement.populateBoardWithShips(getBoard(), ships);
+        Board board = new Board();
+        placement.populateBoardWithShips(board, ships);
+        setBoard(board);
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());
         }

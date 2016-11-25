@@ -16,6 +16,7 @@ import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.model.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
+import com.ivygames.morskoiboi.player.DummyCallback;
 
 import org.commons.logger.Ln;
 
@@ -45,6 +46,9 @@ public class PlayerOpponent implements Opponent {
     private boolean mPlayerReady;
     private int mOpponentVersion;
     protected QueuedCommandOpponent mOpponent;
+    @NonNull
+    private PlayerCallback mCallback = new DummyCallback();
+
     /**
      * opponent is ready either when he has sent his bid or *go* command
      */
@@ -82,7 +86,7 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": my chat listener is: " + listener);
     }
 
-    public final void startBidding(int bid) {
+    public void startBidding(int bid) {
         debug_handler.post(debug_thread_break_task);
 
         mMyBid = bid;
@@ -105,13 +109,13 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         setOpponentBid(bid);
-        mOpponent.notifyOpponentReady();
+        mCallback.opponentReady();
 
         if (mPlayerReady && opponentStarts()) {
             Ln.d(mName + ": I'm ready , but it's opponent's turn, " + mOpponent + " begins");
             mOpponent.go();
 
-            mOpponent.notifyOpponentTurn();
+            mCallback.onOpponentTurn();
         }
 
         mOpponent.executePendingCommands();
@@ -126,8 +130,12 @@ public class PlayerOpponent implements Opponent {
         Ln.d(this + ": opponent is ready, bid = " + bid);
     }
 
+    /**
+     * @param callback this callback is only for 1-directional feedback,
+     *                 and the implementation must not call into this {@link PlayerOpponent}
+     */
     public void registerCallback(@NonNull PlayerCallback callback) {
-        mOpponent.registerCallback(callback);
+        mCallback = callback;
         Ln.v(mName + ": [" + callback + "] callback added");
 
         if (mOpponentReady) {
@@ -145,7 +153,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     public void unregisterCallback(@NonNull PlayerCallback callback) {
-        mOpponent.unregisterCallback(callback);
+        mCallback = new DummyCallback();
     }
 
     @Override
@@ -157,10 +165,10 @@ public class PlayerOpponent implements Opponent {
             Ln.v(mName + ": opponent was not ready, but ready now");
             mOpponentReady = true;
 
-            mOpponent.notifyOpponentReady();
+            mCallback.opponentReady();
         }
 
-        mOpponent.notifyPlayersTurn();
+        mCallback.onPlayersTurn();
 
         mOpponent.executePendingCommands();
     }
@@ -172,9 +180,9 @@ public class PlayerOpponent implements Opponent {
         Ln.v(mName + ": -> my shot result: " + result);
         updateEnemyBoard(result);
 
-        mOpponent.notifyOnShotResult(result);
+        mCallback.onPlayerShotResult(result);
         if (result.isaKill()) {
-            mOpponent.notifyOnKillEnemy();
+            mCallback.onKillEnemy();
             if (BoardUtils.isItDefeatedBoard(mEnemyBoard, mNumberOfShips)) {
                 Ln.d(mName + ": actually opponent lost");
 
@@ -188,16 +196,16 @@ public class PlayerOpponent implements Opponent {
 
                 Ln.d(mName + ": resetting my state before win");
                 reset();
-                mOpponent.notifyOnWin();
+                mCallback.onWin();
             }
         } else if (result.cell == Cell.MISS) {
             Ln.d(mName + ": I missed - passing the turn to " + mOpponent);
             mOpponent.go();
-            mOpponent.notifyOnMiss();
-            mOpponent.notifyOpponentTurn();
+            mCallback.onMiss();
+            mCallback.onOpponentTurn();
         } else {
             Ln.d(mName + ": it's a hit!");
-            mOpponent.notifyOnHit();
+            mCallback.onHit();
         }
 
         mOpponent.executePendingCommands();
@@ -214,17 +222,17 @@ public class PlayerOpponent implements Opponent {
         ShotResult result = createResultForShootingAt(aim);
         Ln.v(mName + ": <- hitting my board at " + aim + " yields: " + result);
 
-        mOpponent.notifyOnShotAt();
+        mCallback.onPlayerShotAt();
         if (result.isaKill()) {
             Ln.d(mName + ": my ship is destroyed - " + result.locatedShip);
             // FIXME: add unit test for removed below line
 //            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
-            mOpponent.notifyOnKillPlayer();
+            mCallback.onKillPlayer();
         } else if (result.cell == Cell.MISS) {
-            mOpponent.notifyOnMiss();
+            mCallback.onMiss();
         } else {
             Ln.d(mName + ": my ship is hit");
-            mOpponent.notifyOnHit();
+            mCallback.onHit();
         }
 
         mOpponent.onShotResult(result);
@@ -236,7 +244,7 @@ public class PlayerOpponent implements Opponent {
                     Ln.d(mName + ": opponent version doesn't support board reveal = " + mOpponentVersion);
                     Ln.d(mName + ": resetting my state before win");
                     reset();
-                    mOpponent.notifyOnWin();
+                    mCallback.onWin();
                 }
             } else {
                 Ln.d(mName + ": I'm hit - " + mOpponent + " continues");
@@ -261,7 +269,7 @@ public class PlayerOpponent implements Opponent {
         if (mChatListener != null) {
             mChatListener.showChatCrouton(message);
         }
-        mOpponent.notifyOnMessage(text);
+        mCallback.onMessage(text);
     }
 
     @Override
@@ -274,7 +282,7 @@ public class PlayerOpponent implements Opponent {
 
         Ln.d(mName + ": resetting my state before lost");
         reset();
-        mOpponent.notifyOnLost(board);
+        mCallback.onPlayerLost(board);
     }
 
     @Override
