@@ -2,7 +2,6 @@ package com.ivygames.morskoiboi.bluetooth;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.Opponent;
 import com.ivygames.morskoiboi.multiplayer.AbstractOnlineOpponent;
 
 import org.commons.logger.Ln;
@@ -23,13 +22,6 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
         Ln.v("sending: [" + message + "]");
         message = message + '|';
         mSender.write(message);
-    }
-
-    @Override
-    public void setOpponent(@NonNull Opponent opponent) {
-        mOpponent = opponent;
-        String message = NAME + mOpponent.getName();
-        send(message);
     }
 
     @Override

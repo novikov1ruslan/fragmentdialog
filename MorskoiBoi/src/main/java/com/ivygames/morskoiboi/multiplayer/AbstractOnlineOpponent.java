@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi.multiplayer;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
@@ -13,12 +14,12 @@ import com.ivygames.battleship.shot.ShotResultSerialization;
 import org.commons.logger.Ln;
 
 public abstract class AbstractOnlineOpponent implements Opponent {
-    protected Opponent mOpponent;
+    private Opponent mOpponent;
 
     @NonNull
     private String mName;
 
-    protected static final char NAME = 'N';
+    private static final char NAME = 'N';
     private static final char BID = 'B';
     private static final char GO = 'G';
     private static final char SHOOT = 'S';
@@ -33,7 +34,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
 
     protected abstract void send(@NonNull String message);
 
-    protected final void onRealTimeMessageReceived(String message) {
+    protected final void onRealTimeMessageReceived(@NonNull String message) {
         char opCode = message.charAt(0);
         String body = message.substring(1);
         switch (opCode) {
@@ -70,50 +71,59 @@ public abstract class AbstractOnlineOpponent implements Opponent {
     }
 
     @Override
-    public void onShotResult(@NonNull ShotResult shotResult) {
+    public final void setOpponent(@NonNull Opponent opponent) {
+        mOpponent = opponent;
+        String name = mOpponent.getName();
+        if (TextUtils.isEmpty(name)) {
+            name = "Player"; // TODO: think about better solution
+        }
+        send(NAME + name);
+    }
+
+    @Override
+    public final void onShotResult(@NonNull ShotResult shotResult) {
         send(SHOOT_RESULT + ShotResultSerialization.toJson(shotResult).toString());
     }
 
     @Override
-    public void onShotAt(@NonNull Vector aim) {
+    public final void onShotAt(@NonNull Vector aim) {
         send(SHOOT + VectorSerialization.toJson(aim).toString());
     }
 
     @Override
-    public void go() {
+    public final void go() {
         send(String.valueOf(GO));
     }
 
     @Override
-    public void onEnemyBid(int bid) {
+    public final void onEnemyBid(int bid) {
         send(String.valueOf(BID) + bid);
     }
 
     @NonNull
     @Override
-    public String getName() {
+    public final String getName() {
         return mName;
     }
 
     @Override
-    public void onLost(@NonNull Board board) {
+    public final void onLost(@NonNull Board board) {
         send(WIN + BoardSerialization.toJson(board).toString());
     }
 
     @Override
-    public void setOpponentVersion(int ver) {
+    public final void setOpponentVersion(int ver) {
         send(VERSION + String.valueOf(ver));
     }
 
     @Override
-    public void onNewMessage(@NonNull String text) {
+    public final void onNewMessage(@NonNull String text) {
         send(MESSAGE + text);
     }
 
     @Override
     public String toString() {
-        String name = getName();
-        return (name == null ? "still_unnamed" : name) + "#" + (hashCode() % 1000);
+        return getName() + "#" + hashCode() % 1000;
     }
 
 }
