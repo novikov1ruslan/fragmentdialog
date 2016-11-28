@@ -232,7 +232,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
     @Override
     public void showChatCrouton(ChatMessage message) {
         if (mScreenManager.isStarted()) {
-            View layout = inflateChatCroutonLayout(getLayoutInflater(), message.getText(), mLayout);
+            View layout = inflateChatCroutonLayout(getLayoutInflater(), message.text, mLayout);
             Crouton.make(this, layout).setConfiguration(CONFIGURATION_LONG).show();
         }
     }
