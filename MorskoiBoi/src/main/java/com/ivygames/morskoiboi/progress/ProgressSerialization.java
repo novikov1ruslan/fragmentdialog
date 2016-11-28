@@ -9,11 +9,11 @@ import org.commons.logger.Ln;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ProgressUtils {
+public class ProgressSerialization {
     private static final String RANK = "rank";
 
     @NonNull
-    public static JSONObject toJson(@NonNull Progress progress) {
+    public static String toJson(@NonNull Progress progress) {
         JSONObject json = new JSONObject();
         try {
             json.put(RANK, progress.progress);
@@ -21,7 +21,7 @@ public class ProgressUtils {
             throw new RuntimeException(e);
         }
 
-        return json;
+        return json.toString();
     }
 
     @NonNull
@@ -50,7 +50,7 @@ public class ProgressUtils {
                     return new Progress(Integer.parseInt(json.substring(start, end)));
                 } catch (Exception e) {
                     Ln.w(e);
-                    ExceptionEvent.send("parsing_progress", "data=" + json, e);
+                    ExceptionEvent.send("parsing_progress2", "data=" + json, e);
                 }
             }
 

@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.achievements.AchievementsSettings;
 import com.ivygames.common.backup.BackupSharedPreferences;
-import com.ivygames.morskoiboi.progress.ProgressUtils;
+import com.ivygames.morskoiboi.progress.ProgressSerialization;
 
 import org.commons.logger.Ln;
 import org.json.JSONException;
@@ -155,7 +155,7 @@ public class GameSettings implements AchievementsSettings {
     }
 
     public void setProgress(Progress progress) {
-        mEditor.putString(PROGRESS, ProgressUtils.toJson(progress).toString());
+        mEditor.putString(PROGRESS, ProgressSerialization.toJson(progress));
     }
 
     @NonNull
@@ -166,7 +166,7 @@ public class GameSettings implements AchievementsSettings {
             progress = new Progress(0);
         } else {
             try {
-                progress = ProgressUtils.fromJson(json);
+                progress = ProgressSerialization.fromJson(json);
             } catch (JSONException je) {
                 throw new RuntimeException(je);
             }

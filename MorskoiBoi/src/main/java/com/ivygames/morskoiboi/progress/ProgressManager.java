@@ -133,12 +133,12 @@ public class ProgressManager {
 
     @NonNull
     private static byte[] getBytes(@NonNull Progress progress) {
-        return ProgressUtils.toJson(progress).toString().getBytes();
+        return ProgressSerialization.toJson(progress).getBytes();
     }
 
     @NonNull
     private static Progress parseProgress(@NonNull byte[] loadedData) {
-        return ProgressUtils.parseProgress(new String(loadedData));
+        return ProgressSerialization.parseProgress(new String(loadedData));
     }
 
     @Override
