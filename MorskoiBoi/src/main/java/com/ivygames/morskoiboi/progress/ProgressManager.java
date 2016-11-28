@@ -89,11 +89,11 @@ public class ProgressManager {
             Progress cloudProgress = getProgressFromSnapshot(snapshot);
             Progress localProgress = mSettings.getProgress();
             Ln.v("local =" + localProgress + ", cloud =" + cloudProgress);
-            if (localProgress.getScores() > cloudProgress.getScores()) {
+            if (localProgress.progress > cloudProgress.progress) {
                 AnalyticsEvent.send("save_game", "local_wins");
                 Ln.d("updating remote with: " + localProgress);
                 commitAndClose(snapshot, ProgressUtils.getBytes(localProgress));
-            } else if (cloudProgress.getScores() > localProgress.getScores()) {
+            } else if (cloudProgress.progress > localProgress.progress) {
                 AnalyticsEvent.send("save_game", "cloud_wins");
                 Ln.d("updating local with: " + cloudProgress);
                 mSettings.setProgress(cloudProgress);
@@ -119,7 +119,7 @@ public class ProgressManager {
     }
 
     private static int getScoresFromSnapshot(Snapshot snapshot) throws IOException {
-        return getProgressFromSnapshot(snapshot).getScores();
+        return getProgressFromSnapshot(snapshot).progress;
     }
 
     private static Progress getProgressFromSnapshot(@NonNull Snapshot snapshot) throws IOException {

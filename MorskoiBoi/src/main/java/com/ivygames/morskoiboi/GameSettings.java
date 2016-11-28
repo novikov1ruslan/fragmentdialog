@@ -209,7 +209,7 @@ public class GameSettings implements AchievementsSettings {
 
     @NonNull
     public Progress incrementProgress(int increment) {
-        int oldScores = getProgress().getScores();
+        int oldScores = getProgress().progress;
         Ln.d("incrementing progress (" + oldScores + ") by " + increment);
 
         int newScore = oldScores + increment;

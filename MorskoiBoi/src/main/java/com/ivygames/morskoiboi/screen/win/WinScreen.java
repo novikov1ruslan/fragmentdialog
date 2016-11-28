@@ -194,9 +194,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + mScores + "] for game: " + mGame + "; penalty=" + penalty);
         int progressIncrement = mScores - penalty;
         if (progressIncrement > 0) {
-            int oldScores = mSettings.getProgress().getScores();
+            int oldScores = mSettings.getProgress().progress;
             Progress newProgress = mSettings.incrementProgress(progressIncrement);
-            boolean newRankAchieved = AnalyticsUtils.trackPromotionEvent(oldScores, newProgress.getScores());
+            boolean newRankAchieved = AnalyticsUtils.trackPromotionEvent(oldScores, newProgress.progress);
             if (newRankAchieved) {
                 mSettings.newRankAchieved(true);
             }

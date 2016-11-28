@@ -16,7 +16,7 @@ public class ProgressUtils {
     public static JSONObject toJson(@NonNull Progress progress) {
         JSONObject json = new JSONObject();
         try {
-            json.put(RANK, progress.getScores());
+            json.put(RANK, progress.progress);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
