@@ -25,47 +25,36 @@ public class ProgressUtils {
     }
 
     @NonNull
-    public static Progress fromJson(@NonNull byte[] json) throws JSONException {
-        return fromJson(new JSONObject(new String(json)));
-    }
-
-    @NonNull
     public static Progress fromJson(@NonNull String json) throws JSONException {
         return fromJson(new JSONObject(json));
     }
 
     @NonNull
-    public static Progress fromJson(@NonNull JSONObject json) throws JSONException {
+    private static Progress fromJson(@NonNull JSONObject json) throws JSONException {
         return new Progress(json.getInt(RANK));
     }
 
     @NonNull
-    public static byte[] getBytes(@NonNull Progress progress) {
-        return toJson(progress).toString().getBytes();
-    }
-
-    public static Progress parseProgress(@NonNull byte[] loadedData) {
+    public static Progress parseProgress(@NonNull String json) {
         try {
-            return fromJson(loadedData);
+            return fromJson(json);
         } catch (JSONException je) {
             Ln.e(je);
-            String corruptedData = new String(loadedData);
-            ExceptionEvent.send("parsing_progress", "data=" + corruptedData);
+            ExceptionEvent.send("parsing_progress", "data=" + json);
 
             // hacky solution to fix these corruptions: [rank=1575175], Progress [mRank=54397]
-            if (corruptedData.length() > 3) {
+            if (json.length() > 3) {
                 try {
-                    int start = corruptedData.indexOf('=') + 1;
-                    int end = corruptedData.lastIndexOf(']');
-                    return new Progress(Integer.parseInt(corruptedData.substring(start, end)));
+                    int start = json.indexOf('=') + 1;
+                    int end = json.lastIndexOf(']');
+                    return new Progress(Integer.parseInt(json.substring(start, end)));
                 } catch (Exception e) {
                     Ln.w(e);
-                    ExceptionEvent.send("parsing_progress", "data=" + corruptedData, e);
+                    ExceptionEvent.send("parsing_progress", "data=" + json, e);
                 }
             }
 
             return new Progress(0);
         }
     }
-
 }

@@ -92,7 +92,7 @@ public class ProgressManager {
             if (localProgress.progress > cloudProgress.progress) {
                 AnalyticsEvent.send("save_game", "local_wins");
                 Ln.d("updating remote with: " + localProgress);
-                commitAndClose(snapshot, ProgressUtils.getBytes(localProgress));
+                commitAndClose(snapshot, getBytes(localProgress));
             } else if (cloudProgress.progress > localProgress.progress) {
                 AnalyticsEvent.send("save_game", "cloud_wins");
                 Ln.d("updating local with: " + cloudProgress);
@@ -128,7 +128,17 @@ public class ProgressManager {
             return new Progress(0);
         }
 
-        return ProgressUtils.parseProgress(data);
+        return parseProgress(data);
+    }
+
+    @NonNull
+    private static byte[] getBytes(@NonNull Progress progress) {
+        return ProgressUtils.toJson(progress).toString().getBytes();
+    }
+
+    @NonNull
+    private static Progress parseProgress(@NonNull byte[] loadedData) {
+        return ProgressUtils.parseProgress(new String(loadedData));
     }
 
     @Override
