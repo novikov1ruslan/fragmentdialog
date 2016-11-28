@@ -10,7 +10,7 @@ import com.ivygames.morskoiboi.model.ScoreStatistics;
 
 import java.util.Collection;
 
-public abstract class RulesUtils {
+public abstract class ScoresUtils {
 
     private static final int SURRENDER_PENALTY_PER_DECK = 100;
     private static final int MIN_SURRENDER_PENALTY = 1000;

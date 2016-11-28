@@ -69,7 +69,7 @@ public class GameplayScreen_SurrenderDialog extends GameplayScreen_ {
         clickOn(okButton());
         checkDoesNotExist(surrenderDialog());
         Collection<Ship> ships = new ArrayList<>(Arrays.asList(new Ship(1), new Ship(1)));
-//        verify(settings(), times(1)).setProgressPenalty(RulesUtils.calcSurrenderPenalty(ships, FLEET));
+//        verify(settings(), times(1)).setProgressPenalty(ScoresUtils.calcSurrenderPenalty(ships, FLEET));
         backToSelectGame();
     }
 

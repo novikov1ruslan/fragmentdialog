@@ -11,7 +11,7 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.config.RulesUtils;
+import com.ivygames.morskoiboi.config.ScoresUtils;
 import com.ivygames.morskoiboi.model.Game;
 import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.model.ScoreStatistics;
@@ -88,7 +88,7 @@ abstract class WinScreen_ extends OnlineScreen_ {
 
     protected void setScores(int scores) {
         setGameType(OnlineScreen_.Type.VS_ANDROID);
-        when(RulesUtils.calcTotalScores(any(Collection.class), any(Game.class), any(ScoreStatistics.class),
+        when(ScoresUtils.calcTotalScores(any(Collection.class), any(Game.class), any(ScoreStatistics.class),
                 anyBoolean(), any(ScoresCalculator.class))).thenReturn(scores);
     }
 
