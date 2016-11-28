@@ -234,7 +234,7 @@ public abstract class ScreenTest {
     }
 
     protected final void setProgress(int progress) {
-        when(settings().getProgress()).thenReturn(new Progress(progress));
+        when(settings().getProgress()).thenReturn(progress);
     }
 
     protected final String getString(int id, String text) {

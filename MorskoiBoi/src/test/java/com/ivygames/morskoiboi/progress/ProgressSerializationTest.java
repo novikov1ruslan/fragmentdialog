@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi.progress;
 
-import com.ivygames.morskoiboi.Progress;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -14,25 +12,23 @@ public class ProgressSerializationTest {
 
     @Test
     public void SuccessfulParsingToAndFromJson() throws Exception {
-        Progress progress1 = new Progress(1);
-        String json = ProgressSerialization.toJson(progress1);
-        Progress progress2 = ProgressSerialization.fromJson(json);
+        String json = ProgressSerialization.toJson(1);
 
-        assertThat(progress1.progress, is(progress2.progress));
+        assertThat(ProgressSerialization.fromJson(json), is(1));
     }
 
     @Test
     public void ParseInvalidProgress1() throws Exception {
-        Progress progress = ProgressSerialization.parseProgress("[rank=1575175]");
+        int progress = ProgressSerialization.parseProgress("[rank=1575175]");
 
-        assertThat(progress.progress, is(1575175));
+        assertThat(progress, is(1575175));
     }
 
     @Test
     public void ParseInvalidProgress2() throws Exception {
-        Progress progress = ProgressSerialization.parseProgress("Progress [mRank=54397]");
+        int progress = ProgressSerialization.parseProgress("Progress [mRank=54397]");
 
-        assertThat(progress.progress, is(54397));
+        assertThat(progress, is(54397));
     }
 
 }

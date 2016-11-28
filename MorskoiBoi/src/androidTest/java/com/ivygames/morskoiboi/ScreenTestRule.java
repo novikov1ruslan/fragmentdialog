@@ -26,8 +26,8 @@ public class ScreenTestRule extends ActivityTestRule<BattleshipActivity> {
         super.beforeActivityLaunched();
 
         settings = mock(GameSettings.class);
-        when(settings.getProgress()).thenReturn(new Progress(1));
-        when(settings.incrementProgress(anyInt())).thenReturn(new Progress(1));
+        when(settings.getProgress()).thenReturn(1);
+        when(settings.incrementProgress(anyInt())).thenReturn(1);
         Dependencies.inject(settings);
         apiClient = new ThrowingApiClient();
         apiClient.connect();

@@ -14,7 +14,6 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.Progress;
 
 import org.commons.logger.Ln;
 
@@ -86,14 +85,14 @@ public class ProgressManager {
         }
 
         private void processSuccessResult(@NonNull Snapshot snapshot) throws Exception {
-            Progress cloudProgress = getProgressFromSnapshot(snapshot);
-            Progress localProgress = mSettings.getProgress();
+            int cloudProgress = getProgressFromSnapshot(snapshot);
+            int localProgress = mSettings.getProgress();
             Ln.v("local =" + localProgress + ", cloud =" + cloudProgress);
-            if (localProgress.progress > cloudProgress.progress) {
+            if (localProgress > cloudProgress) {
                 AnalyticsEvent.send("save_game", "local_wins");
                 Ln.d("updating remote with: " + localProgress);
                 commitAndClose(snapshot, getBytes(localProgress));
-            } else if (cloudProgress.progress > localProgress.progress) {
+            } else if (cloudProgress > localProgress) {
                 AnalyticsEvent.send("save_game", "cloud_wins");
                 Ln.d("updating local with: " + cloudProgress);
                 mSettings.setProgress(cloudProgress);
@@ -119,25 +118,25 @@ public class ProgressManager {
     }
 
     private static int getScoresFromSnapshot(Snapshot snapshot) throws IOException {
-        return getProgressFromSnapshot(snapshot).progress;
+        return getProgressFromSnapshot(snapshot);
     }
 
-    private static Progress getProgressFromSnapshot(@NonNull Snapshot snapshot) throws IOException {
+    private static int getProgressFromSnapshot(@NonNull Snapshot snapshot) throws IOException {
         byte[] data = snapshot.getSnapshotContents().readFully();
         if (data == null || data.length == 0) {
-            return new Progress(0);
+            return 0;
         }
 
         return parseProgress(data);
     }
 
     @NonNull
-    private static byte[] getBytes(@NonNull Progress progress) {
+    private static byte[] getBytes(@NonNull int progress) {
         return ProgressSerialization.toJson(progress).getBytes();
     }
 
     @NonNull
-    private static Progress parseProgress(@NonNull byte[] loadedData) {
+    private static int parseProgress(@NonNull byte[] loadedData) {
         return ProgressSerialization.parseProgress(new String(loadedData));
     }
 

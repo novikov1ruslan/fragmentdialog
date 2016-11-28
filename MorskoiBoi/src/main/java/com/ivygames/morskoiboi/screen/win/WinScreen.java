@@ -20,15 +20,14 @@ import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.config.ScoresUtils;
-import com.ivygames.morskoiboi.Game;
-import com.ivygames.morskoiboi.Progress;
-import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -194,9 +193,9 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         Ln.d("updating player's progress [" + mScores + "] for game: " + mGame + "; penalty=" + penalty);
         int progressIncrement = mScores - penalty;
         if (progressIncrement > 0) {
-            int oldScores = mSettings.getProgress().progress;
-            Progress newProgress = mSettings.incrementProgress(progressIncrement);
-            boolean newRankAchieved = AnalyticsUtils.trackPromotionEvent(oldScores, newProgress.progress);
+            int oldScores = mSettings.getProgress();
+            int newProgress = mSettings.incrementProgress(progressIncrement);
+            boolean newRankAchieved = AnalyticsUtils.trackPromotionEvent(oldScores, newProgress);
             if (newRankAchieved) {
                 mSettings.newRankAchieved(true);
             }

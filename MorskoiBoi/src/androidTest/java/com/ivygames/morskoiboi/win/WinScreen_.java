@@ -6,15 +6,14 @@ import android.view.View;
 
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rules;
+import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.config.ScoresUtils;
-import com.ivygames.morskoiboi.Game;
-import com.ivygames.morskoiboi.Progress;
-import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
@@ -54,7 +53,7 @@ abstract class WinScreen_ extends OnlineScreen_ {
         Dependencies.inject(progressManager);
         statistics = mock(ScoreStatistics.class);
 
-        when(settings().incrementProgress(anyInt())).thenReturn(new Progress(0));
+        when(settings().incrementProgress(anyInt())).thenReturn(0);
         Dependencies.inject(rules);
     }
 

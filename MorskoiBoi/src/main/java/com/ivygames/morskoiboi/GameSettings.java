@@ -154,16 +154,15 @@ public class GameSettings implements AchievementsSettings {
         mEditor.putString(PLAYER_NAME, name);
     }
 
-    public void setProgress(Progress progress) {
+    public void setProgress(int progress) {
         mEditor.putString(PROGRESS, ProgressSerialization.toJson(progress));
     }
 
-    @NonNull
-    public Progress getProgress() {
+    public int getProgress() {
         String json = mPreferences.getString(PROGRESS, "");
-        Progress progress;
+        int progress;
         if (TextUtils.isEmpty(json)) {
-            progress = new Progress(0);
+            progress = 0;
         } else {
             try {
                 progress = ProgressSerialization.fromJson(json);
@@ -207,16 +206,14 @@ public class GameSettings implements AchievementsSettings {
         return mPreferences.getBoolean(NEW_RANK_ACHIEVED, false);
     }
 
-    @NonNull
-    public Progress incrementProgress(int increment) {
-        int oldScores = getProgress().progress;
+    public int incrementProgress(int increment) {
+        int oldScores = getProgress();
         Ln.d("incrementing progress (" + oldScores + ") by " + increment);
 
         int newScore = oldScores + increment;
-        Progress newProgress = new Progress(newScore);
-        setProgress(newProgress);
+        setProgress(newScore);
 
-        return newProgress;
+        return newScore;
     }
 
     @Override

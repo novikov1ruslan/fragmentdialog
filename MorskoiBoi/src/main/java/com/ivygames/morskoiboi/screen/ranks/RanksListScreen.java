@@ -10,7 +10,6 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 
@@ -28,8 +27,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
 
     private static void debug_setProgress(int progress, GameSettings settings) {
         Ln.i("setting debug progress to: " + progress);
-        Progress newProgress = new Progress(progress);
-        settings.setProgress(newProgress);
+        settings.setProgress(progress);
         Dependencies.getProgressManager().synchronize();
     }
 
@@ -37,7 +35,7 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (RanksLayout) inflate(R.layout.ranks_list, container);
-        mLayout.setTotalScore(mSettings.getProgress().progress);
+        mLayout.setTotalScore(mSettings.getProgress());
 
         mLayout.debug_setDebugListener(new RanksLayout.DebugListener() {
             @Override
