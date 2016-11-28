@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.battleship.ChatMessage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.screen;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.Game;
 
 public class EndGameCommand implements Runnable {
     @NonNull

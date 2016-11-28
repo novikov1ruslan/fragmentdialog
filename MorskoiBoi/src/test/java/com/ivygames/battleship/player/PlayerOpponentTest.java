@@ -16,7 +16,7 @@ import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.PlayerCallback;
 import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.battleship.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
 import com.ivygames.morskoiboi.russian.RussianRules;
 

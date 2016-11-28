@@ -14,7 +14,7 @@ import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.Progress;
 
 import org.commons.logger.Ln;
 

@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.ai;
 
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.Game;
 
 import org.commons.logger.Ln;
 

@@ -11,7 +11,6 @@ import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.idlingresources.TaskResource;
 import com.ivygames.morskoiboi.matchers.DrawableMatcher;
-import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.bluetooth.BluetoothLayout;
 import com.ivygames.morskoiboi.screen.devicelist.DeviceListLayout;

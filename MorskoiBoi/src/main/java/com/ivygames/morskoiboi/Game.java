@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.morskoiboi;
 
 import com.ivygames.common.Finishable;
 

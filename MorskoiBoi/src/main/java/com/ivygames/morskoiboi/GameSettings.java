@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.achievements.AchievementsSettings;
 import com.ivygames.common.backup.BackupSharedPreferences;
-import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.progress.ProgressUtils;
 
 import org.commons.logger.Ln;

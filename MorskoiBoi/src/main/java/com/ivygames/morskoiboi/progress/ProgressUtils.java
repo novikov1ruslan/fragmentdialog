@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.progress;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.analytics.ExceptionEvent;
-import com.ivygames.morskoiboi.model.Progress;
+import com.ivygames.morskoiboi.Progress;
 
 import org.commons.logger.Ln;
 import org.json.JSONException;

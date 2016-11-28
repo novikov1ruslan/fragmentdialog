@@ -1,6 +1,6 @@
 package com.ivygames.morskoiboi.player;
 
-import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.battleship.ChatMessage;
 
 public interface ChatListener {
     void showChatCrouton(ChatMessage message);

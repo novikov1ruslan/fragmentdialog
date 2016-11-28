@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.rt;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.multiplayer.MultiplayerRoom;
-import com.ivygames.morskoiboi.model.Game;
+import com.ivygames.morskoiboi.Game;
 
 import org.commons.logger.Ln;
 

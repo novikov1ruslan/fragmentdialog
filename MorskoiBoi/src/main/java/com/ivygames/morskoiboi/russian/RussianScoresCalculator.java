@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.ScoresCalculator;
-import com.ivygames.morskoiboi.model.ScoreStatistics;
+import com.ivygames.morskoiboi.ScoreStatistics;
 
 import org.commons.logger.Ln;
 

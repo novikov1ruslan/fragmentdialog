@@ -5,7 +5,6 @@ import android.support.test.rule.ActivityTestRule;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.model.Progress;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import static org.mockito.Matchers.anyInt;

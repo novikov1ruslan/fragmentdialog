@@ -1,12 +1,12 @@
-package com.ivygames.morskoiboi.model;
+package com.ivygames.morskoiboi;
 
 public class Progress {
+
+    public final int progress;
 
     public Progress(int progress) {
         this.progress = progress;
     }
-
-    public final int progress;
 
     // TODO: remove
     public int getScores() {

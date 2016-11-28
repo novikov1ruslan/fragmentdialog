@@ -1,7 +1,5 @@
 package com.ivygames.morskoiboi;
 
-import com.ivygames.morskoiboi.model.Game;
-
 public class TestableGame extends Game {
 
     private final Game mGame;

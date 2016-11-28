@@ -14,7 +14,7 @@ import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
-import com.ivygames.morskoiboi.model.ChatMessage;
+import com.ivygames.battleship.ChatMessage;
 import com.ivygames.morskoiboi.player.ChatListener;
 
 import org.commons.logger.Ln;
