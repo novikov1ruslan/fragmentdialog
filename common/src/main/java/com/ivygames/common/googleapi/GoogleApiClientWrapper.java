@@ -28,7 +28,6 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.common.BuildConfig;
 import com.ivygames.common.DebugUtils;
@@ -83,7 +82,6 @@ public class GoogleApiClientWrapper implements ApiClient {
             }
         }, new OnConnectionFailedListenerImpl());
         builder.addApi(Games.API).addScope(Games.SCOPE_GAMES);
-        builder.addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN);
         builder.addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER);
 
         mGoogleApiClient = builder.build();
