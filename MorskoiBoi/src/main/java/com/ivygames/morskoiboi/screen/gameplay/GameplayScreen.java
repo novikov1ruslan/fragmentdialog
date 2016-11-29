@@ -78,7 +78,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private static final int ALARM_TIME_SECONDS = 10;
 
-
     @NonNull
     private final Handler mUiThreadHandler = new Handler(Looper.getMainLooper());
     @NonNull
@@ -109,7 +108,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     private final ChatAdapter mChatAdapter;
     @NonNull
-    private final GameplaySoundManager mGameplaySounds;
+    private final GameplaySounds mGameplaySounds;
     @NonNull
     private final Session mSession;
     @NonNull
@@ -131,7 +130,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mTimerController = timerController;
 
         Dependencies.getAdProvider().needToShowAfterPlayAd();
-        mGameplaySounds = new GameplayScreenSounds((AudioManager) parent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
+        mGameplaySounds = new GameplaySoundsWrapper((AudioManager) parent.getSystemService(Context.AUDIO_SERVICE), this, mSettings);
         mGameplaySounds.prepareSoundPool(parent.getAssets());
         mPlayer = session.player;
         mEnemy = session.opponent;
@@ -359,9 +358,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         private final Opponent mEnemy;
         private boolean debug_aiming_started;
         @NonNull
-        private final GameplaySoundManager mGameplaySounds;
+        private final GameplaySounds mGameplaySounds;
 
-        BoardShotListener(@NonNull Opponent opponent, @NonNull GameplaySoundManager gameplaySounds) {
+        BoardShotListener(@NonNull Opponent opponent, @NonNull GameplaySounds gameplaySounds) {
             mEnemy = opponent;
             mGameplaySounds = gameplaySounds;
         }

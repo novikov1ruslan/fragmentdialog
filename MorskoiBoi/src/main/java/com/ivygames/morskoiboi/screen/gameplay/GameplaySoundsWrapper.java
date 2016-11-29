@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 
-public class GameplayScreenSounds extends GameplaySoundManager {
+class GameplaySoundsWrapper extends GameplaySounds {
 
     @NonNull
     private final BattleshipScreen mScreen;
@@ -14,8 +14,10 @@ public class GameplayScreenSounds extends GameplaySoundManager {
     @NonNull
     private final GameSettings mSettings;
 
-    public GameplayScreenSounds(@NonNull AudioManager audioManager, @NonNull BattleshipScreen screen, @NonNull GameSettings settings) {
-        super(audioManager);
+    GameplaySoundsWrapper(@NonNull AudioManager am,
+                          @NonNull BattleshipScreen screen,
+                          @NonNull GameSettings settings) {
+        super(am);
         mScreen = screen;
         mSettings = settings;
     }

@@ -10,7 +10,7 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 import java.util.Random;
 
-public class GameplaySoundManager {
+class GameplaySounds {
 
     private static final int HIT_SOUNDS_COUNT = 2;
     private static final int KILL_SOUNDS_COUNT = 2;
@@ -37,7 +37,7 @@ public class GameplaySoundManager {
     @NonNull
     private final AudioManager mAudioManager;
 
-    public GameplaySoundManager(@NonNull AudioManager audioManager) {
+    GameplaySounds(@NonNull AudioManager audioManager) {
         mAudioManager = audioManager;
         int soundsCount = HIT_SOUNDS_COUNT + KILL_SOUNDS_COUNT + SPLASH_SOUNDS_COUNT;
         mSoundPool = new SoundPool(soundsCount, AudioManager.STREAM_MUSIC, 0);
@@ -47,8 +47,7 @@ public class GameplaySoundManager {
         mSplashSounds = new int[SPLASH_SOUNDS_COUNT];
     }
 
-    public void prepareSoundPool(AssetManager assets) {
-
+    void prepareSoundPool(AssetManager assets) {
         try {
             mHitSounds[0] = mSoundPool.load(assets.openFd("hit1.ogg"), 1);
             mHitSounds[1] = mSoundPool.load(assets.openFd("hit2.ogg"), 1);
@@ -74,7 +73,7 @@ public class GameplaySoundManager {
 //        mSoundPool.autoResume();
 //    }
 
-    public void stopPlaying() {
+    void stopPlaying() {
         mSoundPool.stop(mAlarmStream);
         mSoundPool.stop(mKantropStream);
 
@@ -102,7 +101,7 @@ public class GameplaySoundManager {
         mKantropStream = play(mKantropSound, volume, -1, 1f);
     }
 
-    public void stopKantropSound() {
+    void stopKantropSound() {
         mSoundPool.stop(mKantropStream);
     }
 
@@ -121,7 +120,7 @@ public class GameplaySoundManager {
         mKillStream = play(mKillSounds[random(KILL_SOUNDS_COUNT)], volume, 0, 1f);
     }
 
-    public boolean isAlarmPlaying() {
+    boolean isAlarmPlaying() {
         return mAlarmStream != 0;
     }
 
@@ -130,7 +129,7 @@ public class GameplaySoundManager {
         mAlarmStream = play(mAlarmSound, volume, 0, 1f);
     }
 
-    public void stopAlarmSound() {
+    void stopAlarmSound() {
         mSoundPool.stop(mAlarmStream);
         mAlarmStream = 0;
     }
