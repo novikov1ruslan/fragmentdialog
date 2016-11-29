@@ -13,7 +13,6 @@ public class BoardTestUtils {
         return similar(board1.mCells, board2.mCells) && similarLocatedShips(board1.getLocatedShips(), board2.getLocatedShips());
     }
 
-    // TODO: remove when cell becomes immutable
     private static boolean similar(Cell[][] cells1, Cell[][] cells2) {
         if (cells1.length != cells2.length) {
             return false;
