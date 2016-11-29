@@ -96,7 +96,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     private void placeShips() {
         Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());
         OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
-        Collection<Ship> ships = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
+        Collection<Ship> ships = ShipUtils.createNewShips(mRules.getAllShipsSizes(), orientationBuilder);
         Board board = new Board();
         placement.populateBoardWithShips(board, ships);
         setBoard(board);

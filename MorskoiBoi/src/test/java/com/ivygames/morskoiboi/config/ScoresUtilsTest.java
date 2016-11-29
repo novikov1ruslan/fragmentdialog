@@ -60,7 +60,7 @@ public class ScoresUtilsTest {
     public void max_scores_for_android_game_is_31250() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(ScoresUtils.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame,
+        assertThat(ScoresUtils.calcTotalScores(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), mAndroidGame,
                 statistics, false, scoresCalculator), is(31250));
     }
 
@@ -68,7 +68,7 @@ public class ScoresUtilsTest {
     public void max_scores_for_surrendered_game_is_5000() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(ScoresUtils.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame,
+        assertThat(ScoresUtils.calcTotalScores(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), mAndroidGame,
                 statistics, true, scoresCalculator), is(5000));
     }
 
@@ -98,7 +98,7 @@ public class ScoresUtilsTest {
         ScoreStatistics statistics = mockPerfectGame();
 
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(ScoresUtils.calcTotalScores(ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder), mAndroidGame, statistics,
+        assertThat(ScoresUtils.calcTotalScores(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), mAndroidGame, statistics,
                 false, scoresCalculator), is(31250));
     }
 
@@ -154,7 +154,7 @@ public class ScoresUtilsTest {
 
     @Test
     public void SurrenderPenaltyForTheFullFleet_1000() {
-        Collection<Ship> fullFleet = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+        Collection<Ship> fullFleet = ShipUtils.createNewShips(allShipsSizes, orientationBuilder);
         assertThat(ScoresUtils.calcSurrenderPenalty(allShipsSizes, fullFleet), is(1000));
     }
 

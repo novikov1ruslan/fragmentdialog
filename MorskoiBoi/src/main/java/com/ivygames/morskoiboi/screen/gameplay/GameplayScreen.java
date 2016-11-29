@@ -589,7 +589,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     private Collection<Ship> getWorkingEnemyShips() {
         Collection<Ship> killedShips = mEnemyPublicBoard.getShips();
         OrientationBuilder orientationBuilder = new OrientationBuilder(new Random());
-        Collection<Ship> fleet = ShipUtils.generateFullFleet(mRules.getAllShipsSizes(), orientationBuilder);
+        Collection<Ship> fleet = ShipUtils.createNewShips(mRules.getAllShipsSizes(), orientationBuilder);
         for (Ship ship : killedShips) {
             GameplayUtils.removeShipFromFleet(fleet, ship);
         }

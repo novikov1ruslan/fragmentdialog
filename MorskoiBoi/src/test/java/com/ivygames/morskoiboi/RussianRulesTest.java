@@ -40,10 +40,10 @@ public class RussianRulesTest {
     }
 
     @Test
-    public void board_is_set_when_it_has_full_russian_fleet_and_no_conflicting_cells() {
+    public void BoardIsSetWhenItHasFullFleet_AndNoConflictingCells() {
         Board board = new Board();
 
-        placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
+        placement.populateBoardWithShips(board, ShipUtils.createNewShips(allShipsSizes, orientationBuilder));
 
         assertThat(BoardUtils.isBoardSet(board, mRules), is(true));
     }
@@ -56,7 +56,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_not_set_when_it_has_less_than_full_russian_fleet() {
         Board board = new Board();
-        Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+        Collection<Ship> ships = ShipUtils.createNewShips(allShipsSizes, orientationBuilder);
         ships.remove(ships.iterator().next());
         placement.populateBoardWithShips(board, ships);
 
@@ -66,7 +66,7 @@ public class RussianRulesTest {
     @Test
     public void board_is_not_set_when_it_has_conflicting_cells_when_all_the_fleet_is_on_a_board() {
         Board board = new Board();
-        Collection<Ship> ships = ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder);
+        Collection<Ship> ships = ShipUtils.createNewShips(allShipsSizes, orientationBuilder);
         for (Ship ship : ships) {
             board.addShip(new LocatedShip(ship, 0, 0));
         }

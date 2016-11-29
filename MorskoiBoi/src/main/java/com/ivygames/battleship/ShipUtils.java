@@ -54,15 +54,14 @@ public class ShipUtils {
             }
         };
 
-        return generateFullFleet(allShipsSizes, orientationBuilder);
+        return createNewShips(allShipsSizes, orientationBuilder);
     }
 
     @NonNull
-    public static Collection<Ship> generateFullFleet(@NonNull int[] allShipsSizes,
-                                                     @NonNull OrientationBuilder orientationBuilder) {
-        List<Ship> fleet = new ArrayList<>();
-        for (int length : allShipsSizes) {
-            fleet.add(new Ship(length, orientationBuilder.nextOrientation()));
+    public static Collection<Ship> createNewShips(@NonNull int[] shipsSizes, @NonNull OrientationBuilder orientation) {
+        Collection<Ship> fleet = new ArrayList<>();
+        for (int length : shipsSizes) {
+            fleet.add(new Ship(length, orientation.nextOrientation()));
         }
 
         return fleet;

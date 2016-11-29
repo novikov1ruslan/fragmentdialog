@@ -2,18 +2,18 @@ package com.ivygames.morskoiboi;
 
 import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.board.BoardTestUtils;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
@@ -25,7 +25,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class PlacementTest {
 
     private Placement mPlacement;
-    private int mNumberOfDistinctShips;
     private Rules rules = new RussianRules();
     private Board mBoard = new Board();
 
@@ -44,15 +43,14 @@ public class PlacementTest {
     }
 
     @Test
-    public void after_generating_full_board_it_has_russian_fleet() {
-        Board board = new Board();
-        // TODO: this test tests populateBoardWithShips actually and not generation
-        Collection<Ship> ships = ShipUtils.generateFullFleet(rules.getAllShipsSizes(),
+    public void AfterPopulatingBoardWithShips__AllShipsAreOnBoard() {
+        Collection<Ship> ships = ShipUtils.createNewShips(new int[]{1, 2, 3, 4, 5},
                 new OrientationBuilder(mRandom));
 
+        Board board = new Board();
         mPlacement.populateBoardWithShips(board, ships);
 
-        assertAllTheShipsAreRussianFleet(new ArrayList<>(board.getShips()));
+        BoardTestUtils.similarShips(board.getShips(), ships);
     }
 
     @Test
@@ -155,38 +153,6 @@ public class PlacementTest {
 
     private void putShipAt(Ship ship, int x, int y) {
         mBoard.addShip(new LocatedShip(ship, x, y));
-    }
-
-    private void assertAllTheShipsAreRussianFleet(Collection<Ship> distinct) {
-        mNumberOfDistinctShips = distinct.size();
-        assertThat(mNumberOfDistinctShips, is(10));
-
-        assertThereIsNewDistinctShip(distinct, 4);
-        assertThereIsNewDistinctShip(distinct, 3);
-        assertThereIsNewDistinctShip(distinct, 3);
-        assertThereIsNewDistinctShip(distinct, 2);
-        assertThereIsNewDistinctShip(distinct, 2);
-        assertThereIsNewDistinctShip(distinct, 2);
-        assertThereIsNewDistinctShip(distinct, 1);
-        assertThereIsNewDistinctShip(distinct, 1);
-        assertThereIsNewDistinctShip(distinct, 1);
-        assertThereIsNewDistinctShip(distinct, 1);
-    }
-
-    private void assertThereIsNewDistinctShip(Collection<Ship> distinct, int shipSize) {
-        assertThat(removeShipFromSet(distinct, shipSize), is(true));
-        mNumberOfDistinctShips--;
-        assertThat(distinct.size(), is(mNumberOfDistinctShips));
-    }
-
-    private boolean removeShipFromSet(Collection<Ship> distinct, int size) {
-        for (Ship ship : distinct) {
-            if (ship.size == size) {
-                distinct.remove(ship);
-                return true;
-            }
-        }
-        return false;
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class BoardTestUtils {
     public static boolean similar(Board board1, Board board2) {
-        return similar(board1.mCells, board2.mCells) && similar(board1.getLocatedShips(), board2.getLocatedShips());
+        return similar(board1.mCells, board2.mCells) && similarLocatedShips(board1.getLocatedShips(), board2.getLocatedShips());
     }
 
     // TODO: remove when cell becomes immutable
@@ -33,7 +33,7 @@ public class BoardTestUtils {
         return true;
     }
 
-    private static boolean similar(@NonNull Collection<LocatedShip> ships1, @NonNull Collection<LocatedShip> ships2) {
+    public static boolean similarLocatedShips(@NonNull Collection<LocatedShip> ships1, @NonNull Collection<LocatedShip> ships2) {
         if (ships1.size() != ships2.size()) {
             return false;
         }
@@ -41,6 +41,21 @@ public class BoardTestUtils {
         Iterator<LocatedShip> iterator = ships2.iterator();
         for (LocatedShip locatedShip : ships1) {
             if (!similar(locatedShip, iterator.next())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean similarShips(@NonNull Collection<Ship> ships1, @NonNull Collection<Ship> ships2) {
+        if (ships1.size() != ships2.size()) {
+            return false;
+        }
+
+        Iterator<Ship> iterator = ships2.iterator();
+        for (Ship ship : ships1) {
+            if (!similar(ship, iterator.next())) {
                 return false;
             }
         }
