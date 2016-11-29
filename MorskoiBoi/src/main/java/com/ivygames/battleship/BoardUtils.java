@@ -18,11 +18,6 @@ import java.util.List;
 public class BoardUtils {
 
     @NonNull
-    public static List<Vector> getNeighboringCoordinates(int x, int y) {
-        return getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
-    }
-
-    @NonNull
     public static List<Vector> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
         List<Vector> coordinates = new ArrayList<>();
 
@@ -211,5 +206,10 @@ public class BoardUtils {
         }
 
         return true;
+    }
+
+    @NonNull
+    private static List<Vector> getNeighboringCoordinates(int x, int y) {
+        return getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 }
