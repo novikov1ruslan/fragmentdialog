@@ -37,8 +37,8 @@ class BidAiPlayerFactory implements AiPlayerFactory {
         private final List<Vector> mShots = new ArrayList<>();
 
         public MyBot(Rules rules) {
-            mShots.addAll(Utils.getShots(rules, mRandom));
-            mShots.addAll(Utils.getShots(rules, mRandom));
+            mShots.addAll(ScenarioTestUtils.getShots(rules, mRandom));
+            mShots.addAll(ScenarioTestUtils.getShots(rules, mRandom));
         }
 
         @NonNull

@@ -33,7 +33,7 @@ public class Placement {
         }
     }
 
-    public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
+    boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
         List<Vector> freeCells = BoardUtils.getCoordinatesFreeFromShips(board, mAllowAdjacentShips);
 
         while (!freeCells.isEmpty()) {

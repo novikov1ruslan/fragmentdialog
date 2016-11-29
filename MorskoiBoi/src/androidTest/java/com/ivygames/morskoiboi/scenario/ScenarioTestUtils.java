@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class Utils {
+class ScenarioTestUtils {
     static List<Vector> getShots(@NonNull Rules rules, @NonNull Random random) {
         Board board = new Board();
         Collection<Ship> ships = ShipUtils.generateFullFleet(rules.getAllShipsSizes(), new OrientationBuilder(random));

@@ -20,7 +20,7 @@ class Shooter {
 
     Shooter(Rules rules, Random random, View view, int padding) {
         mPadding = padding;
-        mShots = Utils.getShots(rules, random);
+        mShots = ScenarioTestUtils.getShots(rules, random);
         mView = view;
     }
 
