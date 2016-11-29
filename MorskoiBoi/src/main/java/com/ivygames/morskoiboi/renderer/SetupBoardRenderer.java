@@ -46,10 +46,10 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         mResources = res;
 
         mProcessor = processor;
-        mConflictCellPaint = PaintFactory.newFillPaint(res, R.color.conflict_cell);
-        mShipBorderPaint = PaintFactory.newStrokePaint(res, R.color.line, R.dimen.ship_border);
-        mDockedShipPaint = PaintFactory.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
-        mLinePaint = PaintFactory.newStrokePaint(res, R.color.line);
+        mConflictCellPaint = PaintFactory.newFillPaint(res.getColor(R.color.conflict_cell));
+        mShipBorderPaint = PaintFactory.newStrokePaint(res.getColor(R.color.line), res.getDimension(R.dimen.ship_border));
+        mDockedShipPaint = PaintFactory.newStrokePaint(res.getColor(R.color.ship_border), res.getDimension(R.dimen.ship_border));
+        mLinePaint = PaintFactory.newStrokePaint(res.getColor(R.color.line));
         mRotationMatrix.postRotate(90);
     }
 

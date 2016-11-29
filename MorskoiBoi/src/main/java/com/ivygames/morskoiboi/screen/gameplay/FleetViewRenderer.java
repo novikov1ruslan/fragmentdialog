@@ -49,7 +49,7 @@ class FleetViewRenderer {
     private Rect mGunboatBounds = new Rect();
 
     public FleetViewRenderer(@NonNull Resources resources) {
-        mLinePaint = PaintFactory.newStrokePaint(resources, R.color.line);
+        mLinePaint = PaintFactory.newStrokePaint(resources.getColor(R.color.line));
         float textSize = resources.getDimension(R.dimen.status_text_size);
         mTextPaint.setTextSize(textSize);
         mTextPaint.setTypeface(Typeface.DEFAULT_BOLD);

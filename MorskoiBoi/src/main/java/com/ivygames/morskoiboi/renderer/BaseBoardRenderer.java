@@ -41,30 +41,30 @@ public class BaseBoardRenderer {
     private final BaseGeometryProcessor mProcessor;
 
     public BaseBoardRenderer(@NonNull Resources res, @NonNull BaseGeometryProcessor processor) {
-        mLinePaint = PaintFactory.newStrokePaint(res, R.color.line);
+        mLinePaint = PaintFactory.newStrokePaint(res.getColor(R.color.line));
 
-        mHitOuterPaint = PaintFactory.newStrokePaint(res, R.color.hit);
+        mHitOuterPaint = PaintFactory.newStrokePaint(res.getColor(R.color.hit));
         mHitOuterPaint.setAntiAlias(true);
-        mHitInnerPaint = PaintFactory.newFillPaint(res, R.color.hit);
+        mHitInnerPaint = PaintFactory.newFillPaint(res.getColor(R.color.hit));
         mHitInnerPaint.setAntiAlias(true);
-        mHitBgPaint = PaintFactory.newFillPaint(res, R.color.hit_background);
+        mHitBgPaint = PaintFactory.newFillPaint(res.getColor(R.color.hit_background));
 
-        mMissOuterPaint = PaintFactory.newStrokePaint(res, R.color.miss);
+        mMissOuterPaint = PaintFactory.newStrokePaint(res.getColor(R.color.miss));
         mMissOuterPaint.setAntiAlias(true);
         mMissOuterPaint.setAlpha(63);
-        mMissInnerPaint = PaintFactory.newFillPaint(res, R.color.miss);
+        mMissInnerPaint = PaintFactory.newFillPaint(res.getColor(R.color.miss));
         mMissInnerPaint.setAntiAlias(true);
         mMissInnerPaint.setAlpha(80);
-        mMissBgPaint = PaintFactory.newFillPaint(res, R.color.miss_background);
+        mMissBgPaint = PaintFactory.newFillPaint(res.getColor(R.color.miss_background));
         mMissBgPaint.setAlpha(80);
 
-        mShipPaint = PaintFactory.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
-        mTurnBorderPaint = PaintFactory.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
-        mAimingPaint = PaintFactory.newFillPaint(res, R.color.aim);
+        mShipPaint = PaintFactory.newStrokePaint(res.getColor(R.color.ship_border), res.getDimension(R.dimen.ship_border));
+        mTurnBorderPaint = PaintFactory.newStrokePaint(res.getColor(R.color.turn_highliter), res.getDimension(R.dimen.turn_border));
+        mAimingPaint = PaintFactory.newFillPaint(res.getColor(R.color.aim));
 
-        mBorderPaint = PaintFactory.newStrokePaint(res, R.color.line, R.dimen.board_border);
+        mBorderPaint = PaintFactory.newStrokePaint(res.getColor(R.color.line), res.getDimension(R.dimen.board_border));
 
-        mAimingLockedPaint = PaintFactory.newFillPaint(res, R.color.aim_locked);
+        mAimingLockedPaint = PaintFactory.newFillPaint(res.getColor(R.color.aim_locked));
 
         mProcessor = processor;
     }
