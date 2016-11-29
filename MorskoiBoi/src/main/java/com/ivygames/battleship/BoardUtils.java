@@ -11,47 +11,18 @@ import com.ivygames.battleship.ship.Ship;
 
 import org.commons.logger.Ln;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class BoardUtils {
 
     @NonNull
-    public static List<Vector> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
-        List<Vector> coordinates = new ArrayList<>();
-
-        int x = locatedShip.coordinate.x;
-        int y = locatedShip.coordinate.y;
-        Ship ship = locatedShip.ship;
-        boolean horizontal = ship.isHorizontal();
-
-        for (int i = -1; i <= ship.size; i++) {
-            for (int j = -1; j < 2; j++) {
-                int cellX = x + (horizontal ? i : j);
-                int cellY = y + (horizontal ? j : i);
-                if (contains(cellX, cellY)) {
-                    Vector v = Vector.get(cellX, cellY);
-                    boolean inShip = ShipUtils.isInShip(v, locatedShip);
-                    if (inShip && !type.isNeighboring()) {
-                        coordinates.add(v);
-                    } else if (!inShip && type.isNeighboring()) {
-                        coordinates.add(v);
-                    }
-                }
-            }
-        }
-
-        return coordinates;
-    }
-
-    @NonNull
     public static List<Vector> getCoordinatesFreeFromShips(@NonNull Board board, boolean allowAdjacentShips) {
         List<Vector> coordinates = Vector.getAllCoordinates();
         for (LocatedShip locatedShip : board.getLocatedShips()) {
-            coordinates.removeAll(getCoordinates(locatedShip, CoordinateType.IN_SHIP));
+            coordinates.removeAll(ShipUtils.getCoordinates(locatedShip, CoordinateType.IN_SHIP));
             if (!allowAdjacentShips) {
-                coordinates.removeAll(getCoordinates(locatedShip, CoordinateType.NEAR_SHIP));
+                coordinates.removeAll(ShipUtils.getCoordinates(locatedShip, CoordinateType.NEAR_SHIP));
             }
         }
         return coordinates;
@@ -210,6 +181,6 @@ public class BoardUtils {
 
     @NonNull
     private static List<Vector> getNeighboringCoordinates(int x, int y) {
-        return getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
+        return ShipUtils.getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 }

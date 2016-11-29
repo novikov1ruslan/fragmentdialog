@@ -78,4 +78,31 @@ public class ShipUtils {
         return true;
     }
 
+    @NonNull
+    public static List<Vector> getCoordinates(@NonNull LocatedShip locatedShip, @NonNull CoordinateType type) {
+        List<Vector> coordinates = new ArrayList<>();
+
+        int x = locatedShip.coordinate.x;
+        int y = locatedShip.coordinate.y;
+        Ship ship = locatedShip.ship;
+        boolean horizontal = ship.isHorizontal();
+
+        for (int i = -1; i <= ship.size; i++) {
+            for (int j = -1; j < 2; j++) {
+                int cellX = x + (horizontal ? i : j);
+                int cellY = y + (horizontal ? j : i);
+                if (BoardUtils.contains(cellX, cellY)) {
+                    Vector v = Vector.get(cellX, cellY);
+                    boolean inShip = isInShip(v, locatedShip);
+                    if (inShip && !type.isNeighboring()) {
+                        coordinates.add(v);
+                    } else if (!inShip && type.isNeighboring()) {
+                        coordinates.add(v);
+                    }
+                }
+            }
+        }
+
+        return coordinates;
+    }
 }

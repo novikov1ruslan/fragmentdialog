@@ -26,19 +26,17 @@ import static org.mockito.Mockito.when;
 public class RussianRulesTest {
 
     private final RussianRules mRules = new RussianRules();
-    private Placement placement;
+    private final int[] allShipsSizes = mRules.getAllShipsSizes();
+    private final int mNumberOfShips = mRules.getAllShipsSizes().length;
 
-    private int[] allShipsSizes;
     private OrientationBuilder orientationBuilder;
-    private int mNumberOfShips;
+    private Placement placement;
 
     @Before
     public void setUp() {
         Random random = mock(Random.class);
         orientationBuilder = new OrientationBuilder(random);
-        allShipsSizes = mRules.getAllShipsSizes();
         placement = new Placement(random, mRules.allowAdjacentShips());
-        mNumberOfShips = mRules.getAllShipsSizes().length;
     }
 
     @Test
