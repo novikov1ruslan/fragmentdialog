@@ -11,6 +11,7 @@ import com.ivygames.morskoiboi.R;
 
 import org.commons.logger.Ln;
 
+// fragment should be public
 public class WaitFragment extends Fragment {
 
     @Override

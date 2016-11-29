@@ -20,7 +20,6 @@ import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.renderer.SetupBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.SetupBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;
-import com.ivygames.morskoiboi.screen.view.TouchState;
 
 import org.commons.logger.Ln;
 

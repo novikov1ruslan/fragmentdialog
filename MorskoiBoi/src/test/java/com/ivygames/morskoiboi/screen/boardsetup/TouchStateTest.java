@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;

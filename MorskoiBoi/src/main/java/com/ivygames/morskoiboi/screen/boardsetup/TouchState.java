@@ -1,11 +1,11 @@
-package com.ivygames.morskoiboi.screen.view;
+package com.ivygames.morskoiboi.screen.boardsetup;
 
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import org.commons.logger.Ln;
 
-public class TouchState {
+class TouchState {
 
     private static final int START_DRAGGING = 1;
     private static final int STOP_DRAGGING = 0;
@@ -15,7 +15,7 @@ public class TouchState {
     private int mTouchAction = MotionEvent.ACTION_UP;
     private int mDragStatus;
 
-    public void setEvent(@NonNull MotionEvent event) {
+    void setEvent(@NonNull MotionEvent event) {
         mTouchX = (int) event.getX();
         mTouchY = (int) event.getY();
         mTouchAction = event.getAction();
@@ -28,19 +28,19 @@ public class TouchState {
         }
     }
 
-    public int getX() {
+    int getX() {
         return mTouchX;
     }
 
-    public int getY() {
+    int getY() {
         return mTouchY;
     }
 
-    public int getAction() {
+    int getAction() {
         return mTouchAction;
     }
 
-    public boolean isDragging() {
+    boolean isDragging() {
         return mDragStatus == TouchState.START_DRAGGING;
     }
 
