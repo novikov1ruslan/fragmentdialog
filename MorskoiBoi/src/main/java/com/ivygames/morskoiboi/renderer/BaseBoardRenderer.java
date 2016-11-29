@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
-import com.ivygames.morskoiboi.GraphicsUtils;
+import com.ivygames.morskoiboi.PaintFactory;
 import com.ivygames.morskoiboi.R;
 
 public class BaseBoardRenderer {
@@ -41,30 +41,30 @@ public class BaseBoardRenderer {
     private final BaseGeometryProcessor mProcessor;
 
     public BaseBoardRenderer(@NonNull Resources res, @NonNull BaseGeometryProcessor processor) {
-        mLinePaint = GraphicsUtils.newStrokePaint(res, R.color.line);
+        mLinePaint = PaintFactory.newStrokePaint(res, R.color.line);
 
-        mHitOuterPaint = GraphicsUtils.newStrokePaint(res, R.color.hit);
+        mHitOuterPaint = PaintFactory.newStrokePaint(res, R.color.hit);
         mHitOuterPaint.setAntiAlias(true);
-        mHitInnerPaint = GraphicsUtils.newFillPaint(res, R.color.hit);
+        mHitInnerPaint = PaintFactory.newFillPaint(res, R.color.hit);
         mHitInnerPaint.setAntiAlias(true);
-        mHitBgPaint = GraphicsUtils.newFillPaint(res, R.color.hit_background);
+        mHitBgPaint = PaintFactory.newFillPaint(res, R.color.hit_background);
 
-        mMissOuterPaint = GraphicsUtils.newStrokePaint(res, R.color.miss);
+        mMissOuterPaint = PaintFactory.newStrokePaint(res, R.color.miss);
         mMissOuterPaint.setAntiAlias(true);
         mMissOuterPaint.setAlpha(63);
-        mMissInnerPaint = GraphicsUtils.newFillPaint(res, R.color.miss);
+        mMissInnerPaint = PaintFactory.newFillPaint(res, R.color.miss);
         mMissInnerPaint.setAntiAlias(true);
         mMissInnerPaint.setAlpha(80);
-        mMissBgPaint = GraphicsUtils.newFillPaint(res, R.color.miss_background);
+        mMissBgPaint = PaintFactory.newFillPaint(res, R.color.miss_background);
         mMissBgPaint.setAlpha(80);
 
-        mShipPaint = GraphicsUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
-        mTurnBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
-        mAimingPaint = GraphicsUtils.newFillPaint(res, R.color.aim);
+        mShipPaint = PaintFactory.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
+        mTurnBorderPaint = PaintFactory.newStrokePaint(res, R.color.turn_highliter, R.dimen.turn_border);
+        mAimingPaint = PaintFactory.newFillPaint(res, R.color.aim);
 
-        mBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.board_border);
+        mBorderPaint = PaintFactory.newStrokePaint(res, R.color.line, R.dimen.board_border);
 
-        mAimingLockedPaint = GraphicsUtils.newFillPaint(res, R.color.aim_locked);
+        mAimingLockedPaint = PaintFactory.newFillPaint(res, R.color.aim_locked);
 
         mProcessor = processor;
     }

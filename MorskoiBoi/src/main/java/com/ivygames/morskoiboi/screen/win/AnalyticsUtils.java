@@ -1,11 +1,13 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.morskoiboi.screen.win;
 
 import com.ivygames.common.analytics.AnalyticsEvent;
+import com.ivygames.morskoiboi.BuildConfig;
+import com.ivygames.morskoiboi.Rank;
 
 import org.commons.logger.Ln;
 
-public class AnalyticsUtils {
-    public static boolean trackPromotionEvent(int oldScores, int newScores) {
+class AnalyticsUtils {
+    static boolean trackPromotionEvent(int oldScores, int newScores) {
         Rank lastRank = Rank.getBestRankForScore(oldScores);
         Rank newRank = Rank.getBestRankForScore(newScores);
         if (newRank != lastRank) {

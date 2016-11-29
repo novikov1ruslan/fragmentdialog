@@ -6,6 +6,7 @@ import com.ivygames.battleship.board.Cell;
 
 import org.commons.logger.Ln;
 
+// TODO: just keep journal of shots with times
 public class ScoreStatistics {
     private static final int INITIAL_SHELLS_NUMBER = 100; // 10 * 10
 

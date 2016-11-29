@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Bitmaps;
-import com.ivygames.morskoiboi.GraphicsUtils;
+import com.ivygames.morskoiboi.PaintFactory;
 import com.ivygames.morskoiboi.R;
 
 import java.util.HashMap;
@@ -46,10 +46,10 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         mResources = res;
 
         mProcessor = processor;
-        mConflictCellPaint = GraphicsUtils.newFillPaint(res, R.color.conflict_cell);
-        mShipBorderPaint = GraphicsUtils.newStrokePaint(res, R.color.line, R.dimen.ship_border);
-        mDockedShipPaint = GraphicsUtils.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
-        mLinePaint = GraphicsUtils.newStrokePaint(res, R.color.line);
+        mConflictCellPaint = PaintFactory.newFillPaint(res, R.color.conflict_cell);
+        mShipBorderPaint = PaintFactory.newStrokePaint(res, R.color.line, R.dimen.ship_border);
+        mDockedShipPaint = PaintFactory.newStrokePaint(res, R.color.ship_border, R.dimen.ship_border);
+        mLinePaint = PaintFactory.newStrokePaint(res, R.color.line);
         mRotationMatrix.postRotate(90);
     }
 

@@ -17,7 +17,6 @@ import com.ivygames.common.music.SoundBar;
 import com.ivygames.common.music.SoundBarFactory;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.common.ui.SignInListener;
-import com.ivygames.morskoiboi.AnalyticsUtils;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Game;
