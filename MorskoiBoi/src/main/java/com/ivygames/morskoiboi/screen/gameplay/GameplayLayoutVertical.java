@@ -135,7 +135,7 @@ public class GameplayLayoutVertical extends ViewGroup implements GameplayLayoutI
     }
 
     @Override
-    public void updateMyWorkingShips(@NonNull Collection<Ship> workingShips) {
+    public void setMyWorkingShips(@NonNull Collection<Ship> workingShips) {
         if (mFleetView == null) {
             // TODO; check if these verifications needed
             return;
@@ -149,7 +149,7 @@ public class GameplayLayoutVertical extends ViewGroup implements GameplayLayoutI
     }
 
     @Override
-    public void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips) {
+    public void setWorkingEnemyShips(@NonNull Collection<Ship> workingShips) {
         if (mFleetView == null) {
             return;
         }

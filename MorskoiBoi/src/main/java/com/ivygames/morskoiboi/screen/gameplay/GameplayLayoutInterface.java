@@ -66,9 +66,9 @@ public interface GameplayLayoutInterface {
 
     void lost();
 
-    void updateMyWorkingShips(@NonNull Collection<Ship> workingShips);
+    void setMyWorkingShips(@NonNull Collection<Ship> workingShips);
 
-    void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips);
+    void setWorkingEnemyShips(@NonNull Collection<Ship> workingShips);
 
     void hideChatButton();
 

@@ -124,7 +124,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     }
 
     @Override
-    public void updateMyWorkingShips(@NonNull Collection<Ship> workingShips) {
+    public void setMyWorkingShips(@NonNull Collection<Ship> workingShips) {
         mFleetView.setMyShips(workingShips);
     }
 
@@ -134,7 +134,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
     }
 
     @Override
-    public void updateEnemyWorkingShips(@NonNull Collection<Ship> workingShips) {
+    public void setWorkingEnemyShips(@NonNull Collection<Ship> workingShips) {
         mFleetView.setEnemyShips(workingShips);
     }
 
