@@ -8,8 +8,6 @@ import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.Rules;
-import com.ivygames.morskoiboi.screen.boardsetup.CoordinateType;
 
 import org.commons.logger.Ln;
 

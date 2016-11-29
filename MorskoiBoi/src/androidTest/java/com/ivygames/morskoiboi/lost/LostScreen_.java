@@ -2,7 +2,7 @@ package com.ivygames.morskoiboi.lost;
 
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.OnlineScreen_;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.lost.LostScreen;
 

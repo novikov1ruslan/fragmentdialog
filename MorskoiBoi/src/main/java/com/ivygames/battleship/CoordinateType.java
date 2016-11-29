@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.screen.boardsetup;
+package com.ivygames.battleship;
 
 public enum CoordinateType {
     NEAR_SHIP,

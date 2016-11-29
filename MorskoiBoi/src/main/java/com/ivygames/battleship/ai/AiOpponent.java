@@ -11,7 +11,7 @@ import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
 import org.commons.logger.Ln;

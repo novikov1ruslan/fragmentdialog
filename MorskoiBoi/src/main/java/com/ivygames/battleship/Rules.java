@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 

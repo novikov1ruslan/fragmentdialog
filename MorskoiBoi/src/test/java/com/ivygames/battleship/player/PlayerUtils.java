@@ -2,7 +2,7 @@ package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

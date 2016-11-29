@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.Bot;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 
 import java.util.Random;
 

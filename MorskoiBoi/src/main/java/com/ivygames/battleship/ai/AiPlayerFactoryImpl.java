@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 
 import java.util.Random;
 

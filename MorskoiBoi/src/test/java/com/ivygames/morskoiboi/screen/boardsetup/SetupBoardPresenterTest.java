@@ -9,7 +9,7 @@ import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.russian.RussianRules;
+import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;

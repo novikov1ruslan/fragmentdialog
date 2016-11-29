@@ -2,10 +2,10 @@ package com.ivygames.morskoiboi.component;
 
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ChatMessage;
-import com.ivygames.morskoiboi.player.ChatListener;
-import com.ivygames.morskoiboi.russian.RussianRules;
+import com.ivygames.battleship.player.ChatListener;
+import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;

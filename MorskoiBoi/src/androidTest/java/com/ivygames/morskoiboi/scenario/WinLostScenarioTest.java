@@ -15,10 +15,10 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.ScreenTestRule;
 import com.ivygames.morskoiboi.player.DummyCallback;
-import com.ivygames.morskoiboi.russian.RussianRules;
+import com.ivygames.battleship.RussianRules;
 
 import org.junit.After;
 import org.junit.Before;

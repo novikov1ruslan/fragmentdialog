@@ -30,7 +30,7 @@ import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ScreenManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.battleship.ChatMessage;
-import com.ivygames.morskoiboi.player.ChatListener;
+import com.ivygames.battleship.player.ChatListener;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;

@@ -16,7 +16,7 @@ import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.renderer.SetupBoardGeometryProcessor;
 import com.ivygames.morskoiboi.renderer.SetupBoardRenderer;
 import com.ivygames.morskoiboi.screen.view.BaseBoardView;

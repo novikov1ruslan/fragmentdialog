@@ -14,7 +14,7 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.rt.InternetGame;
-import com.ivygames.morskoiboi.russian.RussianRules;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
 
 import org.junit.Before;

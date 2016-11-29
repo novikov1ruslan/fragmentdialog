@@ -20,7 +20,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.bluetooth.AcceptThread;
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;

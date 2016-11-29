@@ -24,7 +24,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;

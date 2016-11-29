@@ -12,7 +12,7 @@ class PickShipTask implements Runnable {
     @NonNull
     private final View.OnLongClickListener mListener;
 
-    public PickShipTask(int x, int y, @NonNull View.OnLongClickListener listener) {
+    PickShipTask(int x, int y, @NonNull View.OnLongClickListener listener) {
         mTouchX = x;
         mTouchY = y;
         mListener = listener;
@@ -23,7 +23,7 @@ class PickShipTask implements Runnable {
         mListener.onLongClick(null);
     }
 
-    public boolean hasMovedBeyondSlope(int x, int y, int slop) {
+    boolean hasMovedBeyondSlope(int x, int y, int slop) {
         int dX = mTouchX - x;
         int dY = mTouchY - y;
         double d = Math.sqrt(dX * dX + dY * dY);

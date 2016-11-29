@@ -13,7 +13,7 @@ import org.commons.logger.Ln;
 
 import java.util.PriorityQueue;
 
-public class SetupBoardPresenter {
+class SetupBoardPresenter {
 
     /**
      * ship displayed at the top of the screen (selection area)

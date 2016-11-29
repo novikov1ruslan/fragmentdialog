@@ -8,7 +8,7 @@ import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.Placement;
-import com.ivygames.morskoiboi.Rules;
+import com.ivygames.battleship.Rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
