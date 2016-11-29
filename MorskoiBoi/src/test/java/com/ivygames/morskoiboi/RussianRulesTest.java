@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.ShipTestUtils;
 import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,11 +22,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RussianRulesTest {
 
-    private RussianRules mRules = new RussianRules();
+    private final RussianRules mRules = new RussianRules();
     private Placement placement;
 
     private int[] allShipsSizes;
@@ -35,8 +34,6 @@ public class RussianRulesTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
-
         Random random = mock(Random.class);
         orientationBuilder = new OrientationBuilder(random);
         allShipsSizes = mRules.getAllShipsSizes();
@@ -50,12 +47,12 @@ public class RussianRulesTest {
 
         placement.populateBoardWithShips(board, ShipUtils.generateFullFleet(allShipsSizes, orientationBuilder));
 
-        assertThat(BoardUtils.isBoardSet(board, mRules, mNumberOfShips), is(true));
+        assertThat(BoardUtils.isBoardSet(board, mRules), is(true));
     }
 
     @Test
     public void empty_board_is_not_set() {
-        assertThat(BoardUtils.isBoardSet(new Board(), mRules, mNumberOfShips), is(false));
+        assertThat(BoardUtils.isBoardSet(new Board(), mRules), is(false));
     }
 
     @Test
@@ -65,7 +62,7 @@ public class RussianRulesTest {
         ships.remove(ships.iterator().next());
         placement.populateBoardWithShips(board, ships);
 
-        assertThat(BoardUtils.isBoardSet(board, mRules, mNumberOfShips), is(false));
+        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
     }
 
     @Test
@@ -76,7 +73,7 @@ public class RussianRulesTest {
             board.addShip(new LocatedShip(ship, 0, 0));
         }
         assertThat(board.getShips().size(), is(10));
-        assertThat(BoardUtils.isBoardSet(board, mRules, mNumberOfShips), is(false));
+        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
     }
 
     @Test

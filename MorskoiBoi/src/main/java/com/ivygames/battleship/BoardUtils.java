@@ -97,8 +97,8 @@ public class BoardUtils {
         return false;
     }
 
-    public static boolean isBoardSet(@NonNull Board board, @NonNull Rules rules, int numberOfShips) {
-        return allShipsAreOnBoard(board, numberOfShips) && !hasConflictingCell(board, rules.allowAdjacentShips());
+    public static boolean isBoardSet(@NonNull Board board, @NonNull Rules rules) {
+        return allShipsAreOnBoard(board, rules.getAllShipsSizes().length) && !hasConflictingCell(board, rules.allowAdjacentShips());
     }
 
     private static boolean allShipsAreOnBoard(@NonNull Board board, int numberOfShips) {
