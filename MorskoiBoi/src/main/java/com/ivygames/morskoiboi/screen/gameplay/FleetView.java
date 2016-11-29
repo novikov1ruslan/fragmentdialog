@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -28,9 +29,11 @@ public class FleetView extends View {
 
     private final int mMarginBetweenShips;
 
-    private Map<Integer, Integer> mMyShipsLeft;
-    private Map<Integer, Integer> mEnemyShipsLeft;
-
+    @NonNull
+    private final Map<Integer, Integer> mMyShipsLeft = new HashMap<>();
+    @NonNull
+    private final Map<Integer, Integer> mEnemyShipsLeft = new HashMap<>();
+    @NonNull
     private final FleetViewRenderer mRenderer;
 
     private final int largestShipHeight;
@@ -63,7 +66,8 @@ public class FleetView extends View {
     /**
      * {@link #init(int[])} must be called before this method
      */
-    public void setMyShips(Collection<Ship> ships) {
+    public void setMyShips(@NonNull Collection<Ship> ships) {
+        clearMapFromShips(mMyShipsLeft);
         putShipsToMap(ships, mMyShipsLeft);
         invalidate();
     }
@@ -71,17 +75,21 @@ public class FleetView extends View {
     /**
      * {@link #init(int[])} must be called before this method
      */
-    public void setEnemyShips(Collection<Ship> ships) {
+    public void setEnemyShips(@NonNull Collection<Ship> ships) {
+        clearMapFromShips(mEnemyShipsLeft);
         putShipsToMap(ships, mEnemyShipsLeft);
         invalidate();
     }
 
-    private static void putShipsToMap(Collection<Ship> ships, Map<Integer, Integer> map) {
-        for (Integer size : map.keySet()) {
-            map.put(size, 0);
-        }
+    private static void putShipsToMap(@NonNull Collection<Ship> ships, @NonNull Map<Integer, Integer> map) {
         for (Ship ship : ships) {
             map.put(ship.size, map.get(ship.size) + 1);
+        }
+    }
+
+    private static void clearMapFromShips(@NonNull Map<Integer, Integer> map) {
+        for (Integer size : map.keySet()) {
+            map.put(size, 0);
         }
     }
 
@@ -117,13 +125,13 @@ public class FleetView extends View {
         return (destWidth * bitmapHeight) / bitmapWidth;
     }
 
-    public void init(int[] shipsSizes) {
-        mMyShipsLeft = new HashMap<>();
+    public void init(@NonNull int[] shipsSizes) {
+        mMyShipsLeft.clear();
         for (int shipSize : shipsSizes) {
             mMyShipsLeft.put(shipSize, 0);
         }
 
-        mEnemyShipsLeft = new HashMap<>();
+        mEnemyShipsLeft.clear();
         for (int shipSize : shipsSizes) {
             mEnemyShipsLeft.put(shipSize, 0);
         }

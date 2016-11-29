@@ -48,7 +48,7 @@ class FleetViewRenderer {
     @NonNull
     private Rect mGunboatBounds = new Rect();
 
-    public FleetViewRenderer(Resources resources) {
+    public FleetViewRenderer(@NonNull Resources resources) {
         mLinePaint = GraphicsUtils.newStrokePaint(resources, R.color.line);
         float textSize = resources.getDimension(R.dimen.status_text_size);
         mTextPaint.setTextSize(textSize);
@@ -121,7 +121,7 @@ class FleetViewRenderer {
     }
 
     @NonNull
-    private Rect createRectForBitmap(Bitmap bitmap) {
+    private Rect createRectForBitmap(@NonNull Bitmap bitmap) {
         return new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
     }
 
@@ -170,7 +170,7 @@ class FleetViewRenderer {
         drawLine(canvas, numOfMyShips, numOfEnemyShips, w);
     }
 
-    private static Rect scaleShip(Bitmap bitmap, int destWidth) {
+    private static Rect scaleShip(@NonNull Bitmap bitmap, int destWidth) {
         return scaleShip(bitmap.getHeight(), bitmap.getWidth(), destWidth);
     }
 
