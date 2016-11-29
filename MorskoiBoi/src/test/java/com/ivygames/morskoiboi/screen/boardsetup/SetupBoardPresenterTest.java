@@ -3,17 +3,14 @@ package com.ivygames.morskoiboi.screen.boardsetup;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.BoardUtils;
-import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.OrientationBuilder;
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
@@ -32,8 +29,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class SetupBoardPresenterTest {
     private SetupBoardPresenter mPresenter;
 
-    private Placement mPlacement;
-    private RussianRules rules;
     @Mock
     private Random mRandom;
 
@@ -41,16 +36,15 @@ public class SetupBoardPresenterTest {
     public void setup() {
         initMocks(this);
         mPresenter = new SetupBoardPresenter();
-        rules = new RussianRules();
-        mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
     }
 
     @Test
     public void dropping_ship_without_picking__has_no_effect() {
         Board board = new Board();
-        mPlacement.populateBoardWithShips(board, ShipUtils.generateFullFleet(rules.getAllShipsSizes(),
-                new OrientationBuilder(mRandom)));
+
         mPresenter.dropShip(board, 5, 5);
+
+        assertThat(board.getShipAt(5, 5), is(nullValue()));
     }
 
     @Test
