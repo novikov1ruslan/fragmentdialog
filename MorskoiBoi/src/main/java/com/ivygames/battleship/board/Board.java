@@ -52,6 +52,10 @@ public class Board {
         return mShips.remove(locatedShip);
     }
 
+    public void addShip(@NonNull Ship ship, int i, int j) {
+        addShip(new LocatedShip(ship, i, j));
+    }
+
     public void addShip(@NonNull LocatedShip locatedShip) {
         int i = locatedShip.coordinate.x;
         int j = locatedShip.coordinate.y;

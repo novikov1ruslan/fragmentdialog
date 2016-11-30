@@ -108,10 +108,19 @@ public class BoardUtilsTest {
 
     @Test
     public void BoardIsSetWhenItHasFullFleet_AndNoConflictingCells() {
+        Rules rules = mockRules(new int[]{1, 2});
         Board board = new Board();
-        mPlacement.populateBoardWithShips(board, ShipUtils.createNewShips(mRules.getAllShipsSizes(), mOrientationBuilder));
+        board.addShip(new Ship(1), 1, 1);
+        board.addShip(new Ship(2), 5, 5);
 
-        assertThat(BoardUtils.isBoardSet(board, mRules), is(true));
+        assertThat(BoardUtils.isBoardSet(board, rules), is(true));
+    }
+
+    @NonNull
+    private Rules mockRules(int[] value) {
+        Rules rules = mock(Rules.class);
+        when(rules.getAllShipsSizes()).thenReturn(value);
+        return rules;
     }
 
     @Test
@@ -121,18 +130,16 @@ public class BoardUtilsTest {
 
     @Test
     public void BoardIsNotSetWhenItHasLessThanFullFleet() {
+        Rules rules = mockRules(new int[]{1, 2});
         Board board = new Board();
-        Collection<Ship> ships = createShips(mRules.getAllShipsSizes());
-        removeOneShip(ships);
-        mPlacement.populateBoardWithShips(board, ships);
+        board.addShip(new Ship(1), 1, 1);
 
-        assertThat(BoardUtils.isBoardSet(board, mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(board, rules), is(false));
     }
 
     @Test
     public void WhenBoardHasConflictingCells__ItIsNotSet() {
-        Rules rules = mock(Rules.class);
-        when(rules.getAllShipsSizes()).thenReturn(new int[]{1, 2});
+        Rules rules = mockRules(new int[]{1, 2});
         Board board = new Board();
         board.addShip(new LocatedShip(new Ship(2), 0, 0));
         board.addShip(new LocatedShip(new Ship(1), 0, 0));
@@ -189,14 +196,12 @@ public class BoardUtilsTest {
 
     @Test
     public void board_is_NOT_defeated_if_it_has_less_than_all_ships() {
+        Rules rules = mockRules(new int[]{1, 2});
         Board board = new Board();
-        int[] shipsSizes = {1, 2, 3, 4, 5};
-        Collection<Ship> ships = createShips(shipsSizes);
-        removeOneShip(ships);
-        killAllShips(ships);
-        mPlacement.populateBoardWithShips(board, ships);
+        Ship ship = ShipTestUtils.deadShip();
+        board.addShip(ship, 1, 1);
 
-        assertThat(BoardUtils.isItDefeatedBoard(board, shipsSizes.length), is(false));
+        assertThat(BoardUtils.isItDefeatedBoard(board, rules.getAllShipsSizes().length), is(false));
     }
 
     @Test
@@ -241,7 +246,7 @@ public class BoardUtilsTest {
     private Set<Ship> mock_10_dead_ships() {
         Set<Ship> ships = new HashSet<>();
         for (int i = 0; i < 10; i++) {
-            ships.add(ShipTestUtils.mockDeadShip());
+            ships.add(ShipTestUtils.deadShip());
         }
         return ships;
     }
@@ -250,7 +255,7 @@ public class BoardUtilsTest {
     private Set<Ship> mock_9_dead_1_alive_ship() {
         Set<Ship> ships = new HashSet<>();
         for (int i = 0; i < 9; i++) {
-            ships.add(ShipTestUtils.mockDeadShip());
+            ships.add(ShipTestUtils.deadShip());
         }
         ships.add(new Ship(1));
         return ships;

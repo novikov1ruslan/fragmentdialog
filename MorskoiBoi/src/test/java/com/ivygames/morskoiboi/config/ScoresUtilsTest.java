@@ -145,7 +145,7 @@ public class ScoresUtilsTest {
     @Test
     public void dead_ships_do_not_count() {
         Collection<Ship> ships = ships_1_4();
-        ships.add(ShipTestUtils.mockDeadShip());
+        ships.add(ShipTestUtils.deadShip());
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
 
         assertThat(ScoresUtils.calcTotalScores(ships, mAndroidGame, statistics,
