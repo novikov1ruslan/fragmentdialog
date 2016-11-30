@@ -24,6 +24,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -241,6 +242,22 @@ public class BoardUtilsTest {
         assertThat(ship2, is(ship));
     }
 
+    // TODO: this test can be removed?
+    @Test
+    public void testBoardDefeated() {
+        assertThat(BoardUtils.isItDefeatedBoard(mBoard, 1), is(false));
+
+        Ship ship = new Ship(2);
+        mBoard.addShip(new LocatedShip(ship, 5, 5));
+        assertFalse(BoardUtils.isItDefeatedBoard(mBoard, 1));
+
+        ship.shoot();
+        assertFalse(BoardUtils.isItDefeatedBoard(mBoard, 1));
+
+        ship.shoot();
+        assertTrue(BoardUtils.isItDefeatedBoard(mBoard, 1));
+    }
+
     @NonNull
     private Set<Ship> mock_10_dead_ships() {
         Set<Ship> ships = new HashSet<>();
@@ -258,23 +275,6 @@ public class BoardUtilsTest {
         }
         ships.add(new Ship(1));
         return ships;
-    }
-
-    private void removeOneShip(Collection<Ship> ships) {
-        ships.remove(ships.iterator().next());
-    }
-
-    private void killAllShips(Collection<Ship> ships) {
-        for (Ship ship : ships) {
-            while (!ship.isDead()) {
-                ship.shoot();
-            }
-        }
-    }
-
-    @NonNull
-    private Collection<Ship> createShips(int[] shipsSizes) {
-        return ShipUtils.createNewShips(shipsSizes, mOrientationBuilder);
     }
 
     private void putShipAt(Ship ship, int x, int y) {

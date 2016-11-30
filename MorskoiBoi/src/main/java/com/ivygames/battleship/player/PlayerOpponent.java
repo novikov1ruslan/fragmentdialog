@@ -128,7 +128,7 @@ public class PlayerOpponent implements Opponent {
      * @param callback this callback is only for 1-directional feedback,
      *                 and the implementation must not call into this {@link PlayerOpponent}
      */
-    public void registerCallback(@NonNull PlayerCallback callback) {
+    public final void registerCallback(@NonNull PlayerCallback callback) {
         mCallback.registerCallback(callback);
         Ln.v(mName + ": [" + callback + "] callback added");
 
@@ -146,7 +146,7 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    public void unregisterCallback(@NonNull PlayerCallback callback) {
+    public final void unregisterCallback(@NonNull PlayerCallback callback) {
         mCallback.unregisterCallback(callback);
     }
 
@@ -313,11 +313,18 @@ public class PlayerOpponent implements Opponent {
             mEnemyBoard.setCell(result.cell, result.aim);
         } else {
             Ship ship = result.locatedShip.ship;
+            killShip(ship);
             mEnemyBoard.setCell(result.cell, result.aim);
             Vector location = findShipLocation(mEnemyBoard, ship, result.aim);
             mEnemyBoard.addShip(new LocatedShip(ship, location));
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
+    }
+
+    private void killShip(@NonNull Ship ship) {
+        while (!ship.isDead()) {
+            ship.shoot();
+        }
     }
 
     @NonNull

@@ -7,10 +7,6 @@ public class ExceptionHandler {
 
     private static boolean sDryRun;
 
-    private ExceptionHandler() {
-        // utility
-    }
-
     public static void setDryRun(boolean dryRun) {
         sDryRun = dryRun;
     }

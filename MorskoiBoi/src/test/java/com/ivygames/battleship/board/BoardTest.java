@@ -62,21 +62,6 @@ public class BoardTest {
     }
 
     @Test
-    public void testAllShipsAreDestroyed() {
-        assertFalse(!BoardUtils.allAvailableShipsAreDestroyed(mBoard));
-
-        Ship ship = new Ship(2);
-        mBoard.addShip(new LocatedShip(ship, 5, 5));
-        assertFalse(BoardUtils.allAvailableShipsAreDestroyed(mBoard));
-
-        ship.shoot();
-        assertFalse(BoardUtils.allAvailableShipsAreDestroyed(mBoard));
-
-        ship.shoot();
-        assertTrue(BoardUtils.allAvailableShipsAreDestroyed(mBoard));
-    }
-
-    @Test
     public void testGetShipsAt() {
         Board board = new Board();
 

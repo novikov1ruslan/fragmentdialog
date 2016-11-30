@@ -168,7 +168,7 @@ public class BoardUtils {
     /**
      * @return true if every ship on the board is sunk
      */
-    public static boolean allAvailableShipsAreDestroyed(@NonNull Board board) {
+    private static boolean allAvailableShipsAreDestroyed(@NonNull Board board) {
         // TODO: optimize iterating over Located or move the method from here
         for (Ship ship : board.getShips()) {
             if (!ship.isDead()) {

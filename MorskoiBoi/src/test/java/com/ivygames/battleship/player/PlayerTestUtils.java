@@ -7,9 +7,9 @@ import com.ivygames.battleship.Rules;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class PlayerUtils {
+class PlayerTestUtils {
     @NonNull
-    public static Rules defeatedBoardRules(int numberOfShips) {
+    static Rules defeatedBoardRules(int numberOfShips) {
         Rules rules = mock(Rules.class);
         when(rules.getAllShipsSizes()).thenReturn(new int[numberOfShips]);
         return rules;
