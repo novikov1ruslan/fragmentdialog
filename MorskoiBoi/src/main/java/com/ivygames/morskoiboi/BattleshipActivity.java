@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.ivygames.battleship.ChatMessage;
+import com.ivygames.battleship.player.ChatListener;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.AndroidUtils;
 import com.ivygames.common.DebugUtils;
@@ -29,8 +31,6 @@ import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ScreenManager;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.battleship.ChatMessage;
-import com.ivygames.battleship.player.ChatListener;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;

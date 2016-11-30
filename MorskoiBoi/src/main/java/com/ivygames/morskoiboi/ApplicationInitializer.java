@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.ai.AiPlayerFactoryImpl;
 import com.ivygames.battleship.ai.RussianBot;
@@ -21,7 +22,6 @@ import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
-import com.ivygames.battleship.RussianRules;
 import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
 
 import org.acra.ACRA;

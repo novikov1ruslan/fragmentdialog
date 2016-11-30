@@ -1,12 +1,10 @@
-package com.ivygames.morskoiboi;
+package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.BoardUtils;
-import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.board.Vector;
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import java.util.Collection;
@@ -40,7 +38,7 @@ public class Placement {
         }
     }
 
-    boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
+    public boolean putShipOnBoard(@NonNull Ship ship, @NonNull Board board) {
         List<Vector> freeCells = BoardUtils.getCoordinatesFreeFromShips(board, mAllowAdjacentShips);
 
         while (!freeCells.isEmpty()) {

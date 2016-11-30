@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.Placement;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ShipUtils;

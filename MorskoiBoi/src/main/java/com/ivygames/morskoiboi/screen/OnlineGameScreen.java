@@ -9,8 +9,8 @@ import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Game;
+import com.ivygames.morskoiboi.R;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;

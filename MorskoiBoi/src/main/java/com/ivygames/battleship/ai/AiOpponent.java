@@ -3,6 +3,8 @@ package com.ivygames.battleship.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.Placement;
+import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.player.PlayerOpponent;
@@ -10,8 +12,6 @@ import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.OrientationBuilder;
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
 import org.commons.logger.Ln;

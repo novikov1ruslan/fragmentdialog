@@ -2,13 +2,13 @@ package com.ivygames.morskoiboi.scenario;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.Placement;
+import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.battleship.Rules;
 
 import java.util.ArrayList;
 import java.util.Collection;

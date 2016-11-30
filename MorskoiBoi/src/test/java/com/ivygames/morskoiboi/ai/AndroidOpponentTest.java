@@ -3,6 +3,9 @@ package com.ivygames.morskoiboi.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.Placement;
+import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.Bot;
 import com.ivygames.battleship.ai.RussianBot;
@@ -13,9 +16,6 @@ import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.Placement;
-import com.ivygames.battleship.Rules;
-import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;

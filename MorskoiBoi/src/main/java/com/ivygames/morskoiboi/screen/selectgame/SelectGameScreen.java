@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.PlayerFactory;
+import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.AndroidDevice;
@@ -31,7 +32,6 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
-import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;

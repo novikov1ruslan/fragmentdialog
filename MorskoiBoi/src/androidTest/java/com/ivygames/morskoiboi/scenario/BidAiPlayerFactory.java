@@ -2,12 +2,12 @@ package com.ivygames.morskoiboi.scenario;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.ai.Bot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.player.PlayerOpponent;
-import com.ivygames.battleship.Rules;
 
 import java.util.ArrayList;
 import java.util.List;

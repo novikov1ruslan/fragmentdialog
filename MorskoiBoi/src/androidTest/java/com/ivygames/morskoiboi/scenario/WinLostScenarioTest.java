@@ -9,16 +9,16 @@ import android.support.test.espresso.IdlingPolicies;
 import android.util.Log;
 
 import com.ivygames.battleship.PlayerFactory;
+import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.ScreenTestRule;
 import com.ivygames.morskoiboi.player.DummyCallback;
-import com.ivygames.battleship.RussianRules;
 
 import org.junit.After;
 import org.junit.Before;

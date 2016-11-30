@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.ivygames.morskoiboi.R;
 import com.ivygames.battleship.ChatMessage;
+import com.ivygames.morskoiboi.R;
 
 import java.util.ArrayList;
 import java.util.List;

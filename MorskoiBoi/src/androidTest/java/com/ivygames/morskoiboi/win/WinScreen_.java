@@ -4,12 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
+import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.battleship.Rules;
 import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;

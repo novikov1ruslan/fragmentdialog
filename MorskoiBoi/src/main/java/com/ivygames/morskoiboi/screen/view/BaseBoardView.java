@@ -9,13 +9,13 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.ivygames.battleship.CoordinateType;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.morskoiboi.renderer.BaseBoardRenderer;
-import com.ivygames.battleship.CoordinateType;
 
 import java.util.List;
 

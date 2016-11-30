@@ -3,10 +3,10 @@ package com.ivygames.morskoiboi.config;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.ScoresCalculator;
-import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.ScoreStatistics;
+import com.ivygames.morskoiboi.ScoresCalculator;
+import com.ivygames.morskoiboi.achievement.AchievementsManager;
 
 import java.util.Collection;
 

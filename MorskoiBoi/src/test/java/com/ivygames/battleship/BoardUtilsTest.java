@@ -10,7 +10,6 @@ import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
-import com.ivygames.morskoiboi.Placement;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.ChatMessage;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
@@ -14,7 +15,6 @@ import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.morskoiboi.PlayerCallback;
-import com.ivygames.battleship.ChatMessage;
 
 import org.commons.logger.Ln;
 

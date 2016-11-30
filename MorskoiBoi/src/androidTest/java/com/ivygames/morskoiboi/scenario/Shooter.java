@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.scenario;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.morskoiboi.ScreenUtils;
 
 import java.util.List;

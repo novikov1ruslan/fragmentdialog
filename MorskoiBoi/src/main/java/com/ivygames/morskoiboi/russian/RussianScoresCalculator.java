@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.russian;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.ScoreStatistics;
+import com.ivygames.morskoiboi.ScoresCalculator;
 
 import org.commons.logger.Ln;
 

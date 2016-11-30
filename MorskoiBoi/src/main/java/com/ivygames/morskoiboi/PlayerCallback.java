@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.ivygames.battleship.board.Board;
-import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.shot.ShotResult;
 
 public interface PlayerCallback {

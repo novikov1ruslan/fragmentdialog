@@ -3,7 +3,10 @@ package com.ivygames.battleship.player;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.ChatMessage;
 import com.ivygames.battleship.Opponent;
+import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.board.Board;
@@ -15,9 +18,6 @@ import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.PlayerCallback;
-import com.ivygames.battleship.Rules;
-import com.ivygames.battleship.ChatMessage;
-import com.ivygames.battleship.RussianRules;
 
 import org.junit.Before;
 import org.junit.Test;
