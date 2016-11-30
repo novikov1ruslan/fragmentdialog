@@ -187,4 +187,36 @@ public class BoardUtils {
     public static String debugBoard(@NonNull Board board) {
         return board.toString();
     }
+
+    @NonNull
+    public static Vector findShipLocation(@NonNull Board board, @NonNull Ship ship, @NonNull Vector lastKnownCoordinate) {
+        Vector coordinate = lastKnownCoordinate;
+        if (ship.isHorizontal()) {
+            while (isHit(board, coordinate)) {
+                lastKnownCoordinate = coordinate;
+                coordinate = goLeft(coordinate);
+            }
+        } else {
+            while (isHit(board, coordinate)) {
+                lastKnownCoordinate = coordinate;
+                coordinate = goUp(coordinate);
+            }
+        }
+
+        return lastKnownCoordinate;
+    }
+
+    @NonNull
+    private static Vector goUp(@NonNull Vector coordinate) {
+        return Vector.get(coordinate.x, coordinate.y - 1);
+    }
+
+    @NonNull
+    private static Vector goLeft(@NonNull Vector coordinate) {
+        return Vector.get(coordinate.x - 1, coordinate.y);
+    }
+
+    private static boolean isHit(@NonNull Board board, @NonNull Vector coordinate) {
+        return contains(coordinate) && board.getCell(coordinate) == Cell.HIT;
+    }
 }
