@@ -25,11 +25,18 @@ public class Placement {
         mAllowAdjacentShips = allowAdjacentShips;
     }
 
-    // TODO: remove
-    // TODO: do not modify board, create new
+    @NonNull
+    public Board newBoardWithShips(@NonNull Collection<Ship> ships) {
+        Board board = new Board();
+        populateBoardWithShips(board, ships);
+        return board;
+    }
+
     public void populateBoardWithShips(@NonNull Board board, @NonNull Collection<Ship> ships) {
         for (Ship ship : ships) {
-            putShipOnBoard(ship, board);
+            if (!putShipOnBoard(ship, board)) {
+                throw new IllegalArgumentException("could not put " + ship + " on " + BoardUtils.debugBoard(board));
+            }
         }
     }
 

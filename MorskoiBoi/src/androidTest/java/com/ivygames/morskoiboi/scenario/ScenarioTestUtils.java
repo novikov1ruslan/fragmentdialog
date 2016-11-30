@@ -17,9 +17,8 @@ import java.util.Random;
 
 class ScenarioTestUtils {
     static List<Vector> getShots(@NonNull Rules rules, @NonNull Random random) {
-        Board board = new Board();
         Collection<Ship> ships = ShipUtils.createNewShips(rules.getAllShipsSizes(), new OrientationBuilder(random));
-        new Placement(random, rules.allowAdjacentShips()).populateBoardWithShips(board, ships);
+        Board board = new Placement(random, rules.allowAdjacentShips()).newBoardWithShips(ships);
 
         List<Vector> shots = new ArrayList<>(20);
 

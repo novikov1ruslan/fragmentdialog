@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,7 +23,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class PlacementTest {
 
     private Placement mPlacement;
-    private Rules rules = new RussianRules();
+    private final Rules mRules = new RussianRules();
+    private OrientationBuilder mOrientationBuilder;
+
 
     @Mock
     private Random mRandom;
@@ -30,18 +33,27 @@ public class PlacementTest {
     @Before
     public void setup() {
         initMocks(this);
-        mPlacement = new Placement(mRandom, rules.allowAdjacentShips());
+        mPlacement = new Placement(mRandom, mRules.allowAdjacentShips());
+        mOrientationBuilder = new OrientationBuilder(mRandom);
     }
 
     @Test
     public void AfterPopulatingBoardWithShips__AllShipsAreOnBoard() {
-        Collection<Ship> ships = ShipUtils.createNewShips(new int[]{1, 2, 3, 4, 5},
-                new OrientationBuilder(mRandom));
+        Collection<Ship> ships = ShipUtils.createNewShips(new int[]{1, 2, 3, 4, 5}, mOrientationBuilder);
+
+        Board board = mPlacement.newBoardWithShips(ships);
+
+        BoardTestUtils.similarShips(board.getShips(), ships);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void WhenItIsImpossibleToPopulateBoard__ExceptionIsThrown() {
+        Collection<Ship> ships = ShipUtils.createNewShips(new int[]{10, 10, 10, 10, 10}, mOrientationBuilder);
 
         Board board = new Board();
         mPlacement.populateBoardWithShips(board, ships);
 
-        BoardTestUtils.similarShips(board.getShips(), ships);
+        mPlacement.populateBoardWithShips(board, Collections.singleton(new Ship(5)));
     }
 
     @Test
@@ -91,7 +103,7 @@ public class PlacementTest {
                 }
             }
         };
-        Placement placement = new Placement(random, rules.allowAdjacentShips());
+        Placement placement = new Placement(random, mRules.allowAdjacentShips());
         placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
         placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
         placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
@@ -108,7 +120,7 @@ public class PlacementTest {
 
         boolean success = placement.putShipOnBoard(new Ship(2, Ship.Orientation.HORIZONTAL), board);
         assertThat(success, is(true));
-        assertThat(BoardUtils.hasConflictingCell(board, rules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.hasConflictingCell(board, mRules.allowAdjacentShips()), is(false));
     }
 
 }

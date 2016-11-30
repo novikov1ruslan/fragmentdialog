@@ -183,4 +183,8 @@ public class BoardUtils {
     private static List<Vector> getNeighboringCoordinates(int x, int y) {
         return ShipUtils.getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
     }
+
+    public static String debugBoard(@NonNull Board board) {
+        return board.toString();
+    }
 }
