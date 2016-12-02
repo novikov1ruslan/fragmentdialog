@@ -7,6 +7,7 @@ import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.BoardSerialization;
 import com.ivygames.battleship.board.BoardSerializationTest;
 import com.ivygames.battleship.board.Cell;
+import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OrientationBuilder;
@@ -17,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -37,7 +37,6 @@ public class BoardUtilsTest {
 
     private Board mBoard = new Board();
 
-    private Placement mPlacement;
     private Rules mRules = new RussianRules();
 
     @Mock
@@ -49,7 +48,6 @@ public class BoardUtilsTest {
     public void setup() {
         initMocks(this);
         when(mOrientationBuilder.nextOrientation()).thenReturn(Ship.Orientation.VERTICAL);
-        mPlacement = new Placement(mRandom, mRules.allowAdjacentShips());
     }
 
     // TODO: test with allowing adjacent ships
@@ -256,6 +254,42 @@ public class BoardUtilsTest {
 
         ship.shoot();
         assertTrue(BoardUtils.isItDefeatedBoard(mBoard, 1));
+    }
+
+    @Test
+    public void ShipLocationCorrectlyFound1() {
+        Board board = new Board();
+        board.setCell(Cell.HIT, 5, 5);
+
+        Ship ship = new Ship(1);
+        Vector shipLocation = BoardUtils.findShipLocation(board);
+
+        assertThat(shipLocation, is(Vector.get(5 ,5)));
+    }
+
+    @Test
+    public void ShipLocationCorrectlyFound2() {
+        Board board = new Board();
+        board.setCell(Cell.HIT, 5, 5);
+        board.setCell(Cell.HIT, 6, 5);
+
+        Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
+        Vector shipLocation = BoardUtils.findShipLocation(board);
+
+        assertThat(shipLocation, is(Vector.get(5 ,5)));
+    }
+
+    @Test
+    public void ShipLocationCorrectlyFound3() {
+        Board board = new Board();
+        board.setCell(Cell.HIT, 5, 5);
+        board.setCell(Cell.HIT, 5, 7);
+        board.setCell(Cell.HIT, 5, 6);
+
+        Ship ship = new Ship(3, Ship.Orientation.VERTICAL);
+        Vector shipLocation = BoardUtils.findShipLocation(board);
+
+        assertThat(shipLocation, is(Vector.get(5 ,5)));
     }
 
     @NonNull

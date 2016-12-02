@@ -11,6 +11,7 @@ import com.ivygames.battleship.ship.Ship;
 
 import org.commons.logger.Ln;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class BoardUtils {
     /**
      * @param v coordinate on the board where the 1st ship's square is to be put
      */
-    public static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector v) {
+    static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector v) {
         return shipFitsTheBoard(ship, v.x, v.y);
     }
 
@@ -184,39 +185,66 @@ public class BoardUtils {
         return ShipUtils.getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
     }
 
-    public static String debugBoard(@NonNull Board board) {
-        return board.toString();
-    }
-
     @NonNull
-    public static Vector findShipLocation(@NonNull Board board, @NonNull Ship ship, @NonNull Vector lastKnownCoordinate) {
-        Vector coordinate = lastKnownCoordinate;
-        if (ship.isHorizontal()) {
-            while (isHit(board, coordinate)) {
-                lastKnownCoordinate = coordinate;
-                coordinate = goLeft(coordinate);
+    public static Vector findShipLocation(@NonNull Board board) {
+        List<Vector> hitCells = findHitCells(board);
+
+        Vector location = hitCells.get(0);
+        for (Vector coordinate : hitCells) {
+            if (coordinate.x < location.x) {
+                location = coordinate;
             }
-        } else {
-            while (isHit(board, coordinate)) {
-                lastKnownCoordinate = coordinate;
-                coordinate = goUp(coordinate);
+            if (coordinate.y < location.y) {
+                location = coordinate;
             }
         }
 
-        return lastKnownCoordinate;
+        return location;
+    }
+
+    private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
+        return contains(x, y) && board.getCell(x, y) == Cell.EMPTY;
     }
 
     @NonNull
-    private static Vector goUp(@NonNull Vector coordinate) {
-        return Vector.get(coordinate.x, coordinate.y - 1);
+    public static List<Vector> getPossibleShotsAround(@NonNull Board board, int x, int y) {
+        ArrayList<Vector> possibleShots = new ArrayList<>();
+        if (isEmptyCell(board, x - 1, y)) {
+            possibleShots.add(Vector.get(x - 1, y));
+        }
+        if (isEmptyCell(board, x + 1, y)) {
+            possibleShots.add(Vector.get(x + 1, y));
+        }
+        if (isEmptyCell(board, x, y - 1)) {
+            possibleShots.add(Vector.get(x, y - 1));
+        }
+        if (isEmptyCell(board, x, y + 1)) {
+            possibleShots.add(Vector.get(x, y + 1));
+        }
+
+        return possibleShots;
+    }
+
+    /**
+     * Assumption is that the cells will belong to the same ship.
+     */
+    @NonNull
+    public static List<Vector> findHitCells(@NonNull Board board) {
+        List<Vector> decks = new ArrayList<>();
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
+                if (board.getCell(i, j) == Cell.HIT) {
+                    if (board.getShipsAt(i, j).isEmpty()) {
+                        decks.add(Vector.get(i, j));
+                    }
+                }
+            }
+        }
+        return decks;
     }
 
     @NonNull
-    private static Vector goLeft(@NonNull Vector coordinate) {
-        return Vector.get(coordinate.x - 1, coordinate.y);
-    }
-
-    private static boolean isHit(@NonNull Board board, @NonNull Vector coordinate) {
-        return contains(coordinate) && board.getCell(coordinate) == Cell.HIT;
+    static String debugBoard(@NonNull Board board) {
+        return board.toString();
     }
 }

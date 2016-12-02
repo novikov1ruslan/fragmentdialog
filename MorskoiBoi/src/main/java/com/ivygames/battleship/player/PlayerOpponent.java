@@ -315,7 +315,7 @@ public class PlayerOpponent implements Opponent {
             Ship ship = result.locatedShip.ship;
             killShip(ship);
             mEnemyBoard.setCell(result.cell, result.aim);
-            Vector location = BoardUtils.findShipLocation(mEnemyBoard, ship, result.aim);
+            Vector location = BoardUtils.findShipLocation(mEnemyBoard);
             mEnemyBoard.addShip(new LocatedShip(ship, location));
         }
         Ln.v(this + ": opponent's board: " + mEnemyBoard);
