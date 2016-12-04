@@ -3,6 +3,7 @@ package com.ivygames.morskoiboi.boardsetup;
 import com.ivygames.battleship.ship.Ship.Orientation;
 import com.ivygames.morskoiboi.OnlineScreen_;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
@@ -10,7 +11,6 @@ import static com.ivygames.morskoiboi.ScreenUtils.autoSetup;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
 import static com.ivygames.morskoiboi.ScreenUtils.done;
-
 
 public class BoardSetupScreenTest extends BoardSetupScreen_ {
 
@@ -25,13 +25,10 @@ public class BoardSetupScreenTest extends BoardSetupScreen_ {
         showScreen();
         mOrientationBuilder.setOrientation(Orientation.VERTICAL);
         clickOn(autoSetup());
-        setBoardSet();
-        clickOn(done());
-        checkDisplayed(GAMEPLAY_LAYOUT);
-    }
 
-    private void setBoardSet() {
-//        when(rules.getAllShipsSizes()).thenReturn(new int[0]);
+        clickOn(done());
+
+        checkDisplayed(GAMEPLAY_LAYOUT);
     }
 
     @Test

@@ -39,21 +39,25 @@ public abstract class ScoresUtils {
 
     public static int normalizeScores(int score, boolean surrendered) {
         if (surrendered) {
-            score = score / 2;
-            if (score > MAX_SCORE_FOR_SURRENDERED_GAME) {
-                score = MAX_SCORE_FOR_SURRENDERED_GAME;
-            }
+            return normalizeScores(score);
         }
         return score;
     }
 
-    public static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game, ScoresCalculator scoresCalculator) {
-        int progress;
-        if (game.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
-            progress = scoresCalculator.calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
-        } else {
-            progress = game.getWinPoints();
+    public static int normalizeScores(int score) {
+        score = score / 2;
+        if (score > MAX_SCORE_FOR_SURRENDERED_GAME) {
+            score = MAX_SCORE_FOR_SURRENDERED_GAME;
         }
-        return progress;
+        return score;
+    }
+
+    public static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game,
+                                             @NonNull ScoresCalculator scoresCalculator) {
+        if (game.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
+            return scoresCalculator.calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;
+        } else {
+            return game.getWinPoints();
+        }
     }
 }

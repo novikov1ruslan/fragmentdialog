@@ -5,9 +5,13 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.ScreenUtils;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -16,8 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.never;
+import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,70 +35,13 @@ public class WinScreenTest extends WinScreen_ {
     }
 
     @Test
-    public void WhenScreenDisplayedForAndroidGame__AchievementsProcessed() {
-        setGameType(OnlineScreen_.Type.VS_ANDROID);
-        showScreen();
-        expectProcessAchievementsBeCalled(times(1));
-    }
-
-    @Test
-    public void WhenScreenDisplayedForNonAndroidGame__AchievementsNotProcessed() {
-        setGameType(OnlineScreen_.Type.BLUETOOTH);
-        showScreen();
-        expectProcessAchievementsBeCalled(never());
-    }
-
-//    @Test
-    public void WhenScreenDisplayedWithPositiveScoreBalance__ProgressUpdated() {
-        // TODO: this is component test
-        setScores(100);
-        setPenalty(0);
-        showScreen();
-        verify(settings(), times(1)).incrementProgress(100);
-        verify(settings(), times(1)).setProgressPenalty(0);
-    }
-
-    private void setScores(int i) {
-
-    }
-
-    //    @Test
-    public void IfScoreBalancePositive_AndConnected__ProgressSynchronized() {
-        // TODO: this is component test
-        when(progressManager.isConnected()).thenReturn(true);
-        setScores(100);
-        setPenalty(0);
-        showScreen();
-        expectSynchronizeBeCalled(times(1));
-    }
-
-//    @Test
-    public void IfNotConnected__ProgressNotSynchronized() {
-        // TODO: this is component test
-        when(progressManager.isConnected()).thenReturn(false);
-        setScores(100);
-        setPenalty(0);
-        showScreen();
-        expectSynchronizeBeCalled(never());
-    }
-
-//    @Test
-    public void WhenScreenDisplayedWithNegativeScoreBalance__PenaltyUpdated() {
-        // TODO: component test
-        setScores(100);
-        setPenalty(200);
-        showScreen();
-        expectSynchronizeBeCalled(never());
-        verify(settings(), never()).incrementProgress(anyInt());
-        verify(settings(), times(1)).setProgressPenalty(100);
-    }
-
-//    @Test
     public void WhenGameTypeIsAndroid__ScoresAndDurationShown() {
         setGameType(OnlineScreen_.Type.VS_ANDROID);
         when(statistics.getTimeSpent()).thenReturn(135000L);
         setScores(100);
+
         showScreen();
+
         onView(timeView()).check(matches(withText("2:15")));
         onView(scoresView()).check(matches(withText("100")));
     }
@@ -217,6 +163,10 @@ public class WinScreenTest extends WinScreen_ {
         showScreen();
         pressBack();
         expectSubmitScoreBeCalled(false);
+    }
+
+    private void setScores(int scores) {
+        when(scoresCalculator.calcScoresForAndroidGame(anyCollection(), statistics)).thenReturn(scores);
     }
 
 }

@@ -20,6 +20,8 @@ import com.ivygames.morskoiboi.screen.win.WinScreen;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.verification.VerificationMode;
 
 import java.util.ArrayList;
@@ -38,14 +40,18 @@ abstract class WinScreen_ extends OnlineScreen_ {
     protected Rules rules;
     private AchievementsManager achievementsManager;
     // FIXME: substitute by real
-    ProgressManager progressManager;
+    private ProgressManager progressManager;
     private Collection<Ship> fleet = new ArrayList<>();
     boolean surrendered;
     ScoreStatistics statistics;
+    @Mock
+    ScoresCalculator scoresCalculator;
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         super.setup();
+
         rules = mock(Rules.class);
         achievementsManager = mock(AchievementsManager.class);
         Dependencies.inject(achievementsManager);
@@ -55,19 +61,13 @@ abstract class WinScreen_ extends OnlineScreen_ {
 
         when(settings().incrementProgress(anyInt())).thenReturn(0);
         Dependencies.inject(rules);
+
+        Dependencies.inject(scoresCalculator);
     }
 
     @Override
     public BattleshipScreen newScreen() {
         return new WinScreen(activity, game, session, fleet, statistics, surrendered);
-    }
-
-    void expectProcessAchievementsBeCalled(VerificationMode times) {
-        verify(achievementsManager, times).processScores(anyInt());
-    }
-
-    void expectSynchronizeBeCalled(VerificationMode times) {
-        verify(progressManager, times).synchronize();
     }
 
     @NonNull
@@ -85,7 +85,4 @@ abstract class WinScreen_ extends OnlineScreen_ {
         return withId(R.id.sign_in_bar);
     }
 
-    void setPenalty(Integer penalty) {
-        when(settings().getProgressPenalty()).thenReturn(penalty);
-    }
 }
