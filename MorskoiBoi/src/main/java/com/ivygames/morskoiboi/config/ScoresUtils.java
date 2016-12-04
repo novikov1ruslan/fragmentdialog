@@ -51,7 +51,7 @@ public abstract class ScoresUtils {
         return score;
     }
 
-    private static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game, ScoresCalculator scoresCalculator) {
+    public static int calculateScoresForGame(@NonNull Collection<Ship> ships, @NonNull ScoreStatistics statistics, @NonNull Game game, ScoresCalculator scoresCalculator) {
         int progress;
         if (game.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
             progress = scoresCalculator.calcScoresForAndroidGame(ships, statistics) * AchievementsManager.NORMAL_DIFFICULTY_PROGRESS_FACTOR;

@@ -128,7 +128,7 @@ public class PlayerOpponent implements Opponent {
      * @param callback this callback is only for 1-directional feedback,
      *                 and the implementation must not call into this {@link PlayerOpponent}
      */
-    public final void registerCallback(@NonNull PlayerCallback callback) {
+    public void registerCallback(@NonNull PlayerCallback callback) {
         mCallback.registerCallback(callback);
         Ln.v(mName + ": [" + callback + "] callback added");
 
@@ -146,7 +146,7 @@ public class PlayerOpponent implements Opponent {
         }
     }
 
-    public final void unregisterCallback(@NonNull PlayerCallback callback) {
+    public void unregisterCallback(@NonNull PlayerCallback callback) {
         mCallback.unregisterCallback(callback);
     }
 

@@ -41,7 +41,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
         player = mockPlayer();
 
         session = new Session(player, opponent);
-        Session.bindOpponents(player, opponent);
+//        Session.bindOpponents(player, opponent);
         setGameType(Type.VS_ANDROID);
     }
 

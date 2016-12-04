@@ -38,10 +38,10 @@ abstract class WinScreen_ extends OnlineScreen_ {
     protected Rules rules;
     private AchievementsManager achievementsManager;
     // FIXME: substitute by real
-    protected ProgressManager progressManager;
+    ProgressManager progressManager;
     private Collection<Ship> fleet = new ArrayList<>();
-    protected boolean surrendered;
-    protected ScoreStatistics statistics;
+    boolean surrendered;
+    ScoreStatistics statistics;
 
     @Before
     public void setup() {
@@ -62,36 +62,30 @@ abstract class WinScreen_ extends OnlineScreen_ {
         return new WinScreen(activity, game, session, fleet, statistics, surrendered);
     }
 
-    protected void expectProcessAchievementsBeCalled(VerificationMode times) {
+    void expectProcessAchievementsBeCalled(VerificationMode times) {
         verify(achievementsManager, times).processScores(anyInt());
     }
 
-    protected void expectSynchronizeBeCalled(VerificationMode times) {
+    void expectSynchronizeBeCalled(VerificationMode times) {
         verify(progressManager, times).synchronize();
     }
 
     @NonNull
-    protected Matcher<View> timeView() {
+    Matcher<View> timeView() {
         return ViewMatchers.withId(R.id.time);
     }
 
     @NonNull
-    protected Matcher<View> scoresView() {
+    Matcher<View> scoresView() {
         return withId(R.id.total_scores);
     }
 
     @NonNull
-    protected Matcher<View> signInBar() {
+    Matcher<View> signInBar() {
         return withId(R.id.sign_in_bar);
     }
 
-    protected void setScores(int scores) {
-        setGameType(OnlineScreen_.Type.VS_ANDROID);
-        when(ScoresUtils.calcTotalScores(any(Collection.class), any(Game.class), any(ScoreStatistics.class),
-                anyBoolean(), any(ScoresCalculator.class))).thenReturn(scores);
-    }
-
-    protected void setPenalty(Integer penalty) {
+    void setPenalty(Integer penalty) {
         when(settings().getProgressPenalty()).thenReturn(penalty);
     }
 }

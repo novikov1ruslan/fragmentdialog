@@ -175,7 +175,7 @@ public class ScoresUtilsTest {
     }
 
     @NonNull
-    private Collection<Ship> ships_1_4() {
+    public static Collection<Ship> ships_1_4() {
         Collection<Ship> ships = new ArrayList<>();
         ships.add(new Ship(1));
         ships.add(new Ship(4));
@@ -183,7 +183,7 @@ public class ScoresUtilsTest {
     }
 
     @NonNull
-    private ScoreStatistics game_2xCombo_30xShells_150seconds() {
+    public static ScoreStatistics game_2xCombo_30xShells_150seconds() {
         ScoreStatistics statistics = mock(ScoreStatistics.class);
         when(statistics.getCombo()).thenReturn(2);
         when(statistics.getShells()).thenReturn(30);
