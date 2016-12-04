@@ -16,6 +16,7 @@ public class TurnTimerController {
 
     private final int mTurnTimeout;
     private final int mTurnsBeforeIdle;
+    @NonNull
     private final TurnTimerFactory mTurnTimerFactory;
 
     public TurnTimerController(int turnTimeout, int turnsBeforeIdle, @NonNull TurnTimerFactory turnTimerFactory) {

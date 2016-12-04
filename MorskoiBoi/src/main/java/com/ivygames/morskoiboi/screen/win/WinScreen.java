@@ -253,7 +253,7 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         if (mGame.shouldNotifyOpponent() && !mOpponentSurrendered) {
             showWantToLeaveRoomDialog();
         } else {
-            backToSelectGame();
+            mEndGameCommand.run();
         }
     }
 

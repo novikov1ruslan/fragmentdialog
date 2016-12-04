@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.gameplay;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ChatAdapter extends BaseAdapter {
+    @NonNull
     private final List<ChatMessage> mMessages = new ArrayList<>();
+    @NonNull
     private final LayoutInflater mInflater;
 
-    ChatAdapter(LayoutInflater inflater) {
+    ChatAdapter(@NonNull LayoutInflater inflater) {
         mInflater = inflater;
     }
 
-    public void add(ChatMessage message) {
+    public void add(@NonNull ChatMessage message) {
         mMessages.add(message);
         notifyDataSetChanged();
     }

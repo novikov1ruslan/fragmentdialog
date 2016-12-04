@@ -47,7 +47,7 @@ class GameplaySounds {
         mSplashSounds = new int[SPLASH_SOUNDS_COUNT];
     }
 
-    void prepareSoundPool(AssetManager assets) {
+    void prepareSoundPool(@NonNull AssetManager assets) {
         try {
             mHitSounds[0] = mSoundPool.load(assets.openFd("hit1.ogg"), 1);
             mHitSounds[1] = mSoundPool.load(assets.openFd("hit2.ogg"), 1);

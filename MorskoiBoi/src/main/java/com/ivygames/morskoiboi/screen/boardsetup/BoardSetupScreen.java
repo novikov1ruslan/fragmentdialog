@@ -70,12 +70,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             Ln.d("board setup timeout");
             AnalyticsEvent.send("board setup timeout");
             mGame.finish();
-            DialogUtils.newOkDialog(R.string.session_timeout, new Runnable() {
-                @Override
-                public void run() {
-                    backToSelectGame();
-                }
-            }).show(mFm, FragmentAlertDialog.TAG);
+            DialogUtils.newOkDialog(R.string.session_timeout,
+                    mEndGameCommand).show(mFm, FragmentAlertDialog.TAG);
         }
     };
     @NonNull
@@ -198,7 +194,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             Ln.d("match against a real human - ask the player if he really wants to exit");
             showWantToLeaveRoomDialog();
         } else {
-            backToSelectGame();
+            mEndGameCommand.run();
         }
     }
 

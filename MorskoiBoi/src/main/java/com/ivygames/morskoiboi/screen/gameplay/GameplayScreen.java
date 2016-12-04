@@ -333,7 +333,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             public void onClick(DialogInterface dialog, int which) {
                 UiEvent.send("left_from_game", "ok");
                 Ln.d("player decided to leave the game");
-                backToSelectGame();
+                mEndGameCommand.run();
             }
         }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
     }
@@ -606,7 +606,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
     private void surrender(final int penalty) {
         mSettings.setProgressPenalty(mSettings.getProgressPenalty() + penalty);
-        backToSelectGame();
+        mEndGameCommand.run();
     }
 
     @Override
