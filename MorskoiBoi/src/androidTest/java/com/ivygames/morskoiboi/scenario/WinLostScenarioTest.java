@@ -45,7 +45,7 @@ import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Ignore
+//@Ignore
 public class WinLostScenarioTest {
     private static final long WON_GAME_DELAY = 3000; // milliseconds
     private static final long LOST_GAME_DELAY = 5000; // milliseconds

@@ -5,13 +5,12 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import com.ivygames.common.ui.SignInListener;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.ScoresCalculator;
+import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScreenUtils;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
+import java.util.Collection;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -20,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.BOARD_SETUP_LAYOUT;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
 import static com.ivygames.morskoiboi.ScreenUtils.clickOn;
-import static org.mockito.Matchers.anyCollection;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -166,7 +165,7 @@ public class WinScreenTest extends WinScreen_ {
     }
 
     private void setScores(int scores) {
-        when(scoresCalculator.calcScoresForAndroidGame(anyCollection(), statistics)).thenReturn(scores);
+        when(scoresCalculator.calcScoresForAndroidGame(any(Collection.class), any(ScoreStatistics.class))).thenReturn(scores);
     }
 
 }

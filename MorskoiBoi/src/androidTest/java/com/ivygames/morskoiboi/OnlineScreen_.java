@@ -44,7 +44,7 @@ public abstract class OnlineScreen_ extends ScreenTest {
         setGameType(Type.VS_ANDROID);
     }
 
-    public PlayerOpponent mockPlayer() {
+    protected PlayerOpponent mockPlayer() {
         PlayerOpponent player = mock(PlayerOpponent.class);
         when(player.getBoard()).thenReturn(new Board());
         when(player.getEnemyBoard()).thenReturn(new Board());

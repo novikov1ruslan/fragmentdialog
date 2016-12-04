@@ -7,11 +7,13 @@ import android.view.View;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Dependencies;
+import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.config.ScoresUtils;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.win.WinScreen;
@@ -19,14 +21,17 @@ import com.ivygames.morskoiboi.screen.win.WinScreen;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.verification.VerificationMode;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 abstract class WinScreen_ extends OnlineScreen_ {
@@ -38,14 +43,11 @@ abstract class WinScreen_ extends OnlineScreen_ {
     private Collection<Ship> fleet = new ArrayList<>();
     boolean surrendered;
     ScoreStatistics statistics;
-    @Mock
-    ScoresCalculator scoresCalculator;
+    protected ScoresCalculator scoresCalculator;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
         super.setup();
-
         rules = mock(Rules.class);
         achievementsManager = mock(AchievementsManager.class);
         Dependencies.inject(achievementsManager);
@@ -56,6 +58,7 @@ abstract class WinScreen_ extends OnlineScreen_ {
         when(settings().incrementProgress(anyInt())).thenReturn(0);
         Dependencies.inject(rules);
 
+        scoresCalculator = mock(ScoresCalculator.class);
         Dependencies.inject(scoresCalculator);
     }
 
