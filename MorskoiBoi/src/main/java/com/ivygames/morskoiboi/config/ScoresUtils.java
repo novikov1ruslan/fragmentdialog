@@ -37,11 +37,7 @@ public abstract class ScoresUtils {
         return health;
     }
 
-    public static int calcTotalScores(@NonNull Collection<Ship> ships, @NonNull Game game,
-                                      @NonNull ScoreStatistics statistics,
-                                      boolean surrendered, @NonNull ScoresCalculator scoresCalculator) {
-        int score = calculateScoresForGame(ships, statistics, game, scoresCalculator);
-
+    public static int normalizeScores(int score, boolean surrendered) {
         if (surrendered) {
             score = score / 2;
             if (score > MAX_SCORE_FOR_SURRENDERED_GAME) {

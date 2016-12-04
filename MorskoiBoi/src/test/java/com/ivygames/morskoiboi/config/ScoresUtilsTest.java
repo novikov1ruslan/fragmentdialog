@@ -60,26 +60,26 @@ public class ScoresUtilsTest {
     public void max_scores_for_android_game_is_31250() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(ScoresUtils.calcTotalScores(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), mAndroidGame,
-                statistics, false, scoresCalculator), is(31250));
+        int score = ScoresUtils.calculateScoresForGame(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, false), is(31250));
     }
 
     @Test
     public void max_scores_for_surrendered_game_is_5000() {
         ScoreStatistics statistics = mockPerfectGame();
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME);
-        assertThat(ScoresUtils.calcTotalScores(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), mAndroidGame,
-                statistics, true, scoresCalculator), is(5000));
+        int score = ScoresUtils.calculateScoresForGame(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, true), is(5000));
     }
 
     @Test
     public void max_score_for_BT_game_is_5000() {
         ScoreStatistics statistics = new ScoreStatistics();
         int MAX_BT_SCORE = 5000;
-        assertThat(ScoresUtils.calcTotalScores(new ArrayList<Ship>(), mBluetoothGame, statistics,
-                false, scoresCalculator), is(MAX_BT_SCORE));
-        assertThat(ScoresUtils.calcTotalScores(new ArrayList<Ship>(), mBluetoothGame, statistics,
-                true, scoresCalculator), lessThan(MAX_BT_SCORE));
+        int score1 = ScoresUtils.calculateScoresForGame(new ArrayList<Ship>(), statistics, mBluetoothGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score1, false), is(MAX_BT_SCORE));
+        int score = ScoresUtils.calculateScoresForGame(new ArrayList<Ship>(), statistics, mBluetoothGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, true), lessThan(MAX_BT_SCORE));
     }
 
     @Test
@@ -87,10 +87,10 @@ public class ScoresUtilsTest {
         ScoreStatistics statistics = new ScoreStatistics();
 
         int MAX_INTERNET_SCORE = 10000;
-        assertThat(ScoresUtils.calcTotalScores(new ArrayList<Ship>(), mInternetGame, statistics,
-                false, scoresCalculator), is(MAX_INTERNET_SCORE));
-        assertThat(ScoresUtils.calcTotalScores(new ArrayList<Ship>(), mInternetGame, statistics,
-                true, scoresCalculator), lessThan(MAX_INTERNET_SCORE));
+        int score1 = ScoresUtils.calculateScoresForGame(new ArrayList<Ship>(), statistics, mInternetGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score1, false), is(MAX_INTERNET_SCORE));
+        int score = ScoresUtils.calculateScoresForGame(new ArrayList<Ship>(), statistics, mInternetGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, true), lessThan(MAX_INTERNET_SCORE));
     }
 
     @Test
@@ -98,8 +98,8 @@ public class ScoresUtilsTest {
         ScoreStatistics statistics = mockPerfectGame();
 
         when(statistics.getTimeSpent()).thenReturn(MIN_TIME/2);
-        assertThat(ScoresUtils.calcTotalScores(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), mAndroidGame, statistics,
-                false, scoresCalculator), is(31250));
+        int score = ScoresUtils.calculateScoresForGame(ShipUtils.createNewShips(allShipsSizes, orientationBuilder), statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, false), is(31250));
     }
 
     @Test
@@ -110,7 +110,8 @@ public class ScoresUtilsTest {
         when(statistics.getShells()).thenReturn(0);
         when(statistics.getTimeSpent()).thenReturn(MAX_TIME);
 
-        int i = ScoresUtils.calcTotalScores(ships, mAndroidGame, statistics, false, scoresCalculator);
+        int score = ScoresUtils.calculateScoresForGame(ships, statistics, mAndroidGame, scoresCalculator);
+        int i = ScoresUtils.normalizeScores(score, false);
         assertThat(i, is(230));
     }
 
@@ -122,24 +123,24 @@ public class ScoresUtilsTest {
         when(statistics.getShells()).thenReturn(0);
         when(statistics.getTimeSpent()).thenReturn(MAX_TIME*2);
 
-        assertThat(ScoresUtils.calcTotalScores(ships, mAndroidGame, statistics,
-                false, scoresCalculator), is(230));
+        int score = ScoresUtils.calculateScoresForGame(ships, statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, false), is(230));
     }
 
     @Test
     public void scores_2xCombo_1_4_ships_30xShells_150seconds_is_8737() {
         Collection<Ship> ships = ships_1_4();
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
-        assertThat(ScoresUtils.calcTotalScores(ships, mAndroidGame, statistics,
-                false, scoresCalculator), is(8737));
+        int score = ScoresUtils.calculateScoresForGame(ships, statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, false), is(8737));
     }
 
     @Test
     public void surrendered_game_scores_2x_less() {
         Collection<Ship> ships = ships_1_4();
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
-        assertThat(ScoresUtils.calcTotalScores(ships, mAndroidGame, statistics,
-                true, scoresCalculator), is(4368));
+        int score = ScoresUtils.calculateScoresForGame(ships, statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, true), is(4368));
     }
 
     @Test
@@ -148,8 +149,8 @@ public class ScoresUtilsTest {
         ships.add(ShipTestUtils.deadShip());
         ScoreStatistics statistics = game_2xCombo_30xShells_150seconds();
 
-        assertThat(ScoresUtils.calcTotalScores(ships, mAndroidGame, statistics,
-                false, scoresCalculator), is(8737));
+        int score = ScoresUtils.calculateScoresForGame(ships, statistics, mAndroidGame, scoresCalculator);
+        assertThat(ScoresUtils.normalizeScores(score, false), is(8737));
     }
 
     @Test
