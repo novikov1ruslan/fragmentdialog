@@ -110,13 +110,16 @@ public class ScreenManager {
 
         if (mCurrentScreen != null) {
             oldView = mCurrentScreen.getView();
+            // TODO: unite pause/stop/destroy
             mCurrentScreen.onPause();
             mCurrentScreen.onStop();
             mCurrentScreen.onDestroy();
         }
 
         mCurrentScreen = screen;
-        View view = mCurrentScreen.onCreateView(mContainer);
+        // TODO: rename onCreateView->onCreate
+        mCurrentScreen.onCreateView(mContainer);
+        View view = mCurrentScreen.getView();
 
         // TODO: change order of add and remove
         mContainer.addView(view);

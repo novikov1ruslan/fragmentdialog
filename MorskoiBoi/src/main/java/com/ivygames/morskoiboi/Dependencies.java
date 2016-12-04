@@ -7,6 +7,7 @@ import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.ads.AdProvider;
+import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
@@ -25,7 +26,7 @@ public class Dependencies {
     private static AndroidDevice sAndroidDevice;
     private static GameSettings sGameSettings;
     private static Rules sRules;
-    private static AdProvider sAdProvider;
+    private static AdProvider sAdProvider = new NoAdsAdProvider();
     private static PlayerFactory sPlayerFactory;
     private static AiPlayerFactory sAiPlayerFactory;
     private static Random sRandom;

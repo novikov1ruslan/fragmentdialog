@@ -34,7 +34,6 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
 
         mEndGameCommand = new EndGameCommand(game, new BackToSelectGameCommand(parent));
 
-        // FIXME: if registered here it can happen that event will arrive to more than 1 screen
         mMultiplayer.registerConnectionLostListener(this);
     }
 
@@ -49,9 +48,11 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     public void onConnectionLost(@NonNull MultiplayerEvent event) {
         if (event == MultiplayerEvent.OPPONENT_LEFT) {
             Ln.d("opponent left the game - notifying player");
+            mGame.finish();
             showOpponentLeftDialog();
         } else if (event == MultiplayerEvent.CONNECTION_LOST) {
             Ln.d("connection lost - notifying player");
+            mGame.finish();
             showConnectionLostDialog();
         }
     }
