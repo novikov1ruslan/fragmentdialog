@@ -130,7 +130,7 @@ public class PlayerOpponentTest {
     @Test
     public void after_shot_result_is_miss__enemy_board_shows_miss() {
         Vector aim = Vector.get(5, 5);
-        ShotResult result = new ShotResult(aim, Cell.MISS);
+        ShotResult result = newMissResult(5, 5);
 
         mPlayer.onShotResult(result);
 
@@ -139,9 +139,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void when_result_of_a_shot_is_miss__opponent_goes() {
-        ShotResult result = new ShotResult(Vector.get(5, 5), Cell.MISS);
-
-        mPlayer.onShotResult(result);
+        mPlayer.onShotResult(newMissResult(5, 5));
 
         verify(mEnemy, times(1)).go();
     }
@@ -159,10 +157,9 @@ public class PlayerOpponentTest {
     @Test
     public void after_shot_result_is_hit__enemy_board_shows_hit() {
         Vector aim = Vector.get(5, 5);
-        Cell cell = Cell.HIT;
-        ShotResult result = new ShotResult(aim, cell);
+        ShotResult result = new ShotResult(aim, Cell.HIT);
         mPlayer.onShotResult(result);
-        assertThat(enemyCellAt(aim), equalTo(cell));
+        assertThat(enemyCellAt(aim), equalTo(Cell.HIT));
     }
 
     @Test
@@ -221,8 +218,7 @@ public class PlayerOpponentTest {
     @Test
     public void when_asking_for_board__actual_board_returned() {
         Board board = new Board();
-        board.setCell(Cell.MISS, Vector.get(4, 4))
-        ;
+        board.setCell(Cell.MISS, Vector.get(4, 4));
         mPlayer.setBoard(board);
 
         assertThat(mPlayer.getBoard(), is(board));
@@ -291,7 +287,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerGetsShotResult__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector.get(1, 1), Cell.HIT);
+        ShotResult result = newHitResult(1, 1);
         mPlayer.onShotResult(result);
 
         verify(callback, times(1)).onPlayerShotResult(result);
@@ -299,24 +295,21 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerKillsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector.get(1, 1), Cell.HIT, new LocatedShip(new Ship(1)));
-        mPlayer.onShotResult(result);
+        mPlayer.onShotResult(newHitResult(1, 1, new Ship(1)));
 
         verify(callback, times(1)).onKillEnemy();
     }
 
     @Test
     public void WhenPlayerHitsShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector.get(1, 1), Cell.HIT);
-        mPlayer.onShotResult(result);
+        mPlayer.onShotResult(newHitResult(1, 1));
 
         verify(callback, times(1)).onHit();
     }
 
     @Test
     public void WhenPlayerMissesShip__CallbackCalled() {
-        ShotResult result = new ShotResult(Vector.get(1, 1), Cell.MISS);
-        mPlayer.onShotResult(result);
+        mPlayer.onShotResult(newMissResult(1, 1));
 
         verify(callback, times(1)).onMiss();
         verify(callback, times(1)).onOpponentTurn();
@@ -367,7 +360,7 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void WhenPlayerLoses__CallbackNotCalled() {
+    public void WhenPlayerLoses_AndOpponentDoesNotSupportBoardReveal__WinCallbackCalled() {
         PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
         doesntSupportBoardReveal(player);
 
@@ -380,18 +373,22 @@ public class PlayerOpponentTest {
 
     @Test
     public void AfterPlayerLoses__EnemyIsNotReady() {
-        if_player_can_go__enemy_is_ready();
+        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+        doesntSupportBoardReveal(player);
 
-        WhenPlayerLoses__CallbackNotCalled();
+        player.setBoard(boardWithShip(new Ship(1), 5, 5));
+
+        player.onShotAt(Vector.get(5, 5));
 
         assertThat(mPlayer.isOpponentReady(), is(false));
     }
 
     @Test
     public void AfterPlayerWins__EnemyIsNotReady() {
-        if_player_can_go__enemy_is_ready();
+        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+        supportBoardReveal(player);
 
-        WhenPlayerWins__OpponentLost();
+        player.onShotResult(newHitResult(5, 5, newDeadShip()));
 
         assertThat(mPlayer.isOpponentReady(), is(false));
     }
@@ -401,9 +398,7 @@ public class PlayerOpponentTest {
         PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
         supportBoardReveal(player);
 
-        Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Vector.get(5, 5), Cell.HIT, new LocatedShip(ship));
-        player.onShotResult(result);
+        player.onShotResult(newHitResult(5, 5, newDeadShip()));
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
     }
@@ -413,8 +408,7 @@ public class PlayerOpponentTest {
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, 1);
         doesntSupportBoardReveal(player);
 
-        ShotResult result = new ShotResult(Vector.get(5, 5), Cell.HIT, new LocatedShip(new Ship(1)));
-        player.onShotResult(result);
+        player.onShotResult(newHitResult(5, 5, new Ship(1)));
 
         verify(mEnemy, never()).onLost(any(Board.class));
     }
@@ -480,8 +474,7 @@ public class PlayerOpponentTest {
         aiOpponent.setOpponent(player);
 
         Ship ship = newDeadShip();
-        ShotResult result = new ShotResult(Vector.get(5, 5), Cell.HIT, new LocatedShip(ship));
-        player.onShotResult(result);
+        player.onShotResult(newHitResult(5, 5, ship));
 
         assertThat(aiOpponent.lostCalled(), is(true));
     }
@@ -538,6 +531,18 @@ public class PlayerOpponentTest {
 
     private void doesntSupportBoardReveal(PlayerOpponent player) {
         player.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+    }
+
+    private ShotResult newMissResult(int i, int j) {
+        return new ShotResult(Vector.get(i, j), Cell.MISS);
+    }
+
+    private ShotResult newHitResult(int i, int j) {
+        return new ShotResult(Vector.get(i, j), Cell.HIT, null);
+    }
+
+    private ShotResult newHitResult(int i, int j, Ship ship) {
+        return new ShotResult(Vector.get(i, j), Cell.HIT, new LocatedShip(ship));
     }
 
     private class MyAiOpponent extends AiOpponent {

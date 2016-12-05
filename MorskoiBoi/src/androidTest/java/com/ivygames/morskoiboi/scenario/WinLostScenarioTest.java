@@ -8,6 +8,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingPolicies;
 import android.util.Log;
 
+import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
@@ -160,6 +161,19 @@ public class WinLostScenarioTest {
         verifyWin();
     }
 
+//    @Test
+//    public void Lost() throws InterruptedException {
+//        BidPlayerFactory playerFactory = new BidPlayerFactory(1);
+//        playerFactory.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+//        Dependencies.inject(playerFactory);
+//        Dependencies.inject(new BidAiPlayerFactory(mRandom, 2));
+//
+//        goToGameplay();
+//
+//        idleWait();
+//        verifyLost();
+//    }
+
     private void idleWait() throws InterruptedException {
         playResource.setIdle(false);
         espressoWait();
@@ -172,14 +186,23 @@ public class WinLostScenarioTest {
     private class BidPlayerFactory implements PlayerFactory {
 
         private final int[] mBid;
+        private int mVersion;
 
-        public BidPlayerFactory(int... bid) {
+        BidPlayerFactory(int... bid) {
             mBid = bid;
+        }
+
+        void setOpponentVersion(int version) {
+            mVersion = version;
         }
 
         @Override
         public PlayerOpponent createPlayer(@NonNull String name, int numberOfShips) {
-            return new BidPlayer("player1", numberOfShips, mBid, new WinLostCallback());
+            BidPlayer player = new BidPlayer("player1", numberOfShips, mBid, new WinLostCallback());
+            if (mVersion != 0) {
+                player.setVersion(mVersion);
+            }
+            return player;
         }
     }
 
