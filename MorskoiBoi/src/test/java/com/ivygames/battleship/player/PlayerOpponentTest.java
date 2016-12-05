@@ -368,7 +368,7 @@ public class PlayerOpponentTest {
 
         player.onShotAt(Vector.get(5, 5));
 
-        verify(callback, times(1)).onWin();
+        verify(callback, times(1)).onPlayerLost(any(Board.class));
     }
 
     @Test
@@ -388,20 +388,30 @@ public class PlayerOpponentTest {
         PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
         supportBoardReveal(player);
 
-        player.onShotResult(newHitResult(5, 5, newDeadShip()));
+        player.onShotResult(newHitResult(5, 5, new Ship(1)));
 
         assertThat(mPlayer.isOpponentReady(), is(false));
     }
 
     @Test
-    public void WhenPlayerWins__OpponentLost() {
+    public void WhenPlayerWins__WinCallbackCalled() {
         PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
         supportBoardReveal(player);
 
-        player.onShotResult(newHitResult(5, 5, newDeadShip()));
+        player.onShotResult(newHitResult(5, 5, new Ship(1)));
 
-        verify(mEnemy, times(1)).onLost(any(Board.class));
+        verify(callback, times(1)).onWin();
     }
+//
+//    @Test
+//    public void WhenPlayerWins__OpponentLost() {
+//        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+//        supportBoardReveal(player);
+//
+//        player.onShotResult(newHitResult(5, 5, newDeadShip()));
+//
+//        verify(mEnemy, times(1)).onLost(any(Board.class));
+//    }
 
     @Test
     public void WhenEnemyLoses_AndEnemyDoesNotSupportBoardReveal__CallbackNotCalled() {
@@ -467,19 +477,6 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void WhenPlayerWinsOverAiOpponent__OpponentLost() {
-        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
-        MyAiOpponent aiOpponent = new MyAiOpponent("Ai", rules);
-        player.setOpponent(aiOpponent);
-        aiOpponent.setOpponent(player);
-
-        Ship ship = newDeadShip();
-        player.onShotResult(newHitResult(5, 5, ship));
-
-        assertThat(aiOpponent.lostCalled(), is(true));
-    }
-
-    @Test
     public void AfterPlayerIsShotAt__OpponentReceivesShotResult() {
         Vector aim = Vector.get(5, 5);
         ArgumentCaptor<ShotResult> argument = ArgumentCaptor.forClass(ShotResult.class);
@@ -498,13 +495,6 @@ public class PlayerOpponentTest {
         mPlayer.onShotAt(Vector.get(5, 5));
 
         verify(mEnemy, times(1)).go();
-    }
-
-    @NonNull
-    private Ship newDeadShip() {
-        Ship ship = new Ship(1);
-        ship.shoot();
-        return ship;
     }
 
     @NonNull

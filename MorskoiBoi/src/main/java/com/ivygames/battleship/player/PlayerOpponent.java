@@ -233,7 +233,7 @@ public class PlayerOpponent implements Opponent {
                 if (!versionSupportsBoardReveal()) {
                     Ln.d(mName + ": opponent doesn't support board reveal = " + mOpponentVersion + ", resetting my state before win");
                     reset();
-                    mCallback.onWin();
+                    mCallback.onPlayerLost(null);
                 }
             } else {
                 Ln.d(mName + ": I'm hit - " + mOpponent + " continues");
