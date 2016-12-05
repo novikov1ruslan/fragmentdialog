@@ -231,8 +231,7 @@ public class PlayerOpponent implements Opponent {
             if (BoardUtils.isItDefeatedBoard(mMyBoard, mNumberOfShips)) {
                 Ln.d(mName + ": I'm defeated, no turn to pass");
                 if (!versionSupportsBoardReveal()) {
-                    Ln.d(mName + ": opponent version doesn't support board reveal = " + mOpponentVersion);
-                    Ln.d(mName + ": resetting my state before win");
+                    Ln.d(mName + ": opponent doesn't support board reveal = " + mOpponentVersion + ", resetting my state before win");
                     reset();
                     mCallback.onWin();
                 }

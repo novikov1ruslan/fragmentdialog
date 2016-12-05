@@ -358,10 +358,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerIsKilled__CallbackCalled() {
-        Board board = new Board();
-        Ship ship = new Ship(1, Ship.Orientation.VERTICAL);
-        board.addShip(new LocatedShip(ship, 5, 5));
-        mPlayer.setBoard(board);
+        mPlayer.setBoard(boardWithShips(new LocatedShip(new Ship(1), 5, 5)));
         Vector aim = Vector.get(5, 5);
 
         mPlayer.onShotAt(aim);
@@ -371,17 +368,14 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerLoses__CallbackNotCalled() {
-        mPlayer = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
-        mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+        doesntSupportBoardReveal(player);
 
-        Board board = new Board();
-        Ship ship = new Ship(1);
-        board.addShip(new LocatedShip(ship, 5, 5));
-        mPlayer.setBoard(board);
+        player.setBoard(boardWithShip(new Ship(1), 5, 5));
 
-        mPlayer.onShotAt(Vector.get(5, 5));
+        player.onShotAt(Vector.get(5, 5));
 
-        verify(callback, never()).onPlayerLost(any(Board.class));
+        verify(callback, times(1)).onWin();
     }
 
     @Test
@@ -404,12 +398,12 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerWins__OpponentLost() {
-        mPlayer = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
-        mPlayer.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
+        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+        supportBoardReveal(player);
 
         Ship ship = newDeadShip();
         ShotResult result = new ShotResult(Vector.get(5, 5), Cell.HIT, new LocatedShip(ship));
-        mPlayer.onShotResult(result);
+        player.onShotResult(result);
 
         verify(mEnemy, times(1)).onLost(any(Board.class));
     }
@@ -417,7 +411,7 @@ public class PlayerOpponentTest {
     @Test
     public void WhenEnemyLoses_AndEnemyDoesNotSupportBoardReveal__CallbackNotCalled() {
         PlayerOpponent player = new PlayerOpponent(PLAYER_NAME, 1);
-        player.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
+        doesntSupportBoardReveal(player);
 
         ShotResult result = new ShotResult(Vector.get(5, 5), Cell.HIT, new LocatedShip(new Ship(1)));
         player.onShotResult(result);
@@ -505,8 +499,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerIsHitButNotLost__OpponentGoes() {
-        Board board = new Board();
-        board.addShip(new LocatedShip(new Ship(2), 5, 5));
+        Board board = boardWithShips(new LocatedShip(new Ship(2), 5, 5));
         mPlayer.setBoard(board);
 
         mPlayer.onShotAt(Vector.get(5, 5));
@@ -521,8 +514,30 @@ public class PlayerOpponentTest {
         return ship;
     }
 
+    @NonNull
+    private Board boardWithShip(Ship ship, int i, int j) {
+        Board board = new Board();
+        board.addShip(new LocatedShip(ship, i , j));
+        return board;
+    }
+
+    @NonNull
+    private Board boardWithShips(LocatedShip locatedShip) {
+        Board board = new Board();
+        board.addShip(locatedShip);
+        return board;
+    }
+
     private Cell enemyCellAt(Vector aim) {
         return mPlayer.getEnemyBoard().getCell(aim);
+    }
+
+    private void supportBoardReveal(PlayerOpponent player) {
+        player.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL);
+    }
+
+    private void doesntSupportBoardReveal(PlayerOpponent player) {
+        player.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
     }
 
     private class MyAiOpponent extends AiOpponent {
