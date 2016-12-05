@@ -3,7 +3,6 @@ package com.ivygames.morskoiboi.boardsetup;
 import com.ivygames.battleship.ship.Ship.Orientation;
 import com.ivygames.morskoiboi.OnlineScreen_;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.pressBack;
