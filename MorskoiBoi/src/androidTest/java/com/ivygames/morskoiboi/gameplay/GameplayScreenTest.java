@@ -90,7 +90,7 @@ public class GameplayScreenTest extends GameplayScreen_ {
     }
 
     @NonNull
-    protected Matcher<View> opponentSettingBoardNotification() {
+    private Matcher<View> opponentSettingBoardNotification() {
         return withText(getString(R.string.opponent_setting_board, OPPONENT_NAME));
     }
 

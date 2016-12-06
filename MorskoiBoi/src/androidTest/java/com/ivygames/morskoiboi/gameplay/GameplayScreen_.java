@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 
 public class GameplayScreen_ extends OnlineScreen_ {
 
-    protected TurnTimerController timeController;
+    TurnTimerController timeController;
 
     @Before
     public void setup() {
@@ -31,7 +31,7 @@ public class GameplayScreen_ extends OnlineScreen_ {
     }
 
     @NonNull
-    protected final Matcher<View> chat() {
+    final Matcher<View> chat() {
         return ViewMatchers.withId(R.id.chat_button);
     }
 
