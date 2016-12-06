@@ -1,7 +1,5 @@
 package com.ivygames.battleship.player;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -22,13 +20,6 @@ import static com.ivygames.common.analytics.ExceptionHandler.reportException;
 
 public class PlayerOpponent implements Opponent {
     public static volatile Board debug_board;
-    private final Handler debug_handler = new Handler(Looper.getMainLooper());
-    private final Runnable debug_thread_break_task = new Runnable() {
-        @Override
-        public void run() {
-            Ln.v("---------------------- main thread ----------------------");
-        }
-    };
 
     private static final int NOT_READY = -1;
 
@@ -83,8 +74,6 @@ public class PlayerOpponent implements Opponent {
     }
 
     public void startBidding(int bid) {
-        debug_handler.post(debug_thread_break_task);
-
         mMyBid = bid;
 
         if (mOpponentReady && opponentStarts()) {
@@ -99,8 +88,6 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void onEnemyBid(int bid) {
-        debug_handler.post(debug_thread_break_task);
-
         setOpponentBid(bid);
         mCallback.opponentReady();
 
@@ -149,8 +136,6 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void go() {
-        debug_handler.post(debug_thread_break_task);
-
         Ln.d(mName + ": I go");
         if (!mOpponentReady) {
             Ln.v(mName + ": opponent was not ready, but ready now");
@@ -164,8 +149,6 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void onShotResult(@NonNull ShotResult result) {
-        debug_handler.post(debug_thread_break_task);
-
         Ln.v(mName + ": -> my shot result: " + result);
         updateEnemyBoard(result);
 
@@ -204,16 +187,12 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void onShotAt(@NonNull Vector aim) {
-        debug_handler.post(debug_thread_break_task);
-
         ShotResult result = createResultForShootingAt(aim);
         Ln.v(mName + ": <- hitting my board at " + aim + " yields: " + result);
 
         mCallback.onPlayerShotAt();
         if (result.isaKill()) {
             Ln.d(mName + ": my ship is destroyed - " + result.locatedShip);
-            // FIXME: add unit test for removed below line
-//            Placement.putShipAt(mMyBoard, result.ship, result.ship.getX(), result.ship.getY());
             mCallback.onKillPlayer();
         } else if (result.cell == Cell.MISS) {
             mCallback.onMiss();
@@ -258,8 +237,6 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void onLost(@NonNull Board board) {
-        debug_handler.post(debug_thread_break_task);
-
         if (!BoardUtils.isItDefeatedBoard(mMyBoard, mNumberOfShips)) {
             reportException("lost while not defeated: " + mMyBoard.getShips());
         }
@@ -271,8 +248,6 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void setOpponentVersion(int ver) {
-        debug_handler.post(debug_thread_break_task);
-
         mOpponentVersion = ver;
         Ln.d(mName + ": opponent's protocol version: v" + ver);
     }
