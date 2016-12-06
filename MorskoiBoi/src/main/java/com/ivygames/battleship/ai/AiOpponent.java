@@ -2,7 +2,6 @@ package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.Placement;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ShipUtils;
@@ -29,7 +28,6 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     private final Bidder mBidder;
     @NonNull
     private final Random mRandom;
-    private boolean mOpponentReady;
 
     public AiOpponent(@NonNull String name,
                       @NonNull Rules rules, @NonNull Bot bot,
@@ -45,7 +43,6 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     @Override
     public void reset() {
         super.reset();
-        mOpponentReady = false;
     }
 
     @Override
@@ -56,28 +53,23 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
         }
     }
 
-    @Override
-    public void setOpponent(@NonNull Opponent opponent) {
-        super.setOpponent(opponent);
-    }
-
     private void start() {
-        if (mOpponentReady) {
+        if (started()) {
             // TODO: unit test to test lack of the return
             return;
         }
 
-        mOpponentReady = true;
-
-        if (getBoard().getShips().isEmpty()) {
-            Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
-            placeShips();
-        }
+        Ln.v(getName() + ": opponent is waiting for me, I will place ships and start bidding...");
+        placeShips();
 
         if (!ready()) {
             Ln.d(getName() + ": opponent is ready, but I'm not, start bidding");
             startBidding(mBidder.newBid());
         }
+    }
+
+    private boolean started() {
+        return getBoard().getShips().size() > 0;
     }
 
     @Override

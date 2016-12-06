@@ -75,10 +75,9 @@ public class GameplayScreenTest extends GameplayScreen_ {
 
     @Test
     public void WhenScreenDestroyed_ForAndroidGame__AndroidOpponentIsCancelled() {
-        PlayerOpponent player = mockPlayer();
         AiOpponent android = mock(AiOpponent.class);
         when(android.getName()).thenReturn(OPPONENT_NAME);
-        session = new Session(player, android);
+        session = new Session(mockPlayer(), android);
         setGameType(OnlineScreen_.Type.VS_ANDROID);
         showScreen();
 
