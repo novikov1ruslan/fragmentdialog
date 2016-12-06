@@ -3,12 +3,9 @@ package com.ivygames.morskoiboi.gameplay;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.ivygames.battleship.ai.AiOpponent;
-import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.morskoiboi.OnlineScreen_;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.screen.gameplay.GameplayScreen;
 
 import org.hamcrest.Matcher;
@@ -16,7 +13,6 @@ import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.ivygames.morskoiboi.ScreenUtils.checkDisplayed;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -71,19 +67,6 @@ public class GameplayScreenTest extends GameplayScreen_ {
         showScreen();
         destroy();
         verify(timeController, times(1)).stop();
-    }
-
-    @Test
-    public void WhenScreenDestroyed_ForAndroidGame__AndroidOpponentIsCancelled() {
-        AiOpponent android = mock(AiOpponent.class);
-        when(android.getName()).thenReturn(OPPONENT_NAME);
-        session = new Session(mockPlayer(), android);
-        setGameType(OnlineScreen_.Type.VS_ANDROID);
-        showScreen();
-
-        destroy();
-
-        verify(android, times(1)).cancel();
     }
 
     @Test
