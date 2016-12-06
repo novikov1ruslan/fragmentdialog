@@ -41,7 +41,6 @@ public class PlayerOpponent implements Opponent {
 
     @Nullable
     private ChatListener mChatListener;
-    private boolean mPlayerReady;
     private int mOpponentVersion;
     protected Opponent mOpponent;
     @NonNull
@@ -68,7 +67,6 @@ public class PlayerOpponent implements Opponent {
         mMyBid = NOT_READY;
         mEnemyBid = NOT_READY;
         mOpponentReady = false;
-        mPlayerReady = false;
     }
 
     public void setBoard(@NonNull Board board) {
@@ -88,7 +86,6 @@ public class PlayerOpponent implements Opponent {
         debug_handler.post(debug_thread_break_task);
 
         mMyBid = bid;
-        mPlayerReady = true;
 
         if (mOpponentReady && opponentStarts()) {
             Ln.d(mName + ": my bid: " + bid + ", opponent is ready and it is his turn");
@@ -342,7 +339,7 @@ public class PlayerOpponent implements Opponent {
     }
 
     protected final boolean ready() {
-        return mPlayerReady;
+        return mMyBid != NOT_READY;
     }
 
     @NonNull
