@@ -25,20 +25,6 @@ public class BoardTest {
     private Board mBoard = new Board();
 
     @Test
-    public void testEquals() {
-        Board board1 = new Board();
-        Board board2 = new Board();
-        assertThat(BoardTestUtils.similar(board1, board2), is(true));
-
-        Ship ship = new Ship(3);
-        board2.addShip(new LocatedShip(ship, 5, 5));
-        assertFalse(BoardTestUtils.similar(board1, board2));
-
-        board1.addShip(new LocatedShip(ship, 5, 5));
-        assertThat(BoardTestUtils.similar(board1, board2), is(true));
-    }
-
-    @Test
     public void testWidth() {
         assertEquals(10, mBoard.width());
     }

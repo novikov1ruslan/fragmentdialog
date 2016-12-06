@@ -107,7 +107,7 @@ public class PlayerOpponent implements Opponent {
         setOpponentBid(bid);
         mCallback.opponentReady();
 
-        if (mPlayerReady && opponentStarts()) {
+        if (ready() && opponentStarts()) {
             Ln.d(mName + ": I'm ready , but it's opponent's turn, " + mOpponent + " begins");
             mOpponent.go();
 
@@ -136,7 +136,7 @@ public class PlayerOpponent implements Opponent {
             Ln.d(mName + ": opponent ready, notifying");
             callback.opponentReady();
 
-            if (mPlayerReady) {
+            if (ready()) {
                 if (opponentStarts()) {
                     callback.onOpponentTurn();
                 } else {

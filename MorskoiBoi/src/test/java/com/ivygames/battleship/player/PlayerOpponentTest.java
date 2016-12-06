@@ -6,8 +6,6 @@ import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ChatMessage;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.Rules;
-import com.ivygames.battleship.ai.AiOpponent;
-import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
@@ -15,7 +13,6 @@ import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
 import com.ivygames.common.analytics.ExceptionHandler;
-import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.PlayerCallback;
 
 import org.junit.Before;
@@ -360,7 +357,7 @@ public class PlayerOpponentTest {
     }
 
     @Test
-    public void WhenPlayerLoses_AndOpponentDoesNotSupportBoardReveal__WinCallbackCalled() {
+    public void WhenPlayerLoses_AndOpponentDoesNotSupportBoardReveal__WinCallbackCalled_AndPlayerIsReset() {
         PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
         doesntSupportBoardReveal(player);
 
@@ -369,6 +366,28 @@ public class PlayerOpponentTest {
         player.onShotAt(Vector.get(5, 5));
 
         verify(callback, times(1)).onPlayerLost(any(Board.class));
+        verifyReset(player);
+    }
+
+    @Test
+    public void WhenPlayerLoses_AndOpponentSupportBoardReveal__WinCallbackNotCalled() {
+        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+        supportBoardReveal(player);
+
+        player.setBoard(boardWithShip(new Ship(1), 5, 5));
+
+        player.onShotAt(Vector.get(5, 5));
+
+        verify(callback, never()).onPlayerLost(any(Board.class));
+    }
+
+    @Test
+    public void WhenOpponentLooses__CallbackIsCalled_AndPlayerIsReset() {
+        Board board = new Board();
+        mPlayer.onLost(board);
+
+        verify(callback, times(1)).onPlayerLost(board);
+        verifyReset(mPlayer);
     }
 
     @Test
@@ -445,14 +464,6 @@ public class PlayerOpponentTest {
         verify(callback, times(1)).onOpponentTurn();
     }
 
-    @Test
-    public void WhenOpponentLooses__CallbackIsCalled() {
-        Board board = new Board();
-        mPlayer.onLost(board);
-
-        verify(callback, times(1)).onPlayerLost(board);
-    }
-
     // TODO: repeat the 3 for win as well
     @Test
     public void WhenGameEnds__PlayersBoardIsEmpty() {
@@ -497,6 +508,18 @@ public class PlayerOpponentTest {
         verify(mEnemy, times(1)).go();
     }
 
+    @Test
+    public void AfterBiddingStarted__PlayerIsReady() {
+        mPlayer.startBidding(1);
+
+        assertThat(mPlayer.ready(), is(true));
+    }
+
+    @Test
+    public void BeforeBiddingStarted__PlayerIsNotReady() {
+        assertThat(mPlayer.ready(), is(false));
+    }
+
     @NonNull
     private Board boardWithShip(Ship ship, int i, int j) {
         Board board = new Board();
@@ -535,22 +558,16 @@ public class PlayerOpponentTest {
         return new ShotResult(Vector.get(i, j), Cell.HIT, new LocatedShip(ship));
     }
 
-    private class MyAiOpponent extends AiOpponent {
 
-        private boolean lostCalled;
+    private void verifyReset(PlayerOpponent player) {
+        verifyBoardIsEmpty(player.getBoard());
+        verifyBoardIsEmpty(player.getEnemyBoard());
 
-        MyAiOpponent(@NonNull String name, @NonNull Rules rules) {
-            super(name, rules, new RussianBot(mRandom), new Bidder(mRandom), mRandom);
-        }
+        assertThat(player.ready(), is(false));
+        assertThat(player.isOpponentReady(), is(false));
+    }
 
-        @Override
-        public void onLost(@NonNull Board board) {
-            super.onLost(board);
-            lostCalled = true;
-        }
-
-        boolean lostCalled() {
-            return lostCalled;
-        }
+    private void verifyBoardIsEmpty(Board board) {
+        assertThat(board.getCellsByType(Cell.EMPTY).size(), is(board.width() * board.height()));
     }
 }
