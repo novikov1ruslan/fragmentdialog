@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.Placement;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ShipUtils;
-import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
@@ -41,12 +40,8 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-    }
-
-    @Override
     public void cancel() {
+        // in practice it is always Cancellable, but doesn't have to be
         if (mOpponent instanceof Cancellable) {
             Ln.v(this + ": cancelling " + mOpponent);
             ((Cancellable) mOpponent).cancel();
@@ -86,11 +81,11 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());
         OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
         Collection<Ship> ships = ShipUtils.createNewShips(mRules.getAllShipsSizes(), orientationBuilder);
-        Board board = placement.newBoardWithShips(ships);
-        setBoard(board);
+
+        Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());
+        setBoard(placement.newBoardWithShips(ships));
         if (BuildConfig.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());
         }

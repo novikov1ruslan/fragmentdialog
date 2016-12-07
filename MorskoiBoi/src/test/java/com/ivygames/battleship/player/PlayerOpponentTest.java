@@ -17,10 +17,8 @@ import com.ivygames.morskoiboi.PlayerCallback;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.Random;
 
@@ -35,7 +33,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
 public class PlayerOpponentTest {
 
     private static final String PLAYER_NAME = "Sagi";
