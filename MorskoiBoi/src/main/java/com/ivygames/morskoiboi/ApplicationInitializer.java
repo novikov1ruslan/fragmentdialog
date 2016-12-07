@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.ivygames.battleship.Configuration;
 import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
@@ -75,6 +76,8 @@ class ApplicationInitializer {
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
+
+        Configuration.DEBUG = BuildConfig.DEBUG;
 
         ExceptionHandler.setDryRun(BuildConfig.DEBUG);
         Ln.v("... application initialization complete");

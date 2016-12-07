@@ -2,13 +2,13 @@ package com.ivygames.battleship.ai;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.battleship.Configuration;
 import com.ivygames.battleship.Placement;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.OrientationBuilder;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
@@ -50,7 +50,6 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
 
     private void start() {
         if (started()) {
-            // TODO: unit test to test lack of the return
             return;
         }
 
@@ -86,7 +85,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
 
         Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());
         setBoard(placement.newBoardWithShips(ships));
-        if (BuildConfig.DEBUG) {
+        if (Configuration.DEBUG) {
             Ln.i(getName() + ": my board: " + getBoard());
         }
     }

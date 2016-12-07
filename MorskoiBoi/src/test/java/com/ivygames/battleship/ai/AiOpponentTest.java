@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.common.game.Bidder;
 import com.ivygames.morskoiboi.ai.DelegateOpponent;
@@ -19,6 +20,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class AiOpponentTest {
 
     private static final String ANDROID_NAME = "Android";
-    private AiOpponent mAndroid;
+    private AiOpponent mAiOpponent;
     @Mock
     private Opponent mOpponent;
 
@@ -38,12 +42,12 @@ public class AiOpponentTest {
 
         mCancellableOpponent.setOpponent(mOpponent);
 
-        mAndroid = newAndroid(getBidder(1));
+        mAiOpponent = newBot(getBidder(1));
     }
 
     @Test
     public void WhenAndroidGoes__OpponentGetsShot() {
-        mAndroid.go();
+        mAiOpponent.go();
 
         verify(mOpponent, times(1)).onShotAt(any(Vector.class));
     }
@@ -53,9 +57,9 @@ public class AiOpponentTest {
      */
     @Test
     public void WhenOpponentBidsWithHigherBid__OpponentGoes() {
-        mAndroid.startBidding(1);
+        mAiOpponent.startBidding(1);
 
-        mAndroid.onEnemyBid(2);
+        mAiOpponent.onEnemyBid(2);
 
         verify(mOpponent, times(1)).go();
     }
@@ -65,16 +69,16 @@ public class AiOpponentTest {
      */
     @Test
     public void WhenOpponentBidsWithLowerBid__OpponentGetsMyBid() {
-        mAndroid.startBidding(2);
+        mAiOpponent.startBidding(2);
 
-        mAndroid.onEnemyBid(1);
+        mAiOpponent.onEnemyBid(1);
 
         verify(mOpponent, times(1)).onEnemyBid(2);
     }
 
     @Test
     public void WhenAndroidNotReady_AndOpponentBidsHigher__OpponentGoesOnlyOnce() {
-        AiOpponent android = newAndroid(getBidder(1));
+        AiOpponent android = newBot(getBidder(1));
 
         android.onEnemyBid(2);
 
@@ -82,15 +86,37 @@ public class AiOpponentTest {
     }
 
     @Test
+    public void WhenAndroidGoes1stTime_ItSetsTheBoard() {
+        AiOpponent bot = newBot(getBidder(1));
+        AiOpponent spy = spy(bot);
+
+        spy.go();
+
+        verify(spy, times(1)).setBoard(any(Board.class));
+    }
+
+    @Test
+    public void WhenAndroidGoes2ndTime_TheBoardNotSet() {
+        AiOpponent bot = newBot(getBidder(1));
+        AiOpponent spy = spy(bot);
+
+        spy.go();
+        reset(spy);
+        spy.go();
+
+        verify(spy, never()).setBoard(any(Board.class));
+    }
+
+    @Test
     public void when_android_cancelled__its_cancellable_delegate_is_called() {
         assertThat(mCancellableOpponent.cancelCalled, is(false));
 
-        mAndroid.cancel();
+        mAiOpponent.cancel();
 
         assertThat(mCancellableOpponent.cancelCalled, is(true));
     }
 
-    private AiOpponent newAndroid(Bidder bidder) {
+    private AiOpponent newBot(Bidder bidder) {
         Rules rules = mock(Rules.class);
         when(rules.getAllShipsSizes()).thenReturn(new int[]{1, 2, 3});
         AiOpponent aiOpponent = new AiOpponent(ANDROID_NAME, rules, mock(Bot.class), bidder, mock(Random.class));
