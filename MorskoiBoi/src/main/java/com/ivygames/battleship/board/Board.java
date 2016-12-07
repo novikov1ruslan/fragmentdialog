@@ -133,7 +133,11 @@ public class Board {
     }
 
     public boolean hasShipAt(@NonNull Vector v) {
-        return getShipAt(v.x, v.y) != null;
+        return hasShipAt(v.x, v.y);
+    }
+
+    public boolean hasShipAt(int i, int j) {
+        return getShipAt(i, j) != null;
     }
 
     /**

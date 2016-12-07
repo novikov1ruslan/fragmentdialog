@@ -187,7 +187,7 @@ public class BoardUtils {
 
     @NonNull
     public static Vector findShipLocation(@NonNull Board board) {
-        List<Vector> hitCells = findHitCells(board);
+        List<Vector> hitCells = findFreeHitCells(board);
 
         Vector location = hitCells.get(0);
         for (Vector coordinate : hitCells) {
@@ -226,21 +226,22 @@ public class BoardUtils {
     }
 
     /**
+     * Finds {@link Cell#HIT} that do not host any ship.
      * Assumption is that the cells will belong to the same ship.
      */
     @NonNull
-    public static List<Vector> findHitCells(@NonNull Board board) {
-        List<Vector> decks = new ArrayList<>();
-        for (int i = 0; i < Board.DIMENSION; i++) {
-            for (int j = 0; j < Board.DIMENSION; j++) {
+    public static List<Vector> findFreeHitCells(@NonNull Board board) {
+        List<Vector> hitCells = new ArrayList<>();
+        for (int i = 0; i < board.width(); i++) {
+            for (int j = 0; j < board.height(); j++) {
                 if (board.getCell(i, j) == Cell.HIT) {
-                    if (board.getShipsAt(i, j).isEmpty()) {
-                        decks.add(Vector.get(i, j));
+                    if (!board.hasShipAt(i, j)) {
+                        hitCells.add(Vector.get(i, j));
                     }
                 }
             }
         }
-        return decks;
+        return hitCells;
     }
 
     @NonNull

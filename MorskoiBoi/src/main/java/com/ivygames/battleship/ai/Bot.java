@@ -8,7 +8,10 @@ import com.ivygames.battleship.board.Vector;
 public interface Bot {
 
     /**
-     * analyzes the board, chooses which cell to shoot, and marks it either miss or hit
+     * Analyzes the board and returns the coordinate to shoot at
+     *
+     * @param board, immutable board
+     * @return the coordinate to shoot at
      */
     @NonNull
     Vector shoot(@NonNull Board board);

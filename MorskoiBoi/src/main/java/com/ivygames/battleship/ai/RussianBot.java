@@ -45,8 +45,7 @@ public class RussianBot implements Bot {
     @NonNull
     @Override
     public Vector shoot(@NonNull Board board) {
-        // TODO: this method does not change the board. Add immutable board and pass it for correctness
-        List<Vector> hitDecks = BoardUtils.findHitCells(board);
+        List<Vector> hitDecks = BoardUtils.findFreeHitCells(board);
         List<Vector> possibleShots;
         if (hitDecks.size() == 0) {
             possibleShots = BoardUtils.getPossibleShots(board, false);
