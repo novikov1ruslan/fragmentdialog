@@ -171,8 +171,8 @@ public class Board {
             }
             board.append('\n');
         }
-        for (Ship ship : getShips()) {
-            board.append(ship).append("; ");
+        for (LocatedShip locatedShip : getLocatedShips()) {
+            board.append(locatedShip).append("; ");
         }
         board.append('\n');
 

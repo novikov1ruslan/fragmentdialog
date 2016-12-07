@@ -86,7 +86,7 @@ class SetupBoardPresenter {
     }
 
     @Nullable
-    public Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
+    Ship pickShipFromBoard(@NonNull Board board, int i, int j) {
         mPickedShip = BoardUtils.pickShipFromBoard(board, i, j);
         return mPickedShip;
     }
@@ -97,7 +97,7 @@ class SetupBoardPresenter {
     }
 
     @Nullable
-    public Ship getPickedShip() {
+    Ship getPickedShip() {
         return mPickedShip;
     }
 }

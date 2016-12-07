@@ -4,151 +4,155 @@ import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
 
-import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class RussianBotTest {
 
     private RussianBot mBot;
+    private Board mBoard = new Board();
 
     @Before
     public void setup() {
-        Random random = mock(Random.class);
-        mBot = new RussianBot(random);
+        mBot = newBot(0);
     }
 
     @Test
-    public void provided_random_seed_is_1_shooting_on_empty_board_returns_8_5() {
-        Board board = new Board();
-        assertThat(mBot.shoot(board), Is.is(Vector.get(0, 0)));
+    public void shooting_on_empty_board() {
+        assertShot(0, 0);
     }
 
     @Test
     public void shooting_when_already_missed() {
-        Board board = new Board();
-        missAt(board, 8, 5);
-        assertThat(mBot.shoot(board), Is.is(Vector.get(0, 0)));
-    }
+        missAt(0, 0);
 
-    private void missAt(Board board, int x, int y) {
-        Cell cell = Cell.MISS;
-        Vector aim = Vector.get(x, y);
-        board.setCell(cell, aim);
+        assertShot(0, 1);
     }
 
     @Test
     public void shooting_when_already_hit() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        assertThat(mBot.shoot(board), Is.is(Vector.get(4, 5)));
+        hitAt(5, 5);
+
+        assertShot(4, 5);
     }
 
     @Test
     public void shooting_when_already_hit_twice() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        hitAt(board, 5, 4);
-        assertThat(mBot.shoot(board), Is.is(Vector.get(5, 3)));
+        hitAt(5, 5);
+        hitAt(5, 4);
+
+        assertShot(5, 3);
     }
 
     @Test
     public void shooting_when_already_hit_and_missed() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        missAt(board, 5, 4);
-        assertThat(mBot.shoot(board), Is.is(Vector.get(4, 5)));
+        hitAt(5, 5);
+        missAt(5, 4);
+
+        assertShot(4, 5);
     }
 
     @Test
-    public void shooting_horizontally_5_4_3() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        assertMissAt(board, 4, 5);
-        assertMissAt(board, 6, 5);
-        assertHitAt(board, 5, 4);
-        assertHitAt(board, 5, 3);
+    public void shooting_horizontally_U() {
+        hitAt(5, 5);
+
+        assertMissAt(4, 5);
+        assertMissAt(6, 5);
+
+        assertHitAt(5, 4);
+        assertShot(5, 3);
     }
 
     @Test
-    public void shooting_horizontally_5_6_7() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        assertMissAt(board, 4, 5);
-        assertHitAt(board, 6, 5);
-        assertHitAt(board, 7, 5);
-        assertHitAt(board, 8, 5);
+    public void shooting_horizontally_R_R_R() {
+        hitAt(5, 5);
+
+        assertMissAt(4, 5);
+
+        assertHitAt(6, 5);
+        assertHitAt(7, 5);
+        assertShot(8, 5);
     }
 
     @Test
-    public void shooting_vertically_5_4_6() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        assertHitAt(board, 4, 5);
-        assertMissAt(board, 3, 5);
-        assertHitAt(board, 6, 5);
+    public void shooting_vertically_L_L_R() {
+        hitAt(5, 5);
+
+        assertHitAt(4, 5);
+        assertMissAt(3, 5);
+        assertShot(6, 5);
     }
 
     @Test
-    public void shooting_vertically_8_7_6_9() {
-        Board board = new Board();
-        assertMissAt(board, 0, 0);
-        assertHitAt(board, 0, 1);
-        assertMissAt(board, 1, 1);
-        assertHitAt(board, 0, 2);
+    public void shooting_vertically_R_D() {
+        missAt(0, 0);
+
+        assertHitAt(0, 1);
+        assertMissAt(1, 1);
+        assertShot(0, 2);
     }
 
     @Test
-    public void shooting_vertically_5_6_7() {
-        Board board = new Board();
-        hitAt(board, 5, 5);
-        assertMissAt(board, 4, 5);
-        assertMissAt(board, 6, 5);
-        assertMissAt(board, 5, 4);
-        assertHitAt(board, 5, 6);
-        assertHitAt(board, 5, 7);
+    public void shooting_vertically_D() {
+        hitAt(5, 5);
+
+        assertMissAt(4, 5);
+        assertMissAt(6, 5);
+        assertMissAt(5, 4);
+
+        assertHitAt(5, 6);
+        assertShot(5, 7);
     }
 
     @Test
     public void hit_and_kill() {
-        Board board = new Board();
-        Vector aim = Vector.get(5, 5);
-        board.setCell(Cell.HIT, aim);
+        hitAt(5, 5);
 
-        Vector shoot = mBot.shoot(board);
-
-        assertThat(shoot, Is.is(Vector.get(4, 5)));
+        assertShot(4, 5);
     }
 
-    private void assertHitAt(Board board, int x, int y) {
-        Vector aim = mBot.shoot(board);
-        assertThat(aim, Is.is(Vector.get(x, y)));
-        hitAt(board, aim);
+    private void assertHitAt(int x, int y) {
+        Vector aim = mBot.shoot(mBoard);
+        assertThat(aim, is(Vector.get(x, y)));
+        hitAt(aim);
     }
 
-    private void hitAt(Board board, int x, int y) {
-        Cell cell = Cell.HIT;
-        Vector aim = Vector.get(x, y);
-        board.setCell(cell, aim);
+    private void hitAt(int x, int y) {
+        mBoard.setCell(Cell.HIT, Vector.get(x, y));
     }
 
-    private void assertMissAt(Board board, int x, int y) {
-        Vector aim = mBot.shoot(board);
-        assertThat(aim, Is.is(Vector.get(x, y)));
-        missAt(board, aim);
+    private void assertMissAt(int x, int y) {
+        Vector aim = mBot.shoot(mBoard);
+        assertThat(aim, is(Vector.get(x, y)));
+        missAt(aim);
     }
 
-    private void hitAt(Board board, Vector aim) {
-        hitAt(board, aim.x, aim.y);
+    private void assertShot(int i, int j) {
+        assertThat(mBot.shoot(mBoard), is(Vector.get(i, j)));
     }
 
-    private void missAt(Board board, Vector aim) {
-        missAt(board, aim.x, aim.y);
+    private void hitAt(Vector aim) {
+        hitAt(aim.x, aim.y);
     }
 
+    private void missAt(Vector aim) {
+        missAt(aim.x, aim.y);
+    }
+
+    private void missAt(int x, int y) {
+        mBoard.setCell(Cell.MISS, Vector.get(x, y));
+    }
+
+    private RussianBot newBot(int value) {
+        Random random = mock(Random.class);
+        when(random.nextInt()).thenReturn(value);
+        return new RussianBot(random);
+    }
 }

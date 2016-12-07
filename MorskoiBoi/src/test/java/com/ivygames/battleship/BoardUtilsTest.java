@@ -94,24 +94,44 @@ public class BoardUtilsTest {
     }
 
     @Test
-    public void CannotRotateShip() {
+    public void CanRotateHorizontalShipNearTheWall() {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
         putShipAt(ship, 5, 7);
 
         BoardUtils.rotateShipAt(mBoard, 5, 7);
 
-        assertFalse(ship.isHorizontal());
-        assertThat(mBoard.getShipsAt(5, 6).contains(ship), is(true));
+        assertThat(ship.isHorizontal(), is(false));
+        assertThat(getFirstShip().coordinate, is(Vector.get(5, 6)));
+    }
+
+    @Test
+    public void CanRotateVerticalShip2() {
+        Ship ship = new Ship(4, Ship.Orientation.VERTICAL);
+        putShipAt(ship, 7, 5);
+
+        BoardUtils.rotateShipAt(mBoard, 7, 5);
+
+        assertThat(ship.isHorizontal(), is(true));
+        assertThat(getFirstShip().coordinate, is(Vector.get(6, 5)));
+    }
+
+    @Test
+    public void RotatingNonExistentShip__HasNoEffect() {
+        Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
+        putShipAt(ship, 5, 7);
+
+        BoardUtils.rotateShipAt(mBoard, 1, 1);
+
+        assertThat(ship.isHorizontal(), is(true));
     }
 
     @Test
     public void BoardIsSetWhenItHasFullFleet_AndNoConflictingCells() {
         Rules rules = mockRules(new int[]{1, 2});
-        Board board = new Board();
-        board.addShip(new Ship(1), 1, 1);
-        board.addShip(new Ship(2), 5, 5);
+        mBoard.addShip(new Ship(1), 1, 1);
+        mBoard.addShip(new Ship(2), 5, 5);
 
-        assertThat(BoardUtils.isBoardSet(board, rules), is(true));
+        assertThat(BoardUtils.isBoardSet(mBoard, rules), is(true));
     }
 
     @NonNull
@@ -123,83 +143,73 @@ public class BoardUtilsTest {
 
     @Test
     public void EmptyBoardIsNotSet() {
-        assertThat(BoardUtils.isBoardSet(new Board(), mRules), is(false));
+        assertThat(BoardUtils.isBoardSet(mBoard, mRules), is(false));
     }
 
     @Test
     public void BoardIsNotSetWhenItHasLessThanFullFleet() {
         Rules rules = mockRules(new int[]{1, 2});
-        Board board = new Board();
-        board.addShip(new Ship(1), 1, 1);
+        mBoard.addShip(new Ship(1), 1, 1);
 
-        assertThat(BoardUtils.isBoardSet(board, rules), is(false));
+        assertThat(BoardUtils.isBoardSet(mBoard, rules), is(false));
     }
 
     @Test
     public void WhenBoardHasConflictingCells__ItIsNotSet() {
         Rules rules = mockRules(new int[]{1, 2});
-        Board board = new Board();
-        board.addShip(new LocatedShip(new Ship(2), 0, 0));
-        board.addShip(new LocatedShip(new Ship(1), 0, 0));
+        mBoard.addShip(new LocatedShip(new Ship(2), 0, 0));
+        mBoard.addShip(new LocatedShip(new Ship(1), 0, 0));
 
-        assertThat(BoardUtils.isBoardSet(board, rules), is(false));
+        assertThat(BoardUtils.isBoardSet(mBoard, rules), is(false));
     }
 
     @Test
     public void EmptyCellIsNotConflicting() {
-        Board board = new Board();
-        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship() {
-        Board board = new Board();
-        Ship ship = new Ship(1);
-        board.addShip(new LocatedShip(ship, 5, 5));
+        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
 
-        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship2() {
-        Board board = new Board();
-        Ship ship = new Ship(1);
-        board.addShip(new LocatedShip(ship, 1, 5));
+        mBoard.addShip(new LocatedShip(new Ship(1), 1, 5));
 
-        assertThat(BoardUtils.isCellConflicting(board, 1, 5, mRules.allowAdjacentShips()), is(false));
+        assertThat(BoardUtils.isCellConflicting(mBoard, 1, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_conflicting_if_it_is_occupied_by_ship_A_and_ship_B_is_touching_the_cell() {
-        Board board = new Board();
         Ship ship = new Ship(1);
-        board.addShip(new LocatedShip(ship, 6, 6));
+        mBoard.addShip(new LocatedShip(ship, 6, 6));
 
         Ship ship1 = new Ship(1);
-        board.addShip(new LocatedShip(ship1, 5, 5));
+        mBoard.addShip(new LocatedShip(ship1, 5, 5));
 
-        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
-        assertThat(BoardUtils.isCellConflicting(board, 6, 6, mRules.allowAdjacentShips()), is(true));
+        assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(true));
+        assertThat(BoardUtils.isCellConflicting(mBoard, 6, 6, mRules.allowAdjacentShips()), is(true));
     }
 
     @Test
     public void WhenShipsOverlap__ThereIsAConflict() {
-        Board board = new Board();
-        board.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
 
-        board.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
 
-        assertThat(BoardUtils.isCellConflicting(board, 5, 5, mRules.allowAdjacentShips()), is(true));
+        assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(true));
     }
 
     @Test
     public void board_is_NOT_defeated_if_it_has_less_than_all_ships() {
         Rules rules = mockRules(new int[]{1, 2});
-        Board board = new Board();
         Ship ship = ShipTestUtils.deadShip();
-        board.addShip(ship, 1, 1);
+        mBoard.addShip(ship, 1, 1);
 
-        assertThat(BoardUtils.isItDefeatedBoard(board, rules.getAllShipsSizes().length), is(false));
+        assertThat(BoardUtils.isItDefeatedBoard(mBoard, rules.getAllShipsSizes().length), is(false));
     }
 
     @Test
@@ -222,20 +232,24 @@ public class BoardUtilsTest {
 
     @Test
     public void WhenThereIsNoShipToBePicked__NullReturned() {
-        Board board = new Board();
+        Ship ship = BoardUtils.pickShipFromBoard(mBoard, 5, 5);
 
-        Ship ship = BoardUtils.pickShipFromBoard(board, 5, 5);
+        assertThat(ship, is(nullValue()));
+    }
+
+    @Test
+    public void TryingToPickFromOutsideTheBoard__NullReturned() {
+        Ship ship = BoardUtils.pickShipFromBoard(mBoard, mBoard.width() + 1, 5);
 
         assertThat(ship, is(nullValue()));
     }
 
     @Test
     public void WhenThereIsShipToBePicked__ItIsReturned() {
-        Board board = new Board();
         Ship ship = new Ship(3);
-        board.addShip(new LocatedShip(ship, 5, 5));
+        mBoard.addShip(new LocatedShip(ship, 5, 5));
 
-        Ship ship2 = BoardUtils.pickShipFromBoard(board, 5, 5);
+        Ship ship2 = BoardUtils.pickShipFromBoard(mBoard, 5, 5);
 
         assertThat(ship2, is(ship));
     }
@@ -258,36 +272,30 @@ public class BoardUtilsTest {
 
     @Test
     public void ShipLocationCorrectlyFound1() {
-        Board board = new Board();
-        board.setCell(Cell.HIT, 5, 5);
+        mBoard.setCell(Cell.HIT, 5, 5);
 
-        Ship ship = new Ship(1);
-        Vector shipLocation = BoardUtils.findShipLocation(board);
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard);
 
         assertThat(shipLocation, is(Vector.get(5 ,5)));
     }
 
     @Test
     public void ShipLocationCorrectlyFound2() {
-        Board board = new Board();
-        board.setCell(Cell.HIT, 5, 5);
-        board.setCell(Cell.HIT, 6, 5);
+        mBoard.setCell(Cell.HIT, 5, 5);
+        mBoard.setCell(Cell.HIT, 6, 5);
 
-        Ship ship = new Ship(2, Ship.Orientation.HORIZONTAL);
-        Vector shipLocation = BoardUtils.findShipLocation(board);
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard);
 
         assertThat(shipLocation, is(Vector.get(5 ,5)));
     }
 
     @Test
     public void ShipLocationCorrectlyFound3() {
-        Board board = new Board();
-        board.setCell(Cell.HIT, 5, 5);
-        board.setCell(Cell.HIT, 5, 7);
-        board.setCell(Cell.HIT, 5, 6);
+        mBoard.setCell(Cell.HIT, 5, 5);
+        mBoard.setCell(Cell.HIT, 5, 7);
+        mBoard.setCell(Cell.HIT, 5, 6);
 
-        Ship ship = new Ship(3, Ship.Orientation.VERTICAL);
-        Vector shipLocation = BoardUtils.findShipLocation(board);
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard);
 
         assertThat(shipLocation, is(Vector.get(5 ,5)));
     }
@@ -315,4 +323,7 @@ public class BoardUtilsTest {
         mBoard.addShip(new LocatedShip(ship, x, y));
     }
 
+    private LocatedShip getFirstShip() {
+        return mBoard.getLocatedShips().iterator().next();
+    }
 }

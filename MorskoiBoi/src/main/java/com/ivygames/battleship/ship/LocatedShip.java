@@ -41,9 +41,6 @@ public class LocatedShip {
 
     @Override
     public String toString() {
-        return "LocatedShip{" +
-                "ship=" + ship +
-                ", coordinate=" + coordinate +
-                '}';
+        return "[" + ship + ", " + coordinate + "]";
     }
 }
