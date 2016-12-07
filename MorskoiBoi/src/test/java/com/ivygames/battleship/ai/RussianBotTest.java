@@ -71,14 +71,21 @@ public class RussianBotTest {
     }
 
     @Test
-    public void shooting_horizontally_R_R_R() {
+    public void shooting_horizontally_R_R() {
+        hitAt(0, 0);
+
+        assertHitAt(1, 0);
+        assertShot(2, 0);
+    }
+
+    @Test
+    public void shooting_horizontally_R() {
         hitAt(5, 5);
 
         assertMissAt(4, 5);
 
         assertHitAt(6, 5);
-        assertHitAt(7, 5);
-        assertShot(8, 5);
+        assertShot(7, 5);
     }
 
     @Test

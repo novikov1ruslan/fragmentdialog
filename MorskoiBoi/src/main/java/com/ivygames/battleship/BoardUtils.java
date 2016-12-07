@@ -2,7 +2,6 @@ package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.Size;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
@@ -14,7 +13,6 @@ import org.commons.logger.Ln;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class BoardUtils {
@@ -199,29 +197,6 @@ public class BoardUtils {
         return location;
     }
 
-    private static boolean isEmptyCell(@NonNull Board board, int x, int y) {
-        return contains(x, y) && board.getCell(x, y) == Cell.EMPTY;
-    }
-
-    @NonNull
-    public static List<Vector> getPossibleShotsAround(@NonNull Board board, int x, int y) {
-        ArrayList<Vector> possibleShots = new ArrayList<>();
-        if (isEmptyCell(board, x - 1, y)) {
-            possibleShots.add(Vector.get(x - 1, y));
-        }
-        if (isEmptyCell(board, x + 1, y)) {
-            possibleShots.add(Vector.get(x + 1, y));
-        }
-        if (isEmptyCell(board, x, y - 1)) {
-            possibleShots.add(Vector.get(x, y - 1));
-        }
-        if (isEmptyCell(board, x, y + 1)) {
-            possibleShots.add(Vector.get(x, y + 1));
-        }
-
-        return possibleShots;
-    }
-
     /**
      * Finds {@link Cell#HIT} that do not host any ship.
      * Assumption is that the cells will belong to the same ship.
@@ -239,55 +214,6 @@ public class BoardUtils {
             }
         }
         return hitCells;
-    }
-
-    @NonNull
-    public static List<Vector> getPossibleShotsLinear(@NonNull Board board,
-                                                      @NonNull @Size(min = 2) Collection<Vector> hitDecks) {
-        List<Vector> possibleShots = new ArrayList<>();
-        Iterator<Vector> iterator = hitDecks.iterator();
-        Vector first = iterator.next();
-        int minX = first.x;
-        int minY = first.y;
-        int maxX = first.x;
-        int maxY = first.y;
-        while (iterator.hasNext()) {
-            Vector v = iterator.next();
-            int x = v.x;
-            if (x < minX) {
-                minX = x;
-            }
-            if (x > maxX) {
-                maxX = x;
-            }
-
-            int y = v.y;
-            if (y < minY) {
-                minY = y;
-            }
-            if (y > maxY) {
-                maxY = y;
-            }
-        }
-
-        if (minY == maxY) { // horizontal orientation
-            addCellIfEmpty(board, --minX, minY, possibleShots);
-            addCellIfEmpty(board, ++maxX, minY, possibleShots);
-        } else {
-            addCellIfEmpty(board, minX, --minY, possibleShots);
-            addCellIfEmpty(board, minX, ++maxY, possibleShots);
-        }
-
-        return possibleShots;
-    }
-
-    private static void addCellIfEmpty(@NonNull Board board, int x, int y, @NonNull Collection<Vector> out) {
-        if (contains(x, y)) {
-            Cell cell = board.getCell(x, y);
-            if (cell == Cell.EMPTY) {
-                out.add(Vector.get(x, y));
-            }
-        }
     }
 
     @NonNull
