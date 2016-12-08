@@ -6,14 +6,11 @@ import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
 public class BoardSerializationTest {
     public static final String EMPTY_BOARD = "{\"ships\":[],\"cells\":\"                                                                                                    \"}";
     public static final String BOARD_WITH_SHIP_x1_5_5 = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
