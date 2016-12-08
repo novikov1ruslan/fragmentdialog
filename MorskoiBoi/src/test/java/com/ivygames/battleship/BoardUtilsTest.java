@@ -14,9 +14,7 @@ import com.ivygames.morskoiboi.OrientationBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -32,7 +30,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
 public class BoardUtilsTest {
 
     private Board mBoard = new Board();
@@ -43,6 +40,7 @@ public class BoardUtilsTest {
     private Random mRandom;
     @Mock
     private OrientationBuilder mOrientationBuilder;
+    private static final boolean mAllowAdjacentShips = false;
 
     @Before
     public void setup() {
@@ -214,11 +212,13 @@ public class BoardUtilsTest {
 
     @Test
     public void board_is_NOT_defeated_if_it_has_at_least_1_alive_ship() {
-        Board board = mock(Board.class);
+        Board board = new Board();
         Set<Ship> ships = mock_9_dead_1_alive_ship();
-        when(board.getShips()).thenReturn(ships);
+        new Placement(mRandom, mAllowAdjacentShips).populateBoardWithShips(board, ships);
 
-        assertThat(BoardUtils.isItDefeatedBoard(board, mRules.getAllShipsSizes().length), is(false));
+        boolean itDefeatedBoard = BoardUtils.isItDefeatedBoard(board, mRules.getAllShipsSizes().length);
+
+        assertThat(itDefeatedBoard, is(false));
     }
 
     @Test
