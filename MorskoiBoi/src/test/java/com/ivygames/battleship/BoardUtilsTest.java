@@ -300,6 +300,47 @@ public class BoardUtilsTest {
         assertThat(shipLocation, is(Vector.get(5 ,5)));
     }
 
+    @Test
+    public void horizontalShipFitsBoard() {
+        Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
+        Vector coordinate = Vector.get(5, 5);
+
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+
+        assertThat(fits, is(true));
+    }
+
+    @Test
+    public void horizontalShipDoesNotFitBoard() {
+        Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
+        Vector coordinate = Vector.get(7, 5);
+
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+
+        assertThat(fits, is(false));
+    }
+
+    @Test
+    public void verticalShipFitsBoard() {
+        Ship ship = new Ship(4, Ship.Orientation.VERTICAL);
+        Vector coordinate = Vector.get(7, 6);
+
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+
+        assertThat(fits, is(true));
+    }
+
+    @Test
+    public void verticalShipDoesntFitBoard() {
+        Ship ship = new Ship(4, Ship.Orientation.VERTICAL);
+        Vector coordinate = Vector.get(7, 7);
+
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+
+        assertThat(fits, is(false));
+    }
+
+
     @NonNull
     private Set<Ship> mock_10_dead_ships() {
         Set<Ship> ships = new HashSet<>();

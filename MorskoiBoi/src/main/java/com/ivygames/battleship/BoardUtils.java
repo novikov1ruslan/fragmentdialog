@@ -127,30 +127,28 @@ public class BoardUtils {
     }
 
     /**
-     * @param v coordinate on the board where the 1st ship's square is to be put
+     * @param v coordinate on the board where the TOP/LEFT ship's square is to be put
      */
     static boolean shipFitsTheBoard(@NonNull Ship ship, @NonNull Vector v) {
         return shipFitsTheBoard(ship, v.x, v.y);
     }
 
     /**
-     * does not check if cells are empty
-     *
-     * @param i horizontal coordinate on the board where the 1st ship's square is to be put
-     * @param j vertical coordinate on the board where the 1st ship's square is to be put
-     * @return true if the ship can fit out on the board
+     * @param i LEFT ship's coordinate
+     * @param j TOP ship's coordinate
+     * @return true if the ship can fit out on the board, does not check if cells are empty
      */
     public static boolean shipFitsTheBoard(@NonNull Ship ship, int i, int j) {
-        boolean canPut = contains(i, j);
+        boolean fits = contains(i, j);
 
-        if (canPut) {
+        if (fits) {
             if (ship.isHorizontal()) {
-                canPut = i + ship.size <= Board.DIMENSION;
+                fits = i + ship.size <= Board.DIMENSION;
             } else {
-                canPut = j + ship.size <= Board.DIMENSION;
+                fits = j + ship.size <= Board.DIMENSION;
             }
         }
-        return canPut;
+        return fits;
     }
 
     public static boolean contains(@NonNull Vector v) {
@@ -182,7 +180,7 @@ public class BoardUtils {
 
     @NonNull
     public static Vector findShipLocation(@NonNull Board board) {
-        Collection<Vector> hitCells = findFreeHitCells(board);
+        Collection<Vector> hitCells = findHitCellsWithNoShip(board);
 
         Vector location = VectorUtils.first(hitCells);
         for (Vector coordinate : hitCells) {
@@ -202,7 +200,7 @@ public class BoardUtils {
      * Assumption is that the cells will belong to the same ship.
      */
     @NonNull
-    public static Collection<Vector> findFreeHitCells(@NonNull Board board) {
+    public static Collection<Vector> findHitCellsWithNoShip(@NonNull Board board) {
         Collection<Vector> hitCells = new ArrayList<>();
         for (int i = 0; i < board.width(); i++) {
             for (int j = 0; j < board.height(); j++) {

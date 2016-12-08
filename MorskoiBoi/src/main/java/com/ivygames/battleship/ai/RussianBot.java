@@ -102,7 +102,7 @@ public class RussianBot implements Bot {
     @NonNull
     @Override
     public Vector shoot(@NonNull Board board) {
-        Collection<Vector> hitDecks = BoardUtils.findFreeHitCells(board);
+        Collection<Vector> hitDecks = BoardUtils.findHitCellsWithNoShip(board);
         List<Vector> possibleShots;
         if (hitDecks.size() == 0) {
             possibleShots = BoardUtils.getPossibleShots(board, false);
