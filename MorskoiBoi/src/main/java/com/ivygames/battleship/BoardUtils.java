@@ -100,7 +100,7 @@ public class BoardUtils {
 
         LocatedShip locatedShip = board.getShipAt(i, j);
         if (locatedShip != null) {
-            board.removeShip(locatedShip);
+            board.removeShip(locatedShip.ship);
             return locatedShip.ship;
         }
         return null;

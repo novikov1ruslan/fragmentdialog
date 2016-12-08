@@ -65,7 +65,7 @@ public class BoardTest {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
         mBoard.addShip(new LocatedShip(ship, 8, 5));
 
-        mBoard.removeShip(new LocatedShip(ship, 8, 5));
+        mBoard.removeShip(ship);
 
         assertThat(mBoard.getShips().size(), is(0));
     }
@@ -76,9 +76,9 @@ public class BoardTest {
         mBoard.addShip(new LocatedShip(ship1, 8, 5));
 
         Ship ship2 = new Ship(1);
-        mBoard.removeShip(new LocatedShip(ship2, 8, 5));
+        mBoard.removeShip(ship2);
 
-        assertThat(mBoard.getShips().size(), is(0));
+        assertThat(mBoard.getShips().size(), is(1));
     }
 
     @Test(expected = IllegalArgumentException.class)

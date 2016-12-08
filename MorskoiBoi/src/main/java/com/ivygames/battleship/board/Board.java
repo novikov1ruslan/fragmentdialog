@@ -48,6 +48,10 @@ public class Board {
         return UnmodifiableSet.unmodifiableSet(mShips);
     }
 
+    public boolean removeShip(@NonNull Ship ship) {
+        return removeShip(new LocatedShip(ship));
+    }
+
     public boolean removeShip(@NonNull LocatedShip locatedShip) {
         return mShips.remove(locatedShip);
     }
