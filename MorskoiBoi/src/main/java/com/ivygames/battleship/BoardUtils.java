@@ -182,9 +182,9 @@ public class BoardUtils {
 
     @NonNull
     public static Vector findShipLocation(@NonNull Board board) {
-        List<Vector> hitCells = findFreeHitCells(board);
+        Collection<Vector> hitCells = findFreeHitCells(board);
 
-        Vector location = hitCells.get(0);
+        Vector location = VectorUtils.first(hitCells);
         for (Vector coordinate : hitCells) {
             if (coordinate.x < location.x) {
                 location = coordinate;
@@ -202,8 +202,8 @@ public class BoardUtils {
      * Assumption is that the cells will belong to the same ship.
      */
     @NonNull
-    public static List<Vector> findFreeHitCells(@NonNull Board board) {
-        List<Vector> hitCells = new ArrayList<>();
+    public static Collection<Vector> findFreeHitCells(@NonNull Board board) {
+        Collection<Vector> hitCells = new ArrayList<>();
         for (int i = 0; i < board.width(); i++) {
             for (int j = 0; j < board.height(); j++) {
                 if (board.getCell(i, j) == Cell.HIT) {

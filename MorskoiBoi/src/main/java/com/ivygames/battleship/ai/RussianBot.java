@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
 import com.ivygames.battleship.BoardUtils;
+import com.ivygames.battleship.VectorUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
@@ -101,12 +102,12 @@ public class RussianBot implements Bot {
     @NonNull
     @Override
     public Vector shoot(@NonNull Board board) {
-        List<Vector> hitDecks = BoardUtils.findFreeHitCells(board);
+        Collection<Vector> hitDecks = BoardUtils.findFreeHitCells(board);
         List<Vector> possibleShots;
         if (hitDecks.size() == 0) {
             possibleShots = BoardUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
-            Vector v = hitDecks.get(0);
+            Vector v = VectorUtils.first(hitDecks);
             possibleShots = getPossibleShotsAround(board, v.x, v.y);
         } else { // wounded ship with > 1 decks hit
             possibleShots = getPossibleShotsLinear(board, hitDecks);
@@ -122,6 +123,10 @@ public class RussianBot implements Bot {
             }
             throw e;
         }
+    }
+
+    private static Object get(@NonNull Collection collection) {
+        return collection.iterator().next();
     }
 
 }
