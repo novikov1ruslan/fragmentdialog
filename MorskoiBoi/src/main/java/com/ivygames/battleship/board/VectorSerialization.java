@@ -9,7 +9,6 @@ public class VectorSerialization {
     private static final String X = "X";
     private static final String Y = "Y";
 
-    // TODO: unit test
     @NonNull
     public static JSONObject toJson(@NonNull Vector coordinate) {
         JSONObject json = new JSONObject();

@@ -32,11 +32,10 @@ public class ShotResultSerialization {
 
             return new ShotResult(aim, cell);
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
-    // TODO: unit test
     public static JSONObject toJson(@NonNull ShotResult result) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -47,7 +46,7 @@ public class ShotResultSerialization {
                 jsonObject.put(SHIP, ShipSerialization.toJson(result.locatedShip));
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
 
         return jsonObject;
