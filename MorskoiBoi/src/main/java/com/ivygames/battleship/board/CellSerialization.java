@@ -7,12 +7,6 @@ public class CellSerialization {
     private final static char MISS_VAL = '*';
     private final static char HIT_VAL = 'X';
 
-    /**
-     * Old versions (< 1.4.21) can send boards with proximity value.
-     * To support old versions this constant is preserved.
-     */
-    private static final int LEGACY_RESERVED_PROXIMITY_VALUE = 8;
-
     @NonNull
     public static Cell parse(char c) {
         switch (c) {
