@@ -17,13 +17,24 @@ public class BoardSerializationTest {
             "\"cells\":\"                                                                                                    \"}";
     public static final String BOARD_WITH_SHIP_x1_5_5_x2_5_5 = "{\"ships\":[" +
             "{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}," +
-            "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":1}" +
+            "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":2}" +
             "]," +
             "\"cells\":\"                                                                                                    \"}";
     private static final String LEGACY_BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
             "\"cells\":\"                                            000       000       000                                 \"}";
 
     private Board mBoard = new Board();
+
+    @Test
+    public void serializationSucceeds() {
+        Board board = new Board();
+        board.addShip(new Ship(1), 5, 5);
+        board.addShip(new Ship(2, Ship.Orientation.VERTICAL), 9, 8);
+
+        String json = BoardSerialization.toJson(board).toString();
+
+        assertThat(json, is(BOARD_WITH_SHIP_x1_5_5_x2_5_5));
+    }
 
     @Test
     public void EmptyBoardSuccessfullyRecreated() {
