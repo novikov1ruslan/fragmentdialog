@@ -28,8 +28,8 @@ public class BoardSerializationTest {
     @Test
     public void serializationSucceeds() {
         Board board = new Board();
-        board.addShip(new Ship(1), 5, 5);
         board.addShip(new Ship(2, Ship.Orientation.VERTICAL), 9, 8);
+        board.addShip(new Ship(1), 5, 5);
 
         String json = BoardSerialization.toJson(board).toString();
 

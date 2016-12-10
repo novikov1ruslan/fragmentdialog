@@ -7,6 +7,8 @@ import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
 
+import org.apache.commons.lang3.Validate;
+
 public class ShotResult {
 
     @NonNull
@@ -21,6 +23,8 @@ public class ShotResult {
     public final LocatedShip locatedShip;
 
     public ShotResult(@NonNull Vector aim, @NonNull Cell cell, @NonNull LocatedShip locatedShip) {
+        Validate.isTrue(cell == Cell.HIT);
+
         this.cell = cell;
         this.aim = aim;
         this.locatedShip = locatedShip;
