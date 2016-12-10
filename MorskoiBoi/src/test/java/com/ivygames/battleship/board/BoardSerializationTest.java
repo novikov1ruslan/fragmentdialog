@@ -51,6 +51,16 @@ public class BoardSerializationTest {
     }
 
     @Test
+    public void ParsingLegacyBoardWithShip() {
+        Board board2 = new Board();
+        board2.addShip(new LocatedShip(new Ship(1), 5, 5));
+
+        Board board1 = BoardSerialization.fromJson(LEGACY_BOARD_WITH_SHIP);
+
+        assertThat(BoardTestUtils.similar(board1, board2), is(true));
+    }
+
+    @Test
     public void BoardWithShipSuccessfullySerializedAndParsed() {
         mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
 
@@ -80,8 +90,8 @@ public class BoardSerializationTest {
     }
 
     private static void assertBoardIsEmpty(Board board) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < Board.DIMENSION; i++) {
+            for (int j = 0; j < Board.DIMENSION; j++) {
                 assertTrue(board.getCell(i, j) == Cell.EMPTY);
             }
         }

@@ -13,10 +13,14 @@ public class ShotResult {
     public final Cell cell;
     @NonNull
     public final Vector aim;
+    /**
+     * Ship is needed only for compatibility with legacy protocol.
+     * The only needed information is if the ship is destroyed.
+     */
     @Nullable
     public final LocatedShip locatedShip;
 
-    public ShotResult(@NonNull Vector aim, @NonNull Cell cell, @Nullable LocatedShip locatedShip) {
+    public ShotResult(@NonNull Vector aim, @NonNull Cell cell, @NonNull LocatedShip locatedShip) {
         this.cell = cell;
         this.aim = aim;
         this.locatedShip = locatedShip;

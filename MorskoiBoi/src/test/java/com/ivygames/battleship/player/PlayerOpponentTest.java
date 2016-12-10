@@ -548,7 +548,7 @@ public class PlayerOpponentTest {
     }
 
     private ShotResult newHitResult(int i, int j) {
-        return new ShotResult(Vector.get(i, j), Cell.HIT, null);
+        return new ShotResult(Vector.get(i, j), Cell.HIT);
     }
 
     private ShotResult newHitResult(int i, int j, Ship ship) {

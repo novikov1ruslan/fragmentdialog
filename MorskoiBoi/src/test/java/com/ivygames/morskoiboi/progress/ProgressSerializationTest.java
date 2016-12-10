@@ -1,20 +1,26 @@
 package com.ivygames.morskoiboi.progress;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(RobolectricTestRunner.class)
 public class ProgressSerializationTest {
 
+    private static final String RANK_1 = "{\"rank\":1}";
+
     @Test
-    public void SuccessfulParsingToAndFromJson() throws Exception {
+    public void SuccessfulSerialization() throws Exception {
         String json = ProgressSerialization.toJson(1);
 
-        assertThat(ProgressSerialization.fromJson(json), is(1));
+        assertThat(json, is(RANK_1));
+    }
+
+    @Test
+    public void SuccessfulDeSerialization() throws Exception {
+        int rank = ProgressSerialization.fromJson(RANK_1);
+
+        assertThat(rank, is(1));
     }
 
     @Test
