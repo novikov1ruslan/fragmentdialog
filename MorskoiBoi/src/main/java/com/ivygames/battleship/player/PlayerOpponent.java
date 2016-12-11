@@ -52,7 +52,7 @@ public class PlayerOpponent implements Opponent {
         Ln.v("new player created: " + name);
     }
 
-    protected void reset() {
+    private void reset() {
         mEnemyBoard = new Board();
         mMyBoard = new Board();
         mMyBid = NOT_READY;

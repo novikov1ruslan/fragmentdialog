@@ -52,7 +52,7 @@ public class Board {
         return removeShip(new LocatedShip(ship));
     }
 
-    public boolean removeShip(@NonNull LocatedShip locatedShip) {
+    private boolean removeShip(@NonNull LocatedShip locatedShip) {
         return mShips.remove(locatedShip);
     }
 

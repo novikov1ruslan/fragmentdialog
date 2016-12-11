@@ -125,8 +125,4 @@ public class RussianBot implements Bot {
         }
     }
 
-    private static Object get(@NonNull Collection collection) {
-        return collection.iterator().next();
-    }
-
 }

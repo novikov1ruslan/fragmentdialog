@@ -48,7 +48,7 @@ public class BoardUtils {
         }
 
         if (!allowAdjacentShips) {
-            Ship ship = theseShips.iterator().next();
+            Ship ship = ShipUtils.first(theseShips);
 
             Collection<Vector> coordinates = getNeighboringCoordinates(i, j);
             for (Vector v : coordinates) {
@@ -115,7 +115,7 @@ public class BoardUtils {
         ship.rotate();
 
         if (shipFitsTheBoard(ship, x, y)) {
-            board.addShip(new LocatedShip(ship, x, y));
+            board.addShip(ship, x, y);
         } else {
             int i = board.width() - ship.size;
             if (ship.isHorizontal()) {

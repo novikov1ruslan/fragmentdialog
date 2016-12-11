@@ -1,6 +1,7 @@
 package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Size;
 
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
@@ -30,7 +31,7 @@ public class ShipUtils {
         }
     }
 
-    public static Collection<Vector> getShipCoordinates(@NonNull Ship ship, @NonNull Vector coordinate) {
+    static Collection<Vector> getShipCoordinates(@NonNull Ship ship, @NonNull Vector coordinate) {
         Collection<Vector> coordinates = new ArrayList<>();
         int i = coordinate.x;
         int j = coordinate.y;
@@ -103,5 +104,9 @@ public class ShipUtils {
         }
 
         return coordinates;
+    }
+
+    static Ship first(@NonNull @Size(min = 1) Collection<Ship> ships) {
+        return ships.iterator().next();
     }
 }

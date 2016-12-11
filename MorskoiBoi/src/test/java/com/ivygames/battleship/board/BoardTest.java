@@ -46,8 +46,8 @@ public class BoardTest {
 
     @Test
     public void gettingMultipleShips__ReturnShips() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
-        mBoard.addShip(new LocatedShip(new Ship(3), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
+        mBoard.addShip(new Ship(3), 5, 5);
 
         assertThat(mBoard.getShipsAt(5, 5).size(), is(2));
     }
@@ -84,33 +84,35 @@ public class BoardTest {
     @Test(expected = IllegalArgumentException.class)
     public void testPutHorizontalShipFailed() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
-        mBoard.addShip(new LocatedShip(ship, 9, 5));
+
+        mBoard.addShip(ship, 9, 5);
     }
 
     @Test
     public void puttingHorizontalShipSucceeds() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
 
-        mBoard.addShip(new LocatedShip(ship, 8, 5));
+        mBoard.addShip(ship, 8, 5);
 
-        assertThat(ship, is(mBoard.getShipsAt(8, 5).iterator().next()));
-        assertThat(ship, is(mBoard.getShipsAt(9, 5).iterator().next()));
+        assertThat(ship, is(mBoard.getShipAt(8, 5).ship));
+        assertThat(ship, is(mBoard.getShipAt(9, 5).ship));
     }
 
     @Test
     public void testPutVerticalShipSucceeded() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
 
-        mBoard.addShip(new LocatedShip(ship, 3, 7));
+        mBoard.addShip(ship, 3, 7);
 
-        assertThat(ship, is(mBoard.getShipsAt(3, 7).iterator().next()));
-        assertThat(ship, is(mBoard.getShipsAt(3, 8).iterator().next()));
+        assertThat(ship, is(mBoard.getShipAt(3, 7).ship));
+        assertThat(ship, is(mBoard.getShipAt(3, 8).ship));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testPutVerticalShipFailed() {
         Ship ship = new Ship(3, Orientation.VERTICAL);
-        mBoard.addShip(new LocatedShip(ship, 3, 8));
+
+        mBoard.addShip(ship, 3, 8);
     }
 
     @Test
