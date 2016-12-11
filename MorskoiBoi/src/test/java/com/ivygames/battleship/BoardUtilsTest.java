@@ -155,8 +155,8 @@ public class BoardUtilsTest {
     @Test
     public void WhenBoardHasConflictingCells__ItIsNotSet() {
         Rules rules = mockRules(new int[]{1, 2});
-        mBoard.addShip(new LocatedShip(new Ship(2), 0, 0));
-        mBoard.addShip(new LocatedShip(new Ship(1), 0, 0));
+        mBoard.addShip(new Ship(2), 0, 0);
+        mBoard.addShip(new Ship(1), 0, 0);
 
         assertThat(BoardUtils.isBoardSet(mBoard, rules), is(false));
     }
@@ -168,14 +168,14 @@ public class BoardUtilsTest {
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
 
         assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(false));
     }
 
     @Test
     public void cell_is_not_conflicting_if_it_only_touched_by_1_ship2() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 1, 5));
+        mBoard.addShip(new Ship(1), 1, 5);
 
         assertThat(BoardUtils.isCellConflicting(mBoard, 1, 5, mRules.allowAdjacentShips()), is(false));
     }
@@ -183,10 +183,10 @@ public class BoardUtilsTest {
     @Test
     public void cell_is_conflicting_if_it_is_occupied_by_ship_A_and_ship_B_is_touching_the_cell() {
         Ship ship = new Ship(1);
-        mBoard.addShip(new LocatedShip(ship, 6, 6));
+        mBoard.addShip(ship, 6, 6);
 
         Ship ship1 = new Ship(1);
-        mBoard.addShip(new LocatedShip(ship1, 5, 5));
+        mBoard.addShip(ship1, 5, 5);
 
         assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(true));
         assertThat(BoardUtils.isCellConflicting(mBoard, 6, 6, mRules.allowAdjacentShips()), is(true));
@@ -194,9 +194,9 @@ public class BoardUtilsTest {
 
     @Test
     public void WhenShipsOverlap__ThereIsAConflict() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
 
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
 
         assertThat(BoardUtils.isCellConflicting(mBoard, 5, 5, mRules.allowAdjacentShips()), is(true));
     }
@@ -247,7 +247,7 @@ public class BoardUtilsTest {
     @Test
     public void WhenThereIsShipToBePicked__ItIsReturned() {
         Ship ship = new Ship(3);
-        mBoard.addShip(new LocatedShip(ship, 5, 5));
+        mBoard.addShip(ship, 5, 5);
 
         Ship ship2 = BoardUtils.pickShipFromBoard(mBoard, 5, 5);
 
@@ -260,7 +260,7 @@ public class BoardUtilsTest {
         assertThat(BoardUtils.isItDefeatedBoard(mBoard, 1), is(false));
 
         Ship ship = new Ship(2);
-        mBoard.addShip(new LocatedShip(ship, 5, 5));
+        mBoard.addShip(ship, 5, 5);
         assertFalse(BoardUtils.isItDefeatedBoard(mBoard, 1));
 
         ship.shoot();
@@ -361,7 +361,7 @@ public class BoardUtilsTest {
     }
 
     private void putShipAt(Ship ship, int x, int y) {
-        mBoard.addShip(new LocatedShip(ship, x, y));
+        mBoard.addShip(ship, x, y);
     }
 
     private LocatedShip getFirstShip() {

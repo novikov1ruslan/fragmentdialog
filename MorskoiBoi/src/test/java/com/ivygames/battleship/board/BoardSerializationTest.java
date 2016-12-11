@@ -2,7 +2,6 @@ package com.ivygames.battleship.board;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Test;
@@ -54,7 +53,7 @@ public class BoardSerializationTest {
     @Test
     public void ParsingBoardWithShip() {
         Board board2 = new Board();
-        board2.addShip(new LocatedShip(new Ship(1), 5, 5));
+        board2.addShip(new Ship(1), 5, 5);
 
         Board board1 = BoardSerialization.fromJson(BOARD_WITH_SHIP_x1_5_5);
 
@@ -64,7 +63,7 @@ public class BoardSerializationTest {
     @Test
     public void ParsingLegacyBoardWithShip() {
         Board board2 = new Board();
-        board2.addShip(new LocatedShip(new Ship(1), 5, 5));
+        board2.addShip(new Ship(1), 5, 5);
 
         Board board1 = BoardSerialization.fromJson(LEGACY_BOARD_WITH_SHIP);
 
@@ -73,7 +72,7 @@ public class BoardSerializationTest {
 
     @Test
     public void BoardWithShipSuccessfullySerializedAndParsed() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
 
         String json = BoardSerialization.toJson(mBoard).toString();
         Board board = BoardSerialization.fromJson(json);

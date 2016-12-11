@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
-import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 
 import java.util.Collection;
@@ -46,7 +45,7 @@ public class Placement {
             Vector coordinate = freeCells.get(cellIndex);
             if (BoardUtils.shipFitsTheBoard(ship, coordinate)) {
                 if (freeCells.containsAll(ShipUtils.getShipCoordinates(ship, coordinate))) {
-                    board.addShip(new LocatedShip(ship, coordinate));
+                    board.addShip(ship, coordinate);
                     return true;
                 }
             }

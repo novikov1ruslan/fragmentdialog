@@ -119,9 +119,9 @@ public class BoardUtils {
         } else {
             int i = board.width() - ship.size;
             if (ship.isHorizontal()) {
-                board.addShip(new LocatedShip(ship, i, y));
+                board.addShip(ship, i, y);
             } else {
-                board.addShip(new LocatedShip(ship, x, i));
+                board.addShip(ship, x, i);
             }
         }
     }

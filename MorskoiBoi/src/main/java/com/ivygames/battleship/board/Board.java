@@ -60,7 +60,11 @@ public class Board {
         addShip(new LocatedShip(ship, i, j));
     }
 
-    public void addShip(@NonNull LocatedShip locatedShip) {
+    public void addShip(@NonNull Ship ship, @NonNull Vector coordinate) {
+        addShip(new LocatedShip(ship, coordinate));
+    }
+
+    void addShip(@NonNull LocatedShip locatedShip) {
         int i = locatedShip.coordinate.x;
         int j = locatedShip.coordinate.y;
         if (!BoardUtils.shipFitsTheBoard(locatedShip.ship, i, j)) {

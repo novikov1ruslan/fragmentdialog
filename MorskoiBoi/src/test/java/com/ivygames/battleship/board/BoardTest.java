@@ -31,15 +31,19 @@ public class BoardTest {
 
     @Test
     public void gettingShip__ReturnsShip() {
-        LocatedShip locatedShip = new LocatedShip(new Ship(1), 5, 5);
-        mBoard.addShip(locatedShip);
+        Ship ship = new Ship(1);
+        mBoard.addShip(ship, 5, 6);
 
-        assertThat(mBoard.getShipAt(5, 5), is(locatedShip));
+        LocatedShip locatedShip = mBoard.getShipAt(5, 6);
+
+        assertThat(locatedShip.ship, is(ship));
+        assertThat(locatedShip.coordinate.x, is(5));
+        assertThat(locatedShip.coordinate.y, is(6));
     }
 
     @Test
     public void gettingShip__Fails() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
 
         assertThat(mBoard.getShipAt(5, 6), is(nullValue()));
     }
@@ -54,8 +58,8 @@ public class BoardTest {
 
     @Test
     public void gettingMultipleShips__Fails() {
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
-        mBoard.addShip(new LocatedShip(new Ship(3), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
+        mBoard.addShip(new Ship(3), 5, 5);
 
         assertThat(mBoard.getShipsAt(6, 7).size(), is(0));
     }
@@ -63,7 +67,7 @@ public class BoardTest {
     @Test
     public void removingShipSucceeded() {
         Ship ship = new Ship(2, Orientation.HORIZONTAL);
-        mBoard.addShip(new LocatedShip(ship, 8, 5));
+        mBoard.addShip(ship, 8, 5);
 
         mBoard.removeShip(ship);
 
@@ -73,7 +77,7 @@ public class BoardTest {
     @Test
     public void removingShipFailed() {
         Ship ship1 = new Ship(1);
-        mBoard.addShip(new LocatedShip(ship1, 8, 5));
+        mBoard.addShip(ship1, 8, 5);
 
         Ship ship2 = new Ship(1);
         mBoard.removeShip(ship2);
@@ -134,11 +138,11 @@ public class BoardTest {
         int totalShips = mBoard.getShips().size();
         assertEquals(0, totalShips);
 
-        mBoard.addShip(new LocatedShip(new Ship(1), 5, 5));
+        mBoard.addShip(new Ship(1), 5, 5);
         totalShips = mBoard.getShips().size();
         assertEquals(1, totalShips);
 
-        mBoard.addShip(new LocatedShip(new Ship(2), 8, 9));
+        mBoard.addShip(new Ship(2), 8, 9);
         totalShips = mBoard.getShips().size();
         assertEquals(2, totalShips);
     }

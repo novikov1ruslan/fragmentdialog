@@ -184,7 +184,7 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(2);
-        board.addShip(new LocatedShip(ship, aim));
+        board.addShip(ship, aim);
 
         mPlayer.onShotAt(aim);
 
@@ -197,7 +197,7 @@ public class PlayerOpponentTest {
         Board board = new Board();
         mPlayer.setBoard(board);
         Ship ship = new Ship(1);
-        board.addShip(new LocatedShip(ship, aim));
+        board.addShip(ship, aim);
 
         mPlayer.onShotAt(aim);
 
@@ -321,7 +321,7 @@ public class PlayerOpponentTest {
     public void WhenPlayerIsHit__CallbackCalled() {
         Board board = new Board();
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
-        board.addShip(new LocatedShip(ship, 5, 5));
+        board.addShip(ship, 5, 5);
         mPlayer.setBoard(board);
         Vector aim = Vector.get(5, 5);
 
@@ -334,7 +334,7 @@ public class PlayerOpponentTest {
     public void WhenPlayerIsMissed__CallbackCalled() {
         Board board = new Board();
         Ship ship = new Ship(2, Ship.Orientation.VERTICAL);
-        board.addShip(new LocatedShip(ship, 5, 5));
+        board.addShip(ship, 5, 5);
         mPlayer.setBoard(board);
         Vector aim = Vector.get(1, 1);
 
@@ -345,7 +345,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerIsKilled__CallbackCalled() {
-        mPlayer.setBoard(boardWithShips(new LocatedShip(new Ship(1), 5, 5)));
+        mPlayer.setBoard(boardWithShips(new Ship(1), 5, 5));
         Vector aim = Vector.get(5, 5);
 
         mPlayer.onShotAt(aim);
@@ -497,8 +497,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerIsHitButNotLost__OpponentGoes() {
-        Board board = boardWithShips(new LocatedShip(new Ship(2), 5, 5));
-        mPlayer.setBoard(board);
+        mPlayer.setBoard(boardWithShips(new Ship(2), 5, 5));
 
         mPlayer.onShotAt(Vector.get(5, 5));
 
@@ -520,14 +519,14 @@ public class PlayerOpponentTest {
     @NonNull
     private Board boardWithShip(Ship ship, int i, int j) {
         Board board = new Board();
-        board.addShip(new LocatedShip(ship, i , j));
+        board.addShip(ship, i , j);
         return board;
     }
 
     @NonNull
-    private Board boardWithShips(LocatedShip locatedShip) {
+    private Board boardWithShips(Ship ship, int i, int j) {
         Board board = new Board();
-        board.addShip(locatedShip);
+        board.addShip(ship, i, j);
         return board;
     }
 
