@@ -7,12 +7,10 @@ import com.ivygames.battleship.ship.Ship.Orientation;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -121,75 +119,78 @@ public class BoardTest {
 
     @Test
     public void testGetCell() {
-        Cell cell = mBoard.getCell(0, 0);
-        assertNotNull(cell);
+        assertThat(mBoard.getCell(0, 0), is(Cell.EMPTY));
 
-        mBoard.setCell(Cell.HIT, 0, 0);
-        cell = mBoard.getCell(0, 0);
-        assertTrue(cell == Cell.HIT);
+        mBoard.setCell(Cell.HIT, Vector.get(0, 0));
+        assertThat(mBoard.getCell(Vector.get(0, 0)), is(Cell.HIT));
 
         mBoard.setCell(Cell.MISS, 0, 0);
-        cell = mBoard.getCell(0, 0);
-        assertTrue(cell == Cell.MISS);
+        assertThat(mBoard.getCell(0, 0), is(Cell.MISS));
     }
 
     @Test
     public void testGetShips() {
-        int totalShips = mBoard.getShips().size();
-        assertEquals(0, totalShips);
+        assertEquals(0, mBoard.getShips().size());
+        assertEquals(0, mBoard.getLocatedShips().size());
 
         mBoard.addShip(new Ship(1), 5, 5);
-        totalShips = mBoard.getShips().size();
-        assertEquals(1, totalShips);
+        assertEquals(1, mBoard.getShips().size());
+        assertEquals(1, mBoard.getLocatedShips().size());
 
         mBoard.addShip(new Ship(2), 8, 9);
-        totalShips = mBoard.getShips().size();
-        assertEquals(2, totalShips);
+        assertEquals(2, mBoard.getShips().size());
+        assertEquals(2, mBoard.getLocatedShips().size());
     }
 
     @Test
-    public void testCanPutShipAt() {
-        Ship ship = new Ship(1);
-        for (int i = -1; i < 11; i++) {
-            for (int j = -1; j < 11; j++) {
-                if (i >= 0 && i < 10 && j >= 0 && j < 10) {
-                    assertTrue(BoardUtils.shipFitsTheBoard(ship, i, j));
-                } else {
-                    assertFalse(BoardUtils.shipFitsTheBoard(ship, i, j));
-                }
-            }
-        }
+    public void EmptyBoardHasAllCellsEmpty() {
+        assertAllCellsAreEmpty();
+    }
+
+    private void assertAllCellsAreEmpty() {
+        List<Vector> emptyCells = mBoard.getCellsByType(Cell.EMPTY);
+        assertThat(emptyCells.size(), is(mBoard.width() * mBoard.height()));
+    }
+
+    @Test
+    public void EmptyBoardHasSomeMissCells() {
+        mBoard.setCell(Cell.MISS, 7, 8);
+        mBoard.setCell(Cell.MISS, 1, 3);
+
+        List<Vector> emptyCells = mBoard.getCellsByType(Cell.MISS);
+
+        assertThat(emptyCells.size(), is(2));
+    }
+
+    @Test
+    public void afterBoardCleared__ItHasNoShipsAndAllCellsAreEmpty() {
+        mBoard.setCell(Cell.MISS, 4, 3);
+        mBoard.addShip(new Ship(2), 5, 7);
+
+        mBoard.clearBoard();
+
+        assertThat(mBoard.getShips().isEmpty(), is(true));
+        assertAllCellsAreEmpty();
     }
 
     @Test
     public void testContainsCell() {
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                assertTrue(BoardUtils.contains(i, j));
-            }
-        }
+        assertTrue(BoardUtils.contains(0, 0));
+        assertTrue(BoardUtils.contains(0, mBoard.height() - 1));
+        assertTrue(BoardUtils.contains(mBoard.width() - 1, 0));
+        assertTrue(BoardUtils.contains(mBoard.width() - 1, mBoard.height() - 1));
 
         assertFalse(BoardUtils.contains(-1, 0));
-        assertFalse(BoardUtils.contains(10, 0));
-        assertFalse(BoardUtils.contains(0, 10));
+        assertFalse(BoardUtils.contains(mBoard.width(), 0));
+        assertFalse(BoardUtils.contains(0, mBoard.height()));
         assertFalse(BoardUtils.contains(0, -1));
     }
 
-    public void addIfHit(Board board, Collection<Vector> hits, int x, int y) {
-        if (BoardUtils.contains(x, y) && board.getCell(x, y) == Cell.HIT) {
-            hits.add(Vector.get(x, y));
-        }
-    }
+    @Test
+    public void boardTpStringDoesNotCrash() {
+        mBoard.addShip(new Ship(4), 3, 3);
 
-    public Collection<Vector> getHitsAround(Board board, int x, int y) {
-        Collection<Vector> hits = new ArrayList<>();
-        addIfHit(board, hits, x + 1, y);
-        addIfHit(board, hits, x - 1, y);
-        addIfHit(board, hits, x, y + 1);
-        addIfHit(board, hits, x, y - 1);
-
-        return hits;
+        mBoard.toString();
     }
 
 }
