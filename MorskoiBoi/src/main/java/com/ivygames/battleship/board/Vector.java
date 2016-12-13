@@ -40,12 +40,12 @@ public final class Vector {
         return coordinates;
     }
 
+    private static boolean containsCell(int i, int j) {
+        return i < Board.DIMENSION && i >= 0 && j < Board.DIMENSION && j >= 0;
+    }
+
     @Override
     public String toString() {
         return "[" + x + "," + y + "]";
-    }
-
-    private static boolean containsCell(int i, int j) {
-        return i < Board.DIMENSION && i >= 0 && j < Board.DIMENSION && j >= 0;
     }
 }

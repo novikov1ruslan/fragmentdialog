@@ -9,14 +9,14 @@ public class VectorSerializationTest {
     private static final String VECTOR_3_7 = "{\"X\":3,\"Y\":7}";
 
     @Test
-    public void serializationSuccedes() {
+    public void serializationSucceeds() {
         String string = VectorSerialization.toJson(Vector.get(3, 7)).toString();
 
         assertThat(string, is(VECTOR_3_7));
     }
 
     @Test
-    public void deSerializationSuccedes() {
+    public void deSerializationSucceeds() {
         Vector vector = VectorSerialization.fromJson(VECTOR_3_7);
 
         assertThat(vector, is(Vector.get(3, 7)));

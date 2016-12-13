@@ -16,11 +16,11 @@ class AggregatePlayerCallback implements PlayerCallback {
     @NonNull
     private final Set<PlayerCallback> mCallbacks = new HashSet<>();
 
-    public void registerCallback(PlayerCallback callback) {
+    void registerCallback(PlayerCallback callback) {
         mCallbacks.add(callback);
     }
 
-    public void unregisterCallback(@NonNull PlayerCallback callback) {
+    void unregisterCallback(@NonNull PlayerCallback callback) {
         mCallbacks.remove(callback);
         Ln.v("callback removed: " + callback);
     }
