@@ -57,7 +57,7 @@ public class BoardUtilsTest {
         board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5);
         assertEquals(91, BoardUtils.getCoordinatesFreeFromShips(board, false).size());
 
-        board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5_x2_5_5);
+        board = BoardSerialization.fromJson(BoardSerializationTest.BOARD_WITH_SHIP_x1_5_5_x2_9_8);
         assertEquals(85, BoardUtils.getCoordinatesFreeFromShips(board, false).size());
     }
 

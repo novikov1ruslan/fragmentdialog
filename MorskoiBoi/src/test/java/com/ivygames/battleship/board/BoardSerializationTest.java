@@ -7,6 +7,7 @@ import com.ivygames.battleship.ship.Ship;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -14,11 +15,18 @@ public class BoardSerializationTest {
     public static final String EMPTY_BOARD = "{\"ships\":[],\"cells\":\"                                                                                                    \"}";
     public static final String BOARD_WITH_SHIP_x1_5_5 = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
             "\"cells\":\"                                                                                                    \"}";
-    public static final String BOARD_WITH_SHIP_x1_5_5_x2_5_5 = "{\"ships\":[" +
+    public static final String BOARD_WITH_SHIP_x1_5_5_x2_9_8 = "{\"ships\":[" +
             "{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}," +
             "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":2}" +
             "]," +
             "\"cells\":\"                                                                                                    \"}";
+
+    public static final String BOARD_WITH_SHIP_x1_9_8_x2_5_5 = "{\"ships\":[" +
+            "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":2}" +
+            "{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}," +
+            "]," +
+            "\"cells\":\"                                                                                                    \"}";
+
     private static final String LEGACY_BOARD_WITH_SHIP = "{\"ships\":[{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}]," +
             "\"cells\":\"                                            000       000       000                                 \"}";
 
@@ -27,12 +35,12 @@ public class BoardSerializationTest {
     @Test
     public void serializationSucceeds() {
         Board board = new Board();
-        board.addShip(new Ship(2, Ship.Orientation.VERTICAL), 9, 8);
         board.addShip(new Ship(1), 5, 5);
+        board.addShip(new Ship(2, Ship.Orientation.VERTICAL), 9, 8);
 
         String json = BoardSerialization.toJson(board).toString();
 
-        assertThat(json, is(BOARD_WITH_SHIP_x1_5_5_x2_5_5));
+        assertThat(json, either(is(BOARD_WITH_SHIP_x1_5_5_x2_9_8)).or(is(BOARD_WITH_SHIP_x1_9_8_x2_5_5)));
     }
 
     @Test
