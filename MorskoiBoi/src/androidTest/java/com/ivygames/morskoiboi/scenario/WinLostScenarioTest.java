@@ -8,7 +8,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingPolicies;
 import android.util.Log;
 
-import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
@@ -160,19 +159,6 @@ public class WinLostScenarioTest {
         shootToWin();
         verifyWin();
     }
-
-//    @Test
-//    public void Lost() throws InterruptedException {
-//        BidPlayerFactory playerFactory = new BidPlayerFactory(1);
-//        playerFactory.setOpponentVersion(Opponent.PROTOCOL_VERSION_SUPPORTS_BOARD_REVEAL - 1);
-//        Dependencies.inject(playerFactory);
-//        Dependencies.inject(new BidAiPlayerFactory(mRandom, 2));
-//
-//        goToGameplay();
-//
-//        idleWait();
-//        verifyLost();
-//    }
 
     private void idleWait() throws InterruptedException {
         playResource.setIdle(false);

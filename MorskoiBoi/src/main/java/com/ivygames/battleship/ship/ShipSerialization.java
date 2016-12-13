@@ -7,7 +7,6 @@ import com.ivygames.battleship.board.Vector;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// TODO: write tests
 public class ShipSerialization {
     private static final String HEALTH = "health";
     private static final String Y = "y";
