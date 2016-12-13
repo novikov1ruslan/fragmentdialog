@@ -172,23 +172,14 @@ public class WinLostScenarioTest {
     private class BidPlayerFactory implements PlayerFactory {
 
         private final int[] mBid;
-        private int mVersion;
 
         BidPlayerFactory(int... bid) {
             mBid = bid;
         }
 
-        void setOpponentVersion(int version) {
-            mVersion = version;
-        }
-
         @Override
         public PlayerOpponent createPlayer(@NonNull String name, int numberOfShips) {
-            BidPlayer player = new BidPlayer("player1", numberOfShips, mBid, new WinLostCallback());
-            if (mVersion != 0) {
-                player.setVersion(mVersion);
-            }
-            return player;
+            return new BidPlayer("player1", numberOfShips, mBid, new WinLostCallback());
         }
     }
 
