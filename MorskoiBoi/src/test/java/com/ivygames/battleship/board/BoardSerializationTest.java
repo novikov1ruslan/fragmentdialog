@@ -22,8 +22,8 @@ public class BoardSerializationTest {
             "\"cells\":\"                                                                                                    \"}";
 
     public static final String BOARD_WITH_SHIP_x1_9_8_x2_5_5 = "{\"ships\":[" +
-            "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":2}" +
-            "{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}," +
+            "{\"size\":2,\"is_horizontal\":false,\"x\":9,\"y\":8,\"health\":2}," +
+            "{\"size\":1,\"is_horizontal\":true,\"x\":5,\"y\":5,\"health\":1}" +
             "]," +
             "\"cells\":\"                                                                                                    \"}";
 

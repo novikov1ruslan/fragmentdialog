@@ -2,11 +2,10 @@ package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.common.DebugUtils;
 
-public class PlayerFactoryImpl implements PlayerFactory {
-    @Override
+public class PlayerFactory {
+
     public PlayerOpponent createPlayer(@NonNull String name, int numberOfShips) {
         return new PlayerOpponent(name, numberOfShips);
     }

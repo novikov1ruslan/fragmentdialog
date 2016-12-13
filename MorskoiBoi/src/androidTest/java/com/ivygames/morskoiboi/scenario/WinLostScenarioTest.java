@@ -8,10 +8,10 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingPolicies;
 import android.util.Log;
 
-import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.board.Board;
+import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -169,7 +169,7 @@ public class WinLostScenarioTest {
         waitFor(lostScreen(), LOST_GAME_DELAY + 1000);
     }
 
-    private class BidPlayerFactory implements PlayerFactory {
+    private class BidPlayerFactory extends PlayerFactory {
 
         private final int[] mBid;
 

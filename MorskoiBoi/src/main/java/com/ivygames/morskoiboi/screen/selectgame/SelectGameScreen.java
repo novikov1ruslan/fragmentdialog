@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.battleship.Opponent;
-import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.ai.AiPlayerFactory;
+import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.DebugUtils;

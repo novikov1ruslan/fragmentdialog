@@ -11,8 +11,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.UiEvent;

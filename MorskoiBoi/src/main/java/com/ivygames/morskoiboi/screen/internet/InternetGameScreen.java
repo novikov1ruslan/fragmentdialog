@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.GamesStatusCodes;
-import com.ivygames.battleship.PlayerFactory;
 import com.ivygames.battleship.Rules;
+import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.ExceptionEvent;
