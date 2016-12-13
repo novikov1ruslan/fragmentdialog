@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.ShipSerialization;
 
-import org.commons.logger.Ln;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,8 +16,7 @@ public class BoardSerialization {
     @NonNull
     public static Board fromJson(@NonNull String json) {
         try {
-            JSONObject jsonObject = new JSONObject(json);
-            return fromJson(jsonObject);
+            return fromJson(new JSONObject(json));
         } catch (JSONException e) {
             throw new IllegalArgumentException(e);
         }
@@ -32,7 +30,6 @@ public class BoardSerialization {
             populateCellsFromString(board.mCells, jsonObject.getString(CELLS));
             populateShipsFromJson(board, jsonObject.getJSONArray(SHIPS));
         } catch (JSONException e) {
-            Ln.e(e);
             throw new IllegalArgumentException(e);
         }
 
@@ -79,7 +76,6 @@ public class BoardSerialization {
                 shipsJson.put(ShipSerialization.toJson(locatedShip));
             }
             jsonObject.put(SHIPS, shipsJson);
-
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
