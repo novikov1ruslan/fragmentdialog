@@ -181,7 +181,7 @@ public class BoardUtils {
     public static Vector findShipLocation(@NonNull Board board) {
         Collection<Vector> hitCells = findHitCellsWithNoShip(board);
 
-        Vector location = VectorUtils.first(hitCells);
+        Vector location = VectorUtils.any(hitCells);
         for (Vector coordinate : hitCells) {
             if (coordinate.x < location.x) {
                 location = coordinate;

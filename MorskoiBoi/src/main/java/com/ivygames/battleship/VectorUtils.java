@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public class VectorUtils {
 
-    public static Vector first(@NonNull Collection<Vector> collection) {
+    public static Vector any(@NonNull Collection<Vector> collection) {
         return collection.iterator().next();
     }
 }

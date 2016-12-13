@@ -107,7 +107,7 @@ public class RussianBot implements Bot {
         if (hitDecks.size() == 0) {
             possibleShots = BoardUtils.getPossibleShots(board, false);
         } else if (hitDecks.size() == 1) { // there is newly wounded ship
-            Vector v = VectorUtils.first(hitDecks);
+            Vector v = VectorUtils.any(hitDecks);
             possibleShots = getPossibleShotsAround(board, v.x, v.y);
         } else { // wounded ship with > 1 decks hit
             possibleShots = getPossibleShotsLinear(board, hitDecks);
