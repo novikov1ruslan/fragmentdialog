@@ -9,7 +9,7 @@ import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.game.Bidder;
-import com.ivygames.morskoiboi.OrientationBuilder;
+import com.ivygames.morskoiboi.RandomOrientationBuilder;
 import com.ivygames.morskoiboi.ai.Cancellable;
 
 import org.commons.logger.Ln;
@@ -80,7 +80,7 @@ public class AiOpponent extends PlayerOpponent implements Cancellable {
     }
 
     private void placeShips() {
-        OrientationBuilder orientationBuilder = new OrientationBuilder(mRandom);
+        RandomOrientationBuilder orientationBuilder = new RandomOrientationBuilder(mRandom);
         Collection<Ship> ships = ShipUtils.createNewShips(mRules.getAllShipsSizes(), orientationBuilder);
 
         Placement placement = new Placement(mRandom, mRules.allowAdjacentShips());

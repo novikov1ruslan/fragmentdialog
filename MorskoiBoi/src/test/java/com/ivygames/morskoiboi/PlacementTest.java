@@ -25,7 +25,7 @@ public class PlacementTest {
 
     private Placement mPlacement;
     private final Rules mRules = new RussianRules();
-    private OrientationBuilder mOrientationBuilder;
+    private RandomOrientationBuilder mOrientationBuilder;
 
 
     @Mock
@@ -35,7 +35,7 @@ public class PlacementTest {
     public void setup() {
         initMocks(this);
         mPlacement = new Placement(mRandom, mRules.allowAdjacentShips());
-        mOrientationBuilder = new OrientationBuilder(mRandom);
+        mOrientationBuilder = new RandomOrientationBuilder(mRandom);
     }
 
     @Test

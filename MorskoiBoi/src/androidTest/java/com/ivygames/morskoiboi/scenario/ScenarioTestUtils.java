@@ -8,7 +8,7 @@ import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.OrientationBuilder;
+import com.ivygames.morskoiboi.RandomOrientationBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.util.Random;
 
 class ScenarioTestUtils {
     static List<Vector> getShots(@NonNull Rules rules, @NonNull Random random) {
-        Collection<Ship> ships = ShipUtils.createNewShips(rules.getAllShipsSizes(), new OrientationBuilder(random));
+        Collection<Ship> ships = ShipUtils.createNewShips(rules.getAllShipsSizes(), new RandomOrientationBuilder(random));
         Board board = new Placement(random, rules.allowAdjacentShips()).newBoardWithShips(ships);
 
         List<Vector> shots = new ArrayList<>(20);

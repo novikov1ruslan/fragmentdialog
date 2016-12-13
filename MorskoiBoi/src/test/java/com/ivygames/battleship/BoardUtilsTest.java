@@ -10,7 +10,7 @@ import com.ivygames.battleship.board.Cell;
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.morskoiboi.OrientationBuilder;
+import com.ivygames.morskoiboi.RandomOrientationBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public class BoardUtilsTest {
     @Mock
     private Random mRandom;
     @Mock
-    private OrientationBuilder mOrientationBuilder;
+    private RandomOrientationBuilder mOrientationBuilder;
     private static final boolean mAllowAdjacentShips = false;
 
     @Before

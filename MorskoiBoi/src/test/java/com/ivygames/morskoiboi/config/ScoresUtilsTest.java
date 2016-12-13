@@ -8,7 +8,7 @@ import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.multiplayer.MultiplayerRoom;
 import com.ivygames.morskoiboi.Game;
-import com.ivygames.morskoiboi.OrientationBuilder;
+import com.ivygames.morskoiboi.RandomOrientationBuilder;
 import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.ai.AndroidGame;
@@ -46,14 +46,14 @@ public class ScoresUtilsTest {
     @Mock
     private ScoreStatistics statistics;
     private int[] allShipsSizes;
-    private OrientationBuilder orientationBuilder;
+    private RandomOrientationBuilder orientationBuilder;
 
     @Before
     public void setUp() {
         initMocks(this);
         allShipsSizes = new RussianRules().getAllShipsSizes();
         Random random = mock(Random.class);
-        orientationBuilder = new OrientationBuilder(random);
+        orientationBuilder = new RandomOrientationBuilder(random);
     }
 
     @Test

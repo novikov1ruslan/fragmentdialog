@@ -11,9 +11,7 @@ import com.ivygames.morskoiboi.OrientationBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
-// TODO: write unit tests
 public class ShipUtils {
 
     public static boolean isInShip(@NonNull Vector v, @NonNull LocatedShip locatedShip) {
@@ -46,9 +44,8 @@ public class ShipUtils {
     }
 
     @NonNull
-    public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] allShipsSizes,
-                                                               @NonNull Random random) {
-        OrientationBuilder orientationBuilder = new OrientationBuilder(random) {
+    public static Collection<Ship> generateFullHorizontalFleet(@NonNull int[] allShipsSizes) {
+        OrientationBuilder orientationBuilder = new OrientationBuilder() {
             @Override
             public Ship.Orientation nextOrientation() {
                 return Ship.Orientation.HORIZONTAL;
@@ -106,7 +103,7 @@ public class ShipUtils {
         return coordinates;
     }
 
-    static Ship first(@NonNull @Size(min = 1) Collection<Ship> ships) {
+    static Ship any(@NonNull @Size(min = 1) Collection<Ship> ships) {
         return ships.iterator().next();
     }
 }

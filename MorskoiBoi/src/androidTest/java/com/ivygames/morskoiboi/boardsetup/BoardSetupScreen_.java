@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.OnlineScreen_;
-import com.ivygames.morskoiboi.OrientationBuilder;
+import com.ivygames.morskoiboi.RandomOrientationBuilder;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -61,7 +61,7 @@ public class BoardSetupScreen_ extends OnlineScreen_ {
         return withId(R.id.got_it_button);
     }
 
-    public static class MyOrientationBuilder extends OrientationBuilder {
+    public static class MyOrientationBuilder extends RandomOrientationBuilder {
         private Ship.Orientation orientation;
 
         public MyOrientationBuilder() {

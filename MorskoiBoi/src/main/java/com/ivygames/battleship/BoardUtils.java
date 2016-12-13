@@ -48,7 +48,7 @@ public class BoardUtils {
         }
 
         if (!allowAdjacentShips) {
-            Ship ship = ShipUtils.first(theseShips);
+            Ship ship = ShipUtils.any(theseShips);
 
             Collection<Vector> coordinates = getNeighboringCoordinates(i, j);
             for (Vector v : coordinates) {
