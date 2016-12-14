@@ -9,9 +9,7 @@ import com.ivygames.battleship.ship.Ship;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -24,7 +22,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
 public class SetupBoardPresenterTest {
     private SetupBoardPresenter mPresenter;
 

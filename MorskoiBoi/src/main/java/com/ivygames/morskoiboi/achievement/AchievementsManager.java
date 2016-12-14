@@ -80,9 +80,9 @@ public class AchievementsManager {
         Ln.v("time=" + time);
         if (time <= 80000) {
             if (unlockIfNotUnlocked(FLYING_DUTCHMAN)) {
-                // TODO: reveal next
+                // reveal next
             } else if (time < 60000) {
-                // TODO: unlock next
+                // unlock next
             }
         }
     }
