@@ -24,7 +24,6 @@ public final class Vector {
         this.y = y;
     }
 
-    // TODO: test
     public static Vector get(int i, int j) {
         if (!containsCell(i, j)) {
             return INVALID_VECTOR;

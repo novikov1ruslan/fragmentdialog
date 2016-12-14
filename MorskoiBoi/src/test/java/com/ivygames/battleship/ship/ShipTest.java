@@ -84,7 +84,6 @@ public class ShipTest {
     @Test
     public void testIsInShip() {
         Ship ship1 = new Ship(2, Ship.Orientation.HORIZONTAL);
-        // TODO: coordinate is changed together - make it a vector
         Ship ship2 = new Ship(2, Ship.Orientation.VERTICAL);
         Ship ship3 = new Ship(3, Ship.Orientation.VERTICAL);
 

@@ -2,7 +2,6 @@ package com.ivygames.battleship.player;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.ChatMessage;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.Rules;
@@ -34,8 +33,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PlayerOpponentTest {
-
     private static final String PLAYER_NAME = "Sagi";
+
     private PlayerOpponent mPlayer;
     @Mock
     private Opponent mEnemy;
@@ -418,16 +417,16 @@ public class PlayerOpponentTest {
 
         verify(callback, times(1)).onWin();
     }
-//
-//    @Test
-//    public void WhenPlayerWins__OpponentLost() {
-//        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
-//        supportBoardReveal(player);
-//
-//        player.onShotResult(newHitResult(5, 5, newDeadShip()));
-//
-//        verify(mEnemy, times(1)).onLost(any(Board.class));
-//    }
+
+    @Test
+    public void WhenPlayerWins__OpponentLost() {
+        PlayerOpponent player = newPlayer(PlayerTestUtils.defeatedBoardRules(1));
+        supportBoardReveal(player);
+
+        player.onShotResult(newHitResult(5, 5, new Ship(1)));
+
+        verify(mEnemy, times(1)).onLost(any(Board.class));
+    }
 
     @Test
     public void WhenEnemyLoses_AndEnemyDoesNotSupportBoardReveal__CallbackNotCalled() {
@@ -459,21 +458,6 @@ public class PlayerOpponentTest {
         mPlayer.onEnemyBid(1);
 
         verify(callback, times(1)).onOpponentTurn();
-    }
-
-    // TODO: repeat the 3 for win as well
-    @Test
-    public void WhenGameEnds__PlayersBoardIsEmpty() {
-        mPlayer.onLost(new Board());
-
-        assertThat(BoardUtils.getCoordinatesFreeFromShips(mPlayer.getBoard(), false).size(), is(100));
-    }
-
-    @Test
-    public void WhenOpponentLooses__enemy_board_is_empty() {
-        mPlayer.onLost(new Board());
-
-        assertThat(BoardUtils.getCoordinatesFreeFromShips(mPlayer.getEnemyBoard(), false).size(), is(100));
     }
 
     @Test

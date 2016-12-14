@@ -21,8 +21,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -252,22 +250,6 @@ public class BoardUtilsTest {
         Ship ship2 = BoardUtils.pickShipFromBoard(mBoard, 5, 5);
 
         assertThat(ship2, is(ship));
-    }
-
-    // TODO: this test can be removed?
-    @Test
-    public void testBoardDefeated() {
-        assertThat(BoardUtils.isItDefeatedBoard(mBoard, 1), is(false));
-
-        Ship ship = new Ship(2);
-        mBoard.addShip(ship, 5, 5);
-        assertFalse(BoardUtils.isItDefeatedBoard(mBoard, 1));
-
-        ship.shoot();
-        assertFalse(BoardUtils.isItDefeatedBoard(mBoard, 1));
-
-        ship.shoot();
-        assertTrue(BoardUtils.isItDefeatedBoard(mBoard, 1));
     }
 
     @Test
