@@ -13,12 +13,6 @@ import static com.ivygames.morskoiboi.ScreenUtils.done;
 
 public class BoardSetupScreenTest extends BoardSetupScreen_ {
 
-    public void WhenAutoPressed__BoardIsSet() {
-        showScreen();
-        clickOn(autoSetup());
-        // TODO:
-    }
-
     @Test
     public void WhenBoardIsSet_PressingDone__OpensGameplayScreen() {
         showScreen();

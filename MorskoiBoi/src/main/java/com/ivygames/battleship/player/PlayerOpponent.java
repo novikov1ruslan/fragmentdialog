@@ -46,7 +46,7 @@ public class PlayerOpponent implements Opponent {
     private final String mName;
     private final int mNumberOfShips;
 
-    protected PlayerOpponent(@NonNull String name, int numberOfShips) {
+    public PlayerOpponent(@NonNull String name, int numberOfShips) {
         mName = name;
         mNumberOfShips = numberOfShips;
         Ln.v("new player created: " + name);
