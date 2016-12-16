@@ -6,18 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingPolicies;
+import android.support.test.rule.ActivityTestRule;
 import android.util.Log;
 
-import com.ivygames.battleship.Rules;
-import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
-import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.ScreenTestRule;
 import com.ivygames.morskoiboi.player.DummyCallback;
 
 import org.junit.After;
@@ -40,9 +37,7 @@ import static com.ivygames.morskoiboi.ScreenUtils.playButton;
 import static com.ivygames.morskoiboi.ScreenUtils.vsAndroid;
 import static com.ivygames.morskoiboi.ScreenUtils.waitFor;
 import static com.ivygames.morskoiboi.ScreenUtils.yesButton;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 //@Ignore
 public class WinLostScenarioTest {
@@ -50,7 +45,7 @@ public class WinLostScenarioTest {
     private static final long LOST_GAME_DELAY = 5000; // milliseconds
 
     @Rule
-    public ScreenTestRule rule = new ScreenTestRule();
+    public ActivityTestRule<BattleshipActivity> rule = new WinLostTestRule(BattleshipActivity.class);
 
     private volatile WinLostIdlingResource playResource;
     private final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
@@ -58,16 +53,8 @@ public class WinLostScenarioTest {
 
     @Before
     public void setup() {
-        BattleshipActivity activity = rule.getActivity();
-        Rules rules = new RussianRules();
-
         mRandom = mock(Random.class);
-        when(mRandom.nextInt()).thenReturn(0);
-        when(mRandom.nextInt(anyInt())).thenReturn(0);
-
         Dependencies.inject(mRandom);
-        Dependencies.inject(new GameSettings(activity));
-        Dependencies.inject(rules);
 
         IdlingPolicies.setMasterPolicyTimeout(2, TimeUnit.MINUTES);
         IdlingPolicies.setIdlingResourceTimeout(2, TimeUnit.MINUTES);
@@ -89,7 +76,6 @@ public class WinLostScenarioTest {
         Dependencies.inject(new BidAiPlayerFactory(mRandom, 1, 1));
 
         goToGameplay();
-
 
         shootToWin();
         verifyWin();
@@ -252,4 +238,15 @@ public class WinLostScenarioTest {
         Log.i("TEST", msg);
     }
 
+    private class WinLostTestRule extends ActivityTestRule<BattleshipActivity> {
+        public WinLostTestRule(Class<BattleshipActivity> c) {
+            super(c);
+        }
+
+        @Override
+        protected void beforeActivityLaunched() {
+            super.beforeActivityLaunched();
+            Dependencies.getSettings().setRated();
+        }
+    }
 }

@@ -45,6 +45,7 @@ import java.util.Set;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
+// TODO: Game rate me test
 public class BattleshipActivity extends Activity implements ApiConnectionListener, ChatListener {
     private static final boolean _DEBUG_ALWAYS_SHOW_ADS = BuildConfig.DEBUG && false;
     // TODO:
