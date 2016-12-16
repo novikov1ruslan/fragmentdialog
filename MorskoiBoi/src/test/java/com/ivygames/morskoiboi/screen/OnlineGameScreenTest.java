@@ -1,21 +1,15 @@
 package com.ivygames.morskoiboi.screen;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.res.AssetManager;
-
 import com.ivygames.battleship.Opponent;
-import com.ivygames.battleship.Rules;
-import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.multiplayer.MultiplayerEvent;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Game;
-import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.screen.boardsetup.BoardSetupScreen;
@@ -28,7 +22,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,18 +32,16 @@ import java.util.Collection;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class OnlineGameScreenTest {
 
-    @Mock
     private BattleshipActivity activity;
     @Mock
     private Game game;
     @Mock
     private RealTimeMultiplayer mMultiplayer;
-    private Rules mRules = new RussianRules();
 
     private Session session;
 
@@ -56,14 +50,9 @@ public class OnlineGameScreenTest {
         MockitoAnnotations.initMocks(this);
 
         session = new Session(mock(PlayerOpponent.class), mock(Opponent.class));
-        FragmentManager fm = mock(FragmentManager.class);
-        when(activity.getFragmentManager()).thenReturn(fm);
-        when(fm.beginTransaction()).thenReturn(mock(FragmentTransaction.class));
-        when(activity.getAssets()).thenReturn(mock(AssetManager.class));
+        activity = Robolectric.buildActivity(BattleshipActivity.class).get();
 
         Dependencies.inject(mMultiplayer);
-        Dependencies.inject(mRules);
-        Dependencies.inject(mock(GameSettings.class));
     }
 
     @Test
