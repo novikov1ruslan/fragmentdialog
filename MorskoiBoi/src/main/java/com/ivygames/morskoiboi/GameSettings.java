@@ -216,6 +216,10 @@ public class GameSettings implements AchievementsSettings {
         return newScore;
     }
 
+    public void clear() {
+        mEditor.clear().apply();
+    }
+
     @Override
     public String toString() {
         return DebugUtils.getSimpleName(this);

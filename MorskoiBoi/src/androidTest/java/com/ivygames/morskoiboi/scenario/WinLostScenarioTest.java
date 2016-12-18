@@ -246,7 +246,7 @@ public class WinLostScenarioTest {
         @Override
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
-            Dependencies.getSettings().setRated();
+            Dependencies.getSettings().clear();
         }
     }
 }

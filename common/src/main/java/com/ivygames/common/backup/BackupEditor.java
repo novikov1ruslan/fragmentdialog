@@ -70,8 +70,9 @@ class BackupEditor implements SharedPreferences.Editor {
 
     @Override
     public SharedPreferences.Editor clear() {
-        Ln.w("not implemented");
-        return null;
+        Ln.i("debug - clearing settings");
+        mEditor.clear();
+        return this;
     }
 
     @Override
