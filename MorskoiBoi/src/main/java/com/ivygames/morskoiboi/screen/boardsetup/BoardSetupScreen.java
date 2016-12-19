@@ -46,7 +46,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     private static final long BOARD_SETUP_TIMEOUT = 60 * 1000;
 
     @NonNull
-    private final Board mBoard = new Board();
+    private final Board mBoard;
     @NonNull
     private final PriorityQueue<Ship> mFleet = new PriorityQueue<>(INITIAL_CAPACITY, new ShipComparator());
     @NonNull
@@ -81,6 +81,7 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
         super(parent, game, session.opponent.getName());
         mSession = session;
         mFleet.addAll(ShipUtils.generateFullHorizontalFleet(mRules.getAllShipsSizes()));
+        mBoard = session.player.getBoard();
         Ln.d("new board created, fleet initialized");
     }
 

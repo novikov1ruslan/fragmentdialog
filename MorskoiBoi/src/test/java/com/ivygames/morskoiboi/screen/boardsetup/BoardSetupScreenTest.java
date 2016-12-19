@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.screen.boardsetup;
 
+import com.ivygames.battleship.BoardUtils;
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.player.PlayerOpponent;
@@ -20,6 +21,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -50,6 +53,8 @@ public class BoardSetupScreenTest {
         activity.setScreen(screen);
 
         activity.findViewById(R.id.auto_setup).performClick();
+
+        assertThat(BoardUtils.isBoardSet(player.getBoard(), rules), is(true));
     }
 
 }
