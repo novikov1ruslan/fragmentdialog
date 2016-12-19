@@ -76,6 +76,15 @@ public class PlayerOpponentTest {
 
     @Test
     public void if_player_can_go__enemy_is_ready() {
+        mPlayer.startBidding(1);
+
+        mPlayer.go();
+
+        assertThat(mPlayer.isOpponentReady(), is(true));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void ifPlayerGoesWhenNotReady__ExceptionIsThrown() {
         mPlayer.go();
 
         assertThat(mPlayer.isOpponentReady(), is(true));
@@ -83,6 +92,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenCallbackIsRegisteredWhenOpponentIsReady__CallbackNotifiedOfThat() {
+        mPlayer.startBidding(1);
         mPlayer.go();
 
         PlayerCallback callback = mock(PlayerCallback.class);
@@ -256,6 +266,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void WhenPlayerGoesForNonReadyOpponent__ItIsPlayersTurn() {
+        mPlayer.startBidding(1);
         mPlayer.go();
 
         verify(callback, times(1)).onPlayersTurn();
@@ -272,6 +283,7 @@ public class PlayerOpponentTest {
 
     @Test
     public void AfterCallbackUnregistered__ItIsNotCalled() {
+        mPlayer.startBidding(1);
         mPlayer.unregisterCallback(callback);
         mPlayer.go();
 
@@ -441,13 +453,6 @@ public class PlayerOpponentTest {
     @Test
     public void WhenOpponentBids__ItIsReady() {
         mPlayer.onEnemyBid(0);
-
-        verify(callback, times(1)).opponentReady();
-    }
-
-    @Test
-    public void IfPlayerCanGo__OpponentIsReady() {
-        mPlayer.go();
 
         verify(callback, times(1)).opponentReady();
     }

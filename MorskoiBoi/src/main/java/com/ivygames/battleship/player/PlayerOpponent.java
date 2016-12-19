@@ -136,6 +136,10 @@ public class PlayerOpponent implements Opponent {
 
     @Override
     public void go() {
+        if (!ready()) {
+            throw new IllegalStateException("cannot go when not ready");
+        }
+
         Ln.d(mName + ": I go");
         if (!mOpponentReady) {
             Ln.v(mName + ": opponent was not ready, but ready now");

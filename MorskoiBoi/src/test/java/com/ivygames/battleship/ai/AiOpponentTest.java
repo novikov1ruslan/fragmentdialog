@@ -47,6 +47,8 @@ public class AiOpponentTest {
 
     @Test
     public void WhenAndroidGoes__OpponentGetsShot() {
+        mAiOpponent.onEnemyBid(1);
+
         mAiOpponent.go();
 
         verify(mOpponent, times(1)).onShotAt(any(Vector.class));
@@ -89,6 +91,7 @@ public class AiOpponentTest {
     public void WhenAndroidGoes1stTime_ItSetsTheBoard() {
         AiOpponent bot = newBot(getBidder(1));
         AiOpponent spy = spy(bot);
+        spy.startBidding(1);
 
         spy.go();
 
@@ -99,6 +102,7 @@ public class AiOpponentTest {
     public void WhenAndroidGoes2ndTime_TheBoardNotSet() {
         AiOpponent bot = newBot(getBidder(1));
         AiOpponent spy = spy(bot);
+        spy.startBidding(1);
 
         spy.go();
         reset(spy);
