@@ -26,7 +26,7 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
-import com.ivygames.morskoiboi.bluetooth.peer.ConnectionListener;
+import com.ivygames.morskoiboi.bluetooth.peer.ConnectionCreationListener;
 import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -71,7 +71,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     };
 
     @NonNull
-    private final ConnectionListener mConnectionListener = new ConnectionListener() {
+    private final ConnectionCreationListener mConnectionListener = new ConnectionCreationListener() {
 
         @Override
         public void onConnected(@NonNull BluetoothConnection connection) {

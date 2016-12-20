@@ -5,6 +5,9 @@ import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.ivygames.common.multiplayer.ConnectionLostListener;
+import com.ivygames.common.multiplayer.MultiplayerEvent;
+
 import org.commons.logger.Ln;
 
 import java.util.Set;
@@ -18,14 +21,15 @@ public class BluetoothPeer {
     private final UUID mUuid;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
-    private ConnectionListener mConnectionListener;
+    private ConnectionCreationListener mConnectionListener;
+    private ConnectionLostListener mConnectionLostListener;
 
     public BluetoothPeer(@NonNull BluetoothAdapter btAdapter, @NonNull UUID uuid) {
         mBtAdapter = btAdapter;
         mUuid = uuid;
     }
 
-    public void setConnectionListener(@NonNull ConnectionListener listener) {
+    public void setConnectionListener(@NonNull ConnectionCreationListener listener) {
         mConnectionListener = listener;
         Ln.v("connection listener = " + listener);
     }
@@ -34,25 +38,29 @@ public class BluetoothPeer {
      * Start AcceptThread to begin a session in listening (server) mode. Called by the Activity onResume()
      */
     public void startAccepting() {
-        Ln.d("starting listening to new connections");
-
-        // Start the thread to listen on a BluetoothServerSocket
-        if (mAcceptThread == null) {
-            mAcceptThread = new AcceptThread(new ConnectionListener() {
-                @Override
-                public void onConnected(@NonNull BluetoothConnection connection) {
-                    mConnectionListener.onConnected(connection);
-                }
-
-                @Override
-                public void onConnectFailed() {
-                    mConnectionListener.onConnectFailed();
-                }
-            }, mBtAdapter, mUuid);
-            mAcceptThread.start();
-        } else {
+        if (mAcceptThread != null) {
             Ln.e("already accepting");
+            return;
         }
+
+        Ln.d("starting listening to new connections");
+        mAcceptThread = new AcceptThread(new ConnectionListener() {
+            @Override
+            public void onConnectionLost(@NonNull MultiplayerEvent event) {
+                mConnectionLostListener.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
+            }
+
+            @Override
+            public void onConnected(@NonNull BluetoothConnection connection) {
+                mConnectionListener.onConnected(connection);
+            }
+
+            @Override
+            public void onConnectFailed() {
+                mConnectionListener.onConnectFailed();
+            }
+        }, mBtAdapter, mUuid);
+        mAcceptThread.start();
     }
 
     public void cancelAcceptAndCloseConnection() {
@@ -115,5 +123,10 @@ public class BluetoothPeer {
         Ln.v("connecting to: " + device);
         mConnectThread = new ConnectThread(device, mConnectionListener, mUuid);
         mConnectThread.start();
+    }
+
+    public void registerConnectionLostListener(@NonNull ConnectionLostListener listener) {
+        mConnectionLostListener = listener;
+        Ln.v("connection lost listener = " + listener);
     }
 }

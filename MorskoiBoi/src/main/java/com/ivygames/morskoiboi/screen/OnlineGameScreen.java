@@ -11,6 +11,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -28,6 +29,8 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     private final String mOpponentName;
     @NonNull
     private final RealTimeMultiplayer mMultiplayer = Dependencies.getMultiplayer();
+    @NonNull
+    private final BluetoothPeer mBluetooth = Dependencies.getBluetooth();
 
     protected OnlineGameScreen(@NonNull BattleshipActivity parent, @NonNull Game game, @NonNull String opponentName) {
         super(parent);
@@ -38,6 +41,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
         mEndGameCommand = new EndGameCommand(game, mBackToSelectGameCommand);
 
         mMultiplayer.registerConnectionLostListener(this);
+        mBluetooth.registerConnectionLostListener(this);
     }
 
     @Override

@@ -28,7 +28,7 @@ final class AcceptThread extends Thread {
     private volatile boolean mCancelled;
 
     @NonNull
-    private final ConnectionListener mConnectionListener;
+    private final ConnectionCreationListener mConnectionListener;
 
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -38,7 +38,7 @@ final class AcceptThread extends Thread {
     @NonNull
     private final UUID mUuid;
 
-    AcceptThread(@NonNull ConnectionListener listener,
+    AcceptThread(@NonNull ConnectionCreationListener listener,
                  @NonNull BluetoothAdapter adapter,
                  @NonNull UUID uuid) {
         super("bt_accept");

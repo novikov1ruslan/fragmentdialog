@@ -25,14 +25,14 @@ final class ConnectThread extends Thread {
     @NonNull
     private final BluetoothDevice mDevice;
     @NonNull
-    private final ConnectionListener mConnectionListener;
+    private final ConnectionCreationListener mConnectionListener;
     @NonNull
     private final UUID mUuid;
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     ConnectThread(@NonNull BluetoothDevice device,
-                  @NonNull ConnectionListener connectionListener,
+                  @NonNull ConnectionCreationListener connectionListener,
                   @NonNull UUID uuid) {
         super("bt_connect");
         mDevice = device;

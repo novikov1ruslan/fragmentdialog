@@ -26,7 +26,7 @@ import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothUtils;
-import com.ivygames.morskoiboi.bluetooth.peer.ConnectionListener;
+import com.ivygames.morskoiboi.bluetooth.peer.ConnectionCreationListener;
 import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -51,7 +51,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     private final BluetoothPeer mBluetooth = Dependencies.getBluetooth();
 
     @NonNull
-    private final ConnectionListener mConnectionListener = new ConnectionListener() {
+    private final ConnectionCreationListener mConnectionListener = new ConnectionCreationListener() {
 
         @Override
         public void onConnectFailed() {
