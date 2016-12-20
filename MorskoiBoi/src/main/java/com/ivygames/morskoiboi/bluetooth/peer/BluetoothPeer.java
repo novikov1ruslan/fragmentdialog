@@ -1,10 +1,9 @@
 package com.ivygames.morskoiboi.bluetooth.peer;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 
 import org.commons.logger.Ln;
 
@@ -14,15 +13,15 @@ import java.util.UUID;
 public class BluetoothPeer {
 
     @NonNull
-    private final BluetoothAdapterWrapper mBtAdapter;
+    private final BluetoothAdapter mBtAdapter;
     @NonNull
     private final UUID mUuid;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectionListener mConnectionListener;
 
-    public BluetoothPeer(@NonNull BluetoothAdapterWrapper mBtAdapter, @NonNull UUID uuid) {
-        this.mBtAdapter = mBtAdapter;
+    public BluetoothPeer(@NonNull BluetoothAdapter btAdapter, @NonNull UUID uuid) {
+        mBtAdapter = btAdapter;
         mUuid = uuid;
     }
 
@@ -85,7 +84,7 @@ public class BluetoothPeer {
     }
 
     public boolean isDiscoverable() {
-        return mBtAdapter.isDiscoverable();
+        return mBtAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE;
     }
 
     public boolean isConnecting() {

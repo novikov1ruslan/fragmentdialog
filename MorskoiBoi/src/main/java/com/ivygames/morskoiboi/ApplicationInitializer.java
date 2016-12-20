@@ -21,7 +21,6 @@ import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
@@ -66,8 +65,7 @@ class ApplicationInitializer {
         PlayerFactory playerFactory = new PlayerFactory();
         AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBot(random), random);
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();
-        BluetoothAdapterWrapper bluetoothAdapter = new BluetoothAdapterWrapper(BluetoothAdapter.getDefaultAdapter());
-        BluetoothPeer bluetooth = new BluetoothPeer(bluetoothAdapter, MY_UUID);
+        BluetoothPeer bluetooth = new BluetoothPeer(BluetoothAdapter.getDefaultAdapter(), MY_UUID);
 
         Dependencies.inject(random);
         Dependencies.inject(apiClient);

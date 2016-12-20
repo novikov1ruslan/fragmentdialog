@@ -1,5 +1,6 @@
 package com.ivygames.morskoiboi.bluetooth.peer;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
@@ -7,7 +8,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.multiplayer.MultiplayerEvent;
-import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 
 import org.commons.logger.Ln;
 
@@ -34,12 +34,12 @@ final class AcceptThread extends Thread {
     private final Handler mHandler = new Handler(Looper.myLooper());
 
     @NonNull
-    private final BluetoothAdapterWrapper mAdapter;
+    private final BluetoothAdapter mAdapter;
     @NonNull
     private final UUID mUuid;
 
     AcceptThread(@NonNull ConnectionListener listener,
-                 @NonNull BluetoothAdapterWrapper adapter,
+                 @NonNull BluetoothAdapter adapter,
                  @NonNull UUID uuid) {
         super("bt_accept");
         mConnectionListener = listener;
