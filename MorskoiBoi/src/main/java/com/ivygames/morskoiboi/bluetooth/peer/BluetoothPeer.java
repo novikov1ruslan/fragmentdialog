@@ -21,8 +21,25 @@ public class BluetoothPeer {
     private final UUID mUuid;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
-    private ConnectionCreationListener mConnectionListener;
+    private ConnectionCreationListener mConnectionCreationListener;
     private ConnectionLostListener mConnectionLostListener;
+    @NonNull
+    private final ConnectionListener mConnectionListener = new ConnectionListener() {
+        @Override
+        public void onConnectionLost(@NonNull MultiplayerEvent event) {
+            mConnectionLostListener.onConnectionLost(event);
+        }
+
+        @Override
+        public void onConnected(@NonNull BluetoothConnection connection) {
+            mConnectionCreationListener.onConnected(connection);
+        }
+
+        @Override
+        public void onConnectFailed() {
+            mConnectionCreationListener.onConnectFailed();
+        }
+    };
 
     public BluetoothPeer(@NonNull BluetoothAdapter btAdapter, @NonNull UUID uuid) {
         mBtAdapter = btAdapter;
@@ -30,7 +47,7 @@ public class BluetoothPeer {
     }
 
     public void setConnectionListener(@NonNull ConnectionCreationListener listener) {
-        mConnectionListener = listener;
+        mConnectionCreationListener = listener;
         Ln.v("connection listener = " + listener);
     }
 
@@ -44,22 +61,7 @@ public class BluetoothPeer {
         }
 
         Ln.d("starting listening to new connections");
-        mAcceptThread = new AcceptThread(new ConnectionListener() {
-            @Override
-            public void onConnectionLost(@NonNull MultiplayerEvent event) {
-                mConnectionLostListener.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
-            }
-
-            @Override
-            public void onConnected(@NonNull BluetoothConnection connection) {
-                mConnectionListener.onConnected(connection);
-            }
-
-            @Override
-            public void onConnectFailed() {
-                mConnectionListener.onConnectFailed();
-            }
-        }, mBtAdapter, mUuid);
+        mAcceptThread = new AcceptThread(mConnectionListener, mBtAdapter, mUuid);
         mAcceptThread.start();
     }
 

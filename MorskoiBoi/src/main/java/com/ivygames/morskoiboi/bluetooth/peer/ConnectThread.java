@@ -13,8 +13,6 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 import java.util.UUID;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * This thread runs while attempting to make an outgoing connection with a device. It runs straight through; the connection either succeeds or fails.
  */
@@ -25,14 +23,14 @@ final class ConnectThread extends Thread {
     @NonNull
     private final BluetoothDevice mDevice;
     @NonNull
-    private final ConnectionCreationListener mConnectionListener;
+    private final ConnectionListener mConnectionListener;
     @NonNull
     private final UUID mUuid;
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     ConnectThread(@NonNull BluetoothDevice device,
-                  @NonNull ConnectionCreationListener connectionListener,
+                  @NonNull ConnectionListener connectionListener,
                   @NonNull UUID uuid) {
         super("bt_connect");
         mDevice = device;
@@ -79,7 +77,12 @@ final class ConnectThread extends Thread {
                 Ln.d("cancelled while connected");
             } else {
                 Ln.d("connection lost: " + ioe.getMessage());
-                EventBus.getDefault().postSticky(MultiplayerEvent.CONNECTION_LOST);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConnectionListener.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
+                    }
+                });
             }
         } finally {
             BluetoothUtils.close(mSocket);

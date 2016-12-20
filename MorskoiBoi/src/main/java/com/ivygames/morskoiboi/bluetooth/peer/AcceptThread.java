@@ -14,8 +14,6 @@ import org.commons.logger.Ln;
 import java.io.IOException;
 import java.util.UUID;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * This thread runs while listening for incoming connections. It behaves like a server-side client. It runs until a connection is accepted (or until cancelled).
  */
@@ -28,7 +26,7 @@ final class AcceptThread extends Thread {
     private volatile boolean mCancelled;
 
     @NonNull
-    private final ConnectionCreationListener mConnectionListener;
+    private final ConnectionListener mConnectionListener;
 
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -38,7 +36,7 @@ final class AcceptThread extends Thread {
     @NonNull
     private final UUID mUuid;
 
-    AcceptThread(@NonNull ConnectionCreationListener listener,
+    AcceptThread(@NonNull ConnectionListener listener,
                  @NonNull BluetoothAdapter adapter,
                  @NonNull UUID uuid) {
         super("bt_accept");
@@ -86,7 +84,12 @@ final class AcceptThread extends Thread {
                 Ln.v("cancelled while connected");
             } else {
                 Ln.w(ioe);
-                EventBus.getDefault().postSticky(MultiplayerEvent.CONNECTION_LOST);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConnectionListener.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
+                    }
+                });
             }
         } finally {
             BluetoothUtils.close(mSocket);
