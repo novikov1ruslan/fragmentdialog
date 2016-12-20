@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.IOException;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class BluetoothAdapterWrapper {
         return mAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE;
     }
 
+    @Nullable
     public Set<BluetoothDevice> getBondedDevices() {
         return mAdapter.getBondedDevices();
     }

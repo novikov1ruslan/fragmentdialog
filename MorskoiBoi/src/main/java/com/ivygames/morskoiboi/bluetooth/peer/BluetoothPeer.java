@@ -2,6 +2,7 @@ package com.ivygames.morskoiboi.bluetooth.peer;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 
@@ -27,12 +28,13 @@ public class BluetoothPeer {
 
     public void setConnectionListener(@NonNull ConnectionListener listener) {
         mConnectionListener = listener;
+        Ln.v("connection listener = " + listener);
     }
 
     /**
      * Start AcceptThread to begin a session in listening (server) mode. Called by the Activity onResume()
      */
-    public synchronized void startAccepting() {
+    public void startAccepting() {
         Ln.d("starting listening to new connections");
 
         // Start the thread to listen on a BluetoothServerSocket
@@ -54,7 +56,7 @@ public class BluetoothPeer {
         }
     }
 
-    public synchronized void cancelAcceptAndCloseConnection() {
+    public void cancelAcceptAndCloseConnection() {
         if (mAcceptThread == null) {
             Ln.e("not accepting - cannot close");
             return;
@@ -65,6 +67,7 @@ public class BluetoothPeer {
         mAcceptThread = null;
     }
 
+    @Nullable
     public Set<BluetoothDevice> getBondedDevices() {
         return mBtAdapter.getBondedDevices();
     }
@@ -92,26 +95,25 @@ public class BluetoothPeer {
     /**
      * Cancel any thread attempting to make a connection
      */
-    public synchronized void stopConnecting() {
+    public void stopConnecting() {
         if (!isConnecting()) {
+            Ln.e("cannot stop connecting");
             return;
         }
 
-        Ln.d("canceling current connection attempt...");
+        Ln.v("canceling current connection attempt...");
         mConnectThread.cancel();
         BluetoothUtils.join(mConnectThread);
         mConnectThread = null;
-        Ln.d("connection cancelled");
+        Ln.v("connection cancelled");
     }
 
     /**
      * Start the ConnectThread to initiate a connection to a remote device.
-     *
-     * @param device The BluetoothDevice to connect
      */
-    public void connectToDevice(BluetoothDevice device) {
+    public void connectToDevice(@NonNull BluetoothDevice device) {
         stopConnecting();
-        Ln.d("connecting to: " + device);
+        Ln.v("connecting to: " + device);
         mConnectThread = new ConnectThread(device, mConnectionListener, mUuid);
         mConnectThread.start();
     }
