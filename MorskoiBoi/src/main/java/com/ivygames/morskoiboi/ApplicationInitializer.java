@@ -1,6 +1,7 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -20,6 +21,8 @@ import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
@@ -32,8 +35,11 @@ import org.commons.logger.LoggerImpl;
 import org.commons.logger.WarningListener;
 
 import java.util.Random;
+import java.util.UUID;
 
 class ApplicationInitializer {
+    // Unique UUID for this application
+    static final UUID MY_UUID = UUID.fromString("9ecd276e-c044-43ea-969e-2ed67fc9f633");
 
     private static final String ANALYTICS_KEY = "UA-43473473-1";
 
@@ -60,6 +66,8 @@ class ApplicationInitializer {
         PlayerFactory playerFactory = new PlayerFactory();
         AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBot(random), random);
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();
+        BluetoothAdapterWrapper bluetoothAdapter = new BluetoothAdapterWrapper(BluetoothAdapter.getDefaultAdapter());
+        BluetoothPeer bluetooth = new BluetoothPeer(bluetoothAdapter, MY_UUID);
 
         Dependencies.inject(random);
         Dependencies.inject(apiClient);
@@ -72,6 +80,7 @@ class ApplicationInitializer {
         Dependencies.inject(playerFactory);
         Dependencies.inject(aiPlayerFactory);
         Dependencies.inject(scoresCalculator);
+        Dependencies.inject(bluetooth);
 
         FleetBitmaps fleetBitmapsChooser = new RussianFleetBitmapsChooser();
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);

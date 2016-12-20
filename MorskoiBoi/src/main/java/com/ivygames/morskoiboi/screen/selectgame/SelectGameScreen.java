@@ -35,7 +35,6 @@ import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
-import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 import com.ivygames.morskoiboi.dialogs.SignInDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -201,7 +200,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         boolean enabled = mDevice.bluetoothEnabled();
         UiEvent.send("viaBluetooth", enabled ? 1 : 0);
         if (enabled) {
-            showBluetoothScreen();
+            setScreen(ScreenCreator.newBluetoothScreen());
         } else {
             Ln.d("Bluetooth available, but not enabled - prompt to enable");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -215,16 +214,11 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         }
     }
 
-    private void showBluetoothScreen() {
-        BluetoothAdapterWrapper adapter = new BluetoothAdapterWrapper(BluetoothAdapter.getDefaultAdapter());
-        setScreen(ScreenCreator.newBluetoothScreen(adapter));
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Ln.v("result=" + resultCode + ", request=" + requestCode + ", data=" + data);
         if (requestCode == BattleshipActivity.RC_ENABLE_BT && resultCode == Activity.RESULT_OK) {
-            showBluetoothScreen();
+            setScreen(ScreenCreator.newBluetoothScreen());
         }
     }
 

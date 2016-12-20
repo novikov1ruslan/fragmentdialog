@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.bluetooth;
+package com.ivygames.morskoiboi.bluetooth.peer;
 
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
@@ -7,17 +7,19 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.ivygames.common.multiplayer.MultiplayerEvent;
+import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
 
 import org.commons.logger.Ln;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
 
 /**
  * This thread runs while listening for incoming connections. It behaves like a server-side client. It runs until a connection is accepted (or until cancelled).
  */
-public final class AcceptThread extends Thread {
+final class AcceptThread extends Thread {
     // Name for the SDP record when creating server socket
     private static final String NAME = "BtGameManager";
 
@@ -33,12 +35,16 @@ public final class AcceptThread extends Thread {
 
     @NonNull
     private final BluetoothAdapterWrapper mAdapter;
+    @NonNull
+    private final UUID mUuid;
 
-    public AcceptThread(@NonNull ConnectionListener listener,
-                        @NonNull BluetoothAdapterWrapper adapter) {
+    AcceptThread(@NonNull ConnectionListener listener,
+                 @NonNull BluetoothAdapterWrapper adapter,
+                 @NonNull UUID uuid) {
         super("bt_accept");
         mConnectionListener = listener;
         mAdapter = adapter;
+        mUuid = uuid;
     }
 
     @Override
@@ -89,7 +95,7 @@ public final class AcceptThread extends Thread {
 
     private BluetoothSocket obtainBluetoothSocket() throws IOException {
         try {
-            mServerSocket = mAdapter.listenUsingRfcommWithServiceRecord(NAME, BluetoothGame.MY_UUID);
+            mServerSocket = mAdapter.listenUsingRfcommWithServiceRecord(NAME, mUuid);
             Ln.v("server socket created, accepting connection...");
             // This is a blocking call and will only return on a successful connection or an exception
             return mServerSocket.accept();
@@ -98,7 +104,7 @@ public final class AcceptThread extends Thread {
         }
     }
 
-    public void cancelAccept() {
+    void cancelAccept() {
         Ln.v("canceling accept...");
         mCancelled = true;
         BluetoothUtils.close(mServerSocket);

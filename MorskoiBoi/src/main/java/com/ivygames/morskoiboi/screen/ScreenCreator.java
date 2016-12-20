@@ -66,13 +66,13 @@ public class ScreenCreator {
     }
 
     @NonNull
-    public static BluetoothScreen newBluetoothScreen(@NonNull BluetoothAdapterWrapper adapter) {
-        return new BluetoothScreen(activity, adapter);
+    public static BluetoothScreen newBluetoothScreen() {
+        return new BluetoothScreen(activity);
     }
 
     @NonNull
-    public static DeviceListScreen newDeviceListScreen(@NonNull BluetoothAdapterWrapper adapter) {
-        return new DeviceListScreen(activity, adapter);
+    public static DeviceListScreen newDeviceListScreen() {
+        return new DeviceListScreen(activity);
     }
 
     @NonNull

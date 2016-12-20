@@ -2,6 +2,8 @@ package com.ivygames.morskoiboi.bluetooth;
 
 import android.support.annotation.NonNull;
 
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
+import com.ivygames.morskoiboi.bluetooth.peer.MessageReceiver;
 import com.ivygames.morskoiboi.multiplayer.AbstractOnlineOpponent;
 
 import org.commons.logger.Ln;

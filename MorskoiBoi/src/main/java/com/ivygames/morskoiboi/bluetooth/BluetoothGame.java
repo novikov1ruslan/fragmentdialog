@@ -4,18 +4,14 @@ package com.ivygames.morskoiboi.bluetooth;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Game;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 
 import org.commons.logger.Ln;
-
-import java.util.UUID;
 
 public class BluetoothGame extends Game {
 
     public static final int BLUETOOTH_WIN_POINTS = 5000;
     private static final int TURN_TIMEOUT = 40 * 1000;
-
-    // Unique UUID for this application
-    static final UUID MY_UUID = UUID.fromString("9ecd276e-c044-43ea-969e-2ed67fc9f633");
 
     @NonNull
     private final BluetoothConnection mConnection;

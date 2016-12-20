@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.bluetooth;
+package com.ivygames.morskoiboi.bluetooth.peer;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -11,6 +11,7 @@ import com.ivygames.common.multiplayer.MultiplayerEvent;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,13 +27,17 @@ public final class ConnectThread extends Thread {
     @NonNull
     private final ConnectionListener mConnectionListener;
     @NonNull
+    private final UUID mUuid;
+    @NonNull
     private final Handler mHandler = new Handler(Looper.myLooper());
 
     public ConnectThread(@NonNull BluetoothDevice device,
-                         @NonNull ConnectionListener connectionListener) {
+                         @NonNull ConnectionListener connectionListener,
+                         @NonNull UUID uuid) {
         super("bt_connect");
         mDevice = device;
         mConnectionListener = connectionListener;
+        mUuid = uuid;
     }
 
     @Override
@@ -83,7 +88,7 @@ public final class ConnectThread extends Thread {
 
     private BluetoothSocket obtainSocket(BluetoothDevice device) throws IOException {
         // get a BluetoothSocket for a connection with the given BluetoothDevice
-        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(BluetoothGame.MY_UUID);
+        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(mUuid);
 
         Ln.v("socket created - connecting...");
         // This is a blocking call and will only return on a

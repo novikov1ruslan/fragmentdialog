@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.bluetooth;
+package com.ivygames.morskoiboi.bluetooth.peer;
 
 public interface BluetoothConnection {
 

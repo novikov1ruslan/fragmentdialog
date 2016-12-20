@@ -21,28 +21,22 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
-import com.ivygames.morskoiboi.bluetooth.BluetoothAdapterWrapper;
-import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
-import com.ivygames.morskoiboi.bluetooth.BluetoothUtils;
-import com.ivygames.morskoiboi.bluetooth.ConnectThread;
-import com.ivygames.morskoiboi.bluetooth.ConnectionListener;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothUtils;
+import com.ivygames.morskoiboi.bluetooth.peer.ConnectionListener;
 import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
 
 import org.commons.logger.Ln;
 
-public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, ConnectionListener, BackPressListener {
+public class DeviceListScreen extends BattleshipScreen implements DeviceListActions, BackPressListener {
     private static final String TAG = "bluetooth";
 
     private DeviceListLayout mLayout;
-
-    @NonNull
-    private final BluetoothAdapterWrapper mBtAdapter;
-
-    private ConnectThread mConnectThread;
 
     private ViewGroup mContainer;
     private SingleTextDialog mDialog;
@@ -53,10 +47,42 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     private final Rules mRules = Dependencies.getRules();
     @NonNull
     private final PlayerFactory mPlayerFactory = Dependencies.getPlayerFactory();
+    @NonNull
+    private final BluetoothPeer mBluetooth = Dependencies.getBluetooth();
 
-    public DeviceListScreen(@NonNull BattleshipActivity parent, @NonNull BluetoothAdapterWrapper adapter) {
+    @NonNull
+    private final ConnectionListener mConnectionListener = new ConnectionListener() {
+
+        @Override
+        public void onConnectFailed() {
+            Ln.d(TAG + ": connection attempt failed");
+            if (isDialogShown()) {
+                mDialog.setText(R.string.connection_failed);
+            }
+        }
+
+        @Override
+        public void onConnected(@NonNull BluetoothConnection connection) {
+            Ln.d(TAG + ": connected - creating opponent and showing board setup");
+            String defaultName = getString(R.string.player);
+            BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
+            connection.setMessageReceiver(opponent);
+            String playerName = mSettings.getPlayerName();
+            if (TextUtils.isEmpty(playerName)) {
+                playerName = getString(R.string.player);
+                Ln.i("player name is empty - replaced by " + playerName);
+            }
+            PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
+            player.setChatListener(parent());
+            Session session = new Session(player, opponent);
+            Session.bindOpponents(player, opponent);
+            setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection), session));
+        }
+    };
+
+    public DeviceListScreen(@NonNull BattleshipActivity parent) {
         super(parent);
-        mBtAdapter = adapter;
+        mBluetooth.setConnectionListener(mConnectionListener);
     }
 
     @NonNull
@@ -71,7 +97,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         mContainer = container;
         mLayout = (DeviceListLayout) inflate(R.layout.device_list, container);
         mLayout.setListener(this);
-        mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
+        mLayout.setBondedDevices(mBluetooth.getBondedDevices());
 
         Ln.d(this + " screen created");
         return mLayout;
@@ -111,7 +137,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
                     mLayout.addBondedDevice(device);
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                mLayout.setBondedDevices(mBtAdapter.getBondedDevices());
+                mLayout.setBondedDevices(mBluetooth.getBondedDevices());
                 cancelDiscovery();
             }
 //            else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
@@ -124,7 +150,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     @Override
     public void selectDevice(String info) {
         Ln.d(TAG + ": selected device [" + info + "]");
-        if (isConnecting()) {
+        if (mBluetooth.isConnecting()) {
             Ln.w("already connecting to device");
             return;
         }
@@ -133,13 +159,13 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         // Always cancel discovery because it will slow down a connection
         cancelDiscovery();
 
-        BluetoothDevice device = mBtAdapter.getRemoteDevice(BluetoothUtils.extractMacAddress(info));
+        BluetoothDevice device = mBluetooth.getRemoteDevice(BluetoothUtils.extractMacAddress(info));
         showDialog(getString(R.string.connecting_to, device.getName()));
-        connectToDevice(device);
+        mBluetooth.connectToDevice(device);
     }
 
     private void cancelDiscovery() {
-        mBtAdapter.cancelDiscovery();
+        mBluetooth.cancelDiscovery();
         mLayout.discoveryFinished();
     }
 
@@ -150,37 +176,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     private void startDiscovery() {
         mLayout.discoveryStarted();
-        mBtAdapter.startDiscovery();
-    }
-
-    private boolean isConnecting() {
-        return mConnectThread != null;
-    }
-
-    @Override
-    public void onConnectFailed() {
-        Ln.d(TAG + ": connection attempt failed");
-        if (isDialogShown()) {
-            mDialog.setText(R.string.connection_failed);
-        }
-    }
-
-    @Override
-    public void onConnected(@NonNull BluetoothConnection connection) {
-        Ln.d(TAG + ": connected - creating opponent and showing board setup");
-        String defaultName = getString(R.string.player);
-        BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
-        connection.setMessageReceiver(opponent);
-        String playerName = mSettings.getPlayerName();
-        if (TextUtils.isEmpty(playerName)) {
-            playerName = getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + playerName);
-        }
-        PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
-        player.setChatListener(parent());
-        Session session = new Session(player, opponent);
-        Session.bindOpponents(player, opponent);
-        setScreen(ScreenCreator.newBoardSetupScreen(new BluetoothGame(connection), session));
+        mBluetooth.startDiscovery();
     }
 
     @Override
@@ -198,33 +194,6 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         } else {
             setScreen(ScreenCreator.newMainScreen());
         }
-    }
-
-    /**
-     * Cancel any thread attempting to make a connection
-     */
-    private synchronized void stopConnecting() {
-        if (mConnectThread == null) {
-            return;
-        }
-
-        Ln.d("canceling current connection attempt...");
-        mConnectThread.cancel();
-        BluetoothUtils.join(mConnectThread);
-        mConnectThread = null;
-        Ln.d("connection cancelled");
-    }
-
-    /**
-     * Start the ConnectThread to initiate a connection to a remote device.
-     *
-     * @param device The BluetoothDevice to connect
-     */
-    private void connectToDevice(BluetoothDevice device) {
-        stopConnecting();
-        Ln.d("connecting to: " + device);
-        mConnectThread = new ConnectThread(device, this);
-        mConnectThread.start();
     }
 
     private boolean isDialogShown() {
@@ -246,7 +215,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
 
     private void cancelGameCreation() {
         hideDialog();
-        stopConnecting();
+        mBluetooth.stopConnecting();
     }
 
     @Override

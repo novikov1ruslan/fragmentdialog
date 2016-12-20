@@ -12,7 +12,7 @@ import com.ivygames.morskoiboi.RandomOrientationBuilder;
 import com.ivygames.morskoiboi.ScoreStatistics;
 import com.ivygames.morskoiboi.ScoresCalculator;
 import com.ivygames.morskoiboi.ai.AndroidGame;
-import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.russian.RussianScoresCalculator;

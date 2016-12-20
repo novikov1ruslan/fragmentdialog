@@ -11,6 +11,7 @@ import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import org.commons.logger.Ln;
@@ -31,6 +32,7 @@ public class Dependencies {
     private static AiPlayerFactory sAiPlayerFactory;
     private static Random sRandom;
     private static ScoresCalculator sScoresCalculator;
+    private static BluetoothPeer sBluetoothPeer;
 
     public static void inject(@NonNull ApiClient apiClient) {
         sApiClient = apiClient;
@@ -141,5 +143,15 @@ public class Dependencies {
     @NonNull
     public static ScoresCalculator getScoresCalculator() {
         return sScoresCalculator;
+    }
+
+    public static void inject(@NonNull BluetoothPeer bluetooth) {
+        sBluetoothPeer = bluetooth;
+        Ln.i(sBluetoothPeer);
+    }
+
+    @NonNull
+    public static BluetoothPeer getBluetooth() {
+        return sBluetoothPeer;
     }
 }

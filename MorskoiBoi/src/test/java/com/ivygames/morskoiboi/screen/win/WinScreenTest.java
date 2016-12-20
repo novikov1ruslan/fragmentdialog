@@ -15,7 +15,7 @@ import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
-import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

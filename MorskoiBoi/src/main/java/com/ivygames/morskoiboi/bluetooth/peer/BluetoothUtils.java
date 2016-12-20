@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.bluetooth;
+package com.ivygames.morskoiboi.bluetooth.peer;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

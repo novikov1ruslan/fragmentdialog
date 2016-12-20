@@ -8,7 +8,7 @@ import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.multiplayer.MultiplayerRoom;
 import com.ivygames.morskoiboi.ai.AndroidGame;
-import com.ivygames.morskoiboi.bluetooth.BluetoothConnection;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
