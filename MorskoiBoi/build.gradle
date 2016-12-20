@@ -64,6 +64,7 @@ dependencies {
     def playServicesVersion = '9.4.0'
 
     compile project(':common')
+    compile project(':bluetoothpeer')
     compile project(':battleship')
     compile project(':AppTheme')
     compile project(':fragmentdialog')

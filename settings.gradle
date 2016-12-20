@@ -1,4 +1,4 @@
-include ':AppTheme', ':unity-ads-1.5.8', ':cheetah-mobile-3.4.7', ':battleship'
+include ':AppTheme', ':unity-ads-1.5.8', ':cheetah-mobile-3.4.7', ':battleship', ':bluetoothpeer'
 include ':common'
 include ':BaseGameUtils'
 include ':fragmentdialog'
