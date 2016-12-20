@@ -18,7 +18,7 @@ import de.greenrobot.event.EventBus;
 /**
  * This thread runs while attempting to make an outgoing connection with a device. It runs straight through; the connection either succeeds or fails.
  */
-public final class ConnectThread extends Thread {
+final class ConnectThread extends Thread {
     private volatile BluetoothSocket mSocket;
     private volatile boolean mCancelled;
 
@@ -29,11 +29,11 @@ public final class ConnectThread extends Thread {
     @NonNull
     private final UUID mUuid;
     @NonNull
-    private final Handler mHandler = new Handler(Looper.myLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public ConnectThread(@NonNull BluetoothDevice device,
-                         @NonNull ConnectionListener connectionListener,
-                         @NonNull UUID uuid) {
+    ConnectThread(@NonNull BluetoothDevice device,
+                  @NonNull ConnectionListener connectionListener,
+                  @NonNull UUID uuid) {
         super("bt_connect");
         mDevice = device;
         mConnectionListener = connectionListener;
@@ -97,7 +97,7 @@ public final class ConnectThread extends Thread {
         return socket;
     }
 
-    public void cancel() {
+    void cancel() {
         Ln.v("cancelling...");
         mCancelled = true;
         interrupt();

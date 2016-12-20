@@ -31,7 +31,7 @@ final class AcceptThread extends Thread {
     private final ConnectionListener mConnectionListener;
 
     @NonNull
-    private final Handler mHandler = new Handler(Looper.myLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @NonNull
     private final BluetoothAdapter mAdapter;
