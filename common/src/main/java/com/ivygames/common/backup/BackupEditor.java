@@ -23,49 +23,49 @@ class BackupEditor implements SharedPreferences.Editor {
 
     @Override
     public SharedPreferences.Editor putBoolean(String key, boolean value) {
-        SharedPreferences.Editor editor = mEditor.putBoolean(key, value);
+        mEditor.putBoolean(key, value);
         mBackupManager.dataChanged();
-        return editor;
+        return this;
     }
 
     @Override
     public SharedPreferences.Editor putFloat(String key, float value) {
-        SharedPreferences.Editor editor = mEditor.putFloat(key, value);
+        mEditor.putFloat(key, value);
         mBackupManager.dataChanged();
-        return editor;
+        return this;
     }
 
     @Override
     public SharedPreferences.Editor putInt(String key, int value) {
-        SharedPreferences.Editor editor = mEditor.putInt(key, value);
+        mEditor.putInt(key, value);
         mBackupManager.dataChanged();
-        return editor;
+        return this;
     }
 
     @Override
     public SharedPreferences.Editor putLong(String key, long value) {
-        SharedPreferences.Editor editor = mEditor.putLong(key, value);
+        mEditor.putLong(key, value);
         mBackupManager.dataChanged();
-        return editor;
+        return this;
     }
 
     @Override
     public SharedPreferences.Editor putString(String key, String value) {
-        SharedPreferences.Editor editor = mEditor.putString(key, value);
+        mEditor.putString(key, value);
         mBackupManager.dataChanged();
-        return editor;
+        return this;
     }
 
     @Override
     public SharedPreferences.Editor putStringSet(String key, Set<String> values) {
-        Ln.w("not implemented");
-        return null;
+        Ln.e("not implemented");
+        return this;
     }
 
     @Override
     public SharedPreferences.Editor remove(String key) {
-        Ln.w("not implemented");
-        return null;
+        Ln.e("not implemented");
+        return this;
     }
 
     @Override
