@@ -19,10 +19,12 @@ public class BluetoothPeer {
     private final BluetoothAdapter mBtAdapter;
     @NonNull
     private final UUID mUuid;
+
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectionCreationListener mConnectionCreationListener;
     private ConnectionLostListener mConnectionLostListener;
+
     @NonNull
     private final ConnectionListener mConnectionListener = new ConnectionListener() {
         @Override
@@ -49,6 +51,12 @@ public class BluetoothPeer {
     public void setConnectionListener(@NonNull ConnectionCreationListener listener) {
         mConnectionCreationListener = listener;
         Ln.v("connection listener = " + listener);
+    }
+
+
+    public void setConnectionLostListener(@NonNull ConnectionLostListener listener) {
+        mConnectionLostListener = listener;
+        Ln.v("connection lost listener = " + listener);
     }
 
     /**
@@ -127,8 +135,4 @@ public class BluetoothPeer {
         mConnectThread.start();
     }
 
-    public void registerConnectionLostListener(@NonNull ConnectionLostListener listener) {
-        mConnectionLostListener = listener;
-        Ln.v("connection lost listener = " + listener);
-    }
 }

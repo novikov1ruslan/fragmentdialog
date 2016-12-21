@@ -41,7 +41,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
         mEndGameCommand = new EndGameCommand(game, mBackToSelectGameCommand);
 
         mMultiplayer.registerConnectionLostListener(this);
-        mBluetooth.registerConnectionLostListener(this);
+        mBluetooth.setConnectionLostListener(this);
     }
 
     @Override

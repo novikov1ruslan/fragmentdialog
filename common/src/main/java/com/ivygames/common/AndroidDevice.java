@@ -1,6 +1,7 @@
 package com.ivygames.common;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -80,15 +81,24 @@ public class AndroidDevice {
         return isGoogleServicesAvailable() && PurchaseUtils.isBillingAvailable(mContext.getPackageManager());
     }
 
+    public BluetoothAdapter getBluetoothAdapter() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            BluetoothManager bm = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+            return bm.getAdapter();
+        }
+
+        return BluetoothAdapter.getDefaultAdapter();
+    }
+
     public boolean hasBluetooth() {
         PackageManager pm = mContext.getPackageManager();
         boolean hasBluetooth = pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
-        hasBluetooth &= BluetoothAdapter.getDefaultAdapter() != null;
+        hasBluetooth &= getBluetoothAdapter() != null;
         return hasBluetooth;
     }
 
     public boolean bluetoothEnabled() {
-        return BluetoothAdapter.getDefaultAdapter().isEnabled();
+        return getBluetoothAdapter().isEnabled();
     }
 
     @Override

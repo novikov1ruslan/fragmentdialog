@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi;
 
 import android.app.Application;
-import android.bluetooth.BluetoothAdapter;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -42,7 +41,7 @@ class ApplicationInitializer {
 
     private static final String ANALYTICS_KEY = "UA-43473473-1";
 
-    public static void initialize(@NonNull Application application) {
+    static void initialize(@NonNull Application application) {
         Log.v("Battleship", "initializing application...");
         ACRA.init(application);
         initLogger(application);
@@ -65,7 +64,7 @@ class ApplicationInitializer {
         PlayerFactory playerFactory = new PlayerFactory();
         AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBot(random), random);
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();
-        BluetoothPeer bluetooth = new BluetoothPeer(BluetoothAdapter.getDefaultAdapter(), MY_UUID);
+        BluetoothPeer bluetooth = new BluetoothPeer(device.getBluetoothAdapter(), MY_UUID);
 
         Dependencies.inject(random);
         Dependencies.inject(apiClient);
