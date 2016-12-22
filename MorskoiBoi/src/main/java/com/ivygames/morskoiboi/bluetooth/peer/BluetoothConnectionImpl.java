@@ -2,8 +2,8 @@ package com.ivygames.morskoiboi.bluetooth.peer;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
-import org.apache.commons.lang3.Validate;
 import org.commons.logger.Ln;
 
 import java.io.IOException;
@@ -21,9 +21,9 @@ class BluetoothConnectionImpl implements BluetoothConnection {
     private final Handler mHandler;
     private volatile MessageReceiver mMessageReceiver;
 
-    BluetoothConnectionImpl(BluetoothSocket socket, Handler handler) {
-        mSocket = Validate.notNull(socket);
-        mHandler = Validate.notNull(handler);
+    BluetoothConnectionImpl(@NonNull BluetoothSocket socket, @NonNull Handler handler) {
+        mSocket = socket;
+        mHandler = handler;
     }
 
     void connect() throws IOException {
@@ -82,7 +82,7 @@ class BluetoothConnectionImpl implements BluetoothConnection {
      * Write to the connected OutStream.
      */
     @Override
-    public void write(String message) {
+    public void write(@NonNull String message) {
         byte[] buffer = message.getBytes();
         Ln.v("writing " + buffer.length + " bytes");
         try {
@@ -93,7 +93,7 @@ class BluetoothConnectionImpl implements BluetoothConnection {
     }
 
     @Override
-    public void setMessageReceiver(MessageReceiver receiver) {
+    public void setMessageReceiver(@NonNull MessageReceiver receiver) {
         mMessageReceiver = receiver;
     }
 
