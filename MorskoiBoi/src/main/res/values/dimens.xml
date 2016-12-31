@@ -48,6 +48,9 @@
     <dimen name="settings_padding">16dp</dimen>
     <dimen name="version_margin">4dp</dimen>
 
+    <!-- bluetooth -->
+    <dimen name="bluetooth_margin">4dp</dimen>
+
     <!-- setup -->
     <dimen name="board_setup_margin">10dp</dimen>
 
