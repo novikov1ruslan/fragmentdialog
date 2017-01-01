@@ -106,8 +106,7 @@ public class GameplayScreen_PauseDialogTest extends GameplayScreen_ {
         task = new TaskResource(new Runnable() {
             @Override
             public void run() {
-                GameplayLayoutInterface layout = (GameplayLayoutInterface) screen().getView();
-                layout.unLock();
+                ((GameplayLayoutInterface) screen().getView()).playerTurn();
             }
         });
         registerIdlingResources(task);

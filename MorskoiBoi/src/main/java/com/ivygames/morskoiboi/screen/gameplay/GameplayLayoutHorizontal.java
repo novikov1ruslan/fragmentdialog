@@ -143,8 +143,7 @@ public class GameplayLayoutHorizontal extends LinearLayout implements View.OnCli
         mEnemyBoardView.setShotListener(listener);
     }
 
-    @Override
-    public void unLock() {
+    private void unLock() {
         mEnemyBoardView.unLock();
     }
 

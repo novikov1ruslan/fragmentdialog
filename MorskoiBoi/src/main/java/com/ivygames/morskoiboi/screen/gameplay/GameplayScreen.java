@@ -248,7 +248,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 // So it is safe to resume timer
                 mTimerController.start();
                 // before dialog was displayed, layout has been locked
-                mLayout.unLock();
+                mLayout.playerTurn();
                 mGameIsOn = true;
                 mStartTime = SystemClock.elapsedRealtime();
             }

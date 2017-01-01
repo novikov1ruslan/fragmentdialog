@@ -161,8 +161,7 @@ public class GameplayLayoutVertical extends ViewGroup implements GameplayLayoutI
         mEnemyBoardView.setShotListener(listener);
     }
 
-    @Override
-    public void unLock() {
+    private void unLock() {
         mEnemyBoardView.unLock();
     }
 

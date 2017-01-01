@@ -34,8 +34,6 @@ public interface GameplayLayoutInterface {
 
     boolean isLocked();
 
-    void unLock();
-
     void showOpponentSettingBoardNote(@NonNull String message);
 
     void setAim(@NonNull Vector aim);
