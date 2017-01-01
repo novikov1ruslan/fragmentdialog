@@ -159,7 +159,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     @NonNull
     @Override
     public View onCreateView(@NonNull ViewGroup container) {
-        mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false).findViewById(R.id.gameplay_layout);
+        mLayout = (GameplayLayoutInterface) getLayoutInflater().inflate(R.layout.gameplay, container, false);
         mLayout.setShipsSizes(mRules.getAllShipsSizes());
         if (!mGame.isRemote()) {
             Ln.v("not internet game - hide chat button");
@@ -377,7 +377,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             }
 
             Cell cell = mEnemyPublicBoard.getCell(i, j);
-            if (!(cell == Cell.EMPTY)) {
+            if (cell != Cell.EMPTY) {
                 Ln.d(cell + " is not empty");
                 // TODO: play sound
                 return;

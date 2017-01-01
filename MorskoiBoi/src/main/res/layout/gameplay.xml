@@ -1,6 +1,5 @@
 <com.ivygames.morskoiboi.screen.gameplay.GameplayLayoutVertical xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gameplay_layout"
     android:background="@color/default_background"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
