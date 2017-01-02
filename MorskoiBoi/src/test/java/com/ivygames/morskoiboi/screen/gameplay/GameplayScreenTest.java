@@ -16,6 +16,7 @@ import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidGame;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 
 import org.junit.Before;
@@ -50,6 +51,7 @@ public class GameplayScreenTest {
         Dependencies.inject(mMultiplayer);
         Dependencies.inject(mRules);
         Dependencies.inject(mock(GameSettings.class));
+        Dependencies.inject(mock(BluetoothPeer.class));
     }
 
     @Test

@@ -5,16 +5,19 @@ import android.graphics.Rect;
 
 import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.Ship;
+import com.ivygames.morskoiboi.BuildConfig;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 18)
 public class BaseGeometryProcessorTest {
 
     private BaseGeometryProcessor mPresenter;

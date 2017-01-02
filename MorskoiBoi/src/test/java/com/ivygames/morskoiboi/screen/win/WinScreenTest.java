@@ -13,6 +13,7 @@ import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
+import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
@@ -70,6 +71,7 @@ public class WinScreenTest {
         Dependencies.inject(mMultiplayer);
         Dependencies.inject(mAchievementsManager);
         Dependencies.inject(mProgressManager);
+        Dependencies.inject(mock(BluetoothPeer.class));
     }
 
     @Test
