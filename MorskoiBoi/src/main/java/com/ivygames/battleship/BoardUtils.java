@@ -173,8 +173,8 @@ public class BoardUtils {
     }
 
     @NonNull
-    private static List<Vector> getNeighboringCoordinates(int x, int y) {
-        return ShipUtils.getCoordinates(new LocatedShip(new Ship(1), Vector.get(x, y)), CoordinateType.NEAR_SHIP);
+    private static List<Vector> getNeighboringCoordinates(int i, int j) {
+        return ShipUtils.getCoordinates(new LocatedShip(new Ship(1), i, j), CoordinateType.NEAR_SHIP);
     }
 
     @NonNull
@@ -216,5 +216,26 @@ public class BoardUtils {
     @NonNull
     static String debugBoard(@NonNull Board board) {
         return board.toString();
+    }
+
+    public static boolean isShootableCell(@NonNull Board board, @NonNull Vector coordinate) {
+        return isShootableCell(board, coordinate.x, coordinate.y);
+    }
+
+    public static boolean isShootableCell(@NonNull Board board, int i, int j) {
+        if (board.getCell(i, j) != Cell.EMPTY) {
+            return false;
+        }
+        if (board.getShipAt(i, j) != null) {
+            return false;
+        }
+        List<Vector> coordinates = BoardUtils.getNeighboringCoordinates(i, j);
+        for (Vector coordinate : coordinates) {
+            if (board.getShipAt(coordinate) != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

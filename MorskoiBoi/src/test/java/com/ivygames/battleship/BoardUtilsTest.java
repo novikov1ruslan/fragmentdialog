@@ -258,7 +258,7 @@ public class BoardUtilsTest {
 
         Vector shipLocation = BoardUtils.findShipLocation(mBoard);
 
-        assertThat(shipLocation, is(Vector.get(5 ,5)));
+        assertThat(shipLocation, is(Vector.get(5, 5)));
     }
 
     @Test
@@ -268,7 +268,7 @@ public class BoardUtilsTest {
 
         Vector shipLocation = BoardUtils.findShipLocation(mBoard);
 
-        assertThat(shipLocation, is(Vector.get(5 ,5)));
+        assertThat(shipLocation, is(Vector.get(5, 5)));
     }
 
     @Test
@@ -279,15 +279,14 @@ public class BoardUtilsTest {
 
         Vector shipLocation = BoardUtils.findShipLocation(mBoard);
 
-        assertThat(shipLocation, is(Vector.get(5 ,5)));
+        assertThat(shipLocation, is(Vector.get(5, 5)));
     }
 
     @Test
     public void horizontalShipFitsBoard() {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
-        Vector coordinate = Vector.get(5, 5);
 
-        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, Vector.get(5, 5));
 
         assertThat(fits, is(true));
     }
@@ -295,9 +294,8 @@ public class BoardUtilsTest {
     @Test
     public void horizontalShipDoesNotFitBoard() {
         Ship ship = new Ship(4, Ship.Orientation.HORIZONTAL);
-        Vector coordinate = Vector.get(7, 5);
 
-        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, Vector.get(7, 5));
 
         assertThat(fits, is(false));
     }
@@ -305,9 +303,8 @@ public class BoardUtilsTest {
     @Test
     public void verticalShipFitsBoard() {
         Ship ship = new Ship(4, Ship.Orientation.VERTICAL);
-        Vector coordinate = Vector.get(7, 6);
 
-        boolean fits = BoardUtils.shipFitsTheBoard(ship, coordinate);
+        boolean fits = BoardUtils.shipFitsTheBoard(ship, Vector.get(7, 6));
 
         assertThat(fits, is(true));
     }
@@ -322,6 +319,44 @@ public class BoardUtilsTest {
         assertThat(fits, is(false));
     }
 
+    @Test
+    public void freeCellIsEmpty() {
+        boolean isEmpty = BoardUtils.isShootableCell(mBoard, Vector.get(5, 5));
+
+        assertThat(isEmpty, is(true));
+    }
+
+    @Test
+    public void hitCellIsNotEmpty() {
+        mBoard.setCell(Cell.HIT, 5, 5);
+        boolean isEmpty = BoardUtils.isShootableCell(mBoard, 5, 5);
+
+        assertThat(isEmpty, is(false));
+    }
+
+    @Test
+    public void missCellIsNotEmpty() {
+        mBoard.setCell(Cell.MISS, 5, 5);
+        boolean isEmpty = BoardUtils.isShootableCell(mBoard, 5, 5);
+
+        assertThat(isEmpty, is(false));
+    }
+
+    @Test
+    public void cellAtShipIsNotEmpty() {
+        mBoard.addShip(new Ship(1), 5, 5);
+        boolean isEmpty = BoardUtils.isShootableCell(mBoard, 5, 5);
+
+        assertThat(isEmpty, is(false));
+    }
+
+    @Test
+    public void cellNearShipIsNotEmpty() {
+        mBoard.addShip(new Ship(1), 5, 5);
+        boolean isEmpty = BoardUtils.isShootableCell(mBoard, 4, 5);
+
+        assertThat(isEmpty, is(false));
+    }
 
     @NonNull
     private Set<Ship> mock_10_dead_ships() {
