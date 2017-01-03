@@ -376,9 +376,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 return;
             }
 
-            Cell cell = mEnemyPublicBoard.getCell(i, j);
-            if (cell != Cell.EMPTY) {
-                Ln.d(cell + " is not empty");
+            if (!BoardUtils.isShootableCell(mEnemyPublicBoard, i, j)) {
+                Ln.d("cell [" + i  + ", " + j + "] is not shootable");
                 // TODO: play sound
                 return;
             }
@@ -386,6 +385,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             mTimerController.stop();
 
             Vector aim = Vector.get(i, j);
+            Cell cell = mEnemyPublicBoard.getCell(i, j);
             Ln.d("shooting at: " + aim + cell);
             mLayout.lock();
             updateUnlockedTime();
