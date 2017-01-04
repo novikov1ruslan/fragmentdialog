@@ -4,7 +4,7 @@ package com.ivygames.morskoiboi.bluetooth;
 import android.support.annotation.NonNull;
 
 import com.ivygames.morskoiboi.Game;
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
+import com.ivygames.bluetooth.peer.BluetoothConnection;
 
 import org.commons.logger.Ln;
 

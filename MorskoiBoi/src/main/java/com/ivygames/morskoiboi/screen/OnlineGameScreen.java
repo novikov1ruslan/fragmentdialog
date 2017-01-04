@@ -11,7 +11,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.R;
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
@@ -41,7 +41,12 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
         mEndGameCommand = new EndGameCommand(game, mBackToSelectGameCommand);
 
         mMultiplayer.registerConnectionLostListener(this);
-        mBluetooth.setConnectionLostListener(this);
+        mBluetooth.setConnectionLostListener(new com.ivygames.bluetooth.peer.ConnectionLostListener() {
+            @Override
+            public void onConnectionLost() {
+                OnlineGameScreen.this.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
+            }
+        });
     }
 
     @Override

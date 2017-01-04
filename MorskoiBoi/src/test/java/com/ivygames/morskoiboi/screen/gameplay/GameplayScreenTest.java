@@ -8,6 +8,7 @@ import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.ai.AiOpponent;
 import com.ivygames.battleship.player.PlayerOpponent;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.common.timer.TurnTimerController;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -16,7 +17,6 @@ import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.ai.AndroidGame;
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 
 import org.junit.Before;

@@ -20,7 +20,7 @@ import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
@@ -37,7 +37,7 @@ import java.util.UUID;
 
 class ApplicationInitializer {
     // Unique UUID for this application
-    static final UUID MY_UUID = UUID.fromString("9ecd276e-c044-43ea-969e-2ed67fc9f633");
+    private static final UUID MY_UUID = UUID.fromString("9ecd276e-c044-43ea-969e-2ed67fc9f633");
 
     private static final String ANALYTICS_KEY = "UA-43473473-1";
 

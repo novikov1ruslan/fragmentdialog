@@ -2,6 +2,8 @@ package com.ivygames.morskoiboi.screen.win;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.player.PlayerOpponent;
+import com.ivygames.bluetooth.peer.BluetoothConnection;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -13,10 +15,8 @@ import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothConnection;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

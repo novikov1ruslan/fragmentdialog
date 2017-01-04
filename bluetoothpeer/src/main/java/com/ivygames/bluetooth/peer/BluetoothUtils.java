@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.bluetooth.peer;
+package com.ivygames.bluetooth.peer;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,7 +31,7 @@ public class BluetoothUtils {
         }
     }
 
-    public static void join(@NonNull Thread t) {
+    static void join(@NonNull Thread t) {
         try {
             t.join();
         } catch (InterruptedException ie) {

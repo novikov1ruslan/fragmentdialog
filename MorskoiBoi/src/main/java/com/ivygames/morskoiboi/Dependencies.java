@@ -11,7 +11,7 @@ import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.multiplayer.RealTimeMultiplayer;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.morskoiboi.bluetooth.peer.BluetoothPeer;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 
 import org.commons.logger.Ln;

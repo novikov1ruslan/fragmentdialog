@@ -1,12 +1,9 @@
-package com.ivygames.morskoiboi.bluetooth.peer;
+package com.ivygames.bluetooth.peer;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.ivygames.common.multiplayer.ConnectionLostListener;
-import com.ivygames.common.multiplayer.MultiplayerEvent;
 
 import org.commons.logger.Ln;
 
@@ -28,8 +25,8 @@ public class BluetoothPeer {
     @NonNull
     private final ConnectionListener mConnectionListener = new ConnectionListener() {
         @Override
-        public void onConnectionLost(@NonNull MultiplayerEvent event) {
-            mConnectionLostListener.onConnectionLost(event);
+        public void onConnectionLost() {
+            mConnectionLostListener.onConnectionLost();
         }
 
         @Override

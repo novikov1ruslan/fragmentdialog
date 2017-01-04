@@ -1,4 +1,4 @@
-package com.ivygames.morskoiboi.bluetooth.peer;
+package com.ivygames.bluetooth.peer;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
@@ -6,8 +6,6 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-
-import com.ivygames.common.multiplayer.MultiplayerEvent;
 
 import org.commons.logger.Ln;
 
@@ -85,7 +83,7 @@ final class AcceptThread extends Thread {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mConnectionListener.onConnectionLost(MultiplayerEvent.CONNECTION_LOST);
+                        mConnectionListener.onConnectionLost();
                     }
                 });
             }
