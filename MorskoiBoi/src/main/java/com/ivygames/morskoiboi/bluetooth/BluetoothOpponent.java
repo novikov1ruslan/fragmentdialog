@@ -22,7 +22,6 @@ public class BluetoothOpponent extends AbstractOnlineOpponent implements Message
     @Override
     public void send(@NonNull String message) {
         Ln.v("sending: [" + message + "]");
-        message = message + '|';
         mSender.send(message);
     }
 
