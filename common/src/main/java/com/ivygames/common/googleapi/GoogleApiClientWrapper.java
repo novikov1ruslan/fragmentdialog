@@ -209,13 +209,9 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     @Override
     public void createRoom(@NonNull ArrayList<String> invitees,
-                           int minAutoMatchPlayers,
-                           int maxAutoMatchPlayers,
                            @NonNull RoomListener roomListener,
                            @NonNull RealTimeMessageReceivedListener rtListener) {
-        RoomConfig.Builder builder = getBuilder(minAutoMatchPlayers, maxAutoMatchPlayers, roomListener, rtListener);
-        builder.addPlayersToInvite(invitees);
-
+        RoomConfig.Builder builder = getBuilder(invitees, roomListener, rtListener);
         Games.RealTimeMultiplayer.create(mGoogleApiClient, builder.build());
     }
 
@@ -225,8 +221,15 @@ public class GoogleApiClientWrapper implements ApiClient {
                            @NonNull RoomListener roomListener,
                            @NonNull RealTimeMessageReceivedListener rtListener) {
         RoomConfig.Builder builder = getBuilder(minAutoMatchPlayers, maxAutoMatchPlayers, roomListener, rtListener);
-
         Games.RealTimeMultiplayer.create(mGoogleApiClient, builder.build());
+    }
+
+    private RoomConfig.Builder getBuilder(@NonNull ArrayList<String> invitees,
+                                          @NonNull RoomListener roomListener,
+                                          @NonNull RealTimeMessageReceivedListener rtListener) {
+        RoomConfig.Builder builder = getRoomConfigBuilder(roomListener, rtListener);
+        builder.addPlayersToInvite(invitees);
+        return builder;
     }
 
     private RoomConfig.Builder getBuilder(int minAutoMatchPlayers,

@@ -22,7 +22,7 @@ import com.ivygames.common.multiplayer.RoomListener;
 
 import java.util.ArrayList;
 
-public class ThrowingApiClient extends DummyApiClient {
+class ThrowingApiClient extends DummyApiClient {
 
     private boolean mConnected;
     private boolean mAchievementsShown;
@@ -112,7 +112,7 @@ public class ThrowingApiClient extends DummyApiClient {
     }
 
     @Override
-    public void createRoom(@NonNull ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
+    public void createRoom(@NonNull ArrayList<String> invitees, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
         throwIfNotConnected();
     }
 

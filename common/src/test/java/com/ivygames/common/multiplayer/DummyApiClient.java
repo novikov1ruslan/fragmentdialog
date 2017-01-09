@@ -98,7 +98,7 @@ class DummyApiClient implements ApiClient {
     }
 
     @Override
-    public void createRoom(@NonNull ArrayList<String> invitees, int minAutoMatchPlayers, int maxAutoMatchPlayers, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
+    public void createRoom(@NonNull ArrayList<String> invitees, @NonNull RoomListener roomListener, @NonNull RealTimeMessageReceivedListener rtListener) {
 
     }
 

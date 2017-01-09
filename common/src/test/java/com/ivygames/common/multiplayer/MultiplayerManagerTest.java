@@ -18,8 +18,10 @@ import com.ivygames.common.invitations.InvitationLoadListener;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -36,6 +37,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
 public class MultiplayerManagerTest {
     private static final int WAITING_ROOM_RC = 1000;
 
@@ -64,12 +66,12 @@ public class MultiplayerManagerTest {
         Intent intent = new Intent();
         ArrayList<String> list = new ArrayList<>(Collections.singletonList("1"));
         intent.putStringArrayListExtra(Games.EXTRA_PLAYER_IDS, list);
-        intent.putExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 1);
-        intent.putExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 2);
+//        intent.putExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 1);
+//        intent.putExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 2);
 
         mm.handleResult(1, Activity.RESULT_OK, intent);
 
-        verify(apiClient, times(1)).createRoom(list, 1, 2, roomListener, rtListener);
+        verify(apiClient, times(1)).createRoom(list, roomListener, rtListener);
     }
 
     @Test
@@ -80,7 +82,7 @@ public class MultiplayerManagerTest {
 
         mm.handleResult(1, Activity.RESULT_CANCELED, intent);
 
-        verify(apiClient, never()).createRoom(any(ArrayList.class), anyInt(), anyInt(),
+        verify(apiClient, never()).createRoom(any(ArrayList.class),
                 any(RoomListener.class), any(RealTimeMessageReceivedListener.class));
         verify(multiplayerListener, times(1)).gameAborted();
     }

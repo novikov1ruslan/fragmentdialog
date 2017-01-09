@@ -105,11 +105,11 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
             if (resultCode == Activity.RESULT_OK) {
                 ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
                 Ln.d("opponent selected: " + invitees + ", creating room...");
-                int minAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
-                int maxAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-
-                mApiClient.createRoom(invitees, minAutoMatchPlayers, maxAutoMatchPlayers,
-                        mRoom, mRtmListener);
+//                int minAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+//                int maxAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+//                int minAutoMatchPlayers = 1;
+//                int maxAutoMatchPlayers = 1;
+                mApiClient.createRoom(invitees, mRoom, mRtmListener);
             } else {
                 Ln.d("select players cancelled");
                 endSession();

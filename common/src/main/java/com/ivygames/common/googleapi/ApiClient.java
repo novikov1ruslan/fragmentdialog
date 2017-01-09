@@ -67,8 +67,6 @@ public interface ApiClient {
                   @NonNull RealTimeMessageReceivedListener rtListener);
 
     void createRoom(@NonNull ArrayList<String> invitees,
-                    int minAutoMatchPlayers,
-                    int maxAutoMatchPlayers,
                     @NonNull RoomListener roomListener,
                     @NonNull RealTimeMessageReceivedListener rtListener);
 
