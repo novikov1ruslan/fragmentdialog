@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -64,8 +63,4 @@ public class RanksListScreen extends BattleshipScreen implements BackPressListen
         return R.raw.intro_music;
     }
 
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
-    }
 }

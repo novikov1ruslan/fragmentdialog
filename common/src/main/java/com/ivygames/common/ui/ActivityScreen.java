@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivygames.common.DebugUtils;
+
 
 public abstract class ActivityScreen extends Screen {
     @NonNull
@@ -54,5 +56,10 @@ public abstract class ActivityScreen extends Screen {
 
     protected ActivityScreen(@NonNull Activity parent) {
         mParent = parent;
+    }
+
+    @Override
+    public String toString() {
+        return DebugUtils.getSimpleName(this);
     }
 }

@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
-import com.ivygames.common.DebugUtils;
+import com.ivygames.bluetooth.peer.BluetoothConnection;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
+import com.ivygames.bluetooth.peer.ConnectionCreationListener;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
@@ -24,9 +26,6 @@ import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
-import com.ivygames.bluetooth.peer.BluetoothConnection;
-import com.ivygames.bluetooth.peer.BluetoothPeer;
-import com.ivygames.bluetooth.peer.ConnectionCreationListener;
 import com.ivygames.morskoiboi.dialogs.SingleTextDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -206,10 +205,5 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     @Override
     public int getMusic() {
         return R.raw.intro_music;
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 }

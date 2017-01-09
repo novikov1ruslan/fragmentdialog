@@ -10,7 +10,6 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
@@ -236,11 +235,6 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     @Override
     public int getMusic() {
         return R.raw.intro_music;
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 
     private class RoomConnectionErrorListenerImpl implements RoomConnectionErrorListener {

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.games.Player;
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.googleapi.ApiClient;
@@ -255,11 +254,6 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
         } else {
             mEndGameCommand.run();
         }
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 
 }

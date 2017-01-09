@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.PlayUtils;
 import com.ivygames.common.Sharing;
 import com.ivygames.common.VibratorWrapper;
@@ -158,10 +157,5 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     @Override
     public int getMusic() {
         return R.raw.intro_music;
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 }

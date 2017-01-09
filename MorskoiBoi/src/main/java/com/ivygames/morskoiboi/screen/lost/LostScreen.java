@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.NullSoundBar;
 import com.ivygames.common.music.SoundBar;
@@ -122,8 +121,4 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
         setScreen(ScreenCreator.newBoardSetupScreen(mGame, mSession));
     }
 
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
-    }
 }

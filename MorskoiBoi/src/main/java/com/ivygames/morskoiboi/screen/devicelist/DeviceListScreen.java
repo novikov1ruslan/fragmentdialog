@@ -18,7 +18,6 @@ import com.ivygames.bluetooth.peer.BluetoothConnection;
 import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.bluetooth.peer.BluetoothUtils;
 import com.ivygames.bluetooth.peer.ConnectionCreationListener;
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ui.BackPressListener;
 import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
@@ -221,10 +220,5 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     @Override
     public int getMusic() {
         return R.raw.intro_music;
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 }

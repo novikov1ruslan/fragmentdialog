@@ -609,11 +609,6 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mEndGameCommand.run();
     }
 
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
-    }
-
     private class GameplayLayoutListenerImpl implements GameplayLayoutListener {
 
         @Override

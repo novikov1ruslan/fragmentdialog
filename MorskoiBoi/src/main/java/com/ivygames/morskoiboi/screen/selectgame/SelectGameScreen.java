@@ -17,7 +17,6 @@ import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
@@ -296,11 +295,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public int getMusic() {
         return R.raw.intro_music;
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 
 }

@@ -14,7 +14,6 @@ import com.ivygames.battleship.ShipUtils;
 import com.ivygames.battleship.board.Board;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.common.AndroidDevice;
-import com.ivygames.common.DebugUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.dialog.DialogUtils;
@@ -24,8 +23,8 @@ import com.ivygames.morskoiboi.BuildConfig;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.Game;
 import com.ivygames.morskoiboi.GameSettings;
-import com.ivygames.morskoiboi.RandomOrientationBuilder;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RandomOrientationBuilder;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.screen.OnlineGameScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -235,11 +234,6 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
             }
         };
         DialogUtils.twoOptions(message, option1, command1, option2, command2).show(mFm, DIALOG);
-    }
-
-    @Override
-    public String toString() {
-        return DebugUtils.getSimpleName(this);
     }
 
 }
