@@ -32,6 +32,7 @@ import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
 import com.ivygames.morskoiboi.Session;
+import com.ivygames.morskoiboi.Test;
 import com.ivygames.morskoiboi.ai.AndroidGame;
 import com.ivygames.morskoiboi.ai.DelayedOpponent;
 import com.ivygames.morskoiboi.dialogs.SignInDialog;
@@ -46,7 +47,7 @@ import org.commons.logger.Ln;
 public class SelectGameScreen extends BattleshipScreen implements SelectGameActions,
         SignInListener, BackPressListener {
     private static final String DIALOG = FragmentAlertDialog.TAG;
-    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && false;
+    private static final boolean ANDROID_VS_ANDROID = BuildConfig.DEBUG && Test.ANDROID_VS_ANDROID;
 
     private SelectGameLayout mLayout;
 
