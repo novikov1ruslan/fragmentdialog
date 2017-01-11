@@ -22,36 +22,42 @@ class GameplaySoundsWrapper extends GameplaySounds {
         mSettings = settings;
     }
 
+    @Override
     public void playWhistleSound() {
         if (isSoundOn()) {
             super.playWhistleSound();
         }
     }
 
+    @Override
     public void playKantrop() {
         if (isSoundOn()) {
             super.playKantrop();
         }
     }
 
+    @Override
     public void playSplash() {
         if (isSoundOn()) {
             super.playSplash();
         }
     }
 
+    @Override
     public void playHitSound() {
         if (isSoundOn()) {
             super.playHitSound();
         }
     }
 
+    @Override
     public void playKillSound() {
         if (isSoundOn()) {
             super.playKillSound();
         }
     }
 
+    @Override
     public void playAlarmSound() {
         if (isSoundOn()) {
             super.playAlarmSound();

@@ -253,7 +253,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 mStartTime = SystemClock.elapsedRealtime();
             }
         };
-        SimpleActionDialog.create(R.string.pause, R.string.continue_str, pauseCommand).show(mFm, DIALOG);
+        showDialog(SimpleActionDialog.create(R.string.pause, R.string.continue_str, pauseCommand));
     }
 
     @Override
@@ -308,6 +308,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             return;
         }
 
+        mGameplaySounds.stopKantropSound();
         if (mGame.shouldNotifyOpponent()) {
             if (mPlayer.isOpponentReady()) {
                 Ln.d("Captain, do you really want to surrender?");
@@ -326,8 +327,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         showLeaveGameDialog(getString(R.string.abandon_game_question));
     }
 
-    private void showLeaveGameDialog(String message) {
-        new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
+    private void showLeaveGameDialog(@NonNull String message) {
+        showDialog(new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -335,14 +336,14 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.d("player decided to leave the game");
                 mEndGameCommand.run();
             }
-        }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
+        }).setNegativeButton(R.string.cancel).create());
     }
 
     private void showSurrenderDialog() {
         final int penalty = ScoresUtils.calcSurrenderPenalty(mRules.getAllShipsSizes(), mPlayerPrivateBoard.getShips());
         String message = getString(R.string.surrender_question, -penalty);
 
-        new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
+        showDialog(new AlertDialogBuilder().setMessage(message).setPositiveButton(R.string.ok, new OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -350,7 +351,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                 Ln.d("player chose to surrender");
                 surrender(penalty);
             }
-        }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
+        }).setNegativeButton(R.string.cancel).create());
     }
 
     private class BoardShotListener implements ShotListener {
@@ -592,12 +593,17 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private void showOpponentSurrenderedDialog(@NonNull Collection<Ship> remainedFleet) {
-        SimpleActionDialog.create(R.string.opponent_surrendered, new ShowWinCommand(true, remainedFleet)).show(mFm, DIALOG);
+        showDialog(SimpleActionDialog.create(R.string.opponent_surrendered, new ShowWinCommand(true, remainedFleet)));
     }
 
-    private void surrender(final int penalty) {
+    private void surrender(int penalty) {
         mSettings.setProgressPenalty(mSettings.getProgressPenalty() + penalty);
         mEndGameCommand.run();
+    }
+
+    private void showDialog(@NonNull FragmentAlertDialog dialog) {
+        mGameplaySounds.stopKantropSound();
+        dialog.show(mFm, DIALOG);
     }
 
     private class GameplayLayoutListenerImpl implements GameplayLayoutListener {
@@ -605,12 +611,12 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void onChatClicked() {
             UiEvent.send("chat", "open");
-            new ChatDialog.Builder(mChatAdapter).setName(mPlayer.getName()).setPositiveButton(R.string.send, new OnClickListener() {
+            showDialog(new ChatDialog.Builder(mChatAdapter).setName(mPlayer.getName()).setPositiveButton(R.string.send, new OnClickListener() {
 
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(DialogInterface dialog1, int which) {
                     UiEvent.send("chat", "sent");
-                    String text = ((ChatDialog) dialog).getChatMessage().toString();
+                    String text = ((ChatDialog) dialog1).getChatMessage().toString();
                     if (TextUtils.isEmpty(text)) {
                         Ln.d("chat text is empty - not sending");
                     } else {
@@ -618,7 +624,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
                         mEnemy.onNewMessage(text);
                     }
                 }
-            }).setNegativeButton(R.string.cancel).create().show(mFm, DIALOG);
+            }).setNegativeButton(R.string.cancel).create());
         }
 
         @Override
@@ -714,6 +720,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void run() {
             Ln.w("shot_hanged");
+            mGameplaySounds.stopKantropSound();
             showConnectionLostDialog();
         }
     }
@@ -722,6 +729,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         @Override
         public void run() {
             Ln.w("turn_hanged");
+            mGameplaySounds.stopKantropSound();
             showConnectionLostDialog();
         }
     }
