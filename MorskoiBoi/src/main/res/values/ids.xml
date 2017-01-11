@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string name="versionName" translatable="false">1.4.20a</string>
+    <string name="versionName" translatable="false">1.4.20c</string>
     <string name="app_id" translatable="false">1081184151538</string>
     <string name="admob_banner_id" translatable="false">ca-app-pub-8951111050321707/4577843277</string>
     <string name="admob_interstitial_after_play_id" translatable="false">ca-app-pub-8951111050321707/3767878071</string>

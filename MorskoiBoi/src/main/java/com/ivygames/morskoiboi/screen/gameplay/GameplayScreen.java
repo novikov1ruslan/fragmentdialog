@@ -194,7 +194,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         mUiPlayerCallback = new UiPlayerCallback();
         mPlayer.registerCallback(mUiPlayerCallback);
 
-        mLayout.setShotListener(new BoardShotListener(mEnemy, mGameplaySounds));
+        mLayout.setShotListener(new BoardShotListener());
 
         Ln.d("screen is fully created - start bidding in " + START_DELAY + "ms");
         mUiThreadHandler.postDelayed(new Runnable() {
@@ -354,16 +354,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     private class BoardShotListener implements ShotListener {
-        @NonNull
-        private final Opponent mEnemy;
         private boolean debug_aiming_started;
-        @NonNull
-        private final GameplaySounds mGameplaySounds;
-
-        BoardShotListener(@NonNull Opponent opponent, @NonNull GameplaySounds gameplaySounds) {
-            mEnemy = opponent;
-            mGameplaySounds = gameplaySounds;
-        }
 
         @Override
         public void onAimingFinished(int i, int j) {
