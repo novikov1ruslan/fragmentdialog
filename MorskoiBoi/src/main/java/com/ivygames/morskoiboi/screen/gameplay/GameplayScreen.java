@@ -614,9 +614,9 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
             showDialog(new ChatDialog.Builder(mChatAdapter).setName(mPlayer.getName()).setPositiveButton(R.string.send, new OnClickListener() {
 
                 @Override
-                public void onClick(DialogInterface dialog1, int which) {
+                public void onClick(DialogInterface dialog, int which) {
                     UiEvent.send("chat", "sent");
-                    String text = ((ChatDialog) dialog1).getChatMessage().toString();
+                    String text = ((ChatDialog) dialog).getChatMessage().toString();
                     if (TextUtils.isEmpty(text)) {
                         Ln.d("chat text is empty - not sending");
                     } else {
