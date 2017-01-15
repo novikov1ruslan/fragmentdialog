@@ -130,4 +130,14 @@ public class OnlineGameScreenTest {
 
         verify(game, times(1)).finish();
     }
+
+    @Test
+    public void whenScreenCreated_ItIsRegisteredAsConnectionListener() {
+        RealTimeMultiplayer multiplayer = mock(RealTimeMultiplayer.class);
+        Dependencies.inject(multiplayer);
+
+        OnlineGameScreen screen = new GameplayScreen(activity, game, session, mock(TurnTimerController.class));
+
+        verify(multiplayer, times(1)).registerConnectionLostListener(screen);
+    }
 }

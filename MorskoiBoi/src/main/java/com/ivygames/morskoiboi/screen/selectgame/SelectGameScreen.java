@@ -151,7 +151,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
         setPlayerName();
-        String playerName = getPlayerName();
+        String playerName = getPlayerNameFromUi();
         PlayerOpponent player = createPlayerOpponent(playerName);
         if (ANDROID_VS_ANDROID) {
             player = createAiOpponent(playerName);
@@ -185,7 +185,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     }
 
     @NonNull
-    private String getPlayerName() {
+    private String getPlayerNameFromUi() {
         String playerName = mLayout.getPlayerName();
         if (TextUtils.isEmpty(playerName)) {
             playerName = getString(R.string.player);
