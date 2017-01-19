@@ -61,7 +61,7 @@ class ApplicationInitializer {
         AchievementsManager achievementsManager = new AchievementsManager(apiClient, settings);
         MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
                 BattleshipActivity.RC_WAITING_ROOM);
-        PlayerFactory playerFactory = new PlayerFactory();
+        PlayerFactory playerFactory = new PlayerFactory(application.getString(R.string.player));
         AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBot(random), random);
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();
         BluetoothPeer bluetooth = new BluetoothPeer(device.getBluetoothAdapter(), MY_UUID);

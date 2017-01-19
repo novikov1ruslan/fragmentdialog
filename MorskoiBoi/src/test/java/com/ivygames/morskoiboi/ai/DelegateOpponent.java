@@ -59,6 +59,11 @@ public class DelegateOpponent implements Opponent, Cancellable {
     }
 
     @Override
+    public void setOpponentName(@NonNull String name) {
+        mOpponent.setOpponentName(name);
+    }
+
+    @Override
     public void onNewMessage(@NonNull String text) {
         mOpponent.onNewMessage(text);
     }

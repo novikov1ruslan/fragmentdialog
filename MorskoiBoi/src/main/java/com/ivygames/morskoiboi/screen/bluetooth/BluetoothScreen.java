@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -78,13 +77,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
             String defaultName = getString(R.string.player);
             BluetoothOpponent opponent = new BluetoothOpponent(connection, defaultName);
             connection.setMessageReceiver(opponent);
-            String playerName = mSettings.getPlayerName();
-            if (TextUtils.isEmpty(playerName)) {
-                playerName = getString(R.string.player);
-                Ln.i("player name is empty - replaced by " + playerName);
-            }
-
-            PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
+            PlayerOpponent player = mPlayerFactory.createPlayer(mSettings.getPlayerName(), mRules.getAllShipsSizes().length);
             player.setChatListener(parent());
             Session session = new Session(player, opponent);
             Session.bindOpponents(player, opponent);

@@ -68,4 +68,9 @@ public class DummyCallback implements PlayerCallback {
     public void onMessage(@NonNull String message) {
 
     }
+
+    @Override
+    public void onOpponentNameReceived(@NonNull String name) {
+
+    }
 }

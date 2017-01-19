@@ -160,6 +160,7 @@ public class WinLostScenarioTest {
         private final int[] mBid;
 
         BidPlayerFactory(int... bid) {
+            super("Player");
             mBid = bid;
         }
 

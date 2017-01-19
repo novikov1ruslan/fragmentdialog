@@ -1,7 +1,6 @@
 package com.ivygames.morskoiboi.multiplayer;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.ivygames.battleship.Opponent;
 import com.ivygames.battleship.board.Board;
@@ -41,6 +40,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
             case NAME:
                 mName = body;
                 Ln.d("opponent name: [" + mName + "]");
+                mOpponent.setOpponentName(body);
                 break;
             case BID:
                 mOpponent.onEnemyBid(Integer.parseInt(body));
@@ -73,11 +73,7 @@ public abstract class AbstractOnlineOpponent implements Opponent {
     @Override
     public final void setOpponent(@NonNull Opponent opponent) {
         mOpponent = opponent;
-        String name = mOpponent.getName();
-        if (TextUtils.isEmpty(name)) {
-            name = "Player"; // TODO: think about better solution
-        }
-        send(NAME + name);
+        Ln.d(this + ": my opponent is: " + opponent);
     }
 
     @Override
@@ -114,6 +110,11 @@ public abstract class AbstractOnlineOpponent implements Opponent {
     @Override
     public final void setOpponentVersion(int ver) {
         send(VERSION + String.valueOf(ver));
+    }
+
+    @Override
+    public void setOpponentName(@NonNull String name) {
+        send(NAME + name);
     }
 
     @Override

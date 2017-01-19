@@ -23,7 +23,6 @@ repositories {
 }
 
 dependencies {
-    def playServicesVersion = '9.4.0'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -43,5 +42,5 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
 
-    compile 'com.github.novikov1ruslan:Logger:-SNAPSHOT'
+    compile "com.github.novikov1ruslan:Logger:${loggerVersion}"
 }

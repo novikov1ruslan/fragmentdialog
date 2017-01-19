@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -138,7 +137,10 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         if (mSettings.showProgressHelp()) {
             mSettings.hideProgressHelp();
         }
-        setPlayerName();
+        String playerName = mLayout.getPlayerName();
+        if (!playerName.equals(mSettings.getPlayerName())) {
+            mSettings.setPlayerName(playerName);
+        }
     }
 
     @Override
@@ -150,8 +152,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void vsAndroid() {
         UiEvent.send("vsAndroid");
-        setPlayerName();
-        String playerName = getPlayerNameFromUi();
+        String playerName = mLayout.getPlayerName();
         PlayerOpponent player = createPlayerOpponent(playerName);
         if (ANDROID_VS_ANDROID) {
             player = createAiOpponent(playerName);
@@ -165,13 +166,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         setScreen(ScreenCreator.newBoardSetupScreen(new AndroidGame(), session));
     }
 
-    private void setPlayerName() {
-        String playerName = mLayout.getPlayerName();
-        if (!playerName.equals(mSettings.getPlayerName())) {
-            mSettings.setPlayerName(playerName);
-        }
-    }
-
     @NonNull
     private PlayerOpponent createAiOpponent(@NonNull String playerName) {
         return mOpponentFactory.createPlayer(playerName, mRules);
@@ -182,16 +176,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
         PlayerOpponent player = mPlayerFactory.createPlayer(playerName, mRules.getAllShipsSizes().length);
         player.setChatListener(parent());
         return player;
-    }
-
-    @NonNull
-    private String getPlayerNameFromUi() {
-        String playerName = mLayout.getPlayerName();
-        if (TextUtils.isEmpty(playerName)) {
-            playerName = getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + playerName);
-        }
-        return playerName;
     }
 
     @Override
@@ -275,7 +259,6 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             return;
         }
 
-        mLayout.setPlayerName(mSettings.getPlayerName());
         if (mViaInternetRequested) {
             mViaInternetRequested = false;
             showInternetGameScreen();

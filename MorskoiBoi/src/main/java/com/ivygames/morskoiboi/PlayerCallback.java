@@ -31,4 +31,6 @@ public interface PlayerCallback {
     void onPlayersTurn();
 
     void onMessage(@NonNull String message);
+
+    void onOpponentNameReceived(@NonNull String name);
 }

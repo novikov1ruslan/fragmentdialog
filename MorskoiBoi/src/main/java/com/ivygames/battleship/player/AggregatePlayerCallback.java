@@ -108,4 +108,11 @@ class AggregatePlayerCallback implements PlayerCallback {
             callback.onPlayerShotAt();
         }
     }
+
+    @Override
+    public void onOpponentNameReceived(@NonNull String name) {
+        for (PlayerCallback callback : mCallbacks) {
+            callback.onOpponentNameReceived(name);
+        }
+    }
 }

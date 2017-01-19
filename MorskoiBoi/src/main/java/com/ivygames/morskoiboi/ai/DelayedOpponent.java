@@ -110,6 +110,16 @@ public class DelayedOpponent implements Opponent, Cancellable {
     }
 
     @Override
+    public void setOpponentName(@NonNull final String name) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mOpponent.setOpponentName(name);
+            }
+        });
+    }
+
+    @Override
     public void onNewMessage(@NonNull final String text) {
         mHandler.post(new Runnable() {
             @Override

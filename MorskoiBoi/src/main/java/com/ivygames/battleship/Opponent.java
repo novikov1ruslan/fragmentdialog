@@ -53,4 +53,6 @@ public interface Opponent {
     void setOpponentVersion(int ver);
 
     void onNewMessage(@NonNull String text);
+
+    void setOpponentName(@NonNull String name);
 }

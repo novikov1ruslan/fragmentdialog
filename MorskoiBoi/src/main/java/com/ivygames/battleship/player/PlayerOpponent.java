@@ -227,6 +227,7 @@ public class PlayerOpponent implements Opponent {
         mOpponent = opponent;
         Ln.d(mName + ": my opponent is " + mOpponent);
         opponent.setOpponentVersion(Opponent.CURRENT_VERSION);
+        opponent.setOpponentName(mName);
     }
 
     @Override
@@ -254,6 +255,11 @@ public class PlayerOpponent implements Opponent {
     public void setOpponentVersion(int ver) {
         mOpponentVersion = ver;
         Ln.d(mName + ": opponent's protocol version: v" + ver);
+    }
+
+    @Override
+    public void setOpponentName(@NonNull String body) {
+        mCallback.onOpponentNameReceived(body);
     }
 
     public boolean isOpponentReady() {

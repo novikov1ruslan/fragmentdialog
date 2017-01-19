@@ -528,6 +528,11 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
         }
 
         @Override
+        public void onOpponentNameReceived(@NonNull String name) {
+            mLayout.setEnemyName(name);
+        }
+
+        @Override
         public String toString() {
             return DebugUtils.getSimpleName(this);
         }

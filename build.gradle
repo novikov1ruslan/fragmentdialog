@@ -15,3 +15,7 @@ allprojects {
         jcenter()
     }
 }
+
+project.ext.playServicesVersion = '9.4.0'
+project.ext.loggerVersion = 'a613595206'
+

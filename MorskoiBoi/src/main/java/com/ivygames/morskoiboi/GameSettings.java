@@ -141,13 +141,9 @@ public class GameSettings implements AchievementsSettings {
         return mPreferences.getInt(ACHIEVEMENT + achievementId, STATE_HIDDEN);
     }
 
+    @NonNull
     public String getPlayerName() {
-        String playerName = mPreferences.getString(PLAYER_NAME, "");
-        if (TextUtils.isEmpty(playerName)) {
-            playerName = mContext.getString(R.string.player);
-            Ln.i("player name is empty - replaced by " + playerName);
-        }
-        return playerName;
+        return mPreferences.getString(PLAYER_NAME, "");
     }
 
     public void setPlayerName(String name) {
