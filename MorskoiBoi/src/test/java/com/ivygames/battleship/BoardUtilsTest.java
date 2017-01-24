@@ -29,6 +29,43 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BoardUtilsTest {
+//    private static final String BOARD_WITH_SHIPS = "{\"ships\":[" +
+//            "{\"size\":1,\"is_horizontal\":false,\"x\":8,\"y\":5,\"health\":0}," +
+//            "{\"size\":3,\"is_horizontal\":true,\"x\":3,\"y\":2,\"health\":0}," +
+//            "{\"size\":1,\"is_horizontal\":true,\"x\":9,\"y\":2,\"health\":0}," +
+//            "{\"size\":4,\"is_horizontal\":true,\"x\":1,\"y\":6,\"health\":0}" +
+//            "]," +
+//            "\"cells\":\"" +
+//            " X*   *X  " +
+//            "       X  " +
+//            "   XXX*X X" +
+//            "   *      " +
+//            "    * *   " +
+//            "   * *  X " +
+//            " XXXX* *  " +
+//            "    *     " +
+//            "          " +
+//            "          " +
+//            "\"}";
+
+    private static final String BOARD_WITH_SHIPS = "{\"ships\":[" +
+            "{\"size\":1,\"is_horizontal\":false,\"x\":8,\"y\":5,\"health\":0}," +
+            "{\"size\":3,\"is_horizontal\":true,\"x\":3,\"y\":2,\"health\":0}," +
+            "{\"size\":1,\"is_horizontal\":true,\"x\":9,\"y\":2,\"health\":0}," +
+            "{\"size\":4,\"is_horizontal\":true,\"x\":1,\"y\":6,\"health\":0}" +
+            "]," +
+            "\"cells\":\"" +
+            "          " +
+            "X     X   " +
+            "*     X   " +
+            "  X* *X   " +
+            "  X * X*  " +
+            "  X  **   " +
+            "* * *     " +
+            "XXX   *   " +
+            "     X    " +
+            "  X       " +
+            "\"}";
 
     private Board mBoard = new Board();
 
@@ -256,7 +293,7 @@ public class BoardUtilsTest {
     public void ShipLocationCorrectlyFound1() {
         mBoard.setCell(Cell.HIT, 5, 5);
 
-        Vector shipLocation = BoardUtils.findShipLocation(mBoard);
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard, 5, 5);
 
         assertThat(shipLocation, is(Vector.get(5, 5)));
     }
@@ -266,7 +303,7 @@ public class BoardUtilsTest {
         mBoard.setCell(Cell.HIT, 5, 5);
         mBoard.setCell(Cell.HIT, 6, 5);
 
-        Vector shipLocation = BoardUtils.findShipLocation(mBoard);
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard, 6, 5);
 
         assertThat(shipLocation, is(Vector.get(5, 5)));
     }
@@ -277,9 +314,31 @@ public class BoardUtilsTest {
         mBoard.setCell(Cell.HIT, 5, 7);
         mBoard.setCell(Cell.HIT, 5, 6);
 
-        Vector shipLocation = BoardUtils.findShipLocation(mBoard);
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard, 5, 6);
 
         assertThat(shipLocation, is(Vector.get(5, 5)));
+    }
+
+    @Test
+    public void ShipLocationCorrectlyFound4() {
+        Board board = BoardSerialization.fromJson(BOARD_WITH_SHIPS);
+
+        Vector shipLocation = BoardUtils.findShipLocation(board, 7, 2);
+
+        assertThat(shipLocation, is(Vector.get(7, 0)));
+    }
+
+    @Test
+    public void ShipLocationCorrectlyFound5() {
+        mBoard.setCell(Cell.HIT, 1, 1);
+        mBoard.setCell(Cell.HIT, 2, 1);
+
+        mBoard.setCell(Cell.HIT, 3, 3);
+        mBoard.setCell(Cell.HIT, 4, 3);
+
+        Vector shipLocation = BoardUtils.findShipLocation(mBoard, 4, 3);
+
+        assertThat(shipLocation, is(Vector.get(3, 3)));
     }
 
     @Test

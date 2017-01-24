@@ -125,11 +125,11 @@ public class BaseGeometryProcessor {
     }
 
     @NonNull
-    final Mark getMark(int x, int y) {
+    final Mark getMark(int i, int j) {
         isTrue(mCellSizePx > 0, "call measure first");
 
-        int left = getLeft(x);
-        int top = getTop(y);
+        int left = getLeft(i);
+        int top = getTop(j);
         mMark.centerX = left + mHalfCellSize;
         mMark.centerY = top + mHalfCellSize;
         mMark.outerRadius = getMarkOuterRadius();

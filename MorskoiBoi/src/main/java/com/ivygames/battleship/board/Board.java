@@ -173,9 +173,9 @@ public class Board {
         StringBuilder board = new StringBuilder(130);
         board.append("----------\n");
         // print rows first
-        for (int y = 0; y < DIMENSION; y++) {
-            for (int x = 0; x < DIMENSION; x++) {
-                board.append(mCells[x][y]);
+        for (int j = 0; j < DIMENSION; j++) {
+            for (int i = 0; i < DIMENSION; i++) {
+                board.append(mCells[i][j]);
             }
             board.append('\n');
         }

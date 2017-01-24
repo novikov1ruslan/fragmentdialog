@@ -178,20 +178,24 @@ public class BoardUtils {
     }
 
     @NonNull
-    public static Vector findShipLocation(@NonNull Board board) {
-        Collection<Vector> hitCells = findHitCellsWithNoShip(board);
+    public static Vector findShipLocation(@NonNull Board board, int i, int j) {
+        return findShipLocation(board, Vector.get(i, j));
+    }
 
-        Vector location = VectorUtils.any(hitCells);
-        for (Vector coordinate : hitCells) {
-            if (coordinate.x < location.x) {
-                location = coordinate;
-            }
-            if (coordinate.y < location.y) {
-                location = coordinate;
-            }
+    @NonNull
+    public static Vector findShipLocation(@NonNull Board board, @NonNull Vector aim) {
+        int i = aim.x;
+        int j = aim.y;
+
+        while (i - 1 >= 0 && board.getCell(i - 1, j) == Cell.HIT) {
+            i--;
         }
 
-        return location;
+        while (j - 1 >= 0 && board.getCell(i, j - 1) == Cell.HIT) {
+            j--;
+        }
+
+        return Vector.get(i, j);
     }
 
     /**
