@@ -100,8 +100,8 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
         Ln.v("request=" + requestCode + ", result=" + resultCode);
         if (requestCode == mSelectPlayersRc) {
             // Handle the result of the "Select players UI" we launched when the user
-            // clicked the
-            // "Invite friends" button. We react by creating a room with those players.
+            // clicked the "Invite friends" button.
+            // We react by creating a room with those players.
             if (resultCode == Activity.RESULT_OK) {
                 ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
                 Ln.d("opponent selected: " + invitees + ", creating room...");

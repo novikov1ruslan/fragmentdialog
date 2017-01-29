@@ -81,7 +81,7 @@ public class MultiplayerRoom implements RoomListener {
             setRoom(room);
             mCreationListener.onRoomCreated(room);
         } else {
-            Ln.w("room creation error: " + statusCode);
+            Ln.w("room creation error: " + GamesStatusCodes.getStatusString(statusCode));
             mConnectionErrorListener.onError(statusCode);
         }
     }

@@ -142,9 +142,10 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        hideWaitingScreen();
+        // TODO: missing UI test: 1) invite player, 2) exit game 3) enter BT game: no "Please Wait"
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required - returning to select game screen");
-            hideWaitingScreen();
             mApiClient.disconnect();
             // TODO: missing UI test
             SimpleActionDialog.create(R.string.error, newBackToSelectGameCommand()).show(mFm, DIALOG);
