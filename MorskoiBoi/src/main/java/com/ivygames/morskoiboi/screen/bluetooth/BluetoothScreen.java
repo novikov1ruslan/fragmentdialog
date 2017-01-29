@@ -184,7 +184,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     private void showDialog() {
         mLayout.disable();
-        mDialog = (SingleTextDialog) inflate(R.layout.wait_dialog, mContainer);
+        mDialog = (SingleTextDialog) inflate(R.layout.single_text_dialog, mContainer);
         mDialog.setText(R.string.waiting_connection);
         mContainer.addView(mDialog);
     }

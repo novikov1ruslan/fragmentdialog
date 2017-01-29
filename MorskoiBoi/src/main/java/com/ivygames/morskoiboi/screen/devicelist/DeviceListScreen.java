@@ -113,6 +113,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         Ln.d(TAG + ": receivers are unregistered, discovery canceled");
     }
 
+    @NonNull
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -141,7 +142,7 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     };
 
     @Override
-    public void selectDevice(String info) {
+    public void selectDevice(@NonNull String info) {
         Ln.d(TAG + ": selected device [" + info + "]");
         if (mBluetooth.isConnecting()) {
             Ln.w("already connecting to device");
@@ -193,9 +194,9 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
         return mDialog != null;
     }
 
-    private void showDialog(String text) {
+    private void showDialog(@NonNull String text) {
         mLayout.disable();
-        mDialog = (SingleTextDialog) inflate(R.layout.wait_dialog, mContainer);
+        mDialog = (SingleTextDialog) inflate(R.layout.single_text_dialog, mContainer);
         mDialog.setText(text);
         mContainer.addView(mDialog);
     }

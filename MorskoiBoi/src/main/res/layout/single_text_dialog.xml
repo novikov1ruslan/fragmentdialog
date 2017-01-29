@@ -17,8 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/please_wait" />
+            android:gravity="center" />
 
 
     </com.ivygames.morskoiboi.screen.view.NotepadRelativeLayout>
