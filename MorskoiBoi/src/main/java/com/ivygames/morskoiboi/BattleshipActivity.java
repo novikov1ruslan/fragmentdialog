@@ -132,9 +132,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (_DEBUG_ALWAYS_SHOW_ADS && !BuildConfig.DEBUG) {
-            throw new IllegalStateException("ads off in release build");
-        }
         mRecreating = savedInstanceState != null;
         if (mRecreating) {
             Ln.i("app is recreating, restart it");
@@ -213,9 +210,11 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         @Override
         public void onHasNoAds() {
             Ln.d("no ads purchased successfully");
-            mSettings.setNoAds();
-            hideAdsUi();
-            mAdProvider.destroy();
+            if (!_DEBUG_ALWAYS_SHOW_ADS) {
+                mSettings.setNoAds();
+                hideAdsUi();
+                mAdProvider.destroy();
+            }
         }
     }
 

@@ -10,6 +10,7 @@ import com.ivygames.common.ads.AdProvider;
 import org.commons.logger.Ln;
 
 public class AppodealAdProvider implements AdProvider {
+    private static final String APP_KEY = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
 
     private int mNextAdIndex;
     private int[] mAdTypes = {
@@ -31,12 +32,10 @@ public class AppodealAdProvider implements AdProvider {
         Ln.d("initializing appodeal");
         Appodeal.disableLocationPermissionCheck();
         Appodeal.disableWriteExternalStoragePermissionCheck();
-//        Appodeal.disableNetwork(activity, "cheetah");
         Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
-        String appKey = "8b8582518838a35e16efcca260202182bc31b890a63879f8";
         int fullScreenAds = getFullScreenAds();
-        Appodeal.initialize(activity, appKey, Appodeal.BANNER | fullScreenAds);
-//        Appodeal.initialize(activity, appKey, Appodeal.BANNER | Appodeal.INTERSTITIAL);
+        Appodeal.initialize(activity, APP_KEY, Appodeal.BANNER | fullScreenAds);
+//        Appodeal.initialize(activity, APP_KEY, Appodeal.BANNER | Appodeal.INTERSTITIAL);
 //        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
         Appodeal.setSkippableVideoCallbacks(new AppodealSkippableVideoCallback());
         Appodeal.setInterstitialCallbacks(new AppodealInterstitialCallback());

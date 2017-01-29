@@ -73,7 +73,6 @@ dependencies {
     admobCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
 
     appodealCompile project(':cheetah-mobile-3.4.7')
-    appodealCompile project(':unity-ads-1.5.8')
     appodealCompile fileTree(dir: 'libs', include: ['*.jar'])
     appodealCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
     appodealCompile "com.google.android.gms:play-services-ads:${playServicesVersion}"
