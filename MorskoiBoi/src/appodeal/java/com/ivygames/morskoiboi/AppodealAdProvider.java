@@ -16,8 +16,8 @@ public class AppodealAdProvider implements AdProvider {
     private int[] mAdTypes = {
             Appodeal.INTERSTITIAL,
             Appodeal.INTERSTITIAL,
-            Appodeal.INTERSTITIAL,
-            Appodeal.SKIPPABLE_VIDEO
+            Appodeal.INTERSTITIAL
+//            Appodeal.SKIPPABLE_VIDEO
     };
     @NonNull
     private final Activity mActivity;
@@ -35,9 +35,7 @@ public class AppodealAdProvider implements AdProvider {
         Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
         int fullScreenAds = getFullScreenAds();
         Appodeal.initialize(activity, APP_KEY, Appodeal.BANNER | fullScreenAds);
-//        Appodeal.initialize(activity, APP_KEY, Appodeal.BANNER | Appodeal.INTERSTITIAL);
-//        Appodeal.setNonSkippableVideoCallbacks(new AppodealNonSkippableVideoCallback());
-        Appodeal.setSkippableVideoCallbacks(new AppodealSkippableVideoCallback());
+//        Appodeal.setSkippableVideoCallbacks(new AppodealSkippableVideoCallback());
         Appodeal.setInterstitialCallbacks(new AppodealInterstitialCallback());
         Appodeal.setBannerCallbacks(new AppodealBannerCallbacks());
 
