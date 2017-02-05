@@ -117,9 +117,8 @@ public class ScreenManager {
 
         mCurrentScreen = screen;
         mCurrentScreen.onCreateView(mContainer);
-        View view = mCurrentScreen.getView();
 
-        mContainer.addView(view);
+        mContainer.addView(mCurrentScreen.getView());
         if (oldView != null) {
             mContainer.removeView(oldView);
         }

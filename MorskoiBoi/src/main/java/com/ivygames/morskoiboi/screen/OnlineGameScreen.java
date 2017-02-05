@@ -55,7 +55,6 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
         mBackToSelectGameCommand = new BackToSelectGameCommand(parent);
         mEndGameCommand = new EndGameCommand(game, mBackToSelectGameCommand);
 
-
         mMultiplayer.registerConnectionLostListener(this);
 
         mBluetooth.setConnectionLostListener(new com.ivygames.bluetooth.peer.ConnectionLostListener() {
@@ -69,7 +68,7 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Ln.v(this + " unregister event listener");
+        Ln.v(this + " unregister connection listener");
         mMultiplayer.unregisterConnectionLostListener(this);
         mBluetooth.resetConnectionLostListener();
     }

@@ -46,7 +46,7 @@ public class OnlineGameScreenTest {
     private Session session;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         session = new Session(mock(PlayerOpponent.class), mock(Opponent.class));
