@@ -116,6 +116,7 @@ public class ScreenManager {
         }
 
         mCurrentScreen = screen;
+        mCurrentScreen.onAttach();
         mCurrentScreen.onCreateView(mContainer);
 
         mContainer.addView(mCurrentScreen.getView());

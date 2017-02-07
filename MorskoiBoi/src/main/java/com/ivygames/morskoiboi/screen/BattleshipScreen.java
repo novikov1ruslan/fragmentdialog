@@ -26,6 +26,11 @@ public abstract class BattleshipScreen extends ActivityScreen {
         UiEvent.screenView(this.getClass().getSimpleName());
     }
 
+    @Override
+    public void onAttach() {
+
+    }
+
     protected final void setScreen(BattleshipScreen screen) {
         parent().setScreen(screen);
     }

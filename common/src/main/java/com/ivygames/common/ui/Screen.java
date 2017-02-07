@@ -14,6 +14,8 @@ public abstract class Screen {
     @NonNull
     public abstract View onCreateView(@NonNull ViewGroup container);
 
+    public abstract void onAttach();
+
     @NonNull
     public abstract View getView();
 
