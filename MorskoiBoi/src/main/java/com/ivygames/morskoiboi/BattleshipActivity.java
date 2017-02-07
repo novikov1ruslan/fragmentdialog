@@ -61,20 +61,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
     private static final String BASE64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsZ8ufj+4+R1sqPrTudIeXZBD6NUtKo8fWLpbQHp9ib9jtIv3PVOzVuNKIsG7eXqn0U+vWX8WYtoPGmogYr4GDJqdzOQb2xq5ZEsAzXoE+Yeiqpp/ASUs1IU2Tw+cu30rKStgktnFeIfcFowPyHeSgSQlqBFUrL0A8oipc5oesao7OiGGCwpUf6OJuvyK0DmdhdYUMPRxTgp0v5+JnXhNEqgiU00W468vf4rfUGqQWUNN902fphf8oADJT5FdlculaQva5t+55RdpqtP8UAficOUXh1xyAn1KQ0APKOPU5x7wAe/z3bLdjE1Ik4g4KXyHLGfP5PMjkfqvgNeU2WsN4QIDAQAB";
     private static final String SKU_NO_ADS = "no_ads";
 
-    public static final int RC_SELECT_PLAYERS = 10000;
-    public static final int RC_INVITATION_INBOX = 10001;
-    public final static int RC_WAITING_ROOM = 10002;
-    public static final int RC_ENSURE_DISCOVERABLE = 3;
-
-    // Request code used to invoke sign in user interactions.
-    public static final int RC_SIGN_IN = 9001;
-    public static final int SERVICE_RESOLVE = 9002;
-
-    public static final int RC_UNUSED = 0;
-    public static final int PLUS_ONE_REQUEST_CODE = 20001;
-    public static final int RC_ENABLE_BT = 2;
-    public static final int RC_PURCHASE = 10003;
-
     @NonNull
     private static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
 
@@ -165,7 +151,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
             mApiClient.connect();
         }
 
-        mPurchaseManager = new PurchaseManager(this, RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
+        mPurchaseManager = new PurchaseManager(this, RequestCodes.RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
         setupAds(device);
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
@@ -378,12 +364,12 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
 
         mApiClient.onActivityResult(requestCode, resultCode);
 
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RequestCodes.RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Ln.d("connection issue is resolved - reconnecting");
                 mApiClient.connect();
             }
-        } else if (requestCode == RC_PURCHASE) {
+        } else if (requestCode == RequestCodes.RC_PURCHASE) {
             mPurchaseManager.handleActivityResult(resultCode, data);
         } else {
             mCurrentScreen.onActivityResult(requestCode, resultCode, data);

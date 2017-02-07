@@ -23,6 +23,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RequestCodes;
 import com.ivygames.morskoiboi.dialogs.SignInDialog;
 import com.ivygames.morskoiboi.screen.BattleshipScreen;
 import com.ivygames.morskoiboi.screen.ScreenCreator;
@@ -91,7 +92,7 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
     public void onResume() {
         super.onResume();
         if (mApiClient.isConnected()) {
-            mLayout.showPlusOneButton(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
+            mLayout.showPlusOneButton(RequestCodes.PLUS_ONE_REQUEST_CODE);
         }
 
         if (mSettings.noAds() || !mDevice.isBillingAvailable()) {
@@ -110,7 +111,7 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
             Ln.i("reconnect required");
             mApiClient.disconnect();
-        } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == RequestCodes.PLUS_ONE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             UiEvent.send("+1", "[" + resultCode + "]");
         }
     }
@@ -134,7 +135,7 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
             boolean signedIn = mApiClient.isConnected();
             UiEvent.send("achievements", signedIn ? 1 : 0);
             if (signedIn) {
-                mApiClient.showAchievements(BattleshipActivity.RC_UNUSED);
+                mApiClient.showAchievements(RequestCodes.RC_UNUSED);
             } else {
                 Ln.d("user is not signed in - ask to sign in");
                 showAchievementsDialog();
@@ -171,7 +172,7 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
             boolean signedIn = mApiClient.isConnected();
             UiEvent.send("showHiScores", signedIn ? 1 : 0);
             if (signedIn) {
-                mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
+                mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), RequestCodes.RC_UNUSED);
             } else {
                 Ln.d("user is not signed in - ask to sign in");
                 showLeaderboardsDialog();
@@ -188,14 +189,14 @@ public class MainScreen extends BattleshipScreen implements SignInListener {
 
     @Override
     public void onSignInSucceeded() {
-        mLayout.showPlusOneButton(BattleshipActivity.PLUS_ONE_REQUEST_CODE);
+        mLayout.showPlusOneButton(RequestCodes.PLUS_ONE_REQUEST_CODE);
 
         if (mAchievementsRequested) {
             mAchievementsRequested = false;
-            mApiClient.showAchievements(BattleshipActivity.RC_UNUSED);
+            mApiClient.showAchievements(RequestCodes.RC_UNUSED);
         } else if (mLeaderboardRequested) {
             mLeaderboardRequested = false;
-            mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), BattleshipActivity.RC_UNUSED);
+            mApiClient.showLeaderboards(getString(R.string.leaderboard_normal), RequestCodes.RC_UNUSED);
         }
     }
 

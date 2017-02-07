@@ -30,6 +30,7 @@ import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
 import com.ivygames.morskoiboi.Rank;
+import com.ivygames.morskoiboi.RequestCodes;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.Test;
 import com.ivygames.morskoiboi.ai.AndroidGame;
@@ -189,7 +190,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
             Ln.d("Bluetooth available, but not enabled - prompt to enable");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             if (mDevice.canResolveIntent(enableIntent)) {
-                startActivityForResult(enableIntent, BattleshipActivity.RC_ENABLE_BT);
+                startActivityForResult(enableIntent, RequestCodes.RC_ENABLE_BT);
             } else {
                 Ln.w("Bluetooth resolver is not available");
                 ExceptionEvent.send("bt_error");
@@ -201,7 +202,7 @@ public class SelectGameScreen extends BattleshipScreen implements SelectGameActi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Ln.v("result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        if (requestCode == BattleshipActivity.RC_ENABLE_BT && resultCode == Activity.RESULT_OK) {
+        if (requestCode == RequestCodes.RC_ENABLE_BT && resultCode == Activity.RESULT_OK) {
             setScreen(ScreenCreator.newBluetoothScreen());
         }
     }

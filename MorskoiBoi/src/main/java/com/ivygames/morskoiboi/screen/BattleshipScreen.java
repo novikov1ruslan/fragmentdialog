@@ -10,6 +10,7 @@ import com.ivygames.common.analytics.UiEvent;
 import com.ivygames.common.music.MusicPlayer;
 import com.ivygames.common.ui.ActivityScreen;
 import com.ivygames.morskoiboi.BattleshipActivity;
+import com.ivygames.morskoiboi.RequestCodes;
 
 import org.commons.logger.Ln;
 
@@ -36,14 +37,14 @@ public abstract class BattleshipScreen extends ActivityScreen {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BattleshipActivity.RC_ENABLE_BT) {
+        if (requestCode == RequestCodes.RC_ENABLE_BT) {
             Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        } else if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
+        } else if (requestCode == RequestCodes.RC_ENSURE_DISCOVERABLE) {
             Ln.w("unprocessed BT result=" + resultCode + ", request=" + requestCode + ", data=" + data);
-        } else if (requestCode == BattleshipActivity.PLUS_ONE_REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
+        } else if (requestCode == RequestCodes.PLUS_ONE_REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
             Ln.i("+1 request cancelled");
         } else {
-            Ln.w("unprocessed result=" + resultCode + ", request=" + requestCode + ", data=" + data);
+            Ln.w("unprocessed result=" + resultCode + ", request=" + RequestCodes.getDebugName(requestCode) + ", data=" + data);
             reportException(this + " unprocessed result: " + resultCode);
         }
     }

@@ -22,6 +22,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RequestCodes;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.bluetooth.BluetoothGame;
 import com.ivygames.morskoiboi.bluetooth.BluetoothOpponent;
@@ -118,7 +119,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BattleshipActivity.RC_ENSURE_DISCOVERABLE) {
+        if (requestCode == RequestCodes.RC_ENSURE_DISCOVERABLE) {
             if (resultCode == Activity.RESULT_CANCELED) {
                 UiEvent.send("reject_discover");
                 Ln.d("user rejected discover-ability - canceling game creation");
@@ -174,7 +175,7 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
             Ln.v("ensuring discover-ability for " + DISCOVERABLE_DURATION);
-            startActivityForResult(discoverableIntent, BattleshipActivity.RC_ENSURE_DISCOVERABLE);
+            startActivityForResult(discoverableIntent, RequestCodes.RC_ENSURE_DISCOVERABLE);
         }
     }
 

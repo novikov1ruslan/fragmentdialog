@@ -26,6 +26,7 @@ import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.Dependencies;
 import com.ivygames.morskoiboi.GameSettings;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RequestCodes;
 import com.ivygames.morskoiboi.Session;
 import com.ivygames.morskoiboi.rt.InternetGame;
 import com.ivygames.morskoiboi.rt.InternetOpponent;
@@ -184,7 +185,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             UiEvent.send("invitePlayer");
 
             showWaitingScreen();
-            mMultiplayer.invitePlayers(BattleshipActivity.RC_SELECT_PLAYERS, createMultiplayerRoom());
+            mMultiplayer.invitePlayers(RequestCodes.RC_SELECT_PLAYERS, createMultiplayerRoom());
         }
 
         @Override
@@ -199,7 +200,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
             Ln.d("requesting invitations screen...");
 
             showWaitingScreen();
-            mMultiplayer.showInvitations(BattleshipActivity.RC_INVITATION_INBOX, createMultiplayerRoom());
+            mMultiplayer.showInvitations(RequestCodes.RC_INVITATION_INBOX, createMultiplayerRoom());
         }
 
         @Override

@@ -3,8 +3,8 @@ package com.ivygames.morskoiboi.internet;
 import android.app.Activity;
 import android.support.test.espresso.matcher.ViewMatchers;
 
-import com.ivygames.morskoiboi.BattleshipActivity;
 import com.ivygames.morskoiboi.R;
+import com.ivygames.morskoiboi.RequestCodes;
 
 import org.junit.Test;
 
@@ -78,7 +78,7 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     public void WhenWaitDialogIsDisplayed__CancellingTheInvitationRemovesDialog() {
         WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
 
-        onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
+        onActivityResult(RequestCodes.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
 
 
         checkDoesNotExist(waitDialog());
@@ -88,8 +88,8 @@ public class InternetGameScreenTest extends InternetGameScreen_ {
     public void WhenWaitDialogIsDisplayed__CancellingWaitingRoomRemovesDialog() {
         WhenInvitePlayerPressed__WaitDialogIsDisplayed_And_InviteScreenShown();
 
-        onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
-        onActivityResult(BattleshipActivity.RC_SELECT_PLAYERS, Activity.RESULT_OK, null);
+        onActivityResult(RequestCodes.RC_SELECT_PLAYERS, Activity.RESULT_CANCELED, null);
+        onActivityResult(RequestCodes.RC_SELECT_PLAYERS, Activity.RESULT_OK, null);
 
         checkDoesNotExist(waitDialog());
     }
