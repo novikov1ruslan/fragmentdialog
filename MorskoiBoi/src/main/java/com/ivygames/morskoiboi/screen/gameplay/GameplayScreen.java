@@ -27,7 +27,7 @@ import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.VibratorWrapper;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.UiEvent;
@@ -534,7 +534,7 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
 
         @Override
         public String toString() {
-            return DebugUtils.getSimpleName(this);
+            return LoggerUtils.getSimpleName(this);
         }
     }
 

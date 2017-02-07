@@ -9,7 +9,7 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.googleapi.ApiClient;
@@ -142,6 +142,6 @@ public class ProgressManager {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

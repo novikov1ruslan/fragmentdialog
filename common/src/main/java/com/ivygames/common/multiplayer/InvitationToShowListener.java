@@ -2,7 +2,7 @@ package com.ivygames.common.multiplayer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationListener;
 import com.ivygames.common.invitations.InvitationShowListener;
@@ -45,6 +45,6 @@ public class InvitationToShowListener implements InvitationListener {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

@@ -18,7 +18,7 @@ import com.ivygames.battleship.ChatMessage;
 import com.ivygames.battleship.player.ChatListener;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.AndroidUtils;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.billing.PurchaseManager;
@@ -437,6 +437,6 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

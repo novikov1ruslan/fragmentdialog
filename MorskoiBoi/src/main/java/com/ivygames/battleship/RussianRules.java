@@ -2,7 +2,7 @@ package com.ivygames.battleship;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 
 public class RussianRules implements Rules {
 
@@ -19,6 +19,6 @@ public class RussianRules implements Rules {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

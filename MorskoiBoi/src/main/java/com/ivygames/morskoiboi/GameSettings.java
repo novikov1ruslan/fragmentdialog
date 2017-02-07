@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.achievements.AchievementsSettings;
 import com.ivygames.common.backup.BackupSharedPreferences;
 import com.ivygames.morskoiboi.progress.ProgressSerialization;
@@ -218,6 +218,6 @@ public class GameSettings implements AchievementsSettings {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

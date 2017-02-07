@@ -16,6 +16,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.ivygames.common.billing.PurchaseUtils;
 
+import org.commons.logger.LoggerUtils;
+
 import java.util.List;
 
 public class AndroidDevice {
@@ -103,6 +105,6 @@ public class AndroidDevice {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

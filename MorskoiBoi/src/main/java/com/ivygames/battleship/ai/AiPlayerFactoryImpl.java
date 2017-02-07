@@ -3,7 +3,7 @@ package com.ivygames.battleship.ai;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.Rules;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.game.Bidder;
 
 import java.util.Random;
@@ -27,6 +27,6 @@ public class AiPlayerFactoryImpl implements AiPlayerFactory {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

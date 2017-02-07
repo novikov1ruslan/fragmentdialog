@@ -1,8 +1,8 @@
-package com.ivygames.common;
+package org.commons.logger;
 
 import android.support.annotation.NonNull;
 
-public class DebugUtils {
+public class LoggerUtils {
 
     @NonNull
     public static String getSimpleName(@NonNull Object o) {

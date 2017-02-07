@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.googleapi.ApiClient;
 
 import org.commons.logger.Ln;
@@ -284,6 +284,6 @@ public class MultiplayerRoom implements RoomListener {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

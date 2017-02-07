@@ -30,7 +30,7 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.ivygames.common.BuildConfig;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.achievements.AchievementsResultCallback;
 import com.ivygames.common.invitations.GameInvitation;
 import com.ivygames.common.invitations.InvitationLoadListener;
@@ -388,6 +388,6 @@ public class GoogleApiClientWrapper implements ApiClient {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

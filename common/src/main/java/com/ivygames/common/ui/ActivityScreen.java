@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 
 
 public abstract class ActivityScreen extends Screen {
@@ -60,6 +60,6 @@ public abstract class ActivityScreen extends Screen {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

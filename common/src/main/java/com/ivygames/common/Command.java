@@ -2,6 +2,8 @@ package com.ivygames.common;
 
 import android.support.annotation.NonNull;
 
+import org.commons.logger.LoggerUtils;
+
 public abstract class Command implements Runnable {
 
     private boolean mExecuted;
@@ -28,7 +30,7 @@ public abstract class Command implements Runnable {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 
 }

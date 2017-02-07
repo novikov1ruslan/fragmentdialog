@@ -3,7 +3,7 @@ package com.ivygames.morskoiboi.achievement;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.Ship;
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 import com.ivygames.common.achievements.AchievementsApi;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
@@ -175,6 +175,6 @@ public class AchievementsManager {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }

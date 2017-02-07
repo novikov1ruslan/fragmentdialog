@@ -3,7 +3,7 @@ package com.ivygames.battleship.player;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.ivygames.common.DebugUtils;
+import org.commons.logger.LoggerUtils;
 
 import org.commons.logger.Ln;
 
@@ -26,6 +26,6 @@ public class PlayerFactory {
 
     @Override
     public String toString() {
-        return DebugUtils.getSimpleName(this);
+        return LoggerUtils.getSimpleName(this);
     }
 }
