@@ -61,7 +61,7 @@ public class GameplayScreenTest {
         Game game = new AndroidGame();
         OnlineGameScreen screen = new GameplayScreen(activity, game, session, mock(TurnTimerController.class));
 
-        screen.onDestroy();
+        screen.onDetach();
 
         verify(android, times(1)).cancel();
     }

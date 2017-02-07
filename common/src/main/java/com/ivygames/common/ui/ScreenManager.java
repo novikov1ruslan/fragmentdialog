@@ -57,7 +57,7 @@ public class ScreenManager {
     }
 
     public void onDestroy() {
-        mCurrentScreen.onDestroy();
+        mCurrentScreen.onDetach();
     }
 
     public void dismissTutorial() {
@@ -112,7 +112,7 @@ public class ScreenManager {
             oldView = mCurrentScreen.getView();
             mCurrentScreen.onPause();
             mCurrentScreen.onStop();
-            mCurrentScreen.onDestroy();
+            mCurrentScreen.onDetach();
         }
 
         mCurrentScreen = screen;

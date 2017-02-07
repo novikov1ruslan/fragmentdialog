@@ -174,8 +174,8 @@ public class DeviceListScreen extends BattleshipScreen implements DeviceListActi
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         if (isDialogShown()) {
             hideDialog();
         }

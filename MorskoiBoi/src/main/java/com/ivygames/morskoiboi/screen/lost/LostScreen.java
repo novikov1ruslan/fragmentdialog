@@ -97,8 +97,8 @@ public class LostScreen extends OnlineGameScreen implements BackPressListener {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         mLostMusic.release();
     }
 

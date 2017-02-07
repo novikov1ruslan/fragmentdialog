@@ -23,7 +23,7 @@ public abstract class Screen {
         Ln.v(this + " started");
     }
 
-    public void onDestroy() {
+    public void onDetach() {
         Ln.v(this + " screen destroyed");
     }
 

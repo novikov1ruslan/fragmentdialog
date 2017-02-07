@@ -257,8 +257,8 @@ public class GameplayScreen extends OnlineGameScreen implements BackPressListene
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
 
         // Player can receive messages related to the new game round (bid).
         // Player can receive more messages after this screen is destroyed.

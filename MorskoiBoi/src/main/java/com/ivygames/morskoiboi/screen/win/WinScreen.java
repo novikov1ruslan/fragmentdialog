@@ -208,8 +208,8 @@ public class WinScreen extends OnlineGameScreen implements BackPressListener, Si
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         if (mGame.getWinPoints() == Game.WIN_POINTS_SHOULD_BE_CALCULATED) {
             if (mApiClient.isConnected()) {
                 submitScore(mScores);

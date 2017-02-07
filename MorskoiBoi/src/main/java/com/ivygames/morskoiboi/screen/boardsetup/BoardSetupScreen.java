@@ -118,8 +118,8 @@ public final class BoardSetupScreen extends OnlineGameScreen implements BackPres
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         mHandler.removeCallbacks(mTimeoutTask);
         Crouton.cancelAllCroutons();
         Ln.d(this + " screen destroyed - all croutons canceled");

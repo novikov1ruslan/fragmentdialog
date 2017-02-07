@@ -132,8 +132,8 @@ public class BluetoothScreen extends BattleshipScreen implements BluetoothLayout
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         mParent.unregisterReceiver(mReceiver);
 
         if (isDialogShown()) {

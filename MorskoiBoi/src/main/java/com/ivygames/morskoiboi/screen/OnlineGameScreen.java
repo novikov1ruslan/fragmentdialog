@@ -70,8 +70,8 @@ public abstract class OnlineGameScreen extends BattleshipScreen implements Conne
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         Ln.v(this + " unregister connection listener");
         mMultiplayer.unregisterConnectionLostListener(this);
         mBluetooth.resetConnectionLostListener();
