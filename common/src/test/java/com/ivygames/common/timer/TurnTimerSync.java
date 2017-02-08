@@ -8,7 +8,7 @@ class TurnTimerSync implements TurnTimer {
 
     @NonNull
     private final TimerUpdater mDelegate;
-    private int nTicks;
+    private final int nTicks;
     private boolean cancelled;
 
     /**

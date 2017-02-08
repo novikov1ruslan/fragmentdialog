@@ -5,14 +5,14 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 import com.google.android.gms.analytics.Tracker;
 
-public class ExceptionEventImpl {
+class ExceptionEventImpl {
 
     private static final String GA_CAT_EXCEPTION = "exception";
 
     @NonNull
     private final Tracker mTracker;
 
-    public ExceptionEventImpl(@NonNull Tracker tracker) {
+    ExceptionEventImpl(@NonNull Tracker tracker) {
         mTracker = tracker;
     }
 

@@ -13,7 +13,7 @@ public class TimerUpdaterTest {
     public void WhenTimerUpdaterIsCreate__ListenerIsUpdatedWithTimeout() {
         TimerListener listener = mock(TimerListener.class);
 
-        TimerUpdater timerUpdater = new TimerUpdater(100, 1, listener) ;
+        new TimerUpdater(100, 1, listener) ;
 
         verify(listener).setCurrentTime(100);
     }

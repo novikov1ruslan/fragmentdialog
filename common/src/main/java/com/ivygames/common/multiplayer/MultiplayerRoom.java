@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import org.commons.logger.LoggerUtils;
 import com.ivygames.common.googleapi.ApiClient;
 
 import org.commons.logger.Ln;
+import org.commons.logger.LoggerUtils;
 
 import java.util.List;
 
@@ -37,12 +37,12 @@ public class MultiplayerRoom implements RoomListener {
         mSender = sender;
     }
 
-    public void setConnectionErrorListener(@NonNull RoomConnectionErrorListener listener) {
+    void setConnectionErrorListener(@NonNull RoomConnectionErrorListener listener) {
         mConnectionErrorListener = listener;
         Ln.v("room connection error listener set: " + listener);
     }
 
-    public void setCreationListener(@NonNull RoomCreationListener listener) {
+    void setCreationListener(@NonNull RoomCreationListener listener) {
         mCreationListener = listener;
         Ln.v("room creation listener set: " + listener);
     }

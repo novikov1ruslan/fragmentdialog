@@ -51,7 +51,7 @@ public final class DialogUtils {
         }).create();
     }
 
-    public static void showNote(FragmentManager fm, int msgId) {
+    public static void showNote(@NonNull FragmentManager fm, int msgId) {
         FragmentAlertDialog.showNote(fm, FragmentAlertDialog.TAG, msgId);
     }
 

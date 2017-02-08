@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 
 public class CommandTest {
 
-    private MyCommand command = new MyCommand();
+    private final MyCommand command = new MyCommand();
 
     @Test
     public void InitiallyCommandIsNotExecuted() {

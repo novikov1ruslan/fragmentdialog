@@ -11,6 +11,7 @@ public abstract class Screen {
 
     private boolean mResumed;
 
+    // TODO: rename to onAttach(), no need to return
     @NonNull
     public abstract View onCreateView(@NonNull ViewGroup container);
 

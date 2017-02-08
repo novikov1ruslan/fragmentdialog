@@ -11,26 +11,26 @@ final class AnalyticsEventImpl {
     @NonNull
     private final Tracker mTracker;
 
-    public AnalyticsEventImpl(@NonNull Tracker tracker) {
+    AnalyticsEventImpl(@NonNull Tracker tracker) {
         mTracker = tracker;
     }
 
-    public void send(String action) {
+    public void send(@NonNull String action) {
         EventBuilder builder = new EventBuilder(AnalyticsEventImpl.GA_CAT_GAME, action);
         mTracker.send(builder.build());
     }
 
-    public void send(String action, String label) {
+    public void send(@NonNull String action, @NonNull String label) {
         EventBuilder builder = new EventBuilder(AnalyticsEventImpl.GA_CAT_GAME, action).setLabel(label);
         mTracker.send(builder.build());
     }
 
-    public void send(String action, String label, int value) {
+    public void send(@NonNull String action, @NonNull String label, int value) {
         EventBuilder builder = new EventBuilder(AnalyticsEventImpl.GA_CAT_GAME, action).setLabel(label).setValue(value);
         mTracker.send(builder.build());
     }
 
-    public void send(String action, int value) {
+    public void send(@NonNull String action, int value) {
         EventBuilder builder = new EventBuilder(AnalyticsEventImpl.GA_CAT_GAME, action).setValue(value);
         mTracker.send(builder.build());
     }
