@@ -66,6 +66,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
             @Override
             public void gameStarted() {
+                hideWaitingScreen();
                 setScreen(ScreenCreator.newBoardSetupScreen(mInternetGame, mSession));
             }
 
@@ -111,7 +112,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     public View onCreateView(@NonNull ViewGroup container) {
         mLayout = (InternetGameLayout) inflate(R.layout.internet_game, container);
         mLayout.setPlayerName(mSettings.getPlayerName());
-        mLayout.setScreenActions(mInternetGameLayoutListener);
+        mLayout.setScreenActions(mLayoutListener);
 
         mInvitationListener = new InvitationToShowListener(mMultiplayer, mLayout);
         Ln.d(this + " screen created");
@@ -144,9 +145,9 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        hideWaitingScreen();
         // TODO: missing UI test: 1) invite player, 2) exit game 3) enter BT game: no "Please Wait"
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
+            hideWaitingScreen();
             WarningEvent.send("reconnect required during online");
             Ln.i("reconnect required - returning to select game screen");
             mApiClient.disconnect();
@@ -173,7 +174,7 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
     }
 
     @NonNull
-    private final InternetGameLayoutListener mInternetGameLayoutListener = new InternetGameLayoutListener() {
+    private final InternetGameLayoutListener mLayoutListener = new InternetGameLayoutListener() {
 
         @Override
         public void invitePlayer() {
