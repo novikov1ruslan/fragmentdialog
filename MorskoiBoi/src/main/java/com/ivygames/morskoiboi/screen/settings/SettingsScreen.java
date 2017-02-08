@@ -68,7 +68,11 @@ public class SettingsScreen extends BattleshipScreen implements SignInListener, 
     }
 
     private Intent getEmailIntent() {
-        return Sharing.getEmailIntent(getString(R.string.report_problem), getString(R.string.app_name), mDevice.getVersionName());
+        return Sharing.getEmailIntent(getString(R.string.report_problem), getString(R.string.app_name), getVersionName());
+    }
+
+    public String getVersionName() {
+        return mParent.getResources().getString(R.string.versionName);
     }
 
     @NonNull

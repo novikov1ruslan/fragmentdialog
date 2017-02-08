@@ -58,11 +58,6 @@ public class AndroidDevice {
     }
 
     @NonNull
-    public String getVersionName() {
-        return mContext.getResources().getString(R.string.versionName);
-    }
-
-    @NonNull
     public static String getDeviceInfo() {
         return "BOARD=" + Build.BOARD + "; BOOTLOADER=" + Build.BOOTLOADER + "; BRAND=" + Build.BRAND + "; CPU_ABI=" + Build.CPU_ABI
                 + "; DEVICE=" + Build.DEVICE + "; DISPLAY=" + Build.DISPLAY + "; HARDWARE=" + Build.HARDWARE + "; HOST=" + Build.HOST + "; ID=" + Build.ID
