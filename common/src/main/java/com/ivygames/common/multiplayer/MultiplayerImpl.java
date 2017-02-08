@@ -10,11 +10,11 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
-import org.commons.logger.LoggerUtils;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
 
 import org.commons.logger.Ln;
+import org.commons.logger.LoggerUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,8 +107,6 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
                 Ln.d("opponent selected: " + invitees + ", creating room...");
 //                int minAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
 //                int maxAutoMatchPlayers = data.getIntExtra(com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
-//                int minAutoMatchPlayers = 1;
-//                int maxAutoMatchPlayers = 1;
                 mApiClient.createRoom(invitees, mRoom, mRtmListener);
             } else {
                 Ln.d("select players cancelled");
@@ -139,7 +137,6 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
                 Ln.d("user explicitly chose to leave the room");
                 // if the activity result is RESULT_LEFT_ROOM,
                 // it's the caller's responsibility to actually leave the room
-//                leaveCurrentRoom();
                 endSession();
                 mGameCreationListener.gameAborted();
             } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -147,7 +144,6 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
                 // In our game, this means leaving the room too. In more elaborate games,this could mean
                 // something else (like minimizing the waiting room UI but continue in the handshake process).
                 Ln.d("user closed the waiting room - leaving");
-//                leaveCurrentRoom();
                 endSession();
                 mGameCreationListener.gameAborted();
             }
@@ -223,9 +219,6 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
             return;
         }
 
-//        if (mInvitees != null) {
-//            mInvitees.get(0);
-//        }
         mRoom.leave();
         mRoom = null;
         mSelectPlayersRc = 0;

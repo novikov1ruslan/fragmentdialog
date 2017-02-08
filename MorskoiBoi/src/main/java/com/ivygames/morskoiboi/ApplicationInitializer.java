@@ -12,6 +12,7 @@ import com.ivygames.battleship.ai.AiPlayerFactory;
 import com.ivygames.battleship.ai.AiPlayerFactoryImpl;
 import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.player.PlayerFactory;
+import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
@@ -20,7 +21,6 @@ import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
 import com.ivygames.common.multiplayer.MultiplayerImpl;
 import com.ivygames.morskoiboi.achievement.AchievementsManager;
-import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.morskoiboi.progress.ProgressManager;
 import com.ivygames.morskoiboi.russian.RussianFleetBitmapsChooser;
 import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
@@ -28,7 +28,6 @@ import com.ivygames.morskoiboi.russian.RussianScoresCalculator;
 import org.acra.ACRA;
 import org.commons.logger.Config;
 import org.commons.logger.Ln;
-import org.commons.logger.Logger;
 import org.commons.logger.LoggerImpl;
 import org.commons.logger.WarningListener;
 
@@ -104,8 +103,7 @@ class ApplicationInitializer {
                 }
             }
         };
-        Logger logger = new LoggerImpl(logConfig, warningListener);
-        Ln.injectLogger(logger);
+        Ln.injectLogger(new LoggerImpl(logConfig, warningListener));
     }
 
 }
