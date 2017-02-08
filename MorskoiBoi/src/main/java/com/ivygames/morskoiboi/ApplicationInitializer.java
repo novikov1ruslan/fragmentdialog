@@ -58,8 +58,7 @@ class ApplicationInitializer {
                 RequestCodes.SERVICE_RESOLVE);
         ProgressManager progressManager = new ProgressManager(apiClient, settings);
         AchievementsManager achievementsManager = new AchievementsManager(apiClient, settings);
-        MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient,
-                RequestCodes.RC_WAITING_ROOM);
+        MultiplayerImpl multiplayerManager = new MultiplayerImpl(apiClient, RequestCodes.RC_WAITING_ROOM);
         PlayerFactory playerFactory = new PlayerFactory(application.getString(R.string.player));
         AiPlayerFactory aiPlayerFactory = new AiPlayerFactoryImpl(new RussianBot(random), random);
         ScoresCalculator scoresCalculator = new RussianScoresCalculator();

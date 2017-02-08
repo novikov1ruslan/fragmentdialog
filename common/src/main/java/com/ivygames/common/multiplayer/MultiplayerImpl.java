@@ -45,9 +45,9 @@ public class MultiplayerImpl implements RealTimeMultiplayer {
     private RoomConnectionErrorListener mRoomConnectionErrorListener;
     private RealTimeMessageReceivedListener mRtmListener;
 
-    public MultiplayerImpl(@NonNull ApiClient apiClient, int requestCode) {
+    public MultiplayerImpl(@NonNull ApiClient apiClient, int waitingRoomRequestCode) {
         mApiClient = apiClient;
-        mWaitingRoomRc = requestCode;
+        mWaitingRoomRc = waitingRoomRequestCode;
         mInvitationManager = new InvitationManager(apiClient);
     }
 

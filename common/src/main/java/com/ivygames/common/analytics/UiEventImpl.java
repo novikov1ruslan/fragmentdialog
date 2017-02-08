@@ -17,11 +17,11 @@ final class UiEventImpl {
     @NonNull
     private final Tracker mTracker;
 
-    public UiEventImpl(@NonNull Tracker tracker) {
+    UiEventImpl(@NonNull Tracker tracker) {
         mTracker = tracker;
     }
 
-    public void screenView(@NonNull String screenName) {
+    void screenView(@NonNull String screenName) {
         mTracker.setScreenName(screenName);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }

@@ -12,6 +12,7 @@ import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.battleship.player.PlayerOpponent;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.UiEvent;
+import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.dialog.SimpleActionDialog;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.common.invitations.InvitationListener;
@@ -146,14 +147,14 @@ public class InternetGameScreen extends BattleshipScreen implements BackPressLis
         hideWaitingScreen();
         // TODO: missing UI test: 1) invite player, 2) exit game 3) enter BT game: no "Please Wait"
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED) {
+            WarningEvent.send("reconnect required during online");
             Ln.i("reconnect required - returning to select game screen");
             mApiClient.disconnect();
             // TODO: missing UI test
             SimpleActionDialog.create(R.string.error, newBackToSelectGameCommand()).show(mFm, DIALOG);
-            return;
+        } else {
+            mMultiplayer.handleResult(requestCode, resultCode, data);
         }
-
-        mMultiplayer.handleResult(requestCode, resultCode, data);
     }
 
     @Override
