@@ -40,7 +40,9 @@ public class PurchaseManager {
 
         // enable debug logging (for a production application, you should set this to false).
         mHelper.enableDebugLogging(BuildConfig.DEBUG);
+    }
 
+    public void startSetup() {
         // Start setup. This is asynchronous and the specified listener
         // will be called once setup completes.
         Ln.d("Starting setup.");

@@ -18,7 +18,6 @@ import com.ivygames.battleship.ChatMessage;
 import com.ivygames.battleship.player.ChatListener;
 import com.ivygames.common.AndroidDevice;
 import com.ivygames.common.AndroidUtils;
-import org.commons.logger.LoggerUtils;
 import com.ivygames.common.ads.AdProvider;
 import com.ivygames.common.ads.NoAdsAdProvider;
 import com.ivygames.common.billing.PurchaseManager;
@@ -39,6 +38,7 @@ import com.ivygames.morskoiboi.screen.view.InfoCroutonLayout;
 import com.ruslan.fragmentdialog.FragmentAlertDialog;
 
 import org.commons.logger.Ln;
+import org.commons.logger.LoggerUtils;
 
 import java.util.Set;
 
@@ -125,9 +125,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
             return;
         }
 
-        AndroidDevice device = Dependencies.getDevice();
-
-        if (device.isTablet()) {
+        if (mDevice.isTablet()) {
             Ln.v("device is tablet");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
@@ -137,7 +135,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
 
         mMusicPlayer = MusicPlayer.create(this, R.raw.intro_music);
 
-        Ln.d("google play services available = " + device.isGoogleServicesAvailable());
+        Ln.d("google play services available = " + mDevice.isGoogleServicesAvailable());
 
         mLayout = (ViewGroup) getLayoutInflater().inflate(R.layout.battleship, null);
         setContentView(mLayout);
@@ -152,7 +150,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         }
 
         mPurchaseManager = new PurchaseManager(this, RequestCodes.RC_PURCHASE, BASE64_ENCODED_PUBLIC_KEY);
-        setupAds(device);
+        setupAds();
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         Ln.i("game fully created");
@@ -162,7 +160,7 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         setScreen(ScreenCreator.newMainScreen());
     }
 
-    private void setupAds(@NonNull AndroidDevice device) {
+    private void setupAds() {
         Ln.v("setting up ads...");
         if (mSettings.noAds()) {
             if (!_DEBUG_ALWAYS_SHOW_ADS) {
@@ -171,7 +169,8 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         } else {
             mAdProvider = AdProviderFactory.create(this, mDevice);
             if (!_DEBUG_ALWAYS_SHOW_ADS) {
-                if (device.isBillingAvailable()) {
+                if (mDevice.isBillingAvailable()) {
+                    mPurchaseManager.startSetup();
                     mPurchaseManager.query(SKU_NO_ADS, new PurchaseStatusListenerImpl());
                 } else {
                     Ln.e("billing_not_available");
@@ -330,7 +329,9 @@ public class BattleshipActivity extends Activity implements ApiConnectionListene
         Crouton.cancelAllCroutons();
         mAdProvider.destroy();
 
-        mPurchaseManager.destroy();
+        if (mDevice.isBillingAvailable()) {
+            mPurchaseManager.destroy();
+        }
         mApiClient.disconnect();
 
         mMusicPlayer.release();

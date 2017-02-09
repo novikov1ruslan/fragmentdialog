@@ -9,13 +9,13 @@ import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
-import org.commons.logger.LoggerUtils;
 import com.ivygames.common.analytics.AnalyticsEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
 
 import org.commons.logger.Ln;
+import org.commons.logger.LoggerUtils;
 
 import java.io.IOException;
 
@@ -131,11 +131,10 @@ public class ProgressManager {
     }
 
     @NonNull
-    private static byte[] getBytes(@NonNull int progress) {
+    private static byte[] getBytes(int progress) {
         return ProgressSerialization.toJson(progress).getBytes();
     }
 
-    @NonNull
     private static int parseProgress(@NonNull byte[] loadedData) {
         return ProgressSerialization.parseProgress(new String(loadedData));
     }
