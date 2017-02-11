@@ -1,7 +1,7 @@
 package com.ivygames.common.analytics;
 
-class Acra extends RuntimeException {
-    Acra(String message) {
+public class Acra extends RuntimeException {
+    public Acra(String message) {
         super(message);
     }
 }

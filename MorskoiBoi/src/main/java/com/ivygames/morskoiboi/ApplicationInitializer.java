@@ -14,8 +14,10 @@ import com.ivygames.battleship.ai.RussianBot;
 import com.ivygames.battleship.player.PlayerFactory;
 import com.ivygames.bluetooth.peer.BluetoothPeer;
 import com.ivygames.common.AndroidDevice;
+import com.ivygames.common.analytics.Acra;
 import com.ivygames.common.analytics.ExceptionEvent;
 import com.ivygames.common.analytics.ExceptionHandler;
+import com.ivygames.common.analytics.ExceptionReporter;
 import com.ivygames.common.analytics.GoogleAnalyticsInitializer;
 import com.ivygames.common.analytics.WarningEvent;
 import com.ivygames.common.googleapi.GoogleApiClientWrapper;
@@ -46,6 +48,19 @@ class ApplicationInitializer {
         initLogger(application);
 
         GoogleAnalyticsInitializer.initAnalytics(application, ANALYTICS_KEY);
+        ExceptionHandler.injectReporter(new ExceptionReporter() {
+            @Override
+            public void report(@NonNull String message) {
+                report(new Acra(message));
+            }
+
+            @Override
+            public void report(@NonNull Exception e) {
+                if (!BuildConfig.DEBUG) {
+                    ACRA.getErrorReporter().handleException(e);
+                }
+            }
+        });
 
         GameSettings settings = new GameSettings(application);
         Resources resources = application.getResources();
@@ -81,8 +96,6 @@ class ApplicationInitializer {
         Bitmaps.loadBitmaps(fleetBitmapsChooser, resources);
 
         Configuration.DEBUG = BuildConfig.DEBUG;
-
-        ExceptionHandler.setDryRun(BuildConfig.DEBUG);
         Ln.v("... application initialization complete");
     }
 

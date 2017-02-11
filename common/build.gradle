@@ -30,7 +30,6 @@ dependencies {
     compile project(':fragmentdialog')
 
     compile 'com.github.novikov1ruslan:BillingUtils:-SNAPSHOT'
-    compile 'ch.acra:acra:4.6.2'
     compile "com.google.android.gms:play-services-analytics:${playServicesVersion}"
     compile "com.google.android.gms:play-services-base:${playServicesVersion}"
     compile "com.google.android.gms:play-services-games:${playServicesVersion}"
