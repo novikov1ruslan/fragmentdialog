@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.board.Vector;
+import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.morskoiboi.Bitmaps;
 import com.ivygames.morskoiboi.PaintFactory;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SetupBoardRenderer extends BaseBoardRenderer {
+    private static final boolean DRAW_SHIP_BITMAP = true;
 
     @NonNull
     private final Resources mResources;
@@ -53,13 +55,17 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
         mRotationMatrix.postRotate(90);
     }
 
-//    @Override
-//    public void drawShip(@NonNull Canvas canvas, @NonNull Ship ship) {
-//        Rect rectForShip = mProcessor.getRectForShip(ship);
-//        canvas.drawRect(rectForShip, mShipBorderPaint);
-//
-//        drawShipInRect(canvas, ship, rectForShip);
-//    }
+    @Override
+    public void drawShip(@NonNull Canvas canvas, @NonNull LocatedShip locatedShip) {
+        if (DRAW_SHIP_BITMAP) {
+            Rect rectForShip = mProcessor.getRectForShip(locatedShip.ship, locatedShip.coordinate);
+            canvas.drawRect(rectForShip, mShipBorderPaint);
+
+            drawShipInRect(canvas, locatedShip.ship, rectForShip);
+        } else {
+            super.drawShip(canvas, locatedShip);
+        }
+    }
 
     private void drawShipInRect(@NonNull Canvas canvas, @NonNull Ship ship, Rect rect) {
         mDest.set(rect.left + 1, rect.top + 1, rect.right - 1, rect.bottom - 1);
@@ -116,9 +122,13 @@ public class SetupBoardRenderer extends BaseBoardRenderer {
 
     public void drawPickedShip(@NonNull Canvas canvas, @NonNull Ship ship, int x, int y) {
         Rect pickedShipRect = mProcessor.getPickedShipRect(ship, x, y);
-        canvas.drawRect(pickedShipRect, mDockedShipPaint);
 
-//        drawShipInRect(canvas, ship, pickedShipRect);
+        if (DRAW_SHIP_BITMAP) {
+            canvas.drawRect(pickedShipRect, mShipBorderPaint);
+            drawShipInRect(canvas, ship, pickedShipRect);
+        } else {
+            canvas.drawRect(pickedShipRect, mDockedShipPaint);
+        }
     }
 
     public void drawAiming(@NonNull Canvas canvas, @NonNull Ship ship, @NonNull Vector v) {
