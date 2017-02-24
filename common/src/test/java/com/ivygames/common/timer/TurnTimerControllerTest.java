@@ -2,8 +2,6 @@ package com.ivygames.common.timer;
 
 import android.support.annotation.NonNull;
 
-import com.ivygames.common.analytics.ExceptionHandler;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -33,7 +31,6 @@ public class TurnTimerControllerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ExceptionHandler.setDryRun(true);
 
         when(factory.newTimer(anyInt(), any(TimerListener.class))).thenReturn(timer);
         controller = new TurnTimerController(DEFAULT_TIMEOUT, 2, factory);

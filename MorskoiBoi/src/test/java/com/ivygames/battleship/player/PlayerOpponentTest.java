@@ -11,7 +11,6 @@ import com.ivygames.battleship.board.Vector;
 import com.ivygames.battleship.ship.LocatedShip;
 import com.ivygames.battleship.ship.Ship;
 import com.ivygames.battleship.shot.ShotResult;
-import com.ivygames.common.analytics.ExceptionHandler;
 import com.ivygames.morskoiboi.PlayerCallback;
 
 import org.junit.Before;
@@ -54,7 +53,6 @@ public class PlayerOpponentTest {
     @Before
     public void setUp() {
         initMocks(this);
-        ExceptionHandler.setDryRun(true);
 
         when(rules.getAllShipsSizes()).thenReturn(new int[]{1, 2, 3});
         mPlayer = newPlayer(rules);

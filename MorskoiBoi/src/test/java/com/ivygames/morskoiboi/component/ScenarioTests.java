@@ -5,7 +5,6 @@ import com.ivygames.battleship.Placement;
 import com.ivygames.battleship.Rules;
 import com.ivygames.battleship.RussianRules;
 import com.ivygames.battleship.player.ChatListener;
-import com.ivygames.common.analytics.ExceptionHandler;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,6 @@ public class ScenarioTests {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ExceptionHandler.setDryRun(true);
     }
 
     @Test
