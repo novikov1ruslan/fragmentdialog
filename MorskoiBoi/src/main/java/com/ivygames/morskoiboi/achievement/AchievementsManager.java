@@ -3,12 +3,12 @@ package com.ivygames.morskoiboi.achievement;
 import android.support.annotation.NonNull;
 
 import com.ivygames.battleship.ship.Ship;
-import org.commons.logger.LoggerUtils;
 import com.ivygames.common.achievements.AchievementsApi;
 import com.ivygames.common.googleapi.ApiClient;
 import com.ivygames.morskoiboi.GameSettings;
 
 import org.commons.logger.Ln;
+import org.commons.logger.LoggerUtils;
 
 import java.util.Collection;
 
@@ -33,6 +33,7 @@ public class AchievementsManager {
     static final String DESTROYER = "CgkI8s_j3LsfEAIQBQ";
     static final String MILITARY_ACHIEVEMENTS = "CgkI8s_j3LsfEAIQEA";
 
+    private static final int FLYING_DUTCHMAN_ACHIEVEMENT_TIME_MS = 100 * 1000;
     public static final int NORMAL_DIFFICULTY_PROGRESS_FACTOR = 1;
 
     @NonNull
@@ -78,7 +79,7 @@ public class AchievementsManager {
 
     public void processTimeSpent(long time) {
         Ln.v("time=" + time);
-        if (time <= 80000) {
+        if (time <= FLYING_DUTCHMAN_ACHIEVEMENT_TIME_MS) {
             if (unlockIfNotUnlocked(FLYING_DUTCHMAN)) {
                 // reveal next
             } else if (time < 60000) {
