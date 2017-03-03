@@ -1,21 +1,28 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.android.library'
 
-buildscript {
-    repositories {
-        jcenter()
+android {
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 13
+        targetSdkVersion 16
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-//        classpath 'com.google.gms:google-services:3.0.0'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
     }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-    }
+dependencies {
+    compile project(':AppTheme')
+    compile "com.github.novikov1ruslan:Logger:${loggerVersion}"
+    compile 'com.android.support:support-annotations:23.3.0'
 }
 
-project.ext.playServicesVersion = '9.4.0'
-project.ext.loggerVersion = 'a613595206'
-
+repositories {
+    maven { url "https://jitpack.io" }
+}
