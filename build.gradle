@@ -33,7 +33,7 @@ android {
 dependencies {
     compile project(':AppTheme')
     compile "com.github.novikov1ruslan:Logger:${loggerVersion}"
-    compile 'com.android.support:support-annotations:23.3.0'
+    compile "com.android.support:support-annotations:${support_annotations_version}"
 }
 
 repositories {
